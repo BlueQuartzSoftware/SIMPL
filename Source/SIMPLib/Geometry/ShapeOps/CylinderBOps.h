@@ -37,7 +37,6 @@
 
 
 #include "ShapeOps.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 
 /*
@@ -46,10 +45,23 @@
 class SIMPLib_EXPORT CylinderBOps : public ShapeOps
 {
   public:
-    SIMPL_SHARED_POINTERS(CylinderBOps)
-    SIMPL_TYPE_MACRO(CylinderBOps)
-    SIMPL_STATIC_NEW_MACRO(CylinderBOps)
+    using Self = CylinderBOps;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
+    /**
+     * @brief Returns the name of the class for CylinderBOps
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for CylinderBOps
+     */
+    static QString ClassName();
+
+    static Pointer New();
 
     ~CylinderBOps() override;
 
@@ -65,6 +77,8 @@ class SIMPLib_EXPORT CylinderBOps : public ShapeOps
     CylinderBOps(CylinderBOps&&) = delete;        // Move Constructor Not Implemented
     CylinderBOps& operator=(const CylinderBOps&) = delete; // Copy Assignment Not Implemented
     CylinderBOps& operator=(CylinderBOps&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 
 

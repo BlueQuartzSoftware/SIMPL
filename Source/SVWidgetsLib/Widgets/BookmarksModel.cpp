@@ -33,7 +33,10 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
+#include "SIMPLib/Common/Constants.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
@@ -1001,4 +1004,16 @@ QString BookmarksModel::getBookmarksPrefsPath()
 #endif
 
   return bookmarksPrefsPath;
+}
+
+// -----------------------------------------------------------------------------
+const QString BookmarksModel::getNameOfClass() const
+{
+  return QString("BookmarksModel");
+}
+
+// -----------------------------------------------------------------------------
+QString BookmarksModel::ClassName()
+{
+  return QString("BookmarksModel");
 }

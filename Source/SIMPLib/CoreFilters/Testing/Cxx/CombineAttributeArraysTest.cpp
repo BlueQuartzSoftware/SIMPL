@@ -33,8 +33,10 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QDebug>
 
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
@@ -46,6 +48,8 @@
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #ifdef CREATE_DATA_ARRAY
 #undef CREATE_DATA_ARRAY
@@ -66,7 +70,24 @@ class CombineAttributeArraysTest
 public:
   CombineAttributeArraysTest() = default;
   virtual ~CombineAttributeArraysTest() = default;
-  SIMPL_TYPE_MACRO(CombineAttributeArraysTest)
+  /**
+   * @brief Returns the name of the class for CombineAttributeArraysTest
+   */
+  /**
+   * @brief Returns the name of the class for CombineAttributeArraysTest
+   */
+  const QString getNameOfClass() const
+  {
+    return QString("CombineAttributeArraysTest");
+  }
+
+  /**
+   * @brief Returns the name of the class for CombineAttributeArraysTest
+   */
+  QString ClassName()
+  {
+    return QString("CombineAttributeArraysTest");
+  }
 
   // -----------------------------------------------------------------------------
   //

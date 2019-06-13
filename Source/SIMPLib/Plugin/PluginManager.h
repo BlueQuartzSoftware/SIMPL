@@ -37,11 +37,11 @@
 
 
 #include <QtCore/QString>
+#include <QtCore/QVector>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
-#include "ISIMPLibPlugin.h"
+class ISIMPLibPlugin;
 
 /**
  * @brief The PluginManager class manages instances of plugins and is mainly used to keep
@@ -51,7 +51,14 @@ class SIMPLib_EXPORT PluginManager
 {
   public:
 //    SIMPL_SHARED_POINTERS(PluginManager)
-    SIMPL_TYPE_MACRO(PluginManager)
+    /**
+     * @brief Returns the name of the class for PluginManager
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for PluginManager
+     */
+    static QString ClassName();
 
     virtual ~PluginManager();
 
@@ -110,7 +117,6 @@ class SIMPLib_EXPORT PluginManager
     PluginManager();
 
   private:
-
     QVector<ISIMPLibPlugin*> m_Plugins;
     static PluginManager* m_Self;
 

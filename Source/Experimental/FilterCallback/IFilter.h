@@ -5,7 +5,6 @@
 
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
 
@@ -22,12 +21,47 @@ class IFilter
     virtual ~IFilter();
     
     void setupParameters();
-    
-    SIMPL_FILTER_PARAMETER(int, Index)
-    SIMPL_FILTER_PARAMETER(int, Parameter1)
-    SIMPL_FILTER_PARAMETER(double, Parameter2)
-    SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsPath)
-    
+
+    /**
+     * @brief Setter property for Index
+     */
+    void setIndex(const int& value);
+    /**
+     * @brief Getter property for Index
+     * @return Value of Index
+     */
+    int getIndex() const;
+
+    /**
+     * @brief Setter property for Parameter1
+     */
+    void setParameter1(const int& value);
+    /**
+     * @brief Getter property for Parameter1
+     * @return Value of Parameter1
+     */
+    int getParameter1() const;
+
+    /**
+     * @brief Setter property for Parameter2
+     */
+    void setParameter2(const double& value);
+    /**
+     * @brief Getter property for Parameter2
+     * @return Value of Parameter2
+     */
+    double getParameter2() const;
+
+    /**
+     * @brief Setter property for FeatureIdsPath
+     */
+    void setFeatureIdsPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for FeatureIdsPath
+     * @return Value of FeatureIdsPath
+     */
+    DataArrayPath getFeatureIdsPath() const;
+
     void readFilterParameters(QJsonObject& root);
     
     void writeParameters(QJsonObject& root);
@@ -35,9 +69,17 @@ class IFilter
     void printValues(std::ostream& out);
     
     std::string getName();
-    
-      SIMPL_INSTANCE_PROPERTY(bool, InPreflight)
-    
+
+    /**
+     * @brief Setter property for InPreflight
+     */
+    void setInPreflight(const bool& value);
+    /**
+     * @brief Getter property for InPreflight
+     * @return Value of InPreflight
+     */
+    bool getInPreflight() const;
+
     std::vector<IFilterParameter::Pointer> getFilterParameters();
     
     virtual void preflight();
@@ -79,6 +121,12 @@ class IFilter
     void dataCheck();
     
   private:
+    int m_Index = {};
+    int m_Parameter1 = {};
+    double m_Parameter2 = {};
+    DataArrayPath m_FeatureIdsPath = {};
+    bool m_InPreflight = {};
+
     std::vector<IFilterParameter::Pointer> m_FilterParameters;
 
   public:

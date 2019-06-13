@@ -12,6 +12,7 @@
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 /**
  * @brief The FilterParameterWidgetUtils class implements some common methods that

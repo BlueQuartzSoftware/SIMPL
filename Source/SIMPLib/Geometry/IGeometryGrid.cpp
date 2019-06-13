@@ -44,3 +44,21 @@ IGeometryGrid::IGeometryGrid() = default;
 //
 // -----------------------------------------------------------------------------
 IGeometryGrid::~IGeometryGrid() = default;
+
+// -----------------------------------------------------------------------------
+IGeometryGrid::Pointer IGeometryGrid::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+const QString IGeometryGrid::getNameOfClass() const
+{
+  return QString("IGeometryGrid");
+}
+
+// -----------------------------------------------------------------------------
+QString IGeometryGrid::ClassName()
+{
+  return QString("IGeometryGrid");
+}

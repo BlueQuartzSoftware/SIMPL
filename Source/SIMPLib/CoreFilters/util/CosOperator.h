@@ -46,7 +46,12 @@ class CalculatorNumber;
 class SIMPLib_EXPORT CosOperator : public UnaryOperator
 {
   public:
-    SIMPL_SHARED_POINTERS(CosOperator)
+    using Self = CosOperator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     static Pointer New()
     {
@@ -65,5 +70,7 @@ class SIMPLib_EXPORT CosOperator : public UnaryOperator
     CosOperator(CosOperator&&) = delete;         // Move Constructor Not Implemented
     CosOperator& operator=(const CosOperator&) = delete; // Copy Assignment Not Implemented
     CosOperator& operator=(CosOperator&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

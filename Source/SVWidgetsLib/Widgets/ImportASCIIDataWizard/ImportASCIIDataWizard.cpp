@@ -37,9 +37,13 @@
 
 #include <QtCore/QFile>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "ASCIIDataModel.h"
 #include "DataFormatPage.h"

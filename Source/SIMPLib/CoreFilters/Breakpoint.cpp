@@ -35,8 +35,10 @@
 
 #include "Breakpoint.h"
 
+#include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
@@ -203,4 +205,33 @@ const QString Breakpoint::getSubGroupName() const
 const QString Breakpoint::getHumanLabel() const
 {
   return "Breakpoint";
+}
+
+// -----------------------------------------------------------------------------
+Breakpoint::Pointer Breakpoint::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<Breakpoint> Breakpoint::New()
+{
+  struct make_shared_enabler : public Breakpoint
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString Breakpoint::getNameOfClass() const
+{
+  return QString("Breakpoint");
+}
+
+// -----------------------------------------------------------------------------
+QString Breakpoint::ClassName()
+{
+  return QString("Breakpoint");
 }

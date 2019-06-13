@@ -45,8 +45,30 @@
 template <typename T>
 class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
 {
-  public:
-    SIMPL_SHARED_POINTERS(CalculatorArray)
+public:
+  using Self = CalculatorArray<T>;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer()
+  {
+    return Pointer(static_cast<Self*>(nullptr));
+  }
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  virtual const QString getNameOfClass() const
+  {
+    return QString("CalculatorArray<T>");
+  }
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  static QString ClassName()
+  {
+    return QString("CalculatorArray<T>");
+  }
 
     static Pointer New(typename DataArray<T>::Pointer dataArray, ValueType type, bool allocate)
     {

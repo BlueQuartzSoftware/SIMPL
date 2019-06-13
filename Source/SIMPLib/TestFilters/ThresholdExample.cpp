@@ -36,6 +36,8 @@
 #include "ThresholdExample.h"
 
 #include "SIMPLib/FilterParameters/ComparisonSelectionFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -242,4 +244,69 @@ const QString ThresholdExample::getSubGroupName() const
 const QString ThresholdExample::getHumanLabel() const
 {
   return "Threshold Example";
+}
+
+// -----------------------------------------------------------------------------
+ThresholdExample::Pointer ThresholdExample::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ThresholdExample> ThresholdExample::New()
+{
+  struct make_shared_enabler : public ThresholdExample
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString ThresholdExample::getNameOfClass() const
+{
+  return QString("ThresholdExample");
+}
+
+// -----------------------------------------------------------------------------
+QString ThresholdExample::ClassName()
+{
+  return QString("ThresholdExample");
+}
+
+// -----------------------------------------------------------------------------
+void ThresholdExample::setDataContainerName(const QString& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ThresholdExample::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void ThresholdExample::setCellAttributeMatrixName(const QString& value)
+{
+  m_CellAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ThresholdExample::getCellAttributeMatrixName() const
+{
+  return m_CellAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void ThresholdExample::setCellComparisonInputs(const ComparisonInputs& value)
+{
+  m_CellComparisonInputs = value;
+}
+
+// -----------------------------------------------------------------------------
+ComparisonInputs ThresholdExample::getCellComparisonInputs() const
+{
+  return m_CellComparisonInputs;
 }

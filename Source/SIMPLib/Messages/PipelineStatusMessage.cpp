@@ -84,3 +84,40 @@ void PipelineStatusMessage::visit(AbstractMessageHandler* msgHandler) const
 {
   msgHandler->processMessage(this);
 }
+
+// -----------------------------------------------------------------------------
+PipelineStatusMessage::Pointer PipelineStatusMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+PipelineStatusMessage::Pointer PipelineStatusMessage::New()
+{
+  Pointer sharedPtr(new(PipelineStatusMessage));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString PipelineStatusMessage::getNameOfClass() const
+{
+  return QString("PipelineStatusMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString PipelineStatusMessage::ClassName()
+{
+  return QString("PipelineStatusMessage");
+}
+
+// -----------------------------------------------------------------------------
+void PipelineStatusMessage::setPipelineName(const QString& value)
+{
+  m_PipelineName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PipelineStatusMessage::getPipelineName() const
+{
+  return m_PipelineName;
+}

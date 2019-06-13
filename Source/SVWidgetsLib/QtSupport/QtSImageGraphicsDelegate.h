@@ -35,7 +35,6 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 //-- Qt Includes
 #include <QtCore/QObject>
@@ -69,16 +68,65 @@ class SVWidgetsLib_EXPORT QtSImageGraphicsDelegate : public QObject
     QtSImageGraphicsDelegate(QObject* parent = 0);
     ~QtSImageGraphicsDelegate() override;
 
+    /**
+     * @brief Setter property for MainWindow
+     */
+    void setMainWindow(QMainWindow* value);
+    /**
+     * @brief Getter property for MainWindow
+     * @return Value of MainWindow
+     */
+    QMainWindow* getMainWindow() const;
 
-    SIMPL_POINTER_PROPERTY(QMainWindow, MainWindow)
-    SIMPL_POINTER_PROPERTY(QGraphicsView, GraphicsView)
-    SIMPL_POINTER_PROPERTY(QGraphicsScene, GraphicsScene)
+    /**
+     * @brief Setter property for GraphicsView
+     */
+    void setGraphicsView(QGraphicsView* value);
+    /**
+     * @brief Getter property for GraphicsView
+     * @return Value of GraphicsView
+     */
+    QGraphicsView* getGraphicsView() const;
 
+    /**
+     * @brief Setter property for GraphicsScene
+     */
+    void setGraphicsScene(QGraphicsScene* value);
+    /**
+     * @brief Getter property for GraphicsScene
+     * @return Value of GraphicsScene
+     */
+    QGraphicsScene* getGraphicsScene() const;
 
-    SIMPL_INSTANCE_PROPERTY(QImage, CachedImage)
-    SIMPL_INSTANCE_PROPERTY(QImage, OverlayImage)
-    SIMPL_INSTANCE_PROPERTY(bool, CompositeImages)
+    /**
+     * @brief Setter property for CachedImage
+     */
+    void setCachedImage(const QImage& value);
+    /**
+     * @brief Getter property for CachedImage
+     * @return Value of CachedImage
+     */
+    QImage getCachedImage() const;
 
+    /**
+     * @brief Setter property for OverlayImage
+     */
+    void setOverlayImage(const QImage& value);
+    /**
+     * @brief Getter property for OverlayImage
+     * @return Value of OverlayImage
+     */
+    QImage getOverlayImage() const;
+
+    /**
+     * @brief Setter property for CompositeImages
+     */
+    void setCompositeImages(const bool& value);
+    /**
+     * @brief Getter property for CompositeImages
+     * @return Value of CompositeImages
+     */
+    bool getCompositeImages() const;
 
     /**
      * @brief Displays a Text message in the graphics view. This is typically used
@@ -141,6 +189,13 @@ class SVWidgetsLib_EXPORT QtSImageGraphicsDelegate : public QObject
     void setExclusionMode() { m_composition_mode = QPainter::CompositionMode_Exclusion;  }
 
   private:
+    QMainWindow* m_MainWindow = nullptr;
+    QGraphicsView* m_GraphicsView = nullptr;
+    QGraphicsScene* m_GraphicsScene = nullptr;
+
+    QImage m_CachedImage = {};
+    QImage m_OverlayImage = {};
+    bool m_CompositeImages = {};
 
     QGraphicsPixmapItem*    m_CurrentGraphicsItem;
 

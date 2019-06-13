@@ -39,7 +39,6 @@
 
 #include <QtGui/QIcon>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -60,16 +59,70 @@ class SVWidgetsLib_EXPORT BookmarksItem
       Bookmark
     };
 
-    SIMPL_BOOL_PROPERTY(Expanded)
-    SIMPL_INSTANCE_PROPERTY(QString, Name)
-    SIMPL_INSTANCE_PROPERTY(QString, Path)
+    void setExpanded(bool value);
+    bool isExpanded() const;
 
-    SIMPL_INSTANCE_PROPERTY(bool, HasErrors)
+    /**
+     * @brief Setter property for Name
+     */
+    void setName(const QString& value);
+    /**
+     * @brief Getter property for Name
+     * @return Value of Name
+     */
+    QString getName() const;
+
+    /**
+     * @brief Setter property for Path
+     */
+    void setPath(const QString& value);
+    /**
+     * @brief Getter property for Path
+     * @return Value of Path
+     */
+    QString getPath() const;
+
+    /**
+     * @brief Setter property for HasErrors
+     */
+    void setHasErrors(const bool& value);
+    /**
+     * @brief Getter property for HasErrors
+     * @return Value of HasErrors
+     */
+    bool getHasErrors() const;
+
     Q_PROPERTY(bool HasErrors READ getHasErrors WRITE setHasErrors)
 
-    SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
-    SIMPL_INSTANCE_PROPERTY(QIcon, Icon)
-    SIMPL_INSTANCE_PROPERTY(BookmarksItem::ItemType, ItemType)
+    /**
+     * @brief Setter property for ItemTooltip
+     */
+    void setItemTooltip(const QString& value);
+    /**
+     * @brief Getter property for ItemTooltip
+     * @return Value of ItemTooltip
+     */
+    QString getItemTooltip() const;
+
+    /**
+     * @brief Setter property for Icon
+     */
+    void setIcon(const QIcon& value);
+    /**
+     * @brief Getter property for Icon
+     * @return Value of Icon
+     */
+    QIcon getIcon() const;
+
+    /**
+     * @brief Setter property for ItemType
+     */
+    void setItemType(const BookmarksItem::ItemType& value);
+    /**
+     * @brief Getter property for ItemType
+     * @return Value of ItemType
+     */
+    BookmarksItem::ItemType getItemType() const;
 
     BookmarksItem* child(int number);
     BookmarksItem* parent();
@@ -89,7 +142,15 @@ class SVWidgetsLib_EXPORT BookmarksItem
     static QString TopLevelString();
 
   private:
-    QList<BookmarksItem*>               m_ChildItems;
+    QString m_Name = {};
+    QString m_Path = {};
+    bool m_HasErrors = {};
+    QString m_ItemTooltip = {};
+    QIcon m_Icon = {};
+    BookmarksItem::ItemType m_ItemType = {};
+    bool m_Expanded = false;
+
+    QList<BookmarksItem*> m_ChildItems;
     BookmarksItem*                      m_ParentItem;
 
   public:

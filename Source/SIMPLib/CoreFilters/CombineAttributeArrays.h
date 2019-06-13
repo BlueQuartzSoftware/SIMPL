@@ -36,8 +36,10 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
 
 /**
  * @brief The CombineAttributeArrays class. See [Filter documentation](@ref combineattributearrays) for details.
@@ -60,22 +62,72 @@ class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(CombineAttributeArrays)
-  SIMPL_FILTER_NEW_MACRO(CombineAttributeArrays)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CombineAttributeArrays, AbstractFilter)
+  using Self = CombineAttributeArrays;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<CombineAttributeArrays> New();
+
+  /**
+   * @brief Returns the name of the class for CombineAttributeArrays
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for CombineAttributeArrays
+   */
+  static QString ClassName();
 
   ~CombineAttributeArrays() override;
 
-  SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedDataArrayPaths)
+  /**
+   * @brief Setter property for SelectedDataArrayPaths
+   */
+  void setSelectedDataArrayPaths(const QVector<DataArrayPath>& value);
+  /**
+   * @brief Getter property for SelectedDataArrayPaths
+   * @return Value of SelectedDataArrayPaths
+   */
+  QVector<DataArrayPath> getSelectedDataArrayPaths() const;
+
   Q_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
 
-  SIMPL_FILTER_PARAMETER(QString, StackedDataArrayName)
+  /**
+   * @brief Setter property for StackedDataArrayName
+   */
+  void setStackedDataArrayName(const QString& value);
+  /**
+   * @brief Getter property for StackedDataArrayName
+   * @return Value of StackedDataArrayName
+   */
+  QString getStackedDataArrayName() const;
+
   Q_PROPERTY(QString StackedDataArrayName READ getStackedDataArrayName WRITE setStackedDataArrayName)
 
-  SIMPL_FILTER_PARAMETER(bool, NormalizeData)
+  /**
+   * @brief Setter property for NormalizeData
+   */
+  void setNormalizeData(const bool& value);
+  /**
+   * @brief Getter property for NormalizeData
+   * @return Value of NormalizeData
+   */
+  bool getNormalizeData() const;
+
   Q_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
 
-  SIMPL_FILTER_PARAMETER(bool, MoveValues)
+  /**
+   * @brief Setter property for MoveValues
+   */
+  void setMoveValues(const bool& value);
+  /**
+   * @brief Getter property for MoveValues
+   * @return Value of MoveValues
+   */
+  bool getMoveValues() const;
+
   Q_PROPERTY(bool MoveValues READ getMoveValues WRITE setMoveValues)
 
   /**
@@ -185,9 +237,14 @@ protected:
   void initialize();
 
 private:
-  DEFINE_IDATAARRAY_WEAKPTR(StackedData)
+  IDataArrayWkPtrType m_StackedDataPtr;
 
-  QVector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
+  QVector<DataArrayPath> m_SelectedDataArrayPaths = {};
+  QString m_StackedDataArrayName = {};
+  bool m_NormalizeData = {};
+  bool m_MoveValues = {};
+
+  QVector<IDataArrayWkPtrType> m_SelectedWeakPtrVector;
 
 public:
   CombineAttributeArrays(const CombineAttributeArrays&) = delete;            // Copy Constructor Not Implemented

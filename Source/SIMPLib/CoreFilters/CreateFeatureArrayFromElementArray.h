@@ -37,8 +37,11 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
 
 /**
  * @brief The CreateFeatureArrayFromElementArray class. See [Filter documentation](@ref createfeaturearrayfromelementarray) for details.
@@ -62,22 +65,72 @@ class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(CreateFeatureArrayFromElementArray)
-    SIMPL_FILTER_NEW_MACRO(CreateFeatureArrayFromElementArray)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateFeatureArrayFromElementArray, AbstractFilter)
+    using Self = CreateFeatureArrayFromElementArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<CreateFeatureArrayFromElementArray> New();
+
+    /**
+     * @brief Returns the name of the class for CreateFeatureArrayFromElementArray
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for CreateFeatureArrayFromElementArray
+     */
+    static QString ClassName();
 
     ~CreateFeatureArrayFromElementArray() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
+    /**
+     * @brief Setter property for CellFeatureAttributeMatrixName
+     */
+    void setCellFeatureAttributeMatrixName(const DataArrayPath& value);
+    /**
+     * @brief Getter property for CellFeatureAttributeMatrixName
+     * @return Value of CellFeatureAttributeMatrixName
+     */
+    DataArrayPath getCellFeatureAttributeMatrixName() const;
+
     Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedCellArrayPath)
+    /**
+     * @brief Setter property for SelectedCellArrayPath
+     */
+    void setSelectedCellArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedCellArrayPath
+     * @return Value of SelectedCellArrayPath
+     */
+    DataArrayPath getSelectedCellArrayPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
 
-    SIMPL_FILTER_PARAMETER(QString, CreatedArrayName)
+    /**
+     * @brief Setter property for CreatedArrayName
+     */
+    void setCreatedArrayName(const QString& value);
+    /**
+     * @brief Getter property for CreatedArrayName
+     * @return Value of CreatedArrayName
+     */
+    QString getCreatedArrayName() const;
+
     Q_PROPERTY(QString CreatedArrayName READ getCreatedArrayName WRITE setCreatedArrayName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+    /**
+     * @brief Setter property for FeatureIdsArrayPath
+     */
+    void setFeatureIdsArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for FeatureIdsArrayPath
+     * @return Value of FeatureIdsArrayPath
+     */
+    DataArrayPath getFeatureIdsArrayPath() const;
+
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
 
     /**
@@ -182,8 +235,15 @@ class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
 
 
   private:
-    DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-    DEFINE_IDATAARRAY_WEAKPTR(InArray)
+    std::weak_ptr<DataArray<int32_t>> m_FeatureIdsPtr;
+    int32_t* m_FeatureIds = nullptr;
+
+    IDataArrayWkPtrType m_InArrayPtr;
+
+    DataArrayPath m_CellFeatureAttributeMatrixName = {};
+    DataArrayPath m_SelectedCellArrayPath = {};
+    QString m_CreatedArrayName = {};
+    DataArrayPath m_FeatureIdsArrayPath = {};
 
   public:
     CreateFeatureArrayFromElementArray(const CreateFeatureArrayFromElementArray&) = delete; // Copy Constructor Not Implemented

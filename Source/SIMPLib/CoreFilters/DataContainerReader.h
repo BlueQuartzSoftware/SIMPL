@@ -39,11 +39,12 @@
 #include <QtCore/QDateTime>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReader.h"
+class DataContainerArray;
+using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
 
 class SIMPLH5DataReader;
 
@@ -73,25 +74,84 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(DataContainerReader)
-    SIMPL_FILTER_NEW_MACRO(DataContainerReader)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerReader, AbstractFilter)
+    using Self = DataContainerReader;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<DataContainerReader> New();
+
+    /**
+     * @brief Returns the name of the class for DataContainerReader
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for DataContainerReader
+     */
+    static QString ClassName();
 
     ~DataContainerReader() override;
 
-    SIMPL_FILTER_PARAMETER(QString, InputFile)
+    /**
+     * @brief Setter property for InputFile
+     */
+    void setInputFile(const QString& value);
+    /**
+     * @brief Getter property for InputFile
+     * @return Value of InputFile
+     */
+    QString getInputFile() const;
+
     Q_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
 
-    SIMPL_FILTER_PARAMETER(bool, OverwriteExistingDataContainers)
+    /**
+     * @brief Setter property for OverwriteExistingDataContainers
+     */
+    void setOverwriteExistingDataContainers(const bool& value);
+    /**
+     * @brief Getter property for OverwriteExistingDataContainers
+     * @return Value of OverwriteExistingDataContainers
+     */
+    bool getOverwriteExistingDataContainers() const;
+
     Q_PROPERTY(bool OverwriteExistingDataContainers READ getOverwriteExistingDataContainers WRITE setOverwriteExistingDataContainers)
 
-    SIMPL_FILTER_PARAMETER(QString, LastFileRead)
+    /**
+     * @brief Setter property for LastFileRead
+     */
+    void setLastFileRead(const QString& value);
+    /**
+     * @brief Getter property for LastFileRead
+     * @return Value of LastFileRead
+     */
+    QString getLastFileRead() const;
+
     Q_PROPERTY(QString LastFileRead READ getLastFileRead WRITE setLastFileRead)
 
-    SIMPL_FILTER_PARAMETER(QDateTime, LastRead)
+    /**
+     * @brief Setter property for LastRead
+     */
+    void setLastRead(const QDateTime& value);
+    /**
+     * @brief Getter property for LastRead
+     * @return Value of LastRead
+     */
+    QDateTime getLastRead() const;
+
     Q_PROPERTY(QDateTime LastRead READ getLastRead WRITE setLastRead)
 
-    SIMPL_FILTER_PARAMETER(DataContainerArrayProxy, InputFileDataContainerArrayProxy)
+    /**
+     * @brief Setter property for InputFileDataContainerArrayProxy
+     */
+    void setInputFileDataContainerArrayProxy(const DataContainerArrayProxy& value);
+    /**
+     * @brief Getter property for InputFileDataContainerArrayProxy
+     * @return Value of InputFileDataContainerArrayProxy
+     */
+    DataContainerArrayProxy getInputFileDataContainerArrayProxy() const;
+
     Q_PROPERTY(DataContainerArrayProxy InputFileDataContainerArrayProxy READ getInputFileDataContainerArrayProxy WRITE setInputFileDataContainerArrayProxy)
 
     /**
@@ -247,7 +307,7 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
      * @param proxy
      * @return
      */
-    DataContainerArray::Pointer readData(DataContainerArrayProxy& proxy);
+    DataContainerArrayShPtrType readData(DataContainerArrayProxy& proxy);
 
   protected slots:
     /**
@@ -256,6 +316,12 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     void cleanupFilter() override;
 
   private:
+    QString m_InputFile = {};
+    bool m_OverwriteExistingDataContainers = {};
+    QString m_LastFileRead = {};
+    QDateTime m_LastRead = {};
+    DataContainerArrayProxy m_InputFileDataContainerArrayProxy = {};
+
     FilterPipeline::Pointer                     m_PipelineFromFile;
 
   public:

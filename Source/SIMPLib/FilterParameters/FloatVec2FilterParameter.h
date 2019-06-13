@@ -42,7 +42,6 @@
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/Common/SIMPLArray.hpp"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/SIMPLib.h"
 
@@ -70,32 +69,47 @@
 class SIMPLib_EXPORT FloatVec2FilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(FloatVec2FilterParameter)
-    SIMPL_STATIC_NEW_MACRO(FloatVec2FilterParameter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FloatVec2FilterParameter, FilterParameter)
+  using Self = FloatVec2FilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    using SetterCallbackType = std::function<void(FloatVec2Type)>;
-    using GetterCallbackType = std::function<FloatVec2Type(void)>;
+  static Pointer New();
 
-    /**
-     * @brief New This function instantiates an instance of the FloatVec2FilterParameter. Although this function is available to be used,
-     * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_FLOAT_VEC3_FP(...) macro at the top of this file.
+  /**
+   * @brief Returns the name of the class for FloatVec2FilterParameter
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for FloatVec2FilterParameter
+   */
+  static QString ClassName();
 
-     * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
-     * @param propertyName The internal property name for this filter parameter.
-     * @param defaultValue The value that this filter parameter will be initialized to by default.
-     * @param category The category for the filter parameter in the DREAM.3D user interface.  There
-     * are three categories: Parameter, Required Arrays, and Created Arrays.
-     * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
-     * @return
-     */
-    static Pointer New(const QString& humanLabel, const QString& propertyName, const FloatVec2Type& defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex = -1);
+  using SetterCallbackType = std::function<void(FloatVec2Type)>;
+  using GetterCallbackType = std::function<FloatVec2Type(void)>;
 
-    ~FloatVec2FilterParameter() override;
+  /**
+   * @brief New This function instantiates an instance of the FloatVec2FilterParameter. Although this function is available to be used,
+   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_FLOAT_VEC3_FP(...) macro at the top of this file.
+
+   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+   * @param propertyName The internal property name for this filter parameter.
+   * @param defaultValue The value that this filter parameter will be initialized to by default.
+   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+   * are three categories: Parameter, Required Arrays, and Created Arrays.
+   * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+   * @return
+   */
+  static Pointer New(const QString& humanLabel, const QString& propertyName, const FloatVec2Type& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                     int groupIndex = -1);
+
+  ~FloatVec2FilterParameter() override;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -121,14 +135,30 @@ public:
     * that this FilterParameter subclass represents.
     * @return The SetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const FloatVec2FilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    FloatVec2FilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const FloatVec2FilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    FloatVec2FilterParameter::GetterCallbackType getGetterCallback() const;
 
   protected:
     /**
@@ -142,6 +172,10 @@ public:
   FloatVec2FilterParameter(FloatVec2FilterParameter&&) = delete;      // Move Constructor Not Implemented
   FloatVec2FilterParameter& operator=(const FloatVec2FilterParameter&) = delete; // Copy Assignment Not Implemented
   FloatVec2FilterParameter& operator=(FloatVec2FilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  FloatVec2FilterParameter::SetterCallbackType m_SetterCallback = {};
+  FloatVec2FilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 
 Q_DECLARE_METATYPE(FloatVec2Type)

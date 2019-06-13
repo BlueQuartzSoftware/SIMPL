@@ -37,7 +37,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -54,13 +53,35 @@ class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(EmptyFilter)
-    SIMPL_FILTER_NEW_MACRO(EmptyFilter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(EmptyFilter, AbstractFilter)
+    using Self = EmptyFilter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<EmptyFilter> New();
+
+    /**
+     * @brief Returns the name of the class for EmptyFilter
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for EmptyFilter
+     */
+    static QString ClassName();
 
     ~EmptyFilter() override;
 
-    SIMPL_INSTANCE_STRING_PROPERTY(OriginalFilterName)
+    /**
+     * @brief Setter property for OriginalFilterName
+     */
+    void setOriginalFilterName(const QString& value);
+    /**
+     * @brief Getter property for OriginalFilterName
+     * @return Value of OriginalFilterName
+     */
+    QString getOriginalFilterName() const;
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -171,6 +192,8 @@ class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
 
 
   private:
+    QString m_OriginalFilterName = {};
+
     QString m_HumanLabel;
 
   public:

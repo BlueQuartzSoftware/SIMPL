@@ -66,12 +66,15 @@ typedef QPair <double, double> FPRangePair;
 class SIMPLib_EXPORT RangeFilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(RangeFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(RangeFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RangeFilterParameter, FilterParameter)
+  using Self = RangeFilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    typedef std::function<void(QPair<double, double>)> SetterCallbackType;
-    typedef std::function<QPair<double, double>(void)> GetterCallbackType;
+  static Pointer New();
+
 
     /**
      * @brief New This function instantiates an instance of the RangeFilterParameter. Although this function is available to be used,
@@ -94,7 +97,20 @@ public:
                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                       int groupIndex = -1);
 
-    ~RangeFilterParameter() override;
+  /**
+   * @brief Returns the name of the class for RangeFilterParameter
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for RangeFilterParameter
+   */
+  static QString ClassName();
+
+  typedef std::function<void(QPair<double, double>)> SetterCallbackType;
+  typedef std::function<QPair<double, double>(void)> GetterCallbackType;
+
+
+  ~RangeFilterParameter() override;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -115,21 +131,45 @@ public:
      */
     void writeJson(QJsonObject& json) override;
 
-    SIMPL_INSTANCE_PROPERTY(FPRangePair, DefaultPair)
+    /**
+     * @brief Setter property for DefaultPair
+     */
+    void setDefaultPair(const FPRangePair& value);
+    /**
+     * @brief Getter property for DefaultPair
+     * @return Value of DefaultPair
+     */
+    FPRangePair getDefaultPair() const;
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The SetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const RangeFilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    RangeFilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const RangeFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    RangeFilterParameter::GetterCallbackType getGetterCallback() const;
 
   protected:
     /**
@@ -143,5 +183,10 @@ public:
   RangeFilterParameter(RangeFilterParameter&&) = delete;      // Move Constructor Not Implemented
   RangeFilterParameter& operator=(const RangeFilterParameter&) = delete; // Copy Assignment Not Implemented
   RangeFilterParameter& operator=(RangeFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  FPRangePair m_DefaultPair = {};
+  RangeFilterParameter::SetterCallbackType m_SetterCallback = {};
+  RangeFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

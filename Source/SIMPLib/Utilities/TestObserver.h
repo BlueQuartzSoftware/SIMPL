@@ -34,7 +34,6 @@
 #include <QtCore/QObject>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/IObserver.h"
 #include "SIMPLib/Messages/AbstractMessage.h"
 
@@ -44,7 +43,15 @@ class SIMPLib_EXPORT TestObserver : public QObject, public IObserver
 
   public:
     TestObserver();
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TestObserver, IObserver)
+    /**
+     * @brief Returns the name of the class for TestObserver
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for TestObserver
+     */
+    static QString ClassName();
+
     ~TestObserver() override;
 
  public slots:
@@ -55,6 +62,8 @@ class SIMPLib_EXPORT TestObserver : public QObject, public IObserver
    TestObserver(TestObserver&&) = delete;                 // Move Constructor Not Implemented
    TestObserver& operator=(const TestObserver&) = delete; // Copy Assignment Not Implemented
    TestObserver& operator=(TestObserver&&) = delete;      // Move Assignment Not Implemented
+
+ private:
 };
 
 

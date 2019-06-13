@@ -44,7 +44,12 @@
 class SIMPLib_EXPORT DivisionOperator : public BinaryOperator
 {
   public:
-    SIMPL_SHARED_POINTERS(DivisionOperator)
+    using Self = DivisionOperator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     static Pointer New()
     {
@@ -63,5 +68,7 @@ class SIMPLib_EXPORT DivisionOperator : public BinaryOperator
     DivisionOperator(DivisionOperator&&) = delete;      // Move Constructor Not Implemented
     DivisionOperator& operator=(const DivisionOperator&) = delete; // Copy Assignment Not Implemented
     DivisionOperator& operator=(DivisionOperator&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

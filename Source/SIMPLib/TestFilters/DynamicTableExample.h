@@ -36,7 +36,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
@@ -69,26 +68,85 @@ class SIMPLib_EXPORT DynamicTableExample : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(DynamicTableExample)
-  SIMPL_FILTER_NEW_MACRO(DynamicTableExample)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DynamicTableExample, AbstractFilter)
+  using Self = DynamicTableExample;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<DynamicTableExample> New();
+
+  /**
+   * @brief Returns the name of the class for DynamicTableExample
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for DynamicTableExample
+   */
+  static QString ClassName();
 
   ~DynamicTableExample() override;
 
   /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
-  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData1)
+  /**
+   * @brief Setter property for DynamicData1
+   */
+  void setDynamicData1(const DynamicTableData& value);
+  /**
+   * @brief Getter property for DynamicData1
+   * @return Value of DynamicData1
+   */
+  DynamicTableData getDynamicData1() const;
+
   Q_PROPERTY(DynamicTableData DynamicData1 READ getDynamicData1 WRITE setDynamicData1)
 
-  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData2)
+  /**
+   * @brief Setter property for DynamicData2
+   */
+  void setDynamicData2(const DynamicTableData& value);
+  /**
+   * @brief Getter property for DynamicData2
+   * @return Value of DynamicData2
+   */
+  DynamicTableData getDynamicData2() const;
+
   Q_PROPERTY(DynamicTableData DynamicData2 READ getDynamicData2 WRITE setDynamicData2)
 
-  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData3)
+  /**
+   * @brief Setter property for DynamicData3
+   */
+  void setDynamicData3(const DynamicTableData& value);
+  /**
+   * @brief Getter property for DynamicData3
+   * @return Value of DynamicData3
+   */
+  DynamicTableData getDynamicData3() const;
+
   Q_PROPERTY(DynamicTableData DynamicData3 READ getDynamicData3 WRITE setDynamicData3)
 
-  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData4)
+  /**
+   * @brief Setter property for DynamicData4
+   */
+  void setDynamicData4(const DynamicTableData& value);
+  /**
+   * @brief Getter property for DynamicData4
+   * @return Value of DynamicData4
+   */
+  DynamicTableData getDynamicData4() const;
+
   Q_PROPERTY(DynamicTableData DynamicData4 READ getDynamicData4 WRITE setDynamicData4)
 
-  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData5)
+  /**
+   * @brief Setter property for DynamicData5
+   */
+  void setDynamicData5(const DynamicTableData& value);
+  /**
+   * @brief Getter property for DynamicData5
+   * @return Value of DynamicData5
+   */
+  DynamicTableData getDynamicData5() const;
+
   Q_PROPERTY(DynamicTableData DynamicData5 READ getDynamicData5 WRITE setDynamicData5)
 
   const QString getCompiledLibraryName() const override;
@@ -160,5 +218,12 @@ public:
   DynamicTableExample(DynamicTableExample&&) = delete;      // Move Constructor Not Implemented
   DynamicTableExample& operator=(const DynamicTableExample&) = delete; // Copy Assignment Not Implemented
   DynamicTableExample& operator=(DynamicTableExample&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  DynamicTableData m_DynamicData1 = {};
+  DynamicTableData m_DynamicData2 = {};
+  DynamicTableData m_DynamicData3 = {};
+  DynamicTableData m_DynamicData4 = {};
+  DynamicTableData m_DynamicData5 = {};
 };
 

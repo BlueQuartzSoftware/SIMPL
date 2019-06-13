@@ -5,10 +5,12 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 /**
  * @brief The ReadASCIIData class. See [Filter documentation](@ref ReadASCIIData) for details.
@@ -26,13 +28,36 @@ class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(ReadASCIIData)
-  SIMPL_FILTER_NEW_MACRO(ReadASCIIData)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReadASCIIData, AbstractFilter)
+  using Self = ReadASCIIData;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<ReadASCIIData> New();
+
+  /**
+   * @brief Returns the name of the class for ReadASCIIData
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ReadASCIIData
+   */
+  static QString ClassName();
 
   ~ReadASCIIData() override;
 
-  SIMPL_FILTER_PARAMETER(ASCIIWizardData, WizardData)
+  /**
+   * @brief Setter property for WizardData
+   */
+  void setWizardData(const ASCIIWizardData& value);
+  /**
+   * @brief Getter property for WizardData
+   * @return Value of WizardData
+   */
+  ASCIIWizardData getWizardData() const;
+
   Q_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)
 
   enum ErrorCodes
@@ -167,7 +192,9 @@ public:
 
 
   private:
-    QMap<int, IDataArray::Pointer>        m_ASCIIArrayMap;
+    ASCIIWizardData m_WizardData = {};
+
+    QMap<int, IDataArrayShPtrType> m_ASCIIArrayMap;
 
   public:
     ReadASCIIData(const ReadASCIIData&) = delete;  // Copy Constructor Not Implemented

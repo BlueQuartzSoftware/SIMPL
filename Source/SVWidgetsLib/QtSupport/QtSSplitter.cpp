@@ -38,7 +38,6 @@
 
 #include "SVWidgetsLib/QtSupport/QtSSplitterHandle.h"
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/SIMPLib.h"
 
 // -----------------------------------------------------------------------------

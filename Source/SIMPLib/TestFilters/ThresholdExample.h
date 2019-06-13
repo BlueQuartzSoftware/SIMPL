@@ -38,7 +38,6 @@
 #include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -63,19 +62,59 @@ class SIMPLib_EXPORT ThresholdExample : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(ThresholdExample)
-  SIMPL_FILTER_NEW_MACRO(ThresholdExample)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ThresholdExample, AbstractFilter)
+  using Self = ThresholdExample;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<ThresholdExample> New();
+
+  /**
+   * @brief Returns the name of the class for ThresholdExample
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ThresholdExample
+   */
+  static QString ClassName();
 
   ~ThresholdExample() override;
-  SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
-  SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
+  /**
+   * @brief Setter property for DataContainerName
+   */
+  void setDataContainerName(const QString& value);
+  /**
+   * @brief Getter property for DataContainerName
+   * @return Value of DataContainerName
+   */
+  QString getDataContainerName() const;
+
+  /**
+   * @brief Setter property for CellAttributeMatrixName
+   */
+  void setCellAttributeMatrixName(const QString& value);
+  /**
+   * @brief Getter property for CellAttributeMatrixName
+   * @return Value of CellAttributeMatrixName
+   */
+  QString getCellAttributeMatrixName() const;
 
   /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
 
   // -----------------------------------------------------------------------------
   /* Each Filter can ONLY have ONE of each of these types of widgets */
-  SIMPL_FILTER_PARAMETER(ComparisonInputs, CellComparisonInputs)
+  /**
+   * @brief Setter property for CellComparisonInputs
+   */
+  void setCellComparisonInputs(const ComparisonInputs& value);
+  /**
+   * @brief Getter property for CellComparisonInputs
+   * @return Value of CellComparisonInputs
+   */
+  ComparisonInputs getCellComparisonInputs() const;
+
   Q_PROPERTY(ComparisonInputs CellComparisonInputs READ getCellComparisonInputs WRITE setCellComparisonInputs)
 
   /**
@@ -152,5 +191,10 @@ public:
   ThresholdExample(ThresholdExample&&) = delete;      // Move Constructor Not Implemented
   ThresholdExample& operator=(const ThresholdExample&) = delete; // Copy Assignment Not Implemented
   ThresholdExample& operator=(ThresholdExample&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  QString m_DataContainerName = {};
+  QString m_CellAttributeMatrixName = {};
+  ComparisonInputs m_CellComparisonInputs = {};
 };
 

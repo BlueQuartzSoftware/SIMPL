@@ -33,6 +33,7 @@
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -179,4 +180,45 @@ const QString ArraySelectionExample::getSubGroupName() const
 const QString ArraySelectionExample::getHumanLabel() const
 {
   return "DataContainerArrayProxy Example";
+}
+
+// -----------------------------------------------------------------------------
+ArraySelectionExample::Pointer ArraySelectionExample::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ArraySelectionExample> ArraySelectionExample::New()
+{
+  struct make_shared_enabler : public ArraySelectionExample
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString ArraySelectionExample::getNameOfClass() const
+{
+  return QString("ArraySelectionExample");
+}
+
+// -----------------------------------------------------------------------------
+QString ArraySelectionExample::ClassName()
+{
+  return QString("ArraySelectionExample");
+}
+
+// -----------------------------------------------------------------------------
+void ArraySelectionExample::setDataContainerArrayProxy(const DataContainerArrayProxy& value)
+{
+  m_DataContainerArrayProxy = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArrayProxy ArraySelectionExample::getDataContainerArrayProxy() const
+{
+  return m_DataContainerArrayProxy;
 }

@@ -37,7 +37,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -64,25 +63,84 @@ class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(MoveMultiData)
-    SIMPL_FILTER_NEW_MACRO(MoveMultiData)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MoveMultiData, AbstractFilter)
+    using Self = MoveMultiData;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<MoveMultiData> New();
+
+    /**
+     * @brief Returns the name of the class for MoveMultiData
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for MoveMultiData
+     */
+    static QString ClassName();
 
     ~MoveMultiData() override;
 
-    SIMPL_FILTER_PARAMETER(int, WhatToMove)
+    /**
+     * @brief Setter property for WhatToMove
+     */
+    void setWhatToMove(const int& value);
+    /**
+     * @brief Getter property for WhatToMove
+     * @return Value of WhatToMove
+     */
+    int getWhatToMove() const;
+
     Q_PROPERTY(int WhatToMove READ getWhatToMove WRITE setWhatToMove)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerDestination)
+    /**
+     * @brief Setter property for DataContainerDestination
+     */
+    void setDataContainerDestination(const DataArrayPath& value);
+    /**
+     * @brief Getter property for DataContainerDestination
+     * @return Value of DataContainerDestination
+     */
+    DataArrayPath getDataContainerDestination() const;
+
     Q_PROPERTY(DataArrayPath DataContainerDestination READ getDataContainerDestination WRITE setDataContainerDestination)
 
-    SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, AttributeMatrixSources)
+    /**
+     * @brief Setter property for AttributeMatrixSources
+     */
+    void setAttributeMatrixSources(const QVector<DataArrayPath>& value);
+    /**
+     * @brief Getter property for AttributeMatrixSources
+     * @return Value of AttributeMatrixSources
+     */
+    QVector<DataArrayPath> getAttributeMatrixSources() const;
+
     Q_PROPERTY(QVector<DataArrayPath> AttributeMatrixSources READ getAttributeMatrixSources WRITE setAttributeMatrixSources)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeMatrixDestination)
+    /**
+     * @brief Setter property for AttributeMatrixDestination
+     */
+    void setAttributeMatrixDestination(const DataArrayPath& value);
+    /**
+     * @brief Getter property for AttributeMatrixDestination
+     * @return Value of AttributeMatrixDestination
+     */
+    DataArrayPath getAttributeMatrixDestination() const;
+
     Q_PROPERTY(DataArrayPath AttributeMatrixDestination READ getAttributeMatrixDestination WRITE setAttributeMatrixDestination)
 
-    SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, DataArraySources)
+    /**
+     * @brief Setter property for DataArraySources
+     */
+    void setDataArraySources(const QVector<DataArrayPath>& value);
+    /**
+     * @brief Getter property for DataArraySources
+     * @return Value of DataArraySources
+     */
+    QVector<DataArrayPath> getDataArraySources() const;
+
     Q_PROPERTY(QVector<DataArrayPath> DataArraySources READ getDataArraySources WRITE setDataArraySources)
 
     /**
@@ -191,5 +249,12 @@ class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
     MoveMultiData(MoveMultiData&&) = delete;       // Move Constructor Not Implemented
     MoveMultiData& operator=(const MoveMultiData&) = delete; // Copy Assignment Not Implemented
     MoveMultiData& operator=(MoveMultiData&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    int m_WhatToMove = {};
+    DataArrayPath m_DataContainerDestination = {};
+    QVector<DataArrayPath> m_AttributeMatrixSources = {};
+    DataArrayPath m_AttributeMatrixDestination = {};
+    QVector<DataArrayPath> m_DataArraySources = {};
 };
 

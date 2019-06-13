@@ -146,12 +146,14 @@ Q_DECLARE_METATYPE(Float4thOrderPoly_t)
 class SIMPLib_EXPORT FourthOrderPolynomialFilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(FourthOrderPolynomialFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(FourthOrderPolynomialFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FourthOrderPolynomialFilterParameter, FilterParameter)
+  using Self = FourthOrderPolynomialFilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    using SetterCallbackType = std::function<void(Float4thOrderPoly_t)>;
-    using GetterCallbackType = std::function<Float4thOrderPoly_t(void)>;
+  static Pointer New();
 
     /**
      * @brief New This function instantiates an instance of the FourthOrderPolynomialFilterParameter. Although this function is available to be used,
@@ -172,7 +174,18 @@ public:
     static Pointer New(const QString& humanLabel, const QString& propertyName, const Float4thOrderPoly_t& defaultValue, Category category, const SetterCallbackType& setterCallback,
                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
-    ~FourthOrderPolynomialFilterParameter() override;
+  /**
+   * @brief Returns the name of the class for FourthOrderPolynomialFilterParameter
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for FourthOrderPolynomialFilterParameter
+   */
+  static QString ClassName();
+
+  using SetterCallbackType = std::function<void(Float4thOrderPoly_t)>;
+  using GetterCallbackType = std::function<Float4thOrderPoly_t(void)>;
+  ~FourthOrderPolynomialFilterParameter() override;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -198,14 +211,30 @@ public:
     * that this FilterParameter subclass represents.
     * @return The SetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const FourthOrderPolynomialFilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    FourthOrderPolynomialFilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const FourthOrderPolynomialFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    FourthOrderPolynomialFilterParameter::GetterCallbackType getGetterCallback() const;
 
   protected:
     /**
@@ -219,5 +248,9 @@ public:
   FourthOrderPolynomialFilterParameter(FourthOrderPolynomialFilterParameter&&) = delete;      // Move Constructor Not Implemented
   FourthOrderPolynomialFilterParameter& operator=(const FourthOrderPolynomialFilterParameter&) = delete; // Copy Assignment Not Implemented
   FourthOrderPolynomialFilterParameter& operator=(FourthOrderPolynomialFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  FourthOrderPolynomialFilterParameter::SetterCallbackType m_SetterCallback = {};
+  FourthOrderPolynomialFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

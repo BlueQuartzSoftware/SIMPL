@@ -61,8 +61,14 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(SIMPLH5DataReader)
-    SIMPL_STATIC_NEW_MACRO(SIMPLH5DataReader)
+    using Self = SIMPLH5DataReader;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
 
     SIMPLH5DataReader();
     ~SIMPLH5DataReader() override;

@@ -37,7 +37,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -58,16 +57,48 @@ class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(RenameAttributeMatrix)
-    SIMPL_FILTER_NEW_MACRO(RenameAttributeMatrix)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RenameAttributeMatrix, AbstractFilter)
+    using Self = RenameAttributeMatrix;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<RenameAttributeMatrix> New();
+
+    /**
+     * @brief Returns the name of the class for RenameAttributeMatrix
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for RenameAttributeMatrix
+     */
+    static QString ClassName();
 
     ~RenameAttributeMatrix() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrixPath)
+    /**
+     * @brief Setter property for SelectedAttributeMatrixPath
+     */
+    void setSelectedAttributeMatrixPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedAttributeMatrixPath
+     * @return Value of SelectedAttributeMatrixPath
+     */
+    DataArrayPath getSelectedAttributeMatrixPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedAttributeMatrixPath READ getSelectedAttributeMatrixPath WRITE setSelectedAttributeMatrixPath)
 
-    SIMPL_FILTER_PARAMETER(QString, NewAttributeMatrix)
+    /**
+     * @brief Setter property for NewAttributeMatrix
+     */
+    void setNewAttributeMatrix(const QString& value);
+    /**
+     * @brief Getter property for NewAttributeMatrix
+     * @return Value of NewAttributeMatrix
+     */
+    QString getNewAttributeMatrix() const;
+
     Q_PROPERTY(QString NewAttributeMatrix READ getNewAttributeMatrix WRITE setNewAttributeMatrix)
 
     /**
@@ -177,6 +208,9 @@ class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
     void initialize();
 
   private:
+    DataArrayPath m_SelectedAttributeMatrixPath = {};
+    QString m_NewAttributeMatrix = {};
+
     QString m_LastMatrixName = "";
 
   public:

@@ -41,7 +41,6 @@
 #include <QtCore/QSharedPointer>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 class QProcess;
@@ -62,11 +61,34 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(ExecuteProcess)
-  SIMPL_FILTER_NEW_MACRO(ExecuteProcess)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ExecuteProcess, AbstractFilter)
+  using Self = ExecuteProcess;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-  SIMPL_FILTER_PARAMETER(QString, Arguments)
+  static std::shared_ptr<ExecuteProcess> New();
+
+  /**
+   * @brief Returns the name of the class for ExecuteProcess
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ExecuteProcess
+   */
+  static QString ClassName();
+
+  /**
+   * @brief Setter property for Arguments
+   */
+  void setArguments(const QString& value);
+  /**
+   * @brief Getter property for Arguments
+   * @return Value of Arguments
+   */
+  QString getArguments() const;
+
   Q_PROPERTY(QString Arguments READ getArguments WRITE setArguments)
 
   ~ExecuteProcess() override;
@@ -178,6 +200,8 @@ protected slots:
   void sendStandardOutput();
 
 private:
+  QString m_Arguments = {};
+
   QWaitCondition m_WaitCondition;
   QMutex m_Mutex;
   bool m_Pause = false;

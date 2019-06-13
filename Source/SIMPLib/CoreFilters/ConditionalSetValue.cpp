@@ -35,12 +35,16 @@
 
 #include "ConditionalSetValue.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -344,4 +348,69 @@ const QString ConditionalSetValue::getSubGroupName() const
 const QString ConditionalSetValue::getHumanLabel() const
 {
   return "Replace Value in Array (Conditional)";
+}
+
+// -----------------------------------------------------------------------------
+ConditionalSetValue::Pointer ConditionalSetValue::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ConditionalSetValue> ConditionalSetValue::New()
+{
+  struct make_shared_enabler : public ConditionalSetValue
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString ConditionalSetValue::getNameOfClass() const
+{
+  return QString("ConditionalSetValue");
+}
+
+// -----------------------------------------------------------------------------
+QString ConditionalSetValue::ClassName()
+{
+  return QString("ConditionalSetValue");
+}
+
+// -----------------------------------------------------------------------------
+void ConditionalSetValue::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ConditionalSetValue::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void ConditionalSetValue::setConditionalArrayPath(const DataArrayPath& value)
+{
+  m_ConditionalArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ConditionalSetValue::getConditionalArrayPath() const
+{
+  return m_ConditionalArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void ConditionalSetValue::setReplaceValue(const double& value)
+{
+  m_ReplaceValue = value;
+}
+
+// -----------------------------------------------------------------------------
+double ConditionalSetValue::getReplaceValue() const
+{
+  return m_ReplaceValue;
 }

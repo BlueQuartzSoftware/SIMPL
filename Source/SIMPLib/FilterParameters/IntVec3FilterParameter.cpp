@@ -109,3 +109,52 @@ void IntVec3FilterParameter::writeJson(QJsonObject& obj)
     obj[getPropertyName()] = json;
   }
 }
+
+// -----------------------------------------------------------------------------
+IntVec3FilterParameter::Pointer IntVec3FilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+IntVec3FilterParameter::Pointer IntVec3FilterParameter::New()
+{
+  Pointer sharedPtr(new(IntVec3FilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString IntVec3FilterParameter::getNameOfClass() const
+{
+  return QString("IntVec3FilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString IntVec3FilterParameter::ClassName()
+{
+  return QString("IntVec3FilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void IntVec3FilterParameter::setSetterCallback(const IntVec3FilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+IntVec3FilterParameter::SetterCallbackType IntVec3FilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void IntVec3FilterParameter::setGetterCallback(const IntVec3FilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+IntVec3FilterParameter::GetterCallbackType IntVec3FilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

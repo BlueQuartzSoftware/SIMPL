@@ -38,10 +38,11 @@
 
 #include <fstream>
 
+#include <QtCore/QDebug>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/FileReader.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @class VTKFileReader VTKFileReader.h PathToHeader/VTKFileReader.h
@@ -87,31 +88,88 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
 {
     Q_OBJECT
   public:
-    SIMPL_SHARED_POINTERS(VTKFileReader)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(VTKFileReader, FileReader)
-     SIMPL_FILTER_NEW_MACRO(VTKFileReader)
+    using Self = VTKFileReader;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
-     ~VTKFileReader() override;
+    /**
+     * @brief Returns the name of the class for VTKFileReader
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for VTKFileReader
+     */
+    static QString ClassName();
 
-     SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
+    static std::shared_ptr<VTKFileReader> New();
 
-     SIMPL_INSTANCE_STRING_PROPERTY(InputFile)
-     SIMPL_INSTANCE_STRING_PROPERTY(Comment)
-     SIMPL_INSTANCE_STRING_PROPERTY(DatasetType)
-     SIMPL_INSTANCE_PROPERTY(bool, FileIsBinary)
+    ~VTKFileReader() override;
 
-     /**
-      * @brief Reads the VTK header and sets the values that are described in the header
-      * @return Error Condition. Negative is Error.
-      */
-     int readHeader() override;
+    /**
+     * @brief Setter property for DataContainerName
+     */
+    void setDataContainerName(const QString& value);
+    /**
+     * @brief Getter property for DataContainerName
+     * @return Value of DataContainerName
+     */
+    QString getDataContainerName() const;
 
-     /**
-      * @brief This method should be re-implemented in a subclass
-      */
-     int readFile() override
-     {
-       return -1;
+    /**
+     * @brief Setter property for InputFile
+     */
+    void setInputFile(const QString& value);
+    /**
+     * @brief Getter property for InputFile
+     * @return Value of InputFile
+     */
+    QString getInputFile() const;
+
+    /**
+     * @brief Setter property for Comment
+     */
+    void setComment(const QString& value);
+    /**
+     * @brief Getter property for Comment
+     * @return Value of Comment
+     */
+    QString getComment() const;
+
+    /**
+     * @brief Setter property for DatasetType
+     */
+    void setDatasetType(const QString& value);
+    /**
+     * @brief Getter property for DatasetType
+     * @return Value of DatasetType
+     */
+    QString getDatasetType() const;
+
+    /**
+     * @brief Setter property for FileIsBinary
+     */
+    void setFileIsBinary(const bool& value);
+    /**
+     * @brief Getter property for FileIsBinary
+     * @return Value of FileIsBinary
+     */
+    bool getFileIsBinary() const;
+
+    /**
+     * @brief Reads the VTK header and sets the values that are described in the header
+     * @return Error Condition. Negative is Error.
+     */
+    int readHeader() override;
+
+    /**
+     * @brief This method should be re-implemented in a subclass
+     */
+    int readFile() override
+    {
+      return -1;
     }
 
     /**
@@ -218,6 +276,13 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
     VTKFileReader(VTKFileReader&&) = delete;       // Move Constructor Not Implemented
     VTKFileReader& operator=(const VTKFileReader&) = delete; // Copy Assignment Not Implemented
     VTKFileReader& operator=(VTKFileReader&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    QString m_DataContainerName = {};
+    QString m_InputFile = {};
+    QString m_Comment = {};
+    QString m_DatasetType = {};
+    bool m_FileIsBinary = {};
 };
 
 

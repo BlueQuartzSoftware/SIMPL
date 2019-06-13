@@ -44,7 +44,12 @@
 class SIMPLib_EXPORT SubtractionOperator : public BinaryOperator
 {
   public:
-    SIMPL_SHARED_POINTERS(SubtractionOperator)
+    using Self = SubtractionOperator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     static Pointer New()
     {
@@ -63,5 +68,7 @@ class SIMPLib_EXPORT SubtractionOperator : public BinaryOperator
     SubtractionOperator(SubtractionOperator&&) = delete;      // Move Constructor Not Implemented
     SubtractionOperator& operator=(const SubtractionOperator&) = delete; // Copy Assignment Not Implemented
     SubtractionOperator& operator=(SubtractionOperator&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

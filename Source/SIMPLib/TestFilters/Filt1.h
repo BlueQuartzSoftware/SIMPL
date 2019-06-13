@@ -6,7 +6,6 @@
 
 #include <QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
@@ -19,15 +18,54 @@ class SIMPLib_EXPORT Filt1 : public AbstractFilter
 {
   Q_OBJECT
 public:
-  SIMPL_SHARED_POINTERS(Filt1)
-  SIMPL_FILTER_NEW_MACRO(Filt1)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Filt1, AbstractFilter)
+  using Self = Filt1;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<Filt1> New();
+
+  /**
+   * @brief Returns the name of the class for Filt1
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for Filt1
+   */
+  static QString ClassName();
 
   ~Filt1() override;
-  SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
+  /**
+   * @brief Setter property for DataContainerName
+   */
+  void setDataContainerName(const QString& value);
+  /**
+   * @brief Getter property for DataContainerName
+   * @return Value of DataContainerName
+   */
+  QString getDataContainerName() const;
 
-  SIMPL_INSTANCE_PROPERTY(float, Filt1_Float)
-  SIMPL_INSTANCE_PROPERTY(int32_t, Filt1_Integer)
+  /**
+   * @brief Setter property for Filt1_Float
+   */
+  void setFilt1_Float(const float& value);
+  /**
+   * @brief Getter property for Filt1_Float
+   * @return Value of Filt1_Float
+   */
+  float getFilt1_Float() const;
+
+  /**
+   * @brief Setter property for Filt1_Integer
+   */
+  void setFilt1_Integer(const int32_t& value);
+  /**
+   * @brief Getter property for Filt1_Integer
+   * @return Value of Filt1_Integer
+   */
+  int32_t getFilt1_Integer() const;
 
   /**
   * @brief This returns the group that the filter belonds to. You can select
@@ -100,6 +138,10 @@ protected:
   void initialize();
 
 private:
+  QString m_DataContainerName = {};
+  float m_Filt1_Float = {};
+  int32_t m_Filt1_Integer = {};
+
   Filt1(const Filt1&) = delete;          // Copy Constructor Not Implemented
   void operator=(const Filt1&) = delete; // Move assignment Not Implemented
 };

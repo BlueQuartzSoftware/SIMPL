@@ -41,14 +41,20 @@
 #include "H5Support/QH5Utilities.h"
 #include "H5Support/H5ScopedSentinel.h"
 
+#include <QtCore/QTextStream>
+
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Utilities/FileSystemPathHelper.h"
-
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #ifdef _WIN32
 extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
@@ -496,4 +502,93 @@ const QString DataContainerWriter::getSubGroupName() const
 const QString DataContainerWriter::getHumanLabel() const
 {
   return "Write DREAM.3D Data File";
+}
+
+// -----------------------------------------------------------------------------
+DataContainerWriter::Pointer DataContainerWriter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<DataContainerWriter> DataContainerWriter::New()
+{
+  struct make_shared_enabler : public DataContainerWriter
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString DataContainerWriter::getNameOfClass() const
+{
+  return QString("DataContainerWriter");
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerWriter::ClassName()
+{
+  return QString("DataContainerWriter");
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerWriter::setOutputFile(const QString& value)
+{
+  m_OutputFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerWriter::getOutputFile() const
+{
+  return m_OutputFile;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerWriter::setWritePipeline(const bool& value)
+{
+  m_WritePipeline = value;
+}
+
+// -----------------------------------------------------------------------------
+bool DataContainerWriter::getWritePipeline() const
+{
+  return m_WritePipeline;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerWriter::setWriteXdmfFile(const bool& value)
+{
+  m_WriteXdmfFile = value;
+}
+
+// -----------------------------------------------------------------------------
+bool DataContainerWriter::getWriteXdmfFile() const
+{
+  return m_WriteXdmfFile;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerWriter::setWriteTimeSeries(const bool& value)
+{
+  m_WriteTimeSeries = value;
+}
+
+// -----------------------------------------------------------------------------
+bool DataContainerWriter::getWriteTimeSeries() const
+{
+  return m_WriteTimeSeries;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerWriter::setAppendToExisting(const bool& value)
+{
+  m_AppendToExisting = value;
+}
+
+// -----------------------------------------------------------------------------
+bool DataContainerWriter::getAppendToExisting() const
+{
+  return m_AppendToExisting;
 }

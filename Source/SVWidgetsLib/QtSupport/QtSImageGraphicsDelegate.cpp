@@ -347,3 +347,73 @@ void QtSImageGraphicsDelegate::_displayTextMessage(QString message)
   m_GraphicsView->centerOn(tItem);
   m_GraphicsScene->update(rect);
 }
+
+// -----------------------------------------------------------------------------
+void QtSImageGraphicsDelegate::setCachedImage(const QImage& value)
+{
+  m_CachedImage = value;
+}
+
+// -----------------------------------------------------------------------------
+QImage QtSImageGraphicsDelegate::getCachedImage() const
+{
+  return m_CachedImage;
+}
+
+// -----------------------------------------------------------------------------
+void QtSImageGraphicsDelegate::setOverlayImage(const QImage& value)
+{
+  m_OverlayImage = value;
+}
+
+// -----------------------------------------------------------------------------
+QImage QtSImageGraphicsDelegate::getOverlayImage() const
+{
+  return m_OverlayImage;
+}
+
+// -----------------------------------------------------------------------------
+void QtSImageGraphicsDelegate::setCompositeImages(const bool& value)
+{
+  m_CompositeImages = value;
+}
+
+// -----------------------------------------------------------------------------
+bool QtSImageGraphicsDelegate::getCompositeImages() const
+{
+  return m_CompositeImages;
+}
+
+// -----------------------------------------------------------------------------
+void QtSImageGraphicsDelegate::setMainWindow(QMainWindow* value)
+{
+  m_MainWindow = value;
+}
+
+// -----------------------------------------------------------------------------
+QMainWindow* QtSImageGraphicsDelegate::getMainWindow() const
+{
+  return m_MainWindow;
+}
+// -----------------------------------------------------------------------------
+void QtSImageGraphicsDelegate::setGraphicsView(QGraphicsView* value)
+{
+  m_GraphicsView = value;
+}
+
+// -----------------------------------------------------------------------------
+QGraphicsView* QtSImageGraphicsDelegate::getGraphicsView() const
+{
+  return m_GraphicsView;
+}
+// -----------------------------------------------------------------------------
+void QtSImageGraphicsDelegate::setGraphicsScene(QGraphicsScene* value)
+{
+  m_GraphicsScene = value;
+}
+
+// -----------------------------------------------------------------------------
+QGraphicsScene* QtSImageGraphicsDelegate::getGraphicsScene() const
+{
+  return m_GraphicsScene;
+}

@@ -46,9 +46,23 @@
 class SIMPLib_EXPORT GenericErrorMessage : public AbstractErrorMessage
 {
   public:
-    SIMPL_SHARED_POINTERS(GenericErrorMessage)
-    SIMPL_STATIC_NEW_MACRO(GenericErrorMessage)
-    SIMPL_TYPE_MACRO(GenericErrorMessage)
+    using Self = GenericErrorMessage;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for GenericErrorMessage
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for GenericErrorMessage
+     */
+    static QString ClassName();
 
     virtual ~GenericErrorMessage();
 
@@ -78,7 +92,6 @@ class SIMPLib_EXPORT GenericErrorMessage : public AbstractErrorMessage
     GenericErrorMessage(const QString& msgText, int code);
 
   private:
-
 };
 Q_DECLARE_METATYPE(GenericErrorMessage::Pointer)
 

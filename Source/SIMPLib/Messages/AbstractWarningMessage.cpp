@@ -41,3 +41,33 @@ AbstractWarningMessage::AbstractWarningMessage(const QString& msgText, int32_t c
 }
 
 AbstractWarningMessage::~AbstractWarningMessage() = default;
+
+// -----------------------------------------------------------------------------
+AbstractWarningMessage::Pointer AbstractWarningMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+const QString AbstractWarningMessage::getNameOfClass() const
+{
+  return QString("AbstractWarningMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractWarningMessage::ClassName()
+{
+  return QString("AbstractWarningMessage");
+}
+
+// -----------------------------------------------------------------------------
+void AbstractWarningMessage::setCode(const int& value)
+{
+  m_Code = value;
+}
+
+// -----------------------------------------------------------------------------
+int AbstractWarningMessage::getCode() const
+{
+  return m_Code;
+}

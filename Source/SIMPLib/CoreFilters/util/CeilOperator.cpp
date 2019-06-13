@@ -58,7 +58,11 @@ CeilOperator::~CeilOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CeilOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void CeilOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                             QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, ceil)}
+
+// -----------------------------------------------------------------------------
+CeilOperator::Pointer CeilOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, ceil)
+  return Pointer(static_cast<Self*>(nullptr));
 }

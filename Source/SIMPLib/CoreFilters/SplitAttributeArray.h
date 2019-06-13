@@ -36,8 +36,13 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
 
 /**
  * @brief The SplitAttributeArray class. See [Filter documentation](@ref splitattributearray) for details.
@@ -57,16 +62,48 @@ class SIMPLib_EXPORT SplitAttributeArray : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(SplitAttributeArray)
-  SIMPL_FILTER_NEW_MACRO(SplitAttributeArray)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(SplitAttributeArray, AbstractFilter)
+  using Self = SplitAttributeArray;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<SplitAttributeArray> New();
+
+  /**
+   * @brief Returns the name of the class for SplitAttributeArray
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for SplitAttributeArray
+   */
+  static QString ClassName();
 
   ~SplitAttributeArray() override;
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, InputArrayPath)
+  /**
+   * @brief Setter property for InputArrayPath
+   */
+  void setInputArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for InputArrayPath
+   * @return Value of InputArrayPath
+   */
+  DataArrayPath getInputArrayPath() const;
+
   Q_PROPERTY(DataArrayPath InputArrayPath READ getInputArrayPath WRITE setInputArrayPath)
 
-  SIMPL_FILTER_PARAMETER(QString, SplitArraysSuffix)
+  /**
+   * @brief Setter property for SplitArraysSuffix
+   */
+  void setSplitArraysSuffix(const QString& value);
+  /**
+   * @brief Getter property for SplitArraysSuffix
+   * @return Value of SplitArraysSuffix
+   */
+  QString getSplitArraysSuffix() const;
+
   Q_PROPERTY(QString SplitArraysSuffix READ getSplitArraysSuffix WRITE setSplitArraysSuffix)
 
   /**
@@ -171,9 +208,13 @@ protected:
   void initialize();
 
 private:
-  DEFINE_IDATAARRAY_VARIABLE(InputArray)
+  IDataArrayWkPtrType m_InputArrayPtr;
+  void* m_InputArray = nullptr;
 
-  std::vector<IDataArray::Pointer> m_SplitArraysPtrVector;
+  DataArrayPath m_InputArrayPath = {};
+  QString m_SplitArraysSuffix = {};
+
+  std::vector<IDataArrayShPtrType> m_SplitArraysPtrVector;
 
 public:
   SplitAttributeArray(const SplitAttributeArray&) = delete;            // Copy Constructor Not Implemented

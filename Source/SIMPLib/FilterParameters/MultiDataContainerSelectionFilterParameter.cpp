@@ -227,3 +227,112 @@ void MultiDataContainerSelectionFilterParameter::dataArrayPathRenamed(AbstractFi
   m_SetterCallback(dcList);
   emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }
+
+// -----------------------------------------------------------------------------
+MultiDataContainerSelectionFilterParameter::Pointer MultiDataContainerSelectionFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+MultiDataContainerSelectionFilterParameter::Pointer MultiDataContainerSelectionFilterParameter::New()
+{
+  Pointer sharedPtr(new(MultiDataContainerSelectionFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString MultiDataContainerSelectionFilterParameter::getNameOfClass() const
+{
+  return QString("MultiDataContainerSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString MultiDataContainerSelectionFilterParameter::ClassName()
+{
+  return QString("MultiDataContainerSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataContainerSelectionFilterParameter::setDefaultNames(const QStringList& value)
+{
+  m_DefaultNames = value;
+}
+
+// -----------------------------------------------------------------------------
+QStringList MultiDataContainerSelectionFilterParameter::getDefaultNames() const
+{
+  return m_DefaultNames;
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataContainerSelectionFilterParameter::setDefaultGeometryTypes(const IGeometry::Types& value)
+{
+  m_DefaultGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Types MultiDataContainerSelectionFilterParameter::getDefaultGeometryTypes() const
+{
+  return m_DefaultGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataContainerSelectionFilterParameter::setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value)
+{
+  m_DefaultAttributeMatrixTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<AttributeMatrix::Type> MultiDataContainerSelectionFilterParameter::getDefaultAttributeMatrixTypes() const
+{
+  return m_DefaultAttributeMatrixTypes;
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataContainerSelectionFilterParameter::setDefaultAttributeArrayTypes(const QVector<QString>& value)
+{
+  m_DefaultAttributeArrayTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<QString> MultiDataContainerSelectionFilterParameter::getDefaultAttributeArrayTypes() const
+{
+  return m_DefaultAttributeArrayTypes;
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataContainerSelectionFilterParameter::setDefaultComponentDimensions(const QVector<QVector<size_t>>& value)
+{
+  m_DefaultComponentDimensions = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<QVector<size_t>> MultiDataContainerSelectionFilterParameter::getDefaultComponentDimensions() const
+{
+  return m_DefaultComponentDimensions;
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataContainerSelectionFilterParameter::setSetterCallback(const MultiDataContainerSelectionFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+MultiDataContainerSelectionFilterParameter::SetterCallbackType MultiDataContainerSelectionFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataContainerSelectionFilterParameter::setGetterCallback(const MultiDataContainerSelectionFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+MultiDataContainerSelectionFilterParameter::GetterCallbackType MultiDataContainerSelectionFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

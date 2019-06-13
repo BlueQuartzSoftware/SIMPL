@@ -37,8 +37,9 @@
 #pragma once
 
 #include <QtCore/QPointer>
+#include <QtCore/QObject>
 
-#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 
 #include "AbstractWizardPage.h"
 
@@ -48,7 +49,12 @@ class ASCIIDataModel;
 class EditHeadersDialog;
 class QSignalMapper;
 class QtSFaderWidget;
+class DataContainerArray;
+using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
 
+/**
+ * @brief The DataFormatPage class
+ */
 class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
 {
   Q_OBJECT
@@ -60,7 +66,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    DataFormatPage(QSharedPointer<ASCIIDataModel> model, const QString& inputFilePath, int numLines, DataContainerArray::Pointer dca, QWidget* parent = nullptr);
+    DataFormatPage(QSharedPointer<ASCIIDataModel> model, const QString& inputFilePath, int numLines, DataContainerArrayShPtrType dca, QWidget* parent = nullptr);
 
     ~DataFormatPage() override;
 
@@ -273,7 +279,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
   private:
     int                                             m_NumLines = -1;
     EditHeadersDialog*                              m_EditHeadersDialog = nullptr;
-    DataContainerArray::Pointer                     m_Dca;
+    DataContainerArrayShPtrType m_Dca;
     QSharedPointer<ASCIIDataModel> m_ASCIIDataModel;
     QSignalMapper*                                  m_AMMenuMapper = nullptr;
     QSignalMapper*                                  m_DCMenuMapper = nullptr;

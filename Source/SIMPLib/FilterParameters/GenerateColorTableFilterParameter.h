@@ -48,9 +48,23 @@
 class SIMPLib_EXPORT GenerateColorTableFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(GenerateColorTableFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(GenerateColorTableFilterParameter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(GenerateColorTableFilterParameter, FilterParameter)
+    using Self = GenerateColorTableFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for GenerateColorTableFilterParameter
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for GenerateColorTableFilterParameter
+     */
+    static QString ClassName();
 
     /**
      * @brief New This function instantiates an instance of the DataContainerCreationFilterParameter.
@@ -69,7 +83,15 @@ class SIMPLib_EXPORT GenerateColorTableFilterParameter : public FilterParameter
 
     ~GenerateColorTableFilterParameter() override;
 
-    SIMPL_POINTER_PROPERTY(GenerateColorTable, Filter)
+    /**
+     * @brief Setter property for Filter
+     */
+    void setFilter(GenerateColorTable* value);
+    /**
+     * @brief Getter property for Filter
+     * @return Value of Filter
+     */
+    GenerateColorTable* getFilter() const;
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls
@@ -102,5 +124,8 @@ class SIMPLib_EXPORT GenerateColorTableFilterParameter : public FilterParameter
     GenerateColorTableFilterParameter(GenerateColorTableFilterParameter&&) = delete;      // Move Constructor Not Implemented
     GenerateColorTableFilterParameter& operator=(const GenerateColorTableFilterParameter&) = delete; // Copy Assignment Not Implemented
     GenerateColorTableFilterParameter& operator=(GenerateColorTableFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    GenerateColorTable* m_Filter = nullptr;
 };
 

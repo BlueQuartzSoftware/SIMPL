@@ -38,7 +38,10 @@
 
 #include <QtCore/QFileInfo>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/ScopedFileMonitor.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -52,6 +55,8 @@
 #include "SIMPLib/FilterParameters/NumericTypeFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/UInt64FilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #define RBR_FILE_NOT_OPEN -1000
 #define RBR_FILE_TOO_SMALL -1010
@@ -510,4 +515,105 @@ const QString RawBinaryReader::getSubGroupName() const
 const QString RawBinaryReader::getHumanLabel() const
 {
   return "Raw Binary Importer";
+}
+
+// -----------------------------------------------------------------------------
+RawBinaryReader::Pointer RawBinaryReader::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<RawBinaryReader> RawBinaryReader::New()
+{
+  struct make_shared_enabler : public RawBinaryReader
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString RawBinaryReader::getNameOfClass() const
+{
+  return QString("RawBinaryReader");
+}
+
+// -----------------------------------------------------------------------------
+QString RawBinaryReader::ClassName()
+{
+  return QString("RawBinaryReader");
+}
+
+// -----------------------------------------------------------------------------
+void RawBinaryReader::setCreatedAttributeArrayPath(const DataArrayPath& value)
+{
+  m_CreatedAttributeArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RawBinaryReader::getCreatedAttributeArrayPath() const
+{
+  return m_CreatedAttributeArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void RawBinaryReader::setScalarType(const SIMPL::NumericTypes::Type& value)
+{
+  m_ScalarType = value;
+}
+
+// -----------------------------------------------------------------------------
+SIMPL::NumericTypes::Type RawBinaryReader::getScalarType() const
+{
+  return m_ScalarType;
+}
+
+// -----------------------------------------------------------------------------
+void RawBinaryReader::setEndian(const int& value)
+{
+  m_Endian = value;
+}
+
+// -----------------------------------------------------------------------------
+int RawBinaryReader::getEndian() const
+{
+  return m_Endian;
+}
+
+// -----------------------------------------------------------------------------
+void RawBinaryReader::setNumberOfComponents(const int& value)
+{
+  m_NumberOfComponents = value;
+}
+
+// -----------------------------------------------------------------------------
+int RawBinaryReader::getNumberOfComponents() const
+{
+  return m_NumberOfComponents;
+}
+
+// -----------------------------------------------------------------------------
+void RawBinaryReader::setSkipHeaderBytes(const uint64_t& value)
+{
+  m_SkipHeaderBytes = value;
+}
+
+// -----------------------------------------------------------------------------
+uint64_t RawBinaryReader::getSkipHeaderBytes() const
+{
+  return m_SkipHeaderBytes;
+}
+
+// -----------------------------------------------------------------------------
+void RawBinaryReader::setInputFile(const QString& value)
+{
+  m_InputFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString RawBinaryReader::getInputFile() const
+{
+  return m_InputFile;
 }

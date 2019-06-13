@@ -36,8 +36,11 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/Geometry/IGeometry.h"
+
+using MeshIndexType = size_t;
 
 /**
  * @brief The ExtractAttributeArraysFromGeometry class. See [Filter documentation](@ref ExtractAttributeArraysFromGeometry) for details.
@@ -81,55 +84,204 @@ class SIMPLib_EXPORT ExtractAttributeArraysFromGeometry : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(ExtractAttributeArraysFromGeometry)
-  SIMPL_FILTER_NEW_MACRO(ExtractAttributeArraysFromGeometry)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ExtractAttributeArraysFromGeometry, AbstractFilter)
+  using Self = ExtractAttributeArraysFromGeometry;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<ExtractAttributeArraysFromGeometry> New();
+
+  /**
+   * @brief Returns the name of the class for ExtractAttributeArraysFromGeometry
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ExtractAttributeArraysFromGeometry
+   */
+  static QString ClassName();
 
   ~ExtractAttributeArraysFromGeometry() override;
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+  /**
+   * @brief Setter property for DataContainerName
+   */
+  void setDataContainerName(const DataArrayPath& value);
+  /**
+   * @brief Getter property for DataContainerName
+   * @return Value of DataContainerName
+   */
+  DataArrayPath getDataContainerName() const;
+
   Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath0)
+  /**
+   * @brief Setter property for SharedVertexListArrayPath0
+   */
+  void setSharedVertexListArrayPath0(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedVertexListArrayPath0
+   * @return Value of SharedVertexListArrayPath0
+   */
+  DataArrayPath getSharedVertexListArrayPath0() const;
+
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath0 READ getSharedVertexListArrayPath0 WRITE setSharedVertexListArrayPath0)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath1)
+  /**
+   * @brief Setter property for SharedVertexListArrayPath1
+   */
+  void setSharedVertexListArrayPath1(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedVertexListArrayPath1
+   * @return Value of SharedVertexListArrayPath1
+   */
+  DataArrayPath getSharedVertexListArrayPath1() const;
+
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath1 READ getSharedVertexListArrayPath1 WRITE setSharedVertexListArrayPath1)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath2)
+  /**
+   * @brief Setter property for SharedVertexListArrayPath2
+   */
+  void setSharedVertexListArrayPath2(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedVertexListArrayPath2
+   * @return Value of SharedVertexListArrayPath2
+   */
+  DataArrayPath getSharedVertexListArrayPath2() const;
+
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath2 READ getSharedVertexListArrayPath2 WRITE setSharedVertexListArrayPath2)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath3)
+  /**
+   * @brief Setter property for SharedVertexListArrayPath3
+   */
+  void setSharedVertexListArrayPath3(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedVertexListArrayPath3
+   * @return Value of SharedVertexListArrayPath3
+   */
+  DataArrayPath getSharedVertexListArrayPath3() const;
+
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath3 READ getSharedVertexListArrayPath3 WRITE setSharedVertexListArrayPath3)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath4)
+  /**
+   * @brief Setter property for SharedVertexListArrayPath4
+   */
+  void setSharedVertexListArrayPath4(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedVertexListArrayPath4
+   * @return Value of SharedVertexListArrayPath4
+   */
+  DataArrayPath getSharedVertexListArrayPath4() const;
+
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath4 READ getSharedVertexListArrayPath4 WRITE setSharedVertexListArrayPath4)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath5)
+  /**
+   * @brief Setter property for SharedVertexListArrayPath5
+   */
+  void setSharedVertexListArrayPath5(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedVertexListArrayPath5
+   * @return Value of SharedVertexListArrayPath5
+   */
+  DataArrayPath getSharedVertexListArrayPath5() const;
+
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath5 READ getSharedVertexListArrayPath5 WRITE setSharedVertexListArrayPath5)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedEdgeListArrayPath)
+  /**
+   * @brief Setter property for SharedEdgeListArrayPath
+   */
+  void setSharedEdgeListArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedEdgeListArrayPath
+   * @return Value of SharedEdgeListArrayPath
+   */
+  DataArrayPath getSharedEdgeListArrayPath() const;
+
   Q_PROPERTY(DataArrayPath SharedEdgeListArrayPath READ getSharedEdgeListArrayPath WRITE setSharedEdgeListArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedTriListArrayPath)
+  /**
+   * @brief Setter property for SharedTriListArrayPath
+   */
+  void setSharedTriListArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedTriListArrayPath
+   * @return Value of SharedTriListArrayPath
+   */
+  DataArrayPath getSharedTriListArrayPath() const;
+
   Q_PROPERTY(DataArrayPath SharedTriListArrayPath READ getSharedTriListArrayPath WRITE setSharedTriListArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedQuadListArrayPath)
+  /**
+   * @brief Setter property for SharedQuadListArrayPath
+   */
+  void setSharedQuadListArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedQuadListArrayPath
+   * @return Value of SharedQuadListArrayPath
+   */
+  DataArrayPath getSharedQuadListArrayPath() const;
+
   Q_PROPERTY(DataArrayPath SharedQuadListArrayPath READ getSharedQuadListArrayPath WRITE setSharedQuadListArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedTetListArrayPath)
+  /**
+   * @brief Setter property for SharedTetListArrayPath
+   */
+  void setSharedTetListArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedTetListArrayPath
+   * @return Value of SharedTetListArrayPath
+   */
+  DataArrayPath getSharedTetListArrayPath() const;
+
   Q_PROPERTY(DataArrayPath SharedTetListArrayPath READ getSharedTetListArrayPath WRITE setSharedTetListArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedHexListArrayPath)
+  /**
+   * @brief Setter property for SharedHexListArrayPath
+   */
+  void setSharedHexListArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedHexListArrayPath
+   * @return Value of SharedHexListArrayPath
+   */
+  DataArrayPath getSharedHexListArrayPath() const;
+
   Q_PROPERTY(DataArrayPath SharedHexListArrayPath READ getSharedHexListArrayPath WRITE setSharedHexListArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, XBoundsArrayPath)
+  /**
+   * @brief Setter property for XBoundsArrayPath
+   */
+  void setXBoundsArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for XBoundsArrayPath
+   * @return Value of XBoundsArrayPath
+   */
+  DataArrayPath getXBoundsArrayPath() const;
+
   Q_PROPERTY(DataArrayPath XBoundsArrayPath READ getXBoundsArrayPath WRITE setXBoundsArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, YBoundsArrayPath)
+  /**
+   * @brief Setter property for YBoundsArrayPath
+   */
+  void setYBoundsArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for YBoundsArrayPath
+   * @return Value of YBoundsArrayPath
+   */
+  DataArrayPath getYBoundsArrayPath() const;
+
   Q_PROPERTY(DataArrayPath YBoundsArrayPath READ getYBoundsArrayPath WRITE setYBoundsArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, ZBoundsArrayPath)
+  /**
+   * @brief Setter property for ZBoundsArrayPath
+   */
+  void setZBoundsArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for ZBoundsArrayPath
+   * @return Value of ZBoundsArrayPath
+   */
+  DataArrayPath getZBoundsArrayPath() const;
+
   Q_PROPERTY(DataArrayPath ZBoundsArrayPath READ getZBoundsArrayPath WRITE setZBoundsArrayPath)
 
   /**
@@ -234,14 +386,38 @@ protected:
   void initialize();
 
 private:
-  DEFINE_DATAARRAY_VARIABLE(float, XBounds)
-  DEFINE_DATAARRAY_VARIABLE(float, YBounds)
-  DEFINE_DATAARRAY_VARIABLE(float, ZBounds)
-  DEFINE_DATAARRAY_VARIABLE(float, Verts)
-  DEFINE_DATAARRAY_VARIABLE(MeshIndexType, Edges)
-  DEFINE_DATAARRAY_VARIABLE(MeshIndexType, Tris)
-  DEFINE_DATAARRAY_VARIABLE(MeshIndexType, Quads)
-  DEFINE_DATAARRAY_VARIABLE(MeshIndexType, Tets)
+  std::weak_ptr<DataArray<float>> m_XBoundsPtr;
+  float* m_XBounds = nullptr;
+  std::weak_ptr<DataArray<float>> m_YBoundsPtr;
+  float* m_YBounds = nullptr;
+  std::weak_ptr<DataArray<float>> m_ZBoundsPtr;
+  float* m_ZBounds = nullptr;
+  std::weak_ptr<DataArray<float>> m_VertsPtr;
+  float* m_Verts = nullptr;
+  std::weak_ptr<DataArray<MeshIndexType>> m_EdgesPtr;
+  MeshIndexType* m_Edges = nullptr;
+  std::weak_ptr<DataArray<MeshIndexType>> m_TrisPtr;
+  MeshIndexType* m_Tris = nullptr;
+  std::weak_ptr<DataArray<MeshIndexType>> m_QuadsPtr;
+  MeshIndexType* m_Quads = nullptr;
+  std::weak_ptr<DataArray<MeshIndexType>> m_TetsPtr;
+  MeshIndexType* m_Tets = nullptr;
+
+  DataArrayPath m_DataContainerName = {};
+  DataArrayPath m_SharedVertexListArrayPath0 = {};
+  DataArrayPath m_SharedVertexListArrayPath1 = {};
+  DataArrayPath m_SharedVertexListArrayPath2 = {};
+  DataArrayPath m_SharedVertexListArrayPath3 = {};
+  DataArrayPath m_SharedVertexListArrayPath4 = {};
+  DataArrayPath m_SharedVertexListArrayPath5 = {};
+  DataArrayPath m_SharedEdgeListArrayPath = {};
+  DataArrayPath m_SharedTriListArrayPath = {};
+  DataArrayPath m_SharedQuadListArrayPath = {};
+  DataArrayPath m_SharedTetListArrayPath = {};
+  DataArrayPath m_SharedHexListArrayPath = {};
+  DataArrayPath m_XBoundsArrayPath = {};
+  DataArrayPath m_YBoundsArrayPath = {};
+  DataArrayPath m_ZBoundsArrayPath = {};
 
 public:
   ExtractAttributeArraysFromGeometry(const ExtractAttributeArraysFromGeometry&) = delete;            // Copy Constructor Not Implemented

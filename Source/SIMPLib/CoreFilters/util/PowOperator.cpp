@@ -58,7 +58,11 @@ PowOperator::~PowOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PowOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void PowOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                            QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, pow)}
+
+// -----------------------------------------------------------------------------
+PowOperator::Pointer PowOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, pow)
+  return Pointer(static_cast<Self*>(nullptr));
 }

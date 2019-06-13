@@ -37,7 +37,12 @@
 
 #include <QtCore/QList>
 
+#include <QtCore/QTextStream>
+
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/PhaseType.h"
+
 #include "SIMPLib/StatsData/BoundaryStatsData.h"
 #include "SIMPLib/StatsData/MatrixStatsData.h"
 #include "SIMPLib/StatsData/PrecipitateStatsData.h"
@@ -834,4 +839,47 @@ StatsData::Pointer StatsDataArray::operator[](int idx)
   }
 #endif
   return m_StatsDataArray[idx];
+}
+
+// -----------------------------------------------------------------------------
+StatsDataArray::Pointer StatsDataArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+StatsDataArray::Pointer StatsDataArray::New()
+{
+  Pointer sharedPtr(new(StatsDataArray));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString StatsDataArray::getNameOfClass() const
+{
+  return QString("StatsDataArray");
+}
+
+// -----------------------------------------------------------------------------
+QString StatsDataArray::ClassName()
+{
+  return QString("StatsDataArray");
+}
+
+// -----------------------------------------------------------------------------
+void StatsDataArray::setStatsDataArray(const QVector<StatsData::Pointer>& value)
+{
+  m_StatsDataArray = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<StatsData::Pointer> StatsDataArray::getStatsDataArray() const
+{
+  return m_StatsDataArray;
+}
+
+// -----------------------------------------------------------------------------
+int StatsDataArray::getClassVersion()
+{
+  return 2;
 }

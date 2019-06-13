@@ -41,14 +41,45 @@ template<typename T>
 class SIMPLib_EXPORT ConstrainedFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(ConstrainedFilterParameter<T>)
-    SIMPL_STATIC_NEW_MACRO(ConstrainedFilterParameter<T>)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ConstrainedFilterParameter<T>, FilterParameter)
+    using Self = ConstrainedFilterParameter<T>;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for ConstrainedFilterParameter<T>
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ConstrainedFilterParameter<T>
+     */
+    static QString ClassName();
 
     virtual ~ConstrainedFilterParameter() {}
 
-    SIMPL_INSTANCE_PROPERTY(T, Minimum)
-    SIMPL_INSTANCE_PROPERTY(T, Maximum)
+    /**
+     * @brief Setter property for Minimum
+     */
+    void setMinimum(const T& value);
+    /**
+     * @brief Getter property for Minimum
+     * @return Value of Minimum
+     */
+    T getMinimum() const;
+
+    /**
+     * @brief Setter property for Maximum
+     */
+    void setMaximum(const T& value);
+    /**
+     * @brief Getter property for Maximum
+     * @return Value of Maximum
+     */
+    T getMaximum() const;
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls
@@ -65,5 +96,9 @@ class SIMPLib_EXPORT ConstrainedFilterParameter : public FilterParameter
     ConstrainedFilterParameter(ConstrainedFilterParameter&&) = delete;      // Move Constructor Not Implemented
     ConstrainedFilterParameter& operator=(const ConstrainedFilterParameter&) = delete; // Copy Assignment Not Implemented
     ConstrainedFilterParameter& operator=(ConstrainedFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    T m_Minimum = {};
+    T m_Maximum = {};
 };
 

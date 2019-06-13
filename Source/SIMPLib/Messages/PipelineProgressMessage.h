@@ -46,13 +46,35 @@
 class SIMPLib_EXPORT PipelineProgressMessage : public AbstractProgressMessage
 {
   public:
-    SIMPL_SHARED_POINTERS(PipelineProgressMessage)
-    SIMPL_STATIC_NEW_MACRO(PipelineProgressMessage)
-    SIMPL_TYPE_MACRO(PipelineProgressMessage)
+    using Self = PipelineProgressMessage;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for PipelineProgressMessage
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for PipelineProgressMessage
+     */
+    static QString ClassName();
 
     virtual ~PipelineProgressMessage();
 
-    SIMPL_INSTANCE_STRING_PROPERTY(PipelineName)
+    /**
+     * @brief Setter property for PipelineName
+     */
+    void setPipelineName(const QString& value);
+    /**
+     * @brief Getter property for PipelineName
+     * @return Value of PipelineName
+     */
+    QString getPipelineName() const;
 
     /**
      * @brief New
@@ -82,7 +104,7 @@ class SIMPLib_EXPORT PipelineProgressMessage : public AbstractProgressMessage
     PipelineProgressMessage(const QString &pipelineName, const QString& msgText, int progress);
 
   private:
-
+    QString m_PipelineName = {};
 };
 Q_DECLARE_METATYPE(PipelineProgressMessage::Pointer)
 

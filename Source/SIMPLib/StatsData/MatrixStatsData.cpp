@@ -144,3 +144,28 @@ void MatrixStatsData::readJson(const QJsonObject& json)
   }
 
 }
+
+// -----------------------------------------------------------------------------
+MatrixStatsData::Pointer MatrixStatsData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+MatrixStatsData::Pointer MatrixStatsData::New()
+{
+  Pointer sharedPtr(new(MatrixStatsData));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString MatrixStatsData::getNameOfClass() const
+{
+  return QString("MatrixStatsData");
+}
+
+// -----------------------------------------------------------------------------
+QString MatrixStatsData::ClassName()
+{
+  return QString("MatrixStatsData");
+}

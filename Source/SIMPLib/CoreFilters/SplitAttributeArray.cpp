@@ -35,12 +35,17 @@
 
 #include "SplitAttributeArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   SplitArrayID = 1
@@ -274,4 +279,57 @@ const QString SplitAttributeArray::getSubGroupName() const
 const QString SplitAttributeArray::getHumanLabel() const
 {
   return "Split Multicomponent Attribute Array";
+}
+
+// -----------------------------------------------------------------------------
+SplitAttributeArray::Pointer SplitAttributeArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<SplitAttributeArray> SplitAttributeArray::New()
+{
+  struct make_shared_enabler : public SplitAttributeArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString SplitAttributeArray::getNameOfClass() const
+{
+  return QString("SplitAttributeArray");
+}
+
+// -----------------------------------------------------------------------------
+QString SplitAttributeArray::ClassName()
+{
+  return QString("SplitAttributeArray");
+}
+
+// -----------------------------------------------------------------------------
+void SplitAttributeArray::setInputArrayPath(const DataArrayPath& value)
+{
+  m_InputArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath SplitAttributeArray::getInputArrayPath() const
+{
+  return m_InputArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void SplitAttributeArray::setSplitArraysSuffix(const QString& value)
+{
+  m_SplitArraysSuffix = value;
+}
+
+// -----------------------------------------------------------------------------
+QString SplitAttributeArray::getSplitArraysSuffix() const
+{
+  return m_SplitArraysSuffix;
 }

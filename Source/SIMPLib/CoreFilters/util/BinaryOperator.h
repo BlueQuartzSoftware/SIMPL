@@ -37,10 +37,17 @@
 
 #include "CalculatorOperator.h"
 
+#include "SIMPLib/DataArrays/DataArray.hpp"
+
 class SIMPLib_EXPORT BinaryOperator : public CalculatorOperator
 {
   public:
-    SIMPL_SHARED_POINTERS(BinaryOperator)
+    using Self = BinaryOperator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     static Pointer New()
     {
@@ -61,6 +68,8 @@ class SIMPLib_EXPORT BinaryOperator : public CalculatorOperator
     BinaryOperator(BinaryOperator&&) = delete;      // Move Constructor Not Implemented
     BinaryOperator& operator=(const BinaryOperator&) = delete; // Copy Assignment Not Implemented
     BinaryOperator& operator=(BinaryOperator&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 
 #define CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, op)                                                                                                              \

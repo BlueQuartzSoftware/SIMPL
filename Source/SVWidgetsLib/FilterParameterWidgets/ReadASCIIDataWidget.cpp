@@ -47,6 +47,7 @@
 #include "SIMPLib/FilterParameters/ReadASCIIDataFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "Widgets/ImportASCIIDataWizard/DataFormatPage.h"
 #include "Widgets/ImportASCIIDataWizard/ImportASCIIDataWizard.h"

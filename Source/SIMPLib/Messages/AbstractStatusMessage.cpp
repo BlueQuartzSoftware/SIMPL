@@ -40,3 +40,20 @@ AbstractStatusMessage::AbstractStatusMessage(const QString& msgText)
 }
 
 AbstractStatusMessage::~AbstractStatusMessage() = default;
+// -----------------------------------------------------------------------------
+AbstractStatusMessage::Pointer AbstractStatusMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+const QString AbstractStatusMessage::getNameOfClass() const
+{
+  return QString("AbstractStatusMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractStatusMessage::ClassName()
+{
+  return QString("AbstractStatusMessage");
+}

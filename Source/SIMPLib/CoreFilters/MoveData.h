@@ -37,7 +37,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -64,25 +63,84 @@ class SIMPLib_EXPORT MoveData : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(MoveData)
-    SIMPL_FILTER_NEW_MACRO(MoveData)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MoveData, AbstractFilter)
+    using Self = MoveData;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<MoveData> New();
+
+    /**
+     * @brief Returns the name of the class for MoveData
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for MoveData
+     */
+    static QString ClassName();
 
     ~MoveData() override;
 
-    SIMPL_FILTER_PARAMETER(int, WhatToMove)
+    /**
+     * @brief Setter property for WhatToMove
+     */
+    void setWhatToMove(const int& value);
+    /**
+     * @brief Getter property for WhatToMove
+     * @return Value of WhatToMove
+     */
+    int getWhatToMove() const;
+
     Q_PROPERTY(int WhatToMove READ getWhatToMove WRITE setWhatToMove)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerDestination)
+    /**
+     * @brief Setter property for DataContainerDestination
+     */
+    void setDataContainerDestination(const DataArrayPath& value);
+    /**
+     * @brief Getter property for DataContainerDestination
+     * @return Value of DataContainerDestination
+     */
+    DataArrayPath getDataContainerDestination() const;
+
     Q_PROPERTY(DataArrayPath DataContainerDestination READ getDataContainerDestination WRITE setDataContainerDestination)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeMatrixSource)
+    /**
+     * @brief Setter property for AttributeMatrixSource
+     */
+    void setAttributeMatrixSource(const DataArrayPath& value);
+    /**
+     * @brief Getter property for AttributeMatrixSource
+     * @return Value of AttributeMatrixSource
+     */
+    DataArrayPath getAttributeMatrixSource() const;
+
     Q_PROPERTY(DataArrayPath AttributeMatrixSource READ getAttributeMatrixSource WRITE setAttributeMatrixSource)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeMatrixDestination)
+    /**
+     * @brief Setter property for AttributeMatrixDestination
+     */
+    void setAttributeMatrixDestination(const DataArrayPath& value);
+    /**
+     * @brief Getter property for AttributeMatrixDestination
+     * @return Value of AttributeMatrixDestination
+     */
+    DataArrayPath getAttributeMatrixDestination() const;
+
     Q_PROPERTY(DataArrayPath AttributeMatrixDestination READ getAttributeMatrixDestination WRITE setAttributeMatrixDestination)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DataArraySource)
+    /**
+     * @brief Setter property for DataArraySource
+     */
+    void setDataArraySource(const DataArrayPath& value);
+    /**
+     * @brief Getter property for DataArraySource
+     * @return Value of DataArraySource
+     */
+    DataArrayPath getDataArraySource() const;
+
     Q_PROPERTY(DataArrayPath DataArraySource READ getDataArraySource WRITE setDataArraySource)
 
     /**
@@ -191,5 +249,12 @@ class SIMPLib_EXPORT MoveData : public AbstractFilter
     MoveData(MoveData&&) = delete;            // Move Constructor Not Implemented
     MoveData& operator=(const MoveData&) = delete; // Copy Assignment Not Implemented
     MoveData& operator=(MoveData&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    int m_WhatToMove = {};
+    DataArrayPath m_DataContainerDestination = {};
+    DataArrayPath m_AttributeMatrixSource = {};
+    DataArrayPath m_AttributeMatrixDestination = {};
+    DataArrayPath m_DataArraySource = {};
 };
 

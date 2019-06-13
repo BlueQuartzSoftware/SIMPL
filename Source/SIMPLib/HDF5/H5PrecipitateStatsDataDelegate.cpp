@@ -679,21 +679,21 @@ int H5PrecipitateStatsDataDelegate::readRDFDistributionData(hid_t pid, const QSt
   }
   rdfData->setMinDistance(val);
 
-  float boxDims[3] = {0.0f, 0.0f, 0.0f};
-  err = QH5Lite::readPointerDataset(disId, SIMPL::StringConstants::RdfBoxDims, boxDims);
+  std::array<float, 3> boxDims = {0.0f, 0.0f, 0.0f};
+  err = QH5Lite::readPointerDataset(disId, SIMPL::StringConstants::RdfBoxDims, boxDims.data());
   if(err < 0)
   {
     return err;
   }
-  rdfData->setBoxSize(std::make_tuple(boxDims[0], boxDims[1], boxDims[2]));
+  rdfData->setBoxSize(boxDims);
 
-  float boxRes[3] = {0.0f, 0.0f, 0.0f};
-  err = QH5Lite::readPointerDataset(disId, SIMPL::StringConstants::RdfBoxRes, boxRes);
+  std::array<float, 3> boxRes = {0.0f, 0.0f, 0.0f};
+  err = QH5Lite::readPointerDataset(disId, SIMPL::StringConstants::RdfBoxRes, boxRes.data());
   if(err < 0)
   {
     return err;
   }
-  rdfData->setBoxResolution(std::make_tuple(boxRes[0], boxRes[1], boxRes[2]));
+  rdfData->setBoxResolution(boxRes);
 
   err = QH5Utilities::closeHDF5Object(disId);
   return err;
@@ -787,7 +787,7 @@ int H5PrecipitateStatsDataDelegate::readFeatureDiameterInfo(PrecipitateStatsData
   float featureDiameterInfo[3] = {0.0f, 0.0f, 0.0f};
 
   err = QH5Lite::readPointerDataset(groupId, SIMPL::StringConstants::Feature_Diameter_Info, featureDiameterInfo);
-  data->setFeatureDiameterInfo(std::make_tuple(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[2]));
+  data->setFeatureDiameterInfo(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[2]);
   return err;
 }
 
@@ -815,4 +815,29 @@ int H5PrecipitateStatsDataDelegate::readBinNumbers(PrecipitateStatsData* data, h
   err = p->readH5Data(groupId);
   data->setBinNumbers(p);
   return err;
+}
+
+// -----------------------------------------------------------------------------
+H5PrecipitateStatsDataDelegate::Pointer H5PrecipitateStatsDataDelegate::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+H5PrecipitateStatsDataDelegate::Pointer H5PrecipitateStatsDataDelegate::New()
+{
+  Pointer sharedPtr(new(H5PrecipitateStatsDataDelegate));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString H5PrecipitateStatsDataDelegate::getNameOfClass() const
+{
+  return QString("H5PrecipitateStatsDataDelegate");
+}
+
+// -----------------------------------------------------------------------------
+QString H5PrecipitateStatsDataDelegate::ClassName()
+{
+  return QString("H5PrecipitateStatsDataDelegate");
 }

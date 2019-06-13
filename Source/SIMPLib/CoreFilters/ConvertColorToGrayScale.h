@@ -36,7 +36,6 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -67,9 +66,23 @@ class SIMPLib_EXPORT ConvertColorToGrayScale : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(ConvertColorToGrayScale)
-  SIMPL_FILTER_NEW_MACRO(ConvertColorToGrayScale)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ConvertColorToGrayScale, AbstractFilter)
+  using Self = ConvertColorToGrayScale;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<ConvertColorToGrayScale> New();
+
+  /**
+   * @brief Returns the name of the class for ConvertColorToGrayScale
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ConvertColorToGrayScale
+   */
+  static QString ClassName();
 
   ~ConvertColorToGrayScale() override;
 
@@ -82,25 +95,88 @@ public:
     SingleChannel = 3
   };
 
-  SIMPL_FILTER_PARAMETER(int, ConversionAlgorithm)
+  /**
+   * @brief Setter property for ConversionAlgorithm
+   */
+  void setConversionAlgorithm(const int& value);
+  /**
+   * @brief Getter property for ConversionAlgorithm
+   * @return Value of ConversionAlgorithm
+   */
+  int getConversionAlgorithm() const;
+
   Q_PROPERTY(int ConversionAlgorithm READ getConversionAlgorithm WRITE setConversionAlgorithm)
 
-  SIMPL_FILTER_PARAMETER(FloatVec3Type, ColorWeights)
+  /**
+   * @brief Setter property for ColorWeights
+   */
+  void setColorWeights(const FloatVec3Type& value);
+  /**
+   * @brief Getter property for ColorWeights
+   * @return Value of ColorWeights
+   */
+  FloatVec3Type getColorWeights() const;
+
   Q_PROPERTY(FloatVec3Type ColorWeights READ getColorWeights WRITE setColorWeights)
 
-  SIMPL_FILTER_PARAMETER(int, ColorChannel)
+  /**
+   * @brief Setter property for ColorChannel
+   */
+  void setColorChannel(const int& value);
+  /**
+   * @brief Getter property for ColorChannel
+   * @return Value of ColorChannel
+   */
+  int getColorChannel() const;
+
   Q_PROPERTY(int ColorChannel READ getColorChannel WRITE setColorChannel)
 
-  SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, InputDataArrayVector)
+  /**
+   * @brief Setter property for InputDataArrayVector
+   */
+  void setInputDataArrayVector(const QVector<DataArrayPath>& value);
+  /**
+   * @brief Getter property for InputDataArrayVector
+   * @return Value of InputDataArrayVector
+   */
+  QVector<DataArrayPath> getInputDataArrayVector() const;
+
   Q_PROPERTY(QVector<DataArrayPath> InputDataArrayVector READ getInputDataArrayVector WRITE setInputDataArrayVector)
 
-  SIMPL_FILTER_PARAMETER(bool, CreateNewAttributeMatrix)
+  /**
+   * @brief Setter property for CreateNewAttributeMatrix
+   */
+  void setCreateNewAttributeMatrix(const bool& value);
+  /**
+   * @brief Getter property for CreateNewAttributeMatrix
+   * @return Value of CreateNewAttributeMatrix
+   */
+  bool getCreateNewAttributeMatrix() const;
+
   Q_PROPERTY(bool CreateNewAttributeMatrix READ getCreateNewAttributeMatrix WRITE setCreateNewAttributeMatrix)
 
-  SIMPL_FILTER_PARAMETER(QString, OutputAttributeMatrixName)
+  /**
+   * @brief Setter property for OutputAttributeMatrixName
+   */
+  void setOutputAttributeMatrixName(const QString& value);
+  /**
+   * @brief Getter property for OutputAttributeMatrixName
+   * @return Value of OutputAttributeMatrixName
+   */
+  QString getOutputAttributeMatrixName() const;
+
   Q_PROPERTY(QString OutputAttributeMatrixName READ getOutputAttributeMatrixName WRITE setOutputAttributeMatrixName)
 
-  SIMPL_FILTER_PARAMETER(QString, OutputArrayPrefix)
+  /**
+   * @brief Setter property for OutputArrayPrefix
+   */
+  void setOutputArrayPrefix(const QString& value);
+  /**
+   * @brief Getter property for OutputArrayPrefix
+   * @return Value of OutputArrayPrefix
+   */
+  QString getOutputArrayPrefix() const;
+
   Q_PROPERTY(QString OutputArrayPrefix READ getOutputArrayPrefix WRITE setOutputArrayPrefix)
 
   /**
@@ -199,6 +275,14 @@ protected:
   void initialize();
 
 private:
+  int m_ConversionAlgorithm = {};
+  FloatVec3Type m_ColorWeights = {};
+  int m_ColorChannel = {};
+  QVector<DataArrayPath> m_InputDataArrayVector = {};
+  bool m_CreateNewAttributeMatrix = {};
+  QString m_OutputAttributeMatrixName = {};
+  QString m_OutputArrayPrefix = {};
+
   QVector<DataArrayPath> m_OutputArrayPaths;
 
 public:

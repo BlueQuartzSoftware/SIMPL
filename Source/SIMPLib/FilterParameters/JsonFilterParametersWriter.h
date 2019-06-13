@@ -37,7 +37,6 @@
 
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -55,13 +54,53 @@
 class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParametersWriter
 {
   public:
-    SIMPL_SHARED_POINTERS(JsonFilterParametersWriter)
-    SIMPL_STATIC_NEW_MACRO(JsonFilterParametersWriter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(JsonFilterParametersWriter, AbstractFilterParametersWriter)
+    using Self = JsonFilterParametersWriter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
-    SIMPL_INSTANCE_PROPERTY(QString, FileName)
-    SIMPL_INSTANCE_PROPERTY(QString, PipelineName)
-    SIMPL_INSTANCE_PROPERTY(bool, ExpandReaderFilters)
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for JsonFilterParametersWriter
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for JsonFilterParametersWriter
+     */
+    static QString ClassName();
+
+    /**
+     * @brief Setter property for FileName
+     */
+    void setFileName(const QString& value);
+    /**
+     * @brief Getter property for FileName
+     * @return Value of FileName
+     */
+    QString getFileName() const;
+
+    /**
+     * @brief Setter property for PipelineName
+     */
+    void setPipelineName(const QString& value);
+    /**
+     * @brief Getter property for PipelineName
+     * @return Value of PipelineName
+     */
+    QString getPipelineName() const;
+
+    /**
+     * @brief Setter property for ExpandReaderFilters
+     */
+    void setExpandReaderFilters(const bool& value);
+    /**
+     * @brief Getter property for ExpandReaderFilters
+     * @return Value of ExpandReaderFilters
+     */
+    bool getExpandReaderFilters() const;
 
     JsonFilterParametersWriter(QString& fileName, QString& pipelineName, int& numFilters);
 
@@ -109,12 +148,25 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
      */
     QJsonObject& getCurrentGroupObject();
 
-    SIMPL_INSTANCE_PROPERTY(int, MaxFilterIndex)
+    /**
+     * @brief Setter property for MaxFilterIndex
+     */
+    void setMaxFilterIndex(const int& value);
+    /**
+     * @brief Getter property for MaxFilterIndex
+     * @return Value of MaxFilterIndex
+     */
+    int getMaxFilterIndex() const;
 
   protected:
     JsonFilterParametersWriter();
 
   private:
+    QString m_FileName = {};
+    QString m_PipelineName = {};
+    bool m_ExpandReaderFilters = {};
+    int m_MaxFilterIndex = {};
+
     QJsonObject m_Root;
     QJsonObject m_CurrentFilterIndex;
     int         m_CurrentIndex;

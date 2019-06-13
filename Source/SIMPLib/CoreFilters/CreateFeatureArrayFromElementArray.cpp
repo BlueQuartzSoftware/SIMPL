@@ -35,7 +35,10 @@
 
 #include "CreateFeatureArrayFromElementArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
@@ -44,6 +47,7 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   FeatureArrayID = 1
@@ -398,4 +402,81 @@ const QString CreateFeatureArrayFromElementArray::getSubGroupName() const
 const QString CreateFeatureArrayFromElementArray::getHumanLabel() const
 {
   return "Create Feature Array from Element Array";
+}
+
+// -----------------------------------------------------------------------------
+CreateFeatureArrayFromElementArray::Pointer CreateFeatureArrayFromElementArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CreateFeatureArrayFromElementArray> CreateFeatureArrayFromElementArray::New()
+{
+  struct make_shared_enabler : public CreateFeatureArrayFromElementArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString CreateFeatureArrayFromElementArray::getNameOfClass() const
+{
+  return QString("CreateFeatureArrayFromElementArray");
+}
+
+// -----------------------------------------------------------------------------
+QString CreateFeatureArrayFromElementArray::ClassName()
+{
+  return QString("CreateFeatureArrayFromElementArray");
+}
+
+// -----------------------------------------------------------------------------
+void CreateFeatureArrayFromElementArray::setCellFeatureAttributeMatrixName(const DataArrayPath& value)
+{
+  m_CellFeatureAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateFeatureArrayFromElementArray::getCellFeatureAttributeMatrixName() const
+{
+  return m_CellFeatureAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void CreateFeatureArrayFromElementArray::setSelectedCellArrayPath(const DataArrayPath& value)
+{
+  m_SelectedCellArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateFeatureArrayFromElementArray::getSelectedCellArrayPath() const
+{
+  return m_SelectedCellArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void CreateFeatureArrayFromElementArray::setCreatedArrayName(const QString& value)
+{
+  m_CreatedArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateFeatureArrayFromElementArray::getCreatedArrayName() const
+{
+  return m_CreatedArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void CreateFeatureArrayFromElementArray::setFeatureIdsArrayPath(const DataArrayPath& value)
+{
+  m_FeatureIdsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateFeatureArrayFromElementArray::getFeatureIdsArrayPath() const
+{
+  return m_FeatureIdsArrayPath;
 }

@@ -106,3 +106,28 @@ int H5MatrixStatsDataDelegate::readPhaseFraction(MatrixStatsData* data, hid_t pi
   data->setPhaseFraction(phaseFraction);
   return err;
 }
+
+// -----------------------------------------------------------------------------
+H5MatrixStatsDataDelegate::Pointer H5MatrixStatsDataDelegate::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+H5MatrixStatsDataDelegate::Pointer H5MatrixStatsDataDelegate::New()
+{
+  Pointer sharedPtr(new(H5MatrixStatsDataDelegate));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString H5MatrixStatsDataDelegate::getNameOfClass() const
+{
+  return QString("H5MatrixStatsDataDelegate");
+}
+
+// -----------------------------------------------------------------------------
+QString H5MatrixStatsDataDelegate::ClassName()
+{
+  return QString("H5MatrixStatsDataDelegate");
+}

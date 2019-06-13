@@ -38,7 +38,6 @@
 
 #include <hdf5.h>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -48,7 +47,15 @@ public:
   ImportHDF5TreeModelItem(hid_t fileId, const QString& data, ImportHDF5TreeModelItem* parent = 0);
   ~ImportHDF5TreeModelItem();
 
-  SIMPL_INSTANCE_PROPERTY(bool, HasErrors)
+  /**
+   * @brief Setter property for HasErrors
+   */
+  void setHasErrors(const bool& value);
+  /**
+   * @brief Getter property for HasErrors
+   * @return Value of HasErrors
+   */
+  bool getHasErrors() const;
 
   void appendChild(ImportHDF5TreeModelItem* child);
 
@@ -79,6 +86,8 @@ protected:
   void initializeChildCount();
 
 private:
+  bool m_HasErrors = {};
+
   QList<ImportHDF5TreeModelItem*> m_ChildItems;
   int m_ChildItemsInitialized = 0;
   int m_ChildCount = -1;

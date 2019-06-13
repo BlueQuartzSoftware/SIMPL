@@ -43,6 +43,8 @@
  *     ImageGeom::findDerivatives
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Geometry/ImageGeom.h"
 
 #include "H5Support/H5Lite.h"
@@ -1179,4 +1181,29 @@ ImageGeom::ErrorType ImageGeom::computeCellIndex(const float coords[], size_t& i
     err = ImageGeom::ErrorType::IndexOutOfBounds;
   }
   return err;
+}
+
+// -----------------------------------------------------------------------------
+ImageGeom::Pointer ImageGeom::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ImageGeom::Pointer ImageGeom::New()
+{
+  Pointer sharedPtr(new(ImageGeom));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString ImageGeom::getNameOfClass() const
+{
+  return QString("ImageGeom");
+}
+
+// -----------------------------------------------------------------------------
+QString ImageGeom::ClassName()
+{
+  return QString("ImageGeom");
 }

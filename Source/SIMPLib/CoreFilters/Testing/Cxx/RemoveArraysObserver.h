@@ -4,7 +4,6 @@
 #include <QtCore/QObject>
 
 #include "SIMPLib/Common/PipelineMessage.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
@@ -12,13 +11,36 @@ class RemoveArraysObserver : public QObject
 {
   Q_OBJECT
 
-  SIMPL_INSTANCE_PROPERTY(QList<PipelineMessage>, ErrorList)
+  /**
+   * @brief Setter property for ErrorList
+   */
+  void setErrorList(const QList<PipelineMessage>& value);
+  /**
+   * @brief Getter property for ErrorList
+   * @return Value of ErrorList
+   */
+  QList<PipelineMessage> getErrorList() const;
+
   Q_PROPERTY(QList<PipelineMessage> ErrorList READ getErrorList WRITE setErrorList)
 
 public:
-  SIMPL_SHARED_POINTERS(RemoveArraysObserver)
-  SIMPL_TYPE_MACRO(RemoveArraysObserver)
-  SIMPL_STATIC_NEW_MACRO(RemoveArraysObserver)
+  using Self = RemoveArraysObserver;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for RemoveArraysObserver
+   */
+  const QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for RemoveArraysObserver
+   */
+  static QString ClassName();
+
+  static Pointer New();
 
   RemoveArraysObserver()
   {
@@ -38,5 +60,8 @@ public:
   RemoveArraysObserver(RemoveArraysObserver&&) = delete;      // Move Constructor Not Implemented
   RemoveArraysObserver& operator=(const RemoveArraysObserver&) = delete; // Copy Assignment Not Implemented
   RemoveArraysObserver& operator=(RemoveArraysObserver&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  QList<PipelineMessage> m_ErrorList = {};
 };
 

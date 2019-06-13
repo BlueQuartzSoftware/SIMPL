@@ -58,7 +58,11 @@ ExpOperator::~ExpOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExpOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void ExpOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                            QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, exp)}
+
+// -----------------------------------------------------------------------------
+ExpOperator::Pointer ExpOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, exp)
+  return Pointer(static_cast<Self*>(nullptr));
 }

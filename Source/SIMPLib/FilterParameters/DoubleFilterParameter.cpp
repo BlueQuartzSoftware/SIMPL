@@ -115,3 +115,52 @@ void DoubleFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = m_GetterCallback();
   }
 }
+
+// -----------------------------------------------------------------------------
+DoubleFilterParameter::Pointer DoubleFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+DoubleFilterParameter::Pointer DoubleFilterParameter::New()
+{
+  Pointer sharedPtr(new(DoubleFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString DoubleFilterParameter::getNameOfClass() const
+{
+  return QString("DoubleFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString DoubleFilterParameter::ClassName()
+{
+  return QString("DoubleFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void DoubleFilterParameter::setSetterCallback(const DoubleFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DoubleFilterParameter::SetterCallbackType DoubleFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void DoubleFilterParameter::setGetterCallback(const DoubleFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DoubleFilterParameter::GetterCallbackType DoubleFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

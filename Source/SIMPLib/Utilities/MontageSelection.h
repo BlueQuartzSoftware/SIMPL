@@ -39,7 +39,6 @@
 #include <QtCore/QStringList>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 /**
  * @class MontageSelection MontageSelection.h SIMPLib/Utilities/MontageSelection.h

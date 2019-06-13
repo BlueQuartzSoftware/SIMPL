@@ -11,7 +11,6 @@
 
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
 
@@ -113,8 +112,13 @@
 class IFilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(IFilterParameter)
-    
+    using Self = IFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
     using EnumType = unsigned int;
     
     enum class Category : EnumType
@@ -128,12 +132,47 @@ class IFilterParameter
     IFilterParameter(const std::string& humanLabel, const std::string& propertyName, Category category, int groupIndex);
     
     virtual ~IFilterParameter();
-    
-    SIMPL_INSTANCE_PROPERTY(std::string, HumanLabel)
-    SIMPL_INSTANCE_PROPERTY(std::string, PropertyName)
-    SIMPL_INSTANCE_PROPERTY(Category, Category)
-    SIMPL_INSTANCE_PROPERTY(int, GroupIndex)
-    
+
+    /**
+     * @brief Setter property for HumanLabel
+     */
+    void setHumanLabel(const std::string& value);
+    /**
+     * @brief Getter property for HumanLabel
+     * @return Value of HumanLabel
+     */
+    std::string getHumanLabel() const;
+
+    /**
+     * @brief Setter property for PropertyName
+     */
+    void setPropertyName(const std::string& value);
+    /**
+     * @brief Getter property for PropertyName
+     * @return Value of PropertyName
+     */
+    std::string getPropertyName() const;
+
+    /**
+     * @brief Setter property for Category
+     */
+    void setCategory(const Category& value);
+    /**
+     * @brief Getter property for Category
+     * @return Value of Category
+     */
+    Category getCategory() const;
+
+    /**
+     * @brief Setter property for GroupIndex
+     */
+    void setGroupIndex(const int& value);
+    /**
+     * @brief Getter property for GroupIndex
+     * @return Value of GroupIndex
+     */
+    int getGroupIndex() const;
+
     virtual void readJson(const QJsonObject& json) = 0;
     virtual void writeJson(QJsonObject& json) const = 0;
     
@@ -150,8 +189,13 @@ class Int32Parameter : public IFilterParameter
 {
     
   public:
-    SIMPL_SHARED_POINTERS(Int32Parameter)
-    
+    using Self = Int32Parameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
     using SetterCallbackType = std::function<void(int)>;
     using GetterCallbackType = std::function<int(void)>;
     
@@ -163,9 +207,17 @@ class Int32Parameter : public IFilterParameter
                        const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                        int groupIndex = -1);
     virtual ~Int32Parameter();
-    
-    SIMPL_INSTANCE_PROPERTY(int, DefaultValue)
-    
+
+    /**
+     * @brief Setter property for DefaultValue
+     */
+    void setDefaultValue(const int& value);
+    /**
+     * @brief Getter property for DefaultValue
+     * @return Value of DefaultValue
+     */
+    int getDefaultValue() const;
+
     SetterCallbackType getSetterCallback();
     GetterCallbackType getGetterCallback();
     
@@ -190,8 +242,13 @@ class Int32Parameter : public IFilterParameter
 class DoubleParameter : public IFilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(DoubleParameter)
-    
+    using Self = DoubleParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
     using SetterCallbackType = std::function<void(double)>;
     using GetterCallbackType = std::function<double(void)>;
     
@@ -202,10 +259,17 @@ class DoubleParameter : public IFilterParameter
                        const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                        int groupIndex = -1);
     virtual ~DoubleParameter();
-    
-    SIMPL_INSTANCE_PROPERTY(double, DefaultValue)
-    
-    
+
+    /**
+     * @brief Setter property for DefaultValue
+     */
+    void setDefaultValue(const double& value);
+    /**
+     * @brief Getter property for DefaultValue
+     * @return Value of DefaultValue
+     */
+    double getDefaultValue() const;
+
     SetterCallbackType getSetterCallback();
     GetterCallbackType getGetterCallback();
     
@@ -230,8 +294,13 @@ class DoubleParameter : public IFilterParameter
 class DataArrayPathParameter : public IFilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(DataArrayPathParameter)
-    
+    using Self = DataArrayPathParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
     using SetterCallbackType = std::function<void(DataArrayPath)>;
     using GetterCallbackType = std::function<DataArrayPath(void)>;
     
@@ -243,10 +312,17 @@ class DataArrayPathParameter : public IFilterParameter
                        int groupIndex = -1);
     
     virtual ~DataArrayPathParameter();
-    
-    SIMPL_INSTANCE_PROPERTY(DataArrayPath, DefaultValue)
-    
-    
+
+    /**
+     * @brief Setter property for DefaultValue
+     */
+    void setDefaultValue(const DataArrayPath& value);
+    /**
+     * @brief Getter property for DefaultValue
+     * @return Value of DefaultValue
+     */
+    DataArrayPath getDefaultValue() const;
+
     SetterCallbackType getSetterCallback();
     GetterCallbackType getGetterCallback();
     
@@ -258,6 +334,14 @@ class DataArrayPathParameter : public IFilterParameter
     DataArrayPathParameter(const std::string& humanLabel, const std::string& propertyName, const DataArrayPath &defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex);
     
   private:
+    std::string m_HumanLabel = {};
+    std::string m_PropertyName = {};
+    Category m_Category = {};
+    int m_GroupIndex = {};
+    int m_DefaultValue = {};
+    double m_DefaultValue = {};
+    DataArrayPath m_DefaultValue = {};
+
     DataArrayPathParameter(const DataArrayPathParameter&) = delete; // Copy Constructor Not Implemented
     void operator=(const DataArrayPathParameter&) = delete;         // Move assignment Not Implemented
 

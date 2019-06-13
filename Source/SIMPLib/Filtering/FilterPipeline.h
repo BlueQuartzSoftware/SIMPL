@@ -43,11 +43,12 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observer.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 class IObserver;
 class FilterPipelineMessageHandler;
+class DataContainerArray;
+using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
 
 /**
  * @class FilterPipeline FilterPipeline.h DREAM3DLib/Common/FilterPipeline.h
@@ -73,7 +74,7 @@ class SIMPLib_EXPORT FilterPipeline : public Observable
   PYB11_PROPERTY(ExecutionResult ExecutionResult READ getExecutionResult)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
 
-  PYB11_METHOD(DataContainerArray::Pointer run)
+  PYB11_METHOD(DataContainerArrayShPtrType run)
   PYB11_METHOD(void preflightPipeline)
   PYB11_METHOD(bool pushFront ARGS AbstractFilter)
   PYB11_METHOD(bool pushBack ARGS AbstractFilter)
@@ -87,9 +88,23 @@ class SIMPLib_EXPORT FilterPipeline : public Observable
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(FilterPipeline)
-  SIMPL_TYPE_MACRO(FilterPipeline)
-  SIMPL_STATIC_NEW_MACRO(FilterPipeline)
+  using Self = FilterPipeline;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for FilterPipeline
+   */
+  const QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for FilterPipeline
+   */
+  static QString ClassName();
+
+  static Pointer New();
 
   ~FilterPipeline() override;
 
@@ -112,11 +127,39 @@ public:
 
   typedef QList<AbstractFilter::Pointer> FilterContainerType;
 
-  SIMPL_GET_PROPERTY(FilterPipeline::ExecutionResult, ExecutionResult)
-  SIMPL_GET_PROPERTY(FilterPipeline::State, State)
-  SIMPL_GET_PROPERTY(int, ErrorCode)
-  SIMPL_GET_PROPERTY(int, WarningCode)
-  SIMPL_INSTANCE_PROPERTY(AbstractFilter::Pointer, CurrentFilter)
+  /**
+   * @brief Getter property for ExecutionResult
+   * @return Value of ExecutionResult
+   */
+  FilterPipeline::ExecutionResult getExecutionResult() const;
+
+  /**
+   * @brief Getter property for State
+   * @return Value of State
+   */
+  FilterPipeline::State getState() const;
+
+  /**
+   * @brief Getter property for ErrorCode
+   * @return Value of ErrorCode
+   */
+  int getErrorCode() const;
+
+  /**
+   * @brief Getter property for WarningCode
+   * @return Value of WarningCode
+   */
+  int getWarningCode() const;
+
+  /**
+   * @brief Setter property for CurrentFilter
+   */
+  void setCurrentFilter(const AbstractFilter::Pointer& value);
+  /**
+   * @brief Getter property for CurrentFilter
+   * @return Value of CurrentFilter
+   */
+  AbstractFilter::Pointer getCurrentFilter() const;
 
   /**
    * @brief Returns true if the pipeline is executing
@@ -140,12 +183,12 @@ public:
    * @brief A pure virtual function that gets called from the "run()" method. Subclasses
    * are expected to create a concrete implementation of this method.
    */
-  virtual DataContainerArray::Pointer execute();
+  virtual DataContainerArrayShPtrType execute();
 
   /**
    * @brief An execute method using an existing data container array
    */
-  DataContainerArray::Pointer execute(DataContainerArray::Pointer dca);
+  DataContainerArrayShPtrType execute(DataContainerArrayShPtrType dca);
 
   /**
    * @brief This will preflight the pipeline and report any errors that would occur during
@@ -168,7 +211,7 @@ public:
 
   virtual FilterContainerType& getFilterContainer();
 
-  virtual DataContainerArray::Pointer getDataContainerArray();
+  virtual DataContainerArrayShPtrType getDataContainerArray();
 
   /**
    * @brief
@@ -258,7 +301,7 @@ public slots:
   /**
    * @brief This method is called to start the pipeline for a plugin
    */
-  virtual DataContainerArray::Pointer run();
+  virtual DataContainerArrayShPtrType run();
 
   /**
    * @brief cancel
@@ -304,6 +347,8 @@ signals:
   void pipelineNameChanged(QString oldName, QString newName);
 
 private:
+  AbstractFilter::Pointer m_CurrentFilter = {};
+
   FilterContainerType m_Pipeline;
   QString m_PipelineName;
 
@@ -312,7 +357,7 @@ private:
 
   QVector<QObject*> m_MessageReceivers;
 
-  DataContainerArray::Pointer m_Dca;
+  DataContainerArrayShPtrType m_Dca;
 
   int m_ErrorCode = 0;
   int m_WarningCode = 0;

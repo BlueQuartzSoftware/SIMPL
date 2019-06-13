@@ -100,3 +100,28 @@ bool PluginProxy::getEnabled()
 {
   return m_Enabled;
 }
+
+// -----------------------------------------------------------------------------
+PluginProxy::Pointer PluginProxy::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+PluginProxy::Pointer PluginProxy::New()
+{
+  Pointer sharedPtr(new(PluginProxy));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString PluginProxy::getNameOfClass() const
+{
+  return QString("PluginProxy");
+}
+
+// -----------------------------------------------------------------------------
+QString PluginProxy::ClassName()
+{
+  return QString("PluginProxy");
+}

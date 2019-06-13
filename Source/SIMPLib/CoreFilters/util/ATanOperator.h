@@ -46,7 +46,12 @@ class CalculatorNumber;
 class SIMPLib_EXPORT ATanOperator : public UnaryOperator
 {
   public:
-    SIMPL_SHARED_POINTERS(ATanOperator)
+    using Self = ATanOperator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     static Pointer New()
     {
@@ -65,5 +70,7 @@ class SIMPLib_EXPORT ATanOperator : public UnaryOperator
     ATanOperator(ATanOperator&&) = delete;        // Move Constructor Not Implemented
     ATanOperator& operator=(const ATanOperator&) = delete; // Copy Assignment Not Implemented
     ATanOperator& operator=(ATanOperator&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

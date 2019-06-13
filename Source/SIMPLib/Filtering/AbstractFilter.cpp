@@ -35,14 +35,17 @@
 
 #include "AbstractFilter.h"
 
-#include "SIMPLib/Filtering/FilterManager.h"
-#include "SIMPLib/Filtering/FilterPipeline.h"
-#include "SIMPLib/Filtering/IFilterFactory.hpp"
+#include <QtCore/QTextStream>
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Messages/FilterErrorMessage.h"
 #include "SIMPLib/Messages/FilterProgressMessage.h"
 #include "SIMPLib/Messages/FilterStatusMessage.h"
 #include "SIMPLib/Messages/FilterWarningMessage.h"
 #include "SIMPLib/Plugin/PluginManager.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/Common/Constants.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -658,4 +661,137 @@ void AbstractFilter::clearRenamedPaths()
 void AbstractFilter::addPathRename(const DataArrayPath& oldPath, const DataArrayPath& newPath)
 {
   m_RenamedPaths.push_back(std::make_pair(oldPath, newPath));
+}
+
+// -----------------------------------------------------------------------------
+AbstractFilter::Pointer AbstractFilter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+const QString AbstractFilter::getNameOfClass() const
+{
+  return QString("AbstractFilter");
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractFilter::ClassName()
+{
+  return QString("AbstractFilter");
+}
+
+// -----------------------------------------------------------------------------
+AbstractFilter::Pointer AbstractFilter::New()
+{
+  Pointer sharedPtr(new(AbstractFilter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setDataContainerArray(const DataContainerArray::Pointer& value)
+{
+  m_DataContainerArray = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArray::Pointer AbstractFilter::getDataContainerArray() const
+{
+  return m_DataContainerArray;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setFilterParameters(const FilterParameterVectorType& value)
+{
+  m_FilterParameters = value;
+}
+
+// -----------------------------------------------------------------------------
+FilterParameterVectorType AbstractFilter::getFilterParameters() const
+{
+  return m_FilterParameters;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setInPreflight(const bool& value)
+{
+  m_InPreflight = value;
+}
+
+// -----------------------------------------------------------------------------
+bool AbstractFilter::getInPreflight() const
+{
+  return m_InPreflight;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setEnabled(const bool& value)
+{
+  m_Enabled = value;
+}
+
+// -----------------------------------------------------------------------------
+bool AbstractFilter::getEnabled() const
+{
+  return m_Enabled;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setRemoving(const bool& value)
+{
+  m_Removing = value;
+}
+
+// -----------------------------------------------------------------------------
+bool AbstractFilter::getRemoving() const
+{
+  return m_Removing;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setPipelineIndex(const int& value)
+{
+  m_PipelineIndex = value;
+}
+
+// -----------------------------------------------------------------------------
+int AbstractFilter::getPipelineIndex() const
+{
+  return m_PipelineIndex;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setPreviousFilter(const AbstractFilter::WeakPointer& value)
+{
+  m_PreviousFilter = value;
+}
+
+// -----------------------------------------------------------------------------
+AbstractFilter::WeakPointer AbstractFilter::getPreviousFilter() const
+{
+  return m_PreviousFilter;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setNextFilter(const AbstractFilter::WeakPointer& value)
+{
+  m_NextFilter = value;
+}
+
+// -----------------------------------------------------------------------------
+AbstractFilter::WeakPointer AbstractFilter::getNextFilter() const
+{
+  return m_NextFilter;
+}
+
+// -----------------------------------------------------------------------------
+int AbstractFilter::getErrorCode() const
+{
+  return m_ErrorCode;
+}
+
+// -----------------------------------------------------------------------------
+int AbstractFilter::getWarningCode() const
+{
+  return m_WarningCode;
 }

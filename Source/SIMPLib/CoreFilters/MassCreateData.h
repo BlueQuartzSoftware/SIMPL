@@ -37,7 +37,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -56,13 +55,36 @@ class SIMPLib_EXPORT MassCreateData : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(MassCreateData)
-  SIMPL_FILTER_NEW_MACRO(MassCreateData)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MassCreateData, AbstractFilter)
+  using Self = MassCreateData;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<MassCreateData> New();
+
+  /**
+   * @brief Returns the name of the class for MassCreateData
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for MassCreateData
+   */
+  static QString ClassName();
 
   ~MassCreateData() override;
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+  /**
+   * @brief Setter property for DataContainerName
+   */
+  void setDataContainerName(const DataArrayPath& value);
+  /**
+   * @brief Getter property for DataContainerName
+   * @return Value of DataContainerName
+   */
+  DataArrayPath getDataContainerName() const;
+
   Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
   /**
@@ -170,5 +192,8 @@ public:
   MassCreateData(MassCreateData&&) = delete;                 // Move Constructor Not Implemented
   MassCreateData& operator=(const MassCreateData&) = delete; // Copy Assignment Not Implemented
   MassCreateData& operator=(MassCreateData&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  DataArrayPath m_DataContainerName = {};
 };
 

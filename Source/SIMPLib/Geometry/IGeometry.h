@@ -39,15 +39,17 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observable.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/DynamicListArray.hpp"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/ITransformContainer.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
-class QTextStream;
+class AttributeMatrix;
+using AttributeMatrixShPtrType = std::shared_ptr<AttributeMatrix>;
 
 // -----------------------------------------------------------------------------
 // Typedefs
@@ -62,6 +64,11 @@ using SharedTetList = MeshIndexArrayType;
 using SharedHexList = MeshIndexArrayType;
 using SharedFaceList = MeshIndexArrayType;
 using ElementDynamicList = DynamicListArray<uint16_t, MeshIndexType>;
+
+/**
+ * @brief Macro to silence compiler warnings for unused parameters in methods.
+ */
+#define SIMPL_NOT_USED(x)
 
 /**
  * @brief The IGeometry class
@@ -93,8 +100,21 @@ class SIMPLib_EXPORT IGeometry : public Observable
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(IGeometry)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry, Observable)
+  using Self = IGeometry;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for IGeometry
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for IGeometry
+   */
+  static QString ClassName();
 
   IGeometry();
   ~IGeometry() override;
@@ -174,7 +194,7 @@ public:
   /**
    * @brief AttributeMatrixMap_t
    */
-  using AttributeMatrixMap_t = QMap<QString, AttributeMatrix::Pointer>;
+  using AttributeMatrixMap_t = QMap<QString, AttributeMatrixShPtrType>;
 
   /**
    * @brief stringToType
@@ -210,10 +230,45 @@ public:
    */
   static QVector<QString> GetAllLengthUnitStrings();
 
-  SIMPL_INSTANCE_PROPERTY(float, TimeValue)
-  SIMPL_INSTANCE_PROPERTY(bool, EnableTimeSeries)
-  SIMPL_INSTANCE_PROPERTY(ITransformContainer::Pointer, TransformContainer)
-  SIMPL_INSTANCE_PROPERTY(IGeometry::LengthUnit, Units)
+  /**
+   * @brief Setter property for TimeValue
+   */
+  void setTimeValue(const float& value);
+  /**
+   * @brief Getter property for TimeValue
+   * @return Value of TimeValue
+   */
+  float getTimeValue() const;
+
+  /**
+   * @brief Setter property for EnableTimeSeries
+   */
+  void setEnableTimeSeries(const bool& value);
+  /**
+   * @brief Getter property for EnableTimeSeries
+   * @return Value of EnableTimeSeries
+   */
+  bool getEnableTimeSeries() const;
+
+  /**
+   * @brief Setter property for TransformContainer
+   */
+  void setTransformContainer(const ITransformContainer::Pointer& value);
+  /**
+   * @brief Getter property for TransformContainer
+   * @return Value of TransformContainer
+   */
+  ITransformContainer::Pointer getTransformContainer() const;
+
+  /**
+   * @brief Setter property for Units
+   */
+  void setUnits(const IGeometry::LengthUnit& value);
+  /**
+   * @brief Getter property for Units
+   * @return Value of Units
+   */
+  IGeometry::LengthUnit getUnits() const;
 
   // -----------------------------------------------------------------------------
   // Connectivity
@@ -415,34 +470,23 @@ public:
   /**
    * @brief addOrReplaceAttributeMatrix
    */
-  virtual void addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) = 0;
+  virtual void addOrReplaceAttributeMatrix(const QString& name, AttributeMatrixShPtrType data) = 0;
 
   /**
    * @brief getAttributeMatrix
    * @param name
    * @return
    */
-  virtual AttributeMatrix::Pointer getAttributeMatrix(const QString& name) final;
+  virtual AttributeMatrixShPtrType getAttributeMatrix(const QString& name) final;
 
   /**
    * @brief removeAttributeMatrix
    * @param name
    * @return
    */
-  virtual AttributeMatrix::Pointer removeAttributeMatrix(const QString& name) final;
+  virtual AttributeMatrixShPtrType removeAttributeMatrix(const QString& name) final;
 
 protected:
-  QString m_Name;
-  QString m_GeometryTypeName;
-  Type m_GeometryType = Type::Unknown;
-  unsigned int m_XdmfGridType = SIMPL::XdmfGridType::UnknownGrid;
-  unsigned int m_UnitDimensionality = 0;
-  unsigned int m_SpatialDimensionality = 0;
-
-  AttributeMatrixMap_t m_AttributeMatrices;
-
-  QMutex m_Mutex;
-  int64_t m_ProgressCounter;
 
   /**
    * @brief sendThreadSafeProgressMessage
@@ -480,4 +524,21 @@ public:
   IGeometry(IGeometry&&) = delete;                 // Move Constructor Not Implemented
   IGeometry& operator=(const IGeometry&) = delete; // Copy Assignment Not Implemented
   IGeometry& operator=(IGeometry&&) = delete;      // Move Assignment Not Implemented
+
+protected:
+  QString m_GeometryTypeName;
+  Type m_GeometryType = Type::Unknown;
+  unsigned int m_XdmfGridType = SIMPL::XdmfGridType::UnknownGrid;
+  unsigned int m_UnitDimensionality = 0;
+  unsigned int m_SpatialDimensionality = 0;
+  int64_t m_ProgressCounter = 0;
+  AttributeMatrixMap_t m_AttributeMatrices;
+
+private:
+  float m_TimeValue = 0.0f;
+  bool m_EnableTimeSeries = false;
+  ITransformContainer::Pointer m_TransformContainer = {};
+  IGeometry::LengthUnit m_Units = LengthUnit::Unspecified;
+  QString m_Name;
+  QMutex m_Mutex;
 };

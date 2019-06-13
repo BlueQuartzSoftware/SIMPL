@@ -66,3 +66,28 @@ QString UnknownFilterParameter::getWidgetType() const
 {
   return QString("UnknownWidget");
 }
+
+// -----------------------------------------------------------------------------
+UnknownFilterParameter::Pointer UnknownFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+UnknownFilterParameter::Pointer UnknownFilterParameter::New()
+{
+  Pointer sharedPtr(new(UnknownFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString UnknownFilterParameter::getNameOfClass() const
+{
+  return QString("UnknownFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString UnknownFilterParameter::ClassName()
+{
+  return QString("UnknownFilterParameter");
+}

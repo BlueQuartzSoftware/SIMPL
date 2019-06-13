@@ -58,7 +58,11 @@ MultiplicationOperator::~MultiplicationOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiplicationOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void MultiplicationOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                                       QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, *)}
+
+// -----------------------------------------------------------------------------
+MultiplicationOperator::Pointer MultiplicationOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, *)
+  return Pointer(static_cast<Self*>(nullptr));
 }

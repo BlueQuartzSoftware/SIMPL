@@ -35,7 +35,10 @@
 
 #include "MoveData.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
@@ -43,6 +46,8 @@
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 namespace
 {
@@ -304,4 +309,93 @@ const QString MoveData::getSubGroupName() const
 const QString MoveData::getHumanLabel() const
 {
   return "Move Data";
+}
+
+// -----------------------------------------------------------------------------
+MoveData::Pointer MoveData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<MoveData> MoveData::New()
+{
+  struct make_shared_enabler : public MoveData
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString MoveData::getNameOfClass() const
+{
+  return QString("MoveData");
+}
+
+// -----------------------------------------------------------------------------
+QString MoveData::ClassName()
+{
+  return QString("MoveData");
+}
+
+// -----------------------------------------------------------------------------
+void MoveData::setWhatToMove(const int& value)
+{
+  m_WhatToMove = value;
+}
+
+// -----------------------------------------------------------------------------
+int MoveData::getWhatToMove() const
+{
+  return m_WhatToMove;
+}
+
+// -----------------------------------------------------------------------------
+void MoveData::setDataContainerDestination(const DataArrayPath& value)
+{
+  m_DataContainerDestination = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath MoveData::getDataContainerDestination() const
+{
+  return m_DataContainerDestination;
+}
+
+// -----------------------------------------------------------------------------
+void MoveData::setAttributeMatrixSource(const DataArrayPath& value)
+{
+  m_AttributeMatrixSource = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath MoveData::getAttributeMatrixSource() const
+{
+  return m_AttributeMatrixSource;
+}
+
+// -----------------------------------------------------------------------------
+void MoveData::setAttributeMatrixDestination(const DataArrayPath& value)
+{
+  m_AttributeMatrixDestination = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath MoveData::getAttributeMatrixDestination() const
+{
+  return m_AttributeMatrixDestination;
+}
+
+// -----------------------------------------------------------------------------
+void MoveData::setDataArraySource(const DataArrayPath& value)
+{
+  m_DataArraySource = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath MoveData::getDataArraySource() const
+{
+  return m_DataArraySource;
 }

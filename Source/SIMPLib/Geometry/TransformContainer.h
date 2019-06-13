@@ -49,19 +49,84 @@ public:
   TransformContainer();
   ~TransformContainer() override;
 
-  SIMPL_SHARED_POINTERS(TransformContainer)
-  SIMPL_STATIC_NEW_MACRO(TransformContainer)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TransformContainer, ITransformContainer)
+  using Self = TransformContainer;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-  SIMPL_INSTANCE_PROPERTY(TransformContainer::TransformParametersType, Parameters)
-  SIMPL_INSTANCE_PROPERTY(TransformContainer::TransformFixedParametersType, FixedParameters)
-  SIMPL_INSTANCE_PROPERTY(std::string, TransformTypeAsString)
-  SIMPL_INSTANCE_PROPERTY(std::string, MovingName)
-  SIMPL_INSTANCE_PROPERTY(std::string, ReferenceName)
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for TransformContainer
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for TransformContainer
+   */
+  static QString ClassName();
+
+  /**
+   * @brief Setter property for Parameters
+   */
+  void setParameters(const TransformContainer::TransformParametersType& value);
+  /**
+   * @brief Getter property for Parameters
+   * @return Value of Parameters
+   */
+  TransformContainer::TransformParametersType getParameters() const;
+
+  /**
+   * @brief Setter property for FixedParameters
+   */
+  void setFixedParameters(const TransformContainer::TransformFixedParametersType& value);
+  /**
+   * @brief Getter property for FixedParameters
+   * @return Value of FixedParameters
+   */
+  TransformContainer::TransformFixedParametersType getFixedParameters() const;
+
+  /**
+   * @brief Setter property for TransformTypeAsString
+   */
+  void setTransformTypeAsString(const std::string& value);
+  /**
+   * @brief Getter property for TransformTypeAsString
+   * @return Value of TransformTypeAsString
+   */
+  std::string getTransformTypeAsString() const;
+
+  /**
+   * @brief Setter property for MovingName
+   */
+  void setMovingName(const std::string& value);
+  /**
+   * @brief Getter property for MovingName
+   * @return Value of MovingName
+   */
+  std::string getMovingName() const;
+
+  /**
+   * @brief Setter property for ReferenceName
+   */
+  void setReferenceName(const std::string& value);
+  /**
+   * @brief Getter property for ReferenceName
+   * @return Value of ReferenceName
+   */
+  std::string getReferenceName() const;
 
   TransformContainer& operator=(const TransformContainer&);
 
   int writeTransformContainerToHDF5(hid_t parentId, const std::string& transformContainerName) override;
   
   int readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformContainerName) override;
+
+private:
+  TransformContainer::TransformParametersType m_Parameters = {};
+  TransformContainer::TransformFixedParametersType m_FixedParameters = {};
+  std::string m_TransformTypeAsString = {};
+  std::string m_MovingName = {};
+  std::string m_ReferenceName = {};
 };

@@ -39,7 +39,6 @@
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -69,19 +68,60 @@ class SIMPLib_EXPORT WriteTriangleGeometry : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(WriteTriangleGeometry)
-    SIMPL_FILTER_NEW_MACRO(WriteTriangleGeometry)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(WriteTriangleGeometry, AbstractFilter)
+    using Self = WriteTriangleGeometry;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<WriteTriangleGeometry> New();
+
+    /**
+     * @brief Returns the name of the class for WriteTriangleGeometry
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for WriteTriangleGeometry
+     */
+    static QString ClassName();
 
     ~WriteTriangleGeometry() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerSelection)
+    /**
+     * @brief Setter property for DataContainerSelection
+     */
+    void setDataContainerSelection(const DataArrayPath& value);
+    /**
+     * @brief Getter property for DataContainerSelection
+     * @return Value of DataContainerSelection
+     */
+    DataArrayPath getDataContainerSelection() const;
+
     Q_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
 
-    SIMPL_FILTER_PARAMETER(QString, OutputNodesFile)
+    /**
+     * @brief Setter property for OutputNodesFile
+     */
+    void setOutputNodesFile(const QString& value);
+    /**
+     * @brief Getter property for OutputNodesFile
+     * @return Value of OutputNodesFile
+     */
+    QString getOutputNodesFile() const;
+
     Q_PROPERTY(QString OutputNodesFile READ getOutputNodesFile WRITE setOutputNodesFile)
 
-    SIMPL_FILTER_PARAMETER(QString, OutputTrianglesFile)
+    /**
+     * @brief Setter property for OutputTrianglesFile
+     */
+    void setOutputTrianglesFile(const QString& value);
+    /**
+     * @brief Getter property for OutputTrianglesFile
+     * @return Value of OutputTrianglesFile
+     */
+    QString getOutputTrianglesFile() const;
+
     Q_PROPERTY(QString OutputTrianglesFile READ getOutputTrianglesFile WRITE setOutputTrianglesFile)
 
     /**
@@ -190,5 +230,10 @@ class SIMPLib_EXPORT WriteTriangleGeometry : public AbstractFilter
     WriteTriangleGeometry(WriteTriangleGeometry&&) = delete;      // Move Constructor Not Implemented
     WriteTriangleGeometry& operator=(const WriteTriangleGeometry&) = delete; // Copy Assignment Not Implemented
     WriteTriangleGeometry& operator=(WriteTriangleGeometry&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    DataArrayPath m_DataContainerSelection = {};
+    QString m_OutputNodesFile = {};
+    QString m_OutputTrianglesFile = {};
 };
 

@@ -34,3 +34,52 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "ConstrainedFilterParameter.h"
+
+// -----------------------------------------------------------------------------
+ConstrainedFilterParameter::Pointer ConstrainedFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ConstrainedFilterParameter::Pointer ConstrainedFilterParameter::New()
+{
+  Pointer sharedPtr(new(ConstrainedFilterParameter<T>));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString ConstrainedFilterParameter::getNameOfClass() const
+{
+  return QString("ConstrainedFilterParameter<T>");
+}
+
+// -----------------------------------------------------------------------------
+QString ConstrainedFilterParameter::ClassName()
+{
+  return QString("ConstrainedFilterParameter<T>");
+}
+
+// -----------------------------------------------------------------------------
+void ConstrainedFilterParameter::setMinimum(const T& value)
+{
+  m_Minimum = value;
+}
+
+// -----------------------------------------------------------------------------
+T ConstrainedFilterParameter::getMinimum() const
+{
+  return m_Minimum;
+}
+
+// -----------------------------------------------------------------------------
+void ConstrainedFilterParameter::setMaximum(const T& value)
+{
+  m_Maximum = value;
+}
+
+// -----------------------------------------------------------------------------
+T ConstrainedFilterParameter::getMaximum() const
+{
+  return m_Maximum;
+}

@@ -38,7 +38,10 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QStringList>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/CoreFilters/EmptyFilter.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
@@ -673,4 +676,53 @@ int JsonFilterParametersReader::closeGroup()
   Q_ASSERT(m_Root.isEmpty() == false);
   m_CurrentFilterIndex = QJsonObject();
   return 0;
+}
+
+// -----------------------------------------------------------------------------
+JsonFilterParametersReader::Pointer JsonFilterParametersReader::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+JsonFilterParametersReader::Pointer JsonFilterParametersReader::New()
+{
+  Pointer sharedPtr(new(JsonFilterParametersReader));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString JsonFilterParametersReader::getNameOfClass() const
+{
+  return QString("JsonFilterParametersReader");
+}
+
+// -----------------------------------------------------------------------------
+QString JsonFilterParametersReader::ClassName()
+{
+  return QString("JsonFilterParametersReader");
+}
+
+// -----------------------------------------------------------------------------
+void JsonFilterParametersReader::setFileName(const QString& value)
+{
+  m_FileName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString JsonFilterParametersReader::getFileName() const
+{
+  return m_FileName;
+}
+
+// -----------------------------------------------------------------------------
+void JsonFilterParametersReader::setMaxFilterIndex(const int& value)
+{
+  m_MaxFilterIndex = value;
+}
+
+// -----------------------------------------------------------------------------
+int JsonFilterParametersReader::getMaxFilterIndex() const
+{
+  return m_MaxFilterIndex;
 }

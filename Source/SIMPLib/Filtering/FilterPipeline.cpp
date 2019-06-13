@@ -35,10 +35,10 @@
 
 #include "FilterPipeline.h"
 
-#include "SIMPLib/CoreFilters/EmptyFilter.h"
-#include "SIMPLib/Filtering/FilterFactory.hpp"
-#include "SIMPLib/Filtering/FilterManager.h"
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Messages/AbstractMessageHandler.h"
+#include "SIMPLib/Messages/FilterProgressMessage.h"
 #include "SIMPLib/Messages/FilterErrorMessage.h"
 #include "SIMPLib/Messages/FilterProgressMessage.h"
 #include "SIMPLib/Messages/FilterStatusMessage.h"
@@ -47,11 +47,11 @@
 #include "SIMPLib/Messages/PipelineProgressMessage.h"
 #include "SIMPLib/Messages/PipelineStatusMessage.h"
 #include "SIMPLib/Messages/PipelineWarningMessage.h"
-
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Utilities/StringOperations.h"
+#include "SIMPLib/Common/Constants.h"
 
 #define RENAME_ENABLED 1
 
@@ -997,4 +997,65 @@ bool FilterPipeline::isIdle() const
 DataContainerArray::Pointer FilterPipeline::getDataContainerArray()
 {
   return m_Dca;
+}
+
+// -----------------------------------------------------------------------------
+FilterPipeline::Pointer FilterPipeline::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+const QString FilterPipeline::getNameOfClass() const
+{
+  return QString("FilterPipeline");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterPipeline::ClassName()
+{
+  return QString("FilterPipeline");
+}
+
+// -----------------------------------------------------------------------------
+FilterPipeline::Pointer FilterPipeline::New()
+{
+  Pointer sharedPtr(new(FilterPipeline));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+void FilterPipeline::setCurrentFilter(const AbstractFilter::Pointer& value)
+{
+  m_CurrentFilter = value;
+}
+
+// -----------------------------------------------------------------------------
+AbstractFilter::Pointer FilterPipeline::getCurrentFilter() const
+{
+  return m_CurrentFilter;
+}
+
+// -----------------------------------------------------------------------------
+FilterPipeline::ExecutionResult FilterPipeline::getExecutionResult() const
+{
+  return m_ExecutionResult;
+}
+
+// -----------------------------------------------------------------------------
+FilterPipeline::State FilterPipeline::getState() const
+{
+  return m_State;
+}
+
+// -----------------------------------------------------------------------------
+int FilterPipeline::getErrorCode() const
+{
+  return m_ErrorCode;
+}
+
+// -----------------------------------------------------------------------------
+int FilterPipeline::getWarningCode() const
+{
+  return m_WarningCode;
 }

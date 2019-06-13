@@ -164,3 +164,52 @@ void BoundaryStatsData::readJson(const QJsonObject& json)
   }
 
 }
+
+// -----------------------------------------------------------------------------
+BoundaryStatsData::Pointer BoundaryStatsData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+BoundaryStatsData::Pointer BoundaryStatsData::New()
+{
+  Pointer sharedPtr(new(BoundaryStatsData));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString BoundaryStatsData::getNameOfClass() const
+{
+  return QString("BoundaryStatsData");
+}
+
+// -----------------------------------------------------------------------------
+QString BoundaryStatsData::ClassName()
+{
+  return QString("BoundaryStatsData");
+}
+
+// -----------------------------------------------------------------------------
+void BoundaryStatsData::setBoundaryArea(const float& value)
+{
+  m_BoundaryArea = value;
+}
+
+// -----------------------------------------------------------------------------
+float BoundaryStatsData::getBoundaryArea() const
+{
+  return m_BoundaryArea;
+}
+
+// -----------------------------------------------------------------------------
+void BoundaryStatsData::setParentPhase(const float& value)
+{
+  m_ParentPhase = value;
+}
+
+// -----------------------------------------------------------------------------
+float BoundaryStatsData::getParentPhase() const
+{
+  return m_ParentPhase;
+}

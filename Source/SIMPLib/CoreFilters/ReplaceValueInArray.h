@@ -37,8 +37,12 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
+
+class IDataArray;
 
 /**
  * @brief The ReplaceValueInArray class. See [Filter documentation](@ref replacevalueinarray) for details.
@@ -60,20 +64,60 @@ class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
 #endif
 
   public:
+    using Self = ReplaceValueInArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
-    SIMPL_SHARED_POINTERS(ReplaceValueInArray)
-    SIMPL_FILTER_NEW_MACRO(ReplaceValueInArray)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReplaceValueInArray, AbstractFilter)
+    static std::shared_ptr<ReplaceValueInArray> New();
+
+    /**
+     * @brief Returns the name of the class for ReplaceValueInArray
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ReplaceValueInArray
+     */
+    static QString ClassName();
 
     ~ReplaceValueInArray() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArray)
+    /**
+     * @brief Setter property for SelectedArray
+     */
+    void setSelectedArray(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedArray
+     * @return Value of SelectedArray
+     */
+    DataArrayPath getSelectedArray() const;
+
     Q_PROPERTY(DataArrayPath SelectedArray READ getSelectedArray WRITE setSelectedArray)
 
-    SIMPL_FILTER_PARAMETER(double, RemoveValue)
+    /**
+     * @brief Setter property for RemoveValue
+     */
+    void setRemoveValue(const double& value);
+    /**
+     * @brief Getter property for RemoveValue
+     * @return Value of RemoveValue
+     */
+    double getRemoveValue() const;
+
     Q_PROPERTY(double RemoveValue READ getRemoveValue WRITE setRemoveValue)
 
-    SIMPL_FILTER_PARAMETER(double, ReplaceValue)
+    /**
+     * @brief Setter property for ReplaceValue
+     */
+    void setReplaceValue(const double& value);
+    /**
+     * @brief Getter property for ReplaceValue
+     * @return Value of ReplaceValue
+     */
+    double getReplaceValue() const;
+
     Q_PROPERTY(double ReplaceValue READ getReplaceValue WRITE setReplaceValue)
 
     /**
@@ -178,7 +222,11 @@ class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
 
 
   private:
-    DEFINE_IDATAARRAY_WEAKPTR(Array)
+    IDataArrayWkPtrType m_ArrayPtr;
+
+    DataArrayPath m_SelectedArray = {};
+    double m_RemoveValue = {};
+    double m_ReplaceValue = {};
 
   public:
     ReplaceValueInArray(const ReplaceValueInArray&) = delete; // Copy Constructor Not Implemented

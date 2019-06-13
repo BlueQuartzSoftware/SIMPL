@@ -36,7 +36,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -63,25 +62,84 @@ class SIMPLib_EXPORT CopyObject : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(CopyObject)
-  SIMPL_FILTER_NEW_MACRO(CopyObject)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CopyObject, AbstractFilter)
+  using Self = CopyObject;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<CopyObject> New();
+
+  /**
+   * @brief Returns the name of the class for CopyObject
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for CopyObject
+   */
+  static QString ClassName();
 
   ~CopyObject() override;
 
-  SIMPL_FILTER_PARAMETER(int, ObjectToCopy)
+  /**
+   * @brief Setter property for ObjectToCopy
+   */
+  void setObjectToCopy(const int& value);
+  /**
+   * @brief Getter property for ObjectToCopy
+   * @return Value of ObjectToCopy
+   */
+  int getObjectToCopy() const;
+
   Q_PROPERTY(int ObjectToCopy READ getObjectToCopy WRITE setObjectToCopy)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerToCopy)
+  /**
+   * @brief Setter property for DataContainerToCopy
+   */
+  void setDataContainerToCopy(const DataArrayPath& value);
+  /**
+   * @brief Getter property for DataContainerToCopy
+   * @return Value of DataContainerToCopy
+   */
+  DataArrayPath getDataContainerToCopy() const;
+
   Q_PROPERTY(DataArrayPath DataContainerToCopy READ getDataContainerToCopy WRITE setDataContainerToCopy)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeMatrixToCopy)
+  /**
+   * @brief Setter property for AttributeMatrixToCopy
+   */
+  void setAttributeMatrixToCopy(const DataArrayPath& value);
+  /**
+   * @brief Getter property for AttributeMatrixToCopy
+   * @return Value of AttributeMatrixToCopy
+   */
+  DataArrayPath getAttributeMatrixToCopy() const;
+
   Q_PROPERTY(DataArrayPath AttributeMatrixToCopy READ getAttributeMatrixToCopy WRITE setAttributeMatrixToCopy)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeArrayToCopy)
+  /**
+   * @brief Setter property for AttributeArrayToCopy
+   */
+  void setAttributeArrayToCopy(const DataArrayPath& value);
+  /**
+   * @brief Getter property for AttributeArrayToCopy
+   * @return Value of AttributeArrayToCopy
+   */
+  DataArrayPath getAttributeArrayToCopy() const;
+
   Q_PROPERTY(DataArrayPath AttributeArrayToCopy READ getAttributeArrayToCopy WRITE setAttributeArrayToCopy)
 
-  SIMPL_FILTER_PARAMETER(QString, CopiedObjectName)
+  /**
+   * @brief Setter property for CopiedObjectName
+   */
+  void setCopiedObjectName(const QString& value);
+  /**
+   * @brief Getter property for CopiedObjectName
+   * @return Value of CopiedObjectName
+   */
+  QString getCopiedObjectName() const;
+
   Q_PROPERTY(QString CopiedObjectName READ getCopiedObjectName WRITE setCopiedObjectName)
 
   /**
@@ -189,5 +247,12 @@ public:
   CopyObject(CopyObject&&) = delete;                 // Move Constructor Not Implemented
   CopyObject& operator=(const CopyObject&) = delete; // Copy Assignment Not Implemented
   CopyObject& operator=(CopyObject&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  int m_ObjectToCopy = {};
+  DataArrayPath m_DataContainerToCopy = {};
+  DataArrayPath m_AttributeMatrixToCopy = {};
+  DataArrayPath m_AttributeArrayToCopy = {};
+  QString m_CopiedObjectName = {};
 };
 

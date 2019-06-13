@@ -39,7 +39,6 @@
 
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -52,9 +51,23 @@
 class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersWriter
 {
   public:
-    SIMPL_SHARED_POINTERS(H5FilterParametersWriter)
-    SIMPL_STATIC_NEW_MACRO(H5FilterParametersWriter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(H5FilterParametersWriter, AbstractFilterParametersWriter)
+    using Self = H5FilterParametersWriter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for H5FilterParametersWriter
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for H5FilterParametersWriter
+     */
+    static QString ClassName();
 
     /**
      * @brief WritePipelineToFile This function will write a pipeline to an HDF5 based
@@ -68,11 +81,28 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
      */
     int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, QList<IObserver*> obs = QList<IObserver*>()) override;
 
-    SIMPL_INSTANCE_PROPERTY(hid_t, PipelineGroupId)
+    /**
+     * @brief Setter property for PipelineGroupId
+     */
+    void setPipelineGroupId(const hid_t& value);
+    /**
+     * @brief Getter property for PipelineGroupId
+     * @return Value of PipelineGroupId
+     */
+    hid_t getPipelineGroupId() const;
 
     ~H5FilterParametersWriter() override;
 
-    SIMPL_INSTANCE_PROPERTY(hid_t, GroupId)
+    /**
+     * @brief Setter property for GroupId
+     */
+    void setGroupId(const hid_t& value);
+    /**
+     * @brief Getter property for GroupId
+     * @return Value of GroupId
+     */
+    hid_t getGroupId() const;
+
     hid_t getCurrentGroupId() const;
 
     int openFilterGroup(AbstractFilter* filter, int index) override;
@@ -133,6 +163,9 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
     int writeValue(const QString& name, AxisAngleInput_t v, int notUsed) override;
 
   private:
+    hid_t m_PipelineGroupId = {};
+    hid_t m_GroupId = {};
+
     hid_t m_CurrentGroupId = -1;
 
   public:

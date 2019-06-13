@@ -46,7 +46,12 @@ class CalculatorNumber;
 class SIMPLib_EXPORT RootOperator : public UnaryOperator
 {
   public:
-    SIMPL_SHARED_POINTERS(RootOperator)
+    using Self = RootOperator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     static Pointer New()
     {
@@ -65,5 +70,7 @@ class SIMPLib_EXPORT RootOperator : public UnaryOperator
     RootOperator(RootOperator&&) = delete;        // Move Constructor Not Implemented
     RootOperator& operator=(const RootOperator&) = delete; // Copy Assignment Not Implemented
     RootOperator& operator=(RootOperator&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

@@ -37,8 +37,8 @@
 #pragma once
 
 #include <QtCore/QString>
+#include <QtCore/QObject>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Messages/AbstractMessage.h"
 
 
@@ -67,7 +67,14 @@ class SIMPLib_EXPORT Observable : public QObject
 #endif
 
   public:
-    SIMPL_TYPE_MACRO(Observable)
+    /**
+     * @brief Returns the name of the class for Observable
+     */
+    virtual const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for Observable
+     */
+    static QString ClassName();
 
     Observable();
 
@@ -103,6 +110,8 @@ class SIMPLib_EXPORT Observable : public QObject
      * @param msg
      */
     void messageGenerated(const AbstractMessage::Pointer& msg);
+
+  private:
 };
 
 

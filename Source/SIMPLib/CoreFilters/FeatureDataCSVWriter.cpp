@@ -37,7 +37,10 @@
 
 #include <QtCore/QDir>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/DataArrays/NeighborList.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
@@ -47,6 +50,7 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Utilities/FileSystemPathHelper.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -404,3 +408,103 @@ void FeatureDataCSVWriter::setDelimiterChoiceInt(const int& value)
   }
 }
 
+// -----------------------------------------------------------------------------
+FeatureDataCSVWriter::Pointer FeatureDataCSVWriter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<FeatureDataCSVWriter> FeatureDataCSVWriter::New()
+{
+  struct make_shared_enabler : public FeatureDataCSVWriter
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString FeatureDataCSVWriter::getNameOfClass() const
+{
+  return QString("FeatureDataCSVWriter");
+}
+
+// -----------------------------------------------------------------------------
+QString FeatureDataCSVWriter::ClassName()
+{
+  return QString("FeatureDataCSVWriter");
+}
+
+// -----------------------------------------------------------------------------
+void FeatureDataCSVWriter::setCellFeatureAttributeMatrixPath(const DataArrayPath& value)
+{
+  m_CellFeatureAttributeMatrixPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FeatureDataCSVWriter::getCellFeatureAttributeMatrixPath() const
+{
+  return m_CellFeatureAttributeMatrixPath;
+}
+
+// -----------------------------------------------------------------------------
+void FeatureDataCSVWriter::setFeatureDataFile(const QString& value)
+{
+  m_FeatureDataFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FeatureDataCSVWriter::getFeatureDataFile() const
+{
+  return m_FeatureDataFile;
+}
+
+// -----------------------------------------------------------------------------
+void FeatureDataCSVWriter::setWriteNeighborListData(const bool& value)
+{
+  m_WriteNeighborListData = value;
+}
+
+// -----------------------------------------------------------------------------
+bool FeatureDataCSVWriter::getWriteNeighborListData() const
+{
+  return m_WriteNeighborListData;
+}
+
+// -----------------------------------------------------------------------------
+void FeatureDataCSVWriter::setDelimiterChoice(const int& value)
+{
+  m_DelimiterChoice = value;
+}
+
+// -----------------------------------------------------------------------------
+int FeatureDataCSVWriter::getDelimiterChoice() const
+{
+  return m_DelimiterChoice;
+}
+
+// -----------------------------------------------------------------------------
+void FeatureDataCSVWriter::setWriteNumFeaturesLine(const bool& value)
+{
+  m_WriteNumFeaturesLine = value;
+}
+
+// -----------------------------------------------------------------------------
+bool FeatureDataCSVWriter::getWriteNumFeaturesLine() const
+{
+  return m_WriteNumFeaturesLine;
+}
+
+// -----------------------------------------------------------------------------
+void FeatureDataCSVWriter::setDelimiter(const char& value)
+{
+  m_Delimiter = value;
+}
+
+// -----------------------------------------------------------------------------
+char FeatureDataCSVWriter::getDelimiter() const
+{
+  return m_Delimiter;
+}

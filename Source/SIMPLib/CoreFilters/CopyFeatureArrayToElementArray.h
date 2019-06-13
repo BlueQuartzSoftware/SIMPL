@@ -37,8 +37,11 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
 
 /**
  * @brief The CopyFeatureArrayToElementArray class. See [Filter documentation](@ref copyfeaturearraytoelementArray) for details.
@@ -60,19 +63,60 @@ class SIMPLib_EXPORT CopyFeatureArrayToElementArray : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(CopyFeatureArrayToElementArray)
-    SIMPL_FILTER_NEW_MACRO(CopyFeatureArrayToElementArray)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CopyFeatureArrayToElementArray, AbstractFilter)
+    using Self = CopyFeatureArrayToElementArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<CopyFeatureArrayToElementArray> New();
+
+    /**
+     * @brief Returns the name of the class for CopyFeatureArrayToElementArray
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for CopyFeatureArrayToElementArray
+     */
+    static QString ClassName();
 
     ~CopyFeatureArrayToElementArray() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedFeatureArrayPath)
+    /**
+     * @brief Setter property for SelectedFeatureArrayPath
+     */
+    void setSelectedFeatureArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedFeatureArrayPath
+     * @return Value of SelectedFeatureArrayPath
+     */
+    DataArrayPath getSelectedFeatureArrayPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedFeatureArrayPath READ getSelectedFeatureArrayPath WRITE setSelectedFeatureArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+    /**
+     * @brief Setter property for FeatureIdsArrayPath
+     */
+    void setFeatureIdsArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for FeatureIdsArrayPath
+     * @return Value of FeatureIdsArrayPath
+     */
+    DataArrayPath getFeatureIdsArrayPath() const;
+
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
 
-    SIMPL_FILTER_PARAMETER(QString, CreatedArrayName)
+    /**
+     * @brief Setter property for CreatedArrayName
+     */
+    void setCreatedArrayName(const QString& value);
+    /**
+     * @brief Getter property for CreatedArrayName
+     * @return Value of CreatedArrayName
+     */
+    QString getCreatedArrayName() const;
+
     Q_PROPERTY(QString CreatedArrayName READ getCreatedArrayName WRITE setCreatedArrayName)
 
     /**
@@ -177,8 +221,14 @@ class SIMPLib_EXPORT CopyFeatureArrayToElementArray : public AbstractFilter
 
 
   private:
-    DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-    DEFINE_IDATAARRAY_WEAKPTR(InArray)
+    std::weak_ptr<DataArray<int32_t>> m_FeatureIdsPtr;
+    int32_t* m_FeatureIds = nullptr;
+
+    IDataArrayWkPtrType m_InArrayPtr;
+
+    DataArrayPath m_SelectedFeatureArrayPath = {};
+    DataArrayPath m_FeatureIdsArrayPath = {};
+    QString m_CreatedArrayName = {};
 
   public:
     CopyFeatureArrayToElementArray(const CopyFeatureArrayToElementArray&) = delete; // Copy Constructor Not Implemented

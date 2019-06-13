@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "PrimaryStatsData.h"
 
@@ -41,6 +41,8 @@
 #include <QtCore/QString>
 
 #include "H5Support/H5Utilities.h"
+
+#include <QtCore/QDebug>
 
 #include "SIMPLib/HDF5/H5PrimaryStatsDataDelegate.h"
 
@@ -83,8 +85,7 @@ StatsData::Pointer PrimaryStatsData::deepCopy()
   ptr->setPhaseFraction(getPhaseFraction());
   ptr->setName(getName());
 
-  float diamInfo[3] = {0.0f, 0.0f, 0.0f};
-  getFeatureDiameterInfo(diamInfo);
+  std::array<float, 3> diamInfo = getFeatureDiameterInfo();
   ptr->setFeatureDiameterInfo(diamInfo);
 
   SD_DEEP_COPY_VECTOR(FeatureSizeDistribution);
@@ -280,7 +281,7 @@ void PrimaryStatsData::readJson(const QJsonObject& json)
     setPhaseFraction(jsonValue.toDouble(0.0));
   }
   // Read the Feature Diameter Info
-  float fVec3[3] = {0.0f, 0.0f, 0.0f};
+  std::array<float, 3> fVec3 = {0.0f, 0.0f, 0.0f};
   if(ParseFloat3Vec(json, SIMPL::StringConstants::Feature_Diameter_Info, fVec3, 0.0) == -1)
   {
     // Throw warning
@@ -350,4 +351,273 @@ void PrimaryStatsData::readJson(const QJsonObject& json)
   // Read the Axis ODF
   arrays = ReadJsonVectorOfFloatsArrays(json, SIMPL::StringConstants::AxisODFWeights);
   setAxisODF_Weights(arrays);
+}
+
+// -----------------------------------------------------------------------------
+PrimaryStatsData::Pointer PrimaryStatsData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+PrimaryStatsData::Pointer PrimaryStatsData::New()
+{
+  Pointer sharedPtr(new(PrimaryStatsData));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString PrimaryStatsData::getNameOfClass() const
+{
+  return QString("PrimaryStatsData");
+}
+
+// -----------------------------------------------------------------------------
+QString PrimaryStatsData::ClassName()
+{
+  return QString("PrimaryStatsData");
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setBoundaryArea(const float& value)
+{
+  m_BoundaryArea = value;
+}
+
+// -----------------------------------------------------------------------------
+float PrimaryStatsData::getBoundaryArea() const
+{
+  return m_BoundaryArea;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setFeatureSizeDistribution(const VectorOfFloatArray& value)
+{
+  m_FeatureSizeDistribution = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrimaryStatsData::getFeatureSizeDistribution() const
+{
+  return m_FeatureSizeDistribution;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setFeatureSize_DistType(const uint32_t& value)
+{
+  m_FeatureSize_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t PrimaryStatsData::getFeatureSize_DistType() const
+{
+  return m_FeatureSize_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setBinNumbers(const FloatArrayType::Pointer& value)
+{
+  m_BinNumbers = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer PrimaryStatsData::getBinNumbers() const
+{
+  return m_BinNumbers;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setFeatureSize_BOverA(const VectorOfFloatArray& value)
+{
+  m_FeatureSize_BOverA = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrimaryStatsData::getFeatureSize_BOverA() const
+{
+  return m_FeatureSize_BOverA;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setBOverA_DistType(const uint32_t& value)
+{
+  m_BOverA_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t PrimaryStatsData::getBOverA_DistType() const
+{
+  return m_BOverA_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setFeatureSize_COverA(const VectorOfFloatArray& value)
+{
+  m_FeatureSize_COverA = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrimaryStatsData::getFeatureSize_COverA() const
+{
+  return m_FeatureSize_COverA;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setCOverA_DistType(const uint32_t& value)
+{
+  m_COverA_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t PrimaryStatsData::getCOverA_DistType() const
+{
+  return m_COverA_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setFeatureSize_Neighbors(const VectorOfFloatArray& value)
+{
+  m_FeatureSize_Neighbors = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrimaryStatsData::getFeatureSize_Neighbors() const
+{
+  return m_FeatureSize_Neighbors;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setNeighbors_DistType(const uint32_t& value)
+{
+  m_Neighbors_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t PrimaryStatsData::getNeighbors_DistType() const
+{
+  return m_Neighbors_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setFeatureSize_Omegas(const VectorOfFloatArray& value)
+{
+  m_FeatureSize_Omegas = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrimaryStatsData::getFeatureSize_Omegas() const
+{
+  return m_FeatureSize_Omegas;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setOmegas_DistType(const uint32_t& value)
+{
+  m_Omegas_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t PrimaryStatsData::getOmegas_DistType() const
+{
+  return m_Omegas_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setMisorientationBins(const FloatArrayType::Pointer& value)
+{
+  m_MisorientationBins = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer PrimaryStatsData::getMisorientationBins() const
+{
+  return m_MisorientationBins;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setMDF_Weights(const VectorOfFloatArray& value)
+{
+  m_MDF_Weights = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrimaryStatsData::getMDF_Weights() const
+{
+  return m_MDF_Weights;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setODF(const FloatArrayType::Pointer& value)
+{
+  m_ODF = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer PrimaryStatsData::getODF() const
+{
+  return m_ODF;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setODF_Weights(const VectorOfFloatArray& value)
+{
+  m_ODF_Weights = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrimaryStatsData::getODF_Weights() const
+{
+  return m_ODF_Weights;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setAxisOrientation(const FloatArrayType::Pointer& value)
+{
+  m_AxisOrientation = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer PrimaryStatsData::getAxisOrientation() const
+{
+  return m_AxisOrientation;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setAxisODF_Weights(const VectorOfFloatArray& value)
+{
+  m_AxisODF_Weights = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrimaryStatsData::getAxisODF_Weights() const
+{
+  return m_AxisODF_Weights;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setFeatureDiameterInfo(const std::array<float, 3>& value)
+{
+  m_FeatureDiameterInfo = value;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::setFeatureDiameterInfo(float v0, float v1, float v2)
+{
+  m_FeatureDiameterInfo[0] = v0;
+  m_FeatureDiameterInfo[1] = v1;
+  m_FeatureDiameterInfo[2] = v2;
+}
+
+// -----------------------------------------------------------------------------
+std::array<float, 3> PrimaryStatsData::getFeatureDiameterInfo() const
+{
+  return m_FeatureDiameterInfo;
+}
+
+// -----------------------------------------------------------------------------
+void PrimaryStatsData::getFeatureDiameterInfo(float* data) const
+{
+  data[0] = m_FeatureDiameterInfo[0];
+  data[1] = m_FeatureDiameterInfo[1];
+  data[2] = m_FeatureDiameterInfo[2];
 }

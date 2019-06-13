@@ -140,3 +140,64 @@ DataContainerSelectionFilterParameter::RequirementType DataContainerSelectionFil
 
   return reqs;
 }
+
+// -----------------------------------------------------------------------------
+DataContainerSelectionFilterParameter::Pointer DataContainerSelectionFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+DataContainerSelectionFilterParameter::Pointer DataContainerSelectionFilterParameter::New()
+{
+  Pointer sharedPtr(new(DataContainerSelectionFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString DataContainerSelectionFilterParameter::getNameOfClass() const
+{
+  return QString("DataContainerSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerSelectionFilterParameter::ClassName()
+{
+  return QString("DataContainerSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerSelectionFilterParameter::setDefaultGeometryTypes(const IGeometry::Types& value)
+{
+  m_DefaultGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Types DataContainerSelectionFilterParameter::getDefaultGeometryTypes() const
+{
+  return m_DefaultGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerSelectionFilterParameter::setSetterCallback(const DataContainerSelectionFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerSelectionFilterParameter::SetterCallbackType DataContainerSelectionFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerSelectionFilterParameter::setGetterCallback(const DataContainerSelectionFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerSelectionFilterParameter::GetterCallbackType DataContainerSelectionFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

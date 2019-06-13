@@ -35,11 +35,15 @@
 
 #include "RenameAttributeArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -268,4 +272,57 @@ DataArrayPath::RenameContainer RenameAttributeArray::getRenamedPaths()
   container.push_back(rename);
 
   return container;
+}
+
+// -----------------------------------------------------------------------------
+RenameAttributeArray::Pointer RenameAttributeArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<RenameAttributeArray> RenameAttributeArray::New()
+{
+  struct make_shared_enabler : public RenameAttributeArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString RenameAttributeArray::getNameOfClass() const
+{
+  return QString("RenameAttributeArray");
+}
+
+// -----------------------------------------------------------------------------
+QString RenameAttributeArray::ClassName()
+{
+  return QString("RenameAttributeArray");
+}
+
+// -----------------------------------------------------------------------------
+void RenameAttributeArray::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RenameAttributeArray::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void RenameAttributeArray::setNewArrayName(const QString& value)
+{
+  m_NewArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString RenameAttributeArray::getNewArrayName() const
+{
+  return m_NewArrayName;
 }

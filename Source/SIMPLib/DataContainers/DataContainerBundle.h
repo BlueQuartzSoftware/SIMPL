@@ -39,15 +39,27 @@
 #include <QtCore/QVector>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/IDataContainerBundle.h"
 
 class SIMPLib_EXPORT DataContainerBundle : public IDataContainerBundle
 {
     Q_OBJECT
   public:
-    SIMPL_SHARED_POINTERS (DataContainerBundle)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerBundle, IDataContainerBundle)
+    using Self = DataContainerBundle;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    /**
+     * @brief Returns the name of the class for DataContainerBundle
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for DataContainerBundle
+     */
+    static QString ClassName();
 
     ~DataContainerBundle() override;
 
@@ -73,7 +85,15 @@ class SIMPLib_EXPORT DataContainerBundle : public IDataContainerBundle
     /**
     * @brief The name of this DataContainerBundle
     */
-    SIMPL_INSTANCE_STRING_PROPERTY_OVERRIDE(Name)
+    /**
+     * @brief Setter property for Name
+     */
+    void setName(const QString& value) override;
+    /**
+     * @brief Getter property for Name
+     * @return Value of Name
+     */
+    QString getName() const override;
 
     /*
      * @brief This is the list of array names that reside inside the "Meta Data" attribute matrix that are the
@@ -84,7 +104,15 @@ class SIMPLib_EXPORT DataContainerBundle : public IDataContainerBundle
      * @li Time Index The raw index of the data, i.e., this is the actual ordering that could also be used as then index
      * into an array of data containers
      */
-    SIMPL_INSTANCE_PROPERTY(QStringList, MetaDataArrays)
+    /**
+     * @brief Setter property for MetaDataArrays
+     */
+    void setMetaDataArrays(const QStringList& value);
+    /**
+     * @brief Getter property for MetaDataArrays
+     * @return Value of MetaDataArrays
+     */
+    QStringList getMetaDataArrays() const;
 
     /**
      * @brief Sets All the DataContainers for this bundle
@@ -161,6 +189,9 @@ class SIMPLib_EXPORT DataContainerBundle : public IDataContainerBundle
     DataContainerBundle();
 
   private:
+    QString m_Name = {};
+    QStringList m_MetaDataArrays = {};
+
     QVector<DataContainer::Pointer>  m_DataContainers;
     QString m_MetaDataAMName;
 

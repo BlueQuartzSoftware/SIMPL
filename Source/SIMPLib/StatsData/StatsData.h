@@ -38,13 +38,13 @@
 
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
+#include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/PhaseType.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 
-typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
+using VectorOfFloatArray = QVector<FloatArrayType::Pointer>;
 
 #define SD_DEEP_COPY_VECTOR(func)                                                                                                                                                                      \
   {                                                                                                                                                                                                    \
@@ -99,17 +99,47 @@ class SIMPLib_EXPORT StatsData
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(StatsData)
-  SIMPL_STATIC_NEW_MACRO(StatsData)
-  SIMPL_TYPE_MACRO(StatsData)
+  using Self = StatsData;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for StatsData
+   */
+  virtual const QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for StatsData
+   */
+  static QString ClassName();
 
   virtual ~StatsData();
 
   /** Allow users to give each StatsData object a custom name
    */
-  SIMPL_INSTANCE_STRING_PROPERTY(Name)
+  /**
+   * @brief Setter property for Name
+   */
+  void setName(const QString& value);
+  /**
+   * @brief Getter property for Name
+   * @return Value of Name
+   */
+  QString getName() const;
 
-  SIMPL_INSTANCE_PROPERTY(float, PhaseFraction)
+  /**
+   * @brief Setter property for PhaseFraction
+   */
+  void setPhaseFraction(const float& value);
+  /**
+   * @brief Getter property for PhaseFraction
+   * @return Value of PhaseFraction
+   */
+  float getPhaseFraction() const;
 
   /**
    * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
@@ -252,7 +282,7 @@ public:
    * @param defaultValue
    * @return
    */
-  static int ParseFloat3Vec(const QJsonObject& json, const QString key, float* values, float defaultValue = 0.0f);
+  static int ParseFloat3Vec(const QJsonObject& json, const QString& key, std::array<float, 3>& values, float defaultValue = 0.0f);
 
   /**
    * @brief ReadJsonDistributionArrays
@@ -285,4 +315,8 @@ public:
   StatsData(StatsData&&) = delete;                 // Move Constructor Not Implemented
   StatsData& operator=(const StatsData&) = delete; // Copy Assignment Not Implemented
   StatsData& operator=(StatsData&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  QString m_Name = {};
+  float m_PhaseFraction = {};
 };

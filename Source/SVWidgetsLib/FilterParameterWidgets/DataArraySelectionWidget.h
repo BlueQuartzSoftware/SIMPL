@@ -39,7 +39,6 @@
 #include <QtCore/QObject>
 #include <QtWidgets/QWidget>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"

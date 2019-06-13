@@ -98,3 +98,9 @@ bool CalculatorItem::isNumber()
 
   return false;
 }
+
+// -----------------------------------------------------------------------------
+CalculatorItem::Pointer CalculatorItem::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}

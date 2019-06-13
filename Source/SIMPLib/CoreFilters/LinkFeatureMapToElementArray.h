@@ -37,8 +37,8 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The LinkFeatureMapToElementArray class. See [Filter documentation](@ref linkfeaturemaptoelementarray) for details.
@@ -60,19 +60,60 @@ class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(LinkFeatureMapToElementArray)
-    SIMPL_FILTER_NEW_MACRO(LinkFeatureMapToElementArray)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkFeatureMapToElementArray, AbstractFilter)
+    using Self = LinkFeatureMapToElementArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<LinkFeatureMapToElementArray> New();
+
+    /**
+     * @brief Returns the name of the class for LinkFeatureMapToElementArray
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for LinkFeatureMapToElementArray
+     */
+    static QString ClassName();
 
     ~LinkFeatureMapToElementArray() override;
 
-    SIMPL_FILTER_PARAMETER(QString, CellFeatureAttributeMatrixName)
+    /**
+     * @brief Setter property for CellFeatureAttributeMatrixName
+     */
+    void setCellFeatureAttributeMatrixName(const QString& value);
+    /**
+     * @brief Getter property for CellFeatureAttributeMatrixName
+     * @return Value of CellFeatureAttributeMatrixName
+     */
+    QString getCellFeatureAttributeMatrixName() const;
+
     Q_PROPERTY(QString CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedCellArrayPath)
+    /**
+     * @brief Setter property for SelectedCellArrayPath
+     */
+    void setSelectedCellArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedCellArrayPath
+     * @return Value of SelectedCellArrayPath
+     */
+    DataArrayPath getSelectedCellArrayPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
 
-    SIMPL_FILTER_PARAMETER(QString, ActiveArrayName)
+    /**
+     * @brief Setter property for ActiveArrayName
+     */
+    void setActiveArrayName(const QString& value);
+    /**
+     * @brief Getter property for ActiveArrayName
+     * @return Value of ActiveArrayName
+     */
+    QString getActiveArrayName() const;
+
     Q_PROPERTY(QString ActiveArrayName READ getActiveArrayName WRITE setActiveArrayName)
 
     /**
@@ -182,8 +223,14 @@ class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
     void updateFeatureInstancePointers();
 
   private:
-    DEFINE_DATAARRAY_VARIABLE(int32_t, SelectedCellData)
-    DEFINE_DATAARRAY_VARIABLE(bool, Active)
+    std::weak_ptr<DataArray<int32_t>> m_SelectedCellDataPtr;
+    int32_t* m_SelectedCellData = nullptr;
+    std::weak_ptr<DataArray<bool>> m_ActivePtr;
+    bool* m_Active = nullptr;
+
+    QString m_CellFeatureAttributeMatrixName = {};
+    DataArrayPath m_SelectedCellArrayPath = {};
+    QString m_ActiveArrayName = {};
 
   public:
     LinkFeatureMapToElementArray(const LinkFeatureMapToElementArray&) = delete; // Copy Constructor Not Implemented

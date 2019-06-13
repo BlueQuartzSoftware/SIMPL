@@ -66,3 +66,28 @@ QString SeparatorFilterParameter::getWidgetType() const
 {
   return QString("SeparatorWidget");
 }
+
+// -----------------------------------------------------------------------------
+SeparatorFilterParameter::Pointer SeparatorFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+SeparatorFilterParameter::Pointer SeparatorFilterParameter::New()
+{
+  Pointer sharedPtr(new(SeparatorFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString SeparatorFilterParameter::getNameOfClass() const
+{
+  return QString("SeparatorFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString SeparatorFilterParameter::ClassName()
+{
+  return QString("SeparatorFilterParameter");
+}

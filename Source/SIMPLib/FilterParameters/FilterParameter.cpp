@@ -131,3 +131,93 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArr
     emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }
+
+// -----------------------------------------------------------------------------
+FilterParameter::Pointer FilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+const QString FilterParameter::getNameOfClass() const
+{
+  return QString("FilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterParameter::ClassName()
+{
+  return QString("FilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameter::setHumanLabel(const QString& value)
+{
+  m_HumanLabel = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterParameter::getHumanLabel() const
+{
+  return m_HumanLabel;
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameter::setPropertyName(const QString& value)
+{
+  m_PropertyName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterParameter::getPropertyName() const
+{
+  return m_PropertyName;
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameter::setCategory(const FilterParameter::Category& value)
+{
+  m_Category = value;
+}
+
+// -----------------------------------------------------------------------------
+FilterParameter::Category FilterParameter::getCategory() const
+{
+  return m_Category;
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameter::setReadOnly(const bool& value)
+{
+  m_ReadOnly = value;
+}
+
+// -----------------------------------------------------------------------------
+bool FilterParameter::getReadOnly() const
+{
+  return m_ReadOnly;
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameter::setGroupIndex(const int& value)
+{
+  m_GroupIndex = value;
+}
+
+// -----------------------------------------------------------------------------
+int FilterParameter::getGroupIndex() const
+{
+  return m_GroupIndex;
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameter::setDefaultValue(const QVariant& value)
+{
+  m_DefaultValue = value;
+}
+
+// -----------------------------------------------------------------------------
+QVariant FilterParameter::getDefaultValue() const
+{
+  return m_DefaultValue;
+}

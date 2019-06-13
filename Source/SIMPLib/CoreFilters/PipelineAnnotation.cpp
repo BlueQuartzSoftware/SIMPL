@@ -33,7 +33,10 @@
 
 #include "PipelineAnnotation.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ParagraphFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -174,4 +177,45 @@ const QString PipelineAnnotation::getSubGroupName() const
 const QString PipelineAnnotation::getHumanLabel() const
 {
   return "Pipeline Annotation";
+}
+
+// -----------------------------------------------------------------------------
+PipelineAnnotation::Pointer PipelineAnnotation::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<PipelineAnnotation> PipelineAnnotation::New()
+{
+  struct make_shared_enabler : public PipelineAnnotation
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString PipelineAnnotation::getNameOfClass() const
+{
+  return QString("PipelineAnnotation");
+}
+
+// -----------------------------------------------------------------------------
+QString PipelineAnnotation::ClassName()
+{
+  return QString("PipelineAnnotation");
+}
+
+// -----------------------------------------------------------------------------
+void PipelineAnnotation::setSummary(const QString& value)
+{
+  m_Summary = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PipelineAnnotation::getSummary() const
+{
+  return m_Summary;
 }

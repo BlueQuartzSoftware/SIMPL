@@ -36,6 +36,8 @@
 
 #include "PipelineWarningMessage.h"
 
+#include <QtCore/QObject>
+
 #include "AbstractMessageHandler.h"
 
 // -----------------------------------------------------------------------------
@@ -84,4 +86,41 @@ QString PipelineWarningMessage::generateMessageString() const
 void PipelineWarningMessage::visit(AbstractMessageHandler* msgHandler) const
 {
   msgHandler->processMessage(this);
+}
+
+// -----------------------------------------------------------------------------
+PipelineWarningMessage::Pointer PipelineWarningMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+PipelineWarningMessage::Pointer PipelineWarningMessage::New()
+{
+  Pointer sharedPtr(new(PipelineWarningMessage));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString PipelineWarningMessage::getNameOfClass() const
+{
+  return QString("PipelineWarningMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString PipelineWarningMessage::ClassName()
+{
+  return QString("PipelineWarningMessage");
+}
+
+// -----------------------------------------------------------------------------
+void PipelineWarningMessage::setPipelineName(const QString& value)
+{
+  m_PipelineName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PipelineWarningMessage::getPipelineName() const
+{
+  return m_PipelineName;
 }

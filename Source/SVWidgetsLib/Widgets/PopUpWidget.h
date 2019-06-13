@@ -33,7 +33,6 @@
 
 #include <QtWidgets/QWidget>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -61,9 +60,35 @@ class SVWidgetsLib_EXPORT PopUpWidget : public QWidget, private Ui::PopUpWidget
       None
     };
 
-    SIMPL_INSTANCE_PROPERTY(int, ArrowHeight)
-    SIMPL_INSTANCE_PROPERTY(int, ArrowWidth)
-    SIMPL_INSTANCE_PROPERTY(int, ArrowOffset)
+    /**
+     * @brief Setter property for ArrowHeight
+     */
+    void setArrowHeight(const int& value);
+    /**
+     * @brief Getter property for ArrowHeight
+     * @return Value of ArrowHeight
+     */
+    int getArrowHeight() const;
+
+    /**
+     * @brief Setter property for ArrowWidth
+     */
+    void setArrowWidth(const int& value);
+    /**
+     * @brief Getter property for ArrowWidth
+     * @return Value of ArrowWidth
+     */
+    int getArrowWidth() const;
+
+    /**
+     * @brief Setter property for ArrowOffset
+     */
+    void setArrowOffset(const int& value);
+    /**
+     * @brief Getter property for ArrowOffset
+     * @return Value of ArrowOffset
+     */
+    int getArrowOffset() const;
 
     /**
      * @brief setupGui
@@ -86,6 +111,10 @@ class SVWidgetsLib_EXPORT PopUpWidget : public QWidget, private Ui::PopUpWidget
     void paintEvent(QPaintEvent* event) override;
 
   private:
+    int m_ArrowHeight = {};
+    int m_ArrowWidth = {};
+    int m_ArrowOffset = {};
+
     ArrowOrientation                    m_ArrowOrientation;
 
   public:

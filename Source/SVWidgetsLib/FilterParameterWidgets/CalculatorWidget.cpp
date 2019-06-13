@@ -37,6 +37,10 @@
 
 
 #include <QtWidgets/QMenu>
+#include <QtCore/QDebug>
+
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"

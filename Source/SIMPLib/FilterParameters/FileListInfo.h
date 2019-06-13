@@ -31,6 +31,7 @@
 
 #include <QtCore/QJsonObject>
 #include <QtCore/QString>
+#include <QtCore/QMetaType>
 
 typedef struct
 {

@@ -44,3 +44,21 @@ IGeometry2D::IGeometry2D() = default;
 //
 // -----------------------------------------------------------------------------
 IGeometry2D::~IGeometry2D() = default;
+
+// -----------------------------------------------------------------------------
+IGeometry2D::Pointer IGeometry2D::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+const QString IGeometry2D::getNameOfClass() const
+{
+  return QString("IGeometry2D");
+}
+
+// -----------------------------------------------------------------------------
+QString IGeometry2D::ClassName()
+{
+  return QString("IGeometry2D");
+}

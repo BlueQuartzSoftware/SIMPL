@@ -40,6 +40,8 @@
 
 #include "H5Support/H5Utilities.h"
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/HDF5/H5PrecipitateStatsDataDelegate.h"
 
 // -----------------------------------------------------------------------------
@@ -106,9 +108,9 @@ StatsData::Pointer PrecipitateStatsData::deepCopy()
   ptr->setPrecipBoundaryFraction(getPrecipBoundaryFraction());
   ptr->setName(getName());
 
-  float diamInfo[3] = {0.0f, 0.0f, 0.0f};
+  std::array<float, 3> diamInfo = {0.0f, 0.0f, 0.0f};
   std::tie(diamInfo[0], diamInfo[1], diamInfo[2]) = getFeatureDiameterInfo();
-  ptr->setFeatureDiameterInfo(std::make_tuple(diamInfo[0], diamInfo[1], diamInfo[2]));
+  ptr->setFeatureDiameterInfo(diamInfo[0], diamInfo[1], diamInfo[2]);
 
   SD_DEEP_COPY_VECTOR(FeatureSizeDistribution);
 
@@ -300,12 +302,12 @@ void PrecipitateStatsData::readJson(const QJsonObject& json)
   }
 
   // Read the Feature Diameter Info
-  float fVec3[3] = {0.0f, 0.0f, 0.0f};
+  std::array<float, 3> fVec3 = {0.0f, 0.0f, 0.0f};
   if(ParseFloat3Vec(json, SIMPL::StringConstants::Feature_Diameter_Info, fVec3, 0.0) == -1)
   {
     // Throw warning
   }
-  setFeatureDiameterInfo(std::make_tuple(fVec3[0], fVec3[1], fVec3[2]));
+  setFeatureDiameterInfo(fVec3[0], fVec3[1], fVec3[2]);
 
   // Read the Feature Size Distribution
   jsonValue = json[SIMPL::StringConstants::Feature_Size_Distribution];
@@ -368,4 +370,297 @@ void PrecipitateStatsData::readJson(const QJsonObject& json)
   // Read the Axis ODF
   arrays = ReadJsonVectorOfFloatsArrays(json, SIMPL::StringConstants::AxisODFWeights);
   setAxisODF_Weights(arrays);
+}
+
+// -----------------------------------------------------------------------------
+PrecipitateStatsData::Pointer PrecipitateStatsData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+PrecipitateStatsData::Pointer PrecipitateStatsData::New()
+{
+  Pointer sharedPtr(new(PrecipitateStatsData));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString PrecipitateStatsData::getNameOfClass() const
+{
+  return QString("PrecipitateStatsData");
+}
+
+// -----------------------------------------------------------------------------
+QString PrecipitateStatsData::ClassName()
+{
+  return QString("PrecipitateStatsData");
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setBoundaryArea(const float& value)
+{
+  m_BoundaryArea = value;
+}
+
+// -----------------------------------------------------------------------------
+float PrecipitateStatsData::getBoundaryArea() const
+{
+  return m_BoundaryArea;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setPrecipBoundaryFraction(const float& value)
+{
+  m_PrecipBoundaryFraction = value;
+}
+
+// -----------------------------------------------------------------------------
+float PrecipitateStatsData::getPrecipBoundaryFraction() const
+{
+  return m_PrecipBoundaryFraction;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setFeatureSizeDistribution(const VectorOfFloatArray& value)
+{
+  m_FeatureSizeDistribution = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrecipitateStatsData::getFeatureSizeDistribution() const
+{
+  return m_FeatureSizeDistribution;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setFeatureSize_DistType(const uint32_t& value)
+{
+  m_FeatureSize_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t PrecipitateStatsData::getFeatureSize_DistType() const
+{
+  return m_FeatureSize_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setRadialDistFunction(const RdfData::Pointer& value)
+{
+  m_RadialDistFunction = value;
+}
+
+// -----------------------------------------------------------------------------
+RdfData::Pointer PrecipitateStatsData::getRadialDistFunction() const
+{
+  return m_RadialDistFunction;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setBinNumbers(const FloatArrayType::Pointer& value)
+{
+  m_BinNumbers = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer PrecipitateStatsData::getBinNumbers() const
+{
+  return m_BinNumbers;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setFeatureSize_BOverA(const VectorOfFloatArray& value)
+{
+  m_FeatureSize_BOverA = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrecipitateStatsData::getFeatureSize_BOverA() const
+{
+  return m_FeatureSize_BOverA;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setBOverA_DistType(const uint32_t& value)
+{
+  m_BOverA_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t PrecipitateStatsData::getBOverA_DistType() const
+{
+  return m_BOverA_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setFeatureSize_COverA(const VectorOfFloatArray& value)
+{
+  m_FeatureSize_COverA = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrecipitateStatsData::getFeatureSize_COverA() const
+{
+  return m_FeatureSize_COverA;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setCOverA_DistType(const uint32_t& value)
+{
+  m_COverA_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t PrecipitateStatsData::getCOverA_DistType() const
+{
+  return m_COverA_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setFeatureSize_Clustering(const VectorOfFloatArray& value)
+{
+  m_FeatureSize_Clustering = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrecipitateStatsData::getFeatureSize_Clustering() const
+{
+  return m_FeatureSize_Clustering;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setClustering_DistType(const uint32_t& value)
+{
+  m_Clustering_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t PrecipitateStatsData::getClustering_DistType() const
+{
+  return m_Clustering_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setFeatureSize_Omegas(const VectorOfFloatArray& value)
+{
+  m_FeatureSize_Omegas = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrecipitateStatsData::getFeatureSize_Omegas() const
+{
+  return m_FeatureSize_Omegas;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setOmegas_DistType(const uint32_t& value)
+{
+  m_Omegas_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t PrecipitateStatsData::getOmegas_DistType() const
+{
+  return m_Omegas_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setMisorientationBins(const FloatArrayType::Pointer& value)
+{
+  m_MisorientationBins = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer PrecipitateStatsData::getMisorientationBins() const
+{
+  return m_MisorientationBins;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setMDF_Weights(const VectorOfFloatArray& value)
+{
+  m_MDF_Weights = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrecipitateStatsData::getMDF_Weights() const
+{
+  return m_MDF_Weights;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setODF(const FloatArrayType::Pointer& value)
+{
+  m_ODF = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer PrecipitateStatsData::getODF() const
+{
+  return m_ODF;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setODF_Weights(const VectorOfFloatArray& value)
+{
+  m_ODF_Weights = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrecipitateStatsData::getODF_Weights() const
+{
+  return m_ODF_Weights;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setAxisOrientation(const FloatArrayType::Pointer& value)
+{
+  m_AxisOrientation = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer PrecipitateStatsData::getAxisOrientation() const
+{
+  return m_AxisOrientation;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setAxisODF_Weights(const VectorOfFloatArray& value)
+{
+  m_AxisODF_Weights = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray PrecipitateStatsData::getAxisODF_Weights() const
+{
+  return m_AxisODF_Weights;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setFeatureDiameterInfo(const std::array<float, 3>& value)
+{
+  m_FeatureDiameterInfo = value;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::setFeatureDiameterInfo(float v0, float v1, float v2)
+{
+  m_FeatureDiameterInfo[0] = v0;
+  m_FeatureDiameterInfo[1] = v1;
+  m_FeatureDiameterInfo[2] = v2;
+}
+
+// -----------------------------------------------------------------------------
+std::array<float, 3> PrecipitateStatsData::getFeatureDiameterInfo() const
+{
+  return m_FeatureDiameterInfo;
+}
+
+// -----------------------------------------------------------------------------
+void PrecipitateStatsData::getFeatureDiameterInfo(float* data) const
+{
+  data[0] = m_FeatureDiameterInfo[0];
+  data[1] = m_FeatureDiameterInfo[1];
+  data[2] = m_FeatureDiameterInfo[2];
 }

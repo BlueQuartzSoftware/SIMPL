@@ -93,3 +93,52 @@ void StringFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = m_GetterCallback();
   }
 }
+
+// -----------------------------------------------------------------------------
+StringFilterParameter::Pointer StringFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+StringFilterParameter::Pointer StringFilterParameter::New()
+{
+  Pointer sharedPtr(new(StringFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString StringFilterParameter::getNameOfClass() const
+{
+  return QString("StringFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString StringFilterParameter::ClassName()
+{
+  return QString("StringFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void StringFilterParameter::setSetterCallback(const StringFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+StringFilterParameter::SetterCallbackType StringFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void StringFilterParameter::setGetterCallback(const StringFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+StringFilterParameter::GetterCallbackType StringFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

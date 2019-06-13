@@ -37,7 +37,6 @@
 
 #include <QtCore/QAbstractTableModel>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 class ASCIIDataItem;
 
@@ -46,7 +45,15 @@ class ASCIIDataModel : public QAbstractTableModel
   Q_OBJECT
 
 public:
-  SIMPL_TYPE_MACRO(ASCIIDataModel)
+  /**
+   * @brief Returns the name of the class for ASCIIDataModel
+   */
+  const QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for ASCIIDataModel
+   */
+  static QString ClassName();
+
   ASCIIDataModel(QObject* parent = 0);
 
   ~ASCIIDataModel() override;

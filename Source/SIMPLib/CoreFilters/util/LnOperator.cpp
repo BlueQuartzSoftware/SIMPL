@@ -58,7 +58,11 @@ LnOperator::~LnOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LnOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void LnOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                           QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, log)}
+
+// -----------------------------------------------------------------------------
+LnOperator::Pointer LnOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, log)
+  return Pointer(static_cast<Self*>(nullptr));
 }

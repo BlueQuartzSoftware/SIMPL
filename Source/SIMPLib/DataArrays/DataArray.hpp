@@ -44,11 +44,13 @@
 #include <string>
 #include <vector>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <QtCore/QTextStream>
+
+#include "SIMPLib/SIMPLib.h"
+
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/HDF5/H5DataArrayReader.h"
 #include "SIMPLib/HDF5/H5DataArrayWriter.hpp"
-#include "SIMPLib/SIMPLib.h"
 
 #define mxa_bswap(s, d, t)                                                                                                                                                                             \
   t[0] = ptr[s];                                                                                                                                                                                       \
@@ -59,13 +61,44 @@
  * @class DataArray
  * @brief Template class for wrapping raw arrays of data and is the basis for storing data within the SIMPL data structure.
  */
-template <typename T> class DataArray : public IDataArray
+template <typename T>
+class DataArray : public IDataArray
 {
 
 public:
-  SIMPL_SHARED_POINTERS(DataArray<T>)
-  SIMPL_TYPE_MACRO_SUPER(DataArray<T>, IDataArray)
-  SIMPL_CLASS_VERSION(2)
+  using Self = DataArray<T>;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer()
+  {
+    return Pointer(static_cast<Self*>(nullptr));
+  }
+
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  const QString getNameOfClass() const override
+  {
+    return QString("DataArray<T>");
+  }
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  static QString ClassName()
+  {
+    return QString("DataArray<T>");
+  }
+
+  /**
+   * @brief Returns the version of this class.
+   * @return
+   */
+  int32_t getClassVersion() override
+  {
+    return 2;
+  }
 
   DataArray(const DataArray&) = default;           // Copy Constructor default Implemented
   DataArray(DataArray&&) = delete;                 // Move Constructor Not Implemented

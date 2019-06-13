@@ -33,7 +33,6 @@
 
 #include <QtWidgets/QAbstractButton>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/SVControlWidgets.h"
 

@@ -36,6 +36,8 @@
 
 #include "FilterWarningMessage.h"
 
+#include <QtCore/QObject>
+
 #include "AbstractMessageHandler.h"
 
 // -----------------------------------------------------------------------------
@@ -86,4 +88,65 @@ QString FilterWarningMessage::generateMessageString() const
 void FilterWarningMessage::visit(AbstractMessageHandler* msgHandler) const
 {
   msgHandler->processMessage(this);
+}
+
+// -----------------------------------------------------------------------------
+FilterWarningMessage::Pointer FilterWarningMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+FilterWarningMessage::Pointer FilterWarningMessage::New()
+{
+  Pointer sharedPtr(new(FilterWarningMessage));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString FilterWarningMessage::getNameOfClass() const
+{
+  return QString("FilterWarningMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterWarningMessage::ClassName()
+{
+  return QString("FilterWarningMessage");
+}
+
+// -----------------------------------------------------------------------------
+void FilterWarningMessage::setClassName(const QString& value)
+{
+  m_ClassName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterWarningMessage::getClassName() const
+{
+  return m_ClassName;
+}
+
+// -----------------------------------------------------------------------------
+void FilterWarningMessage::setHumanLabel(const QString& value)
+{
+  m_HumanLabel = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterWarningMessage::getHumanLabel() const
+{
+  return m_HumanLabel;
+}
+
+// -----------------------------------------------------------------------------
+void FilterWarningMessage::setPipelineIndex(const int& value)
+{
+  m_PipelineIndex = value;
+}
+
+// -----------------------------------------------------------------------------
+int FilterWarningMessage::getPipelineIndex() const
+{
+  return m_PipelineIndex;
 }

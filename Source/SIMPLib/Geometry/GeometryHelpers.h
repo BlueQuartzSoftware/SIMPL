@@ -47,6 +47,9 @@
 #include "SIMPLib/Math/GeometryMath.h"
 #include "SIMPLib/Math/MatrixMath.h"
 
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
+
 /**
 * @brief This file contains a namespace with classes for manipulating IGeometry objects
 */
@@ -76,7 +79,7 @@ public:
     QVector<hsize_t> dims;
     H5T_class_t type_class;
     size_t type_size;
-    IDataArray::Pointer mesh = IDataArray::NullPointer();
+    IDataArrayShPtrType mesh = IDataArray::NullPointer();
     H5ScopedErrorHandler errorHandler;
     err = QH5Lite::getDatasetInfo(parentId, listName, dims, type_class, type_size);
     if(err < 0)

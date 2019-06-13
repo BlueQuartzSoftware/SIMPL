@@ -4,7 +4,10 @@
 
 #include "GenerateColorTable.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
@@ -12,6 +15,7 @@
 #include "SIMPLib/Utilities/ColorTable.h"
 #include "SIMPLib/Utilities/ParallelDataAlgorithm.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   ColorArrayID = 1
@@ -413,3 +417,79 @@ const QString GenerateColorTable::getSubGroupName() const
 const QString GenerateColorTable::getHumanLabel() const
 { return "Generate Color Table"; }
 
+// -----------------------------------------------------------------------------
+GenerateColorTable::Pointer GenerateColorTable::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<GenerateColorTable> GenerateColorTable::New()
+{
+  struct make_shared_enabler : public GenerateColorTable
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString GenerateColorTable::getNameOfClass() const
+{
+  return QString("GenerateColorTable");
+}
+
+// -----------------------------------------------------------------------------
+QString GenerateColorTable::ClassName()
+{
+  return QString("GenerateColorTable");
+}
+
+// -----------------------------------------------------------------------------
+void GenerateColorTable::setSelectedPresetName(const QString& value)
+{
+  m_SelectedPresetName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString GenerateColorTable::getSelectedPresetName() const
+{
+  return m_SelectedPresetName;
+}
+
+// -----------------------------------------------------------------------------
+void GenerateColorTable::setSelectedPresetControlPoints(const QJsonArray& value)
+{
+  m_SelectedPresetControlPoints = value;
+}
+
+// -----------------------------------------------------------------------------
+QJsonArray GenerateColorTable::getSelectedPresetControlPoints() const
+{
+  return m_SelectedPresetControlPoints;
+}
+
+// -----------------------------------------------------------------------------
+void GenerateColorTable::setSelectedDataArrayPath(const DataArrayPath& value)
+{
+  m_SelectedDataArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath GenerateColorTable::getSelectedDataArrayPath() const
+{
+  return m_SelectedDataArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void GenerateColorTable::setRgbArrayName(const QString& value)
+{
+  m_RgbArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString GenerateColorTable::getRgbArrayName() const
+{
+  return m_RgbArrayName;
+}

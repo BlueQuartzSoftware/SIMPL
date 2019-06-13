@@ -42,12 +42,33 @@
 class SIMPLib_EXPORT AbstractErrorMessage : public AbstractMessage
 {
 public:
-  SIMPL_SHARED_POINTERS(AbstractErrorMessage)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractErrorMessage, AbstractMessage)
+  using Self = AbstractErrorMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for AbstractErrorMessage
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for AbstractErrorMessage
+   */
+  static QString ClassName();
 
   ~AbstractErrorMessage() override;
 
-  SIMPL_INSTANCE_PROPERTY(int, Code)
+  /**
+   * @brief Setter property for Code
+   */
+  void setCode(const int& value);
+  /**
+   * @brief Getter property for Code
+   * @return Value of Code
+   */
+  int getCode() const;
 
 protected:
   AbstractErrorMessage();
@@ -55,5 +76,6 @@ protected:
   AbstractErrorMessage(const QString& msgText, int code);
 
 private:
+  int m_Code = {};
 };
 Q_DECLARE_METATYPE(AbstractErrorMessage::Pointer)

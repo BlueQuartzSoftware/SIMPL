@@ -39,7 +39,6 @@
 #include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 
 #ifdef NDEBUG
@@ -140,7 +139,12 @@ class FilterWidgetManager;
 class SIMPLib_EXPORT ISIMPLibPlugin
 {
   public:
-    SIMPL_SHARED_POINTERS(ISIMPLibPlugin)
+    using Self = ISIMPLibPlugin;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     virtual ~ISIMPLibPlugin() = default;
 
@@ -257,6 +261,7 @@ class SIMPLib_EXPORT ISIMPLibPlugin
      */
     virtual void readSettings(QSettings& prefs) = 0;
 
+  private:
 };
 
 

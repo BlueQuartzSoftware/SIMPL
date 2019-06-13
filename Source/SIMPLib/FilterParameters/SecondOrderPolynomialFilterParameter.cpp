@@ -102,3 +102,52 @@ void SecondOrderPolynomialFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = obj;
   }
 }
+
+// -----------------------------------------------------------------------------
+SecondOrderPolynomialFilterParameter::Pointer SecondOrderPolynomialFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+SecondOrderPolynomialFilterParameter::Pointer SecondOrderPolynomialFilterParameter::New()
+{
+  Pointer sharedPtr(new(SecondOrderPolynomialFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString SecondOrderPolynomialFilterParameter::getNameOfClass() const
+{
+  return QString("SecondOrderPolynomialFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString SecondOrderPolynomialFilterParameter::ClassName()
+{
+  return QString("SecondOrderPolynomialFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void SecondOrderPolynomialFilterParameter::setSetterCallback(const SecondOrderPolynomialFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+SecondOrderPolynomialFilterParameter::SetterCallbackType SecondOrderPolynomialFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void SecondOrderPolynomialFilterParameter::setGetterCallback(const SecondOrderPolynomialFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+SecondOrderPolynomialFilterParameter::GetterCallbackType SecondOrderPolynomialFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

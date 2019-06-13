@@ -96,35 +96,49 @@ Q_DECLARE_METATYPE(Float2ndOrderPoly_t)
 class SIMPLib_EXPORT SecondOrderPolynomialFilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(SecondOrderPolynomialFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(SecondOrderPolynomialFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(SecondOrderPolynomialFilterParameter, FilterParameter)
+  using Self = SecondOrderPolynomialFilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    using SetterCallbackType = std::function<void(Float2ndOrderPoly_t)>;
-    using GetterCallbackType = std::function<Float2ndOrderPoly_t(void)>;
+  static Pointer New();
 
-    /**
-     * @brief New This function instantiates an instance of the SecondOrderPolynomialFilterParameter. Although this function is available to be used,
-     * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_SecondO_POLY_FP(...) macro at the top of this file.
+  /**
+   * @brief Returns the name of the class for SecondOrderPolynomialFilterParameter
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for SecondOrderPolynomialFilterParameter
+   */
+  static QString ClassName();
 
-     * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
-     * @param propertyName The internal property name for this filter parameter.
-     * @param defaultValue The value that this filter parameter will be initialized to by default.
-     * @param category The category for the filter parameter in the DREAM.3D user interface.  There
-     * are three categories: Parameter, Required Arrays, and Created Arrays.
-     * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
-     * @return
-     */
+  using SetterCallbackType = std::function<void(Float2ndOrderPoly_t)>;
+  using GetterCallbackType = std::function<Float2ndOrderPoly_t(void)>;
+
+  /**
+   * @brief New This function instantiates an instance of the SecondOrderPolynomialFilterParameter. Although this function is available to be used,
+   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_SecondO_POLY_FP(...) macro at the top of this file.
+
+   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+   * @param propertyName The internal property name for this filter parameter.
+   * @param defaultValue The value that this filter parameter will be initialized to by default.
+   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+   * are three categories: Parameter, Required Arrays, and Created Arrays.
+   * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+   * @return
+   */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const Float2ndOrderPoly_t& defaultValue, Category category,
      const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
      int groupIndex = -1);
 
-    ~SecondOrderPolynomialFilterParameter() override;
+  ~SecondOrderPolynomialFilterParameter() override;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -150,14 +164,30 @@ public:
     * that this FilterParameter subclass represents.
     * @return The SetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const SecondOrderPolynomialFilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    SecondOrderPolynomialFilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const SecondOrderPolynomialFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    SecondOrderPolynomialFilterParameter::GetterCallbackType getGetterCallback() const;
 
   protected:
     /**
@@ -171,5 +201,9 @@ public:
   SecondOrderPolynomialFilterParameter(SecondOrderPolynomialFilterParameter&&) = delete;      // Move Constructor Not Implemented
   SecondOrderPolynomialFilterParameter& operator=(const SecondOrderPolynomialFilterParameter&) = delete; // Copy Assignment Not Implemented
   SecondOrderPolynomialFilterParameter& operator=(SecondOrderPolynomialFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  SecondOrderPolynomialFilterParameter::SetterCallbackType m_SetterCallback = {};
+  SecondOrderPolynomialFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

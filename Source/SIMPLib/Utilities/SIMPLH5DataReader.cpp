@@ -34,10 +34,14 @@
 
 #include <sstream>
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/IObserver.h"
+
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainerBundle.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "H5Support/QH5Utilities.h"
 #include "H5Support/H5ScopedSentinel.h"
@@ -358,4 +362,17 @@ bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, const DataContain
 void SIMPLH5DataReader::setErrorCondition(int code, const QString& str)
 {
   emit errorGenerated(Title, str, code);
+}
+
+// -----------------------------------------------------------------------------
+SIMPLH5DataReader::Pointer SIMPLH5DataReader::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+SIMPLH5DataReader::Pointer SIMPLH5DataReader::New()
+{
+  Pointer sharedPtr(new(SIMPLH5DataReader));
+  return sharedPtr;
 }

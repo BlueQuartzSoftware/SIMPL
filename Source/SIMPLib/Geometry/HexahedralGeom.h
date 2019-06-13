@@ -1,8 +1,12 @@
 #ifndef _hexahedralgeom_h_
 #define _hexahedralgeom_h_
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Geometry/IGeometry3D.h"
+
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The HexahedralGeom class represents a collection of hexahedra
@@ -10,10 +14,23 @@
 class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
 {
   public:
+    using Self = HexahedralGeom;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
-    SIMPL_SHARED_POINTERS(HexahedralGeom)
-    SIMPL_STATIC_NEW_MACRO(HexahedralGeom)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(HexahedralGeom, Observable)
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for HexahedralGeom
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for HexahedralGeom
+     */
+    static QString ClassName();
 
     ~HexahedralGeom() override;
 

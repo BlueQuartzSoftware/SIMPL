@@ -35,7 +35,7 @@
 
 #include "StatsData.h"
 
-#include <QtCore/QString>
+#include <array>
 #include <vector>
 
 #include "H5Support/H5Utilities.h"
@@ -396,7 +396,7 @@ VectorOfFloatArray StatsData::ReadJsonVectorOfFloatsArrays(const QJsonObject& js
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsData::ParseFloat3Vec(const QJsonObject& json, const QString key, float* values, float defaultValue)
+int StatsData::ParseFloat3Vec(const QJsonObject& json, const QString& key, std::array<float, 3>& values, float defaultValue)
 {
   QJsonValue jsonValue = json[key];
   if(!jsonValue.isUndefined() && jsonValue.isArray())
@@ -413,4 +413,53 @@ int StatsData::ParseFloat3Vec(const QJsonObject& json, const QString key, float*
     values[2] = defaultValue;
 
   return -1;
+}
+
+// -----------------------------------------------------------------------------
+StatsData::Pointer StatsData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+StatsData::Pointer StatsData::New()
+{
+  Pointer sharedPtr(new(StatsData));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString StatsData::getNameOfClass() const
+{
+  return QString("StatsData");
+}
+
+// -----------------------------------------------------------------------------
+QString StatsData::ClassName()
+{
+  return QString("StatsData");
+}
+
+// -----------------------------------------------------------------------------
+void StatsData::setName(const QString& value)
+{
+  m_Name = value;
+}
+
+// -----------------------------------------------------------------------------
+QString StatsData::getName() const
+{
+  return m_Name;
+}
+
+// -----------------------------------------------------------------------------
+void StatsData::setPhaseFraction(const float& value)
+{
+  m_PhaseFraction = value;
+}
+
+// -----------------------------------------------------------------------------
+float StatsData::getPhaseFraction() const
+{
+  return m_PhaseFraction;
 }

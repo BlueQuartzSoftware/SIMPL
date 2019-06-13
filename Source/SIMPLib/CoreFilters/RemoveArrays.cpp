@@ -35,10 +35,15 @@
 
 #include "RemoveArrays.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -296,4 +301,45 @@ const QString RemoveArrays::getSubGroupName() const
 const QString RemoveArrays::getHumanLabel() const
 {
   return "Delete Data";
+}
+
+// -----------------------------------------------------------------------------
+RemoveArrays::Pointer RemoveArrays::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<RemoveArrays> RemoveArrays::New()
+{
+  struct make_shared_enabler : public RemoveArrays
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString RemoveArrays::getNameOfClass() const
+{
+  return QString("RemoveArrays");
+}
+
+// -----------------------------------------------------------------------------
+QString RemoveArrays::ClassName()
+{
+  return QString("RemoveArrays");
+}
+
+// -----------------------------------------------------------------------------
+void RemoveArrays::setDataArraysToRemove(const DataContainerArrayProxy& value)
+{
+  m_DataArraysToRemove = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArrayProxy RemoveArrays::getDataArraysToRemove() const
+{
+  return m_DataArraysToRemove;
 }

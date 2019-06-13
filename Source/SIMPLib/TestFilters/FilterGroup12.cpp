@@ -31,6 +31,8 @@
 
 #include "FilterGroup12.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
@@ -186,4 +188,33 @@ const QString FilterGroup12::getSubGroupName() const
 const QString FilterGroup12::getHumanLabel() const
 {
   return "CustomFilters Test Filter";
+}
+
+// -----------------------------------------------------------------------------
+FilterGroup12::Pointer FilterGroup12::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<FilterGroup12> FilterGroup12::New()
+{
+  struct make_shared_enabler : public FilterGroup12
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString FilterGroup12::getNameOfClass() const
+{
+  return QString("FilterGroup12");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterGroup12::ClassName()
+{
+  return QString("FilterGroup12");
 }

@@ -36,7 +36,7 @@
 #include <QtCore/QPair>
 
 #include "SIMPLib/Common/PhaseType.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
@@ -230,99 +230,517 @@ public:
   }
   virtual ~FilterParametersRWTest() = default;
 
-  SIMPL_INSTANCE_PROPERTY(bool, Bool1)
+  // -----------------------------------------------------------------------------
+  void setBool1(const bool& value)
+  {
+    m_Bool1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  bool getBool1() const
+  {
+    return m_Bool1;
+  }
+
   Q_PROPERTY(bool Bool1 READ getBool1 WRITE setBool1)
-  SIMPL_INSTANCE_PROPERTY(bool, Bool2)
+  // -----------------------------------------------------------------------------
+  void setBool2(const bool& value)
+  {
+    m_Bool2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  bool getBool2() const
+  {
+    return m_Bool2;
+  }
+
   Q_PROPERTY(bool Bool2 READ getBool2 WRITE setBool2)
 
-  SIMPL_INSTANCE_PROPERTY(int, Int1)
+  // -----------------------------------------------------------------------------
+  void setInt1(const int& value)
+  {
+    m_Int1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  int getInt1() const
+  {
+    return m_Int1;
+  }
+
   Q_PROPERTY(int Int1 READ getInt1 WRITE setInt1)
-  SIMPL_INSTANCE_PROPERTY(int, Int2)
+  // -----------------------------------------------------------------------------
+  void setInt2(const int& value)
+  {
+    m_Int2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  int getInt2() const
+  {
+    return m_Int2;
+  }
+
   Q_PROPERTY(int Int2 READ getInt2 WRITE setInt2)
 
-  SIMPL_INSTANCE_PROPERTY(double, Double1)
+  // -----------------------------------------------------------------------------
+  void setDouble1(const double& value)
+  {
+    m_Double1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  double getDouble1() const
+  {
+    return m_Double1;
+  }
+
   Q_PROPERTY(double Double1 READ getDouble1 WRITE setDouble1)
-  SIMPL_INSTANCE_PROPERTY(double, Double2)
+  // -----------------------------------------------------------------------------
+  void setDouble2(const double& value)
+  {
+    m_Double2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  double getDouble2() const
+  {
+    return m_Double2;
+  }
+
   Q_PROPERTY(double Double2 READ getDouble2 WRITE setDouble2)
 
-  SIMPL_INSTANCE_PROPERTY(QString, String1)
+  // -----------------------------------------------------------------------------
+  void setString1(const QString& value)
+  {
+    m_String1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  QString getString1() const
+  {
+    return m_String1;
+  }
+
   Q_PROPERTY(QString String1 READ getString1 WRITE setString1)
-  SIMPL_INSTANCE_PROPERTY(QString, String2)
+  // -----------------------------------------------------------------------------
+  void setString2(const QString& value)
+  {
+    m_String2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  QString getString2() const
+  {
+    return m_String2;
+  }
+
   Q_PROPERTY(QString String2 READ getString2 WRITE setString2)
 
-  SIMPL_INSTANCE_PROPERTY(DataArrayPath, Path1)
+  // -----------------------------------------------------------------------------
+  void setPath1(const DataArrayPath& value)
+  {
+    m_Path1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  DataArrayPath getPath1() const
+  {
+    return m_Path1;
+  }
+
   Q_PROPERTY(DataArrayPath Path1 READ getPath1 WRITE setPath1)
-  SIMPL_INSTANCE_PROPERTY(DataArrayPath, Path2)
+  // -----------------------------------------------------------------------------
+  void setPath2(const DataArrayPath& value)
+  {
+    m_Path2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  DataArrayPath getPath2() const
+  {
+    return m_Path2;
+  }
+
   Q_PROPERTY(DataArrayPath Path2 READ getPath2 WRITE setPath2)
 
-  SIMPL_INSTANCE_PROPERTY(DataArrayPath, ArrayPath1)
+  // -----------------------------------------------------------------------------
+  void setArrayPath1(const DataArrayPath& value)
+  {
+    m_ArrayPath1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  DataArrayPath getArrayPath1() const
+  {
+    return m_ArrayPath1;
+  }
+
   Q_PROPERTY(DataArrayPath ArrayPath1 READ getArrayPath1 WRITE setArrayPath1)
-  SIMPL_INSTANCE_PROPERTY(DataArrayPath, ArrayPath2)
+  // -----------------------------------------------------------------------------
+  void setArrayPath2(const DataArrayPath& value)
+  {
+    m_ArrayPath2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  DataArrayPath getArrayPath2() const
+  {
+    return m_ArrayPath2;
+  }
+
   Q_PROPERTY(DataArrayPath ArrayPath2 READ getArrayPath2 WRITE setArrayPath2)
 
-  SIMPL_INSTANCE_PROPERTY(AxisAngleInput_t, AxisAngle1)
+  // -----------------------------------------------------------------------------
+  void setAxisAngle1(const AxisAngleInput_t& value)
+  {
+    m_AxisAngle1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  AxisAngleInput_t getAxisAngle1() const
+  {
+    return m_AxisAngle1;
+  }
+
   Q_PROPERTY(AxisAngleInput_t AxisAngle1 READ getAxisAngle1 WRITE setAxisAngle1)
-  SIMPL_INSTANCE_PROPERTY(AxisAngleInput_t, AxisAngle2)
+  // -----------------------------------------------------------------------------
+  void setAxisAngle2(const AxisAngleInput_t& value)
+  {
+    m_AxisAngle2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  AxisAngleInput_t getAxisAngle2() const
+  {
+    return m_AxisAngle2;
+  }
+
   Q_PROPERTY(AxisAngleInput_t AxisAngle2 READ getAxisAngle2 WRITE setAxisAngle2)
 
-  SIMPL_INSTANCE_PROPERTY(ComparisonInputs, ComparisonInputs1)
+  // -----------------------------------------------------------------------------
+  void setComparisonInputs1(const ComparisonInputs& value)
+  {
+    m_ComparisonInputs1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  ComparisonInputs getComparisonInputs1() const
+  {
+    return m_ComparisonInputs1;
+  }
+
   Q_PROPERTY(ComparisonInputs ComparisonInputs1 READ getComparisonInputs1 WRITE setComparisonInputs1)
-  SIMPL_INSTANCE_PROPERTY(ComparisonInputs, ComparisonInputs2)
+  // -----------------------------------------------------------------------------
+  void setComparisonInputs2(const ComparisonInputs& value)
+  {
+    m_ComparisonInputs2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  ComparisonInputs getComparisonInputs2() const
+  {
+    return m_ComparisonInputs2;
+  }
+
   Q_PROPERTY(ComparisonInputs ComparisonInputs2 READ getComparisonInputs2 WRITE setComparisonInputs2)
 
-  SIMPL_INSTANCE_PROPERTY(DataContainerArrayProxy, DcaProxy1)
+  // -----------------------------------------------------------------------------
+  void setDcaProxy1(const DataContainerArrayProxy& value)
+  {
+    m_DcaProxy1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  DataContainerArrayProxy getDcaProxy1() const
+  {
+    return m_DcaProxy1;
+  }
+
   Q_PROPERTY(DataContainerArrayProxy DcaProxy1 READ getDcaProxy1 WRITE setDcaProxy1)
-  SIMPL_INSTANCE_PROPERTY(DataContainerArrayProxy, DcaProxy2)
+  // -----------------------------------------------------------------------------
+  void setDcaProxy2(const DataContainerArrayProxy& value)
+  {
+    m_DcaProxy2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  DataContainerArrayProxy getDcaProxy2() const
+  {
+    return m_DcaProxy2;
+  }
+
   Q_PROPERTY(DataContainerArrayProxy DcaProxy2 READ getDcaProxy2 WRITE setDcaProxy2)
 
-  SIMPL_INSTANCE_PROPERTY(DynamicTableData, DynamicData1)
+  // -----------------------------------------------------------------------------
+  void setDynamicData1(const DynamicTableData& value)
+  {
+    m_DynamicData1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  DynamicTableData getDynamicData1() const
+  {
+    return m_DynamicData1;
+  }
+
   Q_PROPERTY(DynamicTableData DynamicData1 READ getDynamicData1 WRITE setDynamicData1)
-  SIMPL_INSTANCE_PROPERTY(DynamicTableData, DynamicData2)
+  // -----------------------------------------------------------------------------
+  void setDynamicData2(const DynamicTableData& value)
+  {
+    m_DynamicData2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  DynamicTableData getDynamicData2() const
+  {
+    return m_DynamicData2;
+  }
+
   Q_PROPERTY(DynamicTableData DynamicData2 READ getDynamicData2 WRITE setDynamicData2)
 
-  SIMPL_INSTANCE_PROPERTY(FileListInfo_t, FileListInfo1)
+  // -----------------------------------------------------------------------------
+  void setFileListInfo1(const FileListInfo_t& value)
+  {
+    m_FileListInfo1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  FileListInfo_t getFileListInfo1() const
+  {
+    return m_FileListInfo1;
+  }
+
   Q_PROPERTY(FileListInfo_t FileListInfo1 READ getFileListInfo1 WRITE setFileListInfo1)
-  SIMPL_INSTANCE_PROPERTY(FileListInfo_t, FileListInfo2)
+  // -----------------------------------------------------------------------------
+  void setFileListInfo2(const FileListInfo_t& value)
+  {
+    m_FileListInfo2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  FileListInfo_t getFileListInfo2() const
+  {
+    return m_FileListInfo2;
+  }
+
   Q_PROPERTY(FileListInfo_t FileListInfo2 READ getFileListInfo2 WRITE setFileListInfo2)
 
-  SIMPL_INSTANCE_PROPERTY(IntVec3Type, IntVec3_1)
+  // -----------------------------------------------------------------------------
+  void setIntVec3_1(const IntVec3Type& value)
+  {
+    m_IntVec3_1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  IntVec3Type getIntVec3_1() const
+  {
+    return m_IntVec3_1;
+  }
+
   Q_PROPERTY(IntVec3Type IntVec3_1 READ getIntVec3_1 WRITE setIntVec3_1)
-  SIMPL_INSTANCE_PROPERTY(IntVec3Type, IntVec3_2)
+  // -----------------------------------------------------------------------------
+  void setIntVec3_2(const IntVec3Type& value)
+  {
+    m_IntVec3_2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  IntVec3Type getIntVec3_2() const
+  {
+    return m_IntVec3_2;
+  }
+
   Q_PROPERTY(IntVec3Type IntVec3_2 READ getIntVec3_2 WRITE setIntVec3_2)
 
-  SIMPL_INSTANCE_PROPERTY(FloatVec3Type, FloatVec3_1)
+  // -----------------------------------------------------------------------------
+  void setFloatVec3_1(const FloatVec3Type& value)
+  {
+    m_FloatVec3_1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  FloatVec3Type getFloatVec3_1() const
+  {
+    return m_FloatVec3_1;
+  }
+
   Q_PROPERTY(FloatVec3Type FloatVec3_1 READ getFloatVec3_1 WRITE setFloatVec3_1)
-  SIMPL_INSTANCE_PROPERTY(FloatVec3Type, FloatVec3_2)
+  // -----------------------------------------------------------------------------
+  void setFloatVec3_2(const FloatVec3Type& value)
+  {
+    m_FloatVec3_2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  FloatVec3Type getFloatVec3_2() const
+  {
+    return m_FloatVec3_2;
+  }
+
   Q_PROPERTY(FloatVec3Type FloatVec3_2 READ getFloatVec3_2 WRITE setFloatVec3_2)
 
-  SIMPL_INSTANCE_PROPERTY(Float2ndOrderPoly_t, Float2ndOrderPoly_1)
+  // -----------------------------------------------------------------------------
+  void setFloat2ndOrderPoly_1(const Float2ndOrderPoly_t& value)
+  {
+    m_Float2ndOrderPoly_1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  Float2ndOrderPoly_t getFloat2ndOrderPoly_1() const
+  {
+    return m_Float2ndOrderPoly_1;
+  }
+
   Q_PROPERTY(Float2ndOrderPoly_t Float2ndOrderPoly_1 READ getFloat2ndOrderPoly_1 WRITE setFloat2ndOrderPoly_1)
-  SIMPL_INSTANCE_PROPERTY(Float2ndOrderPoly_t, Float2ndOrderPoly_2)
+  // -----------------------------------------------------------------------------
+  void setFloat2ndOrderPoly_2(const Float2ndOrderPoly_t& value)
+  {
+    m_Float2ndOrderPoly_2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  Float2ndOrderPoly_t getFloat2ndOrderPoly_2() const
+  {
+    return m_Float2ndOrderPoly_2;
+  }
+
   Q_PROPERTY(Float2ndOrderPoly_t Float2ndOrderPoly_2 READ getFloat2ndOrderPoly_2 WRITE setFloat2ndOrderPoly_2)
 
-  SIMPL_INSTANCE_PROPERTY(Float3rdOrderPoly_t, Float3rdOrderPoly_1)
+  // -----------------------------------------------------------------------------
+  void setFloat3rdOrderPoly_1(const Float3rdOrderPoly_t& value)
+  {
+    m_Float3rdOrderPoly_1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  Float3rdOrderPoly_t getFloat3rdOrderPoly_1() const
+  {
+    return m_Float3rdOrderPoly_1;
+  }
+
   Q_PROPERTY(Float3rdOrderPoly_t Float3rdOrderPoly_1 READ getFloat3rdOrderPoly_1 WRITE setFloat3rdOrderPoly_1)
-  SIMPL_INSTANCE_PROPERTY(Float3rdOrderPoly_t, Float3rdOrderPoly_2)
+  // -----------------------------------------------------------------------------
+  void setFloat3rdOrderPoly_2(const Float3rdOrderPoly_t& value)
+  {
+    m_Float3rdOrderPoly_2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  Float3rdOrderPoly_t getFloat3rdOrderPoly_2() const
+  {
+    return m_Float3rdOrderPoly_2;
+  }
+
   Q_PROPERTY(Float3rdOrderPoly_t Float3rdOrderPoly_2 READ getFloat3rdOrderPoly_2 WRITE setFloat3rdOrderPoly_2)
 
-  SIMPL_INSTANCE_PROPERTY(Float4thOrderPoly_t, Float4thOrderPoly_1)
+  // -----------------------------------------------------------------------------
+  void setFloat4thOrderPoly_1(const Float4thOrderPoly_t& value)
+  {
+    m_Float4thOrderPoly_1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  Float4thOrderPoly_t getFloat4thOrderPoly_1() const
+  {
+    return m_Float4thOrderPoly_1;
+  }
+
   Q_PROPERTY(Float4thOrderPoly_t Float4thOrderPoly_1 READ getFloat4thOrderPoly_1 WRITE setFloat4thOrderPoly_1)
-  SIMPL_INSTANCE_PROPERTY(Float4thOrderPoly_t, Float4thOrderPoly_2)
+  // -----------------------------------------------------------------------------
+  void setFloat4thOrderPoly_2(const Float4thOrderPoly_t& value)
+  {
+    m_Float4thOrderPoly_2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  Float4thOrderPoly_t getFloat4thOrderPoly_2() const
+  {
+    return m_Float4thOrderPoly_2;
+  }
+
   Q_PROPERTY(Float4thOrderPoly_t Float4thOrderPoly_2 READ getFloat4thOrderPoly_2 WRITE setFloat4thOrderPoly_2)
 
-  SIMPL_INSTANCE_PROPERTY(QVector<DataArrayPath>, DataArrayPaths1)
+  // -----------------------------------------------------------------------------
+  void setDataArrayPaths1(const QVector<DataArrayPath>& value)
+  {
+    m_DataArrayPaths1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  QVector<DataArrayPath> getDataArrayPaths1() const
+  {
+    return m_DataArrayPaths1;
+  }
+
   Q_PROPERTY(QVector<DataArrayPath> DataArrayPaths1 READ getDataArrayPaths1 WRITE setDataArrayPaths1)
-  SIMPL_INSTANCE_PROPERTY(QVector<DataArrayPath>, DataArrayPaths2)
+  // -----------------------------------------------------------------------------
+  void setDataArrayPaths2(const QVector<DataArrayPath>& value)
+  {
+    m_DataArrayPaths2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  QVector<DataArrayPath> getDataArrayPaths2() const
+  {
+    return m_DataArrayPaths2;
+  }
+
   Q_PROPERTY(QVector<DataArrayPath> DataArrayPaths2 READ getDataArrayPaths2 WRITE setDataArrayPaths2)
 
-  SIMPL_INSTANCE_PROPERTY(ShapeType::Types, ShapeTypeVector_1)
+  // -----------------------------------------------------------------------------
+  void setShapeTypeVector_1(const ShapeType::Types& value)
+  {
+    m_ShapeTypeVector_1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  ShapeType::Types getShapeTypeVector_1() const
+  {
+    return m_ShapeTypeVector_1;
+  }
+
   Q_PROPERTY(ShapeType::Types ShapeTypeVector_1 READ getShapeTypeVector_1 WRITE setShapeTypeVector_1)
-  SIMPL_INSTANCE_PROPERTY(ShapeType::Types, ShapeTypeVector_2)
+  // -----------------------------------------------------------------------------
+  void setShapeTypeVector_2(const ShapeType::Types& value)
+  {
+    m_ShapeTypeVector_2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  ShapeType::Types getShapeTypeVector_2() const
+  {
+    return m_ShapeTypeVector_2;
+  }
+
   Q_PROPERTY(ShapeType::Types ShapeTypeVector_2 READ getShapeTypeVector_2 WRITE setShapeTypeVector_2)
 
-  SIMPL_INSTANCE_PROPERTY(PhaseType::Types, PhaseTypeVector_1)
+  // -----------------------------------------------------------------------------
+  void setPhaseTypeVector_1(const PhaseType::Types& value)
+  {
+    m_PhaseTypeVector_1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  PhaseType::Types getPhaseTypeVector_1() const
+  {
+    return m_PhaseTypeVector_1;
+  }
+
   Q_PROPERTY(PhaseType::Types::Types PhaseTypeVector_1 READ getPhaseTypeVector_1 WRITE setPhaseTypeVector_1)
-  SIMPL_INSTANCE_PROPERTY(PhaseType::Types, PhaseTypeVector_2)
+  // -----------------------------------------------------------------------------
+  void setPhaseTypeVector_2(const PhaseType::Types& value)
+  {
+    m_PhaseTypeVector_2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  PhaseType::Types getPhaseTypeVector_2() const
+  {
+    return m_PhaseTypeVector_2;
+  }
+
   Q_PROPERTY(PhaseType::Types PhaseTypeVector_2 READ getPhaseTypeVector_2 WRITE setPhaseTypeVector_2)
 
   //  SIMPL_INSTANCE_PROPERTY(UInt32Vector_t, UInt32Vector_1)
@@ -332,9 +750,31 @@ public:
 
   typedef QPair<double, double> DoublesPair;
 
-  SIMPL_INSTANCE_PROPERTY(DoublesPair, Pair1)
+  // -----------------------------------------------------------------------------
+  void setPair1(const DoublesPair& value)
+  {
+    m_Pair1 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  DoublesPair getPair1() const
+  {
+    return m_Pair1;
+  }
+
   Q_PROPERTY(DoublesPair Pair1 READ getPair1 WRITE setPair1)
-  SIMPL_INSTANCE_PROPERTY(DoublesPair, Pair2)
+  // -----------------------------------------------------------------------------
+  void setPair2(const DoublesPair& value)
+  {
+    m_Pair2 = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  DoublesPair getPair2() const
+  {
+    return m_Pair2;
+  }
+
   Q_PROPERTY(DoublesPair Pair2 READ getPair2 WRITE setPair2)
 
   // -----------------------------------------------------------------------------
@@ -973,6 +1413,47 @@ This Filter Parameter is NOT tesed since nothing is read or written for the filt
   }
 
 private:
+  bool m_Bool1 = {};
+  bool m_Bool2 = {};
+  int m_Int1 = {};
+  int m_Int2 = {};
+  double m_Double1 = {};
+  double m_Double2 = {};
+  QString m_String1 = {};
+  QString m_String2 = {};
+  DataArrayPath m_Path1 = {};
+  DataArrayPath m_Path2 = {};
+  DataArrayPath m_ArrayPath1 = {};
+  DataArrayPath m_ArrayPath2 = {};
+  AxisAngleInput_t m_AxisAngle1 = {};
+  AxisAngleInput_t m_AxisAngle2 = {};
+  ComparisonInputs m_ComparisonInputs1 = {};
+  ComparisonInputs m_ComparisonInputs2 = {};
+  DataContainerArrayProxy m_DcaProxy1 = {};
+  DataContainerArrayProxy m_DcaProxy2 = {};
+  DynamicTableData m_DynamicData1 = {};
+  DynamicTableData m_DynamicData2 = {};
+  FileListInfo_t m_FileListInfo1 = {};
+  FileListInfo_t m_FileListInfo2 = {};
+  IntVec3Type m_IntVec3_1 = {};
+  IntVec3Type m_IntVec3_2 = {};
+  FloatVec3Type m_FloatVec3_1 = {};
+  FloatVec3Type m_FloatVec3_2 = {};
+  Float2ndOrderPoly_t m_Float2ndOrderPoly_1 = {};
+  Float2ndOrderPoly_t m_Float2ndOrderPoly_2 = {};
+  Float3rdOrderPoly_t m_Float3rdOrderPoly_1 = {};
+  Float3rdOrderPoly_t m_Float3rdOrderPoly_2 = {};
+  Float4thOrderPoly_t m_Float4thOrderPoly_1 = {};
+  Float4thOrderPoly_t m_Float4thOrderPoly_2 = {};
+  QVector<DataArrayPath> m_DataArrayPaths1 = {};
+  QVector<DataArrayPath> m_DataArrayPaths2 = {};
+  ShapeType::Types m_ShapeTypeVector_1 = {};
+  ShapeType::Types m_ShapeTypeVector_2 = {};
+  PhaseType::Types m_PhaseTypeVector_1 = {};
+  PhaseType::Types m_PhaseTypeVector_2 = {};
+  DoublesPair m_Pair1 = {};
+  DoublesPair m_Pair2 = {};
+
   FilterParametersRWTest(const FilterParametersRWTest&); // Copy Constructor Not Implemented
   void operator=(const FilterParametersRWTest&);         // Move assignment Not Implemented
 };

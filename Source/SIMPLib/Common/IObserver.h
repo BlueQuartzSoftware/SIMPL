@@ -45,7 +45,14 @@ class SIMPLib_EXPORT IObserver
   public:
     IObserver();
     virtual ~IObserver();
-    SIMPL_TYPE_MACRO(IObserver)
+    /**
+     * @brief Returns the name of the class for IObserver
+     */
+    virtual const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for IObserver
+     */
+    static QString ClassName();
 
     virtual void processPipelineMessage(const AbstractMessage::Pointer& pm);
 
@@ -54,5 +61,7 @@ class SIMPLib_EXPORT IObserver
     IObserver(IObserver&&) = delete;           // Move Constructor Not Implemented
     IObserver& operator=(const IObserver&) = delete; // Copy Assignment Not Implemented
     IObserver& operator=(IObserver&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

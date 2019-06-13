@@ -36,8 +36,11 @@
 
 #pragma once
 
+#include <hdf5.h>
+
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -62,24 +65,81 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(DataContainerWriter)
-    SIMPL_FILTER_NEW_MACRO(DataContainerWriter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerWriter, AbstractFilter)
+    using Self = DataContainerWriter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<DataContainerWriter> New();
+
+    /**
+     * @brief Returns the name of the class for DataContainerWriter
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for DataContainerWriter
+     */
+    static QString ClassName();
 
     ~DataContainerWriter() override;
 
-    SIMPL_FILTER_PARAMETER(QString, OutputFile)
+    /**
+     * @brief Setter property for OutputFile
+     */
+    void setOutputFile(const QString& value);
+    /**
+     * @brief Getter property for OutputFile
+     * @return Value of OutputFile
+     */
+    QString getOutputFile() const;
+
     Q_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
 
-    SIMPL_INSTANCE_PROPERTY(bool, WritePipeline)
+    /**
+     * @brief Setter property for WritePipeline
+     */
+    void setWritePipeline(const bool& value);
+    /**
+     * @brief Getter property for WritePipeline
+     * @return Value of WritePipeline
+     */
+    bool getWritePipeline() const;
 
-    SIMPL_FILTER_PARAMETER(bool, WriteXdmfFile)
+    /**
+     * @brief Setter property for WriteXdmfFile
+     */
+    void setWriteXdmfFile(const bool& value);
+    /**
+     * @brief Getter property for WriteXdmfFile
+     * @return Value of WriteXdmfFile
+     */
+    bool getWriteXdmfFile() const;
+
     Q_PROPERTY(bool WriteXdmfFile READ getWriteXdmfFile WRITE setWriteXdmfFile)
 
-    SIMPL_FILTER_PARAMETER(bool, WriteTimeSeries)
+    /**
+     * @brief Setter property for WriteTimeSeries
+     */
+    void setWriteTimeSeries(const bool& value);
+    /**
+     * @brief Getter property for WriteTimeSeries
+     * @return Value of WriteTimeSeries
+     */
+    bool getWriteTimeSeries() const;
+
     Q_PROPERTY(bool WriteTimeSeries READ getWriteTimeSeries WRITE setWriteTimeSeries)
 
-    SIMPL_INSTANCE_PROPERTY(bool, AppendToExisting)
+    /**
+     * @brief Setter property for AppendToExisting
+     */
+    void setAppendToExisting(const bool& value);
+    /**
+     * @brief Getter property for AppendToExisting
+     * @return Value of AppendToExisting
+     */
+    bool getAppendToExisting() const;
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -221,6 +281,12 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     void writeXdmfFooter(QTextStream& out);
 
   private:
+    QString m_OutputFile = {};
+    bool m_WritePipeline = {};
+    bool m_WriteXdmfFile = {};
+    bool m_WriteTimeSeries = {};
+    bool m_AppendToExisting = {};
+
     hid_t m_FileId;
 
   public:

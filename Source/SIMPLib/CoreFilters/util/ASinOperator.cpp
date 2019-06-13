@@ -58,7 +58,11 @@ ASinOperator::~ASinOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ASinOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void ASinOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                             QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_ARCTRIG(filter, calculatedArrayPath, executionStack, asin)}
+
+// -----------------------------------------------------------------------------
+ASinOperator::Pointer ASinOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_ARCTRIG(filter, calculatedArrayPath, executionStack, asin)
+  return Pointer(static_cast<Self*>(nullptr));
 }

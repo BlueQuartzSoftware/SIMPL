@@ -32,11 +32,15 @@
 
 #pragma once
 
+#include <hdf5.h>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 /**
  * @brief The ImportHDF5Dataset class. See [Filter documentation](@ref readhdf5file) for details.
@@ -60,9 +64,23 @@ class SIMPLib_EXPORT ImportHDF5Dataset : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(ImportHDF5Dataset)
-  SIMPL_FILTER_NEW_MACRO(ImportHDF5Dataset)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImportHDF5Dataset, AbstractFilter)
+  using Self = ImportHDF5Dataset;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<ImportHDF5Dataset> New();
+
+  /**
+   * @brief Returns the name of the class for ImportHDF5Dataset
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ImportHDF5Dataset
+   */
+  static QString ClassName();
 
   ~ImportHDF5Dataset() override;
 
@@ -84,19 +102,54 @@ public:
     }
   };
 
-  SIMPL_FILTER_PARAMETER(QString, HDF5FilePath)
+  /**
+   * @brief Setter property for HDF5FilePath
+   */
+  void setHDF5FilePath(const QString& value);
+  /**
+   * @brief Getter property for HDF5FilePath
+   * @return Value of HDF5FilePath
+   */
+  QString getHDF5FilePath() const;
+
   Q_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
 
-  SIMPL_FILTER_PARAMETER(QList<ImportHDF5Dataset::DatasetImportInfo>, DatasetImportInfoList)
+  /**
+   * @brief Setter property for DatasetImportInfoList
+   */
+  void setDatasetImportInfoList(const QList<ImportHDF5Dataset::DatasetImportInfo>& value);
+  /**
+   * @brief Getter property for DatasetImportInfoList
+   * @return Value of DatasetImportInfoList
+   */
+  QList<ImportHDF5Dataset::DatasetImportInfo> getDatasetImportInfoList() const;
+
   Q_PROPERTY(QList<DatasetImportInfo> DatasetImportInfoList READ getDatasetImportInfoList WRITE setDatasetImportInfoList)
 
   QString getHDF5Dimensions();
   Q_PROPERTY(QString HDF5Dimensions READ getHDF5Dimensions)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrix)
+  /**
+   * @brief Setter property for SelectedAttributeMatrix
+   */
+  void setSelectedAttributeMatrix(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SelectedAttributeMatrix
+   * @return Value of SelectedAttributeMatrix
+   */
+  DataArrayPath getSelectedAttributeMatrix() const;
+
   Q_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
 
-  SIMPL_FILTER_PARAMETER(QStringList, DatasetPathsWithErrors)
+  /**
+   * @brief Setter property for DatasetPathsWithErrors
+   */
+  void setDatasetPathsWithErrors(const QStringList& value);
+  /**
+   * @brief Getter property for DatasetPathsWithErrors
+   * @return Value of DatasetPathsWithErrors
+   */
+  QStringList getDatasetPathsWithErrors() const;
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -195,6 +248,11 @@ protected:
   void initialize();
 
 private:
+  QString m_HDF5FilePath = {};
+  QList<ImportHDF5Dataset::DatasetImportInfo> m_DatasetImportInfoList = {};
+  DataArrayPath m_SelectedAttributeMatrix = {};
+  QStringList m_DatasetPathsWithErrors = {};
+
   QString m_HDF5Dimensions = "";
 
   IDataArray::Pointer readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, std::vector<size_t> cDims, bool metaDataOnly);

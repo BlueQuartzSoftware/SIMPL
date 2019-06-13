@@ -37,7 +37,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
@@ -65,25 +64,84 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(ScaleVolume)
-    SIMPL_FILTER_NEW_MACRO(ScaleVolume)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ScaleVolume, AbstractFilter)
+    using Self = ScaleVolume;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<ScaleVolume> New();
+
+    /**
+     * @brief Returns the name of the class for ScaleVolume
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ScaleVolume
+     */
+    static QString ClassName();
 
     ~ScaleVolume() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+    /**
+     * @brief Setter property for DataContainerName
+     */
+    void setDataContainerName(const DataArrayPath& value);
+    /**
+     * @brief Getter property for DataContainerName
+     * @return Value of DataContainerName
+     */
+    DataArrayPath getDataContainerName() const;
+
     Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SurfaceDataContainerName)
+    /**
+     * @brief Setter property for SurfaceDataContainerName
+     */
+    void setSurfaceDataContainerName(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SurfaceDataContainerName
+     * @return Value of SurfaceDataContainerName
+     */
+    DataArrayPath getSurfaceDataContainerName() const;
+
     Q_PROPERTY(DataArrayPath SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
 
-    SIMPL_FILTER_PARAMETER(bool, ApplyToVoxelVolume)
+    /**
+     * @brief Setter property for ApplyToVoxelVolume
+     */
+    void setApplyToVoxelVolume(const bool& value);
+    /**
+     * @brief Getter property for ApplyToVoxelVolume
+     * @return Value of ApplyToVoxelVolume
+     */
+    bool getApplyToVoxelVolume() const;
+
     Q_PROPERTY(bool ApplyToVoxelVolume READ getApplyToVoxelVolume WRITE setApplyToVoxelVolume)
 
-    SIMPL_FILTER_PARAMETER(bool, ApplyToSurfaceMesh)
+    /**
+     * @brief Setter property for ApplyToSurfaceMesh
+     */
+    void setApplyToSurfaceMesh(const bool& value);
+    /**
+     * @brief Getter property for ApplyToSurfaceMesh
+     * @return Value of ApplyToSurfaceMesh
+     */
+    bool getApplyToSurfaceMesh() const;
+
     Q_PROPERTY(bool ApplyToSurfaceMesh READ getApplyToSurfaceMesh WRITE setApplyToSurfaceMesh)
 
-    SIMPL_FILTER_PARAMETER(FloatVec3Type, ScaleFactor)
+    /**
+     * @brief Setter property for ScaleFactor
+     */
+    void setScaleFactor(const FloatVec3Type& value);
+    /**
+     * @brief Getter property for ScaleFactor
+     * @return Value of ScaleFactor
+     */
+    FloatVec3Type getScaleFactor() const;
+
     Q_PROPERTY(FloatVec3Type ScaleFactor READ getScaleFactor WRITE setScaleFactor)
 
     /**
@@ -197,5 +255,12 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
     ScaleVolume(ScaleVolume&&) = delete;         // Move Constructor Not Implemented
     ScaleVolume& operator=(const ScaleVolume&) = delete; // Copy Assignment Not Implemented
     ScaleVolume& operator=(ScaleVolume&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    DataArrayPath m_DataContainerName = {};
+    DataArrayPath m_SurfaceDataContainerName = {};
+    bool m_ApplyToVoxelVolume = {};
+    bool m_ApplyToSurfaceMesh = {};
+    FloatVec3Type m_ScaleFactor = {};
 };
 

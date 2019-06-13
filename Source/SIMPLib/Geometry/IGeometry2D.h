@@ -35,8 +35,7 @@
 
 #pragma once
 
-
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
 /**
@@ -44,12 +43,27 @@
  */
 class SIMPLib_EXPORT IGeometry2D : public IGeometry
 {
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(IGeometry2D SUPERCLASS IGeometry)
   PYB11_SHARED_POINTERS(IGeometry2D)
+#endif
 
 public:
-  SIMPL_SHARED_POINTERS(IGeometry2D)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry2D, Observable)
+  using Self = IGeometry2D;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for IGeometry2D
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for IGeometry2D
+   */
+  static QString ClassName();
 
   IGeometry2D();
   ~IGeometry2D() override;
@@ -208,5 +222,3 @@ public:
   IGeometry2D& operator=(const IGeometry2D&) = delete; // Copy Assignment Not Implemented
   IGeometry2D& operator=(IGeometry2D&&) = delete;      // Move Assignment Not Implemented
 };
-
-

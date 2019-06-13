@@ -36,6 +36,8 @@
 
 #include "FilterErrorMessage.h"
 
+#include <QtCore/QObject>
+
 #include "AbstractMessageHandler.h"
 
 // -----------------------------------------------------------------------------
@@ -86,4 +88,65 @@ QString FilterErrorMessage::generateMessageString() const
 void FilterErrorMessage::visit(AbstractMessageHandler* msgHandler) const
 {
   msgHandler->processMessage(this);
+}
+
+// -----------------------------------------------------------------------------
+FilterErrorMessage::Pointer FilterErrorMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+FilterErrorMessage::Pointer FilterErrorMessage::New()
+{
+  Pointer sharedPtr(new(FilterErrorMessage));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString FilterErrorMessage::getNameOfClass() const
+{
+  return QString("FilterErrorMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterErrorMessage::ClassName()
+{
+  return QString("FilterErrorMessage");
+}
+
+// -----------------------------------------------------------------------------
+void FilterErrorMessage::setClassName(const QString& value)
+{
+  m_ClassName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterErrorMessage::getClassName() const
+{
+  return m_ClassName;
+}
+
+// -----------------------------------------------------------------------------
+void FilterErrorMessage::setHumanLabel(const QString& value)
+{
+  m_HumanLabel = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterErrorMessage::getHumanLabel() const
+{
+  return m_HumanLabel;
+}
+
+// -----------------------------------------------------------------------------
+void FilterErrorMessage::setPipelineIndex(const int& value)
+{
+  m_PipelineIndex = value;
+}
+
+// -----------------------------------------------------------------------------
+int FilterErrorMessage::getPipelineIndex() const
+{
+  return m_PipelineIndex;
 }

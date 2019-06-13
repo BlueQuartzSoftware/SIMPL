@@ -35,8 +35,6 @@
 
 #pragma once
 
-
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
@@ -59,6 +57,8 @@
 #include "SIMPLib/Geometry/VertexGeom.h"
 
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 class ExtractAttributeArraysFromGeometryTest
 {

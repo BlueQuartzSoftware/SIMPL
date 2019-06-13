@@ -39,7 +39,10 @@
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
@@ -384,4 +387,45 @@ const QString ExecuteProcess::getSubGroupName() const
 const QString ExecuteProcess::getHumanLabel() const
 {
   return "Execute Process";
+}
+
+// -----------------------------------------------------------------------------
+ExecuteProcess::Pointer ExecuteProcess::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ExecuteProcess> ExecuteProcess::New()
+{
+  struct make_shared_enabler : public ExecuteProcess
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString ExecuteProcess::getNameOfClass() const
+{
+  return QString("ExecuteProcess");
+}
+
+// -----------------------------------------------------------------------------
+QString ExecuteProcess::ClassName()
+{
+  return QString("ExecuteProcess");
+}
+
+// -----------------------------------------------------------------------------
+void ExecuteProcess::setArguments(const QString& value)
+{
+  m_Arguments = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ExecuteProcess::getArguments() const
+{
+  return m_Arguments;
 }

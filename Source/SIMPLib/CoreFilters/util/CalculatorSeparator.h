@@ -42,7 +42,12 @@
 class SIMPLib_EXPORT CalculatorSeparator : public CalculatorItem
 {
   public:
-    SIMPL_SHARED_POINTERS(CalculatorSeparator)
+    using Self = CalculatorSeparator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     ~CalculatorSeparator() override;
 
@@ -54,5 +59,7 @@ class SIMPLib_EXPORT CalculatorSeparator : public CalculatorItem
     CalculatorSeparator(CalculatorSeparator&&) = delete;      // Move Constructor Not Implemented
     CalculatorSeparator& operator=(const CalculatorSeparator&) = delete; // Copy Assignment Not Implemented
     CalculatorSeparator& operator=(CalculatorSeparator&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

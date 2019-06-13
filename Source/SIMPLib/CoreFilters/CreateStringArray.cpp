@@ -35,8 +35,10 @@
 
 #include "CreateStringArray.h"
 
+#include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
@@ -46,6 +48,7 @@
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   StringArrayID = 1
@@ -261,4 +264,69 @@ const QString CreateStringArray::getSubGroupName() const
 const QString CreateStringArray::getHumanLabel() const
 {
   return "Create String Array";
+}
+
+// -----------------------------------------------------------------------------
+CreateStringArray::Pointer CreateStringArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CreateStringArray> CreateStringArray::New()
+{
+  struct make_shared_enabler : public CreateStringArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString CreateStringArray::getNameOfClass() const
+{
+  return QString("CreateStringArray");
+}
+
+// -----------------------------------------------------------------------------
+QString CreateStringArray::ClassName()
+{
+  return QString("CreateStringArray");
+}
+
+// -----------------------------------------------------------------------------
+void CreateStringArray::setNumberOfComponents(const int& value)
+{
+  m_NumberOfComponents = value;
+}
+
+// -----------------------------------------------------------------------------
+int CreateStringArray::getNumberOfComponents() const
+{
+  return m_NumberOfComponents;
+}
+
+// -----------------------------------------------------------------------------
+void CreateStringArray::setNewArray(const DataArrayPath& value)
+{
+  m_NewArray = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateStringArray::getNewArray() const
+{
+  return m_NewArray;
+}
+
+// -----------------------------------------------------------------------------
+void CreateStringArray::setInitializationValue(const QString& value)
+{
+  m_InitializationValue = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateStringArray::getInitializationValue() const
+{
+  return m_InitializationValue;
 }

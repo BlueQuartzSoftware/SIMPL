@@ -46,6 +46,7 @@
 class SIMPLib_EXPORT ComparisonSet : public AbstractComparison
 {
   using AbstractComparisonPtr = AbstractComparison::Pointer;
+#ifdef SIMPL_ENABLE_PYTHON
   // clang-format off
   PYB11_CREATE_BINDINGS(ComparisonSet SUPERCLASS AbstractComparison)
   PYB11_SHARED_POINTERS(ComparisonSet)
@@ -57,10 +58,26 @@ class SIMPLib_EXPORT ComparisonSet : public AbstractComparison
   PYB11_METHOD(void addComparison ARGS AbstractComparisonPtr,comparison)
   PYB11_METHOD(void insertComparison ARGS int,index AbstractComparisonPtr,comparison)
   // clang-format on
+#endif
+
 public:
-  SIMPL_SHARED_POINTERS(ComparisonSet)
-  SIMPL_STATIC_NEW_MACRO(ComparisonSet)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ComparisonSet, AbstractComparison)
+  using Self = ComparisonSet;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for ComparisonSet
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ComparisonSet
+   */
+  static QString ClassName();
 
   ~ComparisonSet() override;
 
@@ -132,5 +149,7 @@ protected:
   QVector<AbstractComparison::Pointer> m_comparisons;
 
   ComparisonSet();
+
+private:
 };
 

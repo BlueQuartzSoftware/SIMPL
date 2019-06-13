@@ -37,10 +37,10 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SIMPLib/Filtering/AbstractDecisionFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The MaskCountDecision class. See [Filter documentation](@ref MaskCountDecision) for details.
@@ -60,16 +60,48 @@ class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(MaskCountDecision)
-    SIMPL_STATIC_NEW_MACRO(MaskCountDecision)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MaskCountDecision, AbstractDecisionFilter)
+    using Self = MaskCountDecision;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for MaskCountDecision
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for MaskCountDecision
+     */
+    static QString ClassName();
 
     ~MaskCountDecision() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
+    /**
+     * @brief Setter property for MaskArrayPath
+     */
+    void setMaskArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for MaskArrayPath
+     * @return Value of MaskArrayPath
+     */
+    DataArrayPath getMaskArrayPath() const;
+
     Q_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
 
-    SIMPL_FILTER_PARAMETER(int, NumberOfTrues)
+    /**
+     * @brief Setter property for NumberOfTrues
+     */
+    void setNumberOfTrues(const int& value);
+    /**
+     * @brief Getter property for NumberOfTrues
+     * @return Value of NumberOfTrues
+     */
+    int getNumberOfTrues() const;
+
     Q_PROPERTY(int NumberOfTrues READ getNumberOfTrues WRITE setNumberOfTrues)
 
     /**
@@ -143,7 +175,11 @@ class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
 
 
   private:
-    DEFINE_DATAARRAY_VARIABLE(bool, Mask)
+    std::weak_ptr<DataArray<bool>> m_MaskPtr;
+    bool* m_Mask = nullptr;
+
+    DataArrayPath m_MaskArrayPath = {};
+    int m_NumberOfTrues = {};
 
   public:
     MaskCountDecision(const MaskCountDecision&) = delete; // Copy Constructor Not Implemented

@@ -38,7 +38,6 @@
 #include <QtCore/QString>
 #include <QtWidgets/QButtonGroup>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
 
 #include "SVWidgetsLib/QtSupport/QtSPluginFrame.h"

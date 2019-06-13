@@ -48,9 +48,23 @@
 class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(DataContainerReaderFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(DataContainerReaderFilterParameter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerReaderFilterParameter, FilterParameter)
+    using Self = DataContainerReaderFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for DataContainerReaderFilterParameter
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for DataContainerReaderFilterParameter
+     */
+    static QString ClassName();
 
     /**
      * @brief New This function instantiates an instance of the DataContainerCreationFilterParameter.
@@ -69,11 +83,55 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
 
     ~DataContainerReaderFilterParameter() override;
 
-    SIMPL_INSTANCE_PROPERTY(Qt::CheckState, DefaultFlagValue)
-    SIMPL_INSTANCE_PROPERTY(QString, InputFileProperty)
-    SIMPL_INSTANCE_PROPERTY(QString, FileExtension)
-    SIMPL_INSTANCE_PROPERTY(QString, FileType)
-    SIMPL_POINTER_PROPERTY(DataContainerReader, Filter)
+    /**
+     * @brief Setter property for DefaultFlagValue
+     */
+    void setDefaultFlagValue(const Qt::CheckState& value);
+    /**
+     * @brief Getter property for DefaultFlagValue
+     * @return Value of DefaultFlagValue
+     */
+    Qt::CheckState getDefaultFlagValue() const;
+
+    /**
+     * @brief Setter property for InputFileProperty
+     */
+    void setInputFileProperty(const QString& value);
+    /**
+     * @brief Getter property for InputFileProperty
+     * @return Value of InputFileProperty
+     */
+    QString getInputFileProperty() const;
+
+    /**
+     * @brief Setter property for FileExtension
+     */
+    void setFileExtension(const QString& value);
+    /**
+     * @brief Getter property for FileExtension
+     * @return Value of FileExtension
+     */
+    QString getFileExtension() const;
+
+    /**
+     * @brief Setter property for FileType
+     */
+    void setFileType(const QString& value);
+    /**
+     * @brief Getter property for FileType
+     * @return Value of FileType
+     */
+    QString getFileType() const;
+
+    /**
+     * @brief Setter property for Filter
+     */
+    void setFilter(DataContainerReader* value);
+    /**
+     * @brief Getter property for Filter
+     * @return Value of Filter
+     */
+    DataContainerReader* getFilter() const;
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls
@@ -106,5 +164,13 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
     DataContainerReaderFilterParameter(DataContainerReaderFilterParameter&&) = delete;      // Move Constructor Not Implemented
     DataContainerReaderFilterParameter& operator=(const DataContainerReaderFilterParameter&) = delete; // Copy Assignment Not Implemented
     DataContainerReaderFilterParameter& operator=(DataContainerReaderFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    DataContainerReader* m_Filter = nullptr;
+
+    Qt::CheckState m_DefaultFlagValue = {};
+    QString m_InputFileProperty = {};
+    QString m_FileExtension = {};
+    QString m_FileType = {};
 };
 

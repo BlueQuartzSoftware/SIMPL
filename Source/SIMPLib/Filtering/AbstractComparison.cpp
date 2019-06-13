@@ -88,3 +88,20 @@ void AbstractComparison::setUnionOperator(int unionOperator)
 {
   m_unionOperator = unionOperator;
 }
+// -----------------------------------------------------------------------------
+AbstractComparison::Pointer AbstractComparison::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+const QString AbstractComparison::getNameOfClass() const
+{
+  return QString("AbstractComparison");
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractComparison::ClassName()
+{
+  return QString("AbstractComparison");
+}

@@ -76,3 +76,9 @@ CalculatorItem::ErrorCode CommaSeparator::checkValidity(QVector<CalculatorItem::
 
   return CalculatorItem::ErrorCode::SUCCESS;
 }
+
+// -----------------------------------------------------------------------------
+CommaSeparator::Pointer CommaSeparator::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}

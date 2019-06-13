@@ -69,3 +69,40 @@ QString PreflightUpdatedValueFilterParameter::getWidgetType() const
 {
   return QString("PreflightUpdatedValueWidget");
 }
+
+// -----------------------------------------------------------------------------
+PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParameter::New()
+{
+  Pointer sharedPtr(new(PreflightUpdatedValueFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString PreflightUpdatedValueFilterParameter::getNameOfClass() const
+{
+  return QString("PreflightUpdatedValueFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString PreflightUpdatedValueFilterParameter::ClassName()
+{
+  return QString("PreflightUpdatedValueFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void PreflightUpdatedValueFilterParameter::setGetterCallback(const PreflightUpdatedValueFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+PreflightUpdatedValueFilterParameter::GetterCallbackType PreflightUpdatedValueFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

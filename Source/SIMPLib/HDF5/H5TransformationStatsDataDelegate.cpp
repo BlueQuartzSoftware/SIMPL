@@ -625,7 +625,7 @@ int H5TransformationStatsDataDelegate::readFeatureDiameterInfo(TransformationSta
   float featureDiameterInfo[3] = {0.0f, 0.0f, 0.0f};
 
   err = QH5Lite::readPointerDataset(groupId, SIMPL::StringConstants::Feature_Diameter_Info, featureDiameterInfo);
-  data->setFeatureDiameterInfo(std::make_tuple(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[1]));
+  data->setFeatureDiameterInfo(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[1]);
   return err;
 }
 
@@ -653,4 +653,29 @@ int H5TransformationStatsDataDelegate::readBinNumbers(TransformationStatsData* d
   err = p->readH5Data(groupId);
   data->setBinNumbers(p);
   return err;
+}
+
+// -----------------------------------------------------------------------------
+H5TransformationStatsDataDelegate::Pointer H5TransformationStatsDataDelegate::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+H5TransformationStatsDataDelegate::Pointer H5TransformationStatsDataDelegate::New()
+{
+  Pointer sharedPtr(new(H5TransformationStatsDataDelegate));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString H5TransformationStatsDataDelegate::getNameOfClass() const
+{
+  return QString("H5TransformationStatsDataDelegate");
+}
+
+// -----------------------------------------------------------------------------
+QString H5TransformationStatsDataDelegate::ClassName()
+{
+  return QString("H5TransformationStatsDataDelegate");
 }

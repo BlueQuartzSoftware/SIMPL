@@ -114,3 +114,63 @@ void IFilter::preflight()
 //  emit preflightExecuted();
 //  setInPreflight(false);
 }
+
+// -----------------------------------------------------------------------------
+void IFilter::setIndex(const int& value)
+{
+  m_Index = value;
+}
+
+// -----------------------------------------------------------------------------
+int IFilter::getIndex() const
+{
+  return m_Index;
+}
+
+// -----------------------------------------------------------------------------
+void IFilter::setParameter1(const int& value)
+{
+  m_Parameter1 = value;
+}
+
+// -----------------------------------------------------------------------------
+int IFilter::getParameter1() const
+{
+  return m_Parameter1;
+}
+
+// -----------------------------------------------------------------------------
+void IFilter::setParameter2(const double& value)
+{
+  m_Parameter2 = value;
+}
+
+// -----------------------------------------------------------------------------
+double IFilter::getParameter2() const
+{
+  return m_Parameter2;
+}
+
+// -----------------------------------------------------------------------------
+void IFilter::setFeatureIdsPath(const DataArrayPath& value)
+{
+  m_FeatureIdsPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath IFilter::getFeatureIdsPath() const
+{
+  return m_FeatureIdsPath;
+}
+
+// -----------------------------------------------------------------------------
+void IFilter::setInPreflight(const bool& value)
+{
+  m_InPreflight = value;
+}
+
+// -----------------------------------------------------------------------------
+bool IFilter::getInPreflight() const
+{
+  return m_InPreflight;
+}

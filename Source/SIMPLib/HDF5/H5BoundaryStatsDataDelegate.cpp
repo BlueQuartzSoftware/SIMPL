@@ -166,3 +166,28 @@ int H5BoundaryStatsDataDelegate::readParentPhase(BoundaryStatsData* data, hid_t 
   data->setParentPhase(static_cast<float>(parentPhase));
   return err;
 }
+
+// -----------------------------------------------------------------------------
+H5BoundaryStatsDataDelegate::Pointer H5BoundaryStatsDataDelegate::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+H5BoundaryStatsDataDelegate::Pointer H5BoundaryStatsDataDelegate::New()
+{
+  Pointer sharedPtr(new(H5BoundaryStatsDataDelegate));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString H5BoundaryStatsDataDelegate::getNameOfClass() const
+{
+  return QString("H5BoundaryStatsDataDelegate");
+}
+
+// -----------------------------------------------------------------------------
+QString H5BoundaryStatsDataDelegate::ClassName()
+{
+  return QString("H5BoundaryStatsDataDelegate");
+}

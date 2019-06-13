@@ -37,12 +37,13 @@
 
 #include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t
 {
@@ -260,4 +261,153 @@ const QString MakeDataContainer::getSubGroupName() const
 const QString MakeDataContainer::getHumanLabel() const
 {
   return "Make DataContainer";
+}
+
+// -----------------------------------------------------------------------------
+MakeDataContainer::Pointer MakeDataContainer::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<MakeDataContainer> MakeDataContainer::New()
+{
+  struct make_shared_enabler : public MakeDataContainer
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString MakeDataContainer::getNameOfClass() const
+{
+  return QString("MakeDataContainer");
+}
+
+// -----------------------------------------------------------------------------
+QString MakeDataContainer::ClassName()
+{
+  return QString("MakeDataContainer");
+}
+
+// -----------------------------------------------------------------------------
+void MakeDataContainer::setDataContainerName(const QString& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString MakeDataContainer::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void MakeDataContainer::setCellEnsembleAttributeMatrixName(const QString& value)
+{
+  m_CellEnsembleAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString MakeDataContainer::getCellEnsembleAttributeMatrixName() const
+{
+  return m_CellEnsembleAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void MakeDataContainer::setCellAttributeMatrixName(const QString& value)
+{
+  m_CellAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString MakeDataContainer::getCellAttributeMatrixName() const
+{
+  return m_CellAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void MakeDataContainer::setPhaseNameArrayName(const QString& value)
+{
+  m_PhaseNameArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString MakeDataContainer::getPhaseNameArrayName() const
+{
+  return m_PhaseNameArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void MakeDataContainer::setMaterialNameArrayName(const QString& value)
+{
+  m_MaterialNameArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString MakeDataContainer::getMaterialNameArrayName() const
+{
+  return m_MaterialNameArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void MakeDataContainer::setFeatureIdsArrayName(const QString& value)
+{
+  m_FeatureIdsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString MakeDataContainer::getFeatureIdsArrayName() const
+{
+  return m_FeatureIdsArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void MakeDataContainer::setCellEulerAnglesArrayName(const QString& value)
+{
+  m_CellEulerAnglesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString MakeDataContainer::getCellEulerAnglesArrayName() const
+{
+  return m_CellEulerAnglesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void MakeDataContainer::setCellPhasesArrayName(const QString& value)
+{
+  m_CellPhasesArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString MakeDataContainer::getCellPhasesArrayName() const
+{
+  return m_CellPhasesArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void MakeDataContainer::setCrystalStructuresArrayName(const QString& value)
+{
+  m_CrystalStructuresArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString MakeDataContainer::getCrystalStructuresArrayName() const
+{
+  return m_CrystalStructuresArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void MakeDataContainer::setLatticeConstantsArrayName(const QString& value)
+{
+  m_LatticeConstantsArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString MakeDataContainer::getLatticeConstantsArrayName() const
+{
+  return m_LatticeConstantsArrayName;
 }

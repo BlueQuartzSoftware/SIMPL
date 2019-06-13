@@ -37,8 +37,8 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
 
 /**
  * @brief The CreateStringArray class. See [Filter documentation](@ref CreateStringArray) for details.
@@ -60,19 +60,60 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(CreateStringArray)
-    SIMPL_FILTER_NEW_MACRO(CreateStringArray)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateStringArray, AbstractFilter)
+    using Self = CreateStringArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<CreateStringArray> New();
+
+    /**
+     * @brief Returns the name of the class for CreateStringArray
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for CreateStringArray
+     */
+    static QString ClassName();
 
     ~CreateStringArray() override;
 
-    SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
+    /**
+     * @brief Setter property for NumberOfComponents
+     */
+    void setNumberOfComponents(const int& value);
+    /**
+     * @brief Getter property for NumberOfComponents
+     * @return Value of NumberOfComponents
+     */
+    int getNumberOfComponents() const;
+
     Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, NewArray)
+    /**
+     * @brief Setter property for NewArray
+     */
+    void setNewArray(const DataArrayPath& value);
+    /**
+     * @brief Getter property for NewArray
+     * @return Value of NewArray
+     */
+    DataArrayPath getNewArray() const;
+
     Q_PROPERTY(DataArrayPath NewArray READ getNewArray WRITE setNewArray)
 
-    SIMPL_FILTER_PARAMETER(QString, InitializationValue)
+    /**
+     * @brief Setter property for InitializationValue
+     */
+    void setInitializationValue(const QString& value);
+    /**
+     * @brief Getter property for InitializationValue
+     * @return Value of InitializationValue
+     */
+    QString getInitializationValue() const;
+
     Q_PROPERTY(QString InitializationValue READ getInitializationValue WRITE setInitializationValue)
 
     /**
@@ -177,6 +218,10 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
 
 
   private:
+    int m_NumberOfComponents = {};
+    DataArrayPath m_NewArray = {};
+    QString m_InitializationValue = {};
+
     IDataArray::WeakPointer m_OutputArrayPtr;
 
   public:

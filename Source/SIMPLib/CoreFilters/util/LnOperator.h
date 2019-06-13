@@ -46,7 +46,12 @@ class CalculatorNumber;
 class SIMPLib_EXPORT LnOperator : public UnaryOperator
 {
   public:
-    SIMPL_SHARED_POINTERS(LnOperator)
+    using Self = LnOperator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     static Pointer New()
     {
@@ -65,5 +70,7 @@ class SIMPLib_EXPORT LnOperator : public UnaryOperator
     LnOperator(LnOperator&&) = delete;          // Move Constructor Not Implemented
     LnOperator& operator=(const LnOperator&) = delete; // Copy Assignment Not Implemented
     LnOperator& operator=(LnOperator&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

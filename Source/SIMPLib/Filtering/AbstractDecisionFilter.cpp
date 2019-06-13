@@ -169,3 +169,32 @@ const QString AbstractDecisionFilter::getHumanLabel() const
 {
   return "";
 }
+
+// -----------------------------------------------------------------------------
+AbstractDecisionFilter::Pointer AbstractDecisionFilter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<AbstractDecisionFilter> AbstractDecisionFilter::New()
+{
+  struct make_shared_enabler : public AbstractDecisionFilter
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString AbstractDecisionFilter::getNameOfClass() const
+{
+  return QString("AbstractDecisionFilter");
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractDecisionFilter::ClassName()
+{
+  return QString("AbstractDecisionFilter");
+}

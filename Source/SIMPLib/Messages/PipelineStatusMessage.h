@@ -46,13 +46,35 @@
 class SIMPLib_EXPORT PipelineStatusMessage : public AbstractStatusMessage
 {
   public:
-    SIMPL_SHARED_POINTERS(PipelineStatusMessage)
-    SIMPL_STATIC_NEW_MACRO(PipelineStatusMessage)
-    SIMPL_TYPE_MACRO(PipelineStatusMessage)
+    using Self = PipelineStatusMessage;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for PipelineStatusMessage
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for PipelineStatusMessage
+     */
+    static QString ClassName();
 
     virtual ~PipelineStatusMessage();
 
-    SIMPL_INSTANCE_STRING_PROPERTY(PipelineName)
+    /**
+     * @brief Setter property for PipelineName
+     */
+    void setPipelineName(const QString& value);
+    /**
+     * @brief Getter property for PipelineName
+     * @return Value of PipelineName
+     */
+    QString getPipelineName() const;
 
     /**
      * @brief New
@@ -81,7 +103,7 @@ class SIMPLib_EXPORT PipelineStatusMessage : public AbstractStatusMessage
     PipelineStatusMessage(const QString &pipelineName, const QString& msgText);
 
   private:
-
+    QString m_PipelineName = {};
 };
 Q_DECLARE_METATYPE(PipelineStatusMessage::Pointer)
 

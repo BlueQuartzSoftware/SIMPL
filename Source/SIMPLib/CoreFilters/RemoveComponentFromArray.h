@@ -37,8 +37,10 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
 
 /**
  * @brief The RemoveComponentFromArray class. See [Filter documentation](@ref RemoveComponentFromArray) for details.
@@ -64,25 +66,84 @@ class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(RemoveComponentFromArray)
-    SIMPL_FILTER_NEW_MACRO(RemoveComponentFromArray)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RemoveComponentFromArray, AbstractFilter)
+    using Self = RemoveComponentFromArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<RemoveComponentFromArray> New();
+
+    /**
+     * @brief Returns the name of the class for RemoveComponentFromArray
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for RemoveComponentFromArray
+     */
+    static QString ClassName();
 
     ~RemoveComponentFromArray() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
+    /**
+     * @brief Setter property for SelectedArrayPath
+     */
+    void setSelectedArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedArrayPath
+     * @return Value of SelectedArrayPath
+     */
+    DataArrayPath getSelectedArrayPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
 
-    SIMPL_FILTER_PARAMETER(int, CompNumber)
+    /**
+     * @brief Setter property for CompNumber
+     */
+    void setCompNumber(const int& value);
+    /**
+     * @brief Getter property for CompNumber
+     * @return Value of CompNumber
+     */
+    int getCompNumber() const;
+
     Q_PROPERTY(int CompNumber READ getCompNumber WRITE setCompNumber)
 
-    SIMPL_FILTER_PARAMETER(bool, SaveRemovedComponent)
+    /**
+     * @brief Setter property for SaveRemovedComponent
+     */
+    void setSaveRemovedComponent(const bool& value);
+    /**
+     * @brief Getter property for SaveRemovedComponent
+     * @return Value of SaveRemovedComponent
+     */
+    bool getSaveRemovedComponent() const;
+
     Q_PROPERTY(bool SaveRemovedComponent READ getSaveRemovedComponent WRITE setSaveRemovedComponent)
 
-    SIMPL_FILTER_PARAMETER(QString, NewArrayArrayName)
+    /**
+     * @brief Setter property for NewArrayArrayName
+     */
+    void setNewArrayArrayName(const QString& value);
+    /**
+     * @brief Getter property for NewArrayArrayName
+     * @return Value of NewArrayArrayName
+     */
+    QString getNewArrayArrayName() const;
+
     Q_PROPERTY(QString NewArrayArrayName READ getNewArrayArrayName WRITE setNewArrayArrayName)
 
-    SIMPL_FILTER_PARAMETER(QString, ReducedArrayArrayName)
+    /**
+     * @brief Setter property for ReducedArrayArrayName
+     */
+    void setReducedArrayArrayName(const QString& value);
+    /**
+     * @brief Getter property for ReducedArrayArrayName
+     * @return Value of ReducedArrayArrayName
+     */
+    QString getReducedArrayArrayName() const;
+
     Q_PROPERTY(QString ReducedArrayArrayName READ getReducedArrayArrayName WRITE setReducedArrayArrayName)
 
     /**
@@ -187,9 +248,15 @@ class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
 
 
   private:
-    DEFINE_IDATAARRAY_WEAKPTR(InArray)
-    DEFINE_IDATAARRAY_WEAKPTR(NewArray)
-    DEFINE_IDATAARRAY_WEAKPTR(ReducedArray)
+    IDataArrayWkPtrType m_InArrayPtr;
+    IDataArrayWkPtrType m_NewArrayPtr;
+    IDataArrayWkPtrType m_ReducedArrayPtr;
+
+    DataArrayPath m_SelectedArrayPath = {};
+    int m_CompNumber = {};
+    bool m_SaveRemovedComponent = {};
+    QString m_NewArrayArrayName = {};
+    QString m_ReducedArrayArrayName = {};
 
   public:
     RemoveComponentFromArray(const RemoveComponentFromArray&) = delete; // Copy Constructor Not Implemented

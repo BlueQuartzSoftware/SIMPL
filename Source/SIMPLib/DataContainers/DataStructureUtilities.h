@@ -38,6 +38,9 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
 
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
+
 class DataContainerArray;
 using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
 
@@ -391,5 +394,5 @@ public:
    * @param paths The paths that should be checked
    * @return bool Validation check
    */
-  bool validateNumberOfTuples(const DataContainerArrayShPtrType& dca, AbstractFilter* filter, const std::vector<IDataArray::Pointer>& dataArrays);
+  bool validateNumberOfTuples(const DataContainerArrayShPtrType& dca, AbstractFilter* filter, const std::vector<IDataArrayShPtrType>& dataArrays);
 };

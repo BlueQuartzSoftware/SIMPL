@@ -98,3 +98,76 @@ void ChoiceFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = m_GetterCallback();
   }
 }
+
+// -----------------------------------------------------------------------------
+ChoiceFilterParameter::Pointer ChoiceFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ChoiceFilterParameter::Pointer ChoiceFilterParameter::New()
+{
+  Pointer sharedPtr(new(ChoiceFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString ChoiceFilterParameter::getNameOfClass() const
+{
+  return QString("ChoiceFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString ChoiceFilterParameter::ClassName()
+{
+  return QString("ChoiceFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void ChoiceFilterParameter::setChoices(const QVector<QString>& value)
+{
+  m_Choices = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<QString> ChoiceFilterParameter::getChoices() const
+{
+  return m_Choices;
+}
+
+// -----------------------------------------------------------------------------
+void ChoiceFilterParameter::setEditable(const bool& value)
+{
+  m_Editable = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ChoiceFilterParameter::getEditable() const
+{
+  return m_Editable;
+}
+
+// -----------------------------------------------------------------------------
+void ChoiceFilterParameter::setSetterCallback(const ChoiceFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ChoiceFilterParameter::SetterCallbackType ChoiceFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void ChoiceFilterParameter::setGetterCallback(const ChoiceFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ChoiceFilterParameter::GetterCallbackType ChoiceFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

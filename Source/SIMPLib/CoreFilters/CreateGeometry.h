@@ -34,10 +34,10 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The CreateGeometry class. See [Filter documentation](@ref creategeometry) for details.
@@ -117,115 +117,435 @@ class SIMPLib_EXPORT CreateGeometry : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(CreateGeometry)
-  SIMPL_FILTER_NEW_MACRO(CreateGeometry)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateGeometry, AbstractFilter)
+  using Self = CreateGeometry;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<CreateGeometry> New();
+
+  /**
+   * @brief Returns the name of the class for CreateGeometry
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for CreateGeometry
+   */
+  static QString ClassName();
 
   ~CreateGeometry() override;
 
   static const int k_CopyArrays = 0;
   static const int k_MoveArrays = 1;
 
-  SIMPL_FILTER_PARAMETER(int, GeometryType)
+  /**
+   * @brief Setter property for GeometryType
+   */
+  void setGeometryType(const int& value);
+  /**
+   * @brief Getter property for GeometryType
+   * @return Value of GeometryType
+   */
+  int getGeometryType() const;
+
   Q_PROPERTY(int GeometryType READ getGeometryType WRITE setGeometryType)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+  /**
+   * @brief Setter property for DataContainerName
+   */
+  void setDataContainerName(const DataArrayPath& value);
+  /**
+   * @brief Getter property for DataContainerName
+   * @return Value of DataContainerName
+   */
+  DataArrayPath getDataContainerName() const;
+
   Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath0)
+  /**
+   * @brief Setter property for SharedVertexListArrayPath0
+   */
+  void setSharedVertexListArrayPath0(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedVertexListArrayPath0
+   * @return Value of SharedVertexListArrayPath0
+   */
+  DataArrayPath getSharedVertexListArrayPath0() const;
+
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath0 READ getSharedVertexListArrayPath0 WRITE setSharedVertexListArrayPath0)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath1)
+  /**
+   * @brief Setter property for SharedVertexListArrayPath1
+   */
+  void setSharedVertexListArrayPath1(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedVertexListArrayPath1
+   * @return Value of SharedVertexListArrayPath1
+   */
+  DataArrayPath getSharedVertexListArrayPath1() const;
+
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath1 READ getSharedVertexListArrayPath1 WRITE setSharedVertexListArrayPath1)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath2)
+  /**
+   * @brief Setter property for SharedVertexListArrayPath2
+   */
+  void setSharedVertexListArrayPath2(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedVertexListArrayPath2
+   * @return Value of SharedVertexListArrayPath2
+   */
+  DataArrayPath getSharedVertexListArrayPath2() const;
+
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath2 READ getSharedVertexListArrayPath2 WRITE setSharedVertexListArrayPath2)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath3)
+  /**
+   * @brief Setter property for SharedVertexListArrayPath3
+   */
+  void setSharedVertexListArrayPath3(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedVertexListArrayPath3
+   * @return Value of SharedVertexListArrayPath3
+   */
+  DataArrayPath getSharedVertexListArrayPath3() const;
+
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath3 READ getSharedVertexListArrayPath3 WRITE setSharedVertexListArrayPath3)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath4)
+  /**
+   * @brief Setter property for SharedVertexListArrayPath4
+   */
+  void setSharedVertexListArrayPath4(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedVertexListArrayPath4
+   * @return Value of SharedVertexListArrayPath4
+   */
+  DataArrayPath getSharedVertexListArrayPath4() const;
+
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath4 READ getSharedVertexListArrayPath4 WRITE setSharedVertexListArrayPath4)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath5)
+  /**
+   * @brief Setter property for SharedVertexListArrayPath5
+   */
+  void setSharedVertexListArrayPath5(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedVertexListArrayPath5
+   * @return Value of SharedVertexListArrayPath5
+   */
+  DataArrayPath getSharedVertexListArrayPath5() const;
+
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath5 READ getSharedVertexListArrayPath5 WRITE setSharedVertexListArrayPath5)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedEdgeListArrayPath)
+  /**
+   * @brief Setter property for SharedEdgeListArrayPath
+   */
+  void setSharedEdgeListArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedEdgeListArrayPath
+   * @return Value of SharedEdgeListArrayPath
+   */
+  DataArrayPath getSharedEdgeListArrayPath() const;
+
   Q_PROPERTY(DataArrayPath SharedEdgeListArrayPath READ getSharedEdgeListArrayPath WRITE setSharedEdgeListArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedTriListArrayPath)
+  /**
+   * @brief Setter property for SharedTriListArrayPath
+   */
+  void setSharedTriListArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedTriListArrayPath
+   * @return Value of SharedTriListArrayPath
+   */
+  DataArrayPath getSharedTriListArrayPath() const;
+
   Q_PROPERTY(DataArrayPath SharedTriListArrayPath READ getSharedTriListArrayPath WRITE setSharedTriListArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedQuadListArrayPath)
+  /**
+   * @brief Setter property for SharedQuadListArrayPath
+   */
+  void setSharedQuadListArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedQuadListArrayPath
+   * @return Value of SharedQuadListArrayPath
+   */
+  DataArrayPath getSharedQuadListArrayPath() const;
+
   Q_PROPERTY(DataArrayPath SharedQuadListArrayPath READ getSharedQuadListArrayPath WRITE setSharedQuadListArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedTetListArrayPath)
+  /**
+   * @brief Setter property for SharedTetListArrayPath
+   */
+  void setSharedTetListArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedTetListArrayPath
+   * @return Value of SharedTetListArrayPath
+   */
+  DataArrayPath getSharedTetListArrayPath() const;
+
   Q_PROPERTY(DataArrayPath SharedTetListArrayPath READ getSharedTetListArrayPath WRITE setSharedTetListArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedHexListArrayPath)
+  /**
+   * @brief Setter property for SharedHexListArrayPath
+   */
+  void setSharedHexListArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SharedHexListArrayPath
+   * @return Value of SharedHexListArrayPath
+   */
+  DataArrayPath getSharedHexListArrayPath() const;
+
   Q_PROPERTY(DataArrayPath SharedHexListArrayPath READ getSharedHexListArrayPath WRITE setSharedHexListArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, XBoundsArrayPath)
+  /**
+   * @brief Setter property for XBoundsArrayPath
+   */
+  void setXBoundsArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for XBoundsArrayPath
+   * @return Value of XBoundsArrayPath
+   */
+  DataArrayPath getXBoundsArrayPath() const;
+
   Q_PROPERTY(DataArrayPath XBoundsArrayPath READ getXBoundsArrayPath WRITE setXBoundsArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, YBoundsArrayPath)
+  /**
+   * @brief Setter property for YBoundsArrayPath
+   */
+  void setYBoundsArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for YBoundsArrayPath
+   * @return Value of YBoundsArrayPath
+   */
+  DataArrayPath getYBoundsArrayPath() const;
+
   Q_PROPERTY(DataArrayPath YBoundsArrayPath READ getYBoundsArrayPath WRITE setYBoundsArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, ZBoundsArrayPath)
+  /**
+   * @brief Setter property for ZBoundsArrayPath
+   */
+  void setZBoundsArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for ZBoundsArrayPath
+   * @return Value of ZBoundsArrayPath
+   */
+  DataArrayPath getZBoundsArrayPath() const;
+
   Q_PROPERTY(DataArrayPath ZBoundsArrayPath READ getZBoundsArrayPath WRITE setZBoundsArrayPath)
 
-  SIMPL_FILTER_PARAMETER(IntVec3Type, Dimensions)
+  /**
+   * @brief Setter property for Dimensions
+   */
+  void setDimensions(const IntVec3Type& value);
+  /**
+   * @brief Getter property for Dimensions
+   * @return Value of Dimensions
+   */
+  IntVec3Type getDimensions() const;
+
   Q_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
 
-  SIMPL_FILTER_PARAMETER(FloatVec3Type, Origin)
+  /**
+   * @brief Setter property for Origin
+   */
+  void setOrigin(const FloatVec3Type& value);
+  /**
+   * @brief Getter property for Origin
+   * @return Value of Origin
+   */
+  FloatVec3Type getOrigin() const;
+
   Q_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
 
-  SIMPL_FILTER_PARAMETER(FloatVec3Type, Spacing)
+  /**
+   * @brief Setter property for Spacing
+   */
+  void setSpacing(const FloatVec3Type& value);
+  /**
+   * @brief Getter property for Spacing
+   * @return Value of Spacing
+   */
+  FloatVec3Type getSpacing() const;
+
   Q_PROPERTY(FloatVec3Type Spacing READ getSpacing WRITE setSpacing)
 
-  SIMPL_FILTER_PARAMETER(QString, ImageCellAttributeMatrixName)
+  /**
+   * @brief Setter property for ImageCellAttributeMatrixName
+   */
+  void setImageCellAttributeMatrixName(const QString& value);
+  /**
+   * @brief Getter property for ImageCellAttributeMatrixName
+   * @return Value of ImageCellAttributeMatrixName
+   */
+  QString getImageCellAttributeMatrixName() const;
+
   Q_PROPERTY(QString ImageCellAttributeMatrixName READ getImageCellAttributeMatrixName WRITE setImageCellAttributeMatrixName)
 
-  SIMPL_FILTER_PARAMETER(QString, RectGridCellAttributeMatrixName)
+  /**
+   * @brief Setter property for RectGridCellAttributeMatrixName
+   */
+  void setRectGridCellAttributeMatrixName(const QString& value);
+  /**
+   * @brief Getter property for RectGridCellAttributeMatrixName
+   * @return Value of RectGridCellAttributeMatrixName
+   */
+  QString getRectGridCellAttributeMatrixName() const;
+
   Q_PROPERTY(QString RectGridCellAttributeMatrixName READ getRectGridCellAttributeMatrixName WRITE setRectGridCellAttributeMatrixName)
 
-  SIMPL_FILTER_PARAMETER(QString, VertexAttributeMatrixName0)
+  /**
+   * @brief Setter property for VertexAttributeMatrixName0
+   */
+  void setVertexAttributeMatrixName0(const QString& value);
+  /**
+   * @brief Getter property for VertexAttributeMatrixName0
+   * @return Value of VertexAttributeMatrixName0
+   */
+  QString getVertexAttributeMatrixName0() const;
+
   Q_PROPERTY(QString VertexAttributeMatrixName0 READ getVertexAttributeMatrixName0 WRITE setVertexAttributeMatrixName0)
 
-  SIMPL_FILTER_PARAMETER(QString, VertexAttributeMatrixName1)
+  /**
+   * @brief Setter property for VertexAttributeMatrixName1
+   */
+  void setVertexAttributeMatrixName1(const QString& value);
+  /**
+   * @brief Getter property for VertexAttributeMatrixName1
+   * @return Value of VertexAttributeMatrixName1
+   */
+  QString getVertexAttributeMatrixName1() const;
+
   Q_PROPERTY(QString VertexAttributeMatrixName1 READ getVertexAttributeMatrixName1 WRITE setVertexAttributeMatrixName1)
 
-  SIMPL_FILTER_PARAMETER(QString, VertexAttributeMatrixName2)
+  /**
+   * @brief Setter property for VertexAttributeMatrixName2
+   */
+  void setVertexAttributeMatrixName2(const QString& value);
+  /**
+   * @brief Getter property for VertexAttributeMatrixName2
+   * @return Value of VertexAttributeMatrixName2
+   */
+  QString getVertexAttributeMatrixName2() const;
+
   Q_PROPERTY(QString VertexAttributeMatrixName2 READ getVertexAttributeMatrixName2 WRITE setVertexAttributeMatrixName2)
 
-  SIMPL_FILTER_PARAMETER(QString, VertexAttributeMatrixName3)
+  /**
+   * @brief Setter property for VertexAttributeMatrixName3
+   */
+  void setVertexAttributeMatrixName3(const QString& value);
+  /**
+   * @brief Getter property for VertexAttributeMatrixName3
+   * @return Value of VertexAttributeMatrixName3
+   */
+  QString getVertexAttributeMatrixName3() const;
+
   Q_PROPERTY(QString VertexAttributeMatrixName3 READ getVertexAttributeMatrixName3 WRITE setVertexAttributeMatrixName3)
 
-  SIMPL_FILTER_PARAMETER(QString, VertexAttributeMatrixName4)
+  /**
+   * @brief Setter property for VertexAttributeMatrixName4
+   */
+  void setVertexAttributeMatrixName4(const QString& value);
+  /**
+   * @brief Getter property for VertexAttributeMatrixName4
+   * @return Value of VertexAttributeMatrixName4
+   */
+  QString getVertexAttributeMatrixName4() const;
+
   Q_PROPERTY(QString VertexAttributeMatrixName4 READ getVertexAttributeMatrixName4 WRITE setVertexAttributeMatrixName4)
 
-  SIMPL_FILTER_PARAMETER(QString, VertexAttributeMatrixName5)
+  /**
+   * @brief Setter property for VertexAttributeMatrixName5
+   */
+  void setVertexAttributeMatrixName5(const QString& value);
+  /**
+   * @brief Getter property for VertexAttributeMatrixName5
+   * @return Value of VertexAttributeMatrixName5
+   */
+  QString getVertexAttributeMatrixName5() const;
+
   Q_PROPERTY(QString VertexAttributeMatrixName5 READ getVertexAttributeMatrixName5 WRITE setVertexAttributeMatrixName5)
 
-  SIMPL_FILTER_PARAMETER(QString, EdgeAttributeMatrixName)
+  /**
+   * @brief Setter property for EdgeAttributeMatrixName
+   */
+  void setEdgeAttributeMatrixName(const QString& value);
+  /**
+   * @brief Getter property for EdgeAttributeMatrixName
+   * @return Value of EdgeAttributeMatrixName
+   */
+  QString getEdgeAttributeMatrixName() const;
+
   Q_PROPERTY(QString EdgeAttributeMatrixName READ getEdgeAttributeMatrixName WRITE setEdgeAttributeMatrixName)
 
-  SIMPL_FILTER_PARAMETER(QString, FaceAttributeMatrixName0)
+  /**
+   * @brief Setter property for FaceAttributeMatrixName0
+   */
+  void setFaceAttributeMatrixName0(const QString& value);
+  /**
+   * @brief Getter property for FaceAttributeMatrixName0
+   * @return Value of FaceAttributeMatrixName0
+   */
+  QString getFaceAttributeMatrixName0() const;
+
   Q_PROPERTY(QString FaceAttributeMatrixName0 READ getFaceAttributeMatrixName0 WRITE setFaceAttributeMatrixName0)
 
-  SIMPL_FILTER_PARAMETER(QString, FaceAttributeMatrixName1)
+  /**
+   * @brief Setter property for FaceAttributeMatrixName1
+   */
+  void setFaceAttributeMatrixName1(const QString& value);
+  /**
+   * @brief Getter property for FaceAttributeMatrixName1
+   * @return Value of FaceAttributeMatrixName1
+   */
+  QString getFaceAttributeMatrixName1() const;
+
   Q_PROPERTY(QString FaceAttributeMatrixName1 READ getFaceAttributeMatrixName1 WRITE setFaceAttributeMatrixName1)
 
-  SIMPL_FILTER_PARAMETER(QString, TetCellAttributeMatrixName)
+  /**
+   * @brief Setter property for TetCellAttributeMatrixName
+   */
+  void setTetCellAttributeMatrixName(const QString& value);
+  /**
+   * @brief Getter property for TetCellAttributeMatrixName
+   * @return Value of TetCellAttributeMatrixName
+   */
+  QString getTetCellAttributeMatrixName() const;
+
   Q_PROPERTY(QString TetCellAttributeMatrixName READ getTetCellAttributeMatrixName WRITE setTetCellAttributeMatrixName)
 
-  SIMPL_FILTER_PARAMETER(QString, HexCellAttributeMatrixName)
+  /**
+   * @brief Setter property for HexCellAttributeMatrixName
+   */
+  void setHexCellAttributeMatrixName(const QString& value);
+  /**
+   * @brief Getter property for HexCellAttributeMatrixName
+   * @return Value of HexCellAttributeMatrixName
+   */
+  QString getHexCellAttributeMatrixName() const;
+
   Q_PROPERTY(QString HexCellAttributeMatrixName READ getHexCellAttributeMatrixName WRITE setHexCellAttributeMatrixName)
 
-  SIMPL_FILTER_PARAMETER(bool, TreatWarningsAsErrors)
+  /**
+   * @brief Setter property for TreatWarningsAsErrors
+   */
+  void setTreatWarningsAsErrors(const bool& value);
+  /**
+   * @brief Getter property for TreatWarningsAsErrors
+   * @return Value of TreatWarningsAsErrors
+   */
+  bool getTreatWarningsAsErrors() const;
+
   Q_PROPERTY(bool TreatWarningsAsErrors READ getTreatWarningsAsErrors WRITE setTreatWarningsAsErrors)
 
-  SIMPL_FILTER_PARAMETER(bool, ArrayHandling)
+  /**
+   * @brief Setter property for ArrayHandling
+   */
+  void setArrayHandling(const bool& value);
+  /**
+   * @brief Getter property for ArrayHandling
+   * @return Value of ArrayHandling
+   */
+  bool getArrayHandling() const;
+
   Q_PROPERTY(bool ArrayHandling READ getArrayHandling WRITE setArrayHandling)
 
   QString getBoxDimensions();
@@ -327,14 +647,57 @@ protected:
   void initialize();
 
 private:
-  DEFINE_DATAARRAY_VARIABLE(float, XBounds)
-  DEFINE_DATAARRAY_VARIABLE(float, YBounds)
-  DEFINE_DATAARRAY_VARIABLE(float, ZBounds)
-  DEFINE_DATAARRAY_VARIABLE(size_t, Edges)
-  DEFINE_DATAARRAY_VARIABLE(size_t, Tris)
-  DEFINE_DATAARRAY_VARIABLE(size_t, Quads)
-  DEFINE_DATAARRAY_VARIABLE(size_t, Tets)
-  DEFINE_DATAARRAY_VARIABLE(size_t, Hexes)
+  std::weak_ptr<DataArray<float>> m_XBoundsPtr;
+  float* m_XBounds = nullptr;
+  std::weak_ptr<DataArray<float>> m_YBoundsPtr;
+  float* m_YBounds = nullptr;
+  std::weak_ptr<DataArray<float>> m_ZBoundsPtr;
+  float* m_ZBounds = nullptr;
+  std::weak_ptr<DataArray<size_t>> m_EdgesPtr;
+  size_t* m_Edges = nullptr;
+  std::weak_ptr<DataArray<size_t>> m_TrisPtr;
+  size_t* m_Tris = nullptr;
+  std::weak_ptr<DataArray<size_t>> m_QuadsPtr;
+  size_t* m_Quads = nullptr;
+  std::weak_ptr<DataArray<size_t>> m_TetsPtr;
+  size_t* m_Tets = nullptr;
+  std::weak_ptr<DataArray<size_t>> m_HexesPtr;
+  size_t* m_Hexes = nullptr;
+
+  int m_GeometryType = {};
+  DataArrayPath m_DataContainerName = {};
+  DataArrayPath m_SharedVertexListArrayPath0 = {};
+  DataArrayPath m_SharedVertexListArrayPath1 = {};
+  DataArrayPath m_SharedVertexListArrayPath2 = {};
+  DataArrayPath m_SharedVertexListArrayPath3 = {};
+  DataArrayPath m_SharedVertexListArrayPath4 = {};
+  DataArrayPath m_SharedVertexListArrayPath5 = {};
+  DataArrayPath m_SharedEdgeListArrayPath = {};
+  DataArrayPath m_SharedTriListArrayPath = {};
+  DataArrayPath m_SharedQuadListArrayPath = {};
+  DataArrayPath m_SharedTetListArrayPath = {};
+  DataArrayPath m_SharedHexListArrayPath = {};
+  DataArrayPath m_XBoundsArrayPath = {};
+  DataArrayPath m_YBoundsArrayPath = {};
+  DataArrayPath m_ZBoundsArrayPath = {};
+  IntVec3Type m_Dimensions = {};
+  FloatVec3Type m_Origin = {};
+  FloatVec3Type m_Spacing = {};
+  QString m_ImageCellAttributeMatrixName = {};
+  QString m_RectGridCellAttributeMatrixName = {};
+  QString m_VertexAttributeMatrixName0 = {};
+  QString m_VertexAttributeMatrixName1 = {};
+  QString m_VertexAttributeMatrixName2 = {};
+  QString m_VertexAttributeMatrixName3 = {};
+  QString m_VertexAttributeMatrixName4 = {};
+  QString m_VertexAttributeMatrixName5 = {};
+  QString m_EdgeAttributeMatrixName = {};
+  QString m_FaceAttributeMatrixName0 = {};
+  QString m_FaceAttributeMatrixName1 = {};
+  QString m_TetCellAttributeMatrixName = {};
+  QString m_HexCellAttributeMatrixName = {};
+  bool m_TreatWarningsAsErrors = {};
+  bool m_ArrayHandling = {};
 
   size_t m_NumVerts;
 

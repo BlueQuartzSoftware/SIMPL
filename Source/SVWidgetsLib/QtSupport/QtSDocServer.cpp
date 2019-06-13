@@ -34,7 +34,10 @@
 #include <QtCore/QUrl>
 #include <QtWidgets/QApplication>
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Filtering/FilterManager.h"
+
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
 
 #include "QtWebApp/httpserver/httplistener.h"
@@ -230,4 +233,16 @@ QUrl QtSDocServer::GenerateHTMLUrl(const QString &className)
 #endif
 
   return QUrl(s);
+}
+
+// -----------------------------------------------------------------------------
+const QString QtSDocServer::getNameOfClass() const
+{
+  return QString("QtSDocServer");
+}
+
+// -----------------------------------------------------------------------------
+QString QtSDocServer::ClassName()
+{
+  return QString("QtSDocServer");
 }

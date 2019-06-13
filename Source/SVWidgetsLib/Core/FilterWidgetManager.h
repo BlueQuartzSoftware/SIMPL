@@ -39,7 +39,6 @@
 #include <QtCore/QString>
 #include <QtCore/QMap>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Core/IFilterWidgetFactory.h"
@@ -57,7 +56,14 @@ class SVWidgetsLib_EXPORT FilterWidgetManager
 {
   public:
     //SIMPL_SHARED_POINTERS(FilterWidgetManager)
-    SIMPL_TYPE_MACRO(FilterWidgetManager)
+    /**
+     * @brief Returns the name of the class for FilterWidgetManager
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for FilterWidgetManager
+     */
+    static QString ClassName();
 
     virtual ~FilterWidgetManager();
 
@@ -106,7 +112,6 @@ class SVWidgetsLib_EXPORT FilterWidgetManager
     FilterWidgetManager();
 
   private:
-
     Collection m_Factories;
 
     static FilterWidgetManager* self;

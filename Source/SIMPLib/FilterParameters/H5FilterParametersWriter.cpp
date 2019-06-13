@@ -42,8 +42,10 @@
 #include "H5Support/QH5Utilities.h"
 #include "H5Support/H5ScopedSentinel.h"
 
+#include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/H5FilterParametersConstants.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 #include "SIMPLib/Messages/PipelineErrorMessage.h"
@@ -822,4 +824,53 @@ int H5FilterParametersWriter::writeValue(const QString& name, const QPair<double
   err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name + "_Max", v.second);
 
   return err;
+}
+
+// -----------------------------------------------------------------------------
+H5FilterParametersWriter::Pointer H5FilterParametersWriter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+H5FilterParametersWriter::Pointer H5FilterParametersWriter::New()
+{
+  Pointer sharedPtr(new(H5FilterParametersWriter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString H5FilterParametersWriter::getNameOfClass() const
+{
+  return QString("H5FilterParametersWriter");
+}
+
+// -----------------------------------------------------------------------------
+QString H5FilterParametersWriter::ClassName()
+{
+  return QString("H5FilterParametersWriter");
+}
+
+// -----------------------------------------------------------------------------
+void H5FilterParametersWriter::setPipelineGroupId(const hid_t& value)
+{
+  m_PipelineGroupId = value;
+}
+
+// -----------------------------------------------------------------------------
+hid_t H5FilterParametersWriter::getPipelineGroupId() const
+{
+  return m_PipelineGroupId;
+}
+
+// -----------------------------------------------------------------------------
+void H5FilterParametersWriter::setGroupId(const hid_t& value)
+{
+  m_GroupId = value;
+}
+
+// -----------------------------------------------------------------------------
+hid_t H5FilterParametersWriter::getGroupId() const
+{
+  return m_GroupId;
 }

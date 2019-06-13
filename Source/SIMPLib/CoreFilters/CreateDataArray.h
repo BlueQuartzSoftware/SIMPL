@@ -37,9 +37,12 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Common/Constants.h"
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
 
 /**
  * @brief The CreateDataArray class. See [Filter documentation](@ref createdataarray) for details.
@@ -67,9 +70,23 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(CreateDataArray)
-    SIMPL_FILTER_NEW_MACRO(CreateDataArray)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateDataArray, AbstractFilter)
+    using Self = CreateDataArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<CreateDataArray> New();
+
+    /**
+     * @brief Returns the name of the class for CreateDataArray
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for CreateDataArray
+     */
+    static QString ClassName();
 
     ~CreateDataArray() override;
 
@@ -79,22 +96,76 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
       RandomWithRange
     };
 
-    SIMPL_FILTER_PARAMETER(SIMPL::ScalarTypes::Type, ScalarType)
+    /**
+     * @brief Setter property for ScalarType
+     */
+    void setScalarType(const SIMPL::ScalarTypes::Type& value);
+    /**
+     * @brief Getter property for ScalarType
+     * @return Value of ScalarType
+     */
+    SIMPL::ScalarTypes::Type getScalarType() const;
+
     Q_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
-    SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
+    /**
+     * @brief Setter property for NumberOfComponents
+     */
+    void setNumberOfComponents(const int& value);
+    /**
+     * @brief Getter property for NumberOfComponents
+     * @return Value of NumberOfComponents
+     */
+    int getNumberOfComponents() const;
+
     Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, NewArray)
+    /**
+     * @brief Setter property for NewArray
+     */
+    void setNewArray(const DataArrayPath& value);
+    /**
+     * @brief Getter property for NewArray
+     * @return Value of NewArray
+     */
+    DataArrayPath getNewArray() const;
+
     Q_PROPERTY(DataArrayPath NewArray READ getNewArray WRITE setNewArray)
 
-    SIMPL_FILTER_PARAMETER(int, InitializationType)
+    /**
+     * @brief Setter property for InitializationType
+     */
+    void setInitializationType(const int& value);
+    /**
+     * @brief Getter property for InitializationType
+     * @return Value of InitializationType
+     */
+    int getInitializationType() const;
+
     Q_PROPERTY(int InitializationType READ getInitializationType WRITE setInitializationType)
 
-    SIMPL_FILTER_PARAMETER(QString, InitializationValue)
+    /**
+     * @brief Setter property for InitializationValue
+     */
+    void setInitializationValue(const QString& value);
+    /**
+     * @brief Getter property for InitializationValue
+     * @return Value of InitializationValue
+     */
+    QString getInitializationValue() const;
+
     Q_PROPERTY(QString InitializationValue READ getInitializationValue WRITE setInitializationValue)
 
-    SIMPL_FILTER_PARAMETER(FPRangePair, InitializationRange)
+    /**
+     * @brief Setter property for InitializationRange
+     */
+    void setInitializationRange(const FPRangePair& value);
+    /**
+     * @brief Getter property for InitializationRange
+     * @return Value of InitializationRange
+     */
+    FPRangePair getInitializationRange() const;
+
     Q_PROPERTY(FPRangePair InitializationRange READ getInitializationRange WRITE setInitializationRange)
 
     /**
@@ -199,7 +270,14 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
 
 
   private:
-    DEFINE_IDATAARRAY_WEAKPTR(OutputArray)
+    IDataArrayWkPtrType m_OutputArrayPtr;
+
+    SIMPL::ScalarTypes::Type m_ScalarType = {};
+    int m_NumberOfComponents = {};
+    DataArrayPath m_NewArray = {};
+    int m_InitializationType = {};
+    QString m_InitializationValue = {};
+    FPRangePair m_InitializationRange = {};
 
     /**
     * @brief checkInitialization Checks that the chosen initialization value/range is inside

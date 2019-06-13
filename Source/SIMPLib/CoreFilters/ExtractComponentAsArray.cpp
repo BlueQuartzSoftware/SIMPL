@@ -35,7 +35,10 @@
 
 #include "ExtractComponentAsArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -44,6 +47,7 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   DataArrayID = 1
@@ -279,4 +283,69 @@ const QString ExtractComponentAsArray::getSubGroupName() const
 const QString ExtractComponentAsArray::getHumanLabel() const
 {
   return "Extract Component as Attribute Array";
+}
+
+// -----------------------------------------------------------------------------
+ExtractComponentAsArray::Pointer ExtractComponentAsArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ExtractComponentAsArray> ExtractComponentAsArray::New()
+{
+  struct make_shared_enabler : public ExtractComponentAsArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString ExtractComponentAsArray::getNameOfClass() const
+{
+  return QString("ExtractComponentAsArray");
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractComponentAsArray::ClassName()
+{
+  return QString("ExtractComponentAsArray");
+}
+
+// -----------------------------------------------------------------------------
+void ExtractComponentAsArray::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ExtractComponentAsArray::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractComponentAsArray::setCompNumber(const int& value)
+{
+  m_CompNumber = value;
+}
+
+// -----------------------------------------------------------------------------
+int ExtractComponentAsArray::getCompNumber() const
+{
+  return m_CompNumber;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractComponentAsArray::setNewArrayArrayName(const QString& value)
+{
+  m_NewArrayArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractComponentAsArray::getNewArrayArrayName() const
+{
+  return m_NewArrayArrayName;
 }

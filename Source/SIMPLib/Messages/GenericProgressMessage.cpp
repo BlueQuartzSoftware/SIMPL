@@ -36,6 +36,8 @@
 
 #include "GenericProgressMessage.h"
 
+#include <QtCore/QObject>
+
 #include "AbstractMessageHandler.h"
 
 // -----------------------------------------------------------------------------
@@ -83,4 +85,29 @@ QString GenericProgressMessage::generateMessageString() const
 void GenericProgressMessage::visit(AbstractMessageHandler* msgHandler) const
 {
   msgHandler->processMessage(this);
+}
+
+// -----------------------------------------------------------------------------
+GenericProgressMessage::Pointer GenericProgressMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+GenericProgressMessage::Pointer GenericProgressMessage::New()
+{
+  Pointer sharedPtr(new(GenericProgressMessage));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString GenericProgressMessage::getNameOfClass() const
+{
+  return QString("GenericProgressMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString GenericProgressMessage::ClassName()
+{
+  return QString("GenericProgressMessage");
 }

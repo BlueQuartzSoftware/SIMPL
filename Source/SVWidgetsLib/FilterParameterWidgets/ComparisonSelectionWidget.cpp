@@ -40,6 +40,7 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
@@ -588,4 +589,28 @@ void ComparisonSelectionWidget::updateDataArrayPath(const QString& propertyName,
     }
     blockSignals(false);
   }
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionWidget::setArrayListType(const ComparisonSelectionWidget::ArrayListType& value)
+{
+  m_ArrayListType = value;
+}
+
+// -----------------------------------------------------------------------------
+ComparisonSelectionWidget::ArrayListType ComparisonSelectionWidget::getArrayListType() const
+{
+  return m_ArrayListType;
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionWidget::setShowOperators(const bool& value)
+{
+  m_ShowOperators = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ComparisonSelectionWidget::getShowOperators() const
+{
+  return m_ShowOperators;
 }

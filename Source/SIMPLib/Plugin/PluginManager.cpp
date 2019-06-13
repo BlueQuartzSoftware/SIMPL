@@ -37,11 +37,11 @@
 
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
+#include <QtCore/QDebug>
 
 #include "SIMPLib/Filtering/CorePlugin.h"
 #include "SIMPLib/Plugin/SIMPLPluginConstants.h"
-
-
+#include "ISIMPLibPlugin.h"
 
 PluginManager* PluginManager::m_Self = nullptr;
 
@@ -58,10 +58,7 @@ PluginManager::PluginManager()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PluginManager::~PluginManager()
-{
-  //  qDebug() << "~PluginManager()" << this;
-}
+PluginManager::~PluginManager() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -185,4 +182,16 @@ QJsonArray PluginManager::toJsonArray() const
     }
   }
   return plugArray;
+}
+
+// -----------------------------------------------------------------------------
+const QString PluginManager::getNameOfClass() const
+{
+  return QString("PluginManager");
+}
+
+// -----------------------------------------------------------------------------
+QString PluginManager::ClassName()
+{
+  return QString("PluginManager");
 }

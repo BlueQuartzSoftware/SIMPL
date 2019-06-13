@@ -76,3 +76,28 @@ int H5StatsDataDelegate::readStatsDataName(StatsData* data, hid_t groupId)
   data->setName(name);
   return err;
 }
+
+// -----------------------------------------------------------------------------
+H5StatsDataDelegate::Pointer H5StatsDataDelegate::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+H5StatsDataDelegate::Pointer H5StatsDataDelegate::New()
+{
+  Pointer sharedPtr(new(H5StatsDataDelegate));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString H5StatsDataDelegate::getNameOfClass() const
+{
+  return QString("H5StatsDataDelegate");
+}
+
+// -----------------------------------------------------------------------------
+QString H5StatsDataDelegate::ClassName()
+{
+  return QString("H5StatsDataDelegate");
+}

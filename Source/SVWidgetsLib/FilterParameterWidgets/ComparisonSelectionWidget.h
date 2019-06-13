@@ -85,8 +85,25 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
       FaceListType,
     };
 
-    SIMPL_INSTANCE_PROPERTY(ComparisonSelectionWidget::ArrayListType, ArrayListType)
-    SIMPL_INSTANCE_PROPERTY(bool, ShowOperators)
+    /**
+     * @brief Setter property for ArrayListType
+     */
+    void setArrayListType(const ComparisonSelectionWidget::ArrayListType& value);
+    /**
+     * @brief Getter property for ArrayListType
+     * @return Value of ArrayListType
+     */
+    ComparisonSelectionWidget::ArrayListType getArrayListType() const;
+
+    /**
+     * @brief Setter property for ShowOperators
+     */
+    void setShowOperators(const bool& value);
+    /**
+     * @brief Getter property for ShowOperators
+     * @return Value of ShowOperators
+     */
+    bool getShowOperators() const;
 
     /**
      * @brief setupGui Initializes some of the GUI elements with selections or other GUI related items
@@ -205,6 +222,9 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     void attributeMatrixUpdated();
 
   private:
+    ComparisonSelectionWidget::ArrayListType m_ArrayListType = {};
+    bool m_ShowOperators = {};
+
     DataContainerArrayProxy m_DcaProxy;
 
     bool m_DidCausePreflight;

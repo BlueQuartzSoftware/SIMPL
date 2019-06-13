@@ -31,6 +31,8 @@
 
 #include "ErrorWarningFilter.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -215,4 +217,93 @@ const QString ErrorWarningFilter::getSubGroupName() const
 const QString ErrorWarningFilter::getHumanLabel() const
 {
   return "Error Warning and Test Filter";
+}
+
+// -----------------------------------------------------------------------------
+ErrorWarningFilter::Pointer ErrorWarningFilter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ErrorWarningFilter> ErrorWarningFilter::New()
+{
+  struct make_shared_enabler : public ErrorWarningFilter
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString ErrorWarningFilter::getNameOfClass() const
+{
+  return QString("ErrorWarningFilter");
+}
+
+// -----------------------------------------------------------------------------
+QString ErrorWarningFilter::ClassName()
+{
+  return QString("ErrorWarningFilter");
+}
+
+// -----------------------------------------------------------------------------
+void ErrorWarningFilter::setPreflightWarning(const bool& value)
+{
+  m_PreflightWarning = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ErrorWarningFilter::getPreflightWarning() const
+{
+  return m_PreflightWarning;
+}
+
+// -----------------------------------------------------------------------------
+void ErrorWarningFilter::setPreflightError(const bool& value)
+{
+  m_PreflightError = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ErrorWarningFilter::getPreflightError() const
+{
+  return m_PreflightError;
+}
+
+// -----------------------------------------------------------------------------
+void ErrorWarningFilter::setExecuteWarning(const bool& value)
+{
+  m_ExecuteWarning = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ErrorWarningFilter::getExecuteWarning() const
+{
+  return m_ExecuteWarning;
+}
+
+// -----------------------------------------------------------------------------
+void ErrorWarningFilter::setExecuteError(const bool& value)
+{
+  m_ExecuteError = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ErrorWarningFilter::getExecuteError() const
+{
+  return m_ExecuteError;
+}
+
+// -----------------------------------------------------------------------------
+void ErrorWarningFilter::setPropertyError(const bool& value)
+{
+  m_PropertyError = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ErrorWarningFilter::getPropertyError() const
+{
+  return m_PropertyError;
 }

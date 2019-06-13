@@ -38,8 +38,11 @@
 #include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
 
 /**
  * @brief The FindDerivatives class. See [Filter documentation](@ref findderivatives) for details.
@@ -59,16 +62,48 @@ class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(FindDerivatives)
-  SIMPL_FILTER_NEW_MACRO(FindDerivatives)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FindDerivatives, AbstractFilter)
+  using Self = FindDerivatives;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<FindDerivatives> New();
+
+  /**
+   * @brief Returns the name of the class for FindDerivatives
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for FindDerivatives
+   */
+  static QString ClassName();
 
   ~FindDerivatives() override;
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
+  /**
+   * @brief Setter property for SelectedArrayPath
+   */
+  void setSelectedArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SelectedArrayPath
+   * @return Value of SelectedArrayPath
+   */
+  DataArrayPath getSelectedArrayPath() const;
+
   Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, DerivativesArrayPath)
+  /**
+   * @brief Setter property for DerivativesArrayPath
+   */
+  void setDerivativesArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for DerivativesArrayPath
+   * @return Value of DerivativesArrayPath
+   */
+  DataArrayPath getDerivativesArrayPath() const;
+
   Q_PROPERTY(DataArrayPath DerivativesArrayPath READ getDerivativesArrayPath WRITE setDerivativesArrayPath)
 
     /**
@@ -183,8 +218,13 @@ protected slots:
   void processDerivativesMessage(const AbstractMessage::Pointer& msg);
 
 private:
-  DEFINE_IDATAARRAY_WEAKPTR(InArray)
-  DEFINE_DATAARRAY_VARIABLE(double, DerivativesArray)
+  std::weak_ptr<DataArray<double>> m_DerivativesArrayPtr;
+  double* m_DerivativesArray = nullptr;
+
+  IDataArrayWkPtrType m_InArrayPtr;
+
+  DataArrayPath m_SelectedArrayPath = {};
+  DataArrayPath m_DerivativesArrayPath = {};
 
   bool m_Interpolate;
 

@@ -38,11 +38,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BookmarksItem::BookmarksItem(const QString &name, const QString &path, BookmarksItem* parent)
-: m_Expanded(false)
-, m_Name(name)
+BookmarksItem::BookmarksItem(const QString& name, const QString& path, BookmarksItem* parent)
+: m_Name(name)
 , m_Path(path)
-, m_HasErrors(false)
 , m_ItemTooltip("")
 , m_Icon(QIcon())
 , m_ParentItem(parent)
@@ -163,4 +161,88 @@ bool BookmarksItem::removeChildren(int position, int count)
 void BookmarksItem::setParent(BookmarksItem* parent)
 {
   m_ParentItem = parent;
+}
+
+// -----------------------------------------------------------------------------
+void BookmarksItem::setName(const QString& value)
+{
+  m_Name = value;
+}
+
+// -----------------------------------------------------------------------------
+QString BookmarksItem::getName() const
+{
+  return m_Name;
+}
+
+// -----------------------------------------------------------------------------
+void BookmarksItem::setPath(const QString& value)
+{
+  m_Path = value;
+}
+
+// -----------------------------------------------------------------------------
+QString BookmarksItem::getPath() const
+{
+  return m_Path;
+}
+
+// -----------------------------------------------------------------------------
+void BookmarksItem::setHasErrors(const bool& value)
+{
+  m_HasErrors = value;
+}
+
+// -----------------------------------------------------------------------------
+bool BookmarksItem::getHasErrors() const
+{
+  return m_HasErrors;
+}
+
+// -----------------------------------------------------------------------------
+void BookmarksItem::setItemTooltip(const QString& value)
+{
+  m_ItemTooltip = value;
+}
+
+// -----------------------------------------------------------------------------
+QString BookmarksItem::getItemTooltip() const
+{
+  return m_ItemTooltip;
+}
+
+// -----------------------------------------------------------------------------
+void BookmarksItem::setIcon(const QIcon& value)
+{
+  m_Icon = value;
+}
+
+// -----------------------------------------------------------------------------
+QIcon BookmarksItem::getIcon() const
+{
+  return m_Icon;
+}
+
+// -----------------------------------------------------------------------------
+void BookmarksItem::setItemType(const BookmarksItem::ItemType& value)
+{
+  m_ItemType = value;
+}
+
+// -----------------------------------------------------------------------------
+BookmarksItem::ItemType BookmarksItem::getItemType() const
+{
+  return m_ItemType;
+}
+
+// -----------------------------------------------------------------------------
+void BookmarksItem::setExpanded(bool value)
+{
+  m_Expanded = value;
+}
+
+// -----------------------------------------------------------------------------
+bool BookmarksItem::isExpanded() const
+{
+  return m_Expanded;
 }

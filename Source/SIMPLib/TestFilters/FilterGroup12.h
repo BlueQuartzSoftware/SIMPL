@@ -31,7 +31,6 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
@@ -43,9 +42,23 @@ class FilterGroup12 : public AbstractFilter
   Q_OBJECT
 
 public:
-  SIMPL_SHARED_POINTERS(FilterGroup12)
-  SIMPL_FILTER_NEW_MACRO(FilterGroup12)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FilterGroup12, AbstractFilter)
+  using Self = FilterGroup12;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<FilterGroup12> New();
+
+  /**
+   * @brief Returns the name of the class for FilterGroup12
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for FilterGroup12
+   */
+  static QString ClassName();
 
   ~FilterGroup12() override;
 
@@ -150,5 +163,7 @@ public:
   FilterGroup12(FilterGroup12&&) = delete;                 // Move Constructor Not Implemented
   FilterGroup12& operator=(const FilterGroup12&) = delete; // Copy Assignment Not Implemented
   FilterGroup12& operator=(FilterGroup12&&) = delete;      // Move Assignment Not Implemented
+
+private:
 };
 

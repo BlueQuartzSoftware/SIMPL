@@ -71,7 +71,24 @@ public:
   virtual ~PipelinePauseTest()
   {
   }
-  SIMPL_TYPE_MACRO(PipelinePauseTest)
+  /**
+   * @brief Returns the name of the class for PipelinePauseTest
+   */
+  /**
+   * @brief Returns the name of the class for PipelinePauseTest
+   */
+  const QString getNameOfClass() const
+  {
+    return QString("PipelinePauseTest");
+  }
+
+  /**
+   * @brief Returns the name of the class for PipelinePauseTest
+   */
+  QString ClassName()
+  {
+    return QString("PipelinePauseTest");
+  }
 
   // -----------------------------------------------------------------------------
   //

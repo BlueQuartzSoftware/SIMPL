@@ -31,6 +31,8 @@
 
 #include "FilterGroup06.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
@@ -186,4 +188,33 @@ const QString FilterGroup06::getSubGroupName() const
 const QString FilterGroup06::getHumanLabel() const
 {
   return "SamplingFilters Test Filter";
+}
+
+// -----------------------------------------------------------------------------
+FilterGroup06::Pointer FilterGroup06::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<FilterGroup06> FilterGroup06::New()
+{
+  struct make_shared_enabler : public FilterGroup06
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString FilterGroup06::getNameOfClass() const
+{
+  return QString("FilterGroup06");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterGroup06::ClassName()
+{
+  return QString("FilterGroup06");
 }

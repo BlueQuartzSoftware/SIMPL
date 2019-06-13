@@ -196,3 +196,15 @@ void PipelineListener::closeFiles()
     m_StandardOutputLog->close();
   }
 }
+
+// -----------------------------------------------------------------------------
+const QString PipelineListener::getNameOfClass() const
+{
+  return QString("_SUPERPipelineListener");
+}
+
+// -----------------------------------------------------------------------------
+QString PipelineListener::ClassName()
+{
+  return QString("_SUPERPipelineListener");
+}

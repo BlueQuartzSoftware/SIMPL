@@ -35,7 +35,6 @@
 #include <QtCore/QWaitCondition>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 class QNetworkAccessManager;
@@ -63,22 +62,72 @@ class SIMPLib_EXPORT PostSlackMessage : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(PostSlackMessage)
-  SIMPL_FILTER_NEW_MACRO(PostSlackMessage)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PostSlackMessage, AbstractFilter)
+  using Self = PostSlackMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<PostSlackMessage> New();
+
+  /**
+   * @brief Returns the name of the class for PostSlackMessage
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for PostSlackMessage
+   */
+  static QString ClassName();
 
   ~PostSlackMessage() override;
 
-  SIMPL_FILTER_PARAMETER(QString, SlackUser)
+  /**
+   * @brief Setter property for SlackUser
+   */
+  void setSlackUser(const QString& value);
+  /**
+   * @brief Getter property for SlackUser
+   * @return Value of SlackUser
+   */
+  QString getSlackUser() const;
+
   Q_PROPERTY(QString SlackUser READ getSlackUser WRITE setSlackUser)
 
-  SIMPL_FILTER_PARAMETER(QString, SlackUrl)
+  /**
+   * @brief Setter property for SlackUrl
+   */
+  void setSlackUrl(const QString& value);
+  /**
+   * @brief Getter property for SlackUrl
+   * @return Value of SlackUrl
+   */
+  QString getSlackUrl() const;
+
   Q_PROPERTY(QString SlackUrl READ getSlackUrl WRITE setSlackUrl)
 
-  SIMPL_FILTER_PARAMETER(QString, SlackMessage)
+  /**
+   * @brief Setter property for SlackMessage
+   */
+  void setSlackMessage(const QString& value);
+  /**
+   * @brief Getter property for SlackMessage
+   * @return Value of SlackMessage
+   */
+  QString getSlackMessage() const;
+
   Q_PROPERTY(QString SlackMessage READ getSlackMessage WRITE setSlackMessage)
 
-  SIMPL_FILTER_PARAMETER(bool, WarningsAsError)
+  /**
+   * @brief Setter property for WarningsAsError
+   */
+  void setWarningsAsError(const bool& value);
+  /**
+   * @brief Getter property for WarningsAsError
+   * @return Value of WarningsAsError
+   */
+  bool getWarningsAsError() const;
+
   Q_PROPERTY(bool WarningsAsError READ getWarningsAsError WRITE setWarningsAsError)
 
     /**
@@ -178,6 +227,11 @@ protected:
   void initialize();
 
 private:
+  QString m_SlackUser = {};
+  QString m_SlackUrl = {};
+  QString m_SlackMessage = {};
+  bool m_WarningsAsError = {};
+
   QWaitCondition m_WaitCondition;
   QMutex m_Mutex;
   QNetworkAccessManager* m_NetworkManager;

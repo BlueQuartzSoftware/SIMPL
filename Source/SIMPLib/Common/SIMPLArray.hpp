@@ -199,6 +199,15 @@ public:
     return dest;
   }
 
+  /**
+   * @brief Returns a copy of the data as a std::array<T,Dimension>
+   * @return
+   */
+  std::array<T, Dimension> toArray() const
+  {
+    return m_Array;
+  }
+
 protected:
   void setValue(size_t i, value_type value)
   {

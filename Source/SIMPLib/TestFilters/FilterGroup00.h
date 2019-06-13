@@ -31,7 +31,6 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
@@ -43,9 +42,23 @@ class TESTCLASSNAME : public AbstractFilter
   Q_OBJECT
 
 public:
-  SIMPL_SHARED_POINTERS(TESTCLASSNAME)
-  SIMPL_FILTER_NEW_MACRO(TESTCLASSNAME)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TESTCLASSNAME, AbstractFilter)
+  using Self = TESTCLASSNAME;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<TESTCLASSNAME> New();
+
+  /**
+   * @brief Returns the name of the class for TESTCLASSNAME
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for TESTCLASSNAME
+   */
+  static QString ClassName();
 
   ~TESTCLASSNAME() override;
 

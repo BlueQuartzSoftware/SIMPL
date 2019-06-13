@@ -94,3 +94,52 @@ void FloatFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = m_GetterCallback();
   }
 }
+
+// -----------------------------------------------------------------------------
+FloatFilterParameter::Pointer FloatFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+FloatFilterParameter::Pointer FloatFilterParameter::New()
+{
+  Pointer sharedPtr(new(FloatFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString FloatFilterParameter::getNameOfClass() const
+{
+  return QString("FloatFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString FloatFilterParameter::ClassName()
+{
+  return QString("FloatFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void FloatFilterParameter::setSetterCallback(const FloatFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatFilterParameter::SetterCallbackType FloatFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void FloatFilterParameter::setGetterCallback(const FloatFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatFilterParameter::GetterCallbackType FloatFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

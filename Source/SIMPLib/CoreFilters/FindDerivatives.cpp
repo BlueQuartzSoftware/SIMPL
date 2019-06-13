@@ -35,7 +35,10 @@
 
 #include "FindDerivatives.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/TemplateHelpers.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -53,6 +56,8 @@
 #include "SIMPLib/Messages/GenericErrorMessage.h"
 #include "SIMPLib/Messages/GenericWarningMessage.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 /**
  * @brief This message handler is used by the FindDerivatives filter to re-emit incoming generic
@@ -498,4 +503,57 @@ const QString FindDerivatives::getSubGroupName() const
 const QString FindDerivatives::getHumanLabel() const
 {
   return "Find Derivatives";
+}
+
+// -----------------------------------------------------------------------------
+FindDerivatives::Pointer FindDerivatives::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<FindDerivatives> FindDerivatives::New()
+{
+  struct make_shared_enabler : public FindDerivatives
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString FindDerivatives::getNameOfClass() const
+{
+  return QString("FindDerivatives");
+}
+
+// -----------------------------------------------------------------------------
+QString FindDerivatives::ClassName()
+{
+  return QString("FindDerivatives");
+}
+
+// -----------------------------------------------------------------------------
+void FindDerivatives::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FindDerivatives::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void FindDerivatives::setDerivativesArrayPath(const DataArrayPath& value)
+{
+  m_DerivativesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FindDerivatives::getDerivativesArrayPath() const
+{
+  return m_DerivativesArrayPath;
 }

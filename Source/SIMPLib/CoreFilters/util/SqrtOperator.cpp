@@ -58,7 +58,11 @@ SqrtOperator::~SqrtOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SqrtOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void SqrtOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                             QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, sqrt)}
+
+// -----------------------------------------------------------------------------
+SqrtOperator::Pointer SqrtOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, sqrt)
+  return Pointer(static_cast<Self*>(nullptr));
 }

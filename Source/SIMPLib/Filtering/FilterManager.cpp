@@ -36,10 +36,11 @@
 #include "FilterManager.h"
 
 #include <QtCore/QJsonObject>
+#include <QtCore/QDebug>
+#include <QtCore/QSet>
 
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/CorePlugin.h"
-
 #include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 
 FilterManager* FilterManager::s_Self = nullptr;
@@ -269,4 +270,16 @@ QJsonArray FilterManager::toJsonArray() const
     filterArray.append(filtJson);
   }
   return filterArray;
+}
+
+// -----------------------------------------------------------------------------
+const QString FilterManager::getNameOfClass() const
+{
+  return QString("FilterManager");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterManager::ClassName()
+{
+  return QString("FilterManager");
 }

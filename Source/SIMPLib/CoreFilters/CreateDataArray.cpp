@@ -40,7 +40,10 @@
 #include <random>
 #include <chrono>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
@@ -598,4 +601,105 @@ const QString CreateDataArray::getSubGroupName() const
 const QString CreateDataArray::getHumanLabel() const
 {
   return "Create Data Array";
+}
+
+// -----------------------------------------------------------------------------
+CreateDataArray::Pointer CreateDataArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CreateDataArray> CreateDataArray::New()
+{
+  struct make_shared_enabler : public CreateDataArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString CreateDataArray::getNameOfClass() const
+{
+  return QString("CreateDataArray");
+}
+
+// -----------------------------------------------------------------------------
+QString CreateDataArray::ClassName()
+{
+  return QString("CreateDataArray");
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataArray::setScalarType(const SIMPL::ScalarTypes::Type& value)
+{
+  m_ScalarType = value;
+}
+
+// -----------------------------------------------------------------------------
+SIMPL::ScalarTypes::Type CreateDataArray::getScalarType() const
+{
+  return m_ScalarType;
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataArray::setNumberOfComponents(const int& value)
+{
+  m_NumberOfComponents = value;
+}
+
+// -----------------------------------------------------------------------------
+int CreateDataArray::getNumberOfComponents() const
+{
+  return m_NumberOfComponents;
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataArray::setNewArray(const DataArrayPath& value)
+{
+  m_NewArray = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateDataArray::getNewArray() const
+{
+  return m_NewArray;
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataArray::setInitializationType(const int& value)
+{
+  m_InitializationType = value;
+}
+
+// -----------------------------------------------------------------------------
+int CreateDataArray::getInitializationType() const
+{
+  return m_InitializationType;
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataArray::setInitializationValue(const QString& value)
+{
+  m_InitializationValue = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateDataArray::getInitializationValue() const
+{
+  return m_InitializationValue;
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataArray::setInitializationRange(const FPRangePair& value)
+{
+  m_InitializationRange = value;
+}
+
+// -----------------------------------------------------------------------------
+FPRangePair CreateDataArray::getInitializationRange() const
+{
+  return m_InitializationRange;
 }

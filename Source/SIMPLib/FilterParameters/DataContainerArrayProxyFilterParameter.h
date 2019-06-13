@@ -65,9 +65,23 @@
 class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(DataContainerArrayProxyFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(DataContainerArrayProxyFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerArrayProxyFilterParameter, FilterParameter)
+    using Self = DataContainerArrayProxyFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for DataContainerArrayProxyFilterParameter
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for DataContainerArrayProxyFilterParameter
+     */
+    static QString ClassName();
 
     using SetterCallbackType = std::function<void(DataContainerArrayProxy)>;
     using GetterCallbackType = std::function<DataContainerArrayProxy(void)>;
@@ -96,8 +110,25 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
 
     ~DataContainerArrayProxyFilterParameter() override;
 
-    SIMPL_INSTANCE_PROPERTY(DataContainerArrayProxy, DataContainerArrayProxy)
-    SIMPL_INSTANCE_PROPERTY(Qt::CheckState, DefaultFlagValue)
+    /**
+     * @brief Setter property for DataContainerArrayProxy
+     */
+    void setDataContainerArrayProxy(const DataContainerArrayProxy& value);
+    /**
+     * @brief Getter property for DataContainerArrayProxy
+     * @return Value of DataContainerArrayProxy
+     */
+    DataContainerArrayProxy getDataContainerArrayProxy() const;
+
+    /**
+     * @brief Setter property for DefaultFlagValue
+     */
+    void setDefaultFlagValue(const Qt::CheckState& value);
+    /**
+     * @brief Getter property for DefaultFlagValue
+     * @return Value of DefaultFlagValue
+     */
+    Qt::CheckState getDefaultFlagValue() const;
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls
@@ -123,14 +154,30 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
     * that this FilterParameter subclass represents.
     * from the filter parameter.
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const DataContainerArrayProxyFilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    DataContainerArrayProxyFilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const DataContainerArrayProxyFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    DataContainerArrayProxyFilterParameter::GetterCallbackType getGetterCallback() const;
 
     /**
      * @brief Handle DataArrayPath changes if necessary
@@ -149,5 +196,11 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
     DataContainerArrayProxyFilterParameter(DataContainerArrayProxyFilterParameter&&) = delete;      // Move Constructor Not Implemented
     DataContainerArrayProxyFilterParameter& operator=(const DataContainerArrayProxyFilterParameter&) = delete; // Copy Assignment Not Implemented
     DataContainerArrayProxyFilterParameter& operator=(DataContainerArrayProxyFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    DataContainerArrayProxy m_DataContainerArrayProxy = {};
+    Qt::CheckState m_DefaultFlagValue = {};
+    DataContainerArrayProxyFilterParameter::SetterCallbackType m_SetterCallback = {};
+    DataContainerArrayProxyFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

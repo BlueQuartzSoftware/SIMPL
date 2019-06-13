@@ -37,13 +37,18 @@
 
 #include <iostream>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/NumericTypeFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #define CHECK_AND_CONVERT(Type, DataContainer, ScalarType, Array, AttributeMatrixName, OutputName)                                                                                                     \
   if(false == completed)                                                                                                                                                                               \
@@ -439,4 +444,69 @@ const QString ConvertData::getSubGroupName() const
 const QString ConvertData::getHumanLabel() const
 {
   return "Convert AttributeArray Data Type";
+}
+
+// -----------------------------------------------------------------------------
+ConvertData::Pointer ConvertData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ConvertData> ConvertData::New()
+{
+  struct make_shared_enabler : public ConvertData
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString ConvertData::getNameOfClass() const
+{
+  return QString("ConvertData");
+}
+
+// -----------------------------------------------------------------------------
+QString ConvertData::ClassName()
+{
+  return QString("ConvertData");
+}
+
+// -----------------------------------------------------------------------------
+void ConvertData::setScalarType(const SIMPL::NumericTypes::Type& value)
+{
+  m_ScalarType = value;
+}
+
+// -----------------------------------------------------------------------------
+SIMPL::NumericTypes::Type ConvertData::getScalarType() const
+{
+  return m_ScalarType;
+}
+
+// -----------------------------------------------------------------------------
+void ConvertData::setOutputArrayName(const QString& value)
+{
+  m_OutputArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ConvertData::getOutputArrayName() const
+{
+  return m_OutputArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void ConvertData::setSelectedCellArrayPath(const DataArrayPath& value)
+{
+  m_SelectedCellArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ConvertData::getSelectedCellArrayPath() const
+{
+  return m_SelectedCellArrayPath;
 }

@@ -31,6 +31,8 @@
 
 #include "TESTCLASSNAME.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
 
 // -----------------------------------------------------------------------------
@@ -186,4 +188,33 @@ const QString TESTCLASSNAME::getSubGroupName() const
 const QString TESTCLASSNAME::getHumanLabel() const
 {
   return "TESTCLASSNAME";
+}
+
+// -----------------------------------------------------------------------------
+FilterGroup00::Pointer FilterGroup00::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<TESTCLASSNAME> FilterGroup00::New()
+{
+  struct make_shared_enabler : public TESTCLASSNAME
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString FilterGroup00::getNameOfClass() const
+{
+  return QString("TESTCLASSNAME");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterGroup00::ClassName()
+{
+  return QString("TESTCLASSNAME");
 }

@@ -55,3 +55,15 @@ void Observer::processPipelineMessage(const AbstractMessage::Pointer& pm)
   // Just call the superclass
   IObserver::processPipelineMessage(pm);
 }
+
+// -----------------------------------------------------------------------------
+const QString Observer::getNameOfClass() const
+{
+  return QString("_SUPERObserver");
+}
+
+// -----------------------------------------------------------------------------
+QString Observer::ClassName()
+{
+  return QString("_SUPERObserver");
+}

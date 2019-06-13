@@ -46,7 +46,12 @@ class CalculatorNumber;
 class SIMPLib_EXPORT CeilOperator : public UnaryOperator
 {
   public:
-    SIMPL_SHARED_POINTERS(CeilOperator)
+    using Self = CeilOperator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     static Pointer New()
     {
@@ -65,5 +70,7 @@ class SIMPLib_EXPORT CeilOperator : public UnaryOperator
     CeilOperator(CeilOperator&&) = delete;        // Move Constructor Not Implemented
     CeilOperator& operator=(const CeilOperator&) = delete; // Copy Assignment Not Implemented
     CeilOperator& operator=(CeilOperator&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

@@ -1,35 +1,35 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include <cmath>
 
@@ -38,7 +38,10 @@
 #include <QtCore/QDir>
 #include <QtCore/QJsonDocument>
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/StatsData/BoundaryStatsData.h"
@@ -46,7 +49,6 @@
 #include "SIMPLib/StatsData/PrecipitateStatsData.h"
 #include "SIMPLib/StatsData/PrimaryStatsData.h"
 #include "SIMPLib/StatsData/TransformationStatsData.h"
-
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
@@ -64,11 +66,65 @@ public:
 
   virtual ~StatsDataJsonRWTest() = default;
 
-  SIMPL_INSTANCE_STRING_PROPERTY(BoundaryStatsFileName)
-  SIMPL_INSTANCE_STRING_PROPERTY(MatrixStatsFileName)
-  SIMPL_INSTANCE_STRING_PROPERTY(PrecipitateStatsFileName)
-  SIMPL_INSTANCE_STRING_PROPERTY(PrimaryStatsFileName)
-  SIMPL_INSTANCE_STRING_PROPERTY(TransformationStatsFileName)
+  // -----------------------------------------------------------------------------
+  void setBoundaryStatsFileName(const QString& value)
+  {
+    m_BoundaryStatsFileName = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  QString getBoundaryStatsFileName() const
+  {
+    return m_BoundaryStatsFileName;
+  }
+
+  // -----------------------------------------------------------------------------
+  void setMatrixStatsFileName(const QString& value)
+  {
+    m_MatrixStatsFileName = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  QString getMatrixStatsFileName() const
+  {
+    return m_MatrixStatsFileName;
+  }
+
+  // -----------------------------------------------------------------------------
+  void setPrecipitateStatsFileName(const QString& value)
+  {
+    m_PrecipitateStatsFileName = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  QString getPrecipitateStatsFileName() const
+  {
+    return m_PrecipitateStatsFileName;
+  }
+
+  // -----------------------------------------------------------------------------
+  void setPrimaryStatsFileName(const QString& value)
+  {
+    m_PrimaryStatsFileName = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  QString getPrimaryStatsFileName() const
+  {
+    return m_PrimaryStatsFileName;
+  }
+
+  // -----------------------------------------------------------------------------
+  void setTransformationStatsFileName(const QString& value)
+  {
+    m_TransformationStatsFileName = value;
+  }
+
+  // -----------------------------------------------------------------------------
+  QString getTransformationStatsFileName() const
+  {
+    return m_TransformationStatsFileName;
+  }
 
   /**
    * @brief Removes any test files that were created during this test
@@ -163,7 +219,8 @@ public:
     }
   }
 
-  template <typename T> void ConfigureStatsData(typename T::Pointer statsData)
+  template <typename T>
+  void ConfigureStatsData(typename T::Pointer statsData)
   {
 
     statsData->setPhaseFraction(0.1f);
@@ -249,7 +306,8 @@ public:
   /**
    * @brief ValidateStatsData
    */
-  template <typename T> void ValidateStatsData(typename T::Pointer statsData)
+  template <typename T>
+  void ValidateStatsData(typename T::Pointer statsData)
   {
     float epsilon = 0.00001f;
 
@@ -392,13 +450,13 @@ public:
     ConfigureStatsData<PrecipitateStatsData>(statsData);
 
     // Write RDF Distribution Data
-    std::vector<float> boxDims(3, 98.0f);
-    std::vector<float> boxRes(3, 0.1f);
+    std::array<float, 3> boxDims = {98.0f, 98.0f, 98.0f};
+    std::array<float, 3> boxRes = {0.1f, 0.1f, 0.1f};
     std::vector<float> frequencies = RadialDistributionFunction::GenerateRandomDistribution(8, 93, 55, boxDims, boxRes);
     RdfData::Pointer rdf = RdfData::New();
     rdf->setFrequencies(frequencies);
-    rdf->setBoxResolution(boxRes.data());
-    rdf->setBoxSize(boxDims.data());
+    rdf->setBoxResolution(boxRes);
+    rdf->setBoxSize(boxDims);
     rdf->setMinDistance(8.0f);
     rdf->setMaxDistance(98);
     statsData->setRadialDistFunction(rdf);
@@ -426,10 +484,8 @@ public:
     DREAM3D_REQUIRED(std::abs(statsData->getPrecipBoundaryFraction() - 0.01), <, epsilon);
 
     RdfData::Pointer rdf = statsData->getRadialDistFunction();
-    float boxRes[3] = {0.0f, 0.0f, 0.0f};
-    rdf->getBoxResolution(boxRes);
-    float boxSize[3] = {0, 0, 0};
-    rdf->getBoxSize(boxSize);
+    //    std::array<float, 3> boxRes = rdf->getBoxResolution();
+    //    std::array<float, 3> boxSize = rdf->getBoxSize();
     DREAM3D_REQUIRED(std::abs(rdf->getMinDistance() - 8.0f), <, epsilon);
     DREAM3D_REQUIRED(std::abs(rdf->getMaxDistance() - 98.0f), <, epsilon);
   }
@@ -560,7 +616,16 @@ public:
 #endif
   }
 
+public:
+  StatsDataJsonRWTest(const StatsDataJsonRWTest&) = delete;            // Copy Constructor Not Implemented
+  StatsDataJsonRWTest(StatsDataJsonRWTest&&) = delete;                 // Move Constructor Not Implemented
+  StatsDataJsonRWTest& operator=(const StatsDataJsonRWTest&) = delete; // Copy Assignment Not Implemented
+  StatsDataJsonRWTest& operator=(StatsDataJsonRWTest&&) = delete;      // Move Assignment Not Implemented
+
 private:
-  StatsDataJsonRWTest(const StatsDataJsonRWTest&); // Copy Constructor Not Implemented
-  void operator=(const StatsDataJsonRWTest&);      // Move assignment Not Implemented
+  QString m_BoundaryStatsFileName = {};
+  QString m_MatrixStatsFileName = {};
+  QString m_PrecipitateStatsFileName = {};
+  QString m_PrimaryStatsFileName = {};
+  QString m_TransformationStatsFileName = {};
 };

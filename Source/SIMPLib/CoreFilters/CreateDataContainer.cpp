@@ -35,10 +35,15 @@
 
 #include "CreateDataContainer.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   DataContainerID = 1
@@ -198,4 +203,45 @@ const QUuid CreateDataContainer::getUuid()
 const QString CreateDataContainer::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
+}
+
+// -----------------------------------------------------------------------------
+CreateDataContainer::Pointer CreateDataContainer::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CreateDataContainer> CreateDataContainer::New()
+{
+  struct make_shared_enabler : public CreateDataContainer
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString CreateDataContainer::getNameOfClass() const
+{
+  return QString("CreateDataContainer");
+}
+
+// -----------------------------------------------------------------------------
+QString CreateDataContainer::ClassName()
+{
+  return QString("CreateDataContainer");
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataContainer::setDataContainerName(const DataArrayPath& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateDataContainer::getDataContainerName() const
+{
+  return m_DataContainerName;
 }

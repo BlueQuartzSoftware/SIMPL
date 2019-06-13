@@ -7,7 +7,6 @@
 #include <QtCore/QJsonArray>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -28,22 +27,72 @@ class SIMPLib_EXPORT GenerateColorTable : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(GenerateColorTable)
-  SIMPL_FILTER_NEW_MACRO(GenerateColorTable)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(GenerateColorTable, AbstractFilter)
+  using Self = GenerateColorTable;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<GenerateColorTable> New();
+
+  /**
+   * @brief Returns the name of the class for GenerateColorTable
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for GenerateColorTable
+   */
+  static QString ClassName();
 
   ~GenerateColorTable() override;
 
-  SIMPL_INSTANCE_PROPERTY(QString, SelectedPresetName)
+  /**
+   * @brief Setter property for SelectedPresetName
+   */
+  void setSelectedPresetName(const QString& value);
+  /**
+   * @brief Getter property for SelectedPresetName
+   * @return Value of SelectedPresetName
+   */
+  QString getSelectedPresetName() const;
+
   Q_PROPERTY(QString SelectedPresetName READ getSelectedPresetName WRITE setSelectedPresetName)
 
-  SIMPL_INSTANCE_PROPERTY(QJsonArray, SelectedPresetControlPoints)
+  /**
+   * @brief Setter property for SelectedPresetControlPoints
+   */
+  void setSelectedPresetControlPoints(const QJsonArray& value);
+  /**
+   * @brief Getter property for SelectedPresetControlPoints
+   * @return Value of SelectedPresetControlPoints
+   */
+  QJsonArray getSelectedPresetControlPoints() const;
+
   Q_PROPERTY(QJsonArray SelectedPresetControlPoints READ getSelectedPresetControlPoints WRITE setSelectedPresetControlPoints)
 
-  SIMPL_INSTANCE_PROPERTY(DataArrayPath, SelectedDataArrayPath)
+  /**
+   * @brief Setter property for SelectedDataArrayPath
+   */
+  void setSelectedDataArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SelectedDataArrayPath
+   * @return Value of SelectedDataArrayPath
+   */
+  DataArrayPath getSelectedDataArrayPath() const;
+
   Q_PROPERTY(DataArrayPath SelectedDataArrayPath READ getSelectedDataArrayPath WRITE setSelectedDataArrayPath)
 
-  SIMPL_INSTANCE_PROPERTY(QString, RgbArrayName)
+  /**
+   * @brief Setter property for RgbArrayName
+   */
+  void setRgbArrayName(const QString& value);
+  /**
+   * @brief Getter property for RgbArrayName
+   * @return Value of RgbArrayName
+   */
+  QString getRgbArrayName() const;
+
   Q_PROPERTY(QString RgbArrayName READ getRgbArrayName WRITE setRgbArrayName)
 
   /**
@@ -147,5 +196,11 @@ public:
   GenerateColorTable(GenerateColorTable&&) = delete;                 // Move Constructor Not Implemented
   GenerateColorTable& operator=(const GenerateColorTable&) = delete; // Copy Assignment Not Implemented
   GenerateColorTable& operator=(GenerateColorTable&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  QString m_SelectedPresetName = {};
+  QJsonArray m_SelectedPresetControlPoints = {};
+  DataArrayPath m_SelectedDataArrayPath = {};
+  QString m_RgbArrayName = {};
 };
 

@@ -110,3 +110,28 @@ float ShapeOps::inside(float axis1comp, float axis2comp, float axis3comp)
 void ShapeOps::init()
 {
 }
+
+// -----------------------------------------------------------------------------
+ShapeOps::Pointer ShapeOps::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+const QString ShapeOps::getNameOfClass() const
+{
+  return QString("ShapeOps");
+}
+
+// -----------------------------------------------------------------------------
+QString ShapeOps::ClassName()
+{
+  return QString("ShapeOps");
+}
+
+// -----------------------------------------------------------------------------
+ShapeOps::Pointer ShapeOps::New()
+{
+  Pointer sharedPtr(new(ShapeOps));
+  return sharedPtr;
+}

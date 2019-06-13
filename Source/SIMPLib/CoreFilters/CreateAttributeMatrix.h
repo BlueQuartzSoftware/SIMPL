@@ -37,7 +37,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
@@ -61,19 +60,60 @@ class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(CreateAttributeMatrix)
-    SIMPL_FILTER_NEW_MACRO(CreateAttributeMatrix)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateAttributeMatrix, AbstractFilter)
+    using Self = CreateAttributeMatrix;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<CreateAttributeMatrix> New();
+
+    /**
+     * @brief Returns the name of the class for CreateAttributeMatrix
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for CreateAttributeMatrix
+     */
+    static QString ClassName();
 
     ~CreateAttributeMatrix() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedAttributeMatrix)
+    /**
+     * @brief Setter property for CreatedAttributeMatrix
+     */
+    void setCreatedAttributeMatrix(const DataArrayPath& value);
+    /**
+     * @brief Getter property for CreatedAttributeMatrix
+     * @return Value of CreatedAttributeMatrix
+     */
+    DataArrayPath getCreatedAttributeMatrix() const;
+
     Q_PROPERTY(DataArrayPath CreatedAttributeMatrix READ getCreatedAttributeMatrix WRITE setCreatedAttributeMatrix)
 
-    SIMPL_FILTER_PARAMETER(int, AttributeMatrixType)
+    /**
+     * @brief Setter property for AttributeMatrixType
+     */
+    void setAttributeMatrixType(const int& value);
+    /**
+     * @brief Getter property for AttributeMatrixType
+     * @return Value of AttributeMatrixType
+     */
+    int getAttributeMatrixType() const;
+
     Q_PROPERTY(int AttributeMatrixType READ getAttributeMatrixType WRITE setAttributeMatrixType)
 
-    SIMPL_FILTER_PARAMETER(DynamicTableData, TupleDimensions)
+    /**
+     * @brief Setter property for TupleDimensions
+     */
+    void setTupleDimensions(const DynamicTableData& value);
+    /**
+     * @brief Getter property for TupleDimensions
+     * @return Value of TupleDimensions
+     */
+    DynamicTableData getTupleDimensions() const;
+
     Q_PROPERTY(DynamicTableData TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
 
     /**
@@ -182,5 +222,10 @@ class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
     CreateAttributeMatrix(CreateAttributeMatrix&&) = delete;      // Move Constructor Not Implemented
     CreateAttributeMatrix& operator=(const CreateAttributeMatrix&) = delete; // Copy Assignment Not Implemented
     CreateAttributeMatrix& operator=(CreateAttributeMatrix&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    DataArrayPath m_CreatedAttributeMatrix = {};
+    int m_AttributeMatrixType = {};
+    DynamicTableData m_TupleDimensions = {};
 };
 

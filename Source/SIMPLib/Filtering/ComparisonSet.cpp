@@ -251,3 +251,28 @@ bool ComparisonSet::renameDataArrayPath(DataArrayPath::RenameType renamePath)
 
   return updated;
 }
+
+// -----------------------------------------------------------------------------
+ComparisonSet::Pointer ComparisonSet::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ComparisonSet::Pointer ComparisonSet::New()
+{
+  Pointer sharedPtr(new(ComparisonSet));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString ComparisonSet::getNameOfClass() const
+{
+  return QString("ComparisonSet");
+}
+
+// -----------------------------------------------------------------------------
+QString ComparisonSet::ClassName()
+{
+  return QString("ComparisonSet");
+}

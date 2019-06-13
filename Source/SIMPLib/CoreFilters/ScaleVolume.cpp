@@ -35,7 +35,10 @@
 
 #include "ScaleVolume.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/Utilities/ParallelDataAlgorithm.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -45,6 +48,8 @@
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/Geometry/IGeometry2D.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 /**
  * @brief The CalculateCentroidsImpl class implements a threaded algorithm that scales the
@@ -337,4 +342,93 @@ const QString ScaleVolume::getSubGroupName() const
 const QString ScaleVolume::getHumanLabel() const
 {
   return "Change Scaling of Volume";
+}
+
+// -----------------------------------------------------------------------------
+ScaleVolume::Pointer ScaleVolume::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ScaleVolume> ScaleVolume::New()
+{
+  struct make_shared_enabler : public ScaleVolume
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString ScaleVolume::getNameOfClass() const
+{
+  return QString("ScaleVolume");
+}
+
+// -----------------------------------------------------------------------------
+QString ScaleVolume::ClassName()
+{
+  return QString("ScaleVolume");
+}
+
+// -----------------------------------------------------------------------------
+void ScaleVolume::setDataContainerName(const DataArrayPath& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ScaleVolume::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void ScaleVolume::setSurfaceDataContainerName(const DataArrayPath& value)
+{
+  m_SurfaceDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ScaleVolume::getSurfaceDataContainerName() const
+{
+  return m_SurfaceDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void ScaleVolume::setApplyToVoxelVolume(const bool& value)
+{
+  m_ApplyToVoxelVolume = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ScaleVolume::getApplyToVoxelVolume() const
+{
+  return m_ApplyToVoxelVolume;
+}
+
+// -----------------------------------------------------------------------------
+void ScaleVolume::setApplyToSurfaceMesh(const bool& value)
+{
+  m_ApplyToSurfaceMesh = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ScaleVolume::getApplyToSurfaceMesh() const
+{
+  return m_ApplyToSurfaceMesh;
+}
+
+// -----------------------------------------------------------------------------
+void ScaleVolume::setScaleFactor(const FloatVec3Type& value)
+{
+  m_ScaleFactor = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type ScaleVolume::getScaleFactor() const
+{
+  return m_ScaleFactor;
 }

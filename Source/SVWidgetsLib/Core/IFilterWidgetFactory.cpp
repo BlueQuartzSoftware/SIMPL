@@ -37,6 +37,8 @@
 
 #include <QtWidgets/QWidget>
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 // -----------------------------------------------------------------------------
@@ -59,4 +61,22 @@ QWidget* IFilterWidgetFactory::createWidget(FilterParameter* parameter, Abstract
 {
   Q_ASSERT(false);
   return nullptr;
+}
+
+// -----------------------------------------------------------------------------
+IFilterWidgetFactory::Pointer IFilterWidgetFactory::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+const QString IFilterWidgetFactory::getNameOfClass() const
+{
+  return QString("IFilterWidgetFactory");
+}
+
+// -----------------------------------------------------------------------------
+QString IFilterWidgetFactory::ClassName()
+{
+  return QString("IFilterWidgetFactory");
 }

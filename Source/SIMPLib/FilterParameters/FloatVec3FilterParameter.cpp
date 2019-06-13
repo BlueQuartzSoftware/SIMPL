@@ -109,3 +109,52 @@ void FloatVec3FilterParameter::writeJson(QJsonObject& obj)
     obj[getPropertyName()] = json;
   }
 }
+
+// -----------------------------------------------------------------------------
+FloatVec3FilterParameter::Pointer FloatVec3FilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3FilterParameter::Pointer FloatVec3FilterParameter::New()
+{
+  Pointer sharedPtr(new(FloatVec3FilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString FloatVec3FilterParameter::getNameOfClass() const
+{
+  return QString("FloatVec3FilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString FloatVec3FilterParameter::ClassName()
+{
+  return QString("FloatVec3FilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void FloatVec3FilterParameter::setSetterCallback(const FloatVec3FilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3FilterParameter::SetterCallbackType FloatVec3FilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void FloatVec3FilterParameter::setGetterCallback(const FloatVec3FilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3FilterParameter::GetterCallbackType FloatVec3FilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

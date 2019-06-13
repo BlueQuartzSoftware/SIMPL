@@ -34,8 +34,8 @@
 
 #include <vector>
 
+
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
@@ -57,13 +57,51 @@ public:
 
   using QVectorSizeT = QVector<QVector<size_t>>;
 
-  SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DCGeometryTypes)
-  SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Types, AMTypes)
-  SIMPL_INSTANCE_PROPERTY(QVector<QString>, DATypes)
-  SIMPL_INSTANCE_PROPERTY(SIMPLH5DataReaderRequirements::QVectorSizeT, ComponentDimensions)
+  /**
+   * @brief Setter property for DCGeometryTypes
+   */
+  void setDCGeometryTypes(const IGeometry::Types& value);
+  /**
+   * @brief Getter property for DCGeometryTypes
+   * @return Value of DCGeometryTypes
+   */
+  IGeometry::Types getDCGeometryTypes() const;
+
+  /**
+   * @brief Setter property for AMTypes
+   */
+  void setAMTypes(const AttributeMatrix::Types& value);
+  /**
+   * @brief Getter property for AMTypes
+   * @return Value of AMTypes
+   */
+  AttributeMatrix::Types getAMTypes() const;
+
+  /**
+   * @brief Setter property for DATypes
+   */
+  void setDATypes(const QVector<QString>& value);
+  /**
+   * @brief Getter property for DATypes
+   * @return Value of DATypes
+   */
+  QVector<QString> getDATypes() const;
+
+  /**
+   * @brief Setter property for ComponentDimensions
+   */
+  void setComponentDimensions(const SIMPLH5DataReaderRequirements::QVectorSizeT& value);
+  /**
+   * @brief Getter property for ComponentDimensions
+   * @return Value of ComponentDimensions
+   */
+  SIMPLH5DataReaderRequirements::QVectorSizeT getComponentDimensions() const;
 
 private:
-
+  IGeometry::Types m_DCGeometryTypes = {};
+  AttributeMatrix::Types m_AMTypes = {};
+  QVector<QString> m_DATypes = {};
+  SIMPLH5DataReaderRequirements::QVectorSizeT m_ComponentDimensions = {};
 };
 
 

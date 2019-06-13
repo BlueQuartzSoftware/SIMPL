@@ -21,10 +21,14 @@
 #include <QtCore/QString>
 
 //SIMPLib Includes
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/DataContainers/IDataStructureNode.h"
 
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 /**
 * @class IDataArray IDataArray.h PathToHeader/IDataArray.h
@@ -52,8 +56,21 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(IDataArray)
-  SIMPL_TYPE_MACRO(IDataArray)
+  using Self = IDataArray;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for IDataArray
+   */
+  virtual const QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for IDataArray
+   */
+  static QString ClassName();
 
   /**
    * This templated method is used to get at the low level pointer that points
@@ -313,7 +330,7 @@ class CheckDataArrayType
   public:
     CheckDataArrayType() = default;
     virtual ~CheckDataArrayType() = default;
-    bool operator()(IDataArray::Pointer p)
+    bool operator()(IDataArrayShPtrType p)
     {
       return (std::dynamic_pointer_cast<T>(p).get() != nullptr);
     }

@@ -42,7 +42,9 @@
 
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/DataArrays/IDataArray.h"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 /**
  * @class H5DataArrayReader H5DataArrayReader.h DREAM3DLib/HDF5/H5DataArrayReader.h
@@ -74,7 +76,7 @@ class SIMPLib_EXPORT H5DataArrayReader
      * @param metaDataOnly Read just the meta data about the DataArray or actually read all the data
      * @return
      */
-    static IDataArray::Pointer ReadIDataArray(hid_t gid, const QString& name, bool metaDataOnly = false);
+    static IDataArrayShPtrType ReadIDataArray(hid_t gid, const QString& name, bool metaDataOnly = false);
 
     /**
      * @brief ReadNeighborListData
@@ -83,7 +85,7 @@ class SIMPLib_EXPORT H5DataArrayReader
      * @param metaDataOnly Read just the meta data about the DataArray or actually read all the data
      * @return
      */
-    static IDataArray::Pointer ReadNeighborListData(hid_t gid, const QString& name, bool metaDataOnly = false);
+    static IDataArrayShPtrType ReadNeighborListData(hid_t gid, const QString& name, bool metaDataOnly = false);
 
     /**
      * @brief readStringDataArray
@@ -92,8 +94,7 @@ class SIMPLib_EXPORT H5DataArrayReader
      * @param metaDataOnly Read just the meta data about the DataArray or actually read all the data
      * @return
      */
-    static IDataArray::Pointer ReadStringDataArray(hid_t gid, const QString& name, bool metaDataOnly = false);
-
+    static IDataArrayShPtrType ReadStringDataArray(hid_t gid, const QString& name, bool metaDataOnly = false);
 
   protected:
     H5DataArrayReader();

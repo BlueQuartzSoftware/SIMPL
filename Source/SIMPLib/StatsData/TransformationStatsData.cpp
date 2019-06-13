@@ -40,6 +40,8 @@
 
 #include "H5Support/H5Utilities.h"
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/HDF5/H5TransformationStatsDataDelegate.h"
 
 // -----------------------------------------------------------------------------
@@ -82,8 +84,7 @@ StatsData::Pointer TransformationStatsData::deepCopy()
   ptr->setParentPhase(getParentPhase());
   ptr->setName(getName());
 
-  float diamInfo[3] = {0.0f, 0.0f, 0.0f};
-  getFeatureDiameterInfo(diamInfo);
+  std::array<float, 3> diamInfo = getFeatureDiameterInfo();
   ptr->setFeatureDiameterInfo(diamInfo);
 
   SD_DEEP_COPY_VECTOR(FeatureSizeDistribution);
@@ -290,7 +291,7 @@ void TransformationStatsData::readJson(const QJsonObject& json)
   }
 
   // Read the Feature Diameter Info
-  float fVec3[3] = {0.0f, 0.0f, 0.0f};
+  std::array<float, 3> fVec3 = {0.0f, 0.0f, 0.0f};
   if(ParseFloat3Vec(json, SIMPL::StringConstants::Feature_Diameter_Info, fVec3, 0.0) == -1)
   {
     // Throw warning
@@ -360,4 +361,285 @@ void TransformationStatsData::readJson(const QJsonObject& json)
   // Read the Axis ODF
   arrays = ReadJsonVectorOfFloatsArrays(json, SIMPL::StringConstants::AxisODFWeights);
   setAxisODF_Weights(arrays);
+}
+
+// -----------------------------------------------------------------------------
+TransformationStatsData::Pointer TransformationStatsData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+TransformationStatsData::Pointer TransformationStatsData::New()
+{
+  Pointer sharedPtr(new(TransformationStatsData));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString TransformationStatsData::getNameOfClass() const
+{
+  return QString("TransformationStatsData");
+}
+
+// -----------------------------------------------------------------------------
+QString TransformationStatsData::ClassName()
+{
+  return QString("TransformationStatsData");
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setBoundaryArea(const float& value)
+{
+  m_BoundaryArea = value;
+}
+
+// -----------------------------------------------------------------------------
+float TransformationStatsData::getBoundaryArea() const
+{
+  return m_BoundaryArea;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setParentPhase(const float& value)
+{
+  m_ParentPhase = value;
+}
+
+// -----------------------------------------------------------------------------
+float TransformationStatsData::getParentPhase() const
+{
+  return m_ParentPhase;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setFeatureSizeDistribution(const VectorOfFloatArray& value)
+{
+  m_FeatureSizeDistribution = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray TransformationStatsData::getFeatureSizeDistribution() const
+{
+  return m_FeatureSizeDistribution;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setFeatureSize_DistType(const uint32_t& value)
+{
+  m_FeatureSize_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t TransformationStatsData::getFeatureSize_DistType() const
+{
+  return m_FeatureSize_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setBinNumbers(const FloatArrayType::Pointer& value)
+{
+  m_BinNumbers = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer TransformationStatsData::getBinNumbers() const
+{
+  return m_BinNumbers;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setFeatureSize_BOverA(const VectorOfFloatArray& value)
+{
+  m_FeatureSize_BOverA = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray TransformationStatsData::getFeatureSize_BOverA() const
+{
+  return m_FeatureSize_BOverA;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setBOverA_DistType(const uint32_t& value)
+{
+  m_BOverA_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t TransformationStatsData::getBOverA_DistType() const
+{
+  return m_BOverA_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setFeatureSize_COverA(const VectorOfFloatArray& value)
+{
+  m_FeatureSize_COverA = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray TransformationStatsData::getFeatureSize_COverA() const
+{
+  return m_FeatureSize_COverA;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setCOverA_DistType(const uint32_t& value)
+{
+  m_COverA_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t TransformationStatsData::getCOverA_DistType() const
+{
+  return m_COverA_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setFeatureSize_Neighbors(const VectorOfFloatArray& value)
+{
+  m_FeatureSize_Neighbors = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray TransformationStatsData::getFeatureSize_Neighbors() const
+{
+  return m_FeatureSize_Neighbors;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setNeighbors_DistType(const uint32_t& value)
+{
+  m_Neighbors_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t TransformationStatsData::getNeighbors_DistType() const
+{
+  return m_Neighbors_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setFeatureSize_Omegas(const VectorOfFloatArray& value)
+{
+  m_FeatureSize_Omegas = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray TransformationStatsData::getFeatureSize_Omegas() const
+{
+  return m_FeatureSize_Omegas;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setOmegas_DistType(const uint32_t& value)
+{
+  m_Omegas_DistType = value;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t TransformationStatsData::getOmegas_DistType() const
+{
+  return m_Omegas_DistType;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setMisorientationBins(const FloatArrayType::Pointer& value)
+{
+  m_MisorientationBins = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer TransformationStatsData::getMisorientationBins() const
+{
+  return m_MisorientationBins;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setMDF_Weights(const VectorOfFloatArray& value)
+{
+  m_MDF_Weights = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray TransformationStatsData::getMDF_Weights() const
+{
+  return m_MDF_Weights;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setODF(const FloatArrayType::Pointer& value)
+{
+  m_ODF = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer TransformationStatsData::getODF() const
+{
+  return m_ODF;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setODF_Weights(const VectorOfFloatArray& value)
+{
+  m_ODF_Weights = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray TransformationStatsData::getODF_Weights() const
+{
+  return m_ODF_Weights;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setAxisOrientation(const FloatArrayType::Pointer& value)
+{
+  m_AxisOrientation = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer TransformationStatsData::getAxisOrientation() const
+{
+  return m_AxisOrientation;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setAxisODF_Weights(const VectorOfFloatArray& value)
+{
+  m_AxisODF_Weights = value;
+}
+
+// -----------------------------------------------------------------------------
+VectorOfFloatArray TransformationStatsData::getAxisODF_Weights() const
+{
+  return m_AxisODF_Weights;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setFeatureDiameterInfo(const std::array<float, 3>& value)
+{
+  m_FeatureDiameterInfo = value;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::setFeatureDiameterInfo(float v0, float v1, float v2)
+{
+  m_FeatureDiameterInfo[0] = v0;
+  m_FeatureDiameterInfo[1] = v1;
+  m_FeatureDiameterInfo[2] = v2;
+}
+
+// -----------------------------------------------------------------------------
+std::array<float, 3> TransformationStatsData::getFeatureDiameterInfo() const
+{
+  return m_FeatureDiameterInfo;
+}
+
+// -----------------------------------------------------------------------------
+void TransformationStatsData::getFeatureDiameterInfo(float* data) const
+{
+  data[0] = m_FeatureDiameterInfo[0];
+  data[1] = m_FeatureDiameterInfo[1];
+  data[2] = m_FeatureDiameterInfo[2];
 }

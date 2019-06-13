@@ -58,7 +58,11 @@ ABSOperator::~ABSOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ABSOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void ABSOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                            QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, fabs)}
+
+// -----------------------------------------------------------------------------
+ABSOperator::Pointer ABSOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, fabs)
+  return Pointer(static_cast<Self*>(nullptr));
 }

@@ -93,3 +93,40 @@ void GenerateColorTableFilterParameter::writeJson(QJsonObject& json)
   json["SelectedPresetName"] = presetName;
   json["SelectedPresetControlPoints"] = presetControlPoints;
 }
+
+// -----------------------------------------------------------------------------
+GenerateColorTableFilterParameter::Pointer GenerateColorTableFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+GenerateColorTableFilterParameter::Pointer GenerateColorTableFilterParameter::New()
+{
+  Pointer sharedPtr(new(GenerateColorTableFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString GenerateColorTableFilterParameter::getNameOfClass() const
+{
+  return QString("GenerateColorTableFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString GenerateColorTableFilterParameter::ClassName()
+{
+  return QString("GenerateColorTableFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void GenerateColorTableFilterParameter::setFilter(GenerateColorTable* value)
+{
+  m_Filter = value;
+}
+
+// -----------------------------------------------------------------------------
+GenerateColorTable* GenerateColorTableFilterParameter::getFilter() const
+{
+  return m_Filter;
+}

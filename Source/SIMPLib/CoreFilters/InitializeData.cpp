@@ -41,7 +41,10 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QTime>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
@@ -50,7 +53,8 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/SIMPLibVersion.h"
-
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -581,4 +585,165 @@ const QString InitializeData::getSubGroupName() const
 const QString InitializeData::getHumanLabel() const
 {
   return "Initialize Data";
+}
+
+// -----------------------------------------------------------------------------
+InitializeData::Pointer InitializeData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<InitializeData> InitializeData::New()
+{
+  struct make_shared_enabler : public InitializeData
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString InitializeData::getNameOfClass() const
+{
+  return QString("InitializeData");
+}
+
+// -----------------------------------------------------------------------------
+QString InitializeData::ClassName()
+{
+  return QString("InitializeData");
+}
+
+// -----------------------------------------------------------------------------
+void InitializeData::setCellAttributeMatrixPaths(const QVector<DataArrayPath>& value)
+{
+  m_CellAttributeMatrixPaths = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> InitializeData::getCellAttributeMatrixPaths() const
+{
+  return m_CellAttributeMatrixPaths;
+}
+
+// -----------------------------------------------------------------------------
+void InitializeData::setXMin(const int& value)
+{
+  m_XMin = value;
+}
+
+// -----------------------------------------------------------------------------
+int InitializeData::getXMin() const
+{
+  return m_XMin;
+}
+
+// -----------------------------------------------------------------------------
+void InitializeData::setYMin(const int& value)
+{
+  m_YMin = value;
+}
+
+// -----------------------------------------------------------------------------
+int InitializeData::getYMin() const
+{
+  return m_YMin;
+}
+
+// -----------------------------------------------------------------------------
+void InitializeData::setZMin(const int& value)
+{
+  m_ZMin = value;
+}
+
+// -----------------------------------------------------------------------------
+int InitializeData::getZMin() const
+{
+  return m_ZMin;
+}
+
+// -----------------------------------------------------------------------------
+void InitializeData::setXMax(const int& value)
+{
+  m_XMax = value;
+}
+
+// -----------------------------------------------------------------------------
+int InitializeData::getXMax() const
+{
+  return m_XMax;
+}
+
+// -----------------------------------------------------------------------------
+void InitializeData::setYMax(const int& value)
+{
+  m_YMax = value;
+}
+
+// -----------------------------------------------------------------------------
+int InitializeData::getYMax() const
+{
+  return m_YMax;
+}
+
+// -----------------------------------------------------------------------------
+void InitializeData::setZMax(const int& value)
+{
+  m_ZMax = value;
+}
+
+// -----------------------------------------------------------------------------
+int InitializeData::getZMax() const
+{
+  return m_ZMax;
+}
+
+// -----------------------------------------------------------------------------
+void InitializeData::setInitType(const int& value)
+{
+  m_InitType = value;
+}
+
+// -----------------------------------------------------------------------------
+int InitializeData::getInitType() const
+{
+  return m_InitType;
+}
+
+// -----------------------------------------------------------------------------
+void InitializeData::setRandom(const bool& value)
+{
+  m_Random = value;
+}
+
+// -----------------------------------------------------------------------------
+bool InitializeData::getRandom() const
+{
+  return m_Random;
+}
+
+// -----------------------------------------------------------------------------
+void InitializeData::setInitValue(const double& value)
+{
+  m_InitValue = value;
+}
+
+// -----------------------------------------------------------------------------
+double InitializeData::getInitValue() const
+{
+  return m_InitValue;
+}
+
+// -----------------------------------------------------------------------------
+void InitializeData::setInitRange(const FPRangePair& value)
+{
+  m_InitRange = value;
+}
+
+// -----------------------------------------------------------------------------
+FPRangePair InitializeData::getInitRange() const
+{
+  return m_InitRange;
 }

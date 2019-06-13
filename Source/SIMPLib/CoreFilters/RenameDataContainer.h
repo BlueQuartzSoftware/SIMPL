@@ -37,7 +37,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -58,16 +57,48 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(RenameDataContainer)
-    SIMPL_FILTER_NEW_MACRO(RenameDataContainer)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RenameDataContainer, AbstractFilter)
+    using Self = RenameDataContainer;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<RenameDataContainer> New();
+
+    /**
+     * @brief Returns the name of the class for RenameDataContainer
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for RenameDataContainer
+     */
+    static QString ClassName();
 
     ~RenameDataContainer() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedDataContainerName)
+    /**
+     * @brief Setter property for SelectedDataContainerName
+     */
+    void setSelectedDataContainerName(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedDataContainerName
+     * @return Value of SelectedDataContainerName
+     */
+    DataArrayPath getSelectedDataContainerName() const;
+
     Q_PROPERTY(DataArrayPath SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, NewDataContainerName)
+    /**
+     * @brief Setter property for NewDataContainerName
+     */
+    void setNewDataContainerName(const DataArrayPath& value);
+    /**
+     * @brief Getter property for NewDataContainerName
+     * @return Value of NewDataContainerName
+     */
+    DataArrayPath getNewDataContainerName() const;
+
     Q_PROPERTY(DataArrayPath NewDataContainerName READ getNewDataContainerName WRITE setNewDataContainerName)
 
     /**
@@ -172,6 +203,9 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
     void initialize();
 
   private:
+    DataArrayPath m_SelectedDataContainerName = {};
+    DataArrayPath m_NewDataContainerName = {};
+
     DataArrayPath m_LastContainerName;
 
   public:

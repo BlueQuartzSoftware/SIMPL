@@ -113,3 +113,28 @@ float SuperEllipsoidOps::inside(float axis1comp, float axis2comp, float axis3com
   inside = 1.0f - axis1comp - axis2comp - axis3comp;
   return inside;
 }
+
+// -----------------------------------------------------------------------------
+SuperEllipsoidOps::Pointer SuperEllipsoidOps::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+const QString SuperEllipsoidOps::getNameOfClass() const
+{
+  return QString("SuperEllipsoidOps");
+}
+
+// -----------------------------------------------------------------------------
+QString SuperEllipsoidOps::ClassName()
+{
+  return QString("SuperEllipsoidOps");
+}
+
+// -----------------------------------------------------------------------------
+SuperEllipsoidOps::Pointer SuperEllipsoidOps::New()
+{
+  Pointer sharedPtr(new(SuperEllipsoidOps));
+  return sharedPtr;
+}

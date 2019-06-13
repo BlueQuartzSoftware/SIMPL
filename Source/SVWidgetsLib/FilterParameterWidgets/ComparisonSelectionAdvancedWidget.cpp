@@ -43,6 +43,7 @@
 #include "FilterParameterWidgetsDialogs.h"
 
 #include "SIMPLib/Filtering/ComparisonValue.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //

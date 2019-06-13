@@ -35,10 +35,14 @@
 
 #include "MassCreateData.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   DataContainerBaseID = 1
@@ -205,4 +209,45 @@ const QUuid MassCreateData::getUuid()
 const QString MassCreateData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
+}
+
+// -----------------------------------------------------------------------------
+MassCreateData::Pointer MassCreateData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<MassCreateData> MassCreateData::New()
+{
+  struct make_shared_enabler : public MassCreateData
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString MassCreateData::getNameOfClass() const
+{
+  return QString("MassCreateData");
+}
+
+// -----------------------------------------------------------------------------
+QString MassCreateData::ClassName()
+{
+  return QString("MassCreateData");
+}
+
+// -----------------------------------------------------------------------------
+void MassCreateData::setDataContainerName(const DataArrayPath& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath MassCreateData::getDataContainerName() const
+{
+  return m_DataContainerName;
 }

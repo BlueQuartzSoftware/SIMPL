@@ -46,17 +46,55 @@
 class SIMPLib_EXPORT FilterProgressMessage : public AbstractProgressMessage
 {
   public:
-    SIMPL_SHARED_POINTERS(FilterProgressMessage)
-    SIMPL_STATIC_NEW_MACRO(FilterProgressMessage)
-    SIMPL_TYPE_MACRO(FilterProgressMessage)
+    using Self = FilterProgressMessage;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for FilterProgressMessage
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for FilterProgressMessage
+     */
+    static QString ClassName();
 
     virtual ~FilterProgressMessage();
 
-    SIMPL_INSTANCE_STRING_PROPERTY(ClassName)
+    /**
+     * @brief Setter property for ClassName
+     */
+    void setClassName(const QString& value);
+    /**
+     * @brief Getter property for ClassName
+     * @return Value of ClassName
+     */
+    QString getClassName() const;
 
-    SIMPL_INSTANCE_STRING_PROPERTY(HumanLabel)
+    /**
+     * @brief Setter property for HumanLabel
+     */
+    void setHumanLabel(const QString& value);
+    /**
+     * @brief Getter property for HumanLabel
+     * @return Value of HumanLabel
+     */
+    QString getHumanLabel() const;
 
-    SIMPL_INSTANCE_PROPERTY(int, PipelineIndex)
+    /**
+     * @brief Setter property for PipelineIndex
+     */
+    void setPipelineIndex(const int& value);
+    /**
+     * @brief Getter property for PipelineIndex
+     * @return Value of PipelineIndex
+     */
+    int getPipelineIndex() const;
 
     /**
      * @brief New
@@ -87,7 +125,9 @@ class SIMPLib_EXPORT FilterProgressMessage : public AbstractProgressMessage
     FilterProgressMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int progress);
 
   private:
-
+    QString m_ClassName = {};
+    QString m_HumanLabel = {};
+    int m_PipelineIndex = {};
 };
 Q_DECLARE_METATYPE(FilterProgressMessage::Pointer)
 

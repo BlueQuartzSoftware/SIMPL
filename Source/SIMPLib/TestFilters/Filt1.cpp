@@ -6,6 +6,8 @@
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -99,4 +101,69 @@ void Filt1::execute()
   clearWarningCode();
 
   /* Place all your code to execute your filter here. */
+}
+
+// -----------------------------------------------------------------------------
+Filt1::Pointer Filt1::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<Filt1> Filt1::New()
+{
+  struct make_shared_enabler : public Filt1
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString Filt1::getNameOfClass() const
+{
+  return QString("Filt1");
+}
+
+// -----------------------------------------------------------------------------
+QString Filt1::ClassName()
+{
+  return QString("Filt1");
+}
+
+// -----------------------------------------------------------------------------
+void Filt1::setDataContainerName(const QString& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString Filt1::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void Filt1::setFilt1_Float(const float& value)
+{
+  m_Filt1_Float = value;
+}
+
+// -----------------------------------------------------------------------------
+float Filt1::getFilt1_Float() const
+{
+  return m_Filt1_Float;
+}
+
+// -----------------------------------------------------------------------------
+void Filt1::setFilt1_Integer(const int32_t& value)
+{
+  m_Filt1_Integer = value;
+}
+
+// -----------------------------------------------------------------------------
+int32_t Filt1::getFilt1_Integer() const
+{
+  return m_Filt1_Integer;
 }

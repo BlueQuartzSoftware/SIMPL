@@ -58,7 +58,11 @@ FloorOperator::~FloorOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FloorOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void FloorOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                              QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, floor)}
+
+// -----------------------------------------------------------------------------
+FloorOperator::Pointer FloorOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, floor)
+  return Pointer(static_cast<Self*>(nullptr));
 }

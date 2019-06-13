@@ -31,6 +31,8 @@
 
 #include "FilterGroup09.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
@@ -186,4 +188,33 @@ const QString FilterGroup09::getSubGroupName() const
 const QString FilterGroup09::getHumanLabel() const
 {
   return "SurfaceMeshingFilters Test Filter";
+}
+
+// -----------------------------------------------------------------------------
+FilterGroup09::Pointer FilterGroup09::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<FilterGroup09> FilterGroup09::New()
+{
+  struct make_shared_enabler : public FilterGroup09
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString FilterGroup09::getNameOfClass() const
+{
+  return QString("FilterGroup09");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterGroup09::ClassName()
+{
+  return QString("FilterGroup09");
 }

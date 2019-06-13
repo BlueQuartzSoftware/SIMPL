@@ -43,18 +43,50 @@
 
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/DataArrays/IDataArray.h"
+
 #include "SIMPLib/DataArrays/IDataArrayFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
 template<typename T>
 class StructArray : public IDataArray
 {
-  public:
-    SIMPL_SHARED_POINTERS(StructArray<T> )
-    SIMPL_TYPE_MACRO_SUPER(StructArray<T>, IDataArray)
-    SIMPL_CLASS_VERSION(2)
+public:
+  using Self = StructArray<T>;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer()
+  {
+    return Pointer(static_cast<Self*>(nullptr));
+  }
+
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  const QString getNameOfClass() const override
+  {
+    return QString("StructArray<T>");
+  }
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  static QString ClassName()
+  {
+    return QString("StructArray<T>");
+  }
+
+  /**
+   * @brief Returns the version of this class.
+   * @return
+   */
+  int32_t getClassVersion() override
+  {
+    return 2;
+  }
 
     /**
      * @brief Static constructor

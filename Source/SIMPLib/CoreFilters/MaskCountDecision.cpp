@@ -37,10 +37,14 @@
 
 #include <QtCore/QJsonDocument>
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -250,4 +254,53 @@ const QString MaskCountDecision::getSubGroupName() const
 const QString MaskCountDecision::getHumanLabel() const
 {
   return "Mask Count Decision";
+}
+
+// -----------------------------------------------------------------------------
+MaskCountDecision::Pointer MaskCountDecision::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+MaskCountDecision::Pointer MaskCountDecision::New()
+{
+  Pointer sharedPtr(new(MaskCountDecision));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString MaskCountDecision::getNameOfClass() const
+{
+  return QString("MaskCountDecision");
+}
+
+// -----------------------------------------------------------------------------
+QString MaskCountDecision::ClassName()
+{
+  return QString("MaskCountDecision");
+}
+
+// -----------------------------------------------------------------------------
+void MaskCountDecision::setMaskArrayPath(const DataArrayPath& value)
+{
+  m_MaskArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath MaskCountDecision::getMaskArrayPath() const
+{
+  return m_MaskArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void MaskCountDecision::setNumberOfTrues(const int& value)
+{
+  m_NumberOfTrues = value;
+}
+
+// -----------------------------------------------------------------------------
+int MaskCountDecision::getNumberOfTrues() const
+{
+  return m_NumberOfTrues;
 }

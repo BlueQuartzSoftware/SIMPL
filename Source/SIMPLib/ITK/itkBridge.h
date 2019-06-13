@@ -41,7 +41,6 @@
 #include "itkRGBPixel.h"
 
 // DREAM3D Includes next
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
@@ -291,8 +290,21 @@ template <typename ComponentType>
 class ItkBridge
 {
 public:
-  SIMPL_SHARED_POINTERS(ItkBridge<ComponentType>)
-  SIMPL_TYPE_MACRO(ItkBridge<ComponentType>)
+  using Self = ItkBridge<ComponentType>;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for ItkBridge<ComponentType>
+   */
+  const QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for ItkBridge<ComponentType>
+   */
+  static QString ClassName();
 
   virtual ~ItkBridge() = default;
   //*! Define all the Typedefs for this class

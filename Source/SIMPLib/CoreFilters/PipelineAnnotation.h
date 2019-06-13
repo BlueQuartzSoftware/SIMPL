@@ -34,7 +34,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -53,11 +52,34 @@ class SIMPLib_EXPORT PipelineAnnotation : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(PipelineAnnotation)
-  SIMPL_FILTER_NEW_MACRO(PipelineAnnotation)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PipelineAnnotation, AbstractFilter)
+  using Self = PipelineAnnotation;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-  SIMPL_FILTER_PARAMETER(QString, Summary)
+  static std::shared_ptr<PipelineAnnotation> New();
+
+  /**
+   * @brief Returns the name of the class for PipelineAnnotation
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for PipelineAnnotation
+   */
+  static QString ClassName();
+
+  /**
+   * @brief Setter property for Summary
+   */
+  void setSummary(const QString& value);
+  /**
+   * @brief Getter property for Summary
+   * @return Value of Summary
+   */
+  QString getSummary() const;
+
   Q_PROPERTY(QString Summary READ getSummary WRITE setSummary)
 
   ~PipelineAnnotation() override;
@@ -162,5 +184,8 @@ public:
   PipelineAnnotation(PipelineAnnotation&&) = delete;      // Move Constructor Not Implemented
   PipelineAnnotation& operator=(const PipelineAnnotation&) = delete; // Copy Assignment Not Implemented
   PipelineAnnotation& operator=(PipelineAnnotation&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  QString m_Summary = {};
 };
 

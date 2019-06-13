@@ -35,6 +35,8 @@
 
 #include "DynamicTableFilterParameter.h"
 
+#include <QtCore/QSet>
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -119,4 +121,89 @@ void DynamicTableFilterParameter::writeJson(QJsonObject& json)
     dynamicData.writeJson(jsonObj);
     json[getPropertyName()] = jsonObj;
   }
+}
+
+// -----------------------------------------------------------------------------
+DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New()
+{
+  Pointer sharedPtr(new(DynamicTableFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString DynamicTableFilterParameter::getNameOfClass() const
+{
+  return QString("DynamicTableFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString DynamicTableFilterParameter::ClassName()
+{
+  return QString("DynamicTableFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableFilterParameter::setDefaultTableData(const DynamicTableData& value)
+{
+  m_DefaultTableData = value;
+}
+
+// -----------------------------------------------------------------------------
+DynamicTableData DynamicTableFilterParameter::getDefaultTableData() const
+{
+  return m_DefaultTableData;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableFilterParameter::setErrorCondition(const int& value)
+{
+  m_ErrorCondition = value;
+}
+
+// -----------------------------------------------------------------------------
+int DynamicTableFilterParameter::getErrorCondition() const
+{
+  return m_ErrorCondition;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableFilterParameter::setErrorMessage(const QString& value)
+{
+  m_ErrorMessage = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DynamicTableFilterParameter::getErrorMessage() const
+{
+  return m_ErrorMessage;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableFilterParameter::setSetterCallback(const DynamicTableFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DynamicTableFilterParameter::SetterCallbackType DynamicTableFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableFilterParameter::setGetterCallback(const DynamicTableFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DynamicTableFilterParameter::GetterCallbackType DynamicTableFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
 }

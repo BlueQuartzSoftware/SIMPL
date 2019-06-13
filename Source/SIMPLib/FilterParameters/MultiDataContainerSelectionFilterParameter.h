@@ -67,9 +67,23 @@
 class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(MultiDataContainerSelectionFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(MultiDataContainerSelectionFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MultiDataContainerSelectionFilterParameter, FilterParameter)
+    using Self = MultiDataContainerSelectionFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for MultiDataContainerSelectionFilterParameter
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for MultiDataContainerSelectionFilterParameter
+     */
+    static QString ClassName();
 
     using SetterCallbackType = std::function<void(QStringList)>;
     using GetterCallbackType = std::function<QStringList(void)>;
@@ -131,7 +145,15 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
                                              AttributeMatrix::Type attributeMatrixType,
                                              IGeometry::Type geometryType);
 
-    SIMPL_INSTANCE_PROPERTY(QStringList, DefaultNames)
+    /**
+     * @brief Setter property for DefaultNames
+     */
+    void setDefaultNames(const QStringList& value);
+    /**
+     * @brief Getter property for DefaultNames
+     * @return Value of DefaultNames
+     */
+    QStringList getDefaultNames() const;
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls
@@ -152,24 +174,75 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
      */
     void writeJson(QJsonObject& json) override;
 
-    SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
-    SIMPL_INSTANCE_PROPERTY(QVector<AttributeMatrix::Type>, DefaultAttributeMatrixTypes)
-    SIMPL_INSTANCE_PROPERTY(QVector<QString>, DefaultAttributeArrayTypes)
-    SIMPL_INSTANCE_PROPERTY(std::vector<std::vector<size_t>>, DefaultComponentDimensions)
+    /**
+     * @brief Setter property for DefaultGeometryTypes
+     */
+    void setDefaultGeometryTypes(const IGeometry::Types& value);
+    /**
+     * @brief Getter property for DefaultGeometryTypes
+     * @return Value of DefaultGeometryTypes
+     */
+    IGeometry::Types getDefaultGeometryTypes() const;
+
+    /**
+     * @brief Setter property for DefaultAttributeMatrixTypes
+     */
+    void setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value);
+    /**
+     * @brief Getter property for DefaultAttributeMatrixTypes
+     * @return Value of DefaultAttributeMatrixTypes
+     */
+    QVector<AttributeMatrix::Type> getDefaultAttributeMatrixTypes() const;
+
+    /**
+     * @brief Setter property for DefaultAttributeArrayTypes
+     */
+    void setDefaultAttributeArrayTypes(const QVector<QString>& value);
+    /**
+     * @brief Getter property for DefaultAttributeArrayTypes
+     * @return Value of DefaultAttributeArrayTypes
+     */
+    QVector<QString> getDefaultAttributeArrayTypes() const;
+
+    /**
+     * @brief Setter property for DefaultComponentDimensions
+     */
+    void setDefaultComponentDimensions(const QVector<QVector<size_t>>& value);
+    /**
+     * @brief Getter property for DefaultComponentDimensions
+     * @return Value of DefaultComponentDimensions
+     */
+    QVector<QVector<size_t>> getDefaultComponentDimensions() const;
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
     * that this FilterParameter subclass represents.
     * from the filter parameter.
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const MultiDataContainerSelectionFilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    MultiDataContainerSelectionFilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const MultiDataContainerSelectionFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    MultiDataContainerSelectionFilterParameter::GetterCallbackType getGetterCallback() const;
 
     /**
      * @brief Handle DataArrayPath changes if necessary
@@ -190,5 +263,14 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
     MultiDataContainerSelectionFilterParameter(MultiDataContainerSelectionFilterParameter&&) = delete;      // Move Constructor Not Implemented
     MultiDataContainerSelectionFilterParameter& operator=(const MultiDataContainerSelectionFilterParameter&) = delete; // Copy Assignment Not Implemented
     MultiDataContainerSelectionFilterParameter& operator=(MultiDataContainerSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    QStringList m_DefaultNames = {};
+    IGeometry::Types m_DefaultGeometryTypes = {};
+    QVector<AttributeMatrix::Type> m_DefaultAttributeMatrixTypes = {};
+    QVector<QString> m_DefaultAttributeArrayTypes = {};
+    QVector<QVector<size_t>> m_DefaultComponentDimensions = {};
+    MultiDataContainerSelectionFilterParameter::SetterCallbackType m_SetterCallback = {};
+    MultiDataContainerSelectionFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

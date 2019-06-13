@@ -404,3 +404,15 @@ QString ImportHDF5TreeModelItem::generateHDFPath()
   }
   return path;
 }
+
+// -----------------------------------------------------------------------------
+void ImportHDF5TreeModelItem::setHasErrors(const bool& value)
+{
+  m_HasErrors = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ImportHDF5TreeModelItem::getHasErrors() const
+{
+  return m_HasErrors;
+}

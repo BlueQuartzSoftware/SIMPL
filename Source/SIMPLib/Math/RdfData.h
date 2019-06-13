@@ -35,32 +35,117 @@
 
 #pragma once
 
+#include <array>
 #include <vector>
 
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Common/Constants.h"
 
-
-
-
+/**
+ * @brief The RdfData class
+ */
 class SIMPLib_EXPORT RdfData
 {
   public:
-    SIMPL_SHARED_POINTERS(RdfData)
-    SIMPL_STATIC_NEW_MACRO(RdfData)
-    SIMPL_TYPE_MACRO(RdfData)
+    using Self = RdfData;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for RdfData
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for RdfData
+     */
+    static QString ClassName();
 
     virtual ~RdfData();
 
-    SIMPL_INSTANCE_PROPERTY(std::vector<float>, Frequencies)
-    SIMPL_INSTANCE_PROPERTY(float, MinDistance)
-    SIMPL_INSTANCE_PROPERTY(float, MaxDistance)
-    SIMPL_INSTANCE_PROPERTY(int, NumberOfBins)
-    SIMPL_INSTANCE_STRING_PROPERTY(DistributionType)
-    SIMPL_INSTANCE_VEC3_PROPERTY(float, BoxSize)
-    SIMPL_INSTANCE_VEC3_PROPERTY(float, BoxResolution)
+    /**
+     * @brief Setter property for Frequencies
+     */
+    void setFrequencies(const std::vector<float>& value);
+    /**
+     * @brief Getter property for Frequencies
+     * @return Value of Frequencies
+     */
+    std::vector<float> getFrequencies() const;
+
+    /**
+     * @brief Setter property for MinDistance
+     */
+    void setMinDistance(const float& value);
+    /**
+     * @brief Getter property for MinDistance
+     * @return Value of MinDistance
+     */
+    float getMinDistance() const;
+
+    /**
+     * @brief Setter property for MaxDistance
+     */
+    void setMaxDistance(const float& value);
+    /**
+     * @brief Getter property for MaxDistance
+     * @return Value of MaxDistance
+     */
+    float getMaxDistance() const;
+
+    /**
+     * @brief Setter property for NumberOfBins
+     */
+    void setNumberOfBins(const int& value);
+    /**
+     * @brief Getter property for NumberOfBins
+     * @return Value of NumberOfBins
+     */
+    int getNumberOfBins() const;
+
+    /**
+     * @brief Setter property for DistributionType
+     */
+    void setDistributionType(const QString& value);
+    /**
+     * @brief Getter property for DistributionType
+     * @return Value of DistributionType
+     */
+    QString getDistributionType() const;
+
+    /**
+     * @brief Setter property for BoxSize
+     */
+    void setBoxSize(const std::array<float, 3>& value);
+    /**
+     * @brief Setter property for BoxSize
+     */
+    void setBoxSize(float v0, float v1, float v2);
+    /**
+     * @brief Getter property for BoxSize
+     * @return Value of BoxSize
+     */
+    std::array<float, 3> getBoxSize() const;
+
+    /**
+     * @brief Setter property for BoxResolution
+     */
+    void setBoxResolution(const std::array<float, 3>& value);
+    /**
+     * @brief Setter property for BoxResolution
+     */
+    void setBoxResolution(float v0, float v1, float v2);
+    /**
+     * @brief Getter property for BoxResolution
+     * @return Value of BoxResolution
+     */
+    std::array<float, 3> getBoxResolution() const;
 
     int getFrequencyCount();
 
@@ -88,6 +173,15 @@ class SIMPLib_EXPORT RdfData
     RdfData();
 
   private:
+    std::array<float, 3> m_BoxSize = {100.0f, 100.0f, 100.0f};
+    std::array<float, 3> m_BoxResolution{0.1f, 0.1f, 0.1f};
+
+    std::vector<float> m_Frequencies = {};
+    float m_MinDistance = 0.0f;
+    float m_MaxDistance = 0.0f;
+    int m_NumberOfBins = 50;
+    QString m_DistributionType = SIMPL::StringConstants::UnknownDistribution;
+
     RdfData(const RdfData&) = delete;        // Copy Constructor Not Implemented
     void operator=(const RdfData&) = delete; // Move assignment Not Implemented
 };

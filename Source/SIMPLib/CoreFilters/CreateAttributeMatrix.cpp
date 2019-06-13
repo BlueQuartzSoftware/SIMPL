@@ -35,12 +35,17 @@
 
 #include "CreateAttributeMatrix.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 #include "SIMPLib/FilterParameters/DynamicTableFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   AttributeMatrixID = 1
@@ -257,4 +262,69 @@ const QUuid CreateAttributeMatrix::getUuid()
 const QString CreateAttributeMatrix::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
+}
+
+// -----------------------------------------------------------------------------
+CreateAttributeMatrix::Pointer CreateAttributeMatrix::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CreateAttributeMatrix> CreateAttributeMatrix::New()
+{
+  struct make_shared_enabler : public CreateAttributeMatrix
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString CreateAttributeMatrix::getNameOfClass() const
+{
+  return QString("CreateAttributeMatrix");
+}
+
+// -----------------------------------------------------------------------------
+QString CreateAttributeMatrix::ClassName()
+{
+  return QString("CreateAttributeMatrix");
+}
+
+// -----------------------------------------------------------------------------
+void CreateAttributeMatrix::setCreatedAttributeMatrix(const DataArrayPath& value)
+{
+  m_CreatedAttributeMatrix = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateAttributeMatrix::getCreatedAttributeMatrix() const
+{
+  return m_CreatedAttributeMatrix;
+}
+
+// -----------------------------------------------------------------------------
+void CreateAttributeMatrix::setAttributeMatrixType(const int& value)
+{
+  m_AttributeMatrixType = value;
+}
+
+// -----------------------------------------------------------------------------
+int CreateAttributeMatrix::getAttributeMatrixType() const
+{
+  return m_AttributeMatrixType;
+}
+
+// -----------------------------------------------------------------------------
+void CreateAttributeMatrix::setTupleDimensions(const DynamicTableData& value)
+{
+  m_TupleDimensions = value;
+}
+
+// -----------------------------------------------------------------------------
+DynamicTableData CreateAttributeMatrix::getTupleDimensions() const
+{
+  return m_TupleDimensions;
 }

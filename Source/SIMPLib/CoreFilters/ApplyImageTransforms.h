@@ -36,7 +36,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -47,13 +46,36 @@ class SIMPLib_EXPORT ApplyImageTransforms : public AbstractFilter
   Q_OBJECT
 
   public:
-    SIMPL_SHARED_POINTERS(ApplyImageTransforms)
-    SIMPL_FILTER_NEW_MACRO(ApplyImageTransforms)
-    SIMPL_TYPE_MACRO_SUPER(ApplyImageTransforms, AbstractFilter)
+    using Self = ApplyImageTransforms;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<ApplyImageTransforms> New();
+
+    /**
+     * @brief Returns the name of the class for _SUPERApplyImageTransforms
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for _SUPERApplyImageTransforms
+     */
+    static QString ClassName();
 
     ~ApplyImageTransforms() override;
 
-    SIMPL_FILTER_PARAMETER(QStringList, ImageDataContainers)
+    /**
+     * @brief Setter property for ImageDataContainers
+     */
+    void setImageDataContainers(const QStringList& value);
+    /**
+     * @brief Getter property for ImageDataContainers
+     * @return Value of ImageDataContainers
+     */
+    QStringList getImageDataContainers() const;
+
     Q_PROPERTY(QStringList ImageDataContainers READ getImageDataContainers WRITE setImageDataContainers)
 
     /**
@@ -152,8 +174,8 @@ class SIMPLib_EXPORT ApplyImageTransforms : public AbstractFilter
     */
     void initialize();
   private:
+    QStringList m_ImageDataContainers = {};
 
-  
   public:
     /* Rule of 5: All special member functions should be defined if any are defined.
     * https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c21-if-you-define-or-delete-any-default-operation-define-or-delete-them-all

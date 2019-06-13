@@ -901,3 +901,57 @@ void BookmarksTreeView::currentChanged(const QModelIndex& current, const QModelI
 {
   emit currentIndexChanged(current, previous);
 }
+
+// -----------------------------------------------------------------------------
+QAction* BookmarksTreeView::getActionRenameBookmark() const
+{
+  return m_ActionRenameBookmark;
+}
+
+// -----------------------------------------------------------------------------
+QAction* BookmarksTreeView::getActionRemoveBookmark() const
+{
+  return m_ActionRemoveBookmark;
+}
+
+// -----------------------------------------------------------------------------
+QAction* BookmarksTreeView::getActionShowBookmarkInFileSystem() const
+{
+  return m_ActionShowBookmarkInFileSystem;
+}
+
+// -----------------------------------------------------------------------------
+QAction* BookmarksTreeView::getActionClearBookmarks() const
+{
+  return m_ActionClearBookmarks;
+}
+
+// -----------------------------------------------------------------------------
+QAction* BookmarksTreeView::getActionAddBookmark() const
+{
+  return m_ActionAddBookmark;
+}
+
+// -----------------------------------------------------------------------------
+QAction* BookmarksTreeView::getActionAddBookmarkFolder() const
+{
+  return m_ActionAddBookmarkFolder;
+}
+
+// -----------------------------------------------------------------------------
+QAction* BookmarksTreeView::getActionLocateFile() const
+{
+  return m_ActionLocateFile;
+}
+
+// -----------------------------------------------------------------------------
+QAction* BookmarksTreeView::getActionOpenBookmark() const
+{
+  return m_ActionOpenBookmark;
+}
+
+// -----------------------------------------------------------------------------
+QAction* BookmarksTreeView::getActionExecuteBookmark() const
+{
+  return m_ActionExecuteBookmark;
+}

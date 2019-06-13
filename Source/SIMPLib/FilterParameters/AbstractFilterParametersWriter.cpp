@@ -35,6 +35,8 @@
 
 #include "AbstractFilterParametersWriter.h"
 
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -523,4 +525,16 @@ int AbstractFilterParametersWriter::writeValue(const QString& name, const QPair<
 
   // This should never be executed
   return -1;
+}
+
+// -----------------------------------------------------------------------------
+const QString AbstractFilterParametersWriter::getNameOfClass() const
+{
+  return QString("AbstractFilterParametersWriter");
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractFilterParametersWriter::ClassName()
+{
+  return QString("AbstractFilterParametersWriter");
 }

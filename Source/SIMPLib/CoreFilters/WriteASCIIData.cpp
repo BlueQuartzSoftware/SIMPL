@@ -37,7 +37,10 @@
 
 #include <QtCore/QDir>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
 #include "SIMPLib/DataArrays/StringDataArray.h"
@@ -50,7 +53,8 @@
 #include "SIMPLib/FilterParameters/OutputPathFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
-
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
 
 /**
  * @brief The ExportDataPrivate class is a templated class that implements a method to generically
@@ -660,4 +664,117 @@ const QString WriteASCIIData::getSubGroupName() const
 const QString WriteASCIIData::getHumanLabel() const
 {
   return "Export ASCII Data";
+}
+
+// -----------------------------------------------------------------------------
+WriteASCIIData::Pointer WriteASCIIData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<WriteASCIIData> WriteASCIIData::New()
+{
+  struct make_shared_enabler : public WriteASCIIData
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString WriteASCIIData::getNameOfClass() const
+{
+  return QString("WriteASCIIData");
+}
+
+// -----------------------------------------------------------------------------
+QString WriteASCIIData::ClassName()
+{
+  return QString("WriteASCIIData");
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setSelectedDataArrayPaths(const QVector<DataArrayPath>& value)
+{
+  m_SelectedDataArrayPaths = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> WriteASCIIData::getSelectedDataArrayPaths() const
+{
+  return m_SelectedDataArrayPaths;
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setOutputPath(const QString& value)
+{
+  m_OutputPath = value;
+}
+
+// -----------------------------------------------------------------------------
+QString WriteASCIIData::getOutputPath() const
+{
+  return m_OutputPath;
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setOutputFilePath(const QString& value)
+{
+  m_OutputFilePath = value;
+}
+
+// -----------------------------------------------------------------------------
+QString WriteASCIIData::getOutputFilePath() const
+{
+  return m_OutputFilePath;
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setDelimiter(const int& value)
+{
+  m_Delimiter = value;
+}
+
+// -----------------------------------------------------------------------------
+int WriteASCIIData::getDelimiter() const
+{
+  return m_Delimiter;
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setFileExtension(const QString& value)
+{
+  m_FileExtension = value;
+}
+
+// -----------------------------------------------------------------------------
+QString WriteASCIIData::getFileExtension() const
+{
+  return m_FileExtension;
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setMaxValPerLine(const int& value)
+{
+  m_MaxValPerLine = value;
+}
+
+// -----------------------------------------------------------------------------
+int WriteASCIIData::getMaxValPerLine() const
+{
+  return m_MaxValPerLine;
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setOutputStyle(const int& value)
+{
+  m_OutputStyle = value;
+}
+
+// -----------------------------------------------------------------------------
+int WriteASCIIData::getOutputStyle() const
+{
+  return m_OutputStyle;
 }

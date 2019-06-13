@@ -37,7 +37,10 @@
 
 #include <cassert>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
@@ -46,6 +49,8 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   DataContainerID = 1
@@ -389,4 +394,129 @@ const QString CropVertexGeometry::getSubGroupName() const
 const QString CropVertexGeometry::getHumanLabel() const
 {
   return "Crop Geometry (Vertex)";
+}
+
+// -----------------------------------------------------------------------------
+CropVertexGeometry::Pointer CropVertexGeometry::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CropVertexGeometry> CropVertexGeometry::New()
+{
+  struct make_shared_enabler : public CropVertexGeometry
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString CropVertexGeometry::getNameOfClass() const
+{
+  return QString("CropVertexGeometry");
+}
+
+// -----------------------------------------------------------------------------
+QString CropVertexGeometry::ClassName()
+{
+  return QString("CropVertexGeometry");
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setDataContainerName(const DataArrayPath& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CropVertexGeometry::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setCroppedDataContainerName(const DataArrayPath& value)
+{
+  m_CroppedDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CropVertexGeometry::getCroppedDataContainerName() const
+{
+  return m_CroppedDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setXMin(const float& value)
+{
+  m_XMin = value;
+}
+
+// -----------------------------------------------------------------------------
+float CropVertexGeometry::getXMin() const
+{
+  return m_XMin;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setYMin(const float& value)
+{
+  m_YMin = value;
+}
+
+// -----------------------------------------------------------------------------
+float CropVertexGeometry::getYMin() const
+{
+  return m_YMin;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setZMin(const float& value)
+{
+  m_ZMin = value;
+}
+
+// -----------------------------------------------------------------------------
+float CropVertexGeometry::getZMin() const
+{
+  return m_ZMin;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setXMax(const float& value)
+{
+  m_XMax = value;
+}
+
+// -----------------------------------------------------------------------------
+float CropVertexGeometry::getXMax() const
+{
+  return m_XMax;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setYMax(const float& value)
+{
+  m_YMax = value;
+}
+
+// -----------------------------------------------------------------------------
+float CropVertexGeometry::getYMax() const
+{
+  return m_YMax;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setZMax(const float& value)
+{
+  m_ZMax = value;
+}
+
+// -----------------------------------------------------------------------------
+float CropVertexGeometry::getZMax() const
+{
+  return m_ZMax;
 }

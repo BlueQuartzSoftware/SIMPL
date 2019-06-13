@@ -220,3 +220,100 @@ void DataArraySelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* fil
     }
   }
 }
+
+// -----------------------------------------------------------------------------
+DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::New()
+{
+  Pointer sharedPtr(new(DataArraySelectionFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString DataArraySelectionFilterParameter::getNameOfClass() const
+{
+  return QString("DataArraySelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString DataArraySelectionFilterParameter::ClassName()
+{
+  return QString("DataArraySelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void DataArraySelectionFilterParameter::setDefaultGeometryTypes(const IGeometry::Types& value)
+{
+  m_DefaultGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Types DataArraySelectionFilterParameter::getDefaultGeometryTypes() const
+{
+  return m_DefaultGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+void DataArraySelectionFilterParameter::setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value)
+{
+  m_DefaultAttributeMatrixTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<AttributeMatrix::Type> DataArraySelectionFilterParameter::getDefaultAttributeMatrixTypes() const
+{
+  return m_DefaultAttributeMatrixTypes;
+}
+
+// -----------------------------------------------------------------------------
+void DataArraySelectionFilterParameter::setDefaultAttributeArrayTypes(const QVector<QString>& value)
+{
+  m_DefaultAttributeArrayTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<QString> DataArraySelectionFilterParameter::getDefaultAttributeArrayTypes() const
+{
+  return m_DefaultAttributeArrayTypes;
+}
+
+// -----------------------------------------------------------------------------
+void DataArraySelectionFilterParameter::setDefaultComponentDimensions(const QVector<QVector<size_t>>& value)
+{
+  m_DefaultComponentDimensions = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<QVector<size_t>> DataArraySelectionFilterParameter::getDefaultComponentDimensions() const
+{
+  return m_DefaultComponentDimensions;
+}
+
+// -----------------------------------------------------------------------------
+void DataArraySelectionFilterParameter::setSetterCallback(const DataArraySelectionFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArraySelectionFilterParameter::SetterCallbackType DataArraySelectionFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void DataArraySelectionFilterParameter::setGetterCallback(const DataArraySelectionFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArraySelectionFilterParameter::GetterCallbackType DataArraySelectionFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

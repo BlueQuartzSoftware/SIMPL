@@ -35,11 +35,16 @@
 
 #include "RenameAttributeMatrix.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -251,4 +256,57 @@ DataArrayPath::RenameContainer RenameAttributeMatrix::getRenamedPaths()
   container.push_back(std::make_pair(oldPath, newPath));
 
   return container;
+}
+
+// -----------------------------------------------------------------------------
+RenameAttributeMatrix::Pointer RenameAttributeMatrix::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<RenameAttributeMatrix> RenameAttributeMatrix::New()
+{
+  struct make_shared_enabler : public RenameAttributeMatrix
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString RenameAttributeMatrix::getNameOfClass() const
+{
+  return QString("RenameAttributeMatrix");
+}
+
+// -----------------------------------------------------------------------------
+QString RenameAttributeMatrix::ClassName()
+{
+  return QString("RenameAttributeMatrix");
+}
+
+// -----------------------------------------------------------------------------
+void RenameAttributeMatrix::setSelectedAttributeMatrixPath(const DataArrayPath& value)
+{
+  m_SelectedAttributeMatrixPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RenameAttributeMatrix::getSelectedAttributeMatrixPath() const
+{
+  return m_SelectedAttributeMatrixPath;
+}
+
+// -----------------------------------------------------------------------------
+void RenameAttributeMatrix::setNewAttributeMatrix(const QString& value)
+{
+  m_NewAttributeMatrix = value;
+}
+
+// -----------------------------------------------------------------------------
+QString RenameAttributeMatrix::getNewAttributeMatrix() const
+{
+  return m_NewAttributeMatrix;
 }

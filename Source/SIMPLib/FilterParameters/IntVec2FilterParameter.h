@@ -62,9 +62,23 @@
 class SIMPLib_EXPORT IntVec2FilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(IntVec2FilterParameter)
-  SIMPL_STATIC_NEW_MACRO(IntVec2FilterParameter)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IntVec2FilterParameter, FilterParameter)
+  using Self = IntVec2FilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for IntVec2FilterParameter
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for IntVec2FilterParameter
+   */
+  static QString ClassName();
 
   using SetterCallbackType = std::function<void(IntVec2Type)>;
   using GetterCallbackType = std::function<IntVec2Type(void)>;
@@ -114,14 +128,30 @@ public:
    * that this FilterParameter subclass represents.
    * @return The SetterCallback
    */
-  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  /**
+   * @brief Setter property for SetterCallback
+   */
+  void setSetterCallback(const IntVec2FilterParameter::SetterCallbackType& value);
+  /**
+   * @brief Getter property for SetterCallback
+   * @return Value of SetterCallback
+   */
+  IntVec2FilterParameter::SetterCallbackType getSetterCallback() const;
 
   /**
    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
    * that this FilterParameter subclass represents.
    * @return The GetterCallback
    */
-  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+  /**
+   * @brief Setter property for GetterCallback
+   */
+  void setGetterCallback(const IntVec2FilterParameter::GetterCallbackType& value);
+  /**
+   * @brief Getter property for GetterCallback
+   * @return Value of GetterCallback
+   */
+  IntVec2FilterParameter::GetterCallbackType getGetterCallback() const;
 
 protected:
   /**
@@ -135,6 +165,10 @@ public:
   IntVec2FilterParameter(IntVec2FilterParameter&&) = delete;                 // Move Constructor Not Implemented
   IntVec2FilterParameter& operator=(const IntVec2FilterParameter&) = delete; // Copy Assignment Not Implemented
   IntVec2FilterParameter& operator=(IntVec2FilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  IntVec2FilterParameter::SetterCallbackType m_SetterCallback = {};
+  IntVec2FilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 
 Q_DECLARE_METATYPE(IntVec2Type)

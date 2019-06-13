@@ -44,12 +44,33 @@ class AbstractMessageHandler;
 class SIMPLib_EXPORT AbstractProgressMessage : public AbstractMessage
 {
 public:
-  SIMPL_SHARED_POINTERS(AbstractProgressMessage)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractProgressMessage, AbstractMessage)
+  using Self = AbstractProgressMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for AbstractProgressMessage
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for AbstractProgressMessage
+   */
+  static QString ClassName();
 
   ~AbstractProgressMessage() override;
 
-  SIMPL_INSTANCE_PROPERTY(int, ProgressValue)
+  /**
+   * @brief Setter property for ProgressValue
+   */
+  void setProgressValue(const int& value);
+  /**
+   * @brief Getter property for ProgressValue
+   * @return Value of ProgressValue
+   */
+  int getProgressValue() const;
 
 protected:
   AbstractProgressMessage();
@@ -57,5 +78,6 @@ protected:
   AbstractProgressMessage(const QString& msgText, int progress);
 
 private:
+  int m_ProgressValue = {};
 };
 Q_DECLARE_METATYPE(AbstractProgressMessage::Pointer)

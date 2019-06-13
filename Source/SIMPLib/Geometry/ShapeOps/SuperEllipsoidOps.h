@@ -36,7 +36,6 @@
 #pragma once
 
 #include "ShapeOps.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 
 /*
@@ -45,9 +44,23 @@
 class SIMPLib_EXPORT SuperEllipsoidOps : public ShapeOps
 {
   public:
-    SIMPL_SHARED_POINTERS(SuperEllipsoidOps)
-    SIMPL_TYPE_MACRO(SuperEllipsoidOps)
-    SIMPL_STATIC_NEW_MACRO(SuperEllipsoidOps)
+    using Self = SuperEllipsoidOps;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    /**
+     * @brief Returns the name of the class for SuperEllipsoidOps
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for SuperEllipsoidOps
+     */
+    static QString ClassName();
+
+    static Pointer New();
 
     ~SuperEllipsoidOps() override;
 

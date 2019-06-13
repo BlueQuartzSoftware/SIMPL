@@ -42,8 +42,10 @@
 
 #include "H5Support/H5Lite.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+
 #include "SIMPLib/DataArrays/IDataArray.h"
 
 /**
@@ -73,10 +75,25 @@ class SIMPLib_EXPORT StringDataArray : public IDataArray
   // clang-format on
 
 public:
-  SIMPL_SHARED_POINTERS(StringDataArray)
-  SIMPL_STATIC_NEW_MACRO(StringDataArray)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(StringDataArray, IDataArray)
-  SIMPL_CLASS_VERSION(2)
+  using Self = StringDataArray;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for _SUPERStringDataArray
+   */
+  const QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for _SUPERStringDataArray
+   */
+  static QString ClassName();
+
+  int getClassVersion() override;
 
   /**
    * @brief CreateArray
@@ -103,7 +120,7 @@ public:
    * @param name
    * @return
    */
-  IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) override;
+  IDataArrayShPtrType createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief createNewArray
@@ -113,7 +130,7 @@ public:
    * @param allocate
    * @return
    */
-  IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) override;
+  IDataArrayShPtrType createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief createNewArray
@@ -123,7 +140,7 @@ public:
    * @param allocate
    * @return
    */
-  // IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override;
+  IDataArrayShPtrType createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief ~StringDataArray
@@ -254,7 +271,7 @@ public:
    * @param sourceArray
    * @return
    */
-  bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
+  bool copyFromArray(size_t destTupleOffset, IDataArrayShPtrType sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
 
   /**
    * @brief Does Nothing
@@ -285,7 +302,7 @@ public:
    * @param forceNoAllocate
    * @return
    */
-  IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override;
+  IDataArrayShPtrType deepCopy(bool forceNoAllocate = false) override;
 
   /**
    * @brief Reseizes the internal array

@@ -35,7 +35,10 @@
 
 #include "EmptyFilter.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/UnknownFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -204,4 +207,45 @@ const QString EmptyFilter::getHumanLabel() const
 void EmptyFilter::setHumanLabel(const QString& humanLabel)
 {
   m_HumanLabel = humanLabel;
+}
+
+// -----------------------------------------------------------------------------
+EmptyFilter::Pointer EmptyFilter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<EmptyFilter> EmptyFilter::New()
+{
+  struct make_shared_enabler : public EmptyFilter
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString EmptyFilter::getNameOfClass() const
+{
+  return QString("EmptyFilter");
+}
+
+// -----------------------------------------------------------------------------
+QString EmptyFilter::ClassName()
+{
+  return QString("EmptyFilter");
+}
+
+// -----------------------------------------------------------------------------
+void EmptyFilter::setOriginalFilterName(const QString& value)
+{
+  m_OriginalFilterName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString EmptyFilter::getOriginalFilterName() const
+{
+  return m_OriginalFilterName;
 }

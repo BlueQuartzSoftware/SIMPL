@@ -34,6 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "CombineAttributeMatrices.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
 
 #include "SIMPLib/Common/TemplateHelpers.h"
@@ -44,6 +46,8 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   CombinedMatrixID = 1
@@ -433,4 +437,105 @@ const QString CombineAttributeMatrices::getSubGroupName() const
 const QString CombineAttributeMatrices::getHumanLabel() const
 {
   return "Combine Feature/Ensemble Attribute Matrices";
+}
+
+// -----------------------------------------------------------------------------
+CombineAttributeMatrices::Pointer CombineAttributeMatrices::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CombineAttributeMatrices> CombineAttributeMatrices::New()
+{
+  struct make_shared_enabler : public CombineAttributeMatrices
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString CombineAttributeMatrices::getNameOfClass() const
+{
+  return QString("CombineAttributeMatrices");
+}
+
+// -----------------------------------------------------------------------------
+QString CombineAttributeMatrices::ClassName()
+{
+  return QString("CombineAttributeMatrices");
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeMatrices::setFirstAttributeMatrixPath(const DataArrayPath& value)
+{
+  m_FirstAttributeMatrixPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CombineAttributeMatrices::getFirstAttributeMatrixPath() const
+{
+  return m_FirstAttributeMatrixPath;
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeMatrices::setSecondAttributeMatrixPath(const DataArrayPath& value)
+{
+  m_SecondAttributeMatrixPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CombineAttributeMatrices::getSecondAttributeMatrixPath() const
+{
+  return m_SecondAttributeMatrixPath;
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeMatrices::setFirstIndexArrayPath(const DataArrayPath& value)
+{
+  m_FirstIndexArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CombineAttributeMatrices::getFirstIndexArrayPath() const
+{
+  return m_FirstIndexArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeMatrices::setSecondIndexArrayPath(const DataArrayPath& value)
+{
+  m_SecondIndexArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CombineAttributeMatrices::getSecondIndexArrayPath() const
+{
+  return m_SecondIndexArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeMatrices::setCombinedAttributeMatrixName(const QString& value)
+{
+  m_CombinedAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CombineAttributeMatrices::getCombinedAttributeMatrixName() const
+{
+  return m_CombinedAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeMatrices::setNewIndexArrayName(const QString& value)
+{
+  m_NewIndexArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CombineAttributeMatrices::getNewIndexArrayName() const
+{
+  return m_NewIndexArrayName;
 }

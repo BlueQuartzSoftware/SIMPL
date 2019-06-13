@@ -37,8 +37,12 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
+
+class IDataArray;
 
 /**
  * @brief The ExtractComponentAsArray class. See [Filter documentation](@ref extractcomponentasarray) for details.
@@ -60,19 +64,60 @@ class SIMPLib_EXPORT ExtractComponentAsArray : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(ExtractComponentAsArray)
-    SIMPL_FILTER_NEW_MACRO(ExtractComponentAsArray)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ExtractComponentAsArray, AbstractFilter)
+    using Self = ExtractComponentAsArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<ExtractComponentAsArray> New();
+
+    /**
+     * @brief Returns the name of the class for ExtractComponentAsArray
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ExtractComponentAsArray
+     */
+    static QString ClassName();
 
     ~ExtractComponentAsArray() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
+    /**
+     * @brief Setter property for SelectedArrayPath
+     */
+    void setSelectedArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedArrayPath
+     * @return Value of SelectedArrayPath
+     */
+    DataArrayPath getSelectedArrayPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
 
-    SIMPL_FILTER_PARAMETER(int, CompNumber)
+    /**
+     * @brief Setter property for CompNumber
+     */
+    void setCompNumber(const int& value);
+    /**
+     * @brief Getter property for CompNumber
+     * @return Value of CompNumber
+     */
+    int getCompNumber() const;
+
     Q_PROPERTY(int CompNumber READ getCompNumber WRITE setCompNumber)
 
-    SIMPL_FILTER_PARAMETER(QString, NewArrayArrayName)
+    /**
+     * @brief Setter property for NewArrayArrayName
+     */
+    void setNewArrayArrayName(const QString& value);
+    /**
+     * @brief Getter property for NewArrayArrayName
+     * @return Value of NewArrayArrayName
+     */
+    QString getNewArrayArrayName() const;
+
     Q_PROPERTY(QString NewArrayArrayName READ getNewArrayArrayName WRITE setNewArrayArrayName)
 
     /**
@@ -177,8 +222,12 @@ class SIMPLib_EXPORT ExtractComponentAsArray : public AbstractFilter
 
 
   private:
-    DEFINE_IDATAARRAY_WEAKPTR(InArray)
-    DEFINE_IDATAARRAY_WEAKPTR(NewArray)
+    IDataArrayWkPtrType m_InArrayPtr;
+    IDataArrayWkPtrType m_NewArrayPtr;
+
+    DataArrayPath m_SelectedArrayPath = {};
+    int m_CompNumber = {};
+    QString m_NewArrayArrayName = {};
 
   public:
     ExtractComponentAsArray(const ExtractComponentAsArray&) = delete; // Copy Constructor Not Implemented

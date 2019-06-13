@@ -40,7 +40,6 @@
 #include <QtCore/QObject>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/IObserver.h"
 #include "SIMPLib/Messages/AbstractMessage.h"
 
@@ -59,7 +58,14 @@ class SIMPLib_EXPORT Observer : public QObject, public IObserver
 
   public:
     Observer();
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Observer, IObserver)
+    /**
+     * @brief Returns the name of the class for _SUPERObserver
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for _SUPERObserver
+     */
+    static QString ClassName();
 
     ~Observer() override;
 
@@ -71,6 +77,8 @@ class SIMPLib_EXPORT Observer : public QObject, public IObserver
     Observer(Observer&&) = delete;            // Move Constructor Not Implemented
     Observer& operator=(const Observer&) = delete; // Copy Assignment Not Implemented
     Observer& operator=(Observer&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 
 

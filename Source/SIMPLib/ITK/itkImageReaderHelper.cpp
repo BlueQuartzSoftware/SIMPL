@@ -12,6 +12,9 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/ITK/itkGetComponentsDimensions.h"
 #include "SIMPLib/ITK/itkInPlaceImageToDream3DDataFilter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
+
 #include <itkImageFileReader.h>
 
 class ITK_IMAGE_READER_CLASS_NAME : public AbstractFilter

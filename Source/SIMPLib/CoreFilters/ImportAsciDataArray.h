@@ -38,8 +38,11 @@
 #include <QtCore/QScopedPointer>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Common/Constants.h"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 // our PIMPL private class for caching
 class ImportAsciDataArrayPrivate;
@@ -71,38 +74,141 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(ImportAsciDataArray)
-    SIMPL_FILTER_NEW_MACRO(ImportAsciDataArray)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImportAsciDataArray, AbstractFilter)
+    using Self = ImportAsciDataArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<ImportAsciDataArray> New();
+
+    /**
+     * @brief Returns the name of the class for ImportAsciDataArray
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ImportAsciDataArray
+     */
+    static QString ClassName();
 
     ~ImportAsciDataArray() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedAttributeArrayPath)
+    /**
+     * @brief Setter property for CreatedAttributeArrayPath
+     */
+    void setCreatedAttributeArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for CreatedAttributeArrayPath
+     * @return Value of CreatedAttributeArrayPath
+     */
+    DataArrayPath getCreatedAttributeArrayPath() const;
+
     Q_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)
 
-    SIMPL_FILTER_PARAMETER(SIMPL::NumericTypes::Type, ScalarType)
+    /**
+     * @brief Setter property for ScalarType
+     */
+    void setScalarType(const SIMPL::NumericTypes::Type& value);
+    /**
+     * @brief Getter property for ScalarType
+     * @return Value of ScalarType
+     */
+    SIMPL::NumericTypes::Type getScalarType() const;
+
     Q_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
-    SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
+    /**
+     * @brief Setter property for NumberOfComponents
+     */
+    void setNumberOfComponents(const int& value);
+    /**
+     * @brief Getter property for NumberOfComponents
+     * @return Value of NumberOfComponents
+     */
+    int getNumberOfComponents() const;
+
     Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
 
-    SIMPL_FILTER_PARAMETER(int, SkipHeaderLines)
+    /**
+     * @brief Setter property for SkipHeaderLines
+     */
+    void setSkipHeaderLines(const int& value);
+    /**
+     * @brief Getter property for SkipHeaderLines
+     * @return Value of SkipHeaderLines
+     */
+    int getSkipHeaderLines() const;
+
     Q_PROPERTY(int SkipHeaderLines READ getSkipHeaderLines WRITE setSkipHeaderLines)
 
-    SIMPL_FILTER_PARAMETER(QString, InputFile)
+    /**
+     * @brief Setter property for InputFile
+     */
+    void setInputFile(const QString& value);
+    /**
+     * @brief Getter property for InputFile
+     * @return Value of InputFile
+     */
+    QString getInputFile() const;
+
     Q_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
 
-    SIMPL_FILTER_PARAMETER(int, Delimiter)
+    /**
+     * @brief Setter property for Delimiter
+     */
+    void setDelimiter(const int& value);
+    /**
+     * @brief Getter property for Delimiter
+     * @return Value of Delimiter
+     */
+    int getDelimiter() const;
+
     Q_PROPERTY(int Delimiter READ getDelimiter WRITE setDelimiter)
     
     
     Q_PROPERTY(QString FirstLine READ getFirstLine)
-    
-    SIMPL_PIMPL_PROPERTY_DECL(QString, FirstLine)
-    SIMPL_PIMPL_PROPERTY_DECL(QString, InputFile_Cache)
-    SIMPL_PIMPL_PROPERTY_DECL(QDateTime, LastRead)
-    SIMPL_PIMPL_PROPERTY_DECL(int, HeaderLines)
-    
+
+    /**
+     * @brief Setter property for FirstLine
+     */
+    void setFirstLine(const QString& value);
+    /**
+     * @brief Getter property for FirstLine
+     * @return Value of FirstLine
+     */
+    QString getFirstLine() const;
+
+    /**
+     * @brief Setter property for InputFile_Cache
+     */
+    void setInputFile_Cache(const QString& value);
+    /**
+     * @brief Getter property for InputFile_Cache
+     * @return Value of InputFile_Cache
+     */
+    QString getInputFile_Cache() const;
+
+    /**
+     * @brief Setter property for LastRead
+     */
+    void setLastRead(const QDateTime& value);
+    /**
+     * @brief Getter property for LastRead
+     * @return Value of LastRead
+     */
+    QDateTime getLastRead() const;
+
+    /**
+     * @brief Setter property for HeaderLines
+     */
+    void setHeaderLines(int value);
+    /**
+     * @brief Getter property for HeaderLines
+     * @return Value of HeaderLines
+     */
+    int getHeaderLines() const;
+
     enum DelimeterType
     {
       Comma = 0,
@@ -221,9 +327,16 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
     void readHeaderPortion();
 
   private:
+    DataArrayPath m_CreatedAttributeArrayPath = {};
+    SIMPL::NumericTypes::Type m_ScalarType = {};
+    int m_NumberOfComponents = {};
+    int m_SkipHeaderLines = {};
+    QString m_InputFile = {};
+    int m_Delimiter = {};
+
     QScopedPointer<ImportAsciDataArrayPrivate> const d_ptr;
 
-    IDataArray::Pointer m_Array;
+    IDataArrayShPtrType m_Array;
 
   public:
     ImportAsciDataArray(const ImportAsciDataArray&) = delete; // Copy Constructor Not Implemented

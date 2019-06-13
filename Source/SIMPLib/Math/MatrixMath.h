@@ -32,14 +32,13 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
 #pragma once
 
 #include <cmath>
 
+#include <QtCore/QString>
+
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
 
 /*
@@ -54,8 +53,21 @@
 class SIMPLib_EXPORT MatrixMath
 {
   public:
-    SIMPL_SHARED_POINTERS(MatrixMath)
-    SIMPL_TYPE_MACRO(MatrixMath)
+    using Self = MatrixMath;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    /**
+     * @brief Returns the name of the class for MatrixMath
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for MatrixMath
+     */
+    static QString ClassName();
 
     virtual ~MatrixMath();
 
@@ -618,6 +630,8 @@ class SIMPLib_EXPORT MatrixMath
     MatrixMath(MatrixMath&&) = delete;          // Move Constructor Not Implemented
     MatrixMath& operator=(const MatrixMath&) = delete; // Copy Assignment Not Implemented
     MatrixMath& operator=(MatrixMath&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 
 

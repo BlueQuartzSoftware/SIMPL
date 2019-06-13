@@ -35,13 +35,18 @@
 
 #include "MultiThresholdObjects.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ComparisonSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Filtering/ThresholdFilterHelper.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   ThresholdArrayID = 1
@@ -325,4 +330,57 @@ const QString MultiThresholdObjects::getSubGroupName() const
 const QString MultiThresholdObjects::getHumanLabel() const
 {
   return "Threshold Objects";
+}
+
+// -----------------------------------------------------------------------------
+MultiThresholdObjects::Pointer MultiThresholdObjects::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<MultiThresholdObjects> MultiThresholdObjects::New()
+{
+  struct make_shared_enabler : public MultiThresholdObjects
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString MultiThresholdObjects::getNameOfClass() const
+{
+  return QString("MultiThresholdObjects");
+}
+
+// -----------------------------------------------------------------------------
+QString MultiThresholdObjects::ClassName()
+{
+  return QString("MultiThresholdObjects");
+}
+
+// -----------------------------------------------------------------------------
+void MultiThresholdObjects::setDestinationArrayName(const QString& value)
+{
+  m_DestinationArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString MultiThresholdObjects::getDestinationArrayName() const
+{
+  return m_DestinationArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void MultiThresholdObjects::setSelectedThresholds(const ComparisonInputs& value)
+{
+  m_SelectedThresholds = value;
+}
+
+// -----------------------------------------------------------------------------
+ComparisonInputs MultiThresholdObjects::getSelectedThresholds() const
+{
+  return m_SelectedThresholds;
 }

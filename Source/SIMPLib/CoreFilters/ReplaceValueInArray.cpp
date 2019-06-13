@@ -35,12 +35,17 @@
 
 #include "ReplaceValueInArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -336,4 +341,69 @@ const QString ReplaceValueInArray::getSubGroupName() const
 const QString ReplaceValueInArray::getHumanLabel() const
 {
   return "Replace Value in Array";
+}
+
+// -----------------------------------------------------------------------------
+ReplaceValueInArray::Pointer ReplaceValueInArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ReplaceValueInArray> ReplaceValueInArray::New()
+{
+  struct make_shared_enabler : public ReplaceValueInArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString ReplaceValueInArray::getNameOfClass() const
+{
+  return QString("ReplaceValueInArray");
+}
+
+// -----------------------------------------------------------------------------
+QString ReplaceValueInArray::ClassName()
+{
+  return QString("ReplaceValueInArray");
+}
+
+// -----------------------------------------------------------------------------
+void ReplaceValueInArray::setSelectedArray(const DataArrayPath& value)
+{
+  m_SelectedArray = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ReplaceValueInArray::getSelectedArray() const
+{
+  return m_SelectedArray;
+}
+
+// -----------------------------------------------------------------------------
+void ReplaceValueInArray::setRemoveValue(const double& value)
+{
+  m_RemoveValue = value;
+}
+
+// -----------------------------------------------------------------------------
+double ReplaceValueInArray::getRemoveValue() const
+{
+  return m_RemoveValue;
+}
+
+// -----------------------------------------------------------------------------
+void ReplaceValueInArray::setReplaceValue(const double& value)
+{
+  m_ReplaceValue = value;
+}
+
+// -----------------------------------------------------------------------------
+double ReplaceValueInArray::getReplaceValue() const
+{
+  return m_ReplaceValue;
 }

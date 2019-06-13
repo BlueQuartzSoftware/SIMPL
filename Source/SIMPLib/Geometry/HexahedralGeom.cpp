@@ -9,6 +9,8 @@
  *     HexahedralGeom::findDerivatives
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Geometry/HexahedralGeom.h"
 
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
@@ -856,3 +858,28 @@ IGeometry::Pointer HexahedralGeom::deepCopy(bool forceNoAllocate)
 #include "SIMPLib/Geometry/SharedHexOps.cpp"
 #include "SIMPLib/Geometry/SharedQuadOps.cpp"
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
+
+// -----------------------------------------------------------------------------
+HexahedralGeom::Pointer HexahedralGeom::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+HexahedralGeom::Pointer HexahedralGeom::New()
+{
+  Pointer sharedPtr(new(HexahedralGeom));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString HexahedralGeom::getNameOfClass() const
+{
+  return QString("HexahedralGeom");
+}
+
+// -----------------------------------------------------------------------------
+QString HexahedralGeom::ClassName()
+{
+  return QString("HexahedralGeom");
+}

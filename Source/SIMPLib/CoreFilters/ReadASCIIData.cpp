@@ -6,7 +6,10 @@
 
 #include <QtCore/QFileInfo>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
@@ -17,6 +20,8 @@
 #include "SIMPLib/SIMPLibVersion.h"
 
 #include "SIMPLib/CoreFilters/util/AbstractDataParser.hpp"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 namespace {
    const QString k_Skip("Skip");
@@ -660,4 +665,45 @@ const QString ReadASCIIData::getSubGroupName() const
 const QString ReadASCIIData::getHumanLabel() const
 {
   return "Import ASCII Data";
+}
+
+// -----------------------------------------------------------------------------
+ReadASCIIData::Pointer ReadASCIIData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ReadASCIIData> ReadASCIIData::New()
+{
+  struct make_shared_enabler : public ReadASCIIData
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString ReadASCIIData::getNameOfClass() const
+{
+  return QString("ReadASCIIData");
+}
+
+// -----------------------------------------------------------------------------
+QString ReadASCIIData::ClassName()
+{
+  return QString("ReadASCIIData");
+}
+
+// -----------------------------------------------------------------------------
+void ReadASCIIData::setWizardData(const ASCIIWizardData& value)
+{
+  m_WizardData = value;
+}
+
+// -----------------------------------------------------------------------------
+ASCIIWizardData ReadASCIIData::getWizardData() const
+{
+  return m_WizardData;
 }

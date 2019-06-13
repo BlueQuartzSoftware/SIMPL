@@ -358,7 +358,7 @@ int H5FilterParametersReader::closeFilterGroup()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString H5FilterParametersReader::readString(const QString name, QString value)
+QString H5FilterParametersReader::readString(const QString& name, QString value)
 {
   QString defaultStr = value;
   value.clear();
@@ -375,7 +375,7 @@ QString H5FilterParametersReader::readString(const QString name, QString value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<QString> H5FilterParametersReader::readStrings(const QString name, QVector<QString> value)
+QVector<QString> H5FilterParametersReader::readStrings(const QString& name, QVector<QString> value)
 {
   int vectorSize = 0;
   QString str = "";
@@ -396,7 +396,7 @@ QVector<QString> H5FilterParametersReader::readStrings(const QString name, QVect
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStringList H5FilterParametersReader::readStringList(const QString name, QStringList value)
+QStringList H5FilterParametersReader::readStringList(const QString& name, QStringList value)
 {
   int vectorSize = 0;
   QString str = "";
@@ -417,7 +417,7 @@ QStringList H5FilterParametersReader::readStringList(const QString name, QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int8_t H5FilterParametersReader::readValue(const QString name, int8_t value)
+int8_t H5FilterParametersReader::readValue(const QString& name, int8_t value)
 {
   QH5Lite::readScalarDataset(m_CurrentGroupId, name, value);
   return value;
@@ -426,7 +426,7 @@ int8_t H5FilterParametersReader::readValue(const QString name, int8_t value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int16_t H5FilterParametersReader::readValue(const QString name, int16_t value)
+int16_t H5FilterParametersReader::readValue(const QString& name, int16_t value)
 {
   QH5Lite::readScalarDataset(m_CurrentGroupId, name, value);
   return value;
@@ -435,7 +435,7 @@ int16_t H5FilterParametersReader::readValue(const QString name, int16_t value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int32_t H5FilterParametersReader::readValue(const QString name, int32_t value)
+int32_t H5FilterParametersReader::readValue(const QString& name, int32_t value)
 {
   QH5Lite::readScalarDataset(m_CurrentGroupId, name, value);
   return value;
@@ -444,7 +444,7 @@ int32_t H5FilterParametersReader::readValue(const QString name, int32_t value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int64_t H5FilterParametersReader::readValue(const QString name, int64_t value)
+int64_t H5FilterParametersReader::readValue(const QString& name, int64_t value)
 {
   QH5Lite::readScalarDataset(m_CurrentGroupId, name, value);
   return value;
@@ -453,7 +453,7 @@ int64_t H5FilterParametersReader::readValue(const QString name, int64_t value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-uint8_t H5FilterParametersReader::readValue(const QString name, uint8_t value)
+uint8_t H5FilterParametersReader::readValue(const QString& name, uint8_t value)
 {
   QH5Lite::readScalarDataset(m_CurrentGroupId, name, value);
   return value;
@@ -462,7 +462,7 @@ uint8_t H5FilterParametersReader::readValue(const QString name, uint8_t value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-uint16_t H5FilterParametersReader::readValue(const QString name, uint16_t value)
+uint16_t H5FilterParametersReader::readValue(const QString& name, uint16_t value)
 {
   QH5Lite::readScalarDataset(m_CurrentGroupId, name, value);
   return value;
@@ -471,7 +471,7 @@ uint16_t H5FilterParametersReader::readValue(const QString name, uint16_t value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-uint32_t H5FilterParametersReader::readValue(const QString name, uint32_t value)
+uint32_t H5FilterParametersReader::readValue(const QString& name, uint32_t value)
 {
   QH5Lite::readScalarDataset(m_CurrentGroupId, name, value);
   return value;
@@ -480,7 +480,7 @@ uint32_t H5FilterParametersReader::readValue(const QString name, uint32_t value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-uint64_t H5FilterParametersReader::readValue(const QString name, uint64_t value)
+uint64_t H5FilterParametersReader::readValue(const QString& name, uint64_t value)
 {
   QH5Lite::readScalarDataset(m_CurrentGroupId, name, value);
   return value;
@@ -489,7 +489,7 @@ uint64_t H5FilterParametersReader::readValue(const QString name, uint64_t value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-float H5FilterParametersReader::readValue(const QString name, float value)
+float H5FilterParametersReader::readValue(const QString& name, float value)
 {
   QH5Lite::readScalarDataset(m_CurrentGroupId, name, value);
   return value;
@@ -498,7 +498,7 @@ float H5FilterParametersReader::readValue(const QString name, float value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double H5FilterParametersReader::readValue(const QString name, double value)
+double H5FilterParametersReader::readValue(const QString& name, double value)
 {
   QH5Lite::readScalarDataset(m_CurrentGroupId, name, value);
   return value;
@@ -507,7 +507,7 @@ double H5FilterParametersReader::readValue(const QString name, double value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool H5FilterParametersReader::readValue(const QString name, bool value)
+bool H5FilterParametersReader::readValue(const QString& name, bool value)
 {
   QH5Lite::readScalarDataset(m_CurrentGroupId, name, value);
   return value;
@@ -517,7 +517,7 @@ bool H5FilterParametersReader::readValue(const QString name, bool value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::Type H5FilterParametersReader::readValue(const QString name, AttributeMatrix::Type value)
+AttributeMatrix::Type H5FilterParametersReader::readValue(const QString& name, AttributeMatrix::Type value)
 {
   uint32_t v = static_cast<uint32_t>(value);
   QH5Lite::readScalarDataset(m_CurrentGroupId, name, v);
@@ -528,7 +528,7 @@ AttributeMatrix::Type H5FilterParametersReader::readValue(const QString name, At
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<int8_t> H5FilterParametersReader::readArray(const QString name, QVector<int8_t> value)
+QVector<int8_t> H5FilterParametersReader::readArray(const QString& name, QVector<int8_t> value)
 {
   int vectorSize = 0;
   int8_t scalar = 0;
@@ -553,7 +553,7 @@ QVector<int8_t> H5FilterParametersReader::readArray(const QString name, QVector<
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<int16_t> H5FilterParametersReader::readArray(const QString name, QVector<int16_t> value)
+QVector<int16_t> H5FilterParametersReader::readArray(const QString& name, QVector<int16_t> value)
 {
   int vectorSize = 0;
   int16_t scalar = 0;
@@ -578,7 +578,7 @@ QVector<int16_t> H5FilterParametersReader::readArray(const QString name, QVector
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<int32_t> H5FilterParametersReader::readArray(const QString name, QVector<int32_t> value)
+QVector<int32_t> H5FilterParametersReader::readArray(const QString& name, QVector<int32_t> value)
 {
   int vectorSize = 0;
   int32_t scalar = 0;
@@ -604,7 +604,7 @@ QVector<int32_t> H5FilterParametersReader::readArray(const QString name, QVector
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<int64_t> H5FilterParametersReader::readArray(const QString name, QVector<int64_t> value)
+QVector<int64_t> H5FilterParametersReader::readArray(const QString& name, QVector<int64_t> value)
 {
   int vectorSize = 0;
   int64_t scalar = 0;
@@ -629,7 +629,7 @@ QVector<int64_t> H5FilterParametersReader::readArray(const QString name, QVector
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<uint8_t> H5FilterParametersReader::readArray(const QString name, QVector<uint8_t> value)
+QVector<uint8_t> H5FilterParametersReader::readArray(const QString& name, QVector<uint8_t> value)
 {
   int vectorSize = 0;
   uint8_t scalar = 0;
@@ -654,7 +654,7 @@ QVector<uint8_t> H5FilterParametersReader::readArray(const QString name, QVector
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<uint16_t> H5FilterParametersReader::readArray(const QString name, QVector<uint16_t> value)
+QVector<uint16_t> H5FilterParametersReader::readArray(const QString& name, QVector<uint16_t> value)
 {
   int vectorSize = 0;
   uint16_t scalar = 0;
@@ -679,7 +679,7 @@ QVector<uint16_t> H5FilterParametersReader::readArray(const QString name, QVecto
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<uint32_t> H5FilterParametersReader::readArray(const QString name, QVector<uint32_t> value)
+QVector<uint32_t> H5FilterParametersReader::readArray(const QString& name, QVector<uint32_t> value)
 {
   int vectorSize = 0;
   uint32_t scalar = 0;
@@ -704,7 +704,7 @@ QVector<uint32_t> H5FilterParametersReader::readArray(const QString name, QVecto
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<uint64_t> H5FilterParametersReader::readArray(const QString name, QVector<uint64_t> value)
+QVector<uint64_t> H5FilterParametersReader::readArray(const QString& name, QVector<uint64_t> value)
 {
   int vectorSize = 0;
   uint64_t scalar = 0;
@@ -729,7 +729,7 @@ QVector<uint64_t> H5FilterParametersReader::readArray(const QString name, QVecto
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<float> H5FilterParametersReader::readArray(const QString name, QVector<float> value)
+QVector<float> H5FilterParametersReader::readArray(const QString& name, QVector<float> value)
 {
   int vectorSize = 0;
   float scalar = 0.0f;
@@ -754,7 +754,7 @@ QVector<float> H5FilterParametersReader::readArray(const QString name, QVector<f
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<double> H5FilterParametersReader::readArray(const QString name, QVector<double> value)
+QVector<double> H5FilterParametersReader::readArray(const QString& name, QVector<double> value)
 {
   int vectorSize = 0;
   double scalar = 0.0;
@@ -779,7 +779,7 @@ QVector<double> H5FilterParametersReader::readArray(const QString name, QVector<
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntVec3Type H5FilterParametersReader::readIntVec3(const QString name, IntVec3Type defaultValue)
+IntVec3Type H5FilterParametersReader::readIntVec3(const QString& name, IntVec3Type defaultValue)
 {
   int err = 0;
   IntVec3Type v;
@@ -795,7 +795,7 @@ IntVec3Type H5FilterParametersReader::readIntVec3(const QString name, IntVec3Typ
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatVec3Type H5FilterParametersReader::readFloatVec3(const QString name, FloatVec3Type defaultValue)
+FloatVec3Type H5FilterParametersReader::readFloatVec3(const QString& name, FloatVec3Type defaultValue)
 {
   int err = 0;
   FloatVec3Type v;
@@ -810,7 +810,7 @@ FloatVec3Type H5FilterParametersReader::readFloatVec3(const QString name, FloatV
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Float2ndOrderPoly_t H5FilterParametersReader::readFloat2ndOrderPoly(const QString name, Float2ndOrderPoly_t defaultValue)
+Float2ndOrderPoly_t H5FilterParametersReader::readFloat2ndOrderPoly(const QString& name, Float2ndOrderPoly_t defaultValue)
 {
   int err = 0;
   Float2ndOrderPoly_t v;
@@ -825,7 +825,7 @@ Float2ndOrderPoly_t H5FilterParametersReader::readFloat2ndOrderPoly(const QStrin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Float3rdOrderPoly_t H5FilterParametersReader::readFloat3rdOrderPoly(const QString name, Float3rdOrderPoly_t defaultValue)
+Float3rdOrderPoly_t H5FilterParametersReader::readFloat3rdOrderPoly(const QString& name, Float3rdOrderPoly_t defaultValue)
 {
   int err = 0;
   Float3rdOrderPoly_t v;
@@ -840,7 +840,7 @@ Float3rdOrderPoly_t H5FilterParametersReader::readFloat3rdOrderPoly(const QStrin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Float4thOrderPoly_t H5FilterParametersReader::readFloat4thOrderPoly(const QString name, Float4thOrderPoly_t defaultValue)
+Float4thOrderPoly_t H5FilterParametersReader::readFloat4thOrderPoly(const QString& name, Float4thOrderPoly_t defaultValue)
 {
   int err = 0;
   Float4thOrderPoly_t v;
@@ -855,7 +855,7 @@ Float4thOrderPoly_t H5FilterParametersReader::readFloat4thOrderPoly(const QStrin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FileListInfo_t H5FilterParametersReader::readFileListInfo(const QString name, FileListInfo_t defaultValue)
+FileListInfo_t H5FilterParametersReader::readFileListInfo(const QString& name, FileListInfo_t defaultValue)
 {
 
   FileListInfo_t v;
@@ -909,7 +909,7 @@ FileListInfo_t H5FilterParametersReader::readFileListInfo(const QString name, Fi
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonInput_t H5FilterParametersReader::readComparisonInput(const QString name, ComparisonInput_t defaultValue, int vectorPos)
+ComparisonInput_t H5FilterParametersReader::readComparisonInput(const QString& name, ComparisonInput_t defaultValue, int vectorPos)
 {
   // QVector<ComparisonInput_t> comps(1, defaultValue);
   ComparisonInputs comps;
@@ -924,7 +924,7 @@ ComparisonInput_t H5FilterParametersReader::readComparisonInput(const QString na
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonInputs H5FilterParametersReader::readComparisonInputs(const QString name, ComparisonInputs defValue)
+ComparisonInputs H5FilterParametersReader::readComparisonInputs(const QString& name, ComparisonInputs defValue)
 {
   int size = 0;
   QString strData = "";
@@ -986,7 +986,7 @@ ComparisonInputs H5FilterParametersReader::readComparisonInputs(const QString na
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonInputsAdvanced H5FilterParametersReader::readComparisonInputsAdvanced(const QString name, ComparisonInputsAdvanced defValue)
+ComparisonInputsAdvanced H5FilterParametersReader::readComparisonInputsAdvanced(const QString& name, ComparisonInputsAdvanced defValue)
 {
     /*
     int size = 0;
@@ -1025,7 +1025,7 @@ ComparisonInputsAdvanced H5FilterParametersReader::readComparisonInputsAdvanced(
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AxisAngleInput_t H5FilterParametersReader::readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos)
+AxisAngleInput_t H5FilterParametersReader::readAxisAngle(const QString& name, AxisAngleInput_t v, int vectorPos)
 {
   int err = 0;
 
@@ -1044,7 +1044,7 @@ AxisAngleInput_t H5FilterParametersReader::readAxisAngle(const QString name, Axi
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<AxisAngleInput_t> H5FilterParametersReader::readAxisAngles(const QString name, QVector<AxisAngleInput_t> v)
+QVector<AxisAngleInput_t> H5FilterParametersReader::readAxisAngles(const QString& name, QVector<AxisAngleInput_t> v)
 {
   QVector<AxisAngleInput_t> axisAngleInputsVector;
   AxisAngleInput_t axisAngleDummyInput;
@@ -1063,7 +1063,7 @@ QVector<AxisAngleInput_t> H5FilterParametersReader::readAxisAngles(const QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSet<QString> H5FilterParametersReader::readArraySelections(const QString name, QSet<QString> v)
+QSet<QString> H5FilterParametersReader::readArraySelections(const QString& name, QSet<QString> v)
 {
   int size = 0;
   QString strData = "";
@@ -1262,4 +1262,41 @@ QPair<double, double> H5FilterParametersReader::readPairOfDoubles(const QString&
   value.first = min;
   value.second = max;
   return value;
+}
+
+// -----------------------------------------------------------------------------
+H5FilterParametersReader::Pointer H5FilterParametersReader::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+H5FilterParametersReader::Pointer H5FilterParametersReader::New()
+{
+  Pointer sharedPtr(new(H5FilterParametersReader));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString H5FilterParametersReader::getNameOfClass() const
+{
+  return QString("H5FilterParametersReader");
+}
+
+// -----------------------------------------------------------------------------
+QString H5FilterParametersReader::ClassName()
+{
+  return QString("H5FilterParametersReader");
+}
+
+// -----------------------------------------------------------------------------
+void H5FilterParametersReader::setPipelineGroupId(const hid_t& value)
+{
+  m_PipelineGroupId = value;
+}
+
+// -----------------------------------------------------------------------------
+hid_t H5FilterParametersReader::getPipelineGroupId() const
+{
+  return m_PipelineGroupId;
 }

@@ -35,11 +35,16 @@
 
 #include "RenameDataContainer.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -233,4 +238,57 @@ DataArrayPath::RenameContainer RenameDataContainer::getRenamedPaths()
   container.push_back(std::make_pair(oldPath, newPath));
 
   return container;
+}
+
+// -----------------------------------------------------------------------------
+RenameDataContainer::Pointer RenameDataContainer::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<RenameDataContainer> RenameDataContainer::New()
+{
+  struct make_shared_enabler : public RenameDataContainer
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString RenameDataContainer::getNameOfClass() const
+{
+  return QString("RenameDataContainer");
+}
+
+// -----------------------------------------------------------------------------
+QString RenameDataContainer::ClassName()
+{
+  return QString("RenameDataContainer");
+}
+
+// -----------------------------------------------------------------------------
+void RenameDataContainer::setSelectedDataContainerName(const DataArrayPath& value)
+{
+  m_SelectedDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RenameDataContainer::getSelectedDataContainerName() const
+{
+  return m_SelectedDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void RenameDataContainer::setNewDataContainerName(const DataArrayPath& value)
+{
+  m_NewDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RenameDataContainer::getNewDataContainerName() const
+{
+  return m_NewDataContainerName;
 }

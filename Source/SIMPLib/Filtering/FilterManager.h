@@ -41,7 +41,6 @@
 #include <QtCore/QUuid>
 #include <QtCore/QJsonArray>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
 #include "SIMPLib/SIMPLib.h"
 
@@ -53,7 +52,14 @@
 class SIMPLib_EXPORT FilterManager
 {
 public:
-  SIMPL_TYPE_MACRO(FilterManager)
+  /**
+   * @brief Returns the name of the class for FilterManager
+   */
+  const QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for FilterManager
+   */
+  static QString ClassName();
 
   virtual ~FilterManager();
 

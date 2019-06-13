@@ -37,7 +37,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -64,22 +63,72 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(CreateImageGeometry)
-    SIMPL_FILTER_NEW_MACRO(CreateImageGeometry)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateImageGeometry, AbstractFilter)
+    using Self = CreateImageGeometry;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<CreateImageGeometry> New();
+
+    /**
+     * @brief Returns the name of the class for CreateImageGeometry
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for CreateImageGeometry
+     */
+    static QString ClassName();
 
     ~CreateImageGeometry() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedDataContainer)
+    /**
+     * @brief Setter property for SelectedDataContainer
+     */
+    void setSelectedDataContainer(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedDataContainer
+     * @return Value of SelectedDataContainer
+     */
+    DataArrayPath getSelectedDataContainer() const;
+
     Q_PROPERTY(DataArrayPath SelectedDataContainer READ getSelectedDataContainer WRITE setSelectedDataContainer)
 
-    SIMPL_FILTER_PARAMETER(IntVec3Type, Dimensions)
+    /**
+     * @brief Setter property for Dimensions
+     */
+    void setDimensions(const IntVec3Type& value);
+    /**
+     * @brief Getter property for Dimensions
+     * @return Value of Dimensions
+     */
+    IntVec3Type getDimensions() const;
+
     Q_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
 
-    SIMPL_FILTER_PARAMETER(FloatVec3Type, Origin)
+    /**
+     * @brief Setter property for Origin
+     */
+    void setOrigin(const FloatVec3Type& value);
+    /**
+     * @brief Getter property for Origin
+     * @return Value of Origin
+     */
+    FloatVec3Type getOrigin() const;
+
     Q_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
 
-    SIMPL_FILTER_PARAMETER(FloatVec3Type, Spacing)
+    /**
+     * @brief Setter property for Spacing
+     */
+    void setSpacing(const FloatVec3Type& value);
+    /**
+     * @brief Getter property for Spacing
+     * @return Value of Spacing
+     */
+    FloatVec3Type getSpacing() const;
+
     Q_PROPERTY(FloatVec3Type Spacing READ getSpacing WRITE setSpacing)
 
     QString getBoxDimensions();
@@ -197,5 +246,11 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
     CreateImageGeometry(CreateImageGeometry&&) = delete;      // Move Constructor Not Implemented
     CreateImageGeometry& operator=(const CreateImageGeometry&) = delete; // Copy Assignment Not Implemented
     CreateImageGeometry& operator=(CreateImageGeometry&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    DataArrayPath m_SelectedDataContainer = {};
+    IntVec3Type m_Dimensions = {};
+    FloatVec3Type m_Origin = {};
+    FloatVec3Type m_Spacing = {};
 };
 

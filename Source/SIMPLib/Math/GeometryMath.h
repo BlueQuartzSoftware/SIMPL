@@ -38,7 +38,6 @@
 
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DynamicListArray.hpp"
 
 class VertexGeom;
@@ -55,8 +54,21 @@ class TriangleGeom;
 class SIMPLib_EXPORT GeometryMath
 {
   public:
-    SIMPL_SHARED_POINTERS(GeometryMath)
-    SIMPL_TYPE_MACRO(GeometryMath)
+    using Self = GeometryMath;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    /**
+     * @brief Returns the name of the class for GeometryMath
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for GeometryMath
+     */
+    static QString ClassName();
 
     virtual ~GeometryMath();
 
@@ -361,6 +373,8 @@ class SIMPLib_EXPORT GeometryMath
     GeometryMath(GeometryMath&&) = delete;        // Move Constructor Not Implemented
     GeometryMath& operator=(const GeometryMath&) = delete; // Copy Assignment Not Implemented
     GeometryMath& operator=(GeometryMath&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 
 

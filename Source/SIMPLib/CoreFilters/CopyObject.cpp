@@ -35,7 +35,10 @@
 
 #include "CopyObject.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -44,6 +47,8 @@
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   DataContainerID = 1,
@@ -323,4 +328,93 @@ const QString CopyObject::getSubGroupName() const
 const QString CopyObject::getHumanLabel() const
 {
   return "Copy Object";
+}
+
+// -----------------------------------------------------------------------------
+CopyObject::Pointer CopyObject::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CopyObject> CopyObject::New()
+{
+  struct make_shared_enabler : public CopyObject
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString CopyObject::getNameOfClass() const
+{
+  return QString("CopyObject");
+}
+
+// -----------------------------------------------------------------------------
+QString CopyObject::ClassName()
+{
+  return QString("CopyObject");
+}
+
+// -----------------------------------------------------------------------------
+void CopyObject::setObjectToCopy(const int& value)
+{
+  m_ObjectToCopy = value;
+}
+
+// -----------------------------------------------------------------------------
+int CopyObject::getObjectToCopy() const
+{
+  return m_ObjectToCopy;
+}
+
+// -----------------------------------------------------------------------------
+void CopyObject::setDataContainerToCopy(const DataArrayPath& value)
+{
+  m_DataContainerToCopy = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CopyObject::getDataContainerToCopy() const
+{
+  return m_DataContainerToCopy;
+}
+
+// -----------------------------------------------------------------------------
+void CopyObject::setAttributeMatrixToCopy(const DataArrayPath& value)
+{
+  m_AttributeMatrixToCopy = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CopyObject::getAttributeMatrixToCopy() const
+{
+  return m_AttributeMatrixToCopy;
+}
+
+// -----------------------------------------------------------------------------
+void CopyObject::setAttributeArrayToCopy(const DataArrayPath& value)
+{
+  m_AttributeArrayToCopy = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CopyObject::getAttributeArrayToCopy() const
+{
+  return m_AttributeArrayToCopy;
+}
+
+// -----------------------------------------------------------------------------
+void CopyObject::setCopiedObjectName(const QString& value)
+{
+  m_CopiedObjectName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CopyObject::getCopiedObjectName() const
+{
+  return m_CopiedObjectName;
 }

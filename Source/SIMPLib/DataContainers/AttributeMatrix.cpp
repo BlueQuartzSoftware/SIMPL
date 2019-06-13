@@ -33,6 +33,10 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QTextStream>
+
+#include <QtCore/QDebug>
+
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 // C Includes
@@ -498,12 +502,22 @@ void AttributeMatrix::clearAttributeArrays()
   clear();
 }
 
+AttributeMatrix::Container_t AttributeMatrix::getAttributeArrays() const
+{
+  return getChildren();
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 AttributeMatrix::NameList AttributeMatrix::getAttributeArrayNames()
 {
   return getNamesOfChildren();
+}
+
+int AttributeMatrix::getNumAttributeArrays() const
+{
+  return static_cast<int>(size());
 }
 
 // -----------------------------------------------------------------------------
@@ -917,4 +931,64 @@ QString AttributeMatrix::writeXdmfAttributeData(const IDataArray::Pointer& array
   out << block;
 
   return xdmfText;
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrix::Pointer AttributeMatrix::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+const QString AttributeMatrix::getNameOfClass() const
+{
+  return QString("AttributeMatrix");
+}
+
+// -----------------------------------------------------------------------------
+QString AttributeMatrix::ClassName()
+{
+  return QString("AttributeMatrix");
+}
+
+// -----------------------------------------------------------------------------
+void AttributeMatrix::setType(const AttributeMatrix::Type& value)
+{
+  m_Type = value;
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrix::Type AttributeMatrix::getType() const
+{
+  return m_Type;
+}
+bool AttributeMatrix::addOrReplaceAttributeArray(const IDataArrayShPtrType& data)
+{
+  // Can not insert a null IDataArray object
+  if(data.get() == nullptr)
+  {
+    return false;
+  }
+  if(getNumberOfTuples() != data->getNumberOfTuples())
+  {
+    qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
+    qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
+  }
+  Q_ASSERT(getNumberOfTuples() == data->getNumberOfTuples());
+  return insertOrAssign(data);
+}
+
+IDataArrayShPtrType AttributeMatrix::getAttributeArray(const QString& name)
+{
+  return getChildByName(name);
+}
+
+IDataArrayShPtrType AttributeMatrix::getAttributeArray(const DataArrayPath& path)
+{
+  return getAttributeArray(path.getDataArrayName());
+}
+
+bool AttributeMatrix::doesAttributeArrayExist(const QString& name) const
+{
+  return contains(name);
 }

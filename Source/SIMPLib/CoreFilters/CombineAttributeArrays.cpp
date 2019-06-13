@@ -35,13 +35,18 @@
 
 #include "CombineAttributeArrays.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   CombinedArrayID = 1
@@ -422,4 +427,81 @@ const QString CombineAttributeArrays::getSubGroupName() const
 const QString CombineAttributeArrays::getHumanLabel() const
 {
   return "Combine Attribute Arrays";
+}
+
+// -----------------------------------------------------------------------------
+CombineAttributeArrays::Pointer CombineAttributeArrays::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CombineAttributeArrays> CombineAttributeArrays::New()
+{
+  struct make_shared_enabler : public CombineAttributeArrays
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString CombineAttributeArrays::getNameOfClass() const
+{
+  return QString("CombineAttributeArrays");
+}
+
+// -----------------------------------------------------------------------------
+QString CombineAttributeArrays::ClassName()
+{
+  return QString("CombineAttributeArrays");
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeArrays::setSelectedDataArrayPaths(const QVector<DataArrayPath>& value)
+{
+  m_SelectedDataArrayPaths = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> CombineAttributeArrays::getSelectedDataArrayPaths() const
+{
+  return m_SelectedDataArrayPaths;
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeArrays::setStackedDataArrayName(const QString& value)
+{
+  m_StackedDataArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CombineAttributeArrays::getStackedDataArrayName() const
+{
+  return m_StackedDataArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeArrays::setNormalizeData(const bool& value)
+{
+  m_NormalizeData = value;
+}
+
+// -----------------------------------------------------------------------------
+bool CombineAttributeArrays::getNormalizeData() const
+{
+  return m_NormalizeData;
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeArrays::setMoveValues(const bool& value)
+{
+  m_MoveValues = value;
+}
+
+// -----------------------------------------------------------------------------
+bool CombineAttributeArrays::getMoveValues() const
+{
+  return m_MoveValues;
 }

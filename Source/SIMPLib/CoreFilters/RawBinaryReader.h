@@ -37,8 +37,11 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Common/Constants.h"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 /**
  * @brief The RawBinaryReader class. See [Filter documentation](@ref rawbinaryreader) for details.
@@ -66,28 +69,96 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(RawBinaryReader)
-    SIMPL_FILTER_NEW_MACRO(RawBinaryReader)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RawBinaryReader, AbstractFilter)
+    using Self = RawBinaryReader;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<RawBinaryReader> New();
+
+    /**
+     * @brief Returns the name of the class for RawBinaryReader
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for RawBinaryReader
+     */
+    static QString ClassName();
 
     ~RawBinaryReader() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedAttributeArrayPath)
+    /**
+     * @brief Setter property for CreatedAttributeArrayPath
+     */
+    void setCreatedAttributeArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for CreatedAttributeArrayPath
+     * @return Value of CreatedAttributeArrayPath
+     */
+    DataArrayPath getCreatedAttributeArrayPath() const;
+
     Q_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)
 
-    SIMPL_FILTER_PARAMETER(SIMPL::NumericTypes::Type, ScalarType)
+    /**
+     * @brief Setter property for ScalarType
+     */
+    void setScalarType(const SIMPL::NumericTypes::Type& value);
+    /**
+     * @brief Getter property for ScalarType
+     * @return Value of ScalarType
+     */
+    SIMPL::NumericTypes::Type getScalarType() const;
+
     Q_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
-    SIMPL_FILTER_PARAMETER(int, Endian)
+    /**
+     * @brief Setter property for Endian
+     */
+    void setEndian(const int& value);
+    /**
+     * @brief Getter property for Endian
+     * @return Value of Endian
+     */
+    int getEndian() const;
+
     Q_PROPERTY(int Endian READ getEndian WRITE setEndian)
 
-    SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
+    /**
+     * @brief Setter property for NumberOfComponents
+     */
+    void setNumberOfComponents(const int& value);
+    /**
+     * @brief Getter property for NumberOfComponents
+     * @return Value of NumberOfComponents
+     */
+    int getNumberOfComponents() const;
+
     Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
 
-    SIMPL_FILTER_PARAMETER(uint64_t, SkipHeaderBytes)
+    /**
+     * @brief Setter property for SkipHeaderBytes
+     */
+    void setSkipHeaderBytes(const uint64_t& value);
+    /**
+     * @brief Getter property for SkipHeaderBytes
+     * @return Value of SkipHeaderBytes
+     */
+    uint64_t getSkipHeaderBytes() const;
+
     Q_PROPERTY(uint64_t SkipHeaderBytes READ getSkipHeaderBytes WRITE setSkipHeaderBytes)
 
-    SIMPL_FILTER_PARAMETER(QString, InputFile)
+    /**
+     * @brief Setter property for InputFile
+     */
+    void setInputFile(const QString& value);
+    /**
+     * @brief Getter property for InputFile
+     * @return Value of InputFile
+     */
+    QString getInputFile() const;
+
     Q_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
 
 
@@ -194,7 +265,14 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
 
 
   private:
-    IDataArray::Pointer m_Array;
+    DataArrayPath m_CreatedAttributeArrayPath = {};
+    SIMPL::NumericTypes::Type m_ScalarType = {};
+    int m_Endian = {};
+    int m_NumberOfComponents = {};
+    uint64_t m_SkipHeaderBytes = {};
+    QString m_InputFile = {};
+
+    IDataArrayShPtrType m_Array;
 
   public:
     RawBinaryReader(const RawBinaryReader&) = delete; // Copy Constructor Not Implemented

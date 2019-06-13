@@ -407,3 +407,15 @@ void ASCIIDataModel::clearHeaders(Qt::Orientation orientation)
     emit headerDataChanged(Qt::Vertical, 0, m_VerticalHeaders.size() - 1);
   }
 }
+
+// -----------------------------------------------------------------------------
+const QString ASCIIDataModel::getNameOfClass() const
+{
+  return QString("ASCIIDataModel");
+}
+
+// -----------------------------------------------------------------------------
+QString ASCIIDataModel::ClassName()
+{
+  return QString("ASCIIDataModel");
+}

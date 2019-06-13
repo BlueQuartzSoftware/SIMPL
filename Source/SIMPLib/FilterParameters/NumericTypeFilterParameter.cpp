@@ -96,3 +96,52 @@ void NumericTypeFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = static_cast<int>(m_GetterCallback());
   }
 }
+
+// -----------------------------------------------------------------------------
+NumericTypeFilterParameter::Pointer NumericTypeFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+NumericTypeFilterParameter::Pointer NumericTypeFilterParameter::New()
+{
+  Pointer sharedPtr(new(NumericTypeFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString NumericTypeFilterParameter::getNameOfClass() const
+{
+  return QString("NumericTypeFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString NumericTypeFilterParameter::ClassName()
+{
+  return QString("NumericTypeFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void NumericTypeFilterParameter::setSetterCallback(const NumericTypeFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+NumericTypeFilterParameter::SetterCallbackType NumericTypeFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void NumericTypeFilterParameter::setGetterCallback(const NumericTypeFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+NumericTypeFilterParameter::GetterCallbackType NumericTypeFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

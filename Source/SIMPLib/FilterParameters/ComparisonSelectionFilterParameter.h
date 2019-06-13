@@ -66,9 +66,23 @@
 class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(ComparisonSelectionFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(ComparisonSelectionFilterParameter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ComparisonSelectionFilterParameter, FilterParameter)
+    using Self = ComparisonSelectionFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for ComparisonSelectionFilterParameter
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ComparisonSelectionFilterParameter
+     */
+    static QString ClassName();
 
     using SetterCallbackType = std::function<void(ComparisonInputs)>;
     using GetterCallbackType = std::function<ComparisonInputs(void)>;
@@ -97,11 +111,45 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
 
     ~ComparisonSelectionFilterParameter() override;
 
-    SIMPL_INSTANCE_PROPERTY(QVector<QString>, Choices)
-    SIMPL_INSTANCE_PROPERTY(bool, ShowOperators)
+    /**
+     * @brief Setter property for Choices
+     */
+    void setChoices(const QVector<QString>& value);
+    /**
+     * @brief Getter property for Choices
+     * @return Value of Choices
+     */
+    QVector<QString> getChoices() const;
 
-    SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
-    SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Types, DefaultAttributeMatrixTypes)
+    /**
+     * @brief Setter property for ShowOperators
+     */
+    void setShowOperators(const bool& value);
+    /**
+     * @brief Getter property for ShowOperators
+     * @return Value of ShowOperators
+     */
+    bool getShowOperators() const;
+
+    /**
+     * @brief Setter property for DefaultGeometryTypes
+     */
+    void setDefaultGeometryTypes(const IGeometry::Types& value);
+    /**
+     * @brief Getter property for DefaultGeometryTypes
+     * @return Value of DefaultGeometryTypes
+     */
+    IGeometry::Types getDefaultGeometryTypes() const;
+
+    /**
+     * @brief Setter property for DefaultAttributeMatrixTypes
+     */
+    void setDefaultAttributeMatrixTypes(const AttributeMatrix::Types& value);
+    /**
+     * @brief Getter property for DefaultAttributeMatrixTypes
+     * @return Value of DefaultAttributeMatrixTypes
+     */
+    AttributeMatrix::Types getDefaultAttributeMatrixTypes() const;
 
     /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -127,14 +175,30 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
     * that this FilterParameter subclass represents.
     * from the filter parameter.
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const ComparisonSelectionFilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    ComparisonSelectionFilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const ComparisonSelectionFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    ComparisonSelectionFilterParameter::GetterCallbackType getGetterCallback() const;
 
     /**
      * @brief Handle DataArrayPath changes if necessary
@@ -155,5 +219,13 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
     ComparisonSelectionFilterParameter(ComparisonSelectionFilterParameter&&) = delete;      // Move Constructor Not Implemented
     ComparisonSelectionFilterParameter& operator=(const ComparisonSelectionFilterParameter&) = delete; // Copy Assignment Not Implemented
     ComparisonSelectionFilterParameter& operator=(ComparisonSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    QVector<QString> m_Choices = {};
+    bool m_ShowOperators = {};
+    IGeometry::Types m_DefaultGeometryTypes = {};
+    AttributeMatrix::Types m_DefaultAttributeMatrixTypes = {};
+    ComparisonSelectionFilterParameter::SetterCallbackType m_SetterCallback = {};
+    ComparisonSelectionFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

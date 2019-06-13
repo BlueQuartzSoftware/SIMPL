@@ -6,11 +6,8 @@
 #include <itkNumericTraitsRGBPixel.h>
 #include <itkNumericTraitsVectorPixel.h>
 
-#include "SIMPLib/ITK/itkImportDream3DImageContainer.h"
-#include "SIMPLib/ITK/itkSupportConstants.h"
-
 class DataContainer;
-using DataContainerShPtr = std::shared_ptr<DataContainer>;
+using DataContainerShPtrType = std::shared_ptr<DataContainer>;
 
 namespace itk
 {
@@ -35,7 +32,7 @@ public:
   itkNewMacro(Self);
   itkTypeMacro(InPlaceDream3DDataToImageFilter, ImportImageFilter);
 
-  virtual void SetInput(DataContainer::Pointer& dc);
+  virtual void SetInput(DataContainerShPtrType& dc);
 
   itkSetMacro(DataArrayName, std::string);
   itkGetMacro(DataArrayName, std::string);

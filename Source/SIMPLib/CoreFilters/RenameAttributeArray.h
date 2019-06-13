@@ -37,7 +37,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -58,16 +57,48 @@ class SIMPLib_EXPORT RenameAttributeArray : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(RenameAttributeArray)
-    SIMPL_FILTER_NEW_MACRO(RenameAttributeArray)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RenameAttributeArray, AbstractFilter)
+    using Self = RenameAttributeArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<RenameAttributeArray> New();
+
+    /**
+     * @brief Returns the name of the class for RenameAttributeArray
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for RenameAttributeArray
+     */
+    static QString ClassName();
 
     ~RenameAttributeArray() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
+    /**
+     * @brief Setter property for SelectedArrayPath
+     */
+    void setSelectedArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedArrayPath
+     * @return Value of SelectedArrayPath
+     */
+    DataArrayPath getSelectedArrayPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
 
-    SIMPL_FILTER_PARAMETER(QString, NewArrayName)
+    /**
+     * @brief Setter property for NewArrayName
+     */
+    void setNewArrayName(const QString& value);
+    /**
+     * @brief Getter property for NewArrayName
+     * @return Value of NewArrayName
+     */
+    QString getNewArrayName() const;
+
     Q_PROPERTY(QString NewArrayName READ getNewArrayName WRITE setNewArrayName)
 
     /**
@@ -177,6 +208,9 @@ class SIMPLib_EXPORT RenameAttributeArray : public AbstractFilter
     void initialize();
 
   private:
+    DataArrayPath m_SelectedArrayPath = {};
+    QString m_NewArrayName = {};
+
     QString m_LastArrayName = "";
 
   public:

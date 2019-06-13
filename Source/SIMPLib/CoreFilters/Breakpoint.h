@@ -38,7 +38,6 @@
 #include <QtCore/QWaitCondition>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -55,9 +54,23 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(Breakpoint)
-  SIMPL_FILTER_NEW_MACRO(Breakpoint)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Breakpoint, AbstractFilter)
+  using Self = Breakpoint;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<Breakpoint> New();
+
+  /**
+   * @brief Returns the name of the class for Breakpoint
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for Breakpoint
+   */
+  static QString ClassName();
 
   ~Breakpoint() override;
 

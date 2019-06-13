@@ -40,8 +40,6 @@
 #include <QtCore/QVariant>
 #include <QtGui/QStandardItemModel>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/FilterLibraryTreeWidget.h"
@@ -56,7 +54,14 @@ class SVWidgetsLib_EXPORT DataStructureModel : public QStandardItemModel
     Q_OBJECT
 
   public:
-    SIMPL_TYPE_MACRO(DataStructureModel)
+    /**
+     * @brief Returns the name of the class for DataStructureModel
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for DataStructureModel
+     */
+    static QString ClassName();
 
     DataStructureModel(QObject* parent = 0);
     ~DataStructureModel() override;
@@ -107,7 +112,7 @@ the setData() and setHeaderData() functions, respectively.
      * @brief syncDataModel
      * @param dca
      */
-    void syncDataModel(DataContainerArray::Pointer dca);
+    void syncDataModel(DataContainerArrayShPtrType dca);
 
     bool needsToBeExpanded(const QModelIndex& index);
     void setNeedsToBeExpanded(const QModelIndex& index, bool value);

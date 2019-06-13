@@ -94,3 +94,52 @@ void IntFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = m_GetterCallback();
   }
 }
+
+// -----------------------------------------------------------------------------
+IntFilterParameter::Pointer IntFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+IntFilterParameter::Pointer IntFilterParameter::New()
+{
+  Pointer sharedPtr(new(IntFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString IntFilterParameter::getNameOfClass() const
+{
+  return QString("IntFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString IntFilterParameter::ClassName()
+{
+  return QString("IntFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void IntFilterParameter::setSetterCallback(const IntFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+IntFilterParameter::SetterCallbackType IntFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void IntFilterParameter::setGetterCallback(const IntFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+IntFilterParameter::GetterCallbackType IntFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

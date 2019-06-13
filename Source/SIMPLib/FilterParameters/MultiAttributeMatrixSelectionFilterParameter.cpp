@@ -230,3 +230,112 @@ void MultiAttributeMatrixSelectionFilterParameter::dataArrayPathRenamed(Abstract
   m_SetterCallback(paths);
   emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }
+
+// -----------------------------------------------------------------------------
+MultiAttributeMatrixSelectionFilterParameter::Pointer MultiAttributeMatrixSelectionFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+MultiAttributeMatrixSelectionFilterParameter::Pointer MultiAttributeMatrixSelectionFilterParameter::New()
+{
+  Pointer sharedPtr(new(MultiAttributeMatrixSelectionFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString MultiAttributeMatrixSelectionFilterParameter::getNameOfClass() const
+{
+  return QString("MultiAttributeMatrixSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString MultiAttributeMatrixSelectionFilterParameter::ClassName()
+{
+  return QString("MultiAttributeMatrixSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionFilterParameter::setDefaultPaths(const QVector<DataArrayPath>& value)
+{
+  m_DefaultPaths = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> MultiAttributeMatrixSelectionFilterParameter::getDefaultPaths() const
+{
+  return m_DefaultPaths;
+}
+
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionFilterParameter::setDefaultGeometryTypes(const IGeometry::Types& value)
+{
+  m_DefaultGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Types MultiAttributeMatrixSelectionFilterParameter::getDefaultGeometryTypes() const
+{
+  return m_DefaultGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionFilterParameter::setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value)
+{
+  m_DefaultAttributeMatrixTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<AttributeMatrix::Type> MultiAttributeMatrixSelectionFilterParameter::getDefaultAttributeMatrixTypes() const
+{
+  return m_DefaultAttributeMatrixTypes;
+}
+
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionFilterParameter::setDefaultAttributeArrayTypes(const QVector<QString>& value)
+{
+  m_DefaultAttributeArrayTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<QString> MultiAttributeMatrixSelectionFilterParameter::getDefaultAttributeArrayTypes() const
+{
+  return m_DefaultAttributeArrayTypes;
+}
+
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionFilterParameter::setDefaultComponentDimensions(const QVector<QVector<size_t>>& value)
+{
+  m_DefaultComponentDimensions = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<QVector<size_t>> MultiAttributeMatrixSelectionFilterParameter::getDefaultComponentDimensions() const
+{
+  return m_DefaultComponentDimensions;
+}
+
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionFilterParameter::setSetterCallback(const MultiAttributeMatrixSelectionFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+MultiAttributeMatrixSelectionFilterParameter::SetterCallbackType MultiAttributeMatrixSelectionFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionFilterParameter::setGetterCallback(const MultiAttributeMatrixSelectionFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+MultiAttributeMatrixSelectionFilterParameter::GetterCallbackType MultiAttributeMatrixSelectionFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

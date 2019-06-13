@@ -36,7 +36,6 @@
 #include <QtCore/QVariant>
 
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 
@@ -51,7 +50,14 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     Q_OBJECT
 
   public:
-    SIMPL_TYPE_MACRO(PipelineModel)
+    /**
+     * @brief Returns the name of the class for PipelineModel
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for PipelineModel
+     */
+    static QString ClassName();
 
     PipelineModel(QObject* parent = 0);
 
@@ -72,7 +78,15 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
       AnimationTypeRole
     };
 
-    SIMPL_INSTANCE_PROPERTY(int, MaxNumberOfPipelines)
+    /**
+     * @brief Setter property for MaxNumberOfPipelines
+     */
+    void setMaxNumberOfPipelines(const int& value);
+    /**
+     * @brief Getter property for MaxNumberOfPipelines
+     * @return Value of MaxNumberOfPipelines
+     */
+    int getMaxNumberOfPipelines() const;
 
     /**
      * @brief updateActivePipeline
@@ -140,6 +154,8 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     void standardOutputMessageGenerated(const QString &msg);
 
   private:
+    int m_MaxNumberOfPipelines = {};
+
     PipelineItem*                       m_RootItem;
 
     QPersistentModelIndex               m_ActivePipelineIndex;

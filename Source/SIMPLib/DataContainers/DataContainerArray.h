@@ -32,25 +32,25 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
 #pragma once
 
 #include <cstddef>       // for nullptr
 
 #include <QtCore/QObject> // for Q_OBJECT
 #include <QtCore/QString>
+#include <QtCore/QTextStream>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/IDataContainerBundle.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
-
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 class DataContainer;
 using DataContainerShPtr = std::shared_ptr<DataContainer>;
 
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 /**
  * @class DataContainerArray DataContainerArray.h DREAM3DLib/Common/DataContainerArray.h
  * @brief  This class holds the list of filters that will be run. This should be
@@ -96,9 +96,23 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
   // clang-format on
 
 public:
-  SIMPL_SHARED_POINTERS(DataContainerArray)
-  SIMPL_STATIC_NEW_MACRO(DataContainerArray)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerArray, IDataStructureContainerNode<DataContainer>)
+  using Self = DataContainerArray;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for DataContainerArray
+   */
+  const QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for DataContainerArray
+   */
+  static QString ClassName();
 
   using Container = ChildCollection;
 
@@ -680,7 +694,7 @@ public:
     bool validateNumberOfTuples(Filter* filter, const QVector<DataArrayPath>& paths)
     {
       if (paths.size() <= 1) { return false; }
-      QVector<IDataArray::Pointer> dataArrays;
+      QVector<IDataArrayShPtrType> dataArrays;
       bool valid = true;
       QString ss;
       if (!paths.at(0).isValid() && nullptr != filter)
@@ -690,7 +704,7 @@ public:
         valid = false;
         return valid;
       }
-      IDataArray::Pointer array0 = getPrereqIDataArrayFromPath<IDataArray, Filter>(filter, paths.at(0));
+      IDataArrayShPtrType array0 = getPrereqIDataArrayFromPath<IDataArray, Filter>(filter, paths.at(0));
       if (nullptr == array0.get() && nullptr != filter)
       {
         ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
@@ -709,7 +723,7 @@ public:
           valid = false;
           return valid;
         }
-        IDataArray::Pointer nextArray = getPrereqIDataArrayFromPath<IDataArray, Filter>(filter, paths.at(i));
+        IDataArrayShPtrType nextArray = getPrereqIDataArrayFromPath<IDataArray, Filter>(filter, paths.at(i));
         if (nullptr == nextArray.get() && nullptr != filter)
         {
           ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
@@ -743,8 +757,8 @@ public:
      * @param paths The paths that should be checked
      * @return bool Validation check
      */
-    template<typename Filter>
-    bool validateNumberOfTuples(Filter* filter, QVector<IDataArray::Pointer> dataArrays)
+    template <typename Filter>
+    bool validateNumberOfTuples(Filter* filter, QVector<IDataArrayShPtrType> dataArrays)
     {
       if (dataArrays.size() <= 1) { return false; }
       bool valid = true;

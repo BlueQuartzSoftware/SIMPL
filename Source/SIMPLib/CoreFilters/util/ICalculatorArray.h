@@ -38,6 +38,10 @@
 
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 #include "CalculatorItem.h"
 
@@ -51,11 +55,16 @@ class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
       Unknown
     };
 
-    SIMPL_SHARED_POINTERS(ICalculatorArray)
+    using Self = ICalculatorArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     ~ICalculatorArray() override;
 
-    virtual IDataArray::Pointer getArray() = 0;
+    virtual IDataArrayShPtrType getArray() = 0;
     virtual double getValue(int i) = 0;
     virtual void setValue(int i, double value) = 0;
     virtual ValueType getType() = 0;
@@ -70,5 +79,7 @@ class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
     ICalculatorArray(ICalculatorArray&&) = delete;      // Move Constructor Not Implemented
     ICalculatorArray& operator=(const ICalculatorArray&) = delete; // Copy Assignment Not Implemented
     ICalculatorArray& operator=(ICalculatorArray&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

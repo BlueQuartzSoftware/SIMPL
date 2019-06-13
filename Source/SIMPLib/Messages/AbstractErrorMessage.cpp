@@ -42,3 +42,32 @@ AbstractErrorMessage::AbstractErrorMessage(const QString& msgText, int code)
 
 AbstractErrorMessage::~AbstractErrorMessage() = default;
 
+// -----------------------------------------------------------------------------
+AbstractErrorMessage::Pointer AbstractErrorMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+const QString AbstractErrorMessage::getNameOfClass() const
+{
+  return QString("AbstractErrorMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractErrorMessage::ClassName()
+{
+  return QString("AbstractErrorMessage");
+}
+
+// -----------------------------------------------------------------------------
+void AbstractErrorMessage::setCode(const int& value)
+{
+  m_Code = value;
+}
+
+// -----------------------------------------------------------------------------
+int AbstractErrorMessage::getCode() const
+{
+  return m_Code;
+}

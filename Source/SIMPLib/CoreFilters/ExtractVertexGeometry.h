@@ -36,7 +36,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/RectGridGeom.h"
@@ -64,20 +63,70 @@ class SIMPLib_EXPORT ExtractVertexGeometry : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(ExtractVertexGeometry)
-  SIMPL_FILTER_NEW_MACRO(ExtractVertexGeometry)
-  SIMPL_TYPE_MACRO_SUPER(ExtractVertexGeometry, AbstractFilter)
+  using Self = ExtractVertexGeometry;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-  SIMPL_FILTER_PARAMETER(int, ArrayHandling)
+  static std::shared_ptr<ExtractVertexGeometry> New();
+
+  /**
+   * @brief Returns the name of the class for _SUPERExtractVertexGeometry
+   */
+  const QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for _SUPERExtractVertexGeometry
+   */
+  static QString ClassName();
+
+  /**
+   * @brief Setter property for ArrayHandling
+   */
+  void setArrayHandling(const int& value);
+  /**
+   * @brief Getter property for ArrayHandling
+   * @return Value of ArrayHandling
+   */
+  int getArrayHandling() const;
+
   Q_PROPERTY(int ArrayHandling READ getArrayHandling WRITE setArrayHandling)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedDataContainerName)
+  /**
+   * @brief Setter property for SelectedDataContainerName
+   */
+  void setSelectedDataContainerName(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SelectedDataContainerName
+   * @return Value of SelectedDataContainerName
+   */
+  DataArrayPath getSelectedDataContainerName() const;
+
   Q_PROPERTY(DataArrayPath SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
 
-  SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, IncludedDataArrayPaths)
+  /**
+   * @brief Setter property for IncludedDataArrayPaths
+   */
+  void setIncludedDataArrayPaths(const QVector<DataArrayPath>& value);
+  /**
+   * @brief Getter property for IncludedDataArrayPaths
+   * @return Value of IncludedDataArrayPaths
+   */
+  QVector<DataArrayPath> getIncludedDataArrayPaths() const;
+
   Q_PROPERTY(QVector<DataArrayPath> IncludedDataArrayPaths READ getIncludedDataArrayPaths WRITE setIncludedDataArrayPaths)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, VertexDataContainerName)
+  /**
+   * @brief Setter property for VertexDataContainerName
+   */
+  void setVertexDataContainerName(const DataArrayPath& value);
+  /**
+   * @brief Getter property for VertexDataContainerName
+   * @return Value of VertexDataContainerName
+   */
+  DataArrayPath getVertexDataContainerName() const;
+
   Q_PROPERTY(DataArrayPath VertexDataContainerName READ getVertexDataContainerName WRITE setVertexDataContainerName)
 
   ~ExtractVertexGeometry() override;
@@ -185,6 +234,11 @@ protected:
   void initialize();
 
 private:
+  int m_ArrayHandling = {};
+  DataArrayPath m_SelectedDataContainerName = {};
+  QVector<DataArrayPath> m_IncludedDataArrayPaths = {};
+  DataArrayPath m_VertexDataContainerName = {};
+
   QVector<QString> m_NewDCGeometryChoices;
   QVector<QString> m_ArrayHandlingChoices;
 

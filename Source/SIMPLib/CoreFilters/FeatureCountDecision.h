@@ -37,10 +37,10 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SIMPLib/Filtering/AbstractDecisionFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The FeatureCountDecision class. See [Filter documentation](@ref featurecountdecision) for details.
@@ -60,16 +60,48 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(FeatureCountDecision)
-    SIMPL_STATIC_NEW_MACRO(FeatureCountDecision)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FeatureCountDecision, AbstractDecisionFilter)
+    using Self = FeatureCountDecision;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for FeatureCountDecision
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for FeatureCountDecision
+     */
+    static QString ClassName();
 
     ~FeatureCountDecision() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+    /**
+     * @brief Setter property for FeatureIdsArrayPath
+     */
+    void setFeatureIdsArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for FeatureIdsArrayPath
+     * @return Value of FeatureIdsArrayPath
+     */
+    DataArrayPath getFeatureIdsArrayPath() const;
+
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
 
-    SIMPL_FILTER_PARAMETER(int, MaxGrains)
+    /**
+     * @brief Setter property for MaxGrains
+     */
+    void setMaxGrains(const int& value);
+    /**
+     * @brief Getter property for MaxGrains
+     * @return Value of MaxGrains
+     */
+    int getMaxGrains() const;
+
     Q_PROPERTY(int MaxGrains READ getMaxGrains WRITE setMaxGrains)
 
     /**
@@ -143,7 +175,11 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
 
 
   private:
-    DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
+    std::weak_ptr<DataArray<int32_t>> m_FeatureIdsPtr;
+    int32_t* m_FeatureIds = nullptr;
+
+    DataArrayPath m_FeatureIdsArrayPath = {};
+    int m_MaxGrains = {};
 
   public:
     FeatureCountDecision(const FeatureCountDecision&) = delete; // Copy Constructor Not Implemented

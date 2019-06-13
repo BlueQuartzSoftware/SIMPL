@@ -35,7 +35,10 @@
 
 #include "CopyFeatureArrayToElementArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -43,6 +46,7 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   ElementArrayID = 1
@@ -373,4 +377,69 @@ const QString CopyFeatureArrayToElementArray::getSubGroupName() const
 const QString CopyFeatureArrayToElementArray::getHumanLabel() const
 {
   return "Create Element Array from Feature Array";
+}
+
+// -----------------------------------------------------------------------------
+CopyFeatureArrayToElementArray::Pointer CopyFeatureArrayToElementArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CopyFeatureArrayToElementArray> CopyFeatureArrayToElementArray::New()
+{
+  struct make_shared_enabler : public CopyFeatureArrayToElementArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString CopyFeatureArrayToElementArray::getNameOfClass() const
+{
+  return QString("CopyFeatureArrayToElementArray");
+}
+
+// -----------------------------------------------------------------------------
+QString CopyFeatureArrayToElementArray::ClassName()
+{
+  return QString("CopyFeatureArrayToElementArray");
+}
+
+// -----------------------------------------------------------------------------
+void CopyFeatureArrayToElementArray::setSelectedFeatureArrayPath(const DataArrayPath& value)
+{
+  m_SelectedFeatureArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CopyFeatureArrayToElementArray::getSelectedFeatureArrayPath() const
+{
+  return m_SelectedFeatureArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void CopyFeatureArrayToElementArray::setFeatureIdsArrayPath(const DataArrayPath& value)
+{
+  m_FeatureIdsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CopyFeatureArrayToElementArray::getFeatureIdsArrayPath() const
+{
+  return m_FeatureIdsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void CopyFeatureArrayToElementArray::setCreatedArrayName(const QString& value)
+{
+  m_CreatedArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CopyFeatureArrayToElementArray::getCreatedArrayName() const
+{
+  return m_CreatedArrayName;
 }

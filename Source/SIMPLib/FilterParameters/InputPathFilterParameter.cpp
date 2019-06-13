@@ -96,3 +96,76 @@ void InputPathFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = m_GetterCallback();
   }
 }
+
+// -----------------------------------------------------------------------------
+InputPathFilterParameter::Pointer InputPathFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+InputPathFilterParameter::Pointer InputPathFilterParameter::New()
+{
+  Pointer sharedPtr(new(InputPathFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString InputPathFilterParameter::getNameOfClass() const
+{
+  return QString("InputPathFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString InputPathFilterParameter::ClassName()
+{
+  return QString("InputPathFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void InputPathFilterParameter::setFileExtension(const QString& value)
+{
+  m_FileExtension = value;
+}
+
+// -----------------------------------------------------------------------------
+QString InputPathFilterParameter::getFileExtension() const
+{
+  return m_FileExtension;
+}
+
+// -----------------------------------------------------------------------------
+void InputPathFilterParameter::setFileType(const QString& value)
+{
+  m_FileType = value;
+}
+
+// -----------------------------------------------------------------------------
+QString InputPathFilterParameter::getFileType() const
+{
+  return m_FileType;
+}
+
+// -----------------------------------------------------------------------------
+void InputPathFilterParameter::setSetterCallback(const InputPathFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+InputPathFilterParameter::SetterCallbackType InputPathFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void InputPathFilterParameter::setGetterCallback(const InputPathFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+InputPathFilterParameter::GetterCallbackType InputPathFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

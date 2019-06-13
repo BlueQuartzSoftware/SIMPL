@@ -46,17 +46,55 @@
 class SIMPLib_EXPORT FilterStatusMessage : public AbstractStatusMessage
 {
   public:
-    SIMPL_SHARED_POINTERS(FilterStatusMessage)
-    SIMPL_STATIC_NEW_MACRO(FilterStatusMessage)
-    SIMPL_TYPE_MACRO(FilterStatusMessage)
+    using Self = FilterStatusMessage;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for FilterStatusMessage
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for FilterStatusMessage
+     */
+    static QString ClassName();
 
     virtual ~FilterStatusMessage();
 
-    SIMPL_INSTANCE_STRING_PROPERTY(ClassName)
+    /**
+     * @brief Setter property for ClassName
+     */
+    void setClassName(const QString& value);
+    /**
+     * @brief Getter property for ClassName
+     * @return Value of ClassName
+     */
+    QString getClassName() const;
 
-    SIMPL_INSTANCE_STRING_PROPERTY(HumanLabel)
+    /**
+     * @brief Setter property for HumanLabel
+     */
+    void setHumanLabel(const QString& value);
+    /**
+     * @brief Getter property for HumanLabel
+     * @return Value of HumanLabel
+     */
+    QString getHumanLabel() const;
 
-    SIMPL_INSTANCE_PROPERTY(int, PipelineIndex)
+    /**
+     * @brief Setter property for PipelineIndex
+     */
+    void setPipelineIndex(const int& value);
+    /**
+     * @brief Getter property for PipelineIndex
+     * @return Value of PipelineIndex
+     */
+    int getPipelineIndex() const;
 
     /**
      * @brief New
@@ -86,7 +124,9 @@ class SIMPLib_EXPORT FilterStatusMessage : public AbstractStatusMessage
     FilterStatusMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText);
 
   private:
-
+    QString m_ClassName = {};
+    QString m_HumanLabel = {};
+    int m_PipelineIndex = {};
 };
 Q_DECLARE_METATYPE(FilterStatusMessage::Pointer)
 

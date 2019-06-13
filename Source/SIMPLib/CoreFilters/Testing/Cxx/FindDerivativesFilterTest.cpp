@@ -56,6 +56,8 @@
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #define FDTEST_CREATE_DATA_CONTAINER(name, geom, dca)                                                                                                                                                  \
   DataContainer::Pointer _##geom##Container = DataContainer::New(#name);                                                                                                                               \
@@ -113,7 +115,24 @@ class FindDerivativesFilterTest
 public:
   FindDerivativesFilterTest() = default;
   virtual ~FindDerivativesFilterTest() = default;
-  SIMPL_TYPE_MACRO(FindDerivativesFilterTest)
+  /**
+   * @brief Returns the name of the class for FindDerivativesFilterTest
+   */
+  /**
+   * @brief Returns the name of the class for FindDerivativesFilterTest
+   */
+  const QString getNameOfClass() const
+  {
+    return QString("FindDerivativesFilterTest");
+  }
+
+  /**
+   * @brief Returns the name of the class for FindDerivativesFilterTest
+   */
+  QString ClassName()
+  {
+    return QString("FindDerivativesFilterTest");
+  }
 
   // -----------------------------------------------------------------------------
   //

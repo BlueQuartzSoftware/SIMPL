@@ -35,10 +35,13 @@
 #include "AboutPlugins.h"
 
 #include <QtCore/QPluginLoader>
+#include <QtCore/QTextStream>
 
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QAction>
+
+#include <QtCore/QDebug>
 
 #include "SIMPLib/Filtering/FilterManager.h"
 

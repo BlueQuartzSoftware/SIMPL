@@ -33,7 +33,6 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -60,25 +59,84 @@ class SIMPLib_EXPORT ErrorWarningFilter : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(ErrorWarningFilter)
-  SIMPL_FILTER_NEW_MACRO(ErrorWarningFilter)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ErrorWarningFilter, AbstractFilter)
+  using Self = ErrorWarningFilter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<ErrorWarningFilter> New();
+
+  /**
+   * @brief Returns the name of the class for ErrorWarningFilter
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ErrorWarningFilter
+   */
+  static QString ClassName();
 
   ~ErrorWarningFilter() override;
 
-  SIMPL_FILTER_PARAMETER(bool, PreflightWarning)
+  /**
+   * @brief Setter property for PreflightWarning
+   */
+  void setPreflightWarning(const bool& value);
+  /**
+   * @brief Getter property for PreflightWarning
+   * @return Value of PreflightWarning
+   */
+  bool getPreflightWarning() const;
+
   Q_PROPERTY(bool PreflightWarning READ getPreflightWarning WRITE setPreflightWarning)
 
-  SIMPL_FILTER_PARAMETER(bool, PreflightError)
+  /**
+   * @brief Setter property for PreflightError
+   */
+  void setPreflightError(const bool& value);
+  /**
+   * @brief Getter property for PreflightError
+   * @return Value of PreflightError
+   */
+  bool getPreflightError() const;
+
   Q_PROPERTY(bool PreflightError READ getPreflightError WRITE setPreflightError)
 
-  SIMPL_FILTER_PARAMETER(bool, ExecuteWarning)
+  /**
+   * @brief Setter property for ExecuteWarning
+   */
+  void setExecuteWarning(const bool& value);
+  /**
+   * @brief Getter property for ExecuteWarning
+   * @return Value of ExecuteWarning
+   */
+  bool getExecuteWarning() const;
+
   Q_PROPERTY(bool ExecuteWarning READ getExecuteWarning WRITE setExecuteWarning)
 
-  SIMPL_FILTER_PARAMETER(bool, ExecuteError)
+  /**
+   * @brief Setter property for ExecuteError
+   */
+  void setExecuteError(const bool& value);
+  /**
+   * @brief Getter property for ExecuteError
+   * @return Value of ExecuteError
+   */
+  bool getExecuteError() const;
+
   Q_PROPERTY(bool ExecuteError READ getExecuteError WRITE setExecuteError)
 
-  SIMPL_FILTER_PARAMETER(bool, PropertyError)
+  /**
+   * @brief Setter property for PropertyError
+   */
+  void setPropertyError(const bool& value);
+  /**
+   * @brief Getter property for PropertyError
+   * @return Value of PropertyError
+   */
+  bool getPropertyError() const;
+
   Q_PROPERTY(bool PropertyError READ getPropertyError WRITE setPropertyError)
 
   /**
@@ -182,5 +240,12 @@ public:
   ErrorWarningFilter(ErrorWarningFilter&&) = delete;      // Move Constructor Not Implemented
   ErrorWarningFilter& operator=(const ErrorWarningFilter&) = delete; // Copy Assignment Not Implemented
   ErrorWarningFilter& operator=(ErrorWarningFilter&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  bool m_PreflightWarning = {};
+  bool m_PreflightError = {};
+  bool m_ExecuteWarning = {};
+  bool m_ExecuteError = {};
+  bool m_PropertyError = {};
 };
 

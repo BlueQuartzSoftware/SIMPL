@@ -37,12 +37,16 @@
 
 #include <QtCore/QJsonDocument>
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -236,4 +240,53 @@ const QString FeatureCountDecision::getSubGroupName() const
 const QString FeatureCountDecision::getHumanLabel() const
 {
   return "Feature Count Decision";
+}
+
+// -----------------------------------------------------------------------------
+FeatureCountDecision::Pointer FeatureCountDecision::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+FeatureCountDecision::Pointer FeatureCountDecision::New()
+{
+  Pointer sharedPtr(new(FeatureCountDecision));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString FeatureCountDecision::getNameOfClass() const
+{
+  return QString("FeatureCountDecision");
+}
+
+// -----------------------------------------------------------------------------
+QString FeatureCountDecision::ClassName()
+{
+  return QString("FeatureCountDecision");
+}
+
+// -----------------------------------------------------------------------------
+void FeatureCountDecision::setFeatureIdsArrayPath(const DataArrayPath& value)
+{
+  m_FeatureIdsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FeatureCountDecision::getFeatureIdsArrayPath() const
+{
+  return m_FeatureIdsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void FeatureCountDecision::setMaxGrains(const int& value)
+{
+  m_MaxGrains = value;
+}
+
+// -----------------------------------------------------------------------------
+int FeatureCountDecision::getMaxGrains() const
+{
+  return m_MaxGrains;
 }

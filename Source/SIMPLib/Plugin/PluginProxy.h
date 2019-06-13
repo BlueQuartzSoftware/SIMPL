@@ -39,7 +39,6 @@
 #include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 /**
  * @brief The PluginProxy class is a wrapper class for important plugin information.
@@ -47,9 +46,23 @@
 class SIMPLib_EXPORT PluginProxy
 {
   public:
-    SIMPL_SHARED_POINTERS(PluginProxy)
-    SIMPL_STATIC_NEW_MACRO(PluginProxy)
-    SIMPL_TYPE_MACRO(PluginProxy)
+    using Self = PluginProxy;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for PluginProxy
+     */
+    const QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for PluginProxy
+     */
+    static QString ClassName();
 
     PluginProxy();
     virtual ~PluginProxy();

@@ -34,7 +34,10 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "StringDataArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/HDF5/H5DataArrayReader.h"
+
 #include "SIMPLib/HDF5/H5DataArrayWriter.hpp"
 
 
@@ -532,4 +535,35 @@ void StringDataArray::setValue(size_t i, const QString& value)
 QString StringDataArray::getValue(size_t i)
 {
   return m_Array.at(i);
+}
+
+// -----------------------------------------------------------------------------
+StringDataArray::Pointer StringDataArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+StringDataArray::Pointer StringDataArray::New()
+{
+  Pointer sharedPtr(new(StringDataArray));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString StringDataArray::getNameOfClass() const
+{
+  return QString("StringDataArray");
+}
+
+// -----------------------------------------------------------------------------
+QString StringDataArray::ClassName()
+{
+  return QString("StringDataArray");
+}
+
+// -----------------------------------------------------------------------------
+int StringDataArray::getClassVersion()
+{
+  return 2;
 }

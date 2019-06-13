@@ -38,7 +38,6 @@
 #include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -64,9 +63,23 @@ class SIMPLib_EXPORT ArraySelectionExample : public AbstractFilter
 #endif
 
 public:
-  SIMPL_SHARED_POINTERS(ArraySelectionExample)
-  SIMPL_FILTER_NEW_MACRO(ArraySelectionExample)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ArraySelectionExample, AbstractFilter)
+  using Self = ArraySelectionExample;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static std::shared_ptr<ArraySelectionExample> New();
+
+  /**
+   * @brief Returns the name of the class for ArraySelectionExample
+   */
+  const QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ArraySelectionExample
+   */
+  static QString ClassName();
 
   ~ArraySelectionExample() override;
 
@@ -75,7 +88,16 @@ public:
    * as input parameters
    */
 
-  SIMPL_FILTER_PARAMETER(DataContainerArrayProxy, DataContainerArrayProxy)
+  /**
+   * @brief Setter property for DataContainerArrayProxy
+   */
+  void setDataContainerArrayProxy(const DataContainerArrayProxy& value);
+  /**
+   * @brief Getter property for DataContainerArrayProxy
+   * @return Value of DataContainerArrayProxy
+   */
+  DataContainerArrayProxy getDataContainerArrayProxy() const;
+
   Q_PROPERTY(DataContainerArrayProxy DataContainerArrayProxy READ getDataContainerArrayProxy WRITE setDataContainerArrayProxy)
 
   /**
@@ -152,5 +174,8 @@ public:
   ArraySelectionExample(ArraySelectionExample&&) = delete;      // Move Constructor Not Implemented
   ArraySelectionExample& operator=(const ArraySelectionExample&) = delete; // Copy Assignment Not Implemented
   ArraySelectionExample& operator=(ArraySelectionExample&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  DataContainerArrayProxy m_DataContainerArrayProxy = {};
 };
 

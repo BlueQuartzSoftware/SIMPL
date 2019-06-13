@@ -37,8 +37,9 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The ConditionalSetValue class. See [Filter documentation](@ref conditionalsetvalue) for details.
@@ -60,20 +61,60 @@ class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
 #endif
 
   public:
+    using Self = ConditionalSetValue;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
-    SIMPL_SHARED_POINTERS(ConditionalSetValue)
-    SIMPL_FILTER_NEW_MACRO(ConditionalSetValue)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ConditionalSetValue, AbstractFilter)
+    static std::shared_ptr<ConditionalSetValue> New();
+
+    /**
+     * @brief Returns the name of the class for ConditionalSetValue
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ConditionalSetValue
+     */
+    static QString ClassName();
 
     ~ConditionalSetValue() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
+    /**
+     * @brief Setter property for SelectedArrayPath
+     */
+    void setSelectedArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedArrayPath
+     * @return Value of SelectedArrayPath
+     */
+    DataArrayPath getSelectedArrayPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, ConditionalArrayPath)
+    /**
+     * @brief Setter property for ConditionalArrayPath
+     */
+    void setConditionalArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for ConditionalArrayPath
+     * @return Value of ConditionalArrayPath
+     */
+    DataArrayPath getConditionalArrayPath() const;
+
     Q_PROPERTY(DataArrayPath ConditionalArrayPath READ getConditionalArrayPath WRITE setConditionalArrayPath)
 
-    SIMPL_FILTER_PARAMETER(double, ReplaceValue)
+    /**
+     * @brief Setter property for ReplaceValue
+     */
+    void setReplaceValue(const double& value);
+    /**
+     * @brief Getter property for ReplaceValue
+     * @return Value of ReplaceValue
+     */
+    double getReplaceValue() const;
+
     Q_PROPERTY(double ReplaceValue READ getReplaceValue WRITE setReplaceValue)
 
     /**
@@ -178,8 +219,14 @@ class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
 
 
   private:
+    std::weak_ptr<DataArray<bool>> m_ConditionalArrayPtr;
+    bool* m_ConditionalArray = nullptr;
+
+    DataArrayPath m_SelectedArrayPath = {};
+    DataArrayPath m_ConditionalArrayPath = {};
+    double m_ReplaceValue = {};
+
     IDataArray::WeakPointer m_ArrayPtr;
-    DEFINE_DATAARRAY_VARIABLE(bool, ConditionalArray)
 
   public:
     ConditionalSetValue(const ConditionalSetValue&) = delete; // Copy Constructor Not Implemented

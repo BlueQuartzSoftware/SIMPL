@@ -40,7 +40,12 @@
 #include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Utilities.h"
 
+#include <QtCore/QTextStream>
+
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerBundle.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
@@ -51,6 +56,7 @@
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReader.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -453,7 +459,7 @@ AbstractFilter::Pointer DataContainerReader::newFilterInstance(bool copyFilterPa
   {
     copyFilterParameterInstanceVariables(filter.get());
 
-    SIMPL_COPY_INSTANCEVAR(InputFile)
+    filter->setInputFile(getInputFile());
 
     filter->setInputFile(getInputFile());
 #if 0
@@ -529,4 +535,93 @@ const QString DataContainerReader::getHumanLabel() const
 void DataContainerReader::cleanupFilter()
 {
   m_PipelineFromFile->clear();
+}
+
+// -----------------------------------------------------------------------------
+DataContainerReader::Pointer DataContainerReader::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<DataContainerReader> DataContainerReader::New()
+{
+  struct make_shared_enabler : public DataContainerReader
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString DataContainerReader::getNameOfClass() const
+{
+  return QString("DataContainerReader");
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerReader::ClassName()
+{
+  return QString("DataContainerReader");
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReader::setInputFile(const QString& value)
+{
+  m_InputFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerReader::getInputFile() const
+{
+  return m_InputFile;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReader::setOverwriteExistingDataContainers(const bool& value)
+{
+  m_OverwriteExistingDataContainers = value;
+}
+
+// -----------------------------------------------------------------------------
+bool DataContainerReader::getOverwriteExistingDataContainers() const
+{
+  return m_OverwriteExistingDataContainers;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReader::setLastFileRead(const QString& value)
+{
+  m_LastFileRead = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerReader::getLastFileRead() const
+{
+  return m_LastFileRead;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReader::setLastRead(const QDateTime& value)
+{
+  m_LastRead = value;
+}
+
+// -----------------------------------------------------------------------------
+QDateTime DataContainerReader::getLastRead() const
+{
+  return m_LastRead;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReader::setInputFileDataContainerArrayProxy(const DataContainerArrayProxy& value)
+{
+  m_InputFileDataContainerArrayProxy = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArrayProxy DataContainerReader::getInputFileDataContainerArrayProxy() const
+{
+  return m_InputFileDataContainerArrayProxy;
 }

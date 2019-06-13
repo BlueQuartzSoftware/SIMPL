@@ -4,8 +4,6 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-
 #include "PythonBindingsModule.h"
 /* *****************************************************************************
  *

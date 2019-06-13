@@ -176,3 +176,111 @@ DataArrayPathParameter::DataArrayPathParameter(const std::string& humanLabel, co
   , m_GetterCallback(getterCallback)
 {
 }
+
+// -----------------------------------------------------------------------------
+FilterParameter::Pointer FilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameter::setHumanLabel(const std::string& value)
+{
+  m_HumanLabel = value;
+}
+
+// -----------------------------------------------------------------------------
+std::string FilterParameter::getHumanLabel() const
+{
+  return m_HumanLabel;
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameter::setPropertyName(const std::string& value)
+{
+  m_PropertyName = value;
+}
+
+// -----------------------------------------------------------------------------
+std::string FilterParameter::getPropertyName() const
+{
+  return m_PropertyName;
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameter::setCategory(const Category& value)
+{
+  m_Category = value;
+}
+
+// -----------------------------------------------------------------------------
+Category FilterParameter::getCategory() const
+{
+  return m_Category;
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameter::setGroupIndex(const int& value)
+{
+  m_GroupIndex = value;
+}
+
+// -----------------------------------------------------------------------------
+int FilterParameter::getGroupIndex() const
+{
+  return m_GroupIndex;
+}
+
+// -----------------------------------------------------------------------------
+FilterParameter::Pointer FilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameter::setDefaultValue(const int& value)
+{
+  m_DefaultValue = value;
+}
+
+// -----------------------------------------------------------------------------
+int FilterParameter::getDefaultValue() const
+{
+  return m_DefaultValue;
+}
+
+// -----------------------------------------------------------------------------
+FilterParameter::Pointer FilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameter::setDefaultValue(const double& value)
+{
+  m_DefaultValue = value;
+}
+
+// -----------------------------------------------------------------------------
+double FilterParameter::getDefaultValue() const
+{
+  return m_DefaultValue;
+}
+
+// -----------------------------------------------------------------------------
+FilterParameter::Pointer FilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameter::setDefaultValue(const DataArrayPath& value)
+{
+  m_DefaultValue = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FilterParameter::getDefaultValue() const
+{
+  return m_DefaultValue;
+}

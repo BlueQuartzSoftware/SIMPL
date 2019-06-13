@@ -37,8 +37,8 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The CombineAttributeMatrices class. See [Filter documentation](@ref CombineAttributeMatrices) for details.
@@ -66,28 +66,96 @@ class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
 #endif
 
   public:
-    SIMPL_SHARED_POINTERS(CombineAttributeMatrices)
-    SIMPL_FILTER_NEW_MACRO(CombineAttributeMatrices)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CombineAttributeMatrices, AbstractFilter)
+    using Self = CombineAttributeMatrices;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<CombineAttributeMatrices> New();
+
+    /**
+     * @brief Returns the name of the class for CombineAttributeMatrices
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for CombineAttributeMatrices
+     */
+    static QString ClassName();
 
     ~CombineAttributeMatrices() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, FirstAttributeMatrixPath)
+    /**
+     * @brief Setter property for FirstAttributeMatrixPath
+     */
+    void setFirstAttributeMatrixPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for FirstAttributeMatrixPath
+     * @return Value of FirstAttributeMatrixPath
+     */
+    DataArrayPath getFirstAttributeMatrixPath() const;
+
     Q_PROPERTY(DataArrayPath FirstAttributeMatrixPath READ getFirstAttributeMatrixPath WRITE setFirstAttributeMatrixPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SecondAttributeMatrixPath)
+    /**
+     * @brief Setter property for SecondAttributeMatrixPath
+     */
+    void setSecondAttributeMatrixPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SecondAttributeMatrixPath
+     * @return Value of SecondAttributeMatrixPath
+     */
+    DataArrayPath getSecondAttributeMatrixPath() const;
+
     Q_PROPERTY(DataArrayPath SecondAttributeMatrixPath READ getSecondAttributeMatrixPath WRITE setSecondAttributeMatrixPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, FirstIndexArrayPath)
+    /**
+     * @brief Setter property for FirstIndexArrayPath
+     */
+    void setFirstIndexArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for FirstIndexArrayPath
+     * @return Value of FirstIndexArrayPath
+     */
+    DataArrayPath getFirstIndexArrayPath() const;
+
     Q_PROPERTY(DataArrayPath FirstIndexArrayPath READ getFirstIndexArrayPath WRITE setFirstIndexArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SecondIndexArrayPath)
+    /**
+     * @brief Setter property for SecondIndexArrayPath
+     */
+    void setSecondIndexArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SecondIndexArrayPath
+     * @return Value of SecondIndexArrayPath
+     */
+    DataArrayPath getSecondIndexArrayPath() const;
+
     Q_PROPERTY(DataArrayPath SecondIndexArrayPath READ getSecondIndexArrayPath WRITE setSecondIndexArrayPath)
 
-    SIMPL_FILTER_PARAMETER(QString, CombinedAttributeMatrixName)
+    /**
+     * @brief Setter property for CombinedAttributeMatrixName
+     */
+    void setCombinedAttributeMatrixName(const QString& value);
+    /**
+     * @brief Getter property for CombinedAttributeMatrixName
+     * @return Value of CombinedAttributeMatrixName
+     */
+    QString getCombinedAttributeMatrixName() const;
+
     Q_PROPERTY(QString CombinedAttributeMatrixName READ getCombinedAttributeMatrixName WRITE setCombinedAttributeMatrixName)
 
-    SIMPL_FILTER_PARAMETER(QString, NewIndexArrayName)
+    /**
+     * @brief Setter property for NewIndexArrayName
+     */
+    void setNewIndexArrayName(const QString& value);
+    /**
+     * @brief Getter property for NewIndexArrayName
+     * @return Value of NewIndexArrayName
+     */
+    QString getNewIndexArrayName() const;
+
     Q_PROPERTY(QString NewIndexArrayName READ getNewIndexArrayName WRITE setNewIndexArrayName)
 
     /**
@@ -202,9 +270,19 @@ class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
     void updateFeatureInstancePointers();
 
   private:
-    DEFINE_DATAARRAY_VARIABLE(int32_t, FirstIndex)
-    DEFINE_DATAARRAY_VARIABLE(int32_t, SecondIndex)
-    DEFINE_DATAARRAY_VARIABLE(int32_t, NewIndex)
+    std::weak_ptr<DataArray<int32_t>> m_FirstIndexPtr;
+    int32_t* m_FirstIndex = nullptr;
+    std::weak_ptr<DataArray<int32_t>> m_SecondIndexPtr;
+    int32_t* m_SecondIndex = nullptr;
+    std::weak_ptr<DataArray<int32_t>> m_NewIndexPtr;
+    int32_t* m_NewIndex = nullptr;
+
+    DataArrayPath m_FirstAttributeMatrixPath = {};
+    DataArrayPath m_SecondAttributeMatrixPath = {};
+    DataArrayPath m_FirstIndexArrayPath = {};
+    DataArrayPath m_SecondIndexArrayPath = {};
+    QString m_CombinedAttributeMatrixName = {};
+    QString m_NewIndexArrayName = {};
 
   public:
     CombineAttributeMatrices(const CombineAttributeMatrices&) = delete; // Copy Constructor Not Implemented

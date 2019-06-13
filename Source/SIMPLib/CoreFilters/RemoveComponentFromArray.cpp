@@ -35,7 +35,10 @@
 
 #include "RemoveComponentFromArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -45,6 +48,7 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   NewDataArrayID = 1,
@@ -358,4 +362,93 @@ const QString RemoveComponentFromArray::getSubGroupName() const
 const QString RemoveComponentFromArray::getHumanLabel() const
 {
   return "Remove Component From Array";
+}
+
+// -----------------------------------------------------------------------------
+RemoveComponentFromArray::Pointer RemoveComponentFromArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<RemoveComponentFromArray> RemoveComponentFromArray::New()
+{
+  struct make_shared_enabler : public RemoveComponentFromArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+const QString RemoveComponentFromArray::getNameOfClass() const
+{
+  return QString("RemoveComponentFromArray");
+}
+
+// -----------------------------------------------------------------------------
+QString RemoveComponentFromArray::ClassName()
+{
+  return QString("RemoveComponentFromArray");
+}
+
+// -----------------------------------------------------------------------------
+void RemoveComponentFromArray::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RemoveComponentFromArray::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void RemoveComponentFromArray::setCompNumber(const int& value)
+{
+  m_CompNumber = value;
+}
+
+// -----------------------------------------------------------------------------
+int RemoveComponentFromArray::getCompNumber() const
+{
+  return m_CompNumber;
+}
+
+// -----------------------------------------------------------------------------
+void RemoveComponentFromArray::setSaveRemovedComponent(const bool& value)
+{
+  m_SaveRemovedComponent = value;
+}
+
+// -----------------------------------------------------------------------------
+bool RemoveComponentFromArray::getSaveRemovedComponent() const
+{
+  return m_SaveRemovedComponent;
+}
+
+// -----------------------------------------------------------------------------
+void RemoveComponentFromArray::setNewArrayArrayName(const QString& value)
+{
+  m_NewArrayArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString RemoveComponentFromArray::getNewArrayArrayName() const
+{
+  return m_NewArrayArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void RemoveComponentFromArray::setReducedArrayArrayName(const QString& value)
+{
+  m_ReducedArrayArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString RemoveComponentFromArray::getReducedArrayArrayName() const
+{
+  return m_ReducedArrayArrayName;
 }

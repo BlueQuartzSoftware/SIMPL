@@ -43,6 +43,8 @@
  *     RectGridGeom::findDerivatives
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Geometry/RectGridGeom.h"
 
 #include "H5Support/H5Lite.h"
@@ -1181,4 +1183,29 @@ int RectGridGeom::gatherMetaData(hid_t parentId, size_t volDims[3], bool preflig
   setElementSizes(voxelSizes);
 
   return err;
+}
+
+// -----------------------------------------------------------------------------
+RectGridGeom::Pointer RectGridGeom::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+RectGridGeom::Pointer RectGridGeom::New()
+{
+  Pointer sharedPtr(new(RectGridGeom));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+const QString RectGridGeom::getNameOfClass() const
+{
+  return QString("RectGridGeom");
+}
+
+// -----------------------------------------------------------------------------
+QString RectGridGeom::ClassName()
+{
+  return QString("RectGridGeom");
 }
