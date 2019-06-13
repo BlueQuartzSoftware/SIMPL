@@ -45,6 +45,13 @@ class SIMPLib_EXPORT ErrorWarningFilter : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ErrorWarningFilter SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(ErrorWarningFilter)
+  PYB11_FILTER_NEW_MACRO(ErrorWarningFilter)
+  PYB11_FILTER_PARAMETER(bool, PreflightWarning)
+  PYB11_FILTER_PARAMETER(bool, PreflightError)
+  PYB11_FILTER_PARAMETER(bool, ExecuteWarning)
+  PYB11_FILTER_PARAMETER(bool, ExecuteError)
+  PYB11_FILTER_PARAMETER(bool, PropertyError)
   PYB11_PROPERTY(bool PreflightWarning READ getPreflightWarning WRITE setPreflightWarning)
   PYB11_PROPERTY(bool PreflightError READ getPreflightError WRITE setPreflightError)
   PYB11_PROPERTY(bool ExecuteWarning READ getExecuteWarning WRITE setExecuteWarning)

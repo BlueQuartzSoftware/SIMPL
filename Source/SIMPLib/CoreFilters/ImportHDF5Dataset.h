@@ -47,6 +47,12 @@ class SIMPLib_EXPORT ImportHDF5Dataset : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ImportHDF5Dataset SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(ImportHDF5Dataset)
+  PYB11_FILTER_NEW_MACRO(ImportHDF5Dataset)
+  PYB11_FILTER_PARAMETER(QString, HDF5FilePath)
+  PYB11_FILTER_PARAMETER(QList<ImportHDF5Dataset::DatasetImportInfo>, DatasetImportInfoList)
+  PYB11_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrix)
+  PYB11_FILTER_PARAMETER(QStringList, DatasetPathsWithErrors)
   PYB11_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
   PYB11_PROPERTY(QString HDF5Dimensions READ getHDF5Dimensions)
   PYB11_PROPERTY(QList<ImportHDF5Dataset::DatasetImportInfo> DatasetImportInfoList READ getDatasetImportInfoList WRITE setDatasetImportInfoList)

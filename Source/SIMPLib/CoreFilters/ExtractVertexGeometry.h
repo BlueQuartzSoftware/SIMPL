@@ -51,6 +51,12 @@ class SIMPLib_EXPORT ExtractVertexGeometry : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ExtractVertexGeometry SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(ExtractVertexGeometry)
+  PYB11_FILTER_NEW_MACRO(ExtractVertexGeometry)
+  PYB11_FILTER_PARAMETER(int, ArrayHandling)
+  PYB11_FILTER_PARAMETER(DataArrayPath, SelectedDataContainerName)
+  PYB11_FILTER_PARAMETER(QVector<DataArrayPath>, IncludedDataArrayPaths)
+  PYB11_FILTER_PARAMETER(DataArrayPath, VertexDataContainerName)
   PYB11_PROPERTY(int ArrayHandling READ getArrayHandling WRITE setArrayHandling)
   PYB11_PROPERTY(DataArrayPath SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
   PYB11_PROPERTY(QVector<DataArrayPath> IncludedDataArrayPaths READ getIncludedDataArrayPaths WRITE setIncludedDataArrayPaths)

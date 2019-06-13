@@ -49,6 +49,10 @@ class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(RenameAttributeMatrix SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(RenameAttributeMatrix)
+    PYB11_FILTER_NEW_MACRO(RenameAttributeMatrix)
+    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrixPath)
+    PYB11_FILTER_PARAMETER(QString, NewAttributeMatrix)
     PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrixPath READ getSelectedAttributeMatrixPath WRITE setSelectedAttributeMatrixPath)
     PYB11_PROPERTY(QString NewAttributeMatrix READ getNewAttributeMatrix WRITE setNewAttributeMatrix)
 #endif

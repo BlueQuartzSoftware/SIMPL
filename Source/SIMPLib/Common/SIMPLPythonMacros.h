@@ -52,6 +52,30 @@
 #define PYB11_CREATE_BINDINGS(...)
 
 /**
+ * @brief PYB11_STATIC_NEW_MACRO
+ *
+ */
+#define PYB11_STATIC_NEW_MACRO(...)
+
+/**
+ * @brief PYB11_FILTER_NEW_MACRO
+ *
+ */
+#define PYB11_FILTER_NEW_MACRO(...)
+
+/**
+ * @brief PYB11_SHARED_POINTERS
+ *
+ */
+#define PYB11_SHARED_POINTERS(...)
+
+/**
+ * @brief PYB11_FILTER_PARAMETER
+ *
+ */
+#define PYB11_FILTER_PARAMETER(...)
+
+/**
  * @brief PYB11_NO_BINDINGS This macro will ensure that the class is NOT wrapped
  * with python bindings. Only a single argument which is the name of the class
  * should be used.

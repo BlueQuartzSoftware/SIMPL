@@ -83,6 +83,8 @@ class SIMPLib_EXPORT PrimaryStatsData : public StatsData
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(PrimaryStatsData SUPER StatsData)
+  PYB11_SHARED_POINTERS(PrimaryStatsData)
+  PYB11_STATIC_NEW_MACRO(PrimaryStatsData)
   PYB11_STATIC_CREATION(initialize)
 
   PYB11_PROPERTY(float BinStepSize READ getBinStepSize WRITE setBinStepSize)

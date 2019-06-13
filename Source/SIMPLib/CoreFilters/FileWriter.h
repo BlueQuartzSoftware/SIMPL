@@ -48,6 +48,9 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(FileWriter SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(FileWriter)
+    PYB11_FILTER_NEW_MACRO(FileWriter)
+    PYB11_FILTER_PARAMETER(QString, OutputFile)
     PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
 #endif
 

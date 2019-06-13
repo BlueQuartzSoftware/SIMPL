@@ -50,6 +50,8 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(Breakpoint SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(Breakpoint)
+  PYB11_FILTER_NEW_MACRO(Breakpoint)
 #endif
 
 public:

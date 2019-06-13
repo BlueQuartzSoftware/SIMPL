@@ -47,6 +47,8 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
   // clang-format off
 
   PYB11_CREATE_BINDINGS(ImageGeom SUPERCLASS IGeometryGrid)
+  PYB11_SHARED_POINTERS(ImageGeom)
+  PYB11_STATIC_NEW_MACRO(ImageGeom)
   PYB11_STATIC_CREATION(CreateGeometry ARGS QString)
 
   PYB11_ENUMERATION(ErrorType)

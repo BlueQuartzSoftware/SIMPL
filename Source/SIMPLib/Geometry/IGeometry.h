@@ -72,6 +72,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(IGeometry)
+  PYB11_SHARED_POINTERS(IGeometry)
 
   PYB11_ENUMERATION(Type)
   PYB11_ENUMERATION(VtkCellType)

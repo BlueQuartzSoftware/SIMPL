@@ -50,6 +50,7 @@ class SIMPLib_EXPORT AbstractComparison
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(AbstractComparison)
+  PYB11_SHARED_POINTERS(AbstractComparison)
   PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
 #endif
 

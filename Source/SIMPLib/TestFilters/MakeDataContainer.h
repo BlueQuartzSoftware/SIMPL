@@ -53,6 +53,13 @@ class SIMPLib_EXPORT MakeDataContainer : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(MakeDataContainer SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(MakeDataContainer)
+  PYB11_FILTER_NEW_MACRO(MakeDataContainer)
+  PYB11_FILTER_PARAMETER(QString, FeatureIdsArrayName)
+  PYB11_FILTER_PARAMETER(QString, CellEulerAnglesArrayName)
+  PYB11_FILTER_PARAMETER(QString, CellPhasesArrayName)
+  PYB11_FILTER_PARAMETER(QString, CrystalStructuresArrayName)
+  PYB11_FILTER_PARAMETER(QString, LatticeConstantsArrayName)
   PYB11_PROPERTY(QString FeatureIdsArrayName READ getFeatureIdsArrayName WRITE setFeatureIdsArrayName)
   PYB11_PROPERTY(QString CellEulerAnglesArrayName READ getCellEulerAnglesArrayName WRITE setCellEulerAnglesArrayName)
   PYB11_PROPERTY(QString CellPhasesArrayName READ getCellPhasesArrayName WRITE setCellPhasesArrayName)

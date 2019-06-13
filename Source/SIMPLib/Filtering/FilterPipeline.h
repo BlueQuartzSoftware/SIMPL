@@ -64,6 +64,8 @@ class SIMPLib_EXPORT FilterPipeline : public Observable
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(FilterPipeline)
+  PYB11_SHARED_POINTERS(FilterPipeline)
+  PYB11_STATIC_NEW_MACRO(FilterPipeline)
   PYB11_PROPERTY(int ErrorCode READ getErrorCode)
   PYB11_PROPERTY(int WarningCode READ getWarningCode)
   PYB11_PROPERTY(AbstractFilter CurrentFilter READ getCurrentFilter WRITE setCurrentFilter)

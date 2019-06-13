@@ -50,6 +50,13 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(SetOriginResolutionImageGeom SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(SetOriginResolutionImageGeom)
+    PYB11_FILTER_NEW_MACRO(SetOriginResolutionImageGeom)
+    PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+    PYB11_FILTER_PARAMETER(bool, ChangeOrigin)
+    PYB11_FILTER_PARAMETER(FloatVec3Type, Origin)
+    PYB11_FILTER_PARAMETER(bool, ChangeResolution)
+    PYB11_FILTER_PARAMETER(FloatVec3Type, Spacing)
     PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
     PYB11_PROPERTY(bool ChangeOrigin READ getChangeOrigin WRITE setChangeOrigin)
     PYB11_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)

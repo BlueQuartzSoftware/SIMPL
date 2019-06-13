@@ -48,6 +48,13 @@ class SIMPLib_EXPORT CopyObject : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(CopyObject SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(CopyObject)
+  PYB11_FILTER_NEW_MACRO(CopyObject)
+  PYB11_FILTER_PARAMETER(int, ObjectToCopy)
+  PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerToCopy)
+  PYB11_FILTER_PARAMETER(DataArrayPath, AttributeMatrixToCopy)
+  PYB11_FILTER_PARAMETER(DataArrayPath, AttributeArrayToCopy)
+  PYB11_FILTER_PARAMETER(QString, CopiedObjectName)
   PYB11_PROPERTY(int ObjectToCopy READ getObjectToCopy WRITE setObjectToCopy)
   PYB11_PROPERTY(DataArrayPath DataContainerToCopy READ getDataContainerToCopy WRITE setDataContainerToCopy)
   PYB11_PROPERTY(DataArrayPath AttributeMatrixToCopy READ getAttributeMatrixToCopy WRITE setAttributeMatrixToCopy)

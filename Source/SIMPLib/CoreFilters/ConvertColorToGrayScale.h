@@ -48,6 +48,15 @@ class SIMPLib_EXPORT ConvertColorToGrayScale : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ConvertColorToGrayScale SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(ConvertColorToGrayScale)
+  PYB11_FILTER_NEW_MACRO(ConvertColorToGrayScale)
+  PYB11_FILTER_PARAMETER(int, ConversionAlgorithm)
+  PYB11_FILTER_PARAMETER(FloatVec3Type, ColorWeights)
+  PYB11_FILTER_PARAMETER(int, ColorChannel)
+  PYB11_FILTER_PARAMETER(QVector<DataArrayPath>, InputDataArrayVector)
+  PYB11_FILTER_PARAMETER(bool, CreateNewAttributeMatrix)
+  PYB11_FILTER_PARAMETER(QString, OutputAttributeMatrixName)
+  PYB11_FILTER_PARAMETER(QString, OutputArrayPrefix)
   PYB11_PROPERTY(int ConversionAlgorithm READ getConversionAlgorithm WRITE setConversionAlgorithm)
   PYB11_PROPERTY(FloatVec3Type ColorWeights READ getColorWeights WRITE setColorWeights)
   PYB11_PROPERTY(int ColorChannel READ getColorChannel WRITE setColorChannel)

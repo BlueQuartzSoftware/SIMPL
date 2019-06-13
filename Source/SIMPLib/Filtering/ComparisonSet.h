@@ -48,6 +48,8 @@ class SIMPLib_EXPORT ComparisonSet : public AbstractComparison
   using AbstractComparisonPtr = AbstractComparison::Pointer;
   // clang-format off
   PYB11_CREATE_BINDINGS(ComparisonSet SUPERCLASS AbstractComparison)
+  PYB11_SHARED_POINTERS(ComparisonSet)
+  PYB11_STATIC_NEW_MACRO(ComparisonSet)
   PYB11_CREATION()
   PYB11_PROPERTY(QVector<AbstractComparison::Pointer> Comparisons READ getComparisons WRITE setComparisons)
   PYB11_PROPERTY(bool InvertComparison READ getInvertComparison WRITE setInvertComparison)

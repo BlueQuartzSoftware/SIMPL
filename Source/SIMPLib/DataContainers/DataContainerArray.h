@@ -67,6 +67,8 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(DataContainerArray)
+  PYB11_SHARED_POINTERS(DataContainerArray)
+  PYB11_STATIC_NEW_MACRO(DataContainerArray)
 
   PYB11_METHOD(bool addOrReplaceDataContainer ARGS DataContainer)
   PYB11_METHOD(bool insertOrAssign ARGS DataContainer)

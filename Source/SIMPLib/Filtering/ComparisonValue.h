@@ -47,6 +47,8 @@
 class SIMPLib_EXPORT ComparisonValue : public AbstractComparison
 {
   PYB11_CREATE_BINDINGS(ComparisonValue SUPERCLASS AbstractComparison)
+  PYB11_SHARED_POINTERS(ComparisonValue)
+  PYB11_STATIC_NEW_MACRO(ComparisonValue)
   PYB11_CREATION()
   PYB11_PROPERTY(QString AttributeArrayName READ getAttributeArrayName WRITE setAttributeArrayName)
   PYB11_PROPERTY(int CompOperator READ getCompOperator WRITE setCompOperator)

@@ -42,6 +42,7 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(IDataArray)
+  PYB11_SHARED_POINTERS(IDataArray)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
 
   PYB11_METHOD(QString getTypeAsString)

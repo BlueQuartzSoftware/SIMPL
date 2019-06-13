@@ -58,6 +58,13 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(DataContainerReader SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(DataContainerReader)
+    PYB11_FILTER_NEW_MACRO(DataContainerReader)
+    PYB11_FILTER_PARAMETER(QString, InputFile)
+    PYB11_FILTER_PARAMETER(bool, OverwriteExistingDataContainers)
+    PYB11_FILTER_PARAMETER(QString, LastFileRead)
+    PYB11_FILTER_PARAMETER(QDateTime, LastRead)
+    PYB11_FILTER_PARAMETER(DataContainerArrayProxy, InputFileDataContainerArrayProxy)
     PYB11_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
     PYB11_PROPERTY(bool OverwriteExistingDataContainers READ getOverwriteExistingDataContainers WRITE setOverwriteExistingDataContainers)
     PYB11_PROPERTY(DataContainerArrayProxy InputFileDataContainerArrayProxy READ getInputFileDataContainerArrayProxy WRITE setInputFileDataContainerArrayProxy)

@@ -49,6 +49,9 @@ class SIMPLib_EXPORT CreateDataContainer : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(CreateDataContainer SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(CreateDataContainer)
+    PYB11_FILTER_NEW_MACRO(CreateDataContainer)
+    PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
     PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 #endif
 

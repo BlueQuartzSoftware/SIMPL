@@ -52,6 +52,10 @@ class  SIMPLib_EXPORT MultiThresholdObjects2 : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(MultiThresholdObjects2 SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(MultiThresholdObjects2)
+    PYB11_FILTER_NEW_MACRO(MultiThresholdObjects2)
+    PYB11_FILTER_PARAMETER(QString, DestinationArrayName)
+    PYB11_FILTER_PARAMETER(ComparisonInputsAdvanced, SelectedThresholds)
     PYB11_PROPERTY(QString DestinationArrayName READ getDestinationArrayName WRITE setDestinationArrayName)
     PYB11_PROPERTY(ComparisonInputsAdvanced SelectedThresholds READ getSelectedThresholds WRITE setSelectedThresholds)
 #endif

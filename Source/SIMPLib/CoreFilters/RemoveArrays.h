@@ -50,6 +50,9 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(RemoveArrays SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(RemoveArrays)
+    PYB11_FILTER_NEW_MACRO(RemoveArrays)
+    PYB11_FILTER_PARAMETER(DataContainerArrayProxy, DataArraysToRemove)
     PYB11_PROPERTY(DataContainerArrayProxy DataArraysToRemove READ getDataArraysToRemove WRITE setDataArraysToRemove)
 #endif
 

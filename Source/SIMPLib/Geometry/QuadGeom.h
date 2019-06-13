@@ -45,6 +45,8 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
 {
   // clang-format off
   PYB11_CREATE_BINDINGS(QuadGeom SUPERCLASS IGeometry2D)
+  PYB11_SHARED_POINTERS(QuadGeom)
+  PYB11_STATIC_NEW_MACRO(QuadGeom)
 
   PYB11_CREATION(CreateGeometry ARGS OVERLOAD size_t SharedVertexList::Pointer QString bool)
   PYB11_CREATION(CreateGeometry ARGS OVERLOAD SharedQuadList::Pointer SharedVertexList::Pointer QString)

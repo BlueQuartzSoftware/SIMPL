@@ -59,6 +59,8 @@ class SIMPLib_EXPORT StringDataArray : public IDataArray
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(StringDataArray SUPER IDataArray)
+  PYB11_SHARED_POINTERS(StringDataArray)
+  PYB11_STATIC_NEW_MACRO(StringDataArray)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t std::vector<size_t> QString bool)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)

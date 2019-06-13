@@ -45,6 +45,8 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
 {
   // clang-format off
   PYB11_CREATE_BINDINGS(TriangleGeom SUPERCLASS IGeometry2D)
+  PYB11_SHARED_POINTERS(TriangleGeom)
+  PYB11_STATIC_NEW_MACRO(TriangleGeom)
 	  
   PYB11_CREATION(CreateGeometry ARGS OVERLOAD size_t SharedVertexList::Pointer QString bool)
   PYB11_CREATION(CreateGeometry ARGS OVERLOAD SharedTriList::Pointer SharedVertexList::Pointer QString)

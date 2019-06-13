@@ -51,6 +51,11 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(RequiredZThickness SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(RequiredZThickness)
+    PYB11_STATIC_NEW_MACRO(RequiredZThickness)
+    PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerSelection)
+    PYB11_FILTER_PARAMETER(int, NumZVoxels)
+    PYB11_FILTER_PARAMETER(bool, PreflightCheck)
     PYB11_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
     PYB11_PROPERTY(int NumZVoxels READ getNumZVoxels WRITE setNumZVoxels)
     PYB11_PROPERTY(bool PreflightCheck READ getPreflightCheck WRITE setPreflightCheck)

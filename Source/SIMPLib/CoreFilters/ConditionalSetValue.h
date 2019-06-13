@@ -49,6 +49,11 @@ class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ConditionalSetValue SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(ConditionalSetValue)
+    PYB11_FILTER_NEW_MACRO(ConditionalSetValue)
+    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
+    PYB11_FILTER_PARAMETER(DataArrayPath, ConditionalArrayPath)
+    PYB11_FILTER_PARAMETER(double, ReplaceValue)
     PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
     PYB11_PROPERTY(DataArrayPath ConditionalArrayPath READ getConditionalArrayPath WRITE setConditionalArrayPath)
     PYB11_PROPERTY(double ReplaceValue READ getReplaceValue WRITE setReplaceValue)

@@ -49,6 +49,11 @@ class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ReplaceValueInArray SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(ReplaceValueInArray)
+    PYB11_FILTER_NEW_MACRO(ReplaceValueInArray)
+    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedArray)
+    PYB11_FILTER_PARAMETER(double, RemoveValue)
+    PYB11_FILTER_PARAMETER(double, ReplaceValue)
     PYB11_PROPERTY(DataArrayPath SelectedArray READ getSelectedArray WRITE setSelectedArray)
     PYB11_PROPERTY(double RemoveValue READ getRemoveValue WRITE setRemoveValue)
     PYB11_PROPERTY(double ReplaceValue READ getReplaceValue WRITE setReplaceValue)

@@ -54,6 +54,14 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ImportAsciDataArray SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(ImportAsciDataArray)
+    PYB11_FILTER_NEW_MACRO(ImportAsciDataArray)
+    PYB11_FILTER_PARAMETER(DataArrayPath, CreatedAttributeArrayPath)
+    PYB11_FILTER_PARAMETER(SIMPL::NumericTypes::Type, ScalarType)
+    PYB11_FILTER_PARAMETER(int, NumberOfComponents)
+    PYB11_FILTER_PARAMETER(int, SkipHeaderLines)
+    PYB11_FILTER_PARAMETER(QString, InputFile)
+    PYB11_FILTER_PARAMETER(int, Delimiter)
     PYB11_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)
     PYB11_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
     PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)

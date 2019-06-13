@@ -48,6 +48,16 @@ class SIMPLib_EXPORT CropVertexGeometry : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(CropVertexGeometry SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(CropVertexGeometry)
+  PYB11_FILTER_NEW_MACRO(CropVertexGeometry)
+  PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+  PYB11_FILTER_PARAMETER(DataArrayPath, CroppedDataContainerName)
+  PYB11_FILTER_PARAMETER(float, XMin)
+  PYB11_FILTER_PARAMETER(float, YMin)
+  PYB11_FILTER_PARAMETER(float, ZMin)
+  PYB11_FILTER_PARAMETER(float, XMax)
+  PYB11_FILTER_PARAMETER(float, YMax)
+  PYB11_FILTER_PARAMETER(float, ZMax)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(DataArrayPath CroppedDataContainerName READ getCroppedDataContainerName WRITE setCroppedDataContainerName)
   PYB11_PROPERTY(float XMin READ getXMin WRITE setXMin)

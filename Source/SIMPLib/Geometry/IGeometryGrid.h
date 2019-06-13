@@ -49,42 +49,43 @@ class SIMPLib_EXPORT IGeometryGrid : public IGeometry
 {
   // This class needs to be wrapped so Python/Pybind11 can do the proper casting
   PYB11_CREATE_BINDINGS(IGeometryGrid SUPERCLASS IGeometry)
+  PYB11_SHARED_POINTERS(IGeometryGrid)
 
-  public:
-    SIMPL_SHARED_POINTERS(IGeometryGrid)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometryGrid, Observable)
+public:
+  SIMPL_SHARED_POINTERS(IGeometryGrid)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometryGrid, Observable)
 
-    IGeometryGrid();
-    ~IGeometryGrid() override;
+  IGeometryGrid();
+  ~IGeometryGrid() override;
 
-    virtual void setDimensions(const SizeVec3Type& dims) = 0;
-    virtual SizeVec3Type getDimensions() const = 0;
+  virtual void setDimensions(const SizeVec3Type& dims) = 0;
+  virtual SizeVec3Type getDimensions() const = 0;
 
-    virtual size_t getXPoints() = 0;
-    virtual size_t getYPoints() = 0;
-    virtual size_t getZPoints() = 0;
-    
-    virtual void getPlaneCoords(size_t idx[3], float coords[3]) = 0;
-    virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) = 0;
-    virtual void getPlaneCoords(size_t idx, float coords[3]) = 0;
-    
-    virtual void getPlaneCoords(size_t idx[3], double coords[3]) = 0;
-    virtual void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) = 0;
-    virtual void getPlaneCoords(size_t idx, double coords[3]) = 0;
+  virtual size_t getXPoints() = 0;
+  virtual size_t getYPoints() = 0;
+  virtual size_t getZPoints() = 0;
 
-    virtual void getCoords(size_t idx[3], float coords[3]) = 0;
-    virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]) = 0;
-    virtual void getCoords(size_t idx, float coords[3]) = 0;
-    
-    virtual void getCoords(size_t idx[3], double coords[3]) = 0;
-    virtual void getCoords(size_t x, size_t y, size_t z, double coords[3]) = 0;
-    virtual void getCoords(size_t idx, double coords[3]) = 0;
+  virtual void getPlaneCoords(size_t idx[3], float coords[3]) = 0;
+  virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) = 0;
+  virtual void getPlaneCoords(size_t idx, float coords[3]) = 0;
 
-  public:
-    IGeometryGrid(const IGeometryGrid&) = delete;  // Copy Constructor Not Implemented
-    IGeometryGrid(IGeometryGrid&&) = delete;       // Move Constructor Not Implemented
-    IGeometryGrid& operator=(const IGeometryGrid&) = delete; // Copy Assignment Not Implemented
-    IGeometryGrid& operator=(IGeometryGrid&&) = delete;      // Move Assignment Not Implemented
+  virtual void getPlaneCoords(size_t idx[3], double coords[3]) = 0;
+  virtual void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) = 0;
+  virtual void getPlaneCoords(size_t idx, double coords[3]) = 0;
+
+  virtual void getCoords(size_t idx[3], float coords[3]) = 0;
+  virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]) = 0;
+  virtual void getCoords(size_t idx, float coords[3]) = 0;
+
+  virtual void getCoords(size_t idx[3], double coords[3]) = 0;
+  virtual void getCoords(size_t x, size_t y, size_t z, double coords[3]) = 0;
+  virtual void getCoords(size_t idx, double coords[3]) = 0;
+
+public:
+  IGeometryGrid(const IGeometryGrid&) = delete;            // Copy Constructor Not Implemented
+  IGeometryGrid(IGeometryGrid&&) = delete;                 // Move Constructor Not Implemented
+  IGeometryGrid& operator=(const IGeometryGrid&) = delete; // Copy Assignment Not Implemented
+  IGeometryGrid& operator=(IGeometryGrid&&) = delete;      // Move Assignment Not Implemented
 };
 
 

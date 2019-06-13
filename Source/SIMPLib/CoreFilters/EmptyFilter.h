@@ -49,6 +49,8 @@ class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(EmptyFilter SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(EmptyFilter)
+    PYB11_FILTER_NEW_MACRO(EmptyFilter)
 #endif
 
   public:

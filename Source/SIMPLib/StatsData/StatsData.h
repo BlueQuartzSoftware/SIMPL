@@ -91,6 +91,8 @@ class SIMPLib_EXPORT StatsData
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(StatsData)
+  PYB11_SHARED_POINTERS(StatsData)
+  PYB11_STATIC_NEW_MACRO(StatsData)
   PYB11_METHOD(QString getStatsType)
   PYB11_METHOD(PhaseType::Type getPhaseType)
   PYB11_PROPERTY(float PhaseFraction READ getPhaseFraction WRITE setPhaseFraction)

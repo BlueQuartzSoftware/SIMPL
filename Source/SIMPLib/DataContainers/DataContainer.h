@@ -71,6 +71,7 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(DataContainer)
+  PYB11_SHARED_POINTERS(DataContainer)
   PYB11_STATIC_CREATION(New OVERLOAD QString)
   PYB11_STATIC_CREATION(New OVERLOAD DataArrayPath)
 

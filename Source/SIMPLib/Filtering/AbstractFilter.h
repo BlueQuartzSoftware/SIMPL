@@ -79,6 +79,8 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(AbstractFilter)
+  PYB11_SHARED_POINTERS(AbstractFilter)
+  PYB11_STATIC_NEW_MACRO(AbstractFilter)
   PYB11_PROPERTY(QString NameOfClass READ getNameOfClass)  
   PYB11_PROPERTY(QString GroupName READ getGroupName)
   PYB11_PROPERTY(QString SubGroupName READ getSubGroupName)

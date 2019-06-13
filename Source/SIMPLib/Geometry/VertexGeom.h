@@ -50,6 +50,8 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
 
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(VertexGeom SUPERCLASS IGeometry)
+  PYB11_SHARED_POINTERS(VertexGeom)
+  PYB11_STATIC_NEW_MACRO(VertexGeom)
   
   PYB11_CREATION(CreateGeometry ARGS size_t QString bool)
   PYB11_CREATION(CreateGeometry ARGS SharedVertexList::Pointer QString)

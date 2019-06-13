@@ -52,6 +52,8 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(SIMPLH5DataReader)
+    PYB11_SHARED_POINTERS(SIMPLH5DataReader)
+    PYB11_STATIC_NEW_MACRO(SIMPLH5DataReader)
 
     PYB11_METHOD(bool openFile ARGS filePath)
     PYB11_METHOD(bool closeFile)

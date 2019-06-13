@@ -53,6 +53,13 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ArrayCalculator SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(ArrayCalculator)
+    PYB11_FILTER_NEW_MACRO(ArrayCalculator)
+    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrix)
+    PYB11_FILTER_PARAMETER(QString, InfixEquation)
+    PYB11_FILTER_PARAMETER(DataArrayPath, CalculatedArray)
+    PYB11_FILTER_PARAMETER(ArrayCalculator::AngleUnits, Units)
+    PYB11_FILTER_PARAMETER(SIMPL::ScalarTypes::Type, ScalarType)
     PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
     PYB11_PROPERTY(QString InfixEquation READ getInfixEquation WRITE setInfixEquation)
     PYB11_PROPERTY(DataArrayPath CalculatedArray READ getCalculatedArray WRITE setCalculatedArray)

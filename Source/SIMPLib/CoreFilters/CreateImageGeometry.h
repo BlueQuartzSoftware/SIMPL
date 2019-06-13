@@ -51,6 +51,12 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(CreateImageGeometry SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(CreateImageGeometry)
+    PYB11_FILTER_NEW_MACRO(CreateImageGeometry)
+    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedDataContainer)
+    PYB11_FILTER_PARAMETER(IntVec3Type, Dimensions)
+    PYB11_FILTER_PARAMETER(FloatVec3Type, Origin)
+    PYB11_FILTER_PARAMETER(FloatVec3Type, Spacing)
     PYB11_PROPERTY(DataArrayPath SelectedDataContainer READ getSelectedDataContainer WRITE setSelectedDataContainer)
     PYB11_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
     PYB11_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)

@@ -51,6 +51,10 @@ class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(MaskCountDecision SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(MaskCountDecision)
+    PYB11_STATIC_NEW_MACRO(MaskCountDecision)
+    PYB11_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
+    PYB11_FILTER_PARAMETER(int, NumberOfTrues)
     PYB11_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
     PYB11_PROPERTY(int NumberOfTrues READ getNumberOfTrues WRITE setNumberOfTrues)
 #endif

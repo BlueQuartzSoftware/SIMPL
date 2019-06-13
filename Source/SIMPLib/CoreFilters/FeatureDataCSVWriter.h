@@ -51,6 +51,13 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(FeatureDataCSVWriter SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(FeatureDataCSVWriter)
+    PYB11_FILTER_NEW_MACRO(FeatureDataCSVWriter)
+    PYB11_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixPath)
+    PYB11_FILTER_PARAMETER(QString, FeatureDataFile)
+    PYB11_FILTER_PARAMETER(bool, WriteNeighborListData)
+    PYB11_FILTER_PARAMETER(int, DelimiterChoice)
+    PYB11_FILTER_PARAMETER(bool, WriteNumFeaturesLine)
     PYB11_PROPERTY(DataArrayPath CellFeatureAttributeMatrixPath READ getCellFeatureAttributeMatrixPath WRITE setCellFeatureAttributeMatrixPath)
     PYB11_PROPERTY(QString FeatureDataFile READ getFeatureDataFile WRITE setFeatureDataFile)
     PYB11_PROPERTY(bool WriteNeighborListData READ getWriteNeighborListData WRITE setWriteNeighborListData)

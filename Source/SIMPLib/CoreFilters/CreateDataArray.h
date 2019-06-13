@@ -50,6 +50,14 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(CreateDataArray SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(CreateDataArray)
+    PYB11_FILTER_NEW_MACRO(CreateDataArray)
+    PYB11_FILTER_PARAMETER(SIMPL::ScalarTypes::Type, ScalarType)
+    PYB11_FILTER_PARAMETER(int, NumberOfComponents)
+    PYB11_FILTER_PARAMETER(DataArrayPath, NewArray)
+    PYB11_FILTER_PARAMETER(int, InitializationType)
+    PYB11_FILTER_PARAMETER(QString, InitializationValue)
+    PYB11_FILTER_PARAMETER(FPRangePair, InitializationRange)
     PYB11_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)
     PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
     PYB11_PROPERTY(DataArrayPath NewArray READ getNewArray WRITE setNewArray)

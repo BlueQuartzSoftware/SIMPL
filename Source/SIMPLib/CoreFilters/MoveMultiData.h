@@ -49,6 +49,13 @@ class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
 
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(MoveMultiData SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(MoveMultiData)
+    PYB11_FILTER_NEW_MACRO(MoveMultiData)
+    PYB11_FILTER_PARAMETER(int, WhatToMove)
+    PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerDestination)
+    PYB11_FILTER_PARAMETER(QVector<DataArrayPath>, AttributeMatrixSources)
+    PYB11_FILTER_PARAMETER(DataArrayPath, AttributeMatrixDestination)
+    PYB11_FILTER_PARAMETER(QVector<DataArrayPath>, DataArraySources)
     PYB11_PROPERTY(int WhatToMove READ getWhatToMove WRITE setWhatToMove)
     PYB11_PROPERTY(DataArrayPath DataContainerDestination READ getDataContainerDestination WRITE setDataContainerDestination)
     PYB11_PROPERTY(QVector<DataArrayPath> AttributeMatrixSources READ getAttributeMatrixSources WRITE setAttributeMatrixSources)
