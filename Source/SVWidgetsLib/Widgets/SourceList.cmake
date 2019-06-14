@@ -23,6 +23,7 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataArrayPathSelectionWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataPathLabel.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataContainerArrayWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataContainerGridView.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryToolboxWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryTreeWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListToolboxWidget.h
@@ -77,6 +78,7 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataArrayPathDisplay.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataArrayPathSelectionWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataContainerArrayWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataContainerGridView.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryToolboxWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryTreeWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListToolboxWidget.cpp

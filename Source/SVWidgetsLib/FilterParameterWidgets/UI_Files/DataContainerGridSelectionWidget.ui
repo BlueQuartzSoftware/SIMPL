@@ -55,7 +55,7 @@
        <number>4</number>
       </property>
       <item row="2" column="0" colspan="2">
-       <widget class="QTableView" name="dataContainerGridTableView">
+       <widget class="DataContainerGridView" name="dataContainerGridTableView">
         <property name="dragDropMode">
          <enum>QAbstractItemView::DropOnly</enum>
         </property>
@@ -247,6 +247,11 @@
    <class>SVIconPushButton</class>
    <extends>QPushButton</extends>
    <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DataContainerGridView</class>
+   <extends>QTableView</extends>
+   <header location="global">DataContainerGridView.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
