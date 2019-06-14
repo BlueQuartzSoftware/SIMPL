@@ -38,9 +38,9 @@
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/Common/SIMPLArray.hpp"
-#include "SIMPLib/DataContainers/DataContainerGrid.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/Geometry/IGeometry.h"
+#include "SIMPLib/Montages/DataContainerGrid.h"
 
 /**
  * @brief SIMPL_NEW_DC_GRID_SELECTION_FP This macro is a short-form way of instantiating an instance of
@@ -72,7 +72,7 @@ public:
   using SetterCallbackType = std::function<void(DataContainerGrid)>;
   using GetterCallbackType = std::function<DataContainerGrid(void)>;
 
-  //using RequirementType = struct
+  // using RequirementType = struct
   //{
   //  IGeometry::Types dcGeometryTypes;
   //};

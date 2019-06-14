@@ -38,10 +38,7 @@
 #include <QtWidgets/QStyleOptionComboBox>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
-
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-
-//#include "DataContainerGridItemDelegate.h"
 
 // -----------------------------------------------------------------------------
 //

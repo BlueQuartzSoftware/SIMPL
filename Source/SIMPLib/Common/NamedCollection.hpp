@@ -38,9 +38,9 @@
 
 #include <QtCore/QString>
 
-//#include "SIMPLib/Common/INamedObject.h"
+#include "SIMPLib/Common/INamedObject.h"
 
-#include "SIMPLib/DataContainers/AbstractMontage.h"
+//#include "SIMPLib/Montages/AbstractMontage.h"
 
 /**
  * @class NamedCollection NamedCollection.hpp SIMPLib/Common/NamedCollection.hpp

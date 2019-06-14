@@ -134,3 +134,5 @@ protected:
    */
   AbstractMontage(const QString& name);
 };
+
+using AbstractMontageShPtr = std::shared_ptr<AbstractMontage>;

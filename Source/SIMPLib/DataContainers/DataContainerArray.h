@@ -48,13 +48,11 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
+#include "SIMPLib/Montages/AbstractMontage.h"
 
 
 class DataContainer;
 using DataContainerShPtr = std::shared_ptr<DataContainer>;
-
-class AbstractMontage;
-using AbstractMontageShPtr = std::shared_ptr<AbstractMontage>;
 
 /**
  * @class DataContainerArray DataContainerArray.h DREAM3DLib/Common/DataContainerArray.h

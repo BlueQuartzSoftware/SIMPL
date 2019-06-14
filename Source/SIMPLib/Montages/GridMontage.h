@@ -34,9 +34,9 @@
 
 #include <vector>
 
-#include "SIMPLib/DataContainers/AbstractMontage.h"
-#include "SIMPLib/DataContainers/GridTileIndex.h"
 #include "SIMPLib/Geometry/IGeometry.h"
+#include "SIMPLib/Montages/AbstractMontage.h"
+#include "SIMPLib/Montages/GridTileIndex.h"
 
 /**
  * @class GridMontage GridMontage.h SIMPLib/DataContainers/GridMontage.h

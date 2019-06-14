@@ -32,7 +32,7 @@
 
 #include "GridTileIndex.h"
 
-#include "SIMPLib/DataContainers/GridMontage.h"
+#include "SIMPLib/Montages/GridMontage.h"
 
 // -----------------------------------------------------------------------------
 //

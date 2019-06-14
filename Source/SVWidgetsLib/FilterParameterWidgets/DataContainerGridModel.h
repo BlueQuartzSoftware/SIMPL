@@ -36,8 +36,7 @@
 #include <QtCore/QVariant>
 #include <QtCore/QVector>
 
-#include "SIMPLib/DataContainers/DataContainerGrid.h"
-
+#include "SIMPLib/Montages/DataContainerGrid.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class QAbstractItemDelegate;

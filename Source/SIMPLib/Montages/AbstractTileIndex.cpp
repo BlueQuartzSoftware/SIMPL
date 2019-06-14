@@ -32,7 +32,7 @@
 
 #include "AbstractTileIndex.h"
 
-#include "SIMPLib/DataContainers/AbstractMontage.h"
+#include "SIMPLib/Montages/AbstractMontage.h"
 
 // -----------------------------------------------------------------------------
 //

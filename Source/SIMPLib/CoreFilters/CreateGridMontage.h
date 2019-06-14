@@ -33,8 +33,8 @@
 #pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/DataContainers/DataContainerGrid.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Montages/DataContainerGrid.h"
 #include "SIMPLib/SIMPLib.h"
 
 /**
@@ -55,7 +55,7 @@ public:
 
   SIMPL_FILTER_PARAMETER(QString, MontageName)
   Q_PROPERTY(QString MontageName READ getMontageName WRITE setMontageName)
-  
+
   SIMPL_FILTER_PARAMETER(DataContainerGrid, GridSelection)
   Q_PROPERTY(DataContainerGrid GridSelection READ getGridSelection WRITE setGridSelection)
 

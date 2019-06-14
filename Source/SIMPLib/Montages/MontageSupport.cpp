@@ -38,7 +38,7 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
-#include "SIMPLib/DataContainers/GridMontage.h"
+#include "SIMPLib/Montages/GridMontage.h"
 
 // -----------------------------------------------------------------------------
 //

@@ -34,11 +34,11 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "DataContainerArray.h"
 
-#include "SIMPLib/DataContainers/AbstractMontage.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
-#include "SIMPLib/DataContainers/GridMontage.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Montages/AbstractMontage.h"
+#include "SIMPLib/Montages/GridMontage.h"
 
 // -----------------------------------------------------------------------------
 //

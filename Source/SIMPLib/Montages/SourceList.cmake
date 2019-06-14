@@ -1,5 +1,5 @@
 # ============================================================================
-# Copyright (c) 2009-2015 BlueQuartz Software, LLC
+# Copyright (c) 2019-2019 BlueQuartz Software, LLC
 #
 # Redistribution and use in source and binary forms, with or without modification,
 # are permitted provided that the following conditions are met:
@@ -33,15 +33,11 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-set(SUBDIR_NAME DataContainers)
+set(SUBDIR_NAME Montages)
 
 # --------------------------------------------------------------------
 # Any Class that inherits from QObject, either directly or through the heirarchy needs to have its header listed here
 set(SIMPLib_${SUBDIR_NAME}_Moc_HDRS
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerArray.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataArrayPath.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataContainerBundle.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerBundle.h
   )
 # --------------------------------------------------------------------
 # Run Qts automoc program to generate some source files that get compiled
@@ -50,32 +46,21 @@ set_source_files_properties( ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS} PROPER
 set_source_files_properties( ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 set(SIMPLib_${SUBDIR_NAME}_HDRS
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AttributeMatrix.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AttributeMatrixProxy.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataArrayPath.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataArrayProxy.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainer.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerArrayProxy.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerProxy.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DsnIterators.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataStructureContainerNode.hpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataStructureNode.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RenameDataPath.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractMontage.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractTileIndex.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerGrid.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/GridMontage.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/GridTileIndex.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageSupport.h
 )
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AttributeMatrix.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AttributeMatrixProxy.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataArrayPath.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataArrayProxy.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainer.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerArray.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerArrayProxy.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerProxy.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerBundle.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataContainerBundle.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataStructureNode.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RenameDataPath.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractMontage.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractTileIndex.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerGrid.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/GridMontage.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/GridTileIndex.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageSupport.cpp
 )
 
 cmp_IDE_SOURCE_PROPERTIES( "${SUBDIR_NAME}" "${SIMPLib_${SUBDIR_NAME}_HDRS};${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}" "${SIMPLib_${SUBDIR_NAME}_SRCS}" "${PROJECT_INSTALL_HEADERS}")
@@ -90,14 +75,6 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_${SUBDIR_NAME}_SRCS}
   ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS}
 )
-
-# if( ${PROJECT_INSTALL_HEADERS} EQUAL 1 )
-#     INSTALL (FILES ${SIMPLib_${SUBDIR_NAME}_HDRS}
-#                    ${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}
-#             DESTINATION include/SIMPLib/${SUBDIR_NAME}
-#             COMPONENT Headers   )
-# endif()
-
 
 #-------------------------------------------------------------------------------
 # Add the unit testing sources
