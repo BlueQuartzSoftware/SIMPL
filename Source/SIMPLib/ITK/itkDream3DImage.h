@@ -81,7 +81,7 @@ namespace itk
  * \wikiexample{SimpleOperations/SetPixels,Set specified pixels to specified values}
  * \endwiki
  */
-template <typename TPixel, unsigned int VImageDimension = 2> class Dream3DImage : public Image<TPixel, VImageDimension>
+template <typename TPixel, unsigned int VImageDimension = 2> class ITK_TEMPLATE_EXPORT Dream3DImage : public Image<TPixel, VImageDimension>
 {
 public:
   /** Standard class typedefs */
