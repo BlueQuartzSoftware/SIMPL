@@ -37,6 +37,10 @@
 #include <QtWidgets/QAbstractItemDelegate>
 #include <QtWidgets/QStyleOptionComboBox>
 
+#include "SIMPLib/DataContainers/DataArrayPath.h"
+
+#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+
 //#include "DataContainerGridItemDelegate.h"
 
 // -----------------------------------------------------------------------------
@@ -126,6 +130,14 @@ int DataContainerGridModel::depthCount() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+int DataContainerGridModel::getCurrentDepth() const
+{
+  return m_CurrentDepth;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataContainerGridModel::setCurrentDepth(int depth)
 {
   if(depth < 0 || depth > depthCount())
@@ -133,6 +145,9 @@ void DataContainerGridModel::setCurrentDepth(int depth)
     return;
   }
   m_CurrentDepth = depth;
+  
+  QModelIndex index;
+  emit dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -148,7 +163,7 @@ bool DataContainerGridModel::setHeaderData(int col, Qt::Orientation o, const QVa
 // -----------------------------------------------------------------------------
 bool DataContainerGridModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-  if(!index.isValid() || role != Qt::EditRole || index.row() < 0 || index.row() >= rowCount() || index.column() < 0 || index.column() >= columnCount())
+  if(!index.isValid() || index.row() < 0 || index.row() >= rowCount() || index.column() < 0 || index.column() >= columnCount())
   {
     return false;
   }
@@ -158,6 +173,7 @@ bool DataContainerGridModel::setData(const QModelIndex& index, const QVariant& v
     SizeVec3Type pos(index.row(), index.column(), m_CurrentDepth);
     m_DCGrid.setDataContainerName(pos, value.toString());
     emit dataChanged(index, index);
+    emit modelChanged();
     return true;
   }
 
@@ -193,44 +209,100 @@ bool DataContainerGridModel::removeRows(int row, int count, const QModelIndex& i
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataContainerGridModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent)
+bool DataContainerGridModel::insertColumns(int col, int count, const QModelIndex& index)
 {
-  QModelIndex targetIndex = index(row, column, parent);
-  if(!targetIndex.isValid())
-  {
-    return false;
-  }
-
-  return setData(targetIndex, data->data(""), Qt::DisplayRole);
+  beginInsertColumns(QModelIndex(), col, col + count - 1);
+  endInsertColumns();
+  emit dataChanged(index, index);
+  return true;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerGridModel::setTableData(DataContainerGrid& grid)
+bool DataContainerGridModel::removeColumns(int col, int count, const QModelIndex& index)
+{
+  if(count < 1)
+  {
+    return true;
+  } // No Rows to remove
+  beginRemoveColumns(QModelIndex(), col, col + count - 1);
+  endRemoveColumns();
+  emit dataChanged(index, index);
+  return true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+Qt::DropActions DataContainerGridModel::supportedDropActions() const
+{
+  return Qt::CopyAction;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataContainerGridModel::canDropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent) const
+{
+  //QModelIndex targetIndex = index(row, column, parent);
+  if(!parent.isValid())
+  {
+    return false;
+  }
+
+  DataArrayPath dap = DataArrayPath::Deserialize(data->data(SIMPLView::DragAndDrop::DataArrayPath), "|");
+  return !dap.getDataContainerName().isEmpty();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataContainerGridModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent)
+{
+  //QModelIndex targetIndex = index(row, column, parent);
+  if(!parent.isValid())
+  {
+    return false;
+  }
+
+  DataArrayPath dap = DataArrayPath::Deserialize(data->data(SIMPLView::DragAndDrop::DataArrayPath), "|");
+  QString dcName = dap.getDataContainerName();
+  return setData(parent, dcName, Qt::DisplayRole);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerGridModel::setGridData(DataContainerGrid& grid)
 {
   size_t count = grid.size();
-  int32_t row = 0;
+  int32_t rows = grid.getDimensions()[0] - 1;
+  int32_t cols = grid.getDimensions()[1] - 1;
   // Remove all the current rows in the table model
   removeRows(0, rowCount());
+  removeColumns(0, columnCount());
   // Check to make sure we have data to insert.
   if(count == 0)
   {
     return;
   }
   // Now mass insert the data to the table then emit that the data has changed
-  beginInsertRows(QModelIndex(), row, row + count - 1);
+  beginInsertRows(QModelIndex(), 0, rows);
+  beginInsertColumns(QModelIndex(), 0, cols);
   m_DCGrid = grid;
+  endInsertColumns();
   endInsertRows();
   QModelIndex topLeft = createIndex(0, 0);
-  QModelIndex botRight = createIndex(count - 1, grid.getDimensions()[1]);
+  QModelIndex botRight = createIndex(rows, cols);
   emit dataChanged(topLeft, botRight);
+  emit modelChanged();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerGridModel::getTableData(DataContainerGrid& grid)
+void DataContainerGridModel::getGridData(DataContainerGrid& grid)
 {
   grid = m_DCGrid;
 }

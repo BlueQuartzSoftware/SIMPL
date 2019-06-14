@@ -239,6 +239,13 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
      */
     DataContainerArray::Pointer readData(DataContainerArrayProxy& proxy);
 
+    /**
+     * @brief readMontageGroup
+     * @param dca
+     * @return
+     */
+    DataContainerArray::MontageCollection readMontageGroup(const DataContainerArray::Pointer& dca);
+
   protected slots:
     /**
     * @brief Cleans up the filter after execution

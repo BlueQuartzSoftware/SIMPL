@@ -516,13 +516,13 @@ AbstractMontageShPtr DataContainerArray::getPrereqMontage(AbstractFilter* filter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, IntVec3Type size, const QStringList& dcNames)
+AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames)
 {
   GridMontage::Pointer montage = GridMontage::New(montageName, size[0], size[1], size[2]);
 
-  if(!addMontage(montage))
+  if(nullptr == montage)
   {
-    filter->setErrorCondition(-4960, "The montage '" + montageName + "' could not be added to the Data Structure");
+    filter->setErrorCondition(-4965, "The montage '" + montageName + "' could not be instantiated");
     return nullptr;
   }
 
@@ -540,7 +540,13 @@ AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilt
       }
     }
   }
-  
+
+  if(!addMontage(montage))
+  {
+    filter->setErrorCondition(-4960, "The montage '" + montageName + "' could not be added to the Data Structure");
+    return nullptr;
+  }
+
   return montage;
 }
 

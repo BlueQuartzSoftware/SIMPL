@@ -380,7 +380,7 @@ public:
      * @param size
      * @param dcNames
      */
-    AbstractMontageShPtr createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, IntVec3Type size, const QStringList& dcNames = QStringList());
+    AbstractMontageShPtr createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames = QStringList());
 
     /**
      * @brief createNonPrereqDataContainer

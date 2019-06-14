@@ -39,6 +39,9 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "H5Support/QH5Utilities.h"
+#include "H5Support/H5ScopedSentinel.h"
+
 class AbstractTileIndex;
 using AbstractTileIndexShPtr = std::shared_ptr<AbstractTileIndex>;
 
@@ -116,6 +119,13 @@ public:
    * @return
    */
   virtual Pointer propagate(const DataContainerArrayShPtr& dca) const = 0;
+
+  /**
+   * @brief Write the montage to an HDF5 file.
+   * @param groupId
+   * @return error code
+   */
+  virtual int writeH5Data(hid_t groupId) const = 0;
 
 protected:
   /**

@@ -119,8 +119,9 @@ void DataContainerGrid::resizeDimensions(SizeVec3Type newSize)
   const SizeVec3Type oldSize = m_Dims;
   const NameCollectionType oldNames = m_DataContainerNames;
 
-  m_DataContainerNames.resize(newSize[0] * newSize[1] * newSize[2]);
+  m_Dims = newSize;
   m_DataContainerNames.clear();
+  m_DataContainerNames.resize(newSize[0] * newSize[1] * newSize[2]);
 
   for(size_t row = 0; row < newSize[0] && row < oldSize[0]; row++)
   {
@@ -157,6 +158,28 @@ void DataContainerGrid::setDataContainerName(SizeVec3Type pos, const QString& na
   m_DataContainerNames[offset] = name;
 
   emit dataContainerNameChanged();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList DataContainerGrid::getDataContainerNames() const
+{
+  QStringList dcNames;
+
+  for(size_t depth = 0; depth < m_Dims[2]; depth++)
+  {
+    for(size_t row = 0; row < m_Dims[0]; row++)
+    {
+      for(size_t col = 0; col < m_Dims[1]; col++)
+      {
+        size_t offset = getOffset(SizeVec3Type(row, col, depth));
+        dcNames.push_back(m_DataContainerNames[offset]);
+      }
+    }
+  }
+
+  return dcNames;
 }
 
 // -----------------------------------------------------------------------------

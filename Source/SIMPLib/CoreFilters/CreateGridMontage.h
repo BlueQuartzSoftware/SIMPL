@@ -55,10 +55,7 @@ public:
 
   SIMPL_FILTER_PARAMETER(QString, MontageName)
   Q_PROPERTY(QString MontageName READ getMontageName WRITE setMontageName)
-
-  SIMPL_FILTER_PARAMETER(IntVec3Type, Dims)
-  Q_PROPERTY(IntVec3Type Dims READ getDims WRITE setDims)
-
+  
   SIMPL_FILTER_PARAMETER(DataContainerGrid, GridSelection)
   Q_PROPERTY(DataContainerGrid GridSelection READ getGridSelection WRITE setGridSelection)
 

@@ -565,26 +565,84 @@ QString GridMontage::getInfoString() const
   htmlGenerator.addValue("Z", usa.toString(bounds[4]) + " to " + usa.toString(bounds[5]) + " (dimension: " + usa.toString(dims[2]) + ")");
 
   return htmlGenerator.generateHTML();
+}
 
-#if 0
-  ss << "<html><head></head>\n";
-  ss << "<body>\n";
-  ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
-  ss << "<tbody>\n";
-  ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Montage Info</th></tr>";
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int GridMontage::writeH5Data(hid_t groupId) const
+{
+  hid_t montageId = QH5Utilities::createGroup(groupId, getName());
+  // This object will make sure the HDF5 Group id is closed when it goes out of scope.
+  H5GroupAutoCloser bundleIdClose(&montageId);
 
-  ss << R"(<tr bgcolor="#E9E7D6"><th align="right">Name:</th><td>)" << getName() << "</td></tr>";
-  ss << R"(<tr bgcolor="#E9E7D6"><th align="right">Type:</th><td> Grid </td></tr>)";
-  ss << R"(<tr bgcolor="#E9E7D6"><th align="right">Number of Tiles:</th><td>)" << getTileCount() << "</td></tr>";
+  int err = QH5Lite::writeStringDataset(montageId, "Montage Type", "GridMontage");
+  if(err < 0)
+  {
+    return err;
+  }
 
-  ss << R"(<tr bgcolor="#FFFCEA"><th align="Center" colspan=2>Dimensions</td></tr>)";
-  ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Rows:</th><td> )" << usa.toString(getRowCount()) << "</td></tr>";
-  ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Columns:</th><td> )" << usa.toString(getColumnCount()) << "</td></tr>";
-  ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Depth:</th><td> )" << usa.toString(getDepthCount()) << "</td></tr>";
+  err = QH5Lite::writeStringDataset(montageId, SIMPL::StringConstants::Name, getName());
+  if(err < 0)
+  {
+    return err;
+  }
 
-  ss << "</tbody></table>\n";
-  ss << "</body></html>";
+  // Write Dimensions
+  const SizeVec3Type dims = getGridSize();
+  err = QH5Lite::writeScalarDataset(montageId,"X Dim", dims[0]);
+  if(err < 0)
+  {
+    return err;
+  }
+  err = QH5Lite::writeScalarDataset(montageId, "Y Dim", dims[1]);
+  if(err < 0)
+  {
+    return err;
+  }
+  err = QH5Lite::writeScalarDataset(montageId, "Z Dim", dims[2]);
+  if(err < 0)
+  {
+    return err;
+  }
 
-  return info;
-#endif
+  size_t count = static_cast<size_t>(m_DataContainers.size());
+  QStringList dcNameList;
+
+  for(const auto& dc : m_DataContainers)
+  {
+    if(nullptr == dc)
+    {
+      dcNameList << "";
+    }
+    else
+    {
+      dcNameList << dc->getName();
+    }
+    
+  }
+
+  char sep = 0x1E; // Use the ASCII 'record separator' value (Decimal value 30) to separate the names
+  // Write the Names of the Data Containers that this bundle holds
+  QString nameList = dcNameList.join(QString(sep));
+  err = QH5Lite::writeStringDataset(montageId, SIMPL::StringConstants::DataContainerNames, nameList);
+  if(err < 0)
+  {
+    return err;
+  }
+
+  return err;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool GridMontage::setDataContainers(std::vector<DataContainerShPtr> dataContainers)
+{
+  if(dataContainers.size() != m_DataContainers.size())
+  {
+    return false;
+  }
+  m_DataContainers = dataContainers;
+  return true;
 }

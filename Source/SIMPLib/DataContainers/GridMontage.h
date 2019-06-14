@@ -233,6 +233,21 @@ public:
    */
   BoundsType getBounds() const;
 
+  /**
+   * @brief Write the montage to an HDF5 file.
+   * @param groupId
+   * @return error code
+   */
+  int writeH5Data(hid_t groupId) const override;
+
+  /**
+   * @brief Sets the DataContainer vector for the montage.
+   * Returns true on success. Returns false otherwise.
+   * @param dataContainers
+   * @return
+   */
+  bool setDataContainers(std::vector<DataContainerShPtr> dataContainers);
+
 protected:
   GridMontage(const QString& name, size_t row, size_t col, size_t depth);
 

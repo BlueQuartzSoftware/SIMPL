@@ -43,6 +43,7 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerBundle.h"
+#include "SIMPLib/DataContainers/MontageSupport.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
@@ -204,6 +205,12 @@ void DataContainerReader::dataCheck()
   }
   QMap<QString, IDataContainerBundle::Pointer> bundles = tempDCA->getDataContainerBundles();
   dca->setDataContainerBundles(bundles);
+
+  DataContainerArray::MontageCollection montageGroup = readMontageGroup(dca);
+  for(const auto& montage : montageGroup)
+  {
+    dca->addMontage(montage);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -281,6 +288,31 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
   }
 
   return dca;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerArray::MontageCollection DataContainerReader::readMontageGroup(const DataContainerArray::Pointer& dca)
+{
+  hid_t fileId = QH5Utilities::openFile(getInputFile(), true); // Open the file Read Only
+  if(fileId < 0)
+  {
+    QString ss = QObject::tr("Error opening input file '%1'").arg(getInputFile());
+    setErrorCondition(-155, ss);
+    return DataContainerArray::MontageCollection();
+  }
+  H5ScopedFileSentinel sentinel(&fileId, true);
+
+  hid_t groupId = QH5Utilities::openHDF5Object(fileId, SIMPL::StringConstants::MontageGroupName);
+  int err = 0;
+  DataContainerArray::MontageCollection montages = MontageSupport::IO::ReadMontagesFromHDF5(groupId, dca, err);
+  if(err < 0)
+  {
+    QString ss = QObject::tr("Error reading montage collection");
+    setErrorCondition(-160, ss);
+  }
+  return montages;
 }
 
 // -----------------------------------------------------------------------------

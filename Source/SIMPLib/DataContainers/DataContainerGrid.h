@@ -44,9 +44,9 @@ class SIMPLib_EXPORT DataContainerGrid : public QObject
 {
   Q_OBJECT
 
+public:
   using NameCollectionType = std::vector<QString>;
 
-public:
   DataContainerGrid(SizeVec3Type dims = SizeVec3Type());
   DataContainerGrid(SizeVec3Type dims, const std::vector<QString>& dcList);
   virtual ~DataContainerGrid();
@@ -75,13 +75,19 @@ public:
    * @return
    */
   QString getDataContainerName(SizeVec3Type pos) const;
-  
+
   /**
    * @brief Sets the DataContainer name for the given position.
    * @param pos
    * @param name
    */
   void setDataContainerName(SizeVec3Type pos, const QString& name);
+
+  /**
+   * @brief Returns a list of DataContainer names.
+   * @return
+   */
+  QStringList getDataContainerNames() const;
 
 signals:
   void dimensionsChanged(SizeVec3Type newDims);

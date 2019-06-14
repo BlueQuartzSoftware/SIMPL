@@ -35,7 +35,6 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerGridSelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
@@ -63,7 +62,6 @@ CreateGridMontage::~CreateGridMontage() = default;
 void CreateGridMontage::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
-  parameters.push_back(SIMPL_NEW_INT_VEC3_FP("Dimensions", Dims, FilterParameter::Parameter, CreateGridMontage));
   parameters.push_back(SIMPL_NEW_DC_GRID_SELECTION_FP("Data Container Grid", GridSelection, FilterParameter::Parameter, CreateGridMontage));
   parameters.push_back(SIMPL_NEW_STRING_FP("Created Montage Name", MontageName, FilterParameter::CreatedArray, CreateGridMontage));
   setFilterParameters(parameters);
@@ -93,10 +91,7 @@ void CreateGridMontage::dataCheck()
   clearErrorCode();
   clearWarningCode();
 
-  SizeVec3Type sizeDims(m_Dims[0], m_Dims[1], m_Dims[2]);
-  m_GridSelection.resizeDimensions(sizeDims);
-
-  getDataContainerArray()->createNonPrereqGridMontage(this, getMontageName(), getDims(), getDataContainerNameList());
+  getDataContainerArray()->createNonPrereqGridMontage(this, getMontageName(), m_GridSelection.getDimensions(), m_GridSelection.getDataContainerNames());
 }
 
 // -----------------------------------------------------------------------------
@@ -193,7 +188,7 @@ const QString CreateGridMontage::getHumanLabel() const
 // -----------------------------------------------------------------------------
 const QUuid CreateGridMontage::getUuid()
 {
-  return QUuid("{816fbe6b-7c38-581b-b149-3f839fb65b93}");
+  return QUuid("{c5bb92df-c1bb-5e57-a2bf-280303a81935}");
 }
 
 // -----------------------------------------------------------------------------

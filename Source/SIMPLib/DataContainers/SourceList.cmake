@@ -65,6 +65,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/GridTileIndex.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataStructureContainerNode.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataStructureNode.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageSupport.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RenameDataPath.h
 )
 
@@ -85,6 +86,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/GridTileIndex.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataContainerBundle.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataStructureNode.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageSupport.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RenameDataPath.cpp
 )
 

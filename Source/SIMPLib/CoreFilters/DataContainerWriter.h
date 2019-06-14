@@ -201,6 +201,13 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     int writeDataContainerBundles(hid_t fileId);
 
     /**
+     * @brief writeMontages Writes any existing Montages to the HDF5 file
+     * @param fileId Group Id for the Montages
+     * @return
+     */
+    int writeMontages(hid_t fileId);
+
+    /**
      * @brief writeXdmfHeader Writes the Xdmf header
      * @param out QTextStream for output
      */

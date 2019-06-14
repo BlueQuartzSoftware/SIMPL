@@ -92,6 +92,12 @@ public:
 
   /**
    * @brief setCurrentDepth
+   * @return
+   */
+  int getCurrentDepth() const;
+
+  /**
+   * @brief setCurrentDepth
    * @param depth
    */
   void setCurrentDepth(int depth);
@@ -134,6 +140,40 @@ public:
   bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 
   /**
+   *
+   * @param col
+   * @param count
+   * @param parent
+   * @return
+   */
+  bool insertColumns(int col, int count, const QModelIndex& parent = QModelIndex()) override;
+
+  /**
+   *
+   * @param col
+   * @param count
+   * @param parent
+   * @return
+   */
+  bool removeColumns(int col, int count, const QModelIndex& parent = QModelIndex()) override;
+
+  /**
+   * @brief supportedDropActions
+   * @return
+   */
+  Qt::DropActions supportedDropActions() const override;
+
+  /**
+   * @brief canDropMimeData
+   * @param data
+   * @param action
+   * @param row
+   * @param column
+   * @param parent
+   */
+  bool canDropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent) const override;
+
+  /**
    * @brief dropMineData
    * @param data
    * @param action
@@ -153,13 +193,16 @@ public:
    * @brief setTableData
    * @param grid
    */
-  void setTableData(DataContainerGrid& grid);
+  void setGridData(DataContainerGrid& grid);
 
   /**
    * @brief getTableData
    * @param grid
    */
-  void getTableData(DataContainerGrid& grid);
+  void getGridData(DataContainerGrid& grid);
+
+signals:
+  void modelChanged();
 
 private:
   DataContainerGrid m_DCGrid;
