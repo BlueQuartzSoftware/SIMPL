@@ -1,3 +1,7 @@
+:: This file was auto generated from:
+:: @SIMPLProj_SOURCE_DIR@/Wrapping/Python/Conda/package.in.bat
+:: Edit that file and NOT this one. CMake will over write this file each time it runs
+
 @echo off
 
 :: Check to see if we were built using the Visual Studio generators, if so
@@ -47,7 +51,8 @@ set ANACONDA_SCRIPTS_DIR_NAME=@ANACONDA_SCRIPTS_DIR_NAME@
 set ANACONDA_ENVIRONMENT_NAME=@ANACONDA_ENVIRONMENT_NAME@
 set PYTHON_SITE_PACKAGES_NAME=@PYTHON_SITE_PACKAGES_NAME@
 set SIMPL_PYTHON_MODULE_NAME=@SIMPL_PYTHON_MODULE_NAME@
-set ENV_CONDA_EXE=%ANACONDA_DIR%\envs\%ANACONDA_ENVIRONMENT_NAME%\%ANACONDA_SCRIPTS_DIR_NAME%\conda.exe
+set ENV_CONDA_EXE=%ANACONDA_DIR%\%ANACONDA_SCRIPTS_DIR_NAME%\conda.exe
+::set ENV_CONDA_EXE=%ANACONDA_DIR%\envs\%ANACONDA_ENVIRONMENT_NAME%\%ANACONDA_SCRIPTS_DIR_NAME%\conda.exe
 
 ::---------------------------------------------------------------------------------------
 ::Copy the build artifacts from the normal build directory into the Anaconda package dir
