@@ -50,7 +50,13 @@ MeshIndexArrayType::Pointer GeomIO::ReadMeshIndexListFromHDF5(const QString& lis
   }
   else // Reading as a Int64 didn't work which means the data _should_ be a UInt64_t (size_t)
   {
+#ifdef Q_OS_MACOS
+    // Mac OS will fail the dynamic cast from unsigned long ling (Uint64_t) to unsigned long (size_t) so we use the proper
+    // type from the hdf5 file for macOS.
+    UInt64ArrayType::Pointer tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<UInt64ArrayType>(listName, parentId, preflight, err);
+#else
     MeshIndexArrayType::Pointer tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<MeshIndexArrayType>(listName, parentId, preflight, err);
+#endif
     if(tempUInt64.get() != nullptr)
     {
       meshIndex = SharedEdgeList::WrapPointer(reinterpret_cast<MeshIndexType*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
