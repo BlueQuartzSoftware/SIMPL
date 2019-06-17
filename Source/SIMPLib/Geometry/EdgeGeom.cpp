@@ -588,13 +588,9 @@ int EdgeGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   herr_t err = 0;
   SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
-  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
-  DataArray<uint64_t>::Pointer tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
-  // Now create the correct type and pass in the pointer to tempTris.
-  SharedEdgeList::Pointer edges =
-      SharedEdgeList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
-  // Release the ownership of the memory from TempTris and essentially pass it to tris.
-  tempUInt64->releaseOwnership();
+
+  SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadMeshIndexListFromHDF5(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
+
   if(edges.get() == nullptr || vertices.get() == nullptr)
   {
     return -1;
