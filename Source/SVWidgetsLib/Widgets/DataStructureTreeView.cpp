@@ -44,7 +44,7 @@
 #include <QtGui/QStandardItemModel>
 #include <QtWidgets/QApplication>
 
-#include "SIMPLib/DataContainers/AbstractTileIndex.h"
+#include "SIMPLib/Montages/AbstractTileIndex.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
