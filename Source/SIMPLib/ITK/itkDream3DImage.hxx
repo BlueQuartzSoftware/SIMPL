@@ -141,5 +141,23 @@ Dream3DImage<TPixel, VImageDimension>
   // m_Origin and m_Spacing are printed in the Superclass
 }
 
+#if(ITK_VERSION_MAJOR == 5)
+template <typename TPixel, unsigned int VImageDimension>
+void Dream3DImage<TPixel, VImageDimension>::CopyInformation(const DataObject* data)
+{
+  if(data)
+  {
+    const auto* const imgData = static_cast<const ImageBase<VImageDimension>*>(data);
+
+    // Copy the meta data for this data type
+    this->SetLargestPossibleRegion(imgData->GetLargestPossibleRegion());
+    this->SetSpacing(imgData->GetSpacing());
+    this->SetOrigin(imgData->GetOrigin());
+    this->SetDirection(imgData->GetDirection());
+    this->SetNumberOfComponentsPerPixel(imgData->GetNumberOfComponentsPerPixel());
+  }
+}
+#endif
+
 } // end namespace itk
 
