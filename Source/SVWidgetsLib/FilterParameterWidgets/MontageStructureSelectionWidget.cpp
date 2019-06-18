@@ -121,7 +121,9 @@ void MontageStructureSelectionWidget::setupGui()
   MontageStructureSelectionFilterParameter::GetterCallbackType getter = m_FilterParameter->getGetterCallback();
   if(getter)
   {
-    m_Ui->montageSelectionComboBox->setCurrentText(getter());
+    QString montageName = getter();
+    QSignalBlocker selectionBlocker(m_Ui->montageSelectionComboBox);
+    m_Ui->montageSelectionComboBox->setCurrentText(montageName);
   }
 
   changeStyleSheet(Style::FS_STANDARD_STYLE);
