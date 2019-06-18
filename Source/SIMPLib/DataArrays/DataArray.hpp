@@ -1392,6 +1392,7 @@ public:
         compDimStr = compDimStr + QString(", ");
       }
     }
+    compDimStr += ")";
     toolTipGen.addValue("Component Dimensions", compDimStr);
     toolTipGen.addValue("Total Elements", usa.toString(static_cast<qlonglong>(m_Size)));
     toolTipGen.addValue("Total Memory Required", usa.toString(static_cast<qlonglong>(m_Size * sizeof(T))));
