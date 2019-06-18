@@ -65,6 +65,8 @@ public:
   SIMPL_SHARED_POINTERS(AbstractMontage)
 
   using CollectionType = std::vector<DataContainerShPtr>;
+  using Iterator = CollectionType::iterator;
+  using ConstIterator = CollectionType::const_iterator;
 
   virtual ~AbstractMontage();
 
@@ -126,6 +128,32 @@ public:
    * @return error code
    */
   virtual int writeH5Data(hid_t groupId) const = 0;
+
+  /* -------- Begin iterator support -------- */
+  /**
+   * @brief STL begin iterator required in all derived classes.
+   * @return
+   */
+  virtual Iterator begin() = 0;
+
+  /**
+   * @brief STL end iterator required in all derived classes.
+   * @return
+   */
+  virtual Iterator end() = 0;
+
+  /**
+   * @brief STL begin const_iterator required in all derived classes.
+   * @return
+   */
+  virtual ConstIterator begin() const = 0;
+
+  /**
+   * @brief STL end const_iterator required in all derived classes.
+   * @return
+   */
+  virtual ConstIterator end() const = 0;
+  /* -------- End iterator support -------- */
 
 protected:
   /**

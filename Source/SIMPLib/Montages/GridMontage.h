@@ -48,9 +48,6 @@
 class SIMPLib_EXPORT GridMontage : public AbstractMontage
 {
 public:
-  // using CollectionType = std::vector<DataContainerShPtr>;
-  using Iterator = CollectionType::iterator;
-  using ConstIterator = CollectionType::const_iterator;
   using SizeType = SizeVec3Type;
   using TileIdType = SizeVec3Type;
   using DimensionsType = IVec3<double>;
@@ -188,25 +185,25 @@ public:
    * @brief Returns an iterator to the first item in the montage.
    * @return
    */
-  Iterator begin();
+  Iterator begin() override;
 
   /**
    * @brief Returns a const iterator to the first item in the montage.
    * @return
    */
-  ConstIterator begin() const;
+  ConstIterator begin() const override;
 
   /**
    * @brief Returns an iterator to the last item in the montage.
    * @return
    */
-  Iterator end();
+  Iterator end() override;
 
   /**
    * @brief Returns a const iterator to the last item in the montage.
    * @return
    */
-  ConstIterator end() const;
+  ConstIterator end() const override;
   /* -------- End iterator support -------- */
 
   /**
