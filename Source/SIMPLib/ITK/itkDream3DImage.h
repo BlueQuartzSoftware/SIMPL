@@ -264,6 +264,9 @@ public:
     return NeighborhoodAccessorFunctorType();
   }
 
+  /** Work around casting issue. */
+  void CopyInformation(const DataObject *data) override;
+
 protected:
   Dream3DImage();
   void PrintSelf(std::ostream& os, Indent indent) const override;
