@@ -273,6 +273,19 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
 }
 
 // -----------------------------------------------------------------------------
+template <typename T>
+bool vectorContains(const std::vector<std::vector<T>>& container, const std::vector<T>& comparison)
+{
+  for(const auto& value : container)
+  {
+    if(value == comparison)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+// -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter, const DataArrayPath& path, const DataArraySelectionFilterParameter::RequirementType& reqs)
@@ -342,12 +355,8 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
     return false;
   }
 
-  if(!reqs.componentDimensions.empty() && !FilterParameterWidgetUtils::VectorContains<size_t>(reqs.componentDimensions, da->getComponentDimensions()))
-  {
-    return false;
-  }
-
-  return true;
+  bool b = !FilterParameterWidgetUtils::VectorContains<size_t>(reqs.componentDimensions, da->getComponentDimensions());
+  return !(!reqs.componentDimensions.empty() && !b);
 }
 
 // -----------------------------------------------------------------------------

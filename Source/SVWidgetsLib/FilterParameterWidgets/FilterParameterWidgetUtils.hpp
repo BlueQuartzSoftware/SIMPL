@@ -220,7 +220,14 @@ class FilterParameterWidgetUtils
     template <typename T>
     static bool VectorContains(const std::vector<std::vector<T>>& container, const std::vector<T>& comparison)
     {
-      typename std::vector<T>::iterator pos = std::find(container.begin(), container.end(), comparison);
+      auto pos = std::find(container.begin(), container.end(), comparison);
+      return (pos != container.end());
+    }
+    // -----------------------------------------------------------------------------
+    template <typename T>
+    static bool VectorContains(std::vector<std::vector<T>>& container, const std::vector<T>& comparison)
+    {
+      auto pos = std::find(container.begin(), container.end(), comparison);
       return (pos != container.end());
     }
     /**
