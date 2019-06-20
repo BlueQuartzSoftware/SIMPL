@@ -42,6 +42,7 @@
 #include <QtWidgets/QApplication>
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetUtils.hpp"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
@@ -271,19 +272,6 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   return true;
 }
 
-template <typename T>
-bool vectorContains(const std::vector<std::vector<T>>& container, const std::vector<T>& comparison)
-{
-  for(const auto& value : container)
-  {
-    if(value == comparison)
-    {
-      return true;
-    }
-  }
-  return false;
-}
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -354,7 +342,7 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
     return false;
   }
 
-  if(!reqs.componentDimensions.empty() && !vectorContains<size_t>(reqs.componentDimensions, da->getComponentDimensions()))
+  if(!reqs.componentDimensions.empty() && !FilterParameterWidgetUtils::VectorContains<size_t>(reqs.componentDimensions, da->getComponentDimensions()))
   {
     return false;
   }

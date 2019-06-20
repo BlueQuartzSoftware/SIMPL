@@ -63,13 +63,13 @@ template <typename T>
 class GenerateColorTableImpl
 {
 public:
-  GenerateColorTableImpl(typename DataArray<T>::Pointer arrayPtr, std::vector<float>& binPoints, std::vector<std::vector<double>>& controlPoints, int numControlColors,
-                         const UInt8ArrayType::Pointer& colorArray)
+  GenerateColorTableImpl(typename DataArray<T>::Pointer arrayPtr, std::vector<float> binPoints, std::vector<std::vector<double>> controlPoints, int numControlColors,
+                         UInt8ArrayType::Pointer colorArray)
   : m_ArrayPtr(arrayPtr)
-  , m_BinPoints(binPoints)
+  , m_BinPoints(std::move(binPoints))
   , m_NumControlColors(numControlColors)
-  , m_ControlPoints(controlPoints)
-  , m_ColorArray(colorArray)
+  , m_ControlPoints(std::move(controlPoints))
+  , m_ColorArray(std::move(colorArray))
   {
     m_ArrayMin = arrayPtr->getValue(0);
     m_ArrayMax = arrayPtr->getValue(0);

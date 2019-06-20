@@ -88,7 +88,7 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
                                                                                                                 size_t allowedCompDim,
                                                                                                                 AttributeMatrix::Category attributeMatrixCategory)
 {
-  using QVectorOfSizeType = std::vector<size_t>;
+  using SizeTVectorType = std::vector<size_t>;
   DataArraySelectionFilterParameter::RequirementType req;
   AttributeMatrix::Types amTypes;
   if(attributeMatrixCategory == AttributeMatrix::Category::Element)
@@ -119,7 +119,7 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
-    req.componentDimensions = std::vector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
+    req.componentDimensions = std::vector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
   }
   //  if(IGeometry::Type::Unknown != geometryType)
   //  {
@@ -136,7 +136,7 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
                                                                                                         AttributeMatrix::Type attributeMatrixType,
                                                                                                         IGeometry::Type geometryType)
 {
-  using QVectorOfSizeType = std::vector<size_t>;
+  using SizeTVectorType = std::vector<size_t>;
   DataArraySelectionFilterParameter::RequirementType req;
   if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {
@@ -144,7 +144,7 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
-    req.componentDimensions = std::vector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
+    req.componentDimensions = std::vector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
   }
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {

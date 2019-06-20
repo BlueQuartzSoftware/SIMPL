@@ -78,9 +78,9 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
   {                                                                                                                                                                                                    \
     using DataArrayType = DataArray<T>;                                                                                                                                                                \
     PySharedPtrClass<DataArrayType> instance(m, #NAME, parent, py::buffer_protocol());                                                                                                                 \
-    instance.def(py::init([](size_t numElements, QString name, bool allocate) { return DataArrayType::CreateArray(numElements, name, allocate); }))                                                    \
+    instance.def(py::init([](size_t numElements, QString name, T initValue) { return DataArrayType::CreateArray(numElements, name, initValue); }))                                                    \
         .def(py::init([](T* ptr, size_t numElements, std::vector<size_t> cDims, QString name, bool ownsData) {                                                                                         \
-          return DataArrayType::WrapPointer(ptr, numElements, std::vector<size_t>::fromStdVector(cDims), name, ownsData);                                                                                  \
+          return DataArrayType::WrapPointer(ptr, numElements, cDims, name, ownsData);                                                                                  \
         }))                                                                                                                                                                                            \
         .def(py::init([](py::array_t<T, py::array::c_style> b, std::vector<size_t> cDims, QString name, bool ownsData) {                                                                               \
           ssize_t numElements = 1;                                                                                                                                                                     \
@@ -90,7 +90,7 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
             numElements *= b.shape(e);                                                                                                                                                                 \
           }                                                                                                                                                                                            \
           numElements /= cDims[0];                                                                                                                                                                     \
-          return DataArrayType::WrapPointer(reinterpret_cast<T*>(b.mutable_data(0)), static_cast<size_t>(numElements), std::vector<size_t>::fromStdVector(cDims), name, ownsData);                         \
+          return DataArrayType::WrapPointer(reinterpret_cast<T*>(b.mutable_data(0)), static_cast<size_t>(numElements), cDims, name, ownsData);                         \
         })) /* Class instance method setValue */                                                                                                                                                       \
         .def("setValue", &DataArrayType::setValue, py::arg("index"), py::arg("value"))                                                                                                                 \
         .def("getValue", &DataArrayType::getValue, py::arg("index"))                                                                                                                                   \

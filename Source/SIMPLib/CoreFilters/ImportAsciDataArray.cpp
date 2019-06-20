@@ -430,7 +430,7 @@ void ImportAsciDataArray::dataCheck()
 
   std::vector<size_t> tDims = attrMat->getTupleDimensions();
   size_t totalDim = 1;
-  for(int i = 0; i < tDims.size(); i++)
+  for(size_t i = 0; i < tDims.size(); i++)
   {
     totalDim = totalDim * tDims[i];
   }
