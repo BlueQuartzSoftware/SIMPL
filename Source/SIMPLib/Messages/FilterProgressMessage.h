@@ -89,7 +89,7 @@ class SIMPLib_EXPORT FilterProgressMessage : public AbstractProgressMessage
     /**
      * @brief Setter property for PipelineIndex
      */
-    void setPipelineIndex(const int& value);
+    void setPipelineIndex(int value);
     /**
      * @brief Getter property for PipelineIndex
      * @return Value of PipelineIndex

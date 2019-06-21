@@ -95,7 +95,7 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
     /**
      * @brief Setter property for ExpandReaderFilters
      */
-    void setExpandReaderFilters(const bool& value);
+    void setExpandReaderFilters(bool value);
     /**
      * @brief Getter property for ExpandReaderFilters
      * @return Value of ExpandReaderFilters
@@ -151,7 +151,7 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
     /**
      * @brief Setter property for MaxFilterIndex
      */
-    void setMaxFilterIndex(const int& value);
+    void setMaxFilterIndex(int value);
     /**
      * @brief Getter property for MaxFilterIndex
      * @return Value of MaxFilterIndex

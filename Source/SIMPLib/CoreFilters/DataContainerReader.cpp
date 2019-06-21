@@ -579,7 +579,7 @@ QString DataContainerReader::getInputFile() const
 }
 
 // -----------------------------------------------------------------------------
-void DataContainerReader::setOverwriteExistingDataContainers(const bool& value)
+void DataContainerReader::setOverwriteExistingDataContainers(bool value)
 {
   m_OverwriteExistingDataContainers = value;
 }

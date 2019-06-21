@@ -112,7 +112,7 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
     /**
      * @brief Setter property for WriteNeighborListData
      */
-    void setWriteNeighborListData(const bool& value);
+    void setWriteNeighborListData(bool value);
     /**
      * @brief Getter property for WriteNeighborListData
      * @return Value of WriteNeighborListData
@@ -124,7 +124,7 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
     /**
      * @brief Setter property for DelimiterChoice
      */
-    void setDelimiterChoice(const int& value);
+    void setDelimiterChoice(int value);
     /**
      * @brief Getter property for DelimiterChoice
      * @return Value of DelimiterChoice
@@ -136,7 +136,7 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
     /**
      * @brief Setter property for WriteNumFeaturesLine
      */
-    void setWriteNumFeaturesLine(const bool& value);
+    void setWriteNumFeaturesLine(bool value);
     /**
      * @brief Getter property for WriteNumFeaturesLine
      * @return Value of WriteNumFeaturesLine
@@ -148,7 +148,7 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
     /**
      * @brief Setter property for Delimiter
      */
-    void setDelimiter(const char& value);
+    void setDelimiter(char value);
     /**
      * @brief Getter property for Delimiter
      * @return Value of Delimiter
@@ -163,7 +163,7 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
     /**
      * @brief setDelimiterChoiceInt Sets DelimiterChoice to the enum type from SIMPL::DelimiterTypes::Type corresponding to the int parameter
      */
-    void setDelimiterChoiceInt(const int& value);
+    void setDelimiterChoiceInt(int value);
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class

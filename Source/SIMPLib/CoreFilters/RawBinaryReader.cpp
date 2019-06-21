@@ -559,7 +559,7 @@ DataArrayPath RawBinaryReader::getCreatedAttributeArrayPath() const
 }
 
 // -----------------------------------------------------------------------------
-void RawBinaryReader::setScalarType(const SIMPL::NumericTypes::Type& value)
+void RawBinaryReader::setScalarType(SIMPL::NumericTypes::Type value)
 {
   m_ScalarType = value;
 }
@@ -571,7 +571,7 @@ SIMPL::NumericTypes::Type RawBinaryReader::getScalarType() const
 }
 
 // -----------------------------------------------------------------------------
-void RawBinaryReader::setEndian(const int& value)
+void RawBinaryReader::setEndian(int value)
 {
   m_Endian = value;
 }
@@ -583,7 +583,7 @@ int RawBinaryReader::getEndian() const
 }
 
 // -----------------------------------------------------------------------------
-void RawBinaryReader::setNumberOfComponents(const int& value)
+void RawBinaryReader::setNumberOfComponents(int value)
 {
   m_NumberOfComponents = value;
 }
@@ -595,7 +595,7 @@ int RawBinaryReader::getNumberOfComponents() const
 }
 
 // -----------------------------------------------------------------------------
-void RawBinaryReader::setSkipHeaderBytes(const uint64_t& value)
+void RawBinaryReader::setSkipHeaderBytes(uint64_t value)
 {
   m_SkipHeaderBytes = value;
 }

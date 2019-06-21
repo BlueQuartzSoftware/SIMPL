@@ -121,7 +121,7 @@ public:
   /**
    * @brief Setter property for WarningsAsError
    */
-  void setWarningsAsError(const bool& value);
+  void setWarningsAsError(bool value);
   /**
    * @brief Getter property for WarningsAsError
    * @return Value of WarningsAsError

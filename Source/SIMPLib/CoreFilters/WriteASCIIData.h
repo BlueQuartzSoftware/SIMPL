@@ -130,7 +130,7 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     /**
      * @brief Setter property for Delimiter
      */
-    void setDelimiter(const int& value);
+    void setDelimiter(int value);
     /**
      * @brief Getter property for Delimiter
      * @return Value of Delimiter
@@ -154,7 +154,7 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     /**
      * @brief Setter property for MaxValPerLine
      */
-    void setMaxValPerLine(const int& value);
+    void setMaxValPerLine(int value);
     /**
      * @brief Getter property for MaxValPerLine
      * @return Value of MaxValPerLine
@@ -166,7 +166,7 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     /**
      * @brief Setter property for OutputStyle
      */
-    void setOutputStyle(const int& value);
+    void setOutputStyle(int value);
     /**
      * @brief Getter property for OutputStyle
      * @return Value of OutputStyle

@@ -120,7 +120,7 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     /**
      * @brief Setter property for BoundaryArea
      */
-    void setBoundaryArea(const float& value);
+    void setBoundaryArea(float value);
     /**
      * @brief Getter property for BoundaryArea
      * @return Value of BoundaryArea
@@ -130,7 +130,7 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     /**
      * @brief Setter property for ParentPhase
      */
-    void setParentPhase(const float& value);
+    void setParentPhase(float value);
     /**
      * @brief Getter property for ParentPhase
      * @return Value of ParentPhase
@@ -184,7 +184,7 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     /**
      * @brief Setter property for FeatureSize_DistType
      */
-    void setFeatureSize_DistType(const uint32_t& value);
+    void setFeatureSize_DistType(uint32_t value);
     /**
      * @brief Getter property for FeatureSize_DistType
      * @return Value of FeatureSize_DistType
@@ -219,7 +219,7 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     /**
      * @brief Setter property for BOverA_DistType
      */
-    void setBOverA_DistType(const uint32_t& value);
+    void setBOverA_DistType(uint32_t value);
     /**
      * @brief Getter property for BOverA_DistType
      * @return Value of BOverA_DistType
@@ -239,7 +239,7 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     /**
      * @brief Setter property for COverA_DistType
      */
-    void setCOverA_DistType(const uint32_t& value);
+    void setCOverA_DistType(uint32_t value);
     /**
      * @brief Getter property for COverA_DistType
      * @return Value of COverA_DistType
@@ -259,7 +259,7 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     /**
      * @brief Setter property for Neighbors_DistType
      */
-    void setNeighbors_DistType(const uint32_t& value);
+    void setNeighbors_DistType(uint32_t value);
     /**
      * @brief Getter property for Neighbors_DistType
      * @return Value of Neighbors_DistType
@@ -279,7 +279,7 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     /**
      * @brief Setter property for Omegas_DistType
      */
-    void setOmegas_DistType(const uint32_t& value);
+    void setOmegas_DistType(uint32_t value);
     /**
      * @brief Getter property for Omegas_DistType
      * @return Value of Omegas_DistType

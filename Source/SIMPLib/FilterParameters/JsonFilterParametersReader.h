@@ -83,7 +83,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     /**
      * @brief Setter property for MaxFilterIndex
      */
-    void setMaxFilterIndex(const int& value);
+    void setMaxFilterIndex(int value);
     /**
      * @brief Getter property for MaxFilterIndex
      * @return Value of MaxFilterIndex

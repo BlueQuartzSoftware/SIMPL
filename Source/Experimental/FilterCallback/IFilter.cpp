@@ -116,7 +116,7 @@ void IFilter::preflight()
 }
 
 // -----------------------------------------------------------------------------
-void IFilter::setIndex(const int& value)
+void IFilter::setIndex(int value)
 {
   m_Index = value;
 }
@@ -128,7 +128,7 @@ int IFilter::getIndex() const
 }
 
 // -----------------------------------------------------------------------------
-void IFilter::setParameter1(const int& value)
+void IFilter::setParameter1(int value)
 {
   m_Parameter1 = value;
 }
@@ -140,7 +140,7 @@ int IFilter::getParameter1() const
 }
 
 // -----------------------------------------------------------------------------
-void IFilter::setParameter2(const double& value)
+void IFilter::setParameter2(double value)
 {
   m_Parameter2 = value;
 }
@@ -164,7 +164,7 @@ DataArrayPath IFilter::getFeatureIdsPath() const
 }
 
 // -----------------------------------------------------------------------------
-void IFilter::setInPreflight(const bool& value)
+void IFilter::setInPreflight(bool value)
 {
   m_InPreflight = value;
 }

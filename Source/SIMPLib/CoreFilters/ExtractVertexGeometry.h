@@ -84,7 +84,7 @@ public:
   /**
    * @brief Setter property for ArrayHandling
    */
-  void setArrayHandling(const int& value);
+  void setArrayHandling(int value);
   /**
    * @brief Getter property for ArrayHandling
    * @return Value of ArrayHandling

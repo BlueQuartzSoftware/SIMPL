@@ -521,7 +521,7 @@ QString ConvertColorToGrayScale::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void ConvertColorToGrayScale::setConversionAlgorithm(const int& value)
+void ConvertColorToGrayScale::setConversionAlgorithm(int value)
 {
   m_ConversionAlgorithm = value;
 }
@@ -545,7 +545,7 @@ FloatVec3Type ConvertColorToGrayScale::getColorWeights() const
 }
 
 // -----------------------------------------------------------------------------
-void ConvertColorToGrayScale::setColorChannel(const int& value)
+void ConvertColorToGrayScale::setColorChannel(int value)
 {
   m_ColorChannel = value;
 }
@@ -569,7 +569,7 @@ QVector<DataArrayPath> ConvertColorToGrayScale::getInputDataArrayVector() const
 }
 
 // -----------------------------------------------------------------------------
-void ConvertColorToGrayScale::setCreateNewAttributeMatrix(const bool& value)
+void ConvertColorToGrayScale::setCreateNewAttributeMatrix(bool value)
 {
   m_CreateNewAttributeMatrix = value;
 }

@@ -155,7 +155,7 @@ void PopUpWidget::setArrowOrientation(ArrowOrientation orientation)
 }
 
 // -----------------------------------------------------------------------------
-void PopUpWidget::setArrowHeight(const int& value)
+void PopUpWidget::setArrowHeight(int value)
 {
   m_ArrowHeight = value;
 }
@@ -167,7 +167,7 @@ int PopUpWidget::getArrowHeight() const
 }
 
 // -----------------------------------------------------------------------------
-void PopUpWidget::setArrowWidth(const int& value)
+void PopUpWidget::setArrowWidth(int value)
 {
   m_ArrowWidth = value;
 }
@@ -179,7 +179,7 @@ int PopUpWidget::getArrowWidth() const
 }
 
 // -----------------------------------------------------------------------------
-void PopUpWidget::setArrowOffset(const int& value)
+void PopUpWidget::setArrowOffset(int value)
 {
   m_ArrowOffset = value;
 }

@@ -716,7 +716,7 @@ QString JsonFilterParametersReader::getFileName() const
 }
 
 // -----------------------------------------------------------------------------
-void JsonFilterParametersReader::setMaxFilterIndex(const int& value)
+void JsonFilterParametersReader::setMaxFilterIndex(int value)
 {
   m_MaxFilterIndex = value;
 }

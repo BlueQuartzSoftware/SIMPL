@@ -135,7 +135,7 @@ class SIMPLib_EXPORT FilterParameter
     /**
      * @brief Setter property for ReadOnly
      */
-    void setReadOnly(const bool& value);
+    void setReadOnly(bool value);
     /**
      * @brief Getter property for ReadOnly
      * @return Value of ReadOnly
@@ -145,7 +145,7 @@ class SIMPLib_EXPORT FilterParameter
     /**
      * @brief Setter property for GroupIndex
      */
-    void setGroupIndex(const int& value);
+    void setGroupIndex(int value);
     /**
      * @brief Getter property for GroupIndex
      * @return Value of GroupIndex

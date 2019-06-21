@@ -100,7 +100,7 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     /**
      * @brief Setter property for WritePipeline
      */
-    void setWritePipeline(const bool& value);
+    void setWritePipeline(bool value);
     /**
      * @brief Getter property for WritePipeline
      * @return Value of WritePipeline
@@ -110,7 +110,7 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     /**
      * @brief Setter property for WriteXdmfFile
      */
-    void setWriteXdmfFile(const bool& value);
+    void setWriteXdmfFile(bool value);
     /**
      * @brief Getter property for WriteXdmfFile
      * @return Value of WriteXdmfFile
@@ -122,7 +122,7 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     /**
      * @brief Setter property for WriteTimeSeries
      */
-    void setWriteTimeSeries(const bool& value);
+    void setWriteTimeSeries(bool value);
     /**
      * @brief Getter property for WriteTimeSeries
      * @return Value of WriteTimeSeries
@@ -134,7 +134,7 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     /**
      * @brief Setter property for AppendToExisting
      */
-    void setAppendToExisting(const bool& value);
+    void setAppendToExisting(bool value);
     /**
      * @brief Getter property for AppendToExisting
      * @return Value of AppendToExisting

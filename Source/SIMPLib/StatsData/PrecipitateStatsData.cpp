@@ -398,7 +398,7 @@ QString PrecipitateStatsData::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void PrecipitateStatsData::setBoundaryArea(const float& value)
+void PrecipitateStatsData::setBoundaryArea(float value)
 {
   m_BoundaryArea = value;
 }
@@ -410,7 +410,7 @@ float PrecipitateStatsData::getBoundaryArea() const
 }
 
 // -----------------------------------------------------------------------------
-void PrecipitateStatsData::setPrecipBoundaryFraction(const float& value)
+void PrecipitateStatsData::setPrecipBoundaryFraction(float value)
 {
   m_PrecipBoundaryFraction = value;
 }
@@ -434,7 +434,7 @@ VectorOfFloatArray PrecipitateStatsData::getFeatureSizeDistribution() const
 }
 
 // -----------------------------------------------------------------------------
-void PrecipitateStatsData::setFeatureSize_DistType(const uint32_t& value)
+void PrecipitateStatsData::setFeatureSize_DistType(uint32_t value)
 {
   m_FeatureSize_DistType = value;
 }
@@ -482,7 +482,7 @@ VectorOfFloatArray PrecipitateStatsData::getFeatureSize_BOverA() const
 }
 
 // -----------------------------------------------------------------------------
-void PrecipitateStatsData::setBOverA_DistType(const uint32_t& value)
+void PrecipitateStatsData::setBOverA_DistType(uint32_t value)
 {
   m_BOverA_DistType = value;
 }
@@ -506,7 +506,7 @@ VectorOfFloatArray PrecipitateStatsData::getFeatureSize_COverA() const
 }
 
 // -----------------------------------------------------------------------------
-void PrecipitateStatsData::setCOverA_DistType(const uint32_t& value)
+void PrecipitateStatsData::setCOverA_DistType(uint32_t value)
 {
   m_COverA_DistType = value;
 }
@@ -530,7 +530,7 @@ VectorOfFloatArray PrecipitateStatsData::getFeatureSize_Clustering() const
 }
 
 // -----------------------------------------------------------------------------
-void PrecipitateStatsData::setClustering_DistType(const uint32_t& value)
+void PrecipitateStatsData::setClustering_DistType(uint32_t value)
 {
   m_Clustering_DistType = value;
 }
@@ -554,7 +554,7 @@ VectorOfFloatArray PrecipitateStatsData::getFeatureSize_Omegas() const
 }
 
 // -----------------------------------------------------------------------------
-void PrecipitateStatsData::setOmegas_DistType(const uint32_t& value)
+void PrecipitateStatsData::setOmegas_DistType(uint32_t value)
 {
   m_Omegas_DistType = value;
 }

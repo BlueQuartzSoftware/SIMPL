@@ -59,7 +59,7 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
      */
     static QString ClassName();
 
-    PipelineModel(QObject* parent = 0);
+    PipelineModel(QObject* parent = nullptr);
 
     ~PipelineModel() override;
 
@@ -81,7 +81,7 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     /**
      * @brief Setter property for MaxNumberOfPipelines
      */
-    void setMaxNumberOfPipelines(const int& value);
+    void setMaxNumberOfPipelines(int value);
     /**
      * @brief Getter property for MaxNumberOfPipelines
      * @return Value of MaxNumberOfPipelines

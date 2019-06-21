@@ -128,7 +128,7 @@ class SIMPLib_EXPORT BoundaryStatsData : public StatsData
     /**
      * @brief Setter property for BoundaryArea
      */
-    void setBoundaryArea(const float& value);
+    void setBoundaryArea(float value);
     /**
      * @brief Getter property for BoundaryArea
      * @return Value of BoundaryArea
@@ -138,7 +138,7 @@ class SIMPLib_EXPORT BoundaryStatsData : public StatsData
     /**
      * @brief Setter property for ParentPhase
      */
-    void setParentPhase(const float& value);
+    void setParentPhase(float value);
     /**
      * @brief Getter property for ParentPhase
      * @return Value of ParentPhase

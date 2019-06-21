@@ -99,7 +99,7 @@ class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
     /**
      * @brief Setter property for RemoveValue
      */
-    void setRemoveValue(const double& value);
+    void setRemoveValue(double value);
     /**
      * @brief Getter property for RemoveValue
      * @return Value of RemoveValue
@@ -111,7 +111,7 @@ class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
     /**
      * @brief Setter property for ReplaceValue
      */
-    void setReplaceValue(const double& value);
+    void setReplaceValue(double value);
     /**
      * @brief Getter property for ReplaceValue
      * @return Value of ReplaceValue

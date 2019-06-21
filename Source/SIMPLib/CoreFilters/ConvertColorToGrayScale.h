@@ -98,7 +98,7 @@ public:
   /**
    * @brief Setter property for ConversionAlgorithm
    */
-  void setConversionAlgorithm(const int& value);
+  void setConversionAlgorithm(int value);
   /**
    * @brief Getter property for ConversionAlgorithm
    * @return Value of ConversionAlgorithm
@@ -122,7 +122,7 @@ public:
   /**
    * @brief Setter property for ColorChannel
    */
-  void setColorChannel(const int& value);
+  void setColorChannel(int value);
   /**
    * @brief Getter property for ColorChannel
    * @return Value of ColorChannel
@@ -146,7 +146,7 @@ public:
   /**
    * @brief Setter property for CreateNewAttributeMatrix
    */
-  void setCreateNewAttributeMatrix(const bool& value);
+  void setCreateNewAttributeMatrix(bool value);
   /**
    * @brief Getter property for CreateNewAttributeMatrix
    * @return Value of CreateNewAttributeMatrix

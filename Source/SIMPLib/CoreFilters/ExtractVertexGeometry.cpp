@@ -400,7 +400,7 @@ QString ExtractVertexGeometry::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void ExtractVertexGeometry::setArrayHandling(const int& value)
+void ExtractVertexGeometry::setArrayHandling(int value)
 {
   m_ArrayHandling = value;
 }

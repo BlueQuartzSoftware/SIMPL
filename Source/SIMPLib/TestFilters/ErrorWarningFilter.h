@@ -82,7 +82,7 @@ public:
   /**
    * @brief Setter property for PreflightWarning
    */
-  void setPreflightWarning(const bool& value);
+  void setPreflightWarning(bool value);
   /**
    * @brief Getter property for PreflightWarning
    * @return Value of PreflightWarning
@@ -94,7 +94,7 @@ public:
   /**
    * @brief Setter property for PreflightError
    */
-  void setPreflightError(const bool& value);
+  void setPreflightError(bool value);
   /**
    * @brief Getter property for PreflightError
    * @return Value of PreflightError
@@ -106,7 +106,7 @@ public:
   /**
    * @brief Setter property for ExecuteWarning
    */
-  void setExecuteWarning(const bool& value);
+  void setExecuteWarning(bool value);
   /**
    * @brief Getter property for ExecuteWarning
    * @return Value of ExecuteWarning
@@ -118,7 +118,7 @@ public:
   /**
    * @brief Setter property for ExecuteError
    */
-  void setExecuteError(const bool& value);
+  void setExecuteError(bool value);
   /**
    * @brief Getter property for ExecuteError
    * @return Value of ExecuteError
@@ -130,7 +130,7 @@ public:
   /**
    * @brief Setter property for PropertyError
    */
-  void setPropertyError(const bool& value);
+  void setPropertyError(bool value);
   /**
    * @brief Getter property for PropertyError
    * @return Value of PropertyError

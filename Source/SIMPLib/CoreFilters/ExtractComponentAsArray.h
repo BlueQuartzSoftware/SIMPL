@@ -99,7 +99,7 @@ class SIMPLib_EXPORT ExtractComponentAsArray : public AbstractFilter
     /**
      * @brief Setter property for CompNumber
      */
-    void setCompNumber(const int& value);
+    void setCompNumber(int value);
     /**
      * @brief Getter property for CompNumber
      * @return Value of CompNumber

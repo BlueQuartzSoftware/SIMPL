@@ -450,7 +450,7 @@ DataArrayPath CropVertexGeometry::getCroppedDataContainerName() const
 }
 
 // -----------------------------------------------------------------------------
-void CropVertexGeometry::setXMin(const float& value)
+void CropVertexGeometry::setXMin(float value)
 {
   m_XMin = value;
 }
@@ -462,7 +462,7 @@ float CropVertexGeometry::getXMin() const
 }
 
 // -----------------------------------------------------------------------------
-void CropVertexGeometry::setYMin(const float& value)
+void CropVertexGeometry::setYMin(float value)
 {
   m_YMin = value;
 }
@@ -474,7 +474,7 @@ float CropVertexGeometry::getYMin() const
 }
 
 // -----------------------------------------------------------------------------
-void CropVertexGeometry::setZMin(const float& value)
+void CropVertexGeometry::setZMin(float value)
 {
   m_ZMin = value;
 }
@@ -486,7 +486,7 @@ float CropVertexGeometry::getZMin() const
 }
 
 // -----------------------------------------------------------------------------
-void CropVertexGeometry::setXMax(const float& value)
+void CropVertexGeometry::setXMax(float value)
 {
   m_XMax = value;
 }
@@ -498,7 +498,7 @@ float CropVertexGeometry::getXMax() const
 }
 
 // -----------------------------------------------------------------------------
-void CropVertexGeometry::setYMax(const float& value)
+void CropVertexGeometry::setYMax(float value)
 {
   m_YMax = value;
 }
@@ -510,7 +510,7 @@ float CropVertexGeometry::getYMax() const
 }
 
 // -----------------------------------------------------------------------------
-void CropVertexGeometry::setZMax(const float& value)
+void CropVertexGeometry::setZMax(float value)
 {
   m_ZMax = value;
 }

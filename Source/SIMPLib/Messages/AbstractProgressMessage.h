@@ -65,7 +65,7 @@ public:
   /**
    * @brief Setter property for ProgressValue
    */
-  void setProgressValue(const int& value);
+  void setProgressValue(int value);
   /**
    * @brief Getter property for ProgressValue
    * @return Value of ProgressValue

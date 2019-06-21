@@ -99,7 +99,7 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
     /**
      * @brief Setter property for ChangeOrigin
      */
-    void setChangeOrigin(const bool& value);
+    void setChangeOrigin(bool value);
     /**
      * @brief Getter property for ChangeOrigin
      * @return Value of ChangeOrigin
@@ -123,7 +123,7 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
     /**
      * @brief Setter property for ChangeResolution
      */
-    void setChangeResolution(const bool& value);
+    void setChangeResolution(bool value);
     /**
      * @brief Getter property for ChangeResolution
      * @return Value of ChangeResolution

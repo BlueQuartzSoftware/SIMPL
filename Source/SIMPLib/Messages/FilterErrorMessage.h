@@ -87,7 +87,7 @@ class SIMPLib_EXPORT FilterErrorMessage : public AbstractErrorMessage
     /**
      * @brief Setter property for PipelineIndex
      */
-    void setPipelineIndex(const int& value);
+    void setPipelineIndex(int value);
     /**
      * @brief Getter property for PipelineIndex
      * @return Value of PipelineIndex

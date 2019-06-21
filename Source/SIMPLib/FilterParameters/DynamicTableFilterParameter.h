@@ -126,7 +126,7 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
     /**
      * @brief Setter property for ErrorCondition
      */
-    void setErrorCondition(const int& value);
+    void setErrorCondition(int value);
     /**
      * @brief Getter property for ErrorCondition
      * @return Value of ErrorCondition

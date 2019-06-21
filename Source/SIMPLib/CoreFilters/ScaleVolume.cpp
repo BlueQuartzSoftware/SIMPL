@@ -398,7 +398,7 @@ DataArrayPath ScaleVolume::getSurfaceDataContainerName() const
 }
 
 // -----------------------------------------------------------------------------
-void ScaleVolume::setApplyToVoxelVolume(const bool& value)
+void ScaleVolume::setApplyToVoxelVolume(bool value)
 {
   m_ApplyToVoxelVolume = value;
 }
@@ -410,7 +410,7 @@ bool ScaleVolume::getApplyToVoxelVolume() const
 }
 
 // -----------------------------------------------------------------------------
-void ScaleVolume::setApplyToSurfaceMesh(const bool& value)
+void ScaleVolume::setApplyToSurfaceMesh(bool value)
 {
   m_ApplyToSurfaceMesh = value;
 }

@@ -153,7 +153,7 @@ public:
   /**
    * @brief Setter property for AllowPreflight
    */
-  void setAllowPreflight(const bool& value);
+  void setAllowPreflight(bool value);
   /**
    * @brief Getter property for AllowPreflight
    * @return Value of AllowPreflight

@@ -317,7 +317,7 @@ QString PostSlackMessage::getSlackMessage() const
 }
 
 // -----------------------------------------------------------------------------
-void PostSlackMessage::setWarningsAsError(const bool& value)
+void PostSlackMessage::setWarningsAsError(bool value)
 {
   m_WarningsAsError = value;
 }

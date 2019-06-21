@@ -85,7 +85,7 @@ class SVWidgetsLib_EXPORT BookmarksItem
     /**
      * @brief Setter property for HasErrors
      */
-    void setHasErrors(const bool& value);
+    void setHasErrors(bool value);
     /**
      * @brief Getter property for HasErrors
      * @return Value of HasErrors

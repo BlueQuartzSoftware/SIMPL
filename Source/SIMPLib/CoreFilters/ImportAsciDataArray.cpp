@@ -835,7 +835,7 @@ DataArrayPath ImportAsciDataArray::getCreatedAttributeArrayPath() const
 }
 
 // -----------------------------------------------------------------------------
-void ImportAsciDataArray::setScalarType(const SIMPL::NumericTypes::Type& value)
+void ImportAsciDataArray::setScalarType(SIMPL::NumericTypes::Type value)
 {
   m_ScalarType = value;
 }
@@ -847,7 +847,7 @@ SIMPL::NumericTypes::Type ImportAsciDataArray::getScalarType() const
 }
 
 // -----------------------------------------------------------------------------
-void ImportAsciDataArray::setNumberOfComponents(const int& value)
+void ImportAsciDataArray::setNumberOfComponents(int value)
 {
   m_NumberOfComponents = value;
 }
@@ -859,7 +859,7 @@ int ImportAsciDataArray::getNumberOfComponents() const
 }
 
 // -----------------------------------------------------------------------------
-void ImportAsciDataArray::setSkipHeaderLines(const int& value)
+void ImportAsciDataArray::setSkipHeaderLines(int value)
 {
   m_SkipHeaderLines = value;
 }
@@ -883,7 +883,7 @@ QString ImportAsciDataArray::getInputFile() const
 }
 
 // -----------------------------------------------------------------------------
-void ImportAsciDataArray::setDelimiter(const int& value)
+void ImportAsciDataArray::setDelimiter(int value)
 {
   m_Delimiter = value;
 }

@@ -476,7 +476,7 @@ QString ConvertData::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void ConvertData::setScalarType(const SIMPL::NumericTypes::Type& value)
+void ConvertData::setScalarType(SIMPL::NumericTypes::Type value)
 {
   m_ScalarType = value;
 }

@@ -137,7 +137,7 @@ QVector<QString> ChoiceFilterParameter::getChoices() const
 }
 
 // -----------------------------------------------------------------------------
-void ChoiceFilterParameter::setEditable(const bool& value)
+void ChoiceFilterParameter::setEditable(bool value)
 {
   m_Editable = value;
 }

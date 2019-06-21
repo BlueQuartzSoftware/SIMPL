@@ -521,7 +521,7 @@ QString GenericExample::getStlFilePrefix() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setShowPrefix(const bool& value)
+void GenericExample::setShowPrefix(bool value)
 {
   m_ShowPrefix = value;
 }
@@ -533,7 +533,7 @@ bool GenericExample::getShowPrefix() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setMaxIterations(const int& value)
+void GenericExample::setMaxIterations(int value)
 {
   m_MaxIterations = value;
 }
@@ -581,7 +581,7 @@ Float4thOrderPoly_t GenericExample::getFourthOrderACoeff() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setMisorientationTolerance(const double& value)
+void GenericExample::setMisorientationTolerance(double value)
 {
   m_MisorientationTolerance = value;
 }
@@ -617,7 +617,7 @@ ShapeType::Types GenericExample::getShapeTypeData() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setPhaseCount(const int& value)
+void GenericExample::setPhaseCount(int value)
 {
   m_PhaseCount = value;
 }
@@ -773,7 +773,7 @@ QVector<DataArrayPath> GenericExample::getSelectedMultiArrayPaths() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setWriteAlignmentShifts(const bool& value)
+void GenericExample::setWriteAlignmentShifts(bool value)
 {
   m_WriteAlignmentShifts = value;
 }
@@ -785,7 +785,7 @@ bool GenericExample::getWriteAlignmentShifts() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setConversionType(const int& value)
+void GenericExample::setConversionType(int value)
 {
   m_ConversionType = value;
 }
@@ -893,7 +893,7 @@ DataArrayPath GenericExample::getDataContainerName() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setSizeDistributionFitType(const int& value)
+void GenericExample::setSizeDistributionFitType(int value)
 {
   m_SizeDistributionFitType = value;
 }
@@ -941,7 +941,7 @@ DataArrayPath GenericExample::getCreatedDataArray() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setBool1(const bool& value)
+void GenericExample::setBool1(bool value)
 {
   m_Bool1 = value;
 }
@@ -953,7 +953,7 @@ bool GenericExample::getBool1() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setDouble2(const double& value)
+void GenericExample::setDouble2(double value)
 {
   m_Double2 = value;
 }
@@ -965,7 +965,7 @@ double GenericExample::getDouble2() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setBool2(const bool& value)
+void GenericExample::setBool2(bool value)
 {
   m_Bool2 = value;
 }
@@ -977,7 +977,7 @@ bool GenericExample::getBool2() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setAlgorithmSelection(const int& value)
+void GenericExample::setAlgorithmSelection(int value)
 {
   m_AlgorithmSelection = value;
 }
@@ -989,7 +989,7 @@ int GenericExample::getAlgorithmSelection() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setDistanceMetric(const int& value)
+void GenericExample::setDistanceMetric(int value)
 {
   m_DistanceMetric = value;
 }

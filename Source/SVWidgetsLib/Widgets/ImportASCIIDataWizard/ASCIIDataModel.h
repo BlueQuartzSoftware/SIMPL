@@ -54,7 +54,7 @@ public:
    */
   static QString ClassName();
 
-  ASCIIDataModel(QObject* parent = 0);
+  ASCIIDataModel(QObject* parent = nullptr);
 
   ~ASCIIDataModel() override;
 
@@ -80,16 +80,16 @@ public:
 
   bool setData(const QModelIndex& index, const QVariant& value, int role) override;
 
-  QString columnDataType(const int column) const;
-  void setColumnDataType(const int column, const QString &type);
+  QString columnDataType(int column) const;
+  void setColumnDataType(int column, const QString& type);
 
-  bool columnHasErrors(const int column) const;
-  void setColumnHasErrors(const int column, const bool &value);
+  bool columnHasErrors(int column) const;
+  void setColumnHasErrors(int column, bool value);
 
   QStringList originalStrings();
 
-  QString originalString(const int row) const;
-  void setOriginalString(const int row, const QString& value);
+  QString originalString(int row) const;
+  void setOriginalString(int row, const QString& value);
 
 protected:
 

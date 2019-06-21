@@ -713,7 +713,7 @@ FilterParameterVectorType AbstractFilter::getFilterParameters() const
 }
 
 // -----------------------------------------------------------------------------
-void AbstractFilter::setInPreflight(const bool& value)
+void AbstractFilter::setInPreflight(bool value)
 {
   m_InPreflight = value;
 }
@@ -725,7 +725,7 @@ bool AbstractFilter::getInPreflight() const
 }
 
 // -----------------------------------------------------------------------------
-void AbstractFilter::setEnabled(const bool& value)
+void AbstractFilter::setEnabled(bool value)
 {
   m_Enabled = value;
 }
@@ -737,7 +737,7 @@ bool AbstractFilter::getEnabled() const
 }
 
 // -----------------------------------------------------------------------------
-void AbstractFilter::setRemoving(const bool& value)
+void AbstractFilter::setRemoving(bool value)
 {
   m_Removing = value;
 }
@@ -749,7 +749,7 @@ bool AbstractFilter::getRemoving() const
 }
 
 // -----------------------------------------------------------------------------
-void AbstractFilter::setPipelineIndex(const int& value)
+void AbstractFilter::setPipelineIndex(int value)
 {
   m_PipelineIndex = value;
 }

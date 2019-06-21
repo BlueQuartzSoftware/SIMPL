@@ -275,7 +275,7 @@ void PipelineItem::setupFilterInputWidget()
 }
 
 // -----------------------------------------------------------------------------
-void PipelineItem::setFilterEnabled(const bool& value)
+void PipelineItem::setFilterEnabled(bool value)
 {
   m_FilterEnabled = value;
 }
@@ -299,7 +299,7 @@ QIcon PipelineItem::getIcon() const
 }
 
 // -----------------------------------------------------------------------------
-void PipelineItem::setExpanded(const bool& value)
+void PipelineItem::setExpanded(bool value)
 {
   m_Expanded = value;
 }
@@ -335,7 +335,7 @@ QString PipelineItem::getDropIndicatorText() const
 }
 
 // -----------------------------------------------------------------------------
-void PipelineItem::setBorderSize(const int& value)
+void PipelineItem::setBorderSize(int value)
 {
   m_BorderSize = value;
 }
@@ -359,7 +359,7 @@ QSize PipelineItem::getSize() const
 }
 
 // -----------------------------------------------------------------------------
-void PipelineItem::setHeight(const int& value)
+void PipelineItem::setHeight(int value)
 {
   m_Height = value;
 }
@@ -371,7 +371,7 @@ int PipelineItem::getHeight() const
 }
 
 // -----------------------------------------------------------------------------
-void PipelineItem::setWidth(const int& value)
+void PipelineItem::setWidth(int value)
 {
   m_Width = value;
 }
@@ -383,7 +383,7 @@ int PipelineItem::getWidth() const
 }
 
 // -----------------------------------------------------------------------------
-void PipelineItem::setXOffset(const int& value)
+void PipelineItem::setXOffset(int value)
 {
   m_XOffset = value;
 }
@@ -395,7 +395,7 @@ int PipelineItem::getXOffset() const
 }
 
 // -----------------------------------------------------------------------------
-void PipelineItem::setYOffset(const int& value)
+void PipelineItem::setYOffset(int value)
 {
   m_YOffset = value;
 }

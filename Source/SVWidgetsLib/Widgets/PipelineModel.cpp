@@ -830,7 +830,7 @@ QString PipelineModel::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void PipelineModel::setMaxNumberOfPipelines(const int& value)
+void PipelineModel::setMaxNumberOfPipelines(int value)
 {
   m_MaxNumberOfPipelines = value;
 }

@@ -406,7 +406,7 @@ DataArrayPath RemoveComponentFromArray::getSelectedArrayPath() const
 }
 
 // -----------------------------------------------------------------------------
-void RemoveComponentFromArray::setCompNumber(const int& value)
+void RemoveComponentFromArray::setCompNumber(int value)
 {
   m_CompNumber = value;
 }
@@ -418,7 +418,7 @@ int RemoveComponentFromArray::getCompNumber() const
 }
 
 // -----------------------------------------------------------------------------
-void RemoveComponentFromArray::setSaveRemovedComponent(const bool& value)
+void RemoveComponentFromArray::setSaveRemovedComponent(bool value)
 {
   m_SaveRemovedComponent = value;
 }

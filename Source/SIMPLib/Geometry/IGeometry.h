@@ -233,7 +233,7 @@ public:
   /**
    * @brief Setter property for TimeValue
    */
-  void setTimeValue(const float& value);
+  void setTimeValue(float value);
   /**
    * @brief Getter property for TimeValue
    * @return Value of TimeValue
@@ -243,7 +243,7 @@ public:
   /**
    * @brief Setter property for EnableTimeSeries
    */
-  void setEnableTimeSeries(const bool& value);
+  void setEnableTimeSeries(bool value);
   /**
    * @brief Getter property for EnableTimeSeries
    * @return Value of EnableTimeSeries

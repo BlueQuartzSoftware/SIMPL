@@ -301,7 +301,7 @@ QStringList ASCIIDataModel::originalStrings()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ASCIIDataModel::originalString(const int row) const
+QString ASCIIDataModel::originalString(int row) const
 {
   return m_TableItems[row]->originalString();
 }
@@ -309,7 +309,7 @@ QString ASCIIDataModel::originalString(const int row) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ASCIIDataModel::setOriginalString(const int row, const QString& value)
+void ASCIIDataModel::setOriginalString(int row, const QString& value)
 {
   m_TableItems[row]->setOriginalString(value);
 }
@@ -317,7 +317,7 @@ void ASCIIDataModel::setOriginalString(const int row, const QString& value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ASCIIDataModel::columnDataType(const int column) const
+QString ASCIIDataModel::columnDataType(int column) const
 {
   return m_ColumnDataType[column];
 }
@@ -325,7 +325,7 @@ QString ASCIIDataModel::columnDataType(const int column) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ASCIIDataModel::setColumnDataType(const int column, const QString& type)
+void ASCIIDataModel::setColumnDataType(int column, const QString& type)
 {
   m_ColumnDataType[column] = type;
 
@@ -336,7 +336,7 @@ void ASCIIDataModel::setColumnDataType(const int column, const QString& type)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool ASCIIDataModel::columnHasErrors(const int column) const
+bool ASCIIDataModel::columnHasErrors(int column) const
 {
   return m_ColumnHasErrors[column];
 }
@@ -344,7 +344,7 @@ bool ASCIIDataModel::columnHasErrors(const int column) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ASCIIDataModel::setColumnHasErrors(const int column, const bool& value)
+void ASCIIDataModel::setColumnHasErrors(int column, bool value)
 {
   m_ColumnHasErrors[column] = value;
 }
@@ -392,17 +392,17 @@ void ASCIIDataModel::clearHeaders(Qt::Orientation orientation)
 {
   if(orientation == Qt::Horizontal)
   {
-    for(int i = 0; i < m_HorizontalHeaders.size(); i++)
+    for(auto& header : m_HorizontalHeaders)
     {
-      m_HorizontalHeaders[i] = "";
+      header = "";
     }
     emit headerDataChanged(Qt::Horizontal, 0, m_HorizontalHeaders.size() - 1);
   }
   else if(orientation == Qt::Vertical)
   {
-    for(int i = 0; i < m_VerticalHeaders.size(); i++)
+    for(auto& header : m_VerticalHeaders)
     {
-      m_VerticalHeaders[i] = "";
+      header = "";
     }
     emit headerDataChanged(Qt::Vertical, 0, m_VerticalHeaders.size() - 1);
   }

@@ -143,7 +143,7 @@ public:
   /**
    * @brief Setter property for GeometryType
    */
-  void setGeometryType(const int& value);
+  void setGeometryType(int value);
   /**
    * @brief Getter property for GeometryType
    * @return Value of GeometryType
@@ -527,7 +527,7 @@ public:
   /**
    * @brief Setter property for TreatWarningsAsErrors
    */
-  void setTreatWarningsAsErrors(const bool& value);
+  void setTreatWarningsAsErrors(bool value);
   /**
    * @brief Getter property for TreatWarningsAsErrors
    * @return Value of TreatWarningsAsErrors
@@ -539,7 +539,7 @@ public:
   /**
    * @brief Setter property for ArrayHandling
    */
-  void setArrayHandling(const bool& value);
+  void setArrayHandling(bool value);
   /**
    * @brief Getter property for ArrayHandling
    * @return Value of ArrayHandling

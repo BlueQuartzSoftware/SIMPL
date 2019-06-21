@@ -483,7 +483,7 @@ QString CombineAttributeArrays::getStackedDataArrayName() const
 }
 
 // -----------------------------------------------------------------------------
-void CombineAttributeArrays::setNormalizeData(const bool& value)
+void CombineAttributeArrays::setNormalizeData(bool value)
 {
   m_NormalizeData = value;
 }
@@ -495,7 +495,7 @@ bool CombineAttributeArrays::getNormalizeData() const
 }
 
 // -----------------------------------------------------------------------------
-void CombineAttributeArrays::setMoveValues(const bool& value)
+void CombineAttributeArrays::setMoveValues(bool value)
 {
   m_MoveValues = value;
 }

@@ -109,7 +109,7 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
     /**
      * @brief Setter property for ScalarType
      */
-    void setScalarType(const SIMPL::NumericTypes::Type& value);
+    void setScalarType(SIMPL::NumericTypes::Type value);
     /**
      * @brief Getter property for ScalarType
      * @return Value of ScalarType
@@ -121,7 +121,7 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
     /**
      * @brief Setter property for NumberOfComponents
      */
-    void setNumberOfComponents(const int& value);
+    void setNumberOfComponents(int value);
     /**
      * @brief Getter property for NumberOfComponents
      * @return Value of NumberOfComponents
@@ -133,7 +133,7 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
     /**
      * @brief Setter property for SkipHeaderLines
      */
-    void setSkipHeaderLines(const int& value);
+    void setSkipHeaderLines(int value);
     /**
      * @brief Getter property for SkipHeaderLines
      * @return Value of SkipHeaderLines
@@ -157,7 +157,7 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
     /**
      * @brief Setter property for Delimiter
      */
-    void setDelimiter(const int& value);
+    void setDelimiter(int value);
     /**
      * @brief Getter property for Delimiter
      * @return Value of Delimiter

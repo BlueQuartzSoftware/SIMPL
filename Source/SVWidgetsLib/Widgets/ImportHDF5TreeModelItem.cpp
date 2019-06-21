@@ -406,7 +406,7 @@ QString ImportHDF5TreeModelItem::generateHDFPath()
 }
 
 // -----------------------------------------------------------------------------
-void ImportHDF5TreeModelItem::setHasErrors(const bool& value)
+void ImportHDF5TreeModelItem::setHasErrors(bool value)
 {
   m_HasErrors = value;
 }

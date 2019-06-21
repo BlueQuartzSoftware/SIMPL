@@ -109,7 +109,7 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     /**
      * @brief Setter property for OverwriteExistingDataContainers
      */
-    void setOverwriteExistingDataContainers(const bool& value);
+    void setOverwriteExistingDataContainers(bool value);
     /**
      * @brief Getter property for OverwriteExistingDataContainers
      * @return Value of OverwriteExistingDataContainers

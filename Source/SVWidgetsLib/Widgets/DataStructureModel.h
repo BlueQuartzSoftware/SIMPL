@@ -63,7 +63,7 @@ class SVWidgetsLib_EXPORT DataStructureModel : public QStandardItemModel
      */
     static QString ClassName();
 
-    DataStructureModel(QObject* parent = 0);
+    DataStructureModel(QObject* parent = nullptr);
     ~DataStructureModel() override;
 
     using EnumType = unsigned int;

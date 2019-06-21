@@ -360,7 +360,7 @@ QString CopyObject::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void CopyObject::setObjectToCopy(const int& value)
+void CopyObject::setObjectToCopy(int value)
 {
   m_ObjectToCopy = value;
 }

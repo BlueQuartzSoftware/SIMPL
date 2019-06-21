@@ -63,7 +63,7 @@ class SVWidgetsLib_EXPORT PopUpWidget : public QWidget, private Ui::PopUpWidget
     /**
      * @brief Setter property for ArrowHeight
      */
-    void setArrowHeight(const int& value);
+    void setArrowHeight(int value);
     /**
      * @brief Getter property for ArrowHeight
      * @return Value of ArrowHeight
@@ -73,7 +73,7 @@ class SVWidgetsLib_EXPORT PopUpWidget : public QWidget, private Ui::PopUpWidget
     /**
      * @brief Setter property for ArrowWidth
      */
-    void setArrowWidth(const int& value);
+    void setArrowWidth(int value);
     /**
      * @brief Getter property for ArrowWidth
      * @return Value of ArrowWidth
@@ -83,7 +83,7 @@ class SVWidgetsLib_EXPORT PopUpWidget : public QWidget, private Ui::PopUpWidget
     /**
      * @brief Setter property for ArrowOffset
      */
-    void setArrowOffset(const int& value);
+    void setArrowOffset(int value);
     /**
      * @brief Getter property for ArrowOffset
      * @return Value of ArrowOffset

@@ -192,7 +192,7 @@ public:
   /**
    * @brief Setter property for ShowPrefix
    */
-  void setShowPrefix(const bool& value);
+  void setShowPrefix(bool value);
   /**
    * @brief Getter property for ShowPrefix
    * @return Value of ShowPrefix
@@ -204,7 +204,7 @@ public:
   /**
    * @brief Setter property for MaxIterations
    */
-  void setMaxIterations(const int& value);
+  void setMaxIterations(int value);
   /**
    * @brief Getter property for MaxIterations
    * @return Value of MaxIterations
@@ -252,7 +252,7 @@ public:
   /**
    * @brief Setter property for MisorientationTolerance
    */
-  void setMisorientationTolerance(const double& value);
+  void setMisorientationTolerance(double value);
   /**
    * @brief Getter property for MisorientationTolerance
    * @return Value of MisorientationTolerance
@@ -288,7 +288,7 @@ public:
   /**
    * @brief Setter property for PhaseCount
    */
-  void setPhaseCount(const int& value);
+  void setPhaseCount(int value);
   /**
    * @brief Getter property for PhaseCount
    * @return Value of PhaseCount
@@ -445,7 +445,7 @@ public:
   /**
    * @brief Setter property for WriteAlignmentShifts
    */
-  void setWriteAlignmentShifts(const bool& value);
+  void setWriteAlignmentShifts(bool value);
   /**
    * @brief Getter property for WriteAlignmentShifts
    * @return Value of WriteAlignmentShifts
@@ -457,7 +457,7 @@ public:
   /**
    * @brief Setter property for ConversionType
    */
-  void setConversionType(const int& value);
+  void setConversionType(int value);
   /**
    * @brief Getter property for ConversionType
    * @return Value of ConversionType
@@ -565,7 +565,7 @@ public:
   /**
    * @brief Setter property for SizeDistributionFitType
    */
-  void setSizeDistributionFitType(const int& value);
+  void setSizeDistributionFitType(int value);
   /**
    * @brief Getter property for SizeDistributionFitType
    * @return Value of SizeDistributionFitType
@@ -613,7 +613,7 @@ public:
   /**
    * @brief Setter property for Bool1
    */
-  void setBool1(const bool& value);
+  void setBool1(bool value);
   /**
    * @brief Getter property for Bool1
    * @return Value of Bool1
@@ -625,7 +625,7 @@ public:
   /**
    * @brief Setter property for Double2
    */
-  void setDouble2(const double& value);
+  void setDouble2(double value);
   /**
    * @brief Getter property for Double2
    * @return Value of Double2
@@ -637,7 +637,7 @@ public:
   /**
    * @brief Setter property for Bool2
    */
-  void setBool2(const bool& value);
+  void setBool2(bool value);
   /**
    * @brief Getter property for Bool2
    * @return Value of Bool2
@@ -649,7 +649,7 @@ public:
   /**
    * @brief Setter property for AlgorithmSelection
    */
-  void setAlgorithmSelection(const int& value);
+  void setAlgorithmSelection(int value);
   /**
    * @brief Getter property for AlgorithmSelection
    * @return Value of AlgorithmSelection
@@ -661,7 +661,7 @@ public:
   /**
    * @brief Setter property for DistanceMetric
    */
-  void setDistanceMetric(const int& value);
+  void setDistanceMetric(int value);
   /**
    * @brief Getter property for DistanceMetric
    * @return Value of DistanceMetric

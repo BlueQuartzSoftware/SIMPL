@@ -379,7 +379,7 @@ QString PrimaryStatsData::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void PrimaryStatsData::setBoundaryArea(const float& value)
+void PrimaryStatsData::setBoundaryArea(float value)
 {
   m_BoundaryArea = value;
 }
@@ -403,7 +403,7 @@ VectorOfFloatArray PrimaryStatsData::getFeatureSizeDistribution() const
 }
 
 // -----------------------------------------------------------------------------
-void PrimaryStatsData::setFeatureSize_DistType(const uint32_t& value)
+void PrimaryStatsData::setFeatureSize_DistType(uint32_t value)
 {
   m_FeatureSize_DistType = value;
 }
@@ -439,7 +439,7 @@ VectorOfFloatArray PrimaryStatsData::getFeatureSize_BOverA() const
 }
 
 // -----------------------------------------------------------------------------
-void PrimaryStatsData::setBOverA_DistType(const uint32_t& value)
+void PrimaryStatsData::setBOverA_DistType(uint32_t value)
 {
   m_BOverA_DistType = value;
 }
@@ -463,7 +463,7 @@ VectorOfFloatArray PrimaryStatsData::getFeatureSize_COverA() const
 }
 
 // -----------------------------------------------------------------------------
-void PrimaryStatsData::setCOverA_DistType(const uint32_t& value)
+void PrimaryStatsData::setCOverA_DistType(uint32_t value)
 {
   m_COverA_DistType = value;
 }
@@ -487,7 +487,7 @@ VectorOfFloatArray PrimaryStatsData::getFeatureSize_Neighbors() const
 }
 
 // -----------------------------------------------------------------------------
-void PrimaryStatsData::setNeighbors_DistType(const uint32_t& value)
+void PrimaryStatsData::setNeighbors_DistType(uint32_t value)
 {
   m_Neighbors_DistType = value;
 }
@@ -511,7 +511,7 @@ VectorOfFloatArray PrimaryStatsData::getFeatureSize_Omegas() const
 }
 
 // -----------------------------------------------------------------------------
-void PrimaryStatsData::setOmegas_DistType(const uint32_t& value)
+void PrimaryStatsData::setOmegas_DistType(uint32_t value)
 {
   m_Omegas_DistType = value;
 }

@@ -115,7 +115,7 @@ public:
   /**
    * @brief Setter property for XMin
    */
-  void setXMin(const float& value);
+  void setXMin(float value);
   /**
    * @brief Getter property for XMin
    * @return Value of XMin
@@ -127,7 +127,7 @@ public:
   /**
    * @brief Setter property for YMin
    */
-  void setYMin(const float& value);
+  void setYMin(float value);
   /**
    * @brief Getter property for YMin
    * @return Value of YMin
@@ -139,7 +139,7 @@ public:
   /**
    * @brief Setter property for ZMin
    */
-  void setZMin(const float& value);
+  void setZMin(float value);
   /**
    * @brief Getter property for ZMin
    * @return Value of ZMin
@@ -151,7 +151,7 @@ public:
   /**
    * @brief Setter property for XMax
    */
-  void setXMax(const float& value);
+  void setXMax(float value);
   /**
    * @brief Getter property for XMax
    * @return Value of XMax
@@ -163,7 +163,7 @@ public:
   /**
    * @brief Setter property for YMax
    */
-  void setYMax(const float& value);
+  void setYMax(float value);
   /**
    * @brief Getter property for YMax
    * @return Value of YMax
@@ -175,7 +175,7 @@ public:
   /**
    * @brief Setter property for ZMax
    */
-  void setZMax(const float& value);
+  void setZMax(float value);
   /**
    * @brief Getter property for ZMax
    * @return Value of ZMax

@@ -604,7 +604,7 @@ QString IGeometry::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void IGeometry::setTimeValue(const float& value)
+void IGeometry::setTimeValue(float value)
 {
   m_TimeValue = value;
 }
@@ -616,7 +616,7 @@ float IGeometry::getTimeValue() const
 }
 
 // -----------------------------------------------------------------------------
-void IGeometry::setEnableTimeSeries(const bool& value)
+void IGeometry::setEnableTimeSeries(bool value)
 {
   m_EnableTimeSeries = value;
 }

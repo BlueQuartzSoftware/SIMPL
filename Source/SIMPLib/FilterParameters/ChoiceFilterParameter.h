@@ -123,7 +123,7 @@ class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
     /**
      * @brief Setter property for Editable
      */
-    void setEditable(const bool& value);
+    void setEditable(bool value);
     /**
      * @brief Getter property for Editable
      * @return Value of Editable

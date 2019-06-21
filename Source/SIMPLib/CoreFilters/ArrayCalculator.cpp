@@ -1210,7 +1210,7 @@ ArrayCalculator::AngleUnits ArrayCalculator::getUnits() const
 }
 
 // -----------------------------------------------------------------------------
-void ArrayCalculator::setScalarType(const SIMPL::ScalarTypes::Type& value)
+void ArrayCalculator::setScalarType(SIMPL::ScalarTypes::Type value)
 {
   m_ScalarType = value;
 }

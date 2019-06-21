@@ -61,7 +61,7 @@ QString AbstractWarningMessage::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void AbstractWarningMessage::setCode(const int& value)
+void AbstractWarningMessage::setCode(int value)
 {
   m_Code = value;
 }

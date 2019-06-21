@@ -151,7 +151,7 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
     /**
      * @brief Setter property for FileIsBinary
      */
-    void setFileIsBinary(const bool& value);
+    void setFileIsBinary(bool value);
     /**
      * @brief Getter property for FileIsBinary
      * @return Value of FileIsBinary

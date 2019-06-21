@@ -188,7 +188,7 @@ QString BookmarksItem::getPath() const
 }
 
 // -----------------------------------------------------------------------------
-void BookmarksItem::setHasErrors(const bool& value)
+void BookmarksItem::setHasErrors(bool value)
 {
   m_HasErrors = value;
 }

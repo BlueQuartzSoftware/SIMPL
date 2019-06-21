@@ -220,7 +220,7 @@ Category FilterParameter::getCategory() const
 }
 
 // -----------------------------------------------------------------------------
-void FilterParameter::setGroupIndex(const int& value)
+void FilterParameter::setGroupIndex(int value)
 {
   m_GroupIndex = value;
 }
@@ -238,7 +238,7 @@ FilterParameter::Pointer FilterParameter::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-void FilterParameter::setDefaultValue(const int& value)
+void FilterParameter::setDefaultValue(int value)
 {
   m_DefaultValue = value;
 }
@@ -256,7 +256,7 @@ FilterParameter::Pointer FilterParameter::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-void FilterParameter::setDefaultValue(const double& value)
+void FilterParameter::setDefaultValue(double value)
 {
   m_DefaultValue = value;
 }

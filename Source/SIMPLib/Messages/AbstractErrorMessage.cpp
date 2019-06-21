@@ -61,7 +61,7 @@ QString AbstractErrorMessage::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void AbstractErrorMessage::setCode(const int& value)
+void AbstractErrorMessage::setCode(int value)
 {
   m_Code = value;
 }

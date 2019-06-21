@@ -95,7 +95,7 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
     /**
      * @brief Setter property for MaxGrains
      */
-    void setMaxGrains(const int& value);
+    void setMaxGrains(int value);
     /**
      * @brief Getter property for MaxGrains
      * @return Value of MaxGrains

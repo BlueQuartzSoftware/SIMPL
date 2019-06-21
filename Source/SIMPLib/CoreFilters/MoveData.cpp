@@ -341,7 +341,7 @@ QString MoveData::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void MoveData::setWhatToMove(const int& value)
+void MoveData::setWhatToMove(int value)
 {
   m_WhatToMove = value;
 }

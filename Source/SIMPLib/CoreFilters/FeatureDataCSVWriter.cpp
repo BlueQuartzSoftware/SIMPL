@@ -398,7 +398,7 @@ int FeatureDataCSVWriter::getDelimiterChoiceInt() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FeatureDataCSVWriter::setDelimiterChoiceInt(const int& value)
+void FeatureDataCSVWriter::setDelimiterChoiceInt(int value)
 {
   this->m_DelimiterChoice = 0; // Set the default and if the value falls within the correct range, use that.
   // Allowed integer values of the enum SIMPL::DelimiterTypes::Type; see defintion in Constants.h
@@ -462,7 +462,7 @@ QString FeatureDataCSVWriter::getFeatureDataFile() const
 }
 
 // -----------------------------------------------------------------------------
-void FeatureDataCSVWriter::setWriteNeighborListData(const bool& value)
+void FeatureDataCSVWriter::setWriteNeighborListData(bool value)
 {
   m_WriteNeighborListData = value;
 }
@@ -474,7 +474,7 @@ bool FeatureDataCSVWriter::getWriteNeighborListData() const
 }
 
 // -----------------------------------------------------------------------------
-void FeatureDataCSVWriter::setDelimiterChoice(const int& value)
+void FeatureDataCSVWriter::setDelimiterChoice(int value)
 {
   m_DelimiterChoice = value;
 }
@@ -486,7 +486,7 @@ int FeatureDataCSVWriter::getDelimiterChoice() const
 }
 
 // -----------------------------------------------------------------------------
-void FeatureDataCSVWriter::setWriteNumFeaturesLine(const bool& value)
+void FeatureDataCSVWriter::setWriteNumFeaturesLine(bool value)
 {
   m_WriteNumFeaturesLine = value;
 }
@@ -498,7 +498,7 @@ bool FeatureDataCSVWriter::getWriteNumFeaturesLine() const
 }
 
 // -----------------------------------------------------------------------------
-void FeatureDataCSVWriter::setDelimiter(const char& value)
+void FeatureDataCSVWriter::setDelimiter(char value)
 {
   m_Delimiter = value;
 }

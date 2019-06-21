@@ -104,7 +104,7 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
     /**
      * @brief Setter property for ScalarType
      */
-    void setScalarType(const SIMPL::NumericTypes::Type& value);
+    void setScalarType(SIMPL::NumericTypes::Type value);
     /**
      * @brief Getter property for ScalarType
      * @return Value of ScalarType
@@ -116,7 +116,7 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
     /**
      * @brief Setter property for Endian
      */
-    void setEndian(const int& value);
+    void setEndian(int value);
     /**
      * @brief Getter property for Endian
      * @return Value of Endian
@@ -128,7 +128,7 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
     /**
      * @brief Setter property for NumberOfComponents
      */
-    void setNumberOfComponents(const int& value);
+    void setNumberOfComponents(int value);
     /**
      * @brief Getter property for NumberOfComponents
      * @return Value of NumberOfComponents
@@ -140,7 +140,7 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
     /**
      * @brief Setter property for SkipHeaderBytes
      */
-    void setSkipHeaderBytes(const uint64_t& value);
+    void setSkipHeaderBytes(uint64_t value);
     /**
      * @brief Getter property for SkipHeaderBytes
      * @return Value of SkipHeaderBytes

@@ -291,7 +291,7 @@ DataArrayPath RequiredZThickness::getDataContainerSelection() const
 }
 
 // -----------------------------------------------------------------------------
-void RequiredZThickness::setNumZVoxels(const int& value)
+void RequiredZThickness::setNumZVoxels(int value)
 {
   m_NumZVoxels = value;
 }
@@ -303,7 +303,7 @@ int RequiredZThickness::getNumZVoxels() const
 }
 
 // -----------------------------------------------------------------------------
-void RequiredZThickness::setPreflightCheck(const bool& value)
+void RequiredZThickness::setPreflightCheck(bool value)
 {
   m_PreflightCheck = value;
 }

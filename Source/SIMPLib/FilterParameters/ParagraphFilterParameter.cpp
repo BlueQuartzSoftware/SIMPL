@@ -144,7 +144,7 @@ ParagraphFilterParameter::GetterCallbackType ParagraphFilterParameter::getGetter
 }
 
 // -----------------------------------------------------------------------------
-void ParagraphFilterParameter::setAllowPreflight(const bool& value)
+void ParagraphFilterParameter::setAllowPreflight(bool value)
 {
   m_AllowPreflight = value;
 }

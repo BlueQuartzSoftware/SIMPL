@@ -604,7 +604,7 @@ ComparisonSelectionWidget::ArrayListType ComparisonSelectionWidget::getArrayList
 }
 
 // -----------------------------------------------------------------------------
-void ComparisonSelectionWidget::setShowOperators(const bool& value)
+void ComparisonSelectionWidget::setShowOperators(bool value)
 {
   m_ShowOperators = value;
 }

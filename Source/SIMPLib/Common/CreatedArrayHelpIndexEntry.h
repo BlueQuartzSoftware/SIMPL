@@ -138,7 +138,7 @@ class SIMPLib_EXPORT CreatedArrayHelpIndexEntry
     /**
      * @brief Setter property for ArrayNumComponents
      */
-    void setArrayNumComponents(const int& value);
+    void setArrayNumComponents(int value);
     /**
      * @brief Getter property for ArrayNumComponents
      * @return Value of ArrayNumComponents

@@ -193,7 +193,7 @@ std::vector<float> RdfData::getFrequencies() const
 }
 
 // -----------------------------------------------------------------------------
-void RdfData::setMinDistance(const float& value)
+void RdfData::setMinDistance(float value)
 {
   m_MinDistance = value;
 }
@@ -205,7 +205,7 @@ float RdfData::getMinDistance() const
 }
 
 // -----------------------------------------------------------------------------
-void RdfData::setMaxDistance(const float& value)
+void RdfData::setMaxDistance(float value)
 {
   m_MaxDistance = value;
 }
@@ -217,7 +217,7 @@ float RdfData::getMaxDistance() const
 }
 
 // -----------------------------------------------------------------------------
-void RdfData::setNumberOfBins(const int& value)
+void RdfData::setNumberOfBins(int value)
 {
   m_NumberOfBins = value;
 }

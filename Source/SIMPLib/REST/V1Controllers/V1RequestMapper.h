@@ -51,7 +51,7 @@ public:
     Constructor.
     @param parent Parent object
   */
-  V1RequestMapper(QObject* parent = 0);
+  V1RequestMapper(QObject* parent = nullptr);
 
   /**
     Destructor.

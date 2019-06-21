@@ -46,7 +46,7 @@ class DynamicTableItemDelegate : public QStyledItemDelegate
     Q_OBJECT
 
   public:
-    explicit DynamicTableItemDelegate(QObject* parent = 0);
+    explicit DynamicTableItemDelegate(QObject* parent = nullptr);
 
     ~DynamicTableItemDelegate() override;
 

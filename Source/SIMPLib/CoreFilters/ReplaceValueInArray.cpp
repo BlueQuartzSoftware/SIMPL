@@ -385,7 +385,7 @@ DataArrayPath ReplaceValueInArray::getSelectedArray() const
 }
 
 // -----------------------------------------------------------------------------
-void ReplaceValueInArray::setRemoveValue(const double& value)
+void ReplaceValueInArray::setRemoveValue(double value)
 {
   m_RemoveValue = value;
 }
@@ -397,7 +397,7 @@ double ReplaceValueInArray::getRemoveValue() const
 }
 
 // -----------------------------------------------------------------------------
-void ReplaceValueInArray::setReplaceValue(const double& value)
+void ReplaceValueInArray::setReplaceValue(double value)
 {
   m_ReplaceValue = value;
 }

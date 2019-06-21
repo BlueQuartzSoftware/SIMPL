@@ -732,7 +732,7 @@ QString WriteASCIIData::getOutputFilePath() const
 }
 
 // -----------------------------------------------------------------------------
-void WriteASCIIData::setDelimiter(const int& value)
+void WriteASCIIData::setDelimiter(int value)
 {
   m_Delimiter = value;
 }
@@ -756,7 +756,7 @@ QString WriteASCIIData::getFileExtension() const
 }
 
 // -----------------------------------------------------------------------------
-void WriteASCIIData::setMaxValPerLine(const int& value)
+void WriteASCIIData::setMaxValPerLine(int value)
 {
   m_MaxValPerLine = value;
 }
@@ -768,7 +768,7 @@ int WriteASCIIData::getMaxValPerLine() const
 }
 
 // -----------------------------------------------------------------------------
-void WriteASCIIData::setOutputStyle(const int& value)
+void WriteASCIIData::setOutputStyle(int value)
 {
   m_OutputStyle = value;
 }

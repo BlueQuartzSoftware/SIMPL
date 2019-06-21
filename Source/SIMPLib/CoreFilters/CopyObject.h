@@ -85,7 +85,7 @@ public:
   /**
    * @brief Setter property for ObjectToCopy
    */
-  void setObjectToCopy(const int& value);
+  void setObjectToCopy(int value);
   /**
    * @brief Getter property for ObjectToCopy
    * @return Value of ObjectToCopy

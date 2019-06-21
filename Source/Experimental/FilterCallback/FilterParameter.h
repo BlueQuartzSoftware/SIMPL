@@ -166,7 +166,7 @@ class IFilterParameter
     /**
      * @brief Setter property for GroupIndex
      */
-    void setGroupIndex(const int& value);
+    void setGroupIndex(int value);
     /**
      * @brief Getter property for GroupIndex
      * @return Value of GroupIndex
@@ -211,7 +211,7 @@ class Int32Parameter : public IFilterParameter
     /**
      * @brief Setter property for DefaultValue
      */
-    void setDefaultValue(const int& value);
+    void setDefaultValue(int value);
     /**
      * @brief Getter property for DefaultValue
      * @return Value of DefaultValue
@@ -263,7 +263,7 @@ class DoubleParameter : public IFilterParameter
     /**
      * @brief Setter property for DefaultValue
      */
-    void setDefaultValue(const double& value);
+    void setDefaultValue(double value);
     /**
      * @brief Getter property for DefaultValue
      * @return Value of DefaultValue

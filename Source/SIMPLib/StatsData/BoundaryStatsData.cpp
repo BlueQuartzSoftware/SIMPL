@@ -191,7 +191,7 @@ QString BoundaryStatsData::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void BoundaryStatsData::setBoundaryArea(const float& value)
+void BoundaryStatsData::setBoundaryArea(float value)
 {
   m_BoundaryArea = value;
 }
@@ -203,7 +203,7 @@ float BoundaryStatsData::getBoundaryArea() const
 }
 
 // -----------------------------------------------------------------------------
-void BoundaryStatsData::setParentPhase(const float& value)
+void BoundaryStatsData::setParentPhase(float value)
 {
   m_ParentPhase = value;
 }

@@ -316,7 +316,7 @@ DataArrayPath SetOriginResolutionImageGeom::getDataContainerName() const
 }
 
 // -----------------------------------------------------------------------------
-void SetOriginResolutionImageGeom::setChangeOrigin(const bool& value)
+void SetOriginResolutionImageGeom::setChangeOrigin(bool value)
 {
   m_ChangeOrigin = value;
 }
@@ -340,7 +340,7 @@ FloatVec3Type SetOriginResolutionImageGeom::getOrigin() const
 }
 
 // -----------------------------------------------------------------------------
-void SetOriginResolutionImageGeom::setChangeResolution(const bool& value)
+void SetOriginResolutionImageGeom::setChangeResolution(bool value)
 {
   m_ChangeResolution = value;
 }

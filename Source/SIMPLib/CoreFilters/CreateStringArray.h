@@ -83,7 +83,7 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
     /**
      * @brief Setter property for NumberOfComponents
      */
-    void setNumberOfComponents(const int& value);
+    void setNumberOfComponents(int value);
     /**
      * @brief Getter property for NumberOfComponents
      * @return Value of NumberOfComponents

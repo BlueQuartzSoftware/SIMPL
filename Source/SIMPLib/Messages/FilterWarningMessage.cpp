@@ -140,7 +140,7 @@ QString FilterWarningMessage::getHumanLabel() const
 }
 
 // -----------------------------------------------------------------------------
-void FilterWarningMessage::setPipelineIndex(const int& value)
+void FilterWarningMessage::setPipelineIndex(int value)
 {
   m_PipelineIndex = value;
 }

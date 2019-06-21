@@ -389,7 +389,7 @@ QString TransformationStatsData::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void TransformationStatsData::setBoundaryArea(const float& value)
+void TransformationStatsData::setBoundaryArea(float value)
 {
   m_BoundaryArea = value;
 }
@@ -401,7 +401,7 @@ float TransformationStatsData::getBoundaryArea() const
 }
 
 // -----------------------------------------------------------------------------
-void TransformationStatsData::setParentPhase(const float& value)
+void TransformationStatsData::setParentPhase(float value)
 {
   m_ParentPhase = value;
 }
@@ -425,7 +425,7 @@ VectorOfFloatArray TransformationStatsData::getFeatureSizeDistribution() const
 }
 
 // -----------------------------------------------------------------------------
-void TransformationStatsData::setFeatureSize_DistType(const uint32_t& value)
+void TransformationStatsData::setFeatureSize_DistType(uint32_t value)
 {
   m_FeatureSize_DistType = value;
 }
@@ -461,7 +461,7 @@ VectorOfFloatArray TransformationStatsData::getFeatureSize_BOverA() const
 }
 
 // -----------------------------------------------------------------------------
-void TransformationStatsData::setBOverA_DistType(const uint32_t& value)
+void TransformationStatsData::setBOverA_DistType(uint32_t value)
 {
   m_BOverA_DistType = value;
 }
@@ -485,7 +485,7 @@ VectorOfFloatArray TransformationStatsData::getFeatureSize_COverA() const
 }
 
 // -----------------------------------------------------------------------------
-void TransformationStatsData::setCOverA_DistType(const uint32_t& value)
+void TransformationStatsData::setCOverA_DistType(uint32_t value)
 {
   m_COverA_DistType = value;
 }
@@ -509,7 +509,7 @@ VectorOfFloatArray TransformationStatsData::getFeatureSize_Neighbors() const
 }
 
 // -----------------------------------------------------------------------------
-void TransformationStatsData::setNeighbors_DistType(const uint32_t& value)
+void TransformationStatsData::setNeighbors_DistType(uint32_t value)
 {
   m_Neighbors_DistType = value;
 }
@@ -533,7 +533,7 @@ VectorOfFloatArray TransformationStatsData::getFeatureSize_Omegas() const
 }
 
 // -----------------------------------------------------------------------------
-void TransformationStatsData::setOmegas_DistType(const uint32_t& value)
+void TransformationStatsData::setOmegas_DistType(uint32_t value)
 {
   m_Omegas_DistType = value;
 }

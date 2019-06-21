@@ -110,7 +110,7 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     /**
      * @brief Setter property for WidgetIsExpanding
      */
-    virtual void setWidgetIsExpanding(const bool& value);
+    virtual void setWidgetIsExpanding(bool value);
     virtual bool isWidgetExpanding() const;
 
     void setValidFilePath(const QString& filePath);

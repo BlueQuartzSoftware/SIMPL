@@ -298,7 +298,7 @@ public:
   /**
    * @brief Setter property for InPreflight
    */
-  void setInPreflight(const bool& value);
+  void setInPreflight(bool value);
   /**
    * @brief Getter property for InPreflight
    * @return Value of InPreflight
@@ -308,7 +308,7 @@ public:
   /**
    * @brief Setter property for Enabled
    */
-  void setEnabled(const bool& value);
+  void setEnabled(bool value);
   /**
    * @brief Getter property for Enabled
    * @return Value of Enabled
@@ -318,7 +318,7 @@ public:
   /**
    * @brief Setter property for Removing
    */
-  void setRemoving(const bool& value);
+  void setRemoving(bool value);
   /**
    * @brief Getter property for Removing
    * @return Value of Removing
@@ -335,7 +335,7 @@ public:
   /**
    * @brief Setter property for PipelineIndex
    */
-  void setPipelineIndex(const int& value);
+  void setPipelineIndex(int value);
   /**
    * @brief Getter property for PipelineIndex
    * @return Value of PipelineIndex

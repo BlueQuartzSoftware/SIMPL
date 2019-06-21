@@ -327,7 +327,7 @@ DataArrayPath ExtractComponentAsArray::getSelectedArrayPath() const
 }
 
 // -----------------------------------------------------------------------------
-void ExtractComponentAsArray::setCompNumber(const int& value)
+void ExtractComponentAsArray::setCompNumber(int value)
 {
   m_CompNumber = value;
 }

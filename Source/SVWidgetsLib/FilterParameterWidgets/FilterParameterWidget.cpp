@@ -481,7 +481,7 @@ FilterParameter* FilterParameterWidget::getFilterParameter() const
 }
 
 // -----------------------------------------------------------------------------
-void FilterParameterWidget::setWidgetIsExpanding(const bool& value)
+void FilterParameterWidget::setWidgetIsExpanding(bool value)
 {
   m_WidgetIsExpanding = value;
 }

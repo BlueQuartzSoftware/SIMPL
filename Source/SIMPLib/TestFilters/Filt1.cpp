@@ -145,7 +145,7 @@ QString Filt1::getDataContainerName() const
 }
 
 // -----------------------------------------------------------------------------
-void Filt1::setFilt1_Float(const float& value)
+void Filt1::setFilt1_Float(float value)
 {
   m_Filt1_Float = value;
 }
@@ -157,7 +157,7 @@ float Filt1::getFilt1_Float() const
 }
 
 // -----------------------------------------------------------------------------
-void Filt1::setFilt1_Integer(const int32_t& value)
+void Filt1::setFilt1_Integer(int32_t value)
 {
   m_Filt1_Integer = value;
 }

@@ -294,7 +294,7 @@ DataArrayPath MaskCountDecision::getMaskArrayPath() const
 }
 
 // -----------------------------------------------------------------------------
-void MaskCountDecision::setNumberOfTrues(const int& value)
+void MaskCountDecision::setNumberOfTrues(int value)
 {
   m_NumberOfTrues = value;
 }

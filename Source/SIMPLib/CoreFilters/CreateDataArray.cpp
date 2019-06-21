@@ -633,7 +633,7 @@ QString CreateDataArray::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void CreateDataArray::setScalarType(const SIMPL::ScalarTypes::Type& value)
+void CreateDataArray::setScalarType(SIMPL::ScalarTypes::Type value)
 {
   m_ScalarType = value;
 }
@@ -645,7 +645,7 @@ SIMPL::ScalarTypes::Type CreateDataArray::getScalarType() const
 }
 
 // -----------------------------------------------------------------------------
-void CreateDataArray::setNumberOfComponents(const int& value)
+void CreateDataArray::setNumberOfComponents(int value)
 {
   m_NumberOfComponents = value;
 }
@@ -669,7 +669,7 @@ DataArrayPath CreateDataArray::getNewArray() const
 }
 
 // -----------------------------------------------------------------------------
-void CreateDataArray::setInitializationType(const int& value)
+void CreateDataArray::setInitializationType(int value)
 {
   m_InitializationType = value;
 }

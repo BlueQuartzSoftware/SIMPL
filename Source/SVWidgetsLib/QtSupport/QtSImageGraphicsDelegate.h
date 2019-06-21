@@ -65,7 +65,7 @@ class SVWidgetsLib_EXPORT QtSImageGraphicsDelegate : public QObject
     Q_OBJECT
 
   public:
-    QtSImageGraphicsDelegate(QObject* parent = 0);
+    QtSImageGraphicsDelegate(QObject* parent = nullptr);
     ~QtSImageGraphicsDelegate() override;
 
     /**
@@ -121,7 +121,7 @@ class SVWidgetsLib_EXPORT QtSImageGraphicsDelegate : public QObject
     /**
      * @brief Setter property for CompositeImages
      */
-    void setCompositeImages(const bool& value);
+    void setCompositeImages(bool value);
     /**
      * @brief Getter property for CompositeImages
      * @return Value of CompositeImages

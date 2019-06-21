@@ -134,7 +134,7 @@ public:
   /**
    * @brief Setter property for PhaseFraction
    */
-  void setPhaseFraction(const float& value);
+  void setPhaseFraction(float value);
   /**
    * @brief Getter property for PhaseFraction
    * @return Value of PhaseFraction

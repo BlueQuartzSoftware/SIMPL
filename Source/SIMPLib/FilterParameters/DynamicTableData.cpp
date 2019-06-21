@@ -638,7 +638,7 @@ QStringList DynamicTableData::getRowHeaders() const
 }
 
 // -----------------------------------------------------------------------------
-void DynamicTableData::setDynamicRows(const bool& value)
+void DynamicTableData::setDynamicRows(bool value)
 {
   m_DynamicRows = value;
 }
@@ -650,7 +650,7 @@ bool DynamicTableData::getDynamicRows() const
 }
 
 // -----------------------------------------------------------------------------
-void DynamicTableData::setDynamicCols(const bool& value)
+void DynamicTableData::setDynamicCols(bool value)
 {
   m_DynamicCols = value;
 }
@@ -662,7 +662,7 @@ bool DynamicTableData::getDynamicCols() const
 }
 
 // -----------------------------------------------------------------------------
-void DynamicTableData::setMinRows(const int& value)
+void DynamicTableData::setMinRows(int value)
 {
   m_MinRows = value;
 }
@@ -674,7 +674,7 @@ int DynamicTableData::getMinRows() const
 }
 
 // -----------------------------------------------------------------------------
-void DynamicTableData::setMinCols(const int& value)
+void DynamicTableData::setMinCols(int value)
 {
   m_MinCols = value;
 }
@@ -686,7 +686,7 @@ int DynamicTableData::getMinCols() const
 }
 
 // -----------------------------------------------------------------------------
-void DynamicTableData::setDefaultRowCount(const int& value)
+void DynamicTableData::setDefaultRowCount(int value)
 {
   m_DefaultRowCount = value;
 }
@@ -698,7 +698,7 @@ int DynamicTableData::getDefaultRowCount() const
 }
 
 // -----------------------------------------------------------------------------
-void DynamicTableData::setDefaultColCount(const int& value)
+void DynamicTableData::setDefaultColCount(int value)
 {
   m_DefaultColCount = value;
 }

@@ -380,7 +380,7 @@ QString VTKFileReader::getDatasetType() const
 }
 
 // -----------------------------------------------------------------------------
-void VTKFileReader::setFileIsBinary(const bool& value)
+void VTKFileReader::setFileIsBinary(bool value)
 {
   m_FileIsBinary = value;
 }

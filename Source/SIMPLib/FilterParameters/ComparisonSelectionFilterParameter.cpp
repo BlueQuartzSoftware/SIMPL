@@ -213,7 +213,7 @@ QVector<QString> ComparisonSelectionFilterParameter::getChoices() const
 }
 
 // -----------------------------------------------------------------------------
-void ComparisonSelectionFilterParameter::setShowOperators(const bool& value)
+void ComparisonSelectionFilterParameter::setShowOperators(bool value)
 {
   m_ShowOperators = value;
 }

@@ -115,7 +115,7 @@ public:
   /**
    * @brief Setter property for XMin
    */
-  void setXMin(const int& value);
+  void setXMin(int value);
   /**
    * @brief Getter property for XMin
    * @return Value of XMin
@@ -127,7 +127,7 @@ public:
   /**
    * @brief Setter property for YMin
    */
-  void setYMin(const int& value);
+  void setYMin(int value);
   /**
    * @brief Getter property for YMin
    * @return Value of YMin
@@ -139,7 +139,7 @@ public:
   /**
    * @brief Setter property for ZMin
    */
-  void setZMin(const int& value);
+  void setZMin(int value);
   /**
    * @brief Getter property for ZMin
    * @return Value of ZMin
@@ -151,7 +151,7 @@ public:
   /**
    * @brief Setter property for XMax
    */
-  void setXMax(const int& value);
+  void setXMax(int value);
   /**
    * @brief Getter property for XMax
    * @return Value of XMax
@@ -163,7 +163,7 @@ public:
   /**
    * @brief Setter property for YMax
    */
-  void setYMax(const int& value);
+  void setYMax(int value);
   /**
    * @brief Getter property for YMax
    * @return Value of YMax
@@ -175,7 +175,7 @@ public:
   /**
    * @brief Setter property for ZMax
    */
-  void setZMax(const int& value);
+  void setZMax(int value);
   /**
    * @brief Getter property for ZMax
    * @return Value of ZMax
@@ -187,7 +187,7 @@ public:
   /**
    * @brief Setter property for InitType
    */
-  void setInitType(const int& value);
+  void setInitType(int value);
   /**
    * @brief Getter property for InitType
    * @return Value of InitType
@@ -199,7 +199,7 @@ public:
   /**
    * @brief Setter property for Random
    */
-  void setRandom(const bool& value);
+  void setRandom(bool value);
   /**
    * @brief Getter property for Random
    * @return Value of Random
@@ -211,7 +211,7 @@ public:
   /**
    * @brief Setter property for InitValue
    */
-  void setInitValue(const double& value);
+  void setInitValue(double value);
   /**
    * @brief Getter property for InitValue
    * @return Value of InitValue

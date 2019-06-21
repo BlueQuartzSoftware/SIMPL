@@ -51,7 +51,7 @@ function(CreatePybind11Module)
       "${ARGS_SIMPLIB}"
       "${CMAKE_CFG_INTDIR}"
       DEPENDS GeneratePythonBindings ${COPY_LIBRARY_TARGETS}
-      COMMENT "GeneratePythonBindings: Creating Python Bindings for ${ARGS_MODULE_NAME} using pybind11"
+      COMMENT " ${ARGS_MODULE_NAME}: Creating Python Bindings using pybind11"
     )
 
   # --------------------------------------------------------------------------

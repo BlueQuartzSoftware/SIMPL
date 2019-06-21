@@ -46,8 +46,8 @@ class QtUnixServerSocket : public QTcpServer
 {
   Q_OBJECT
 public:
-  QtUnixServerSocket(const QString& path, QObject* parent = 0);
-  QtUnixServerSocket(QObject* parent = 0);
+  QtUnixServerSocket(const QString& path, QObject* parent = nullptr);
+  QtUnixServerSocket(QObject* parent = nullptr);
 
   void setPath(const QString& path);
   void close();

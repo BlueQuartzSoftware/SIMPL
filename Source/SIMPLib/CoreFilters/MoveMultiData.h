@@ -86,7 +86,7 @@ class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
     /**
      * @brief Setter property for WhatToMove
      */
-    void setWhatToMove(const int& value);
+    void setWhatToMove(int value);
     /**
      * @brief Getter property for WhatToMove
      * @return Value of WhatToMove

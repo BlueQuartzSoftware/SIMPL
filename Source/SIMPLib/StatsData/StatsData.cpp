@@ -453,7 +453,7 @@ QString StatsData::getName() const
 }
 
 // -----------------------------------------------------------------------------
-void StatsData::setPhaseFraction(const float& value)
+void StatsData::setPhaseFraction(float value)
 {
   m_PhaseFraction = value;
 }

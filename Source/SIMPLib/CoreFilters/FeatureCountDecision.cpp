@@ -280,7 +280,7 @@ DataArrayPath FeatureCountDecision::getFeatureIdsArrayPath() const
 }
 
 // -----------------------------------------------------------------------------
-void FeatureCountDecision::setMaxGrains(const int& value)
+void FeatureCountDecision::setMaxGrains(int value)
 {
   m_MaxGrains = value;
 }

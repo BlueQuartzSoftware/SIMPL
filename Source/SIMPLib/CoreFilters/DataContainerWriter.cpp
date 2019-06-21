@@ -546,7 +546,7 @@ QString DataContainerWriter::getOutputFile() const
 }
 
 // -----------------------------------------------------------------------------
-void DataContainerWriter::setWritePipeline(const bool& value)
+void DataContainerWriter::setWritePipeline(bool value)
 {
   m_WritePipeline = value;
 }
@@ -558,7 +558,7 @@ bool DataContainerWriter::getWritePipeline() const
 }
 
 // -----------------------------------------------------------------------------
-void DataContainerWriter::setWriteXdmfFile(const bool& value)
+void DataContainerWriter::setWriteXdmfFile(bool value)
 {
   m_WriteXdmfFile = value;
 }
@@ -570,7 +570,7 @@ bool DataContainerWriter::getWriteXdmfFile() const
 }
 
 // -----------------------------------------------------------------------------
-void DataContainerWriter::setWriteTimeSeries(const bool& value)
+void DataContainerWriter::setWriteTimeSeries(bool value)
 {
   m_WriteTimeSeries = value;
 }
@@ -582,7 +582,7 @@ bool DataContainerWriter::getWriteTimeSeries() const
 }
 
 // -----------------------------------------------------------------------------
-void DataContainerWriter::setAppendToExisting(const bool& value)
+void DataContainerWriter::setAppendToExisting(bool value)
 {
   m_AppendToExisting = value;
 }

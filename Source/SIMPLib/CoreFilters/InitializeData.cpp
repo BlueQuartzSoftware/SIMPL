@@ -629,7 +629,7 @@ QVector<DataArrayPath> InitializeData::getCellAttributeMatrixPaths() const
 }
 
 // -----------------------------------------------------------------------------
-void InitializeData::setXMin(const int& value)
+void InitializeData::setXMin(int value)
 {
   m_XMin = value;
 }
@@ -641,7 +641,7 @@ int InitializeData::getXMin() const
 }
 
 // -----------------------------------------------------------------------------
-void InitializeData::setYMin(const int& value)
+void InitializeData::setYMin(int value)
 {
   m_YMin = value;
 }
@@ -653,7 +653,7 @@ int InitializeData::getYMin() const
 }
 
 // -----------------------------------------------------------------------------
-void InitializeData::setZMin(const int& value)
+void InitializeData::setZMin(int value)
 {
   m_ZMin = value;
 }
@@ -665,7 +665,7 @@ int InitializeData::getZMin() const
 }
 
 // -----------------------------------------------------------------------------
-void InitializeData::setXMax(const int& value)
+void InitializeData::setXMax(int value)
 {
   m_XMax = value;
 }
@@ -677,7 +677,7 @@ int InitializeData::getXMax() const
 }
 
 // -----------------------------------------------------------------------------
-void InitializeData::setYMax(const int& value)
+void InitializeData::setYMax(int value)
 {
   m_YMax = value;
 }
@@ -689,7 +689,7 @@ int InitializeData::getYMax() const
 }
 
 // -----------------------------------------------------------------------------
-void InitializeData::setZMax(const int& value)
+void InitializeData::setZMax(int value)
 {
   m_ZMax = value;
 }
@@ -701,7 +701,7 @@ int InitializeData::getZMax() const
 }
 
 // -----------------------------------------------------------------------------
-void InitializeData::setInitType(const int& value)
+void InitializeData::setInitType(int value)
 {
   m_InitType = value;
 }
@@ -713,7 +713,7 @@ int InitializeData::getInitType() const
 }
 
 // -----------------------------------------------------------------------------
-void InitializeData::setRandom(const bool& value)
+void InitializeData::setRandom(bool value)
 {
   m_Random = value;
 }
@@ -725,7 +725,7 @@ bool InitializeData::getRandom() const
 }
 
 // -----------------------------------------------------------------------------
-void InitializeData::setInitValue(const double& value)
+void InitializeData::setInitValue(double value)
 {
   m_InitValue = value;
 }

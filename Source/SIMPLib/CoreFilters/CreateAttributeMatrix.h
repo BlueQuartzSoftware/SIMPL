@@ -95,7 +95,7 @@ class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
     /**
      * @brief Setter property for AttributeMatrixType
      */
-    void setAttributeMatrixType(const int& value);
+    void setAttributeMatrixType(int value);
     /**
      * @brief Getter property for AttributeMatrixType
      * @return Value of AttributeMatrixType

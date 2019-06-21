@@ -108,7 +108,7 @@ class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
     /**
      * @brief Setter property for ReplaceValue
      */
-    void setReplaceValue(const double& value);
+    void setReplaceValue(double value);
     /**
      * @brief Getter property for ReplaceValue
      * @return Value of ReplaceValue

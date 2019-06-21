@@ -198,7 +198,7 @@ QVector<QString> ComparisonSelectionAdvancedFilterParameter::getChoices() const
 }
 
 // -----------------------------------------------------------------------------
-void ComparisonSelectionAdvancedFilterParameter::setShowOperators(const bool& value)
+void ComparisonSelectionAdvancedFilterParameter::setShowOperators(bool value)
 {
   m_ShowOperators = value;
 }

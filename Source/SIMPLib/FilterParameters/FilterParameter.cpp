@@ -187,7 +187,7 @@ FilterParameter::Category FilterParameter::getCategory() const
 }
 
 // -----------------------------------------------------------------------------
-void FilterParameter::setReadOnly(const bool& value)
+void FilterParameter::setReadOnly(bool value)
 {
   m_ReadOnly = value;
 }
@@ -199,7 +199,7 @@ bool FilterParameter::getReadOnly() const
 }
 
 // -----------------------------------------------------------------------------
-void FilterParameter::setGroupIndex(const int& value)
+void FilterParameter::setGroupIndex(int value)
 {
   m_GroupIndex = value;
 }

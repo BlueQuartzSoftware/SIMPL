@@ -249,7 +249,7 @@ QString ErrorWarningFilter::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void ErrorWarningFilter::setPreflightWarning(const bool& value)
+void ErrorWarningFilter::setPreflightWarning(bool value)
 {
   m_PreflightWarning = value;
 }
@@ -261,7 +261,7 @@ bool ErrorWarningFilter::getPreflightWarning() const
 }
 
 // -----------------------------------------------------------------------------
-void ErrorWarningFilter::setPreflightError(const bool& value)
+void ErrorWarningFilter::setPreflightError(bool value)
 {
   m_PreflightError = value;
 }
@@ -273,7 +273,7 @@ bool ErrorWarningFilter::getPreflightError() const
 }
 
 // -----------------------------------------------------------------------------
-void ErrorWarningFilter::setExecuteWarning(const bool& value)
+void ErrorWarningFilter::setExecuteWarning(bool value)
 {
   m_ExecuteWarning = value;
 }
@@ -285,7 +285,7 @@ bool ErrorWarningFilter::getExecuteWarning() const
 }
 
 // -----------------------------------------------------------------------------
-void ErrorWarningFilter::setExecuteError(const bool& value)
+void ErrorWarningFilter::setExecuteError(bool value)
 {
   m_ExecuteError = value;
 }
@@ -297,7 +297,7 @@ bool ErrorWarningFilter::getExecuteError() const
 }
 
 // -----------------------------------------------------------------------------
-void ErrorWarningFilter::setPropertyError(const bool& value)
+void ErrorWarningFilter::setPropertyError(bool value)
 {
   m_PropertyError = value;
 }

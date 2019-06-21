@@ -364,7 +364,7 @@ QString JsonFilterParametersWriter::getPipelineName() const
 }
 
 // -----------------------------------------------------------------------------
-void JsonFilterParametersWriter::setExpandReaderFilters(const bool& value)
+void JsonFilterParametersWriter::setExpandReaderFilters(bool value)
 {
   m_ExpandReaderFilters = value;
 }
@@ -376,7 +376,7 @@ bool JsonFilterParametersWriter::getExpandReaderFilters() const
 }
 
 // -----------------------------------------------------------------------------
-void JsonFilterParametersWriter::setMaxFilterIndex(const int& value)
+void JsonFilterParametersWriter::setMaxFilterIndex(int value)
 {
   m_MaxFilterIndex = value;
 }

@@ -25,7 +25,7 @@ class IFilter
     /**
      * @brief Setter property for Index
      */
-    void setIndex(const int& value);
+    void setIndex(int value);
     /**
      * @brief Getter property for Index
      * @return Value of Index
@@ -35,7 +35,7 @@ class IFilter
     /**
      * @brief Setter property for Parameter1
      */
-    void setParameter1(const int& value);
+    void setParameter1(int value);
     /**
      * @brief Getter property for Parameter1
      * @return Value of Parameter1
@@ -45,7 +45,7 @@ class IFilter
     /**
      * @brief Setter property for Parameter2
      */
-    void setParameter2(const double& value);
+    void setParameter2(double value);
     /**
      * @brief Getter property for Parameter2
      * @return Value of Parameter2
@@ -73,7 +73,7 @@ class IFilter
     /**
      * @brief Setter property for InPreflight
      */
-    void setInPreflight(const bool& value);
+    void setInPreflight(bool value);
     /**
      * @brief Getter property for InPreflight
      * @return Value of InPreflight

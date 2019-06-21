@@ -93,7 +93,7 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
     /**
      * @brief Setter property for DynamicRows
      */
-    void setDynamicRows(const bool& value);
+    void setDynamicRows(bool value);
     /**
      * @brief Getter property for DynamicRows
      * @return Value of DynamicRows
@@ -103,7 +103,7 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
     /**
      * @brief Setter property for DynamicCols
      */
-    void setDynamicCols(const bool& value);
+    void setDynamicCols(bool value);
     /**
      * @brief Getter property for DynamicCols
      * @return Value of DynamicCols
@@ -113,7 +113,7 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
     /**
      * @brief Setter property for MinRows
      */
-    void setMinRows(const int& value);
+    void setMinRows(int value);
     /**
      * @brief Getter property for MinRows
      * @return Value of MinRows
@@ -123,7 +123,7 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
     /**
      * @brief Setter property for MinCols
      */
-    void setMinCols(const int& value);
+    void setMinCols(int value);
     /**
      * @brief Getter property for MinCols
      * @return Value of MinCols
@@ -133,7 +133,7 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
     /**
      * @brief Setter property for DefaultRowCount
      */
-    void setDefaultRowCount(const int& value);
+    void setDefaultRowCount(int value);
     /**
      * @brief Getter property for DefaultRowCount
      * @return Value of DefaultRowCount
@@ -143,7 +143,7 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
     /**
      * @brief Setter property for DefaultColCount
      */
-    void setDefaultColCount(const int& value);
+    void setDefaultColCount(int value);
     /**
      * @brief Getter property for DefaultColCount
      * @return Value of DefaultColCount

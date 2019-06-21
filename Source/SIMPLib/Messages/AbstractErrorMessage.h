@@ -63,7 +63,7 @@ public:
   /**
    * @brief Setter property for Code
    */
-  void setCode(const int& value);
+  void setCode(int value);
   /**
    * @brief Getter property for Code
    * @return Value of Code

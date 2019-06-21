@@ -99,7 +99,7 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
     /**
      * @brief Setter property for ScalarType
      */
-    void setScalarType(const SIMPL::ScalarTypes::Type& value);
+    void setScalarType(SIMPL::ScalarTypes::Type value);
     /**
      * @brief Getter property for ScalarType
      * @return Value of ScalarType
@@ -111,7 +111,7 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
     /**
      * @brief Setter property for NumberOfComponents
      */
-    void setNumberOfComponents(const int& value);
+    void setNumberOfComponents(int value);
     /**
      * @brief Getter property for NumberOfComponents
      * @return Value of NumberOfComponents
@@ -135,7 +135,7 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
     /**
      * @brief Setter property for InitializationType
      */
-    void setInitializationType(const int& value);
+    void setInitializationType(int value);
     /**
      * @brief Getter property for InitializationType
      * @return Value of InitializationType

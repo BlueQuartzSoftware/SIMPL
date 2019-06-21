@@ -95,7 +95,7 @@ class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
     /**
      * @brief Setter property for NumberOfTrues
      */
-    void setNumberOfTrues(const int& value);
+    void setNumberOfTrues(int value);
     /**
      * @brief Getter property for NumberOfTrues
      * @return Value of NumberOfTrues

@@ -46,7 +46,7 @@ class QtUnixSocket : public QTcpSocket
 {
   Q_OBJECT
 public:
-  QtUnixSocket(QObject* parent = 0);
+  QtUnixSocket(QObject* parent = nullptr);
 
   bool connectTo(const QString& path);
 };

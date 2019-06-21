@@ -1184,7 +1184,7 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     /**
      * @brief Setter property for QTreeViewItem_font_size
      */
-    void setQTreeViewItem_font_size(const int& value);
+    void setQTreeViewItem_font_size(int value);
     /**
      * @brief Getter property for QTreeViewItem_font_size
      * @return Value of QTreeViewItem_font_size

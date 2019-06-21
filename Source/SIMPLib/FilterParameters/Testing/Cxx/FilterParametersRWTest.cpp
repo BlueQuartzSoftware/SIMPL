@@ -231,7 +231,7 @@ public:
   virtual ~FilterParametersRWTest() = default;
 
   // -----------------------------------------------------------------------------
-  void setBool1(const bool& value)
+  void setBool1(bool value)
   {
     m_Bool1 = value;
   }
@@ -244,7 +244,7 @@ public:
 
   Q_PROPERTY(bool Bool1 READ getBool1 WRITE setBool1)
   // -----------------------------------------------------------------------------
-  void setBool2(const bool& value)
+  void setBool2(bool value)
   {
     m_Bool2 = value;
   }
@@ -258,7 +258,7 @@ public:
   Q_PROPERTY(bool Bool2 READ getBool2 WRITE setBool2)
 
   // -----------------------------------------------------------------------------
-  void setInt1(const int& value)
+  void setInt1(int value)
   {
     m_Int1 = value;
   }
@@ -271,7 +271,7 @@ public:
 
   Q_PROPERTY(int Int1 READ getInt1 WRITE setInt1)
   // -----------------------------------------------------------------------------
-  void setInt2(const int& value)
+  void setInt2(int value)
   {
     m_Int2 = value;
   }
@@ -285,7 +285,7 @@ public:
   Q_PROPERTY(int Int2 READ getInt2 WRITE setInt2)
 
   // -----------------------------------------------------------------------------
-  void setDouble1(const double& value)
+  void setDouble1(double value)
   {
     m_Double1 = value;
   }
@@ -298,7 +298,7 @@ public:
 
   Q_PROPERTY(double Double1 READ getDouble1 WRITE setDouble1)
   // -----------------------------------------------------------------------------
-  void setDouble2(const double& value)
+  void setDouble2(double value)
   {
     m_Double2 = value;
   }

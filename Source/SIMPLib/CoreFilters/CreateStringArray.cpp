@@ -296,7 +296,7 @@ QString CreateStringArray::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void CreateStringArray::setNumberOfComponents(const int& value)
+void CreateStringArray::setNumberOfComponents(int value)
 {
   m_NumberOfComponents = value;
 }

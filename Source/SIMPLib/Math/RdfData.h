@@ -82,7 +82,7 @@ class SIMPLib_EXPORT RdfData
     /**
      * @brief Setter property for MinDistance
      */
-    void setMinDistance(const float& value);
+    void setMinDistance(float value);
     /**
      * @brief Getter property for MinDistance
      * @return Value of MinDistance
@@ -92,7 +92,7 @@ class SIMPLib_EXPORT RdfData
     /**
      * @brief Setter property for MaxDistance
      */
-    void setMaxDistance(const float& value);
+    void setMaxDistance(float value);
     /**
      * @brief Getter property for MaxDistance
      * @return Value of MaxDistance
@@ -102,7 +102,7 @@ class SIMPLib_EXPORT RdfData
     /**
      * @brief Setter property for NumberOfBins
      */
-    void setNumberOfBins(const int& value);
+    void setNumberOfBins(int value);
     /**
      * @brief Getter property for NumberOfBins
      * @return Value of NumberOfBins

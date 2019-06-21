@@ -50,7 +50,7 @@ public:
   /**
    * @brief Setter property for Filt1_Float
    */
-  void setFilt1_Float(const float& value);
+  void setFilt1_Float(float value);
   /**
    * @brief Getter property for Filt1_Float
    * @return Value of Filt1_Float
@@ -60,7 +60,7 @@ public:
   /**
    * @brief Setter property for Filt1_Integer
    */
-  void setFilt1_Integer(const int32_t& value);
+  void setFilt1_Integer(int32_t value);
   /**
    * @brief Getter property for Filt1_Integer
    * @return Value of Filt1_Integer

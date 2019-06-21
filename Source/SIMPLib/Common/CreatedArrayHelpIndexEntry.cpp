@@ -158,7 +158,7 @@ QString CreatedArrayHelpIndexEntry::getArrayType() const
 }
 
 // -----------------------------------------------------------------------------
-void CreatedArrayHelpIndexEntry::setArrayNumComponents(const int& value)
+void CreatedArrayHelpIndexEntry::setArrayNumComponents(int value)
 {
   m_ArrayNumComponents = value;
 }

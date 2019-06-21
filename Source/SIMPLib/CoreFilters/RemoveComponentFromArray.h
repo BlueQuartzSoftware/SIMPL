@@ -101,7 +101,7 @@ class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
     /**
      * @brief Setter property for CompNumber
      */
-    void setCompNumber(const int& value);
+    void setCompNumber(int value);
     /**
      * @brief Getter property for CompNumber
      * @return Value of CompNumber
@@ -113,7 +113,7 @@ class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
     /**
      * @brief Setter property for SaveRemovedComponent
      */
-    void setSaveRemovedComponent(const bool& value);
+    void setSaveRemovedComponent(bool value);
     /**
      * @brief Getter property for SaveRemovedComponent
      * @return Value of SaveRemovedComponent

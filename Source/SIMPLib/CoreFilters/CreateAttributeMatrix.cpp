@@ -306,7 +306,7 @@ DataArrayPath CreateAttributeMatrix::getCreatedAttributeMatrix() const
 }
 
 // -----------------------------------------------------------------------------
-void CreateAttributeMatrix::setAttributeMatrixType(const int& value)
+void CreateAttributeMatrix::setAttributeMatrixType(int value)
 {
   m_AttributeMatrixType = value;
 }

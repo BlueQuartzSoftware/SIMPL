@@ -1011,7 +1011,7 @@ QString CreateGeometry::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void CreateGeometry::setGeometryType(const int& value)
+void CreateGeometry::setGeometryType(int value)
 {
   m_GeometryType = value;
 }
@@ -1395,7 +1395,7 @@ QString CreateGeometry::getHexCellAttributeMatrixName() const
 }
 
 // -----------------------------------------------------------------------------
-void CreateGeometry::setTreatWarningsAsErrors(const bool& value)
+void CreateGeometry::setTreatWarningsAsErrors(bool value)
 {
   m_TreatWarningsAsErrors = value;
 }
@@ -1407,7 +1407,7 @@ bool CreateGeometry::getTreatWarningsAsErrors() const
 }
 
 // -----------------------------------------------------------------------------
-void CreateGeometry::setArrayHandling(const bool& value)
+void CreateGeometry::setArrayHandling(bool value)
 {
   m_ArrayHandling = value;
 }

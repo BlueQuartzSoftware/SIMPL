@@ -111,7 +111,7 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
     /**
      * @brief Setter property for ApplyToVoxelVolume
      */
-    void setApplyToVoxelVolume(const bool& value);
+    void setApplyToVoxelVolume(bool value);
     /**
      * @brief Getter property for ApplyToVoxelVolume
      * @return Value of ApplyToVoxelVolume
@@ -123,7 +123,7 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
     /**
      * @brief Setter property for ApplyToSurfaceMesh
      */
-    void setApplyToSurfaceMesh(const bool& value);
+    void setApplyToSurfaceMesh(bool value);
     /**
      * @brief Getter property for ApplyToSurfaceMesh
      * @return Value of ApplyToSurfaceMesh

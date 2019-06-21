@@ -137,7 +137,7 @@ QString FilterStatusMessage::getHumanLabel() const
 }
 
 // -----------------------------------------------------------------------------
-void FilterStatusMessage::setPipelineIndex(const int& value)
+void FilterStatusMessage::setPipelineIndex(int value)
 {
   m_PipelineIndex = value;
 }

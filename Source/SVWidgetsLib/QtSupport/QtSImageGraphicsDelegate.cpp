@@ -373,7 +373,7 @@ QImage QtSImageGraphicsDelegate::getOverlayImage() const
 }
 
 // -----------------------------------------------------------------------------
-void QtSImageGraphicsDelegate::setCompositeImages(const bool& value)
+void QtSImageGraphicsDelegate::setCompositeImages(bool value)
 {
   m_CompositeImages = value;
 }

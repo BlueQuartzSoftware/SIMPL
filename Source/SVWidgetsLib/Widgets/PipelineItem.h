@@ -62,7 +62,7 @@ class SVWidgetsLib_EXPORT PipelineItem
     /**
      * @brief Setter property for FilterEnabled
      */
-    void setFilterEnabled(const bool& value);
+    void setFilterEnabled(bool value);
     /**
      * @brief Getter property for FilterEnabled
      * @return Value of FilterEnabled
@@ -88,7 +88,7 @@ class SVWidgetsLib_EXPORT PipelineItem
     /**
      * @brief Setter property for Expanded
      */
-    void setExpanded(const bool& value);
+    void setExpanded(bool value);
     /**
      * @brief Getter property for Expanded
      * @return Value of Expanded
@@ -118,7 +118,7 @@ class SVWidgetsLib_EXPORT PipelineItem
     /**
      * @brief Setter property for BorderSize
      */
-    void setBorderSize(const int& value);
+    void setBorderSize(int value);
     /**
      * @brief Getter property for BorderSize
      * @return Value of BorderSize
@@ -138,7 +138,7 @@ class SVWidgetsLib_EXPORT PipelineItem
     /**
      * @brief Setter property for Height
      */
-    void setHeight(const int& value);
+    void setHeight(int value);
     /**
      * @brief Getter property for Height
      * @return Value of Height
@@ -148,7 +148,7 @@ class SVWidgetsLib_EXPORT PipelineItem
     /**
      * @brief Setter property for Width
      */
-    void setWidth(const int& value);
+    void setWidth(int value);
     /**
      * @brief Getter property for Width
      * @return Value of Width
@@ -158,7 +158,7 @@ class SVWidgetsLib_EXPORT PipelineItem
     /**
      * @brief Setter property for XOffset
      */
-    void setXOffset(const int& value);
+    void setXOffset(int value);
     /**
      * @brief Getter property for XOffset
      * @return Value of XOffset
@@ -168,7 +168,7 @@ class SVWidgetsLib_EXPORT PipelineItem
     /**
      * @brief Setter property for YOffset
      */
-    void setYOffset(const int& value);
+    void setYOffset(int value);
     /**
      * @brief Getter property for YOffset
      * @return Value of YOffset

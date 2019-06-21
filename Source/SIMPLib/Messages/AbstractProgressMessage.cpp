@@ -60,7 +60,7 @@ QString AbstractProgressMessage::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void AbstractProgressMessage::setProgressValue(const int& value)
+void AbstractProgressMessage::setProgressValue(int value)
 {
   m_ProgressValue = value;
 }

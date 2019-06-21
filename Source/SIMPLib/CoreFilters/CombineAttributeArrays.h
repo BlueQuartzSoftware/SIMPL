@@ -109,7 +109,7 @@ public:
   /**
    * @brief Setter property for NormalizeData
    */
-  void setNormalizeData(const bool& value);
+  void setNormalizeData(bool value);
   /**
    * @brief Getter property for NormalizeData
    * @return Value of NormalizeData
@@ -121,7 +121,7 @@ public:
   /**
    * @brief Setter property for MoveValues
    */
-  void setMoveValues(const bool& value);
+  void setMoveValues(bool value);
   /**
    * @brief Getter property for MoveValues
    * @return Value of MoveValues

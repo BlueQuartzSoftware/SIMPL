@@ -1878,7 +1878,7 @@ QColor SVStyle::getQTreeViewItem_error_color() const
 }
 
 // -----------------------------------------------------------------------------
-void SVStyle::setQTreeViewItem_font_size(const int& value)
+void SVStyle::setQTreeViewItem_font_size(int value)
 {
   m_QTreeViewItem_font_size = value;
 }

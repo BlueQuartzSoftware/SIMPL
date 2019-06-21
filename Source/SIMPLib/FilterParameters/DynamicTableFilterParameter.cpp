@@ -161,7 +161,7 @@ DynamicTableData DynamicTableFilterParameter::getDefaultTableData() const
 }
 
 // -----------------------------------------------------------------------------
-void DynamicTableFilterParameter::setErrorCondition(const int& value)
+void DynamicTableFilterParameter::setErrorCondition(int value)
 {
   m_ErrorCondition = value;
 }

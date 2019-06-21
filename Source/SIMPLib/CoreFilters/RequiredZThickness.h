@@ -97,7 +97,7 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
     /**
      * @brief Setter property for NumZVoxels
      */
-    void setNumZVoxels(const int& value);
+    void setNumZVoxels(int value);
     /**
      * @brief Getter property for NumZVoxels
      * @return Value of NumZVoxels
@@ -109,7 +109,7 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
     /**
      * @brief Setter property for PreflightCheck
      */
-    void setPreflightCheck(const bool& value);
+    void setPreflightCheck(bool value);
     /**
      * @brief Getter property for PreflightCheck
      * @return Value of PreflightCheck

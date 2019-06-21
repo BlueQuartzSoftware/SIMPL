@@ -152,7 +152,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     /**
      * @brief Setter property for ScalarType
      */
-    void setScalarType(const SIMPL::ScalarTypes::Type& value);
+    void setScalarType(SIMPL::ScalarTypes::Type value);
     /**
      * @brief Getter property for ScalarType
      * @return Value of ScalarType

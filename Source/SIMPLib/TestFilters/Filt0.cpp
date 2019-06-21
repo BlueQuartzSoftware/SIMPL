@@ -157,7 +157,7 @@ QString Filt0::getCellAttributeMatrixName() const
 }
 
 // -----------------------------------------------------------------------------
-void Filt0::setFilt0_Float(const float& value)
+void Filt0::setFilt0_Float(float value)
 {
   m_Filt0_Float = value;
 }
@@ -169,7 +169,7 @@ float Filt0::getFilt0_Float() const
 }
 
 // -----------------------------------------------------------------------------
-void Filt0::setFilt0_Integer(const int32_t& value)
+void Filt0::setFilt0_Integer(int32_t value)
 {
   m_Filt0_Integer = value;
 }

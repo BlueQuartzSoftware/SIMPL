@@ -83,7 +83,7 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
     /**
      * @brief Setter property for ScalarType
      */
-    void setScalarType(const SIMPL::NumericTypes::Type& value);
+    void setScalarType(SIMPL::NumericTypes::Type value);
     /**
      * @brief Getter property for ScalarType
      * @return Value of ScalarType

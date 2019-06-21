@@ -404,7 +404,7 @@ DataArrayPath ConditionalSetValue::getConditionalArrayPath() const
 }
 
 // -----------------------------------------------------------------------------
-void ConditionalSetValue::setReplaceValue(const double& value)
+void ConditionalSetValue::setReplaceValue(double value)
 {
   m_ReplaceValue = value;
 }
