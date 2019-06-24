@@ -61,9 +61,7 @@ class DummyObserver : public Observer
 public:
   DummyObserver() = default;
   ~DummyObserver() override = default;
-  /**
-   * @brief Returns the name of the class for DummyObserver
-   */
+
   /**
    * @brief Returns the name of the class for DummyObserver
    */

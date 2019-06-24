@@ -56,9 +56,7 @@ class MultiThresholdObjects2Test
 public:
   MultiThresholdObjects2Test() = default;
   virtual ~MultiThresholdObjects2Test() = default;
-  /**
-   * @brief Returns the name of the class for MultiThresholdObjects2Test
-   */
+
   /**
    * @brief Returns the name of the class for MultiThresholdObjects2Test
    */

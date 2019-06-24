@@ -35,32 +35,32 @@
 #include "SIMPLib/SIMPLib.h"
 
 /**
- * @brief The TESTCLASSNAME class. See [Filter documentation](@ref TESTCLASSNAME) for details.
+ * @brief The FilterGroup00 class. See [Filter documentation](@ref FilterGroup00) for details.
  */
-class TESTCLASSNAME : public AbstractFilter
+class FilterGroup00 : public AbstractFilter
 {
   Q_OBJECT
 
 public:
-  using Self = TESTCLASSNAME;
+  using Self = FilterGroup00;
   using Pointer = std::shared_ptr<Self>;
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
   using ConstWeakPointer = std::weak_ptr<Self>;
   static Pointer NullPointer();
 
-  static std::shared_ptr<TESTCLASSNAME> New();
+  static std::shared_ptr<FilterGroup00> New();
 
   /**
-   * @brief Returns the name of the class for TESTCLASSNAME
+   * @brief Returns the name of the class for FilterGroup00
    */
   const QString getNameOfClass() const override;
   /**
-   * @brief Returns the name of the class for TESTCLASSNAME
+   * @brief Returns the name of the class for FilterGroup00
    */
   static QString ClassName();
 
-  ~TESTCLASSNAME() override;
+  ~FilterGroup00() override;
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -146,7 +146,7 @@ signals:
   void preflightExecuted();
 
 protected:
-  TESTCLASSNAME();
+  FilterGroup00();
 
   /**
   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
@@ -159,7 +159,7 @@ protected:
   void initialize();
 
 private:
-  TESTCLASSNAME(const TESTCLASSNAME&) = delete;  // Copy Constructor Not Implemented
-  void operator=(const TESTCLASSNAME&) = delete; // Move assignment Not Implemented
+  FilterGroup00(const FilterGroup00&) = delete;  // Copy Constructor Not Implemented
+  void operator=(const FilterGroup00&) = delete; // Move assignment Not Implemented
 };
 

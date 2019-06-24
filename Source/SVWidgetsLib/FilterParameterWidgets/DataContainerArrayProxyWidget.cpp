@@ -43,7 +43,6 @@
 #include <QtCore/QDebug>
 
 #include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
