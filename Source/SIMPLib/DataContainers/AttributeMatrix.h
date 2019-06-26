@@ -86,7 +86,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureC
 {
   // clang-format off
   PYB11_CREATE_BINDINGS(AttributeMatrix)
-  PYB11_STATIC_CREATION(Create ARGS std::vector<size_t> QString AttributeMatrix::Type)
+  PYB11_STATIC_CREATION(New ARGS std::vector<size_t> QString AttributeMatrix::Type)
   
   PYB11_ENUMERATION(Type)
   PYB11_ENUMERATION(Category)

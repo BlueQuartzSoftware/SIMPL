@@ -38,7 +38,7 @@ def CreateAttributeMatrix(dims, name, type):
     name -- The name of the AttributeMatrix
     type -- the type of the AttributeMatrix
     """
-    am = simpl.AttributeMatrix.Create(dims, name, type)
+    am = simpl.AttributeMatrix.New(dims, name, type)
     return am
 
 
@@ -132,7 +132,7 @@ def ConvertToDataArray(name, array, componentDimensions = 1):
     # Get shape
     shape = array.shape
     # Determine cDims
-    cDims = simpl.VectorSizeT([componentDimensions])  # Default is 1
+    cDims = simpl.Dims([componentDimensions])  # Default is 1
 
     # Determine type
     type = array.dtype

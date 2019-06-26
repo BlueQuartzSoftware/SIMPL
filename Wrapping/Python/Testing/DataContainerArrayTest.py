@@ -32,8 +32,8 @@ def AttributeMatrixAccessTest():
     dca.addOrReplaceDataContainer(dc)
     
     amType = simpl.AttributeMatrix.Type.Cell
-    tupleDims = simpl.VectorSizeT([5,4,3])
-    am = simpl.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
+    tupleDims = simpl.Dims([5,4,3])
+    am = simpl.AttributeMatrix.New(tupleDims, "CellAttributeMatrix", amType)
     dc.addOrReplaceAttributeMatrix(am)
 
     # See if we can get the AttributeMatrix based on a DataArrayPath object
