@@ -50,7 +50,7 @@ NumericTypeFilterParameter::~NumericTypeFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 NumericTypeFilterParameter::Pointer NumericTypeFilterParameter::New(const QString& humanLabel, const QString& propertyName, SIMPL::NumericTypes::Type defaultValue, Category category,
-                                                                                  SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+                                                                                  const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
   NumericTypeFilterParameter::Pointer ptr = NumericTypeFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

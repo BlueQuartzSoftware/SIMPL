@@ -42,6 +42,7 @@
 #include <QtWidgets/QApplication>
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetUtils.hpp"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
@@ -272,6 +273,19 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
 }
 
 // -----------------------------------------------------------------------------
+template <typename T>
+bool vectorContains(const std::vector<std::vector<T>>& container, const std::vector<T>& comparison)
+{
+  for(const auto& value : container)
+  {
+    if(value == comparison)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+// -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter, const DataArrayPath& path, const DataArraySelectionFilterParameter::RequirementType& reqs)
@@ -341,12 +355,8 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
     return false;
   }
 
-  if(!reqs.componentDimensions.empty() && !reqs.componentDimensions.contains(da->getComponentDimensions()))
-  {
-    return false;
-  }
-
-  return true;
+  bool b = !FilterParameterWidgetUtils::VectorContains<size_t>(reqs.componentDimensions, da->getComponentDimensions());
+  return !(!reqs.componentDimensions.empty() && !b);
 }
 
 // -----------------------------------------------------------------------------
@@ -601,7 +611,7 @@ QString DataArrayPathSelectionWidget::createDataArrayTypeString(QVector<QString>
   }
   else
   {
-    for(QString type : daTypes)
+    for(const QString& type : daTypes)
     {
       reqStr += "<td>" + type + "</td>";
     }
@@ -614,7 +624,7 @@ QString DataArrayPathSelectionWidget::createDataArrayTypeString(QVector<QString>
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPathSelectionWidget::createComponentReqString(QVector<QVector<size_t>> comps) const
+QString DataArrayPathSelectionWidget::createComponentReqString(std::vector<std::vector<size_t>> comps) const
 {
   QString reqStr = "<tr><td><i>Required Component Size:</i></td>";
   if(comps.empty())
@@ -623,7 +633,7 @@ QString DataArrayPathSelectionWidget::createComponentReqString(QVector<QVector<s
   }
   else
   {
-    for(QVector<size_t> comp : comps)
+    for(const std::vector<size_t>& comp : comps)
     {
       reqStr += "<td>[";
 

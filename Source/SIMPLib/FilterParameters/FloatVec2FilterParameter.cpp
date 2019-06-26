@@ -47,7 +47,7 @@ FloatVec2FilterParameter::~FloatVec2FilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 FloatVec2FilterParameter::Pointer FloatVec2FilterParameter::New(const QString& humanLabel, const QString& propertyName, const FloatVec2Type& defaultValue, Category category,
-                                                                SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+                                                                const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
   FloatVec2FilterParameter::Pointer ptr = FloatVec2FilterParameter::New();

@@ -966,7 +966,7 @@ std::tuple<herr_t, QString> ImportHDF5DatasetWidget::bestGuessCDims(const QStrin
   AttributeMatrix::Pointer am = m_Filter->getDataContainerArray()->getAttributeMatrix(amPath);
   if(am != nullptr)
   {
-    QVector<size_t> amTupleDims = am->getTupleDimensions();
+    std::vector<size_t> amTupleDims = am->getTupleDimensions();
     int fileDimsSize = fileDims.size();
 
     //      // Calculate the prime factors of the attribute matrix tuple dimensions

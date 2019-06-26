@@ -169,7 +169,7 @@ class FilterParameterWidgetUtils
       DataContainerArrayProxy::StorageType& dcMap = dcaProxy.getDataContainers();
 
       QVector<QString> daTypes = fp->getDefaultAttributeArrayTypes();
-      QVector< QVector<size_t> > cDims = fp->getDefaultComponentDimensions();
+      std::vector<std::vector<size_t>> cDims = fp->getDefaultComponentDimensions();
       for(auto& dc : dcMap)
       {
         if(dc.getName() == currentDCName)
@@ -191,7 +191,7 @@ class FilterParameterWidgetUtils
                 IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(nullptr, DataArrayPath(dc.getName(), amProxy.getName(), daName));
                 aaCombo->addItem(daName);
 
-                if(nullptr != da.get() && ((!daTypes.isEmpty() && !daTypes.contains(da->getTypeAsString())) || (!cDims.isEmpty() && !cDims.contains(da->getComponentDimensions()))))
+                if(nullptr != da.get() && ((!daTypes.isEmpty() && !daTypes.contains(da->getTypeAsString())) || (!cDims.empty() && !VectorContains<size_t>(cDims, da->getComponentDimensions()))))
                 {
                   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(aaCombo->model());
                   if (nullptr != model)
@@ -216,7 +216,20 @@ class FilterParameterWidgetUtils
       }
     }
 
-
+    // -----------------------------------------------------------------------------
+    template <typename T>
+    static bool VectorContains(const std::vector<std::vector<T>>& container, const std::vector<T>& comparison)
+    {
+      auto pos = std::find(container.begin(), container.end(), comparison);
+      return (pos != container.end());
+    }
+    // -----------------------------------------------------------------------------
+    template <typename T>
+    static bool VectorContains(std::vector<std::vector<T>>& container, const std::vector<T>& comparison)
+    {
+      auto pos = std::find(container.begin(), container.end(), comparison);
+      return (pos != container.end());
+    }
     /**
      * @brief PopulateAttributeArrayList This method populates a QListWidget with
      * items representing AttributeArrays
@@ -249,7 +262,7 @@ class FilterParameterWidgetUtils
       DataContainerArrayProxy::StorageType& dcMap = dcaProxy.getDataContainers();
 
       QVector<QString> daTypes = fp->getDefaultAttributeArrayTypes();
-      QVector< QVector<size_t> > cDims = fp->getDefaultComponentDimensions();
+      QVector< std::vector<size_t> > cDims = fp->getDefaultComponentDimensions();
       for(auto& dc : dcMap)
       {
         if(dc.getName() == currentDCName)

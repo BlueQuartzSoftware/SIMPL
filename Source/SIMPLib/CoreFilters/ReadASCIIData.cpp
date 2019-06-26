@@ -74,7 +74,7 @@ void ReadASCIIData::readFilterParameters(AbstractFilterParametersReader* reader,
   data.automaticAM = reader->readValue(prefix + "AutomaticAM", false);
 
   QVector<uint64_t> tmpVec;
-  QVector<size_t> tDims;
+  std::vector<size_t> tDims;
   tmpVec = reader->readArray(prefix + "TupleDims", QVector<uint64_t>());
   for(uint64_t i : tmpVec)
   {
@@ -143,7 +143,7 @@ void ReadASCIIData::readFilterParameters(QJsonObject& obj)
 
   {
     QJsonArray jsonArray = obj[prefix + "TupleDims"].toArray();
-    QVector<size_t> tupleDims;
+    std::vector<size_t> tupleDims;
     for(int i = 0, total = jsonArray.size(); i < total; ++i)
     {
       tupleDims.push_back(static_cast<size_t>(jsonArray[i].toInt()));
@@ -257,8 +257,8 @@ void ReadASCIIData::dataCheck()
   QStringList dataTypes = wizardData.dataTypes;
   bool automaticAM = wizardData.automaticAM;
   DataArrayPath selectedPath = wizardData.selectedPath;
-  QVector<size_t> tDims = wizardData.tupleDims;
-  QVector<size_t> cDims(1, 1);
+  std::vector<size_t> tDims = wizardData.tupleDims;
+  std::vector<size_t> cDims(1, 1);
 
   QFileInfo fi(inputFilePath);
   if(inputFilePath.isEmpty())

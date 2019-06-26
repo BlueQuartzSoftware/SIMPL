@@ -54,19 +54,16 @@
 template <typename T, typename K, typename ItkOutPixelType> class Dream3DToItkImageConversion
 {
 public:
-  Dream3DToItkImageConversion()
-  {
-  }
-  virtual ~Dream3DToItkImageConversion()
-  {
-  }
+  Dream3DToItkImageConversion() = default;
+
+  virtual ~Dream3DToItkImageConversion() = default;
 
   /// Itk ImportImage Filter Types
-  typedef itk::ImportImageFilter<K, ImageProcessingConstants::ImageDimension> ItkImportImageFilterType;
-  typedef typename ItkImportImageFilterType::Pointer ItkImportImageFilterPointerType;
+  using ItkImportImageFilterType = itk::ImportImageFilter<K, ImageProcessingConstants::ImageDimension>;
+  using ItkImportImageFilterPointerType = typename ItkImportImageFilterType::Pointer;
 
-  typedef typename itk::Image<ItkOutPixelType, ImageProcessingConstants::ImageDimension> ItkImageOutType; // 3D RGB Image
-  typedef typename ItkImageOutType::Pointer ItkImageOutPointerType;
+  using ItkImageOutType = typename itk::Image<ItkOutPixelType, ImageProcessingConstants::ImageDimension>; // 3D RGB Image
+  using ItkImageOutPointerType = typename ItkImageOutType::Pointer;
 
   /**
    * @brief operator ()
@@ -80,7 +77,7 @@ public:
     AttributeMatrix::Pointer attrMat = m->getAttributeMatrix(attrMatName);
 
     // get size+dimensions of dataset
-    QVector<size_t> udims = attrMat->getTupleDimensions();
+    std::vector<size_t> udims = attrMat->getTupleDimensions();
     size_t totalPoints = attrMat->getNumberOfTuples();
 
     // create and setup import filter
@@ -157,7 +154,7 @@ class ItkBridge2
       AttributeMatrix::Pointer attrMat = m->getAttributeMatrix(attrMatName);
 
       //get size+dimensions of dataset
-      QVector<size_t> udims = attrMat->getTupleDimensions();
+      std::vector<size_t> udims = attrMat->getTupleDimensions();
       size_t totalPoints = attrMat->getNumberOfTuples();
 
       //create and setup import filter
@@ -223,7 +220,7 @@ public:
     AttributeMatrix::Pointer attrMat = m->getAttributeMatrix(attrMatName);
 
     // get size+dimensions of dataset
-    QVector<size_t> udims = attrMat->getTupleDimensions();
+    std::vector<size_t> udims = attrMat->getTupleDimensions();
     size_t totalPoints = attrMat->getNumberOfTuples();
 
     // create and setup import filter
@@ -327,7 +324,7 @@ public:
     AttributeMatrix::Pointer attrMat = m->getAttributeMatrix(attrMatName);
 
     // get size+dimensions of dataset
-    QVector<size_t> udims = attrMat->getTupleDimensions();
+    std::vector<size_t> udims = attrMat->getTupleDimensions();
     size_t totalPoints = attrMat->getNumberOfTuples();
 
     // create and setup import filter

@@ -53,7 +53,7 @@ InputFileFilterParameter::~InputFileFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 InputFileFilterParameter::Pointer InputFileFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                SetterCallbackType setterCallback, GetterCallbackType getterCallback, const QString& fileExtension, const QString& fileType,
+                                                                const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const QString& fileExtension, const QString& fileType,
                                                                 int groupIndex)
 {
   InputFileFilterParameter::Pointer ptr = InputFileFilterParameter::New();

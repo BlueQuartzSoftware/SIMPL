@@ -54,7 +54,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
     PYB11_PROPERTY(QString InfixEquation READ getInfixEquation WRITE setInfixEquation)
     PYB11_PROPERTY(DataArrayPath CalculatedArray READ getCalculatedArray WRITE setCalculatedArray)
-    PYB11_PROPERTY(AngleUnits Units READ getUnits WRITE setUnits)
+    PYB11_PROPERTY(ArrayCalculator::AngleUnits Units READ getUnits WRITE setUnits)
     PYB11_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
   public:

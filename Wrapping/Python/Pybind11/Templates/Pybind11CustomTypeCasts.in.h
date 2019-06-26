@@ -186,7 +186,7 @@ public:
       }
       value.dataHeaders = dataHeaders;
       value.attrMatType = py::cast<int>(awdDict["attrMatType"]);
-      QVector<size_t> tupleDims;
+      std::vector<size_t> tupleDims;
       for(auto tupleDim : awdDict["tupleDimensions"])
       {
         tupleDims.push_back(py::cast<size_t>(tupleDim));

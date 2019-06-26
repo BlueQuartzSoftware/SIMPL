@@ -98,7 +98,7 @@ int GeomIO::WriteListToHDF5(hid_t parentId, const IDataArray::Pointer& list)
   {
     return err;
   }
-  QVector<size_t> tDims(1, list->getNumberOfTuples());
+  std::vector<size_t> tDims(1, list->getNumberOfTuples());
   err = list->writeH5Data(parentId, tDims);
   return err;
 }

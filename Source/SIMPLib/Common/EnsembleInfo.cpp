@@ -200,7 +200,7 @@ void EnsembleInfo::setPhaseName(size_t index, QString phaseName)
 // -----------------------------------------------------------------------------
 void EnsembleInfo::remove(size_t index)
 {
-  QVector<size_t> indexVec;
+  std::vector<size_t> indexVec;
   indexVec.push_back(index);
   m_CrystalStructures.erase(m_CrystalStructures.begin() + index);
   m_PhaseTypes.erase(m_PhaseTypes.begin() + index);

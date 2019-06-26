@@ -93,8 +93,8 @@ public:
 
         DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-        AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(QVector<size_t>(1, 16), "Cell Attribute Matrix", AttributeMatrix::Type::Cell);
-        AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(QVector<size_t>(1, 5), "Feature Attribute Matrix", AttributeMatrix::Type::Cell);
+        AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(std::vector<size_t>(1, 16), "Cell Attribute Matrix", AttributeMatrix::Type::Cell);
+        AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(std::vector<size_t>(1, 5), "Feature Attribute Matrix", AttributeMatrix::Type::Cell);
 
         DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, "FeatureIds");
         size_t numTuples = featureIds->getNumberOfTuples();
@@ -183,8 +183,8 @@ public:
 
         DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-        AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(QVector<size_t>(1, 16), "Cell Attribute Matrix", AttributeMatrix::Type::Cell);
-        AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(QVector<size_t>(1, 5), "Feature Attribute Matrix", AttributeMatrix::Type::Cell);
+        AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(std::vector<size_t>(1, 16), "Cell Attribute Matrix", AttributeMatrix::Type::Cell);
+        AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(std::vector<size_t>(1, 5), "Feature Attribute Matrix", AttributeMatrix::Type::Cell);
 
         DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, "FeatureIds");
         size_t numTuples = featureIds->getNumberOfTuples();
@@ -213,7 +213,7 @@ public:
         featureIds->initializeTuple(14, &value);
         featureIds->initializeTuple(15, &value);
 
-        QVector<size_t> cDims = QVector<size_t>(1, 3);
+        std::vector<size_t> cDims = std::vector<size_t>(1, 3);
         DataArray<float>::Pointer cellDataArray = DataArray<float>::CreateArray(16, cDims, "CellData");
         numTuples = cellDataArray->getNumberOfTuples();
         for(size_t i = 0; i < numTuples; i++)
@@ -274,8 +274,8 @@ public:
 
         DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-        AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(QVector<size_t>(1, 16), "Cell Attribute Matrix", AttributeMatrix::Type::Cell);
-        AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(QVector<size_t>(1, 5), "Feature Attribute Matrix", AttributeMatrix::Type::Cell);
+        AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(std::vector<size_t>(1, 16), "Cell Attribute Matrix", AttributeMatrix::Type::Cell);
+        AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(std::vector<size_t>(1, 5), "Feature Attribute Matrix", AttributeMatrix::Type::Cell);
 
         DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, "FeatureIds");
         int32_t value = 1;

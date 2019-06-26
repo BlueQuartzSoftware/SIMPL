@@ -119,7 +119,7 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
 
   QList<QString> dataArrayNames;
   QH5Utilities::getGroupObjects(attrMatGid, H5Utilities::H5Support_DATASET | H5Utilities::H5Support_GROUP, dataArrayNames);
-  foreach(QString dataArrayName, dataArrayNames)
+  for(const auto& dataArrayName : dataArrayNames)
   {
     DataArrayProxy proxy(h5InternalPath, dataArrayName, SIMPL::Unchecked);
 
@@ -138,10 +138,20 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
     bool cDimsResult = false;
     if(req != nullptr)
     {
-      QVector<QVector<size_t>> cDims = req->getComponentDimensions();
-      if(cDims.empty() || cDims.contains(proxy.m_CompDims))
+      std::vector<std::vector<size_t>> cDims = req->getComponentDimensions();
+      if(cDims.empty())
       {
         cDimsResult = true;
+      }
+      if(!cDimsResult)
+      {
+        for(const auto& cDim : cDims)
+        {
+          if(cDim == proxy.m_CompDims)
+          {
+            cDimsResult = true;
+          }
+        }
       }
     }
 
@@ -187,7 +197,7 @@ bool DataArrayProxy::operator==(const DataArrayProxy& rhs) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QJsonArray DataArrayProxy::writeVector(QVector<size_t> vector) const
+QJsonArray DataArrayProxy::writeVector(const std::vector<size_t>& vector) const
 {
   QJsonArray jsonArray;
   for(const auto& num : vector)
@@ -200,9 +210,9 @@ QJsonArray DataArrayProxy::writeVector(QVector<size_t> vector) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<size_t> DataArrayProxy::readVector(QJsonArray jsonArray)
+std::vector<size_t> DataArrayProxy::readVector(QJsonArray jsonArray)
 {
-  QVector<size_t> vector;
+  std::vector<size_t> vector;
   for(const auto& val : jsonArray)
   {
     if(val.isDouble())
@@ -377,7 +387,7 @@ QString DataArrayProxy::getObjectType() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayProxy::setTupleDims(const QVector<size_t>& tDims)
+void DataArrayProxy::setTupleDims(const std::vector<size_t>& tDims)
 {
   m_TupleDims = tDims;
 }
@@ -385,7 +395,7 @@ void DataArrayProxy::setTupleDims(const QVector<size_t>& tDims)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<size_t> DataArrayProxy::getTupleDims() const
+std::vector<size_t> DataArrayProxy::getTupleDims() const
 {
   return m_TupleDims;
 }
@@ -393,7 +403,7 @@ QVector<size_t> DataArrayProxy::getTupleDims() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayProxy::setCompDims(const QVector<size_t>& cDims)
+void DataArrayProxy::setCompDims(const std::vector<size_t>& cDims)
 {
   m_CompDims = cDims;
 }
@@ -401,7 +411,7 @@ void DataArrayProxy::setCompDims(const QVector<size_t>& cDims)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<size_t> DataArrayProxy::getCompDims() const
+std::vector<size_t> DataArrayProxy::getCompDims() const
 {
   return m_CompDims;
 }

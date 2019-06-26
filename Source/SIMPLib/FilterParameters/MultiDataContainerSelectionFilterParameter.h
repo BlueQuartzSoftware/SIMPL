@@ -74,13 +74,13 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
     using SetterCallbackType = std::function<void(QStringList)>;
     using GetterCallbackType = std::function<QStringList(void)>;
 
-    typedef struct
+    using RequirementType = struct
     {
       IGeometry::Types dcGeometryTypes;
       AttributeMatrix::Types amTypes;
       QVector<QString> daTypes;
-      QVector<QVector<size_t>> componentDimensions;
-    } RequirementType;
+      std::vector<std::vector<size_t>> componentDimensions;
+    };
 
     /**
      * @brief New This function instantiates an instance of the MultiDataContainerSelectionFilterParameter.  Specifying a RequirementType will
@@ -155,7 +155,7 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
     SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<AttributeMatrix::Type>, DefaultAttributeMatrixTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<QString>, DefaultAttributeArrayTypes)
-    SIMPL_INSTANCE_PROPERTY(QVector< QVector<size_t> >, DefaultComponentDimensions)
+    SIMPL_INSTANCE_PROPERTY(std::vector<std::vector<size_t>>, DefaultComponentDimensions)
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property

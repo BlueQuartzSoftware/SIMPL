@@ -47,7 +47,7 @@ class SIMPLib_EXPORT ImportHDF5Dataset : public AbstractFilter
   PYB11_CREATE_BINDINGS(ImportHDF5Dataset SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
   PYB11_PROPERTY(QString HDF5Dimensions READ getHDF5Dimensions)
-  PYB11_PROPERTY(QList<DatasetImportInfo> DatasetImportInfoList READ getDatasetImportInfoList WRITE setDatasetImportInfoList)
+  PYB11_PROPERTY(QList<ImportHDF5Dataset::DatasetImportInfo> DatasetImportInfoList READ getDatasetImportInfoList WRITE setDatasetImportInfoList)
   PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
 
 public:
@@ -188,13 +188,13 @@ protected:
 private:
   QString m_HDF5Dimensions = "";
 
-  IDataArray::Pointer readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, QVector<size_t> cDims, bool metaDataOnly);
+  IDataArray::Pointer readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, std::vector<size_t> cDims, bool metaDataOnly);
 
   /**
    * @brief createComponentDimensions
    * @return
    */
-  QVector<size_t> createComponentDimensions(const QString& cDimsStr);
+  std::vector<size_t> createComponentDimensions(const QString& cDimsStr);
 
 public:
   ImportHDF5Dataset(const ImportHDF5Dataset&) = delete;            // Copy Constructor Not Implemented

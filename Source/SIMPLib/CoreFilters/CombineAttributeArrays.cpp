@@ -285,7 +285,7 @@ void CombineAttributeArrays::dataCheck()
     return;
   }
 
-  QVector<size_t> cDims(1, totalComps);
+  std::vector<size_t> cDims(1, totalComps);
 
   DataArrayPath tempPath(getSelectedDataArrayPaths()[0].getDataContainerName(), getSelectedDataArrayPaths()[0].getAttributeMatrixName(), getStackedDataArrayName());
   m_StackedDataPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_SelectedWeakPtrVector[0].lock(), CombinedArrayID);

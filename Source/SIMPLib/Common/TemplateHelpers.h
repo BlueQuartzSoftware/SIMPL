@@ -36,6 +36,7 @@
 
 //-- C++11 Includes
 #include <memory>
+#include <vector>
 
 #include <QtCore/QString>
 
@@ -230,7 +231,8 @@ public:
    * @param sourceArrayType
    * @return
    */
-  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType, RenameDataPath::DataID_t = RenameDataPath::k_Invalid_ID);
+  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const std::vector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType,
+                             RenameDataPath::DataID_t = RenameDataPath::k_Invalid_ID);
 };
 
 /**
@@ -256,7 +258,8 @@ public:
    * @param initValue
    * @return
    */
-  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, int arrayType, double initValue, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
+  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const std::vector<size_t>& compDims, int arrayType, double initValue,
+                             RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
 };
 
 /**
@@ -273,7 +276,7 @@ public:
   CreateArrayFromArrayType& operator=(const CreateArrayFromArrayType&) = delete; // Copy Assignment Not Implemented
   CreateArrayFromArrayType& operator=(CreateArrayFromArrayType&&) = delete;      // Move Assignment Not Implemented
 
-  IDataArrayShPtr operator()(AbstractFilter* f, const size_t& numTuples, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const IDataArrayShPtr& sourceArrayType);
+  IDataArrayShPtr operator()(AbstractFilter* f, const size_t& numTuples, const std::vector<size_t>& compDims, const QString& arrayName, bool allocate, const IDataArrayShPtr& sourceArrayType);
 
   /**
    * @brief operator ()
@@ -285,7 +288,8 @@ public:
    * @param sourceArrayType
    * @return
    */
-  IDataArrayShPtr operator()(AbstractFilter* f, const QVector<size_t>& tupleDims, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const IDataArrayShPtr& sourceArrayType);
+  IDataArrayShPtr operator()(AbstractFilter* f, const std::vector<size_t>& tupleDims, const std::vector<size_t>& compDims, const QString& arrayName, bool allocate,
+                             const IDataArrayShPtr& sourceArrayType);
 };
 
 /**
@@ -312,7 +316,7 @@ public:
    * @param type
    * @return
    */
-  IDataArrayShPtr operator()(AbstractFilter* f, const size_t& numTuples, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type);
+  IDataArrayShPtr operator()(AbstractFilter* f, const size_t& numTuples, const std::vector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type);
 
   /**
    * @brief operator ()
@@ -324,7 +328,7 @@ public:
    * @param type
    * @return
    */
-  IDataArrayShPtr operator()(AbstractFilter* f, const QVector<size_t>& tupleDims, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type);
+  IDataArrayShPtr operator()(AbstractFilter* f, const std::vector<size_t>& tupleDims, const std::vector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type);
 };
 
 /**
@@ -347,7 +351,7 @@ public:
    * @param compDims
    * @return
    */
-  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, QVector<size_t>& compDims);
+  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, std::vector<size_t>& compDims);
   // Move assignment Not Implemented
 };
 

@@ -547,10 +547,7 @@ namespace H5Support_NAMESPACE
        * @return Standard HDF Error condition
        */
       template <typename T>
-      static herr_t readVectorAttribute(hid_t loc_id,
-                                        const QString& objName,
-                                        const QString& attrName,
-                                        QVector<T>& data)
+      static herr_t readVectorAttribute(hid_t loc_id, const QString& objName, const QString& attrName, std::vector<T>& data)
       {
 
         std::string objNameStr = objName.toStdString();
@@ -560,78 +557,6 @@ namespace H5Support_NAMESPACE
         data.resize(dataV.size());
         std::copy(dataV.begin(), dataV.end(), data.begin());
         return err;
-#if 0
-        /* identifiers */
-        hid_t      obj_id;
-        H5O_info_t statbuf;
-        herr_t err = 0;
-        herr_t retErr = 0;
-        hid_t attr_id;
-        hid_t tid;
-        T test = 0x00;
-        hid_t dataType = QH5Lite::HDFTypeForPrimitive(test);
-        if (dataType == -1)
-        {
-          return -1;
-        }
-        //qDebug() << "   Reading Vector Attribute at Path '" << objName << "' with Key: '" << attrName << "'";
-        /* Get the type of object */
-        err = H5Oget_info_by_name(loc_id, objName.toLatin1().data(),  &statbuf, H5P_DEFAULT);
-        if (err < 0)
-        { return err; }
-        /* Open the object */
-        obj_id = QH5Lite::openId( loc_id, objName, statbuf.type);
-        if ( obj_id >= 0)
-        {
-          attr_id = H5Aopen_by_name( loc_id, objName.toLatin1().data(), attrName.toLatin1().data(), H5P_DEFAULT, H5P_DEFAULT );
-          if ( attr_id >= 0 )
-          {
-            //Need to allocate the array size
-            H5T_class_t type_class;
-            size_t type_size;
-            QVector<hsize_t> dims;
-            err = QH5Lite::getAttributeInfo(loc_id, objName, attrName, dims, type_class, type_size, tid);
-            hsize_t numElements = 1;
-            for (QVector<hsize_t>::iterator iter = dims.begin(); iter < dims.end(); ++iter )
-            {
-              numElements *= *(iter);
-            }
-            //qDebug() << "    Vector Attribute has " << numElements << " elements.";
-            if (numElements > static_cast<hsize_t>(std::numeric_limits<qint32>::max() ) )
-            {
-              qDebug() << "Number of Elements in Array is larger than QVector can handle. Suggest using a std::vector<> instead";
-              err = -1000;
-            }
-            else
-            {
-              data.resize( static_cast<signed int>(numElements) );
-              err = H5Aread( attr_id, dataType, &(data.front()) );
-            }
-            if ( err < 0 )
-            {
-              qDebug() << "Error Reading Attribute." << err;
-              retErr = err;
-            }
-            err = H5Aclose( attr_id );
-            if ( err < 0 )
-            {
-              qDebug() << "Error Closing Attribute";
-              retErr = err;
-            }
-          }
-          else
-          {
-            retErr = attr_id;
-          }
-          err = QH5Lite::closeId( obj_id, statbuf.type );
-          if ( err < 0 )
-          {
-            qDebug() << "Error Closing Object";
-            retErr = err;
-          }
-        }
-        return retErr;
-#endif
       }
 
       /**
@@ -652,57 +577,6 @@ namespace H5Support_NAMESPACE
         std::string attrNameStr = attrName.toStdString();
         herr_t  err = H5Lite::readScalarAttribute(loc_id, objNameStr, attrNameStr, data);
         return err;
-#if 0
-        /* identifiers */
-        hid_t      obj_id;
-        H5O_info_t statbuf;
-        herr_t err = 0;
-        herr_t retErr = 0;
-        hid_t attr_id;
-        T test = static_cast<T>(0x00);
-        hid_t dataType = QH5Lite::HDFTypeForPrimitive(test);
-        if (dataType == -1)
-        {
-          return -1;
-        }
-        //qDebug() << "Reading Scalar style Attribute at Path '" << objName << "' with Key: '" << attrName << "'";
-        /* Get the type of object */
-        err = H5Oget_info_by_name(loc_id, objName.toLatin1().data(),  &statbuf, H5P_DEFAULT);
-        if (err < 0)
-        { return err; }
-        /* Open the object */
-        obj_id = QH5Lite::openId( loc_id, objName, statbuf.type);
-        if ( obj_id >= 0)
-        {
-          attr_id = H5Aopen_by_name( loc_id, objName.toLatin1().data(), attrName.toLatin1().data(), H5P_DEFAULT, H5P_DEFAULT );
-          if ( attr_id >= 0 )
-          {
-            err = H5Aread( attr_id, dataType, &data );
-            if ( err < 0 )
-            {
-              qDebug() << "Error Reading Attribute.";
-              retErr = err;
-            }
-            err = H5Aclose( attr_id );
-            if ( err < 0 )
-            {
-              qDebug() << "Error Closing Attribute";
-              retErr = err;
-            }
-          }
-          else
-          {
-            retErr = attr_id;
-          }
-          err = QH5Lite::closeId( obj_id, statbuf.type );
-          if ( err < 0 )
-          {
-            qDebug() << "Error Closing Object";
-            retErr = err;
-          }
-        }
-        return retErr;
-#endif
       }
 
       /**
@@ -723,57 +597,6 @@ namespace H5Support_NAMESPACE
         std::string attrNameStr = attrName.toStdString();
         herr_t  err = H5Lite::readPointerAttribute(loc_id, objNameStr, attrNameStr, data);
         return err;
-#if 0
-        /* identifiers */
-        hid_t      obj_id;
-        H5O_info_t statbuf;
-        herr_t err = 0;
-        herr_t retErr = 0;
-        hid_t attr_id;
-        T test = 0x00;
-        hid_t dataType = QH5Lite::HDFTypeForPrimitive(test);
-        if (dataType == -1)
-        {
-          return -1;
-        }
-        //qDebug() << "   Reading Vector Attribute at Path '" << objName << "' with Key: '" << attrName << "'";
-        /* Get the type of object */
-        err = H5Oget_info_by_name(loc_id, objName.toLatin1().data(),  &statbuf, H5P_DEFAULT);
-        if (err < 0)
-        { return err; }
-        /* Open the object */
-        obj_id = QH5Lite::openId( loc_id, objName, statbuf.type);
-        if ( obj_id >= 0)
-        {
-          attr_id = H5Aopen_by_name( loc_id, objName.toLatin1().data(), attrName.toLatin1().data(), H5P_DEFAULT, H5P_DEFAULT );
-          if ( attr_id >= 0 )
-          {
-            err = H5Aread( attr_id, dataType, data);
-            if ( err < 0 )
-            {
-              qDebug() << "Error Reading Attribute." << err;
-              retErr = err;
-            }
-            err = H5Aclose( attr_id );
-            if ( err < 0 )
-            {
-              qDebug() << "Error Closing Attribute";
-              retErr = err;
-            }
-          }
-          else
-          {
-            //retErr = attr_id;
-          }
-          err = QH5Lite::closeId( obj_id, statbuf.type );
-          if ( err < 0 )
-          {
-            qDebug() << "Error Closing Object";
-            retErr = err;
-          }
-        }
-        return retErr;
-#endif
       }
 
       /**

@@ -83,7 +83,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numElements, const QS
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, int rank, size_t* dims, const QString& name, bool allocate)
+StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, int rank, const size_t* dims, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {
@@ -102,7 +102,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, int rank, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, std::vector<size_t> cDims, const QString& name, bool allocate)
+StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, const std::vector<size_t>& cDims, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {
@@ -118,29 +118,11 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, std::vecto
   return ptr;
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, QVector<size_t> cDims, const QString& name, bool allocate)
-{
-  if(name.isEmpty())
-  {
-    return NullPointer();
-  }
-  StatsDataArray::Pointer ptr = StatsDataArray::New();
-  ptr->setName(name);
-  std::vector<PhaseType::Type> phase_types(numTuples, PhaseType::Type::Unknown);
-  if(allocate)
-  {
-    ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()));
-  }
-  return ptr;
-}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StatsDataArray::Pointer StatsDataArray::CreateArray(QVector<size_t> tDims, QVector<size_t> cDims, const QString& name, bool allocate)
+StatsDataArray::Pointer StatsDataArray::CreateArray(const std::vector<size_t>& tDims, const std::vector<size_t>& cDims, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {
@@ -165,7 +147,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(QVector<size_t> tDims, QVect
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate)
+IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate)
 {
   return StatsDataArray::NullPointer();
 }
@@ -173,15 +155,7 @@ IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, int rank,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate)
-{
-  return StatsDataArray::NullPointer();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate)
+IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate)
 {
   return StatsDataArray::NullPointer();
 }
@@ -253,9 +227,9 @@ int StatsDataArray::getNumberOfComponents()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<size_t> StatsDataArray::getComponentDimensions()
+std::vector<size_t> StatsDataArray::getComponentDimensions()
 {
-  QVector<size_t> dims(1, 1);
+  std::vector<size_t> dims = {1};
   return dims;
 }
 
@@ -270,7 +244,7 @@ size_t StatsDataArray::getTypeSize()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::eraseTuples(QVector<size_t>& idxs)
+int StatsDataArray::eraseTuples(std::vector<size_t>& idxs)
 {
   int err = 0;
 
@@ -288,9 +262,9 @@ int StatsDataArray::eraseTuples(QVector<size_t>& idxs)
 
   // Sanity Check the Indices in the vector to make sure we are not trying to remove any indices that are
   // off the end of the array and return an error code.
-  for(QVector<size_t>::size_type i = 0; i < idxs.size(); ++i)
+  for(const auto& idx : idxs)
   {
-    if(idxs[i] >= static_cast<size_t>(m_StatsDataArray.size()))
+    if(idx >= static_cast<size_t>(m_StatsDataArray.size()))
     {
       return -100;
     }
@@ -454,7 +428,7 @@ void StatsDataArray::printComponent(QTextStream& out, size_t i, int j)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::writeH5Data(hid_t parentId, QVector<size_t> tDims)
+int StatsDataArray::writeH5Data(hid_t parentId, std::vector<size_t> tDims)
 {
   herr_t err = 0;
   hid_t gid = QH5Utilities::createGroup(parentId, getName());
@@ -480,7 +454,7 @@ int StatsDataArray::writeH5Data(hid_t parentId, QVector<size_t> tDims)
     }
   }
 
-  QVector<size_t> cDims(1, 1);
+  std::vector<size_t> cDims(1, 1);
   err = H5DataArrayWriter::writeDataArrayAttributes<StatsDataArray>(parentId, this, tDims, cDims);
 
   return err;

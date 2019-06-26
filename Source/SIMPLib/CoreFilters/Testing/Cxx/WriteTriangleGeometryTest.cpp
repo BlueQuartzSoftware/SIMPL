@@ -105,9 +105,9 @@ public:
     static const QString k_TriVertexListDAName("TriVertexList");
     static const QString k_TriListDAName("TriangleList");
 
-    QVector<size_t> k_Dims3(1, 3);
-    QVector<size_t> k_NumNodes(1, 99);
-    QVector<size_t> k_NumTriangles(1, 33);
+    std::vector<size_t> k_Dims3(1, 3);
+    std::vector<size_t> k_NumNodes(1, 99);
+    std::vector<size_t> k_NumTriangles(1, 33);
 
     // Create DataContainerArray
 

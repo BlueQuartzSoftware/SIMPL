@@ -305,7 +305,7 @@ void VertexGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType
 int VertexGeom::writeGeometryToHDF5(hid_t parentId, bool writeXdmf)
 {
   herr_t err = 0;
-  QVector<size_t> tDims(1, 0);
+  std::vector<size_t> tDims(1, 0);
 
   if(m_VertexList.get() != nullptr)
   {
@@ -316,7 +316,7 @@ int VertexGeom::writeGeometryToHDF5(hid_t parentId, bool writeXdmf)
     }
     if(writeXdmf)
     {
-      QVector<size_t> cDims(1, 1);
+      std::vector<size_t> cDims(1, 1);
       DataArray<size_t>::Pointer vertsPtr = DataArray<size_t>::CreateArray(getNumberOfVertices(), cDims, SIMPL::StringConstants::VertsName);
       size_t* verts = vertsPtr->getPointer(0);
       for(size_t i = 0; i < vertsPtr->getNumberOfTuples(); i++)

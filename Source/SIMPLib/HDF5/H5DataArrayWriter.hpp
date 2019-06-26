@@ -66,8 +66,8 @@ class H5DataArrayWriter
      * @param cDims
      * @return
      */
-    template<typename IDataArrayType>
-    static int writeDataArrayAttributes(hid_t gid, IDataArrayType* dataArray, QVector<size_t> tDims, QVector<size_t> cDims)
+    template <typename IDataArrayType>
+    static int writeDataArrayAttributes(hid_t gid, IDataArrayType* dataArray, std::vector<size_t> tDims, std::vector<size_t> cDims)
     {
       int err = QH5Lite::writeScalarAttribute(gid, dataArray->getName(), SIMPL::HDF5::DataArrayVersion, dataArray->getClassVersion());
       if(err < 0)
@@ -115,12 +115,12 @@ class H5DataArrayWriter
      * @param tDims
      * @return
      */
-    template<class T>
-    static int writeDataArray(hid_t gid, T* dataArray, QVector<size_t> tDims)
+    template <class T>
+    static int writeDataArray(hid_t gid, T* dataArray, std::vector<size_t> tDims)
     {
       int err = 0;
 
-      QVector<size_t> cDims = dataArray->getComponentDimensions();
+      std::vector<size_t> cDims = dataArray->getComponentDimensions();
       hsize_t h5Rank = static_cast<hsize_t>(tDims.size()) + cDims.size();
 
       QVector<hsize_t> h5Dims(tDims.size() + cDims.size());
@@ -205,8 +205,8 @@ class H5DataArrayWriter
       }
 
       err = H5Lite::writeVectorOfStringsDataset(gid, dataArray->getName().toStdString(), data);
-      QVector<size_t> tDims(1, dataArray->getNumberOfTuples());
-      QVector<size_t> cDims(1, 1);
+      std::vector<size_t> tDims(1, dataArray->getNumberOfTuples());
+      std::vector<size_t> cDims(1, 1);
       err = writeDataArrayAttributes<T>(gid, dataArray, tDims, cDims);
 
       return err;

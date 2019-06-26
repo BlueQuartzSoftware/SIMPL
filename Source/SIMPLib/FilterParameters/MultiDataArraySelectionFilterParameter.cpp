@@ -57,8 +57,8 @@ MultiDataArraySelectionFilterParameter::~MultiDataArraySelectionFilterParameter(
 //
 // -----------------------------------------------------------------------------
 MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QVector<DataArrayPath>& defaultValue,
-                                                                                            Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                                                                                            const RequirementType req, int groupIndex)
+                                                                                            Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                                                                                            RequirementType req, int groupIndex)
 {
 
   MultiDataArraySelectionFilterParameter::Pointer ptr = MultiDataArraySelectionFilterParameter::New();
@@ -93,7 +93,7 @@ QString MultiDataArraySelectionFilterParameter::getWidgetType() const
 MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionFilterParameter::CreateCategoryRequirement(const QString& primitiveType, size_t allowedCompDim,
                                                                                                                           AttributeMatrix::Category attributeMatrixCategory)
 {
-  typedef QVector<size_t> QVectorOfSizeType;
+  typedef std::vector<size_t> SizeTVectorType;
   MultiDataArraySelectionFilterParameter::RequirementType req;
   AttributeMatrix::Types amTypes;
   if(attributeMatrixCategory == AttributeMatrix::Category::Element)
@@ -124,7 +124,7 @@ MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionF
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
-    req.componentDimensions = QVector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
+    req.componentDimensions = QVector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
   }
   //  if(IGeometry::Type::Unknown != geometryType)
   //  {
@@ -139,7 +139,7 @@ MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionF
 MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionFilterParameter::CreateRequirement(const QString& primitiveType, size_t allowedCompDim, AttributeMatrix::Type attributeMatrixType,
                                                                                                                   IGeometry::Type geometryType)
 {
-  typedef QVector<size_t> QVectorOfSizeType;
+  typedef std::vector<size_t> SizeTVectorType;
   MultiDataArraySelectionFilterParameter::RequirementType req;
   if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {
@@ -147,7 +147,7 @@ MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionF
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
-    req.componentDimensions = QVector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
+    req.componentDimensions = QVector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
   }
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {

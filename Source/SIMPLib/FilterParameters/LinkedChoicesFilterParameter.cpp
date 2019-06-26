@@ -49,7 +49,7 @@ LinkedChoicesFilterParameter::~LinkedChoicesFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::New(const QString& humanLabel, const QString& propertyName, const int& defaultValue, Category category,
-                                                                        SetterCallbackType setterCallback, GetterCallbackType getterCallback, QVector<QString> choices, QStringList linkedProperties,
+                                                                        const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, QVector<QString> choices, QStringList linkedProperties,
                                                                         int groupIndex)
 {
   LinkedChoicesFilterParameter::Pointer ptr = LinkedChoicesFilterParameter::New();

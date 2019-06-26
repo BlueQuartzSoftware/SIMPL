@@ -181,7 +181,7 @@ IGeometry::Pointer DataContainer::getGeometry()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::Pointer DataContainer::createAndAddAttributeMatrix(const QVector<size_t>& tDims, const QString& attrMatName, AttributeMatrix::Type attrType)
+AttributeMatrix::Pointer DataContainer::createAndAddAttributeMatrix(const std::vector<size_t>& tDims, const QString& attrMatName, AttributeMatrix::Type attrType)
 {
   AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, attrMatName, attrType);
   addOrReplaceAttributeMatrix(attrMat);
@@ -276,7 +276,7 @@ int DataContainer::writeAttributeMatricesToHDF5(hid_t parentId)
 int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, DataContainerProxy& dcProxy)
 {
   int err = 0;
-  QVector<size_t> tDims;
+  std::vector<size_t> tDims;
 
   DataContainerProxy::StorageType& attrMatsToRead = dcProxy.getAttributeMatricies();
   AttributeMatrix::Type amType = AttributeMatrix::Type::Unknown;
@@ -822,7 +822,8 @@ AttributeMatrixShPtr DataContainer::getPrereqAttributeMatrix(AbstractFilter* fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const QVector<size_t>& tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id)
+AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const std::vector<size_t>& tDims, AttributeMatrix::Type amType,
+                                                                   RenameDataPath::DataID_t id)
 {
   return createNonPrereqAttributeMatrix(filter, path.getAttributeMatrixName(), tDims, amType, id);
 }
@@ -833,7 +834,7 @@ AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilte
 AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const SizeVec3Type& tDims, AttributeMatrix::Type amType,
                                                                    RenameDataPath::DataID_t id)
 {
-  QVector<size_t> tupleDims;
+  std::vector<size_t> tupleDims;
   for(const auto& value : tDims)
   {
     tupleDims.push_back(value);
@@ -844,7 +845,8 @@ AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, const QVector<size_t> &tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id)
+AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, const std::vector<size_t>& tDims, AttributeMatrix::Type amType,
+                                                                   RenameDataPath::DataID_t id)
 {
   QString ss;
   if(attributeMatrixName.isEmpty())

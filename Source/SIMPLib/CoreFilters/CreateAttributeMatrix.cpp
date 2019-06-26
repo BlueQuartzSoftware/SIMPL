@@ -140,7 +140,7 @@ void CreateAttributeMatrix::dataCheck()
   }
 
   std::vector<double> cols = rows[0]; // Get the first (and only) row of data
-  QVector<size_t> tDims(cols.size(), 0);
+  std::vector<size_t> tDims(cols.size(), 0);
   for(int i = 0; i < cols.size(); i++)
   {
     tDims[i] = static_cast<size_t>(cols[i]);

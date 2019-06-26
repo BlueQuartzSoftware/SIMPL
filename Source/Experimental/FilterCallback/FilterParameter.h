@@ -160,8 +160,7 @@ class Int32Parameter : public IFilterParameter
                        const std::string& propertyName,
                        const int& defaultValue,
                        Category category,
-                       SetterCallbackType setterCallback,
-                       GetterCallbackType getterCallback,
+                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                        int groupIndex = -1);
     virtual ~Int32Parameter();
     
@@ -175,7 +174,7 @@ class Int32Parameter : public IFilterParameter
     void writeJson(QJsonObject& json) const override;
     
   protected:
-    Int32Parameter(const std::string& humanLabel, const std::string& propertyName, int defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex);
+    Int32Parameter(const std::string& humanLabel, const std::string& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex);
     
   private:
     Int32Parameter(const Int32Parameter&) = delete; // Copy Constructor Not Implemented
@@ -200,8 +199,7 @@ class DoubleParameter : public IFilterParameter
                        const std::string& propertyName,
                        const double& defaultValue,
                        Category category,
-                       SetterCallbackType setterCallback,
-                       GetterCallbackType getterCallback,
+                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                        int groupIndex = -1);
     virtual ~DoubleParameter();
     
@@ -216,7 +214,7 @@ class DoubleParameter : public IFilterParameter
     void writeJson(QJsonObject& json) const override;
     
   protected:
-    DoubleParameter(const std::string& humanLabel, const std::string& propertyName, double defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex);
+    DoubleParameter(const std::string& humanLabel, const std::string& propertyName, double defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex);
     
   private:
     DoubleParameter(const DoubleParameter&) = delete; // Copy Constructor Not Implemented
@@ -241,8 +239,7 @@ class DataArrayPathParameter : public IFilterParameter
                        const std::string& propertyName,
                        const DataArrayPath& defaultValue,
                        Category category,
-                       SetterCallbackType setterCallback,
-                       GetterCallbackType getterCallback,
+                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                        int groupIndex = -1);
     
     virtual ~DataArrayPathParameter();
@@ -258,7 +255,7 @@ class DataArrayPathParameter : public IFilterParameter
     void writeJson(QJsonObject& json) const override;
     
   protected:
-    DataArrayPathParameter(const std::string& humanLabel, const std::string& propertyName, const DataArrayPath &defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex);
+    DataArrayPathParameter(const std::string& humanLabel, const std::string& propertyName, const DataArrayPath &defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex);
     
   private:
     DataArrayPathParameter(const DataArrayPathParameter&) = delete; // Copy Constructor Not Implemented

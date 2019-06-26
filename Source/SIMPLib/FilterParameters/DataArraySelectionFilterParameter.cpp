@@ -50,13 +50,8 @@ DataArraySelectionFilterParameter::~DataArraySelectionFilterParameter() = defaul
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::New(const QString& humanLabel,
-                                                                                  const QString& propertyName,
-                                                                                  const DataArrayPath& defaultValue,
-                                                                                  Category category,
-                                                                                  SetterCallbackType setterCallback,
-                                                                                  GetterCallbackType getterCallback,
-                                                                                  const RequirementType req,
+DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category,
+                                                                                  const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, RequirementType req,
                                                                                   int groupIndex)
 {
 
@@ -93,7 +88,7 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
                                                                                                                 size_t allowedCompDim,
                                                                                                                 AttributeMatrix::Category attributeMatrixCategory)
 {
-  typedef QVector<size_t> QVectorOfSizeType;
+  using SizeTVectorType = std::vector<size_t>;
   DataArraySelectionFilterParameter::RequirementType req;
   AttributeMatrix::Types amTypes;
   if(attributeMatrixCategory == AttributeMatrix::Category::Element)
@@ -124,7 +119,7 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
-    req.componentDimensions = QVector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
+    req.componentDimensions = std::vector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
   }
   //  if(IGeometry::Type::Unknown != geometryType)
   //  {
@@ -141,7 +136,7 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
                                                                                                         AttributeMatrix::Type attributeMatrixType,
                                                                                                         IGeometry::Type geometryType)
 {
-  typedef QVector<size_t> QVectorOfSizeType;
+  using SizeTVectorType = std::vector<size_t>;
   DataArraySelectionFilterParameter::RequirementType req;
   if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {
@@ -149,7 +144,7 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
-    req.componentDimensions = QVector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
+    req.componentDimensions = std::vector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
   }
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {
