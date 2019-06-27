@@ -48,12 +48,12 @@ typedef struct
   float c21; float c12; float c20; float c02; 
   float c11; float c10; float c01; float c00;
   
-  void Float4thOrderPoly(const float& C40, const float& C04, 
-    const float& C31, const float& C13,
-    const float& C22,
-    const float& C30, const float& C03,
-    const float& C21, const float& C12, const float& C20, const float& C02,
-    const float& C11, const float& C10, const float& C01, const float& C00
+  void Float4thOrderPoly(float C40, float C04, 
+    float C31, float C13,
+    float C22,
+    float C30, float C03,
+    float C21, float C12, float C20, float C02,
+    float C11, float C10, float C01, float C00
   )
   {
   c40 = C40;

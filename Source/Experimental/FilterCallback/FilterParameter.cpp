@@ -26,7 +26,7 @@ IFilterParameter::~IFilterParameter() = default;
 
 Int32Parameter::Pointer Int32Parameter::New(const std::string& humanLabel,
                                                             const std::string& propertyName,
-                                                            const int& defaultValue,
+                                                            int defaultValue,
                                                             Category category,
                                                             Int32Parameter::SetterCallbackType setterCallback,
                                                             Int32Parameter::GetterCallbackType getterCallback,
@@ -74,7 +74,7 @@ Int32Parameter::Int32Parameter(const std::string& humanLabel, const std::string&
 // -----------------------------------------------------------------------------
 DoubleParameter::Pointer DoubleParameter::New(const std::string& humanLabel,
                                               const std::string& propertyName,
-                                              const double& defaultValue,
+                                              double defaultValue,
                                               Category category,
                                               DoubleParameter::SetterCallbackType setterCallback,
                                               DoubleParameter::GetterCallbackType getterCallback,

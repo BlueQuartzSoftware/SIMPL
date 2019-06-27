@@ -45,7 +45,7 @@ FloatFilterParameter::~FloatFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 FloatFilterParameter::Pointer FloatFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-                       const float& defaultValue, Category category, 
+                       float defaultValue, Category category, 
                        const SetterCallbackType& setterCallback, 
                        const GetterCallbackType& getterCallback, 
                        int groupIndex)

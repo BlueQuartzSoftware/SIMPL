@@ -202,7 +202,7 @@ class Int32Parameter : public IFilterParameter
     
     static Pointer New(const std::string& humanLabel,
                        const std::string& propertyName,
-                       const int& defaultValue,
+                       int defaultValue,
                        Category category,
                        const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                        int groupIndex = -1);
@@ -254,7 +254,7 @@ class DoubleParameter : public IFilterParameter
     
     static Pointer New(const std::string& humanLabel,
                        const std::string& propertyName,
-                       const double& defaultValue,
+                       double defaultValue,
                        Category category,
                        const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                        int groupIndex = -1);

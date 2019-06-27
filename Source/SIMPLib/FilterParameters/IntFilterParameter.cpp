@@ -48,7 +48,7 @@ IntFilterParameter::~IntFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntFilterParameter::Pointer IntFilterParameter::New(const QString& humanLabel, const QString& propertyName, const int& defaultValue, Category category, const SetterCallbackType& setterCallback,
+IntFilterParameter::Pointer IntFilterParameter::New(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback,
                                                     const GetterCallbackType& getterCallback, int groupIndex)
 {
 

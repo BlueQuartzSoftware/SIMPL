@@ -49,7 +49,7 @@ DoubleFilterParameter::~DoubleFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 DoubleFilterParameter::Pointer DoubleFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-                                                          const double& defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                          double defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
   DoubleFilterParameter::Pointer ptr = DoubleFilterParameter::New();
@@ -69,7 +69,7 @@ DoubleFilterParameter::Pointer DoubleFilterParameter::New(const QString& humanLa
 //
 // -----------------------------------------------------------------------------
 DoubleFilterParameter::Pointer DoubleFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-                                                          const float& defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                          float defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
   DoubleFilterParameter::Pointer ptr = DoubleFilterParameter::New();

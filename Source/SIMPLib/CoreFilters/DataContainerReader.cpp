@@ -253,7 +253,7 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
   clearWarningCode();
 
   SIMPLH5DataReader::Pointer simplReader = SIMPLH5DataReader::New();
-  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, const int& code) { setErrorCondition(code, msg); });
+  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, int code) { setErrorCondition(code, msg); });
 
   if (!simplReader->openFile(getInputFile()))
   {
@@ -411,7 +411,7 @@ bool DataContainerReader::syncProxies()
   SIMPLH5DataReaderRequirements req(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
 
   SIMPLH5DataReader::Pointer simplReader = SIMPLH5DataReader::New();
-  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, const int& code) { setErrorCondition(code, msg); });
+  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, int code) { setErrorCondition(code, msg); });
 
   if(!simplReader->openFile(getInputFile()))
   {
