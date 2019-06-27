@@ -93,7 +93,7 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
       IGeometry::Types dcGeometryTypes;
       AttributeMatrix::Types amTypes;
       QVector<QString> daTypes;
-      QVector< std::vector<size_t> > componentDimensions;
+      std::vector<std::vector<size_t>> componentDimensions;
     } RequirementType;
 
     /**
@@ -209,12 +209,12 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
     /**
      * @brief Setter property for DefaultComponentDimensions
      */
-    void setDefaultComponentDimensions(const QVector<QVector<size_t>>& value);
+    void setDefaultComponentDimensions(const std::vector<std::vector<size_t>>& value);
     /**
      * @brief Getter property for DefaultComponentDimensions
      * @return Value of DefaultComponentDimensions
      */
-    QVector<QVector<size_t>> getDefaultComponentDimensions() const;
+    std::vector<std::vector<size_t>> getDefaultComponentDimensions() const;
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
@@ -271,7 +271,7 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
     IGeometry::Types m_DefaultGeometryTypes = {};
     QVector<AttributeMatrix::Type> m_DefaultAttributeMatrixTypes = {};
     QVector<QString> m_DefaultAttributeArrayTypes = {};
-    QVector<QVector<size_t>> m_DefaultComponentDimensions = {};
+    std::vector<std::vector<size_t>> m_DefaultComponentDimensions = {};
     MultiAttributeMatrixSelectionFilterParameter::SetterCallbackType m_SetterCallback = {};
     MultiAttributeMatrixSelectionFilterParameter::GetterCallbackType m_GetterCallback = {};
 };

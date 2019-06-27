@@ -255,7 +255,7 @@ private:
 
   QString m_HDF5Dimensions = "";
 
-  IDataArray::Pointer readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, std::vector<size_t> cDims, bool metaDataOnly);
+  IDataArrayShPtrType readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, const std::vector<size_t>& cDims, bool metaDataOnly);
 
   /**
    * @brief createComponentDimensions

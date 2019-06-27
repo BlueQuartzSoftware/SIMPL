@@ -155,24 +155,27 @@ public:
 
   static Pointer New();
 
-    /**
-     * @brief New This function instantiates an instance of the FourthOrderPolynomialFilterParameter. Although this function is available to be used,
-     * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_FourthO_POLY_FP(...) macro at the top of this file.
+  using SetterCallbackType = std::function<void(Float4thOrderPoly_t)>;
+  using GetterCallbackType = std::function<Float4thOrderPoly_t(void)>;
 
-     * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
-     * @param propertyName The internal property name for this filter parameter.
-     * @param defaultValue The value that this filter parameter will be initialized to by default.
-     * @param category The category for the filter parameter in the DREAM.3D user interface.  There
-     * are three categories: Parameter, Required Arrays, and Created Arrays.
-     * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
-     * @return
-     */
-    static Pointer New(const QString& humanLabel, const QString& propertyName, const Float4thOrderPoly_t& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                       const GetterCallbackType& getterCallback, int groupIndex = -1);
+  /**
+   * @brief New This function instantiates an instance of the FourthOrderPolynomialFilterParameter. Although this function is available to be used,
+   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_FourthO_POLY_FP(...) macro at the top of this file.
+
+   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+   * @param propertyName The internal property name for this filter parameter.
+   * @param defaultValue The value that this filter parameter will be initialized to by default.
+   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+   * are three categories: Parameter, Required Arrays, and Created Arrays.
+   * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+   * @return
+   */
+  static Pointer New(const QString& humanLabel, const QString& propertyName, const Float4thOrderPoly_t& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                     const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   /**
    * @brief Returns the name of the class for FourthOrderPolynomialFilterParameter
@@ -183,8 +186,6 @@ public:
    */
   static QString ClassName();
 
-  using SetterCallbackType = std::function<void(Float4thOrderPoly_t)>;
-  using GetterCallbackType = std::function<Float4thOrderPoly_t(void)>;
   ~FourthOrderPolynomialFilterParameter() override;
 
   /**

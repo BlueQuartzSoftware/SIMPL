@@ -33,23 +33,20 @@
 #include "ImportHDF5Dataset.h"
 
 #include <QtCore/QFileInfo>
-
 #include <QtCore/QTextStream>
-
 #include <QtCore/QDebug>
 
-#include "SIMPLib/Common/Constants.h"
+#include "H5Support/H5ScopedSentinel.h"
+#include "H5Support/H5Utilities.h"
+#include "H5Support/QH5Utilities.h"
 
+#include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/ImportHDF5DatasetFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
-
-#include "H5Support/H5ScopedSentinel.h"
-#include "H5Support/H5Utilities.h"
-#include "H5Support/QH5Utilities.h"
 
 namespace Detail
 {
@@ -408,7 +405,7 @@ std::vector<size_t> ImportHDF5Dataset::createComponentDimensions(const QString& 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, std::vector<size_t> cDims, bool metaDataOnly)
+IDataArrayShPtrType ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, const std::vector<size_t>& cDims, bool metaDataOnly)
 {
   herr_t err = -1;
   // herr_t retErr = 1;

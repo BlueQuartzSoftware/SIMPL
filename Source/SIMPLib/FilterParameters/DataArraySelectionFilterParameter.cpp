@@ -283,13 +283,13 @@ QVector<QString> DataArraySelectionFilterParameter::getDefaultAttributeArrayType
 }
 
 // -----------------------------------------------------------------------------
-void DataArraySelectionFilterParameter::setDefaultComponentDimensions(const QVector<QVector<size_t>>& value)
+void DataArraySelectionFilterParameter::setDefaultComponentDimensions(const std::vector<std::vector<size_t>>& value)
 {
   m_DefaultComponentDimensions = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<QVector<size_t>> DataArraySelectionFilterParameter::getDefaultComponentDimensions() const
+std::vector<std::vector<size_t>> DataArraySelectionFilterParameter::getDefaultComponentDimensions() const
 {
   return m_DefaultComponentDimensions;
 }

@@ -87,7 +87,7 @@ public:
   /**
    * @brief Returns the name of the class for _SUPERStringDataArray
    */
-  const QString getNameOfClass() const;
+  const QString getNameOfClass() const override;
   /**
    * @brief Returns the name of the class for _SUPERStringDataArray
    */
@@ -120,7 +120,7 @@ public:
    * @param name
    * @return
    */
-  IDataArrayShPtrType createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true) override;
+  IDataArrayShPtrType createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief createNewArray
@@ -130,17 +130,7 @@ public:
    * @param allocate
    * @return
    */
-  IDataArrayShPtrType createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override;
-
-  /**
-   * @brief createNewArray
-   * @param numElements
-   * @param dims
-   * @param name
-   * @param allocate
-   * @return
-   */
-  IDataArrayShPtrType createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true) override;
+  IDataArrayShPtrType createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief ~StringDataArray

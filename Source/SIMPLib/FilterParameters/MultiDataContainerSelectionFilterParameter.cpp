@@ -302,13 +302,13 @@ QVector<QString> MultiDataContainerSelectionFilterParameter::getDefaultAttribute
 }
 
 // -----------------------------------------------------------------------------
-void MultiDataContainerSelectionFilterParameter::setDefaultComponentDimensions(const QVector<QVector<size_t>>& value)
+void MultiDataContainerSelectionFilterParameter::setDefaultComponentDimensions(const std::vector<std::vector<size_t>>& value)
 {
   m_DefaultComponentDimensions = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<QVector<size_t>> MultiDataContainerSelectionFilterParameter::getDefaultComponentDimensions() const
+std::vector<std::vector<size_t>> MultiDataContainerSelectionFilterParameter::getDefaultComponentDimensions() const
 {
   return m_DefaultComponentDimensions;
 }

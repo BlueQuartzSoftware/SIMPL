@@ -224,12 +224,12 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     /**
      * @brief Setter property for DefaultComponentDimensions
      */
-    void setDefaultComponentDimensions(const QVector<QVector<size_t>>& value);
+    void setDefaultComponentDimensions(const std::vector<std::vector<size_t>>& value);
     /**
      * @brief Getter property for DefaultComponentDimensions
      * @return Value of DefaultComponentDimensions
      */
-    QVector<QVector<size_t>> getDefaultComponentDimensions() const;
+    std::vector<std::vector<size_t>> getDefaultComponentDimensions() const;
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
@@ -283,7 +283,7 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     IGeometry::Types m_DefaultGeometryTypes = {};
     QVector<AttributeMatrix::Type> m_DefaultAttributeMatrixTypes = {};
     QVector<QString> m_DefaultAttributeArrayTypes = {};
-    QVector<QVector<size_t>> m_DefaultComponentDimensions = {};
+    std::vector<std::vector<size_t>> m_DefaultComponentDimensions = {};
     DataArraySelectionFilterParameter::SetterCallbackType m_SetterCallback = {};
     DataArraySelectionFilterParameter::GetterCallbackType m_GetterCallback = {};
 };

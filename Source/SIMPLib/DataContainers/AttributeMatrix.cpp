@@ -65,8 +65,8 @@
 // -----------------------------------------------------------------------------
 AttributeMatrix::AttributeMatrix(const std::vector<size_t>& tDims, const QString& name, AttributeMatrix::Type attrType)
 : IDataStructureContainerNode(name)
-, m_Type(attrType)
 , m_TupleDims(tDims)
+, m_Type(attrType)
 {
 }
 

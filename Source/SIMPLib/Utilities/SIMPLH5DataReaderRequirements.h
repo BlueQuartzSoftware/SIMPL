@@ -55,7 +55,7 @@ public:
 
   virtual ~SIMPLH5DataReaderRequirements();
 
-  using QVectorSizeT = QVector<QVector<size_t>>;
+  using QVectorSizeT = std::vector<std::vector<size_t>>;
 
   /**
    * @brief Setter property for DCGeometryTypes

@@ -58,7 +58,6 @@
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 class AttributeMatrixProxy;
 class DataContainerProxy;
@@ -85,9 +84,9 @@ enum RenameErrorCodes
 class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureContainerNode<IDataArray>
 {
   // clang-format off
-
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(AttributeMatrix)
+  PYB11_SHARED_POINTERS(AttributeMatrix)
   PYB11_STATIC_CREATION(New ARGS std::vector<size_t> QString AttributeMatrix::Type)
   
   PYB11_ENUMERATION(Type)
@@ -105,7 +104,6 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureC
   PYB11_METHOD(IDataArrayShPtrType getAttributeArray OVERLOAD const.QString.&,Name)
   PYB11_METHOD(IDataArrayShPtrType getAttributeArray OVERLOAD const.DataArrayPath.&,Path)
 #endif
-
   // clang-format on
 
 public:

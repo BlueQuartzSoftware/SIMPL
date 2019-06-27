@@ -124,7 +124,7 @@ MultiAttributeMatrixSelectionFilterParameter::RequirementType MultiAttributeMatr
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
-    req.componentDimensions = QVector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
+    req.componentDimensions = std::vector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
   }
   //  if(IGeometry::Type::Unknown != geometryType)
   //  {
@@ -147,7 +147,7 @@ MultiAttributeMatrixSelectionFilterParameter::RequirementType MultiAttributeMatr
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
-    req.componentDimensions = QVector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
+    req.componentDimensions = std::vector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
   }
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {
@@ -305,13 +305,13 @@ QVector<QString> MultiAttributeMatrixSelectionFilterParameter::getDefaultAttribu
 }
 
 // -----------------------------------------------------------------------------
-void MultiAttributeMatrixSelectionFilterParameter::setDefaultComponentDimensions(const QVector<QVector<size_t>>& value)
+void MultiAttributeMatrixSelectionFilterParameter::setDefaultComponentDimensions(const std::vector<std::vector<size_t>>& value)
 {
   m_DefaultComponentDimensions = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<QVector<size_t>> MultiAttributeMatrixSelectionFilterParameter::getDefaultComponentDimensions() const
+std::vector<std::vector<size_t>> MultiAttributeMatrixSelectionFilterParameter::getDefaultComponentDimensions() const
 {
   return m_DefaultComponentDimensions;
 }
