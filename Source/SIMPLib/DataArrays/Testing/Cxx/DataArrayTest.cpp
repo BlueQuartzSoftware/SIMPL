@@ -128,7 +128,7 @@ public:
   template <typename T> void TestcopyTuplesForType()
   {
     int err = 0;
-    QVector<size_t> dims(1, NUM_COMPONENTS_2);
+    std::vector<size_t> dims(1, NUM_COMPONENTS_2);
     typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_TUPLES_2, dims, "TestcopyTuples");
     DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
 
@@ -190,7 +190,7 @@ public:
         array->setComponent(i, 0, static_cast<T>(i));
       }
 
-      QVector<size_t> eraseElements;
+      std::vector<size_t> eraseElements;
       eraseElements.push_back(0);
       eraseElements.push_back(1);
 
@@ -204,7 +204,7 @@ public:
 
     // Test Dropping of internal elements
     {
-      QVector<size_t> dims(1, NUM_COMPONENTS_2);
+      std::vector<size_t> dims(1, NUM_COMPONENTS_2);
       typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test2");
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_TUPLES_2; ++i)
@@ -213,7 +213,7 @@ public:
         array->setComponent(i, 1, static_cast<T>(i));
       }
 
-      QVector<size_t> eraseElements;
+      std::vector<size_t> eraseElements;
       eraseElements.push_back(3);
       eraseElements.push_back(6);
       eraseElements.push_back(8);
@@ -230,7 +230,7 @@ public:
 
     // Test Dropping of internal elements
     {
-      QVector<size_t> dims(1, NUM_COMPONENTS_2);
+      std::vector<size_t> dims(1, NUM_COMPONENTS_2);
       typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test3");
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_TUPLES_2; ++i)
@@ -239,7 +239,7 @@ public:
         array->setComponent(i, 1, static_cast<T>(i));
       }
 
-      QVector<size_t> eraseElements;
+      std::vector<size_t> eraseElements;
       eraseElements.push_back(3);
       eraseElements.push_back(6);
       eraseElements.push_back(9);
@@ -255,7 +255,7 @@ public:
 
     // Test Dropping of internal continuous elements
     {
-      QVector<size_t> dims(1, NUM_COMPONENTS_2);
+      std::vector<size_t> dims(1, NUM_COMPONENTS_2);
       typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test4");
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_TUPLES_2; ++i)
@@ -264,7 +264,7 @@ public:
         array->setComponent(i, 1, static_cast<T>(i));
       }
 
-      QVector<size_t> eraseElements;
+      std::vector<size_t> eraseElements;
       eraseElements.push_back(3);
       eraseElements.push_back(4);
       eraseElements.push_back(5);
@@ -280,7 +280,7 @@ public:
 
     // Test Dropping of Front and Back Elements
     {
-      QVector<size_t> dims(1, NUM_COMPONENTS_2);
+      std::vector<size_t> dims(1, NUM_COMPONENTS_2);
       typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test5");
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_TUPLES_2; ++i)
@@ -289,7 +289,7 @@ public:
         array->setComponent(i, 1, static_cast<T>(i));
       }
 
-      QVector<size_t> eraseElements;
+      std::vector<size_t> eraseElements;
       eraseElements.push_back(0);
       eraseElements.push_back(9);
 
@@ -303,7 +303,7 @@ public:
 
     // Test Dropping of Back Elements
     {
-      QVector<size_t> dims(1, NUM_COMPONENTS_2);
+      std::vector<size_t> dims(1, NUM_COMPONENTS_2);
       typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test6");
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_TUPLES_2; ++i)
@@ -312,7 +312,7 @@ public:
         array->setComponent(i, 1, static_cast<T>(i));
       }
 
-      QVector<size_t> eraseElements;
+      std::vector<size_t> eraseElements;
       eraseElements.push_back(7);
       eraseElements.push_back(8);
       eraseElements.push_back(9);
@@ -326,7 +326,7 @@ public:
 
     // Test Dropping of indices larger than the number of tuples
     {
-      QVector<size_t> dims(1, NUM_COMPONENTS_2);
+      std::vector<size_t> dims(1, NUM_COMPONENTS_2);
       typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_TUPLES_2, dims, "Test6");
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_TUPLES_2; ++i)
@@ -335,7 +335,7 @@ public:
         array->setComponent(i, 1, static_cast<T>(i));
       }
 
-      QVector<size_t> eraseElements;
+      std::vector<size_t> eraseElements;
       eraseElements.push_back(10);
       int err = array->eraseTuples(eraseElements);
       DREAM3D_REQUIRE_EQUAL(err, -100)
@@ -465,7 +465,7 @@ public:
     }
 
     {
-      QVector<size_t> dims(1, NUM_COMPONENTS);
+      std::vector<size_t> dims(1, NUM_COMPONENTS);
       Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray(NUM_ELEMENTS, dims, "Test8");
       ptr = int32Array->getPointer(0);
       DREAM3D_REQUIRE_EQUAL(int32Array->isAllocated(), true);
@@ -551,7 +551,7 @@ public:
     }
 
     // Remove the front 2 elements and test
-    QVector<size_t> eraseElements;
+    std::vector<size_t> eraseElements;
     eraseElements.push_back(0);
     eraseElements.push_back(1);
 
@@ -629,7 +629,7 @@ public:
   template <typename T> void TestNeighborListDeepCopyForType()
   {
 
-    QVector<size_t> tDims(10);
+    std::vector<size_t> tDims(10);
     AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "AttributeMatrix", AttributeMatrix::Type::Cell);
 
     typename NeighborList<T>::Pointer neiList = NeighborList<T>::CreateArray(10, "NeighborList");
@@ -754,7 +754,7 @@ public:
       }
     }
 
-    ///     virtual QVector<size_t> getComponentDimensions()
+    ///     virtual std::vector<size_t> getComponentDimensions()
     // Test resizing the array based on a give number of tuples. The number of Components will stay the same at each tuple
     array->resizeTuples(numTuples);
     array->initializeWithZeros(); // Init the grown array to all Zeros
@@ -834,7 +834,7 @@ public:
 
     {
       numComp = DIM0 * DIM1 * DIM2;
-      QVector<size_t> vDims(3, 0);
+      std::vector<size_t> vDims(3, 0);
       vDims[0] = DIM0;
       vDims[1] = DIM1;
       vDims[2] = DIM2;
@@ -844,8 +844,8 @@ public:
     }
 
     {
-      QVector<size_t> tDims(2, 4);
-      QVector<size_t> vDims(3, 0);
+      std::vector<size_t> tDims(2, 4);
+      std::vector<size_t> vDims(3, 0);
       vDims[0] = DIM0;
       vDims[1] = DIM1;
       vDims[2] = DIM2;
@@ -870,7 +870,7 @@ public:
         } mudflap;
         unsigned char* cptr = nullptr;
 
-        QVector<size_t> tDims(1, 10);
+        std::vector<size_t> tDims(1, 10);
         typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(DIM0, "TEST");
         array->initializeWithZeros();
         cptr = reinterpret_cast<uint8_t*>(array->getPointer(0));
@@ -946,7 +946,7 @@ public:
   template <typename T> void TestDeepCopyDataArrayForType()
   {
     size_t numTuples = 10;
-    QVector<size_t> cDims(1, 5);
+    std::vector<size_t> cDims(1, 5);
     QString name("Source Array");
 
     // First lets try it without allocating any memory
@@ -1002,7 +1002,7 @@ public:
   template <typename T> void TestCopyDataForType()
   {
     size_t numTuples = 10;
-    QVector<size_t> cDims(1, 5);
+    std::vector<size_t> cDims(1, 5);
     QString name("Source Array");
 
     // First lets try it without allocating any memory
@@ -1123,7 +1123,7 @@ public:
   // -----------------------------------------------------------------------------
   template <typename T> void TestWrapPointerForType()
   {
-    QVector<size_t> cDims = {1};
+    std::vector<size_t> cDims = {1};
     T* ptr = new T[TEST_SIZE]; // Allocate on the heap
     {
       // Wrap the pointer, write some data to it, and then let the object go
@@ -1189,7 +1189,7 @@ public:
   template <typename T> void TestSetTupleForType()
   {
     size_t numTuples = 10;
-    QVector<size_t> cDims(1, 5);
+    std::vector<size_t> cDims(1, 5);
     QString name("Source Array");
 
     // Each index of the vector is a tuple with a vector containing the components for that tuple
@@ -1249,8 +1249,8 @@ public:
   {
     std::cout << "STLInterfaceTest Test Starting...." << std::endl;
 
-    DataArray<int32_t> i32Array(10, "Test Array");
-    DataArray<int32_t> i32Array1(10, "Other Array");
+    DataArray<int32_t> i32Array(10, "Test Array", 0);
+    DataArray<int32_t> i32Array1(10, "Other Array", 0);
 
     // Initialize with a value
     for(auto& value : i32Array)
@@ -1317,7 +1317,7 @@ public:
     std::cout << "" << std::endl;
 
     std::cout << "std::transform from int32_t to float using a back_inserter" << std::endl;
-    DataArray<float> f32Array(0, "Float Array");
+    DataArray<float> f32Array(0, "Float Array", 0.0f);
     std::transform(i32Array.begin(), i32Array.end(), std::back_inserter(f32Array), [](int32_t i) -> float { return i * 2.5; });
     std::for_each(f32Array.begin(), f32Array.end(), print<float>);
     std::cout << std::endl;
@@ -1363,7 +1363,7 @@ public:
     using RgbaIterator = RgbaType::tuple_iterator;
 
     CompDimsType cDims = {4};
-    RgbaType rgba(static_cast<size_t>(10), cDims, "RGBA Array");
+    RgbaType rgba(10, QString("RGBA Array"), cDims, 0);
 
     RgbaIterator begin = rgba.begin<RgbaIterator>();
     rgba.initializeWithValue(0xFF);

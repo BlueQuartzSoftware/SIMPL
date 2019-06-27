@@ -289,7 +289,7 @@ void CreateGeometry::dataCheck()
     image->setSpacing(getSpacing());
     dc->setGeometry(image);
 
-    QVector<size_t> tDims = {image->getXPoints(), image->getYPoints(), image->getZPoints()};
+    std::vector<size_t> tDims = {image->getXPoints(), image->getYPoints(), image->getZPoints()};
     DataArrayPath path = getDataContainerName();
     path.setAttributeMatrixName(getImageCellAttributeMatrixName());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
@@ -297,7 +297,7 @@ void CreateGeometry::dataCheck()
   }
   case 1: // RectGridGeom
   {
-    QVector<size_t> cDims(1, 1);
+    std::vector<size_t> cDims(1, 1);
 
     m_XBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getXBoundsArrayPath(), cDims);
     if(m_XBoundsPtr.lock())
@@ -353,7 +353,7 @@ void CreateGeometry::dataCheck()
     rectgrid->setDimensions(SizeVec3Type(m_XBoundsPtr.lock()->getNumberOfTuples() - 1, m_YBoundsPtr.lock()->getNumberOfTuples() - 1, m_ZBoundsPtr.lock()->getNumberOfTuples() - 1));
     dc->setGeometry(rectgrid);
 
-    QVector<size_t> tDims = {rectgrid->getXPoints(), rectgrid->getYPoints(), rectgrid->getZPoints()};
+    std::vector<size_t> tDims = {rectgrid->getXPoints(), rectgrid->getYPoints(), rectgrid->getZPoints()};
     DataArrayPath path = getDataContainerName();
     path.setAttributeMatrixName(getRectGridCellAttributeMatrixName());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
@@ -361,7 +361,7 @@ void CreateGeometry::dataCheck()
   }
   case 2: // VertexGeom
   {
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
 
     FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath0(), cDims);
 
@@ -382,7 +382,7 @@ void CreateGeometry::dataCheck()
     }
     dc->setGeometry(vertex);
 
-    QVector<size_t> tDims(1, vertex->getNumberOfVertices());
+    std::vector<size_t> tDims(1, vertex->getNumberOfVertices());
     DataArrayPath path = getDataContainerName();
     path.setAttributeMatrixName(getVertexAttributeMatrixName0());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
@@ -390,7 +390,7 @@ void CreateGeometry::dataCheck()
   }
   case 3: // EdgeGeom
   {
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
 
     FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath1(), cDims);
     cDims[0] = 2;
@@ -420,7 +420,7 @@ void CreateGeometry::dataCheck()
     dc->setGeometry(edge);
 
     m_NumVerts = edge->getNumberOfVertices();
-    QVector<size_t> tDims(1, edge->getNumberOfVertices());
+    std::vector<size_t> tDims(1, edge->getNumberOfVertices());
     DataArrayPath path = getDataContainerName();
     path.setAttributeMatrixName(getVertexAttributeMatrixName1());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
@@ -431,7 +431,7 @@ void CreateGeometry::dataCheck()
   }
   case 4: // TriangleGeom
   {
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
 
     FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath2(), cDims);
     m_TrisPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedTriList, AbstractFilter>(this, getSharedTriListArrayPath(), cDims);
@@ -460,7 +460,7 @@ void CreateGeometry::dataCheck()
     dc->setGeometry(triangle);
 
     m_NumVerts = triangle->getNumberOfVertices();
-    QVector<size_t> tDims(1, triangle->getNumberOfVertices());
+    std::vector<size_t> tDims(1, triangle->getNumberOfVertices());
     DataArrayPath path = getDataContainerName();
     path.setAttributeMatrixName(getVertexAttributeMatrixName2());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
@@ -471,7 +471,7 @@ void CreateGeometry::dataCheck()
   }
   case 5: // QuadGeom
   {
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
 
     FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath3(), cDims);
     cDims[0] = 4;
@@ -501,7 +501,7 @@ void CreateGeometry::dataCheck()
     dc->setGeometry(quadrilateral);
 
     m_NumVerts = quadrilateral->getNumberOfVertices();
-    QVector<size_t> tDims(1, quadrilateral->getNumberOfVertices());
+    std::vector<size_t> tDims(1, quadrilateral->getNumberOfVertices());
     DataArrayPath path = getDataContainerName();
     path.setAttributeMatrixName(getVertexAttributeMatrixName3());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
@@ -512,7 +512,7 @@ void CreateGeometry::dataCheck()
   }
   case 6: // TetrahedralGeom
   {
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
 
     FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath4(), cDims);
     cDims[0] = 4;
@@ -543,7 +543,7 @@ void CreateGeometry::dataCheck()
     dc->setGeometry(tetrahedral);
 
     m_NumVerts = tetrahedral->getNumberOfVertices();
-    QVector<size_t> tDims(1, tetrahedral->getNumberOfVertices());
+    std::vector<size_t> tDims(1, tetrahedral->getNumberOfVertices());
     DataArrayPath path = getDataContainerName();
     path.setAttributeMatrixName(getVertexAttributeMatrixName4());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
@@ -554,7 +554,7 @@ void CreateGeometry::dataCheck()
   }
   case 7: // HexahedralGeom
   {
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
 
     FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath5(), cDims);
     cDims[0] = 8;
@@ -586,7 +586,7 @@ void CreateGeometry::dataCheck()
     dc->setGeometry(hexahedral);
 
     m_NumVerts = hexahedral->getNumberOfVertices();
-    QVector<size_t> tDims(1, hexahedral->getNumberOfVertices());
+    std::vector<size_t> tDims(1, hexahedral->getNumberOfVertices());
     DataArrayPath path = getDataContainerName();
     path.setAttributeMatrixName(getVertexAttributeMatrixName5());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);

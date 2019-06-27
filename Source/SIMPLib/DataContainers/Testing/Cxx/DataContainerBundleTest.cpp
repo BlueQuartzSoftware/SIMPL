@@ -67,7 +67,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void AddDataArray(AttributeMatrix::Pointer am, const QString name, QVector<size_t>& tDims, QVector<size_t>& cDims)
+  template <typename T>
+  void AddDataArray(AttributeMatrix::Pointer am, const QString name, std::vector<size_t>& tDims, std::vector<size_t>& cDims)
   {
 
     typename DataArray<T>::Pointer data = DataArray<T>::CreateArray(tDims, cDims, name);
@@ -81,11 +82,11 @@ public:
   void TestDataBundleCommonPaths()
   {
 
-    QVector<size_t> tDims(3, 0);
+    std::vector<size_t> tDims(3, 0);
     tDims[0] = 10;
     tDims[1] = 20;
     tDims[2] = 30;
-    QVector<size_t> cDims(2);
+    std::vector<size_t> cDims(2);
     cDims[0] = 3;
     cDims[1] = 3;
 
@@ -96,7 +97,7 @@ public:
     AddDataArray<int32_t>(am, "int32 Array", tDims, cDims);
     dc0->addOrReplaceAttributeMatrix(am);
 
-    QVector<size_t> tupleDims(1, 1);
+    std::vector<size_t> tupleDims(1, 1);
     AttributeMatrix::Pointer metaAm = AttributeMatrix::New(tupleDims, DataContainerBundle::GetMetaDataName(), AttributeMatrix::Type::MetaData);
     dc0->addOrReplaceAttributeMatrix(metaAm);
 

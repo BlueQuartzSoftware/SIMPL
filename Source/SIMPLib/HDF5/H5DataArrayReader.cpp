@@ -61,7 +61,8 @@ namespace Detail
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> IDataArray::Pointer readH5Dataset(hid_t locId, const QString& datasetPath, const QVector<size_t>& tDims, const QVector<size_t>& cDims)
+template <typename T>
+IDataArray::Pointer readH5Dataset(hid_t locId, const QString& datasetPath, const std::vector<size_t>& tDims, const std::vector<size_t>& cDims)
 {
   herr_t err = -1;
   IDataArray::Pointer ptr;
@@ -82,7 +83,7 @@ template <typename T> IDataArray::Pointer readH5Dataset(hid_t locId, const QStri
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5DataArrayReader::ReadRequiredAttributes(hid_t gid, const QString& name, QString& objType, int& version, QVector<size_t>& tDims, QVector<size_t>& cDims)
+int H5DataArrayReader::ReadRequiredAttributes(hid_t gid, const QString& name, QString& objType, int& version, std::vector<size_t>& tDims, std::vector<size_t>& cDims)
 {
   int err = 0;
   int retErr = 0;
@@ -128,7 +129,6 @@ IDataArray::Pointer H5DataArrayReader::ReadStringDataArray(hid_t gid, const QStr
   hid_t typeId = -1;
   H5T_class_t attr_type;
   size_t attr_size;
-  QString res;
 
   QVector<hsize_t> dims; // Reusable for the loop
   IDataArray::Pointer ptr = IDataArray::NullPointer();
@@ -148,8 +148,8 @@ IDataArray::Pointer H5DataArrayReader::ReadStringDataArray(hid_t gid, const QStr
 
   QString classType;
   int version = 0;
-  QVector<size_t> tDims;
-  QVector<size_t> cDims;
+  std::vector<size_t> tDims;
+  std::vector<size_t> cDims;
 
   err = ReadRequiredAttributes(gid, name, classType, version, tDims, cDims);
   if(err < 0)
@@ -223,8 +223,8 @@ IDataArray::Pointer H5DataArrayReader::ReadIDataArray(hid_t gid, const QString& 
   {
     QString classType;
     int version = 0;
-    QVector<size_t> tDims;
-    QVector<size_t> cDims;
+    std::vector<size_t> tDims;
+    std::vector<size_t> cDims;
 
     err = ReadRequiredAttributes(gid, name, classType, version, tDims, cDims);
     if(err < 0)
@@ -413,8 +413,8 @@ IDataArray::Pointer H5DataArrayReader::ReadNeighborListData(hid_t gid, const QSt
   {
     QString classType;
     int version = 0;
-    QVector<size_t> tDims;
-    QVector<size_t> cDims;
+    std::vector<size_t> tDims;
+    std::vector<size_t> cDims;
 
     err = ReadRequiredAttributes(gid, name, classType, version, tDims, cDims);
     if(err < 0)

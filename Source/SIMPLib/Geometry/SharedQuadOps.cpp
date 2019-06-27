@@ -38,7 +38,7 @@
 // -----------------------------------------------------------------------------
 SharedQuadList::Pointer GEOM_CLASS_NAME::CreateSharedQuadList(size_t numQuads, bool allocate)
 {
-  QVector<size_t> quadDims(1, 4);
+  std::vector<size_t> quadDims(1, 4);
   SharedQuadList::Pointer quads = SharedEdgeList::CreateArray(numQuads, quadDims, SIMPL::Geometry::SharedQuadList, allocate);
   quads->initializeWithZeros();
   return quads;

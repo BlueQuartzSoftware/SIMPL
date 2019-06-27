@@ -107,7 +107,7 @@ void CombineAttributeMatrices::setupFilterParameters()
     amTypes.push_back(AttributeMatrix::Type::VertexFeature);
     QVector<QString> daTypes;
     daTypes.push_back(SIMPL::TypeNames::Int32);
-    QVector<QVector<size_t>> compDims;
+    std::vector<std::vector<size_t>> compDims;
     compDims.resize(1);
     compDims[0].resize(1);
     compDims[0][0] = 1;
@@ -197,7 +197,7 @@ void CombineAttributeMatrices::dataCheck()
   // Note that the minus 1 in the totalTuples calculation is to account for the fact that the zeroth tuple in the two attribute matrices should only be counted once, not twice.
   // All Feature or Ensemble AMs should start from 1 and the zeroth tuple can be combined in the two AMs
   size_t totalTuples = firstAttrMat->getNumberOfTuples() + secondAttrMat->getNumberOfTuples() - 1;
-  QVector<size_t> tDims(1, totalTuples);
+  std::vector<size_t> tDims(1, totalTuples);
   m->createNonPrereqAttributeMatrix(this, getCombinedAttributeMatrixName(), tDims, firstAttrMat->getType(), CombinedMatrixID);
   if(getErrorCode() < 0)
   {
@@ -205,7 +205,7 @@ void CombineAttributeMatrices::dataCheck()
   }
   AttributeMatrix::Pointer combinedAttrMat = m->getAttributeMatrix(getCombinedAttributeMatrixName());
 
-  QVector<size_t> cDims(1, 1);
+  std::vector<size_t> cDims(1, 1);
   m_FirstIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFirstIndexArrayPath(),
                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_FirstIndexPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
@@ -236,7 +236,7 @@ void CombineAttributeMatrices::dataCheck()
     IDataArray::Pointer tmpDataArray = firstAttrMat->getPrereqIDataArray<IDataArray, AbstractFilter>(this, *iter, -90001);
     if(getErrorCode() >= 0)
     {
-      QVector<size_t> cDims = tmpDataArray->getComponentDimensions();
+      std::vector<size_t> cDims = tmpDataArray->getComponentDimensions();
       TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, tmpDataArray);
     }
   }
@@ -249,7 +249,7 @@ void CombineAttributeMatrices::dataCheck()
     {
       if(!fArrayNames.contains(*iter))
       {
-        QVector<size_t> cDims = tmpDataArray->getComponentDimensions();
+        std::vector<size_t> cDims = tmpDataArray->getComponentDimensions();
         TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, tmpDataArray);
       }
     }

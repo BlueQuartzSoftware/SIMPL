@@ -265,7 +265,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     void on_amName_returnPressed();
 
     void updateSelection(const QItemSelection &selected, const QItemSelection &deselected);
-    bool checkTupleDimensions(QVector<size_t> tupleDims);
+    bool checkTupleDimensions(std::vector<size_t> tupleDims);
 
     void on_createAMRadio_toggled(bool b);
     void on_useAMRadio_toggled(bool b);
@@ -291,7 +291,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     bool                                            m_HeadersHasErrors = false;
 
     bool validateHeaders(QVector<QString> headers);
-    bool validateTupleDimensions(QVector<size_t> tupleDims);
+    bool validateTupleDimensions(std::vector<size_t> tupleDims);
   
   public:
     DataFormatPage(const DataFormatPage&) = delete; // Copy Constructor Not Implemented

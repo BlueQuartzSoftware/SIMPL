@@ -83,7 +83,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> std::shared_ptr<DataArray<T>> createDataArray(const QString& daName, const QVector<size_t>& tupleDims, const QVector<size_t>& cDims)
+  template <typename T>
+  std::shared_ptr<DataArray<T>> createDataArray(const QString& daName, const std::vector<size_t>& tupleDims, const std::vector<size_t>& cDims)
   {
     typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName);
     for(size_t i = 0; i < da->getNumberOfTuples(); i++)
@@ -398,9 +399,9 @@ public:
     static const QString k_floatArrayName("floatDataArray");
     static const QString k_doubleArrayName("doubleDataArray");
 
-    QVector<size_t> tupleDims = {12};
-    QVector<size_t> badTupleDims = {14};
-    QVector<size_t> cDims = {3};
+    std::vector<size_t> tupleDims = {12};
+    std::vector<size_t> badTupleDims = {14};
+    std::vector<size_t> cDims = {3};
 
     // Create DataContainerArray
 

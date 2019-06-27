@@ -49,7 +49,7 @@ ThirdOrderPolynomialFilterParameter::~ThirdOrderPolynomialFilterParameter() = de
 //
 // -----------------------------------------------------------------------------
 ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter::New(const QString& humanLabel, const QString& propertyName, const Float3rdOrderPoly_t& defaultValue,
-                                                                                      Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+                                                                                      Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
   ThirdOrderPolynomialFilterParameter::Pointer ptr = ThirdOrderPolynomialFilterParameter::New();

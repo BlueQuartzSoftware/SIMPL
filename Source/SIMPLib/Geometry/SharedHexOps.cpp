@@ -3,7 +3,7 @@
 // -----------------------------------------------------------------------------
 SharedHexList::Pointer GEOM_CLASS_NAME::CreateSharedHexList(size_t numHexas, bool allocate)
 {
-  QVector<size_t> hexDims(1, 8);
+  std::vector<size_t> hexDims(1, 8);
   SharedHexList::Pointer hexas = SharedHexList::CreateArray(numHexas, hexDims, SIMPL::Geometry::SharedHexList, allocate);
   hexas->initializeWithZeros();
   return hexas;

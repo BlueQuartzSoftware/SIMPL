@@ -59,7 +59,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::AttributeMatrix(const QVector<size_t>& tDims, const QString& name, AttributeMatrix::Type attrType)
+AttributeMatrix::AttributeMatrix(const std::vector<size_t>& tDims, const QString& name, AttributeMatrix::Type attrType)
 : IDataStructureContainerNode(name)
 , m_Type(attrType)
 , m_TupleDims(tDims)
@@ -368,7 +368,7 @@ RenameErrorCodes AttributeMatrix::renameAttributeArray(const QString& oldname, c
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<size_t> AttributeMatrix::getTupleDimensions()
+std::vector<size_t> AttributeMatrix::getTupleDimensions()
 {
   return m_TupleDims;
 }
@@ -376,7 +376,7 @@ QVector<size_t> AttributeMatrix::getTupleDimensions()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrix::setTupleDimensions(const QVector<size_t>& tupleDims)
+void AttributeMatrix::setTupleDimensions(const std::vector<size_t>& tupleDims)
 {
   resizeAttributeArrays(tupleDims);
 }
@@ -416,8 +416,8 @@ bool AttributeMatrix::removeInactiveObjects(const QVector<bool> &activeObjects, 
   if(static_cast<size_t>(activeObjects.size()) == totalTuples && acceptableMatrix)
   {
     size_t goodcount = 1;
-    QVector<size_t> newNames(totalTuples, 0);
-    QVector<size_t> removeList;
+    std::vector<size_t> newNames(totalTuples, 0);
+    std::vector<size_t> removeList;
 
     for(qint32 i = 1; i < activeObjects.size(); i++)
     {
@@ -449,7 +449,7 @@ bool AttributeMatrix::removeInactiveObjects(const QVector<bool> &activeObjects, 
           p->eraseTuples(removeList);
         }
       }
-      QVector<size_t> tDims(1, (totalTuples - removeList.size()));
+      std::vector<size_t> tDims(1, (totalTuples - removeList.size()));
       setTupleDimensions(tDims);
 
       // Loop over all the points and correct all the feature names
@@ -474,7 +474,7 @@ bool AttributeMatrix::removeInactiveObjects(const QVector<bool> &activeObjects, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrix::resizeAttributeArrays(const QVector<size_t>& tDims)
+void AttributeMatrix::resizeAttributeArrays(const std::vector<size_t>& tDims)
 {
   m_TupleDims = tDims;
   size_t numTuples = m_TupleDims[0];

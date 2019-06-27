@@ -82,7 +82,7 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, bool allowPreflight = true,
+  static Pointer New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, bool allowPreflight = true,
                      int groupIndex = -1);
 
   ~ParagraphFilterParameter() override;

@@ -93,7 +93,7 @@ public:
     static const QString k_StringInitialValue("Test String");
     static const QString k_EmptyQString("");
 
-    QVector<size_t> tupleDims(1, 5);
+    std::vector<size_t> tupleDims(1, 5);
 
     // Create DataContainerArray
 

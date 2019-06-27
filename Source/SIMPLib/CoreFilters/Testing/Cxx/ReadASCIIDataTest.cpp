@@ -133,7 +133,7 @@ public:
   {
     DataContainerArray::Pointer dca = DataContainerArray::New();
     DataContainer::Pointer dc = DataContainer::New(DataContainerName);
-    AttributeMatrix::Pointer am = AttributeMatrix::New(QVector<size_t>(1, data.numberOfLines), AttributeMatrixName, AttributeMatrix::Type::Cell);
+    AttributeMatrix::Pointer am = AttributeMatrix::New(std::vector<size_t>(1, data.numberOfLines), AttributeMatrixName, AttributeMatrix::Type::Cell);
     dc->addOrReplaceAttributeMatrix(am);
     dca->addOrReplaceDataContainer(dc);
 
@@ -188,7 +188,7 @@ public:
     data.inputFilePath = UnitTest::ReadASCIIDataTest::TestFile1;
     data.numberOfLines = 10;
     data.selectedPath = DataArrayPath(DataContainerName, AttributeMatrixName, "");
-    data.tupleDims = QVector<size_t>(1, 10);
+    data.tupleDims = std::vector<size_t>(1, 10);
 
     // Test Using Expected Input - Double/Float
     {
@@ -335,7 +335,7 @@ public:
       CreateFile(UnitTest::ReadASCIIDataTest::TestFile1, inputOctVector, delimiter);
 
       data.numberOfLines = 7;
-      data.tupleDims = QVector<size_t>(1, 7);
+      data.tupleDims = std::vector<size_t>(1, 7);
       AbstractFilter::Pointer importASCIIData = PrepFilter(data);
       DREAM3D_REQUIRE_VALID_POINTER(importASCIIData.get())
 
@@ -363,7 +363,7 @@ public:
       CreateFile(UnitTest::ReadASCIIDataTest::TestFile1, inputMaxVector, delimiter);
 
       data.numberOfLines = 1;
-      data.tupleDims = QVector<size_t>(1, 1);
+      data.tupleDims = std::vector<size_t>(1, 1);
       AbstractFilter::Pointer importASCIIData = PrepFilter(data);
       DREAM3D_REQUIRE_VALID_POINTER(importASCIIData.get())
 
@@ -399,7 +399,7 @@ public:
       CreateFile(UnitTest::ReadASCIIDataTest::TestFile1, inputMinVector, delimiter);
 
       data.numberOfLines = 1;
-      data.tupleDims = QVector<size_t>(1, 1);
+      data.tupleDims = std::vector<size_t>(1, 1);
       AbstractFilter::Pointer importASCIIData = PrepFilter(data);
       DREAM3D_REQUIRE_VALID_POINTER(importASCIIData.get())
 

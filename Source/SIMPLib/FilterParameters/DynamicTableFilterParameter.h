@@ -94,7 +94,7 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        DynamicTableData defaultTableData, FilterParameter::Category category,
-                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                        int groupIndex = -1);
 
     ~DynamicTableFilterParameter() override;

@@ -106,7 +106,7 @@ class NeighborList : public IDataArray
      * @param allocate
      * @return
      */
-    static Pointer CreateArray(size_t numTuples, int rank, size_t* dims, const QString& name, bool allocate = true)
+    static Pointer CreateArray(size_t numTuples, int rank, const size_t* dims, const QString& name, bool allocate = true)
     {
       //std::cout << "NeighborList::CreateArray  name= " << name.toStdString() << "   numTuples= " << numTuples << std::endl;
       if(name.isEmpty())
@@ -135,17 +135,14 @@ class NeighborList : public IDataArray
      * @param allocate
      * @return
      */
-    static Pointer CreateArray(size_t numTuples, std::vector<size_t> cDims, const QString& name, bool allocate = true)
+    static Pointer CreateArray(size_t numTuples, const std::vector<size_t>& cDims, const QString& name, bool allocate = true)
     {
       if(name.isEmpty())
       {
         return NullPointer();
       }
-      size_t numElements = numTuples;
-      for(size_t iter = 0; iter < cDims.size(); iter++)
-      {
-        numElements *= cDims[iter];
-      }
+      size_t numElements = std::accumulate(cDims.begin(), cDims.end(), numTuples, std::multiplies<>());
+
       Pointer ptr = Pointer(new NeighborList<T>(numElements, name));
       if(allocate)
       {
@@ -162,24 +159,24 @@ class NeighborList : public IDataArray
      * @param allocate
      * @return
      */
-    static Pointer CreateArray(size_t numTuples, QVector<size_t> cDims, const QString& name, bool allocate = true)
-    {
-      if(name.isEmpty())
-      {
-        return NullPointer();
-      }
-      size_t numElements = numTuples;
-      for(int iter = 0; iter < cDims.size(); iter++)
-      {
-        numElements *= cDims[iter];
-      }
-      Pointer ptr = Pointer(new NeighborList<T>(numElements, name));
-      if(allocate)
-      {
-        ptr->resizeTuples(numElements);
-      }
-      return ptr;
-    }
+    //    static Pointer CreateArray(size_t numTuples, std::vector<size_t> cDims, const QString& name, bool allocate = true)
+    //    {
+    //      if(name.isEmpty())
+    //      {
+    //        return NullPointer();
+    //      }
+    //      size_t numElements = numTuples;
+    //      for(int iter = 0; iter < cDims.size(); iter++)
+    //      {
+    //        numElements *= cDims[iter];
+    //      }
+    //      Pointer ptr = Pointer(new NeighborList<T>(numElements, name));
+    //      if(allocate)
+    //      {
+    //        ptr->resizeTuples(numElements);
+    //      }
+    //      return ptr;
+    //    }
 
     /**
      * @brief CreateArray
@@ -189,7 +186,7 @@ class NeighborList : public IDataArray
      * @param allocate
      * @return
      */
-    static Pointer CreateArray(QVector<size_t> tDims, QVector<size_t> cDims, const QString& name, bool allocate = true)
+    static Pointer CreateArray(const std::vector<size_t>& tDims, const std::vector<size_t>& cDims, const QString& name, bool allocate = true)
     {
       if(name.isEmpty())
       {
@@ -220,7 +217,7 @@ class NeighborList : public IDataArray
      * @param name
      * @return
      */
-    IDataArray::Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true) override
+    IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) override
     {
       return NeighborList<T>::CreateArray(numElements, rank, dims, name, allocate);
     }
@@ -232,7 +229,7 @@ class NeighborList : public IDataArray
      * @param name
      * @return
      */
-    IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override
+    IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) override
     {
       return NeighborList<T>::CreateArray(numElements, dims, name, allocate);
     }
@@ -244,10 +241,10 @@ class NeighborList : public IDataArray
      * @param name
      * @return
      */
-    IDataArray::Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true) override
-    {
-      return NeighborList<T>::CreateArray(numElements, dims, name, allocate);
-    }
+    //    IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override
+    //    {
+    //      return NeighborList<T>::CreateArray(numElements, dims, name, allocate);
+    //    }
 
     using VectorType = std::vector<T>;
     using SharedVectorType = std::shared_ptr<VectorType>;
@@ -338,7 +335,7 @@ class NeighborList : public IDataArray
      * @param idxs The indices to remove
      * @return error code.
      */
-    int eraseTuples(QVector<size_t>& idxs) override
+    int eraseTuples(std::vector<size_t>& idxs) override
     {
       int err = 0;
       // If nothing is to be erased just return
@@ -357,7 +354,7 @@ class NeighborList : public IDataArray
       size_t arraySize = m_Array.size();
       // Sanity Check the Indices in the vector to make sure we are not trying to remove any indices that are
       // off the end of the array and return an error code.
-      for(QVector<size_t>::size_type i = 0; i < idxs.size(); ++i)
+      for(std::vector<size_t>::size_type i = 0; i < idxs.size(); ++i)
       {
         if (idxs[i] >= arraySize) { return -100; }
       }
@@ -519,9 +516,9 @@ class NeighborList : public IDataArray
      * @brief getComponentDimensions
      * @return
      */
-    QVector<size_t> getComponentDimensions() override
+    std::vector<size_t> getComponentDimensions() override
     {
-      QVector<size_t> dims(1, 1);
+      std::vector<size_t> dims = {1};
       return dims;
     }
 
@@ -630,7 +627,7 @@ class NeighborList : public IDataArray
      * @param parentId
      * @return
      */
-    int writeH5Data(hid_t parentId, QVector<size_t> tDims) override
+    int writeH5Data(hid_t parentId, std::vector<size_t> tDims) override
     {
       int err = 0;
 
@@ -741,7 +738,7 @@ class NeighborList : public IDataArray
           return -609;
         }
 
-        QVector<size_t> cDims = getComponentDimensions();
+        std::vector<size_t> cDims = getComponentDimensions();
         // write the component dimensions as  an attribute
         size = cDims.size();
         err = QH5Lite::writePointerAttribute(parentId, getName(), SIMPL::HDF5::ComponentDimensions, 1, &size, cDims.data());

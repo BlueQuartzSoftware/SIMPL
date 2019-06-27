@@ -333,7 +333,7 @@ void HexahedralGeom::deleteElementNeighbors()
 // -----------------------------------------------------------------------------
 int HexahedralGeom::findElementCentroids()
 {
-  QVector<size_t> cDims(1, 3);
+  std::vector<size_t> cDims(1, 3);
   m_HexCentroids = FloatArrayType::CreateArray(getNumberOfHexas(), cDims, SIMPL::StringConstants::HexCentroids);
   GeometryHelpers::Topology::FindElementCentroids<size_t>(m_HexList, m_VertexList, m_HexCentroids);
   if(m_HexCentroids.get() == nullptr)
@@ -373,7 +373,7 @@ void HexahedralGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 int HexahedralGeom::findElementSizes()
 {
-  QVector<size_t> cDims(1, 1);
+  std::vector<size_t> cDims(1, 1);
   size_t numHexs = getNumberOfHexas();
   m_HexSizes = FloatArrayType::CreateArray(numHexs, cDims, SIMPL::StringConstants::HexVolumes, (numHexs != 0));
   GeometryHelpers::Topology::FindHexVolumes<size_t>(m_HexList, m_VertexList, m_HexSizes);
@@ -413,7 +413,7 @@ void HexahedralGeom::deleteElementSizes()
 // -----------------------------------------------------------------------------
 int HexahedralGeom::findUnsharedEdges()
 {
-  QVector<size_t> cDims(1, 2);
+  std::vector<size_t> cDims(1, 2);
   m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList, false);
   GeometryHelpers::Connectivity::FindUnsharedHexEdges<size_t>(m_HexList, m_UnsharedEdgeList);
   if(m_UnsharedEdgeList.get() == nullptr)
@@ -452,7 +452,7 @@ void HexahedralGeom::deleteUnsharedEdges()
 // -----------------------------------------------------------------------------
 int HexahedralGeom::findUnsharedFaces()
 {
-  QVector<size_t> cDims(1, 4);
+  std::vector<size_t> cDims(1, 4);
   m_UnsharedQuadList = SharedQuadList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedFaceList, false);
   GeometryHelpers::Connectivity::FindUnsharedHexFaces<size_t>(m_HexList, m_UnsharedQuadList);
   if(m_UnsharedQuadList.get() == nullptr)

@@ -149,14 +149,14 @@ public:
     DataContainer::Pointer m = DataContainer::New("ReplaceValueTest");
 
     // Create Attribute Matrices with different tDims to test validation of tuple compatibility
-    QVector<size_t> tDims(1, 100);
+    std::vector<size_t> tDims(1, 100);
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "ReplaceValueAttrMat", AttributeMatrix::Type::Cell);
 
     m->addOrReplaceAttributeMatrix(attrMat);
 
     dca->addOrReplaceDataContainer(m);
 
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
     int32_t initVal = 10;
     tDims[0] = 100;
 

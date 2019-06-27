@@ -74,7 +74,7 @@ StringDataArray::Pointer StringDataArray::CreateArray(size_t numTuples, const QS
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StringDataArray::Pointer StringDataArray::CreateArray(size_t numTuples, QVector<size_t> compDims, const QString& name, bool allocate)
+StringDataArray::Pointer StringDataArray::CreateArray(size_t numTuples, const std::vector<size_t>& compDims, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {
@@ -88,7 +88,7 @@ StringDataArray::Pointer StringDataArray::CreateArray(size_t numTuples, QVector<
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate)
+IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate)
 {
   IDataArray::Pointer p = StringDataArray::CreateArray(numElements, name, allocate);
   return p;
@@ -97,7 +97,7 @@ IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, int rank
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate)
+IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate)
 {
   IDataArray::Pointer p = StringDataArray::CreateArray(numElements, name, allocate);
   return p;
@@ -106,11 +106,11 @@ IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, std::vec
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate)
-{
-  IDataArray::Pointer p = StringDataArray::CreateArray(numElements, name, allocate);
-  return p;
-}
+// IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate)
+//{
+//  IDataArray::Pointer p = StringDataArray::CreateArray(numElements, name, allocate);
+//  return p;
+//}
 
 StringDataArray::~StringDataArray() = default;
 
@@ -206,9 +206,9 @@ int StringDataArray::getNumberOfComponents()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<size_t> StringDataArray::getComponentDimensions()
+std::vector<size_t> StringDataArray::getComponentDimensions()
 {
-  QVector<size_t> dims(1, 1);
+  std::vector<size_t> dims = {1};
   return dims;
 }
 
@@ -238,7 +238,7 @@ size_t StringDataArray::getTypeSize()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StringDataArray::eraseTuples(QVector<size_t>& idxs)
+int StringDataArray::eraseTuples(std::vector<size_t>& idxs)
 {
 
   int err = 0;
@@ -257,7 +257,7 @@ int StringDataArray::eraseTuples(QVector<size_t>& idxs)
 
   // Sanity Check the Indices in the vector to make sure we are not trying to remove any indices that are
   // off the end of the array and return an error code.
-  // for(QVector<size_t>::size_type i = 0; i < idxs.size(); ++i)
+  // for(std::vector<size_t>::size_type i = 0; i < idxs.size(); ++i)
   for(auto& value : idxs)
   {
     if(value >= static_cast<size_t>(m_Array.size()))
@@ -272,7 +272,7 @@ int StringDataArray::eraseTuples(QVector<size_t>& idxs)
   for(QVector<QString>::size_type i = 0; i < m_Array.size(); ++i)
   {
     bool keep = true;
-    for(QVector<size_t>::size_type j = start; j < idxs.size(); ++j)
+    for(std::vector<size_t>::size_type j = start; j < idxs.size(); ++j)
     {
       if(static_cast<size_t>(i) == idxs[j])
       {
@@ -443,7 +443,7 @@ QString StringDataArray::getFullNameOfClass()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StringDataArray::writeH5Data(hid_t parentId, QVector<size_t> tDims)
+int StringDataArray::writeH5Data(hid_t parentId, std::vector<size_t> tDims)
 {
   return H5DataArrayWriter::writeStringDataArray<StringDataArray>(parentId, this);
 }

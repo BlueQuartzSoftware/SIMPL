@@ -130,10 +130,10 @@ void LinkFeatureMapToElementArray::dataCheck()
     return;
   }
 
-  QVector<size_t> tDims(1, 0);
+  std::vector<size_t> tDims(1, 0);
   m->createNonPrereqAttributeMatrix(this, getCellFeatureAttributeMatrixName(), tDims, AttributeMatrix::Type::CellFeature, AttributeMatrixID);
 
-  QVector<size_t> cDims(1, 1);
+  std::vector<size_t> cDims(1, 1);
   m_SelectedCellDataPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getSelectedCellArrayPath(),
                                                                                                               cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_SelectedCellDataPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
@@ -196,7 +196,7 @@ void LinkFeatureMapToElementArray::execute()
     }
   }
 
-  QVector<size_t> tDims(1, maxIndex);
+  std::vector<size_t> tDims(1, maxIndex);
   m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->resizeAttributeArrays(tDims);
   updateFeatureInstancePointers();
 

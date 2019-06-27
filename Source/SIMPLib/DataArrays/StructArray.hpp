@@ -90,23 +90,23 @@ class StructArray : public IDataArray
      * @param name The name of the array
      * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
      */
-    IDataArray::Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true) override
+    IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) override
     {
       IDataArray::Pointer p = StructArray<T>::CreateArray(numElements, name, allocate);
       return p;
     }
 
-    IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override
+    IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) override
     {
       IDataArray::Pointer p = StructArray<T>::CreateArray(numElements, name, allocate);
       return p;
     }
 
-    IDataArray::Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true) override
-    {
-      IDataArray::Pointer p = StructArray<T>::CreateArray(numElements, name, allocate);
-      return p;
-    }
+    //    IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override
+    //    {
+    //      IDataArray::Pointer p = StructArray<T>::CreateArray(numElements, name, allocate);
+    //      return p;
+    //    }
 
     /**
      * @brief Destructor
@@ -259,13 +259,13 @@ class StructArray : public IDataArray
      * @param idxs The indices to remove
      * @return error code.
      */
-    int eraseTuples(QVector<size_t>& idxs) override
+    int eraseTuples(std::vector<size_t>& idxs) override
     {
 
       int err = 0;
 
       // If nothing is to be erased just return
-      if(idxs.size() == 0)
+      if(idxs.empty())
       {
         return 0;
       }
@@ -279,7 +279,7 @@ class StructArray : public IDataArray
 
       // Sanity Check the Indices in the vector to make sure we are not trying to remove any indices that are
       // off the end of the array and return an error code.
-      for(QVector<size_t>::size_type i = 0; i < idxs.size(); ++i)
+      for(std::vector<size_t>::size_type i = 0; i < idxs.size(); ++i)
       {
         if (idxs[i] > this->m_MaxId) { return -100; }
       }
@@ -323,9 +323,9 @@ class StructArray : public IDataArray
         return 0;
       }
 
-      QVector<size_t> srcIdx(idxs.size() + 1);
-      QVector<size_t> destIdx(idxs.size() + 1);
-      QVector<size_t> copyElements(idxs.size() + 1);
+      std::vector<size_t> srcIdx(idxs.size() + 1);
+      std::vector<size_t> destIdx(idxs.size() + 1);
+      std::vector<size_t> copyElements(idxs.size() + 1);
       srcIdx[0] = 0;
       destIdx[0] = 0;
       copyElements[0] = (idxs[0] - 0);
@@ -496,9 +496,9 @@ class StructArray : public IDataArray
      * @brief getNumberOfComponents
      * @return
      */
-    QVector<size_t> getComponentDimensions() override
+    std::vector<size_t> getComponentDimensions() override
     {
-      QVector<size_t> dims(1, 1);
+      std::vector<size_t> dims(1, 1);
       return dims;
     }
 
@@ -571,7 +571,7 @@ class StructArray : public IDataArray
     IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override
     {
       IDataArray::Pointer daCopy = createNewArray(getNumberOfTuples(), getComponentDimensions(), getName(), m_IsAllocated);
-      if(m_IsAllocated == true && forceNoAllocate == false)
+      if(m_IsAllocated && !forceNoAllocate)
       {
         T* src = getPointer(0);
         void* dest = daCopy->getVoidPointer(0);
@@ -638,7 +638,7 @@ class StructArray : public IDataArray
      * @param parentId
      * @return
      */
-    int writeH5Data(hid_t parentId, QVector<size_t> tDims) override
+    int writeH5Data(hid_t parentId, std::vector<size_t> tDims) override
     {
       Q_ASSERT(false);
       return -1;

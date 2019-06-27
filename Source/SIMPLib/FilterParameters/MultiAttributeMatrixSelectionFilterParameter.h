@@ -79,7 +79,7 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
       IGeometry::Types dcGeometryTypes;
       AttributeMatrix::Types amTypes;
       QVector<QString> daTypes;
-      QVector< QVector<size_t> > componentDimensions;
+      QVector< std::vector<size_t> > componentDimensions;
     } RequirementType;
 
     /**
@@ -104,8 +104,8 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QVector<DataArrayPath>& defaultValue, Category category,
-                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                       const RequirementType req, int groupIndex = -1);
+                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                       RequirementType req, int groupIndex = -1);
 
     ~MultiAttributeMatrixSelectionFilterParameter() override;
 
@@ -157,7 +157,7 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
     SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<AttributeMatrix::Type>, DefaultAttributeMatrixTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<QString>, DefaultAttributeArrayTypes)
-    SIMPL_INSTANCE_PROPERTY(QVector< QVector<size_t> >, DefaultComponentDimensions)
+    SIMPL_INSTANCE_PROPERTY(QVector< std::vector<size_t> >, DefaultComponentDimensions)
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property

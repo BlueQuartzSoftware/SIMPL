@@ -104,8 +104,8 @@ class SIMPLib_EXPORT DataArrayCreationFilterParameter : public FilterParameter
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const DataArrayPath& defaultValue, Category category,
-                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                       const RequirementType req, int groupIndex = -1);
+                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                       RequirementType req, int groupIndex = -1);
 
     ~DataArrayCreationFilterParameter() override;
 

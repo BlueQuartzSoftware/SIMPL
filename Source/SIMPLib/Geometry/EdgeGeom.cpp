@@ -311,7 +311,7 @@ void EdgeGeom::deleteElementNeighbors()
 // -----------------------------------------------------------------------------
 int EdgeGeom::findElementCentroids()
 {
-  QVector<size_t> cDims(1, 3);
+  std::vector<size_t> cDims(1, 3);
   m_EdgeCentroids = FloatArrayType::CreateArray(getNumberOfElements(), cDims, SIMPL::StringConstants::EdgeCentroids);
   GeometryHelpers::Topology::FindElementCentroids<size_t>(m_EdgeList, m_VertexList, m_EdgeCentroids);
   if(m_EdgeCentroids.get() == nullptr)

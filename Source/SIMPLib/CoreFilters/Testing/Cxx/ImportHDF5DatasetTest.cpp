@@ -253,7 +253,7 @@ public:
     ImportHDF5Dataset::Pointer filter = ImportHDF5Dataset::New();
 
     // Set a dummy data container array for error testing purposes
-    DataContainerArray::Pointer dca = createDataContainerArray(QVector<size_t>(1, 1));
+    DataContainerArray::Pointer dca = createDataContainerArray(std::vector<size_t>(1, 1));
     filter->setDataContainerArray(dca);
     filter->setSelectedAttributeMatrix(DataArrayPath("DataContainer", "AttributeMatrix", ""));
 
@@ -324,7 +324,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  DataContainerArray::Pointer createDataContainerArray(QVector<size_t> tDims)
+  DataContainerArray::Pointer createDataContainerArray(std::vector<size_t> tDims)
   {
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
@@ -341,7 +341,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  QString createVectorString(QVector<size_t> vec)
+  QString createVectorString(std::vector<size_t> vec)
   {
     QString str = "(";
     for(int i = 0; i < vec.size(); i++)
@@ -360,7 +360,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void DatasetTest(ImportHDF5Dataset::Pointer filter, QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList, QVector<size_t> amDims, int errCode)
+  template <typename T> void DatasetTest(ImportHDF5Dataset::Pointer filter, QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList, std::vector<size_t> amDims, int errCode)
   {
     if(importInfoList.empty())
     {
@@ -427,7 +427,7 @@ public:
 
         QString cDimsStr = dsetInfoList[i].componentDimensions;
         QStringList tokens = cDimsStr.split(", ");
-        QVector<size_t> cDims;
+        std::vector<size_t> cDims;
         for(int i = 0; i < tokens.size(); i++)
         {
           cDims.push_back(tokens[i].toInt());
@@ -472,7 +472,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> QString joinVector(QVector<T> vector, const QString& separator)
+  template <typename T>
+  QString joinVector(std::vector<T> vector, const QString& separator)
   {
     QString cDimsStr = "";
     for(int i = 0; i < vector.size(); i++)
@@ -497,8 +498,8 @@ public:
     //  // ******************* Test Reading Data *************************************
 
     // Create tuple and component dimensions for all tests
-    QVector<QVector<size_t>> tDimsVector;
-    QVector<QVector<size_t>> cDimsVector;
+    QVector<std::vector<size_t>> tDimsVector;
+    QVector<std::vector<size_t>> cDimsVector;
 
     // Add 1D, 2D, 3D, and 4D tuple and component dimensions that test all 4 possibilities:
     // 1. Tuple dimensions and component dimensions are both valid
@@ -506,37 +507,37 @@ public:
     // 3. Tuple dimensions are invalid, but component dimensions are valid
     // 4. Neither tuple dimensions or component dimensions are valid
 
-    tDimsVector.push_back(QVector<size_t>(1) = {TUPLEDIMPROD});
-    cDimsVector.push_back(QVector<size_t>(1) = {COMPDIMPROD});
+    tDimsVector.push_back(std::vector<size_t>(1) = {TUPLEDIMPROD});
+    cDimsVector.push_back(std::vector<size_t>(1) = {COMPDIMPROD});
 
-    tDimsVector.push_back(QVector<size_t>(2) = {10, 4});
-    cDimsVector.push_back(QVector<size_t>(2) = {12, 6});
+    tDimsVector.push_back(std::vector<size_t>(2) = {10, 4});
+    cDimsVector.push_back(std::vector<size_t>(2) = {12, 6});
 
-    tDimsVector.push_back(QVector<size_t>(3) = {2, 2, 10});
-    cDimsVector.push_back(QVector<size_t>(3) = {4, 3, 6});
+    tDimsVector.push_back(std::vector<size_t>(3) = {2, 2, 10});
+    cDimsVector.push_back(std::vector<size_t>(3) = {4, 3, 6});
 
-    tDimsVector.push_back(QVector<size_t>(4) = {2, 2, 5, 2});
-    cDimsVector.push_back(QVector<size_t>(4) = {4, 3, 3, 2});
+    tDimsVector.push_back(std::vector<size_t>(4) = {2, 2, 5, 2});
+    cDimsVector.push_back(std::vector<size_t>(4) = {4, 3, 3, 2});
 
-    tDimsVector.push_back(QVector<size_t>(1) = {TUPLEDIMPROD - 1});
-    cDimsVector.push_back(QVector<size_t>(1) = {COMPDIMPROD - 1});
+    tDimsVector.push_back(std::vector<size_t>(1) = {TUPLEDIMPROD - 1});
+    cDimsVector.push_back(std::vector<size_t>(1) = {COMPDIMPROD - 1});
 
-    tDimsVector.push_back(QVector<size_t>(2) = {TUPLEDIMPROD - 1, 34});
-    cDimsVector.push_back(QVector<size_t>(2) = {COMPDIMPROD - 1, 56});
+    tDimsVector.push_back(std::vector<size_t>(2) = {TUPLEDIMPROD - 1, 34});
+    cDimsVector.push_back(std::vector<size_t>(2) = {COMPDIMPROD - 1, 56});
 
-    tDimsVector.push_back(QVector<size_t>(3) = {TUPLEDIMPROD - 1, 23, 654});
-    cDimsVector.push_back(QVector<size_t>(3) = {COMPDIMPROD - 1, 56, 12});
+    tDimsVector.push_back(std::vector<size_t>(3) = {TUPLEDIMPROD - 1, 23, 654});
+    cDimsVector.push_back(std::vector<size_t>(3) = {COMPDIMPROD - 1, 56, 12});
 
-    tDimsVector.push_back(QVector<size_t>(4) = {TUPLEDIMPROD - 1, 98, 12, 45});
-    cDimsVector.push_back(QVector<size_t>(4) = {COMPDIMPROD - 1, 43, 12, 53});
+    tDimsVector.push_back(std::vector<size_t>(4) = {TUPLEDIMPROD - 1, 98, 12, 45});
+    cDimsVector.push_back(std::vector<size_t>(4) = {COMPDIMPROD - 1, 43, 12, 53});
 
     // Execute all combinations of tests
     for(int i = 0; i < tDimsVector.size(); i++)
     {
       for(int j = 0; j < cDimsVector.size(); j++)
       {
-        QVector<size_t> tDims = tDimsVector[i];
-        QVector<size_t> cDims = cDimsVector[j];
+        std::vector<size_t> tDims = tDimsVector[i];
+        std::vector<size_t> cDims = cDimsVector[j];
 
         size_t amTupleCount = 1;
         for(int t = 0; t < tDims.size(); t++)

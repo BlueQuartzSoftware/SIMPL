@@ -55,23 +55,9 @@
   ptr[s] = ptr[d];                                                                                                                                                                                     \
   ptr[d] = t[0];
 
-/** @brief Resizes the DataArray Shared m_Array and assigns its internal data pointer
- *
- */
-#define RESIZE_ARRAY(sharedArray, pointer, size) pointer = sharedArray->WritePointer(0, size);
-
-#define DECLARE_WRAPPED_ARRAY(pubVar, priVar, Type)                                                                                                                                                    \
-  DataArray<Type>::Pointer priVar;                                                                                                                                                                     \
-  Type* pubVar;
-
-#define INIT_DataArray(var, Type) var = DataArray<Type>::CreateArray(0, #var);
-
 /**
- * @class DataArray DataArray.hpp DREAM3DLib/Common/DataArray.hpp
- * @brief Template class for wrapping raw arrays of data.
- * @author mjackson
- * @date July 3, 2008
- * @version $Revision: 1.2 $
+ * @class DataArray
+ * @brief Template class for wrapping raw arrays of data and is the basis for storing data within the SIMPL data structure.
  */
 template <typename T> class DataArray : public IDataArray
 {
@@ -81,13 +67,246 @@ public:
   SIMPL_TYPE_MACRO_SUPER(DataArray<T>, IDataArray)
   SIMPL_CLASS_VERSION(2)
 
-  DataArray(const DataArray&) = default;           // Copy Constructor Not Implemented
+  DataArray(const DataArray&) = default;           // Copy Constructor default Implemented
   DataArray(DataArray&&) = delete;                 // Move Constructor Not Implemented
   DataArray& operator=(const DataArray&) = delete; // Copy Assignment Not Implemented
   DataArray& operator=(DataArray&&) = delete;      // Move Assignment Not Implemented
 
-  using ContainterType = QVector<Pointer>;
+  //========================================= STL INTERFACE COMPATIBILITY =================================
+  using comp_dims_type = std::vector<size_t>;
+  using size_type = size_t;
+  using value_type = T;
+  using reference = T&;
+  using iterator_category = std::input_iterator_tag;
+  using pointer = T*;
+  using difference_type = value_type;
 
+  //========================================= SIMPL INTERFACE COMPATIBILITY =================================
+  using ContainterType = std::vector<Pointer>;
+
+  //========================================= Constructing DataArray Objects =================================
+  DataArray() = default;
+
+  /**
+   * @brief Constructor
+   * @param numTuples The number of Tuples in the DataArray
+   * @param name The name of the DataArray
+   * @param initValue The value to use when initializing each element of the array
+   */
+  DataArray(size_t numTuples, const QString& name, T initValue)
+  : IDataArray(name)
+  {
+    m_NumComponents = 1;
+    resizeTuples(numTuples);
+  }
+
+  /**
+   * @brief DataArray
+   * @param numTuples The number of Tuples in the DataArray
+   * @param name The name of the DataArray
+   * @param compDims The number of elements in each axis dimension.
+   * @param initValue The value to use when initializing each element of the array
+   *
+   * For example if you have a 2D image dimensions of 80(w) x 60(h) then the "cdims" would be [80][60]
+   */
+  DataArray(size_t numTuples, const QString& name, comp_dims_type compDims, T initValue)
+  : IDataArray(name)
+  , m_NumTuples(numTuples)
+  , m_CompDims(std::move(compDims))
+  {
+    m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), 1, std::multiplies<>());
+    m_InitValue = initValue;
+    m_Array = resizeAndExtend(m_NumTuples * m_NumComponents);
+  }
+
+  /**
+   * @brief Protected Constructor
+   * @param numTuples The number of Tuples in the DataArray
+   * @param name The name of the DataArray
+   * @param compDims The number of elements in each axis dimension.
+   * @param initValue The value to use when initializing each element of the array
+   * @param allocate Will all the memory be allocated at time of construction
+   */
+  DataArray(size_t numTuples, const QString& name, comp_dims_type compDims, T initValue, bool allocate)
+  : IDataArray(name)
+  , m_NumTuples(numTuples)
+  , m_CompDims(std::move(compDims))
+  {
+    m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), 1, std::multiplies<>());
+    m_InitValue = static_cast<T>(0);
+    if(allocate)
+    {
+      resizeTuples(numTuples);
+    }
+    else
+    {
+      m_Size = m_NumTuples * m_NumComponents;
+      m_MaxId = (m_Size > 0) ? m_Size - 1 : m_Size;
+    }
+#if 0
+      MUD_FLAP_0 = MUD_FLAP_1 = MUD_FLAP_2 = MUD_FLAP_3 = MUD_FLAP_4 = MUD_FLAP_5 = 0xABABABABABABABABul;
+#endif
+  }
+
+  ~DataArray() override
+  {
+    clear();
+  }
+
+  //========================================= Static Constructing DataArray Objects =================================
+  /**
+   * @brief Static constructor
+   * @param numElements The number of elements in the internal array.
+   * @param name The name of the array
+   * @param allocate Will all the memory be allocated at time of construction
+   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
+   */
+  static Pointer CreateArray(size_t numTuples, const QString& name, bool allocate = true)
+  {
+    if(name.isEmpty())
+    {
+      return NullPointer();
+    }
+    comp_dims_type cDims = {1};
+    auto d = new DataArray<T>(numTuples, name, cDims, static_cast<T>(0), allocate);
+    if(allocate)
+    {
+      if(d->allocate() < 0)
+      {
+        // Could not allocate enough memory, reset the pointer to null and return
+        delete d;
+        return DataArray<T>::NullPointer();
+      }
+    }
+    Pointer ptr(d);
+    return ptr;
+  }
+
+  /**
+   * @brief Static constructor
+   * @param numTuples The number of tuples in the array.
+   * @param rank The number of dimensions of the attribute on each Tuple
+   * @param dims The actual dimensions of the attribute on each Tuple
+   * @param name The name of the array
+   * @param allocate Will all the memory be allocated at time of construction
+   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
+   */
+  static Pointer CreateArray(size_t numTuples, int rank, const size_t* dims, const QString& name, bool allocate = true)
+  {
+    if(name.isEmpty())
+    {
+      return NullPointer();
+    }
+    comp_dims_type cDims(rank);
+    for(int i = 0; i < rank; i++)
+    {
+      cDims[i] = dims[i];
+    }
+    auto d = new DataArray<T>(numTuples, name, cDims, allocate);
+    if(allocate)
+    {
+      if(d->allocate() < 0)
+      {
+        // Could not allocate enough memory, reset the pointer to null and return
+        delete d;
+        return DataArray<T>::NullPointer();
+      }
+    }
+    Pointer ptr(d);
+    return ptr;
+  }
+
+  /**
+   * @brief Static constructor
+   * @param numTuples The number of tuples in the array.
+   * @param compDims The actual dimensions of the attribute on each Tuple
+   * @param name The name of the array
+   * @param allocate Will all the memory be allocated at time of construction
+   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
+   */
+  static Pointer CreateArray(size_t numTuples, const comp_dims_type& compDims, const QString& name, bool allocate = true)
+  {
+    if(name.isEmpty())
+    {
+      return NullPointer();
+    }
+    DataArray<T>* d = new DataArray<T>(numTuples, name, compDims, allocate);
+    if(allocate)
+    {
+      if(d->allocate() < 0)
+      {
+        // Could not allocate enough memory, reset the pointer to null and return
+        delete d;
+        return DataArray<T>::NullPointer();
+      }
+    }
+    Pointer ptr(d);
+    return ptr;
+  }
+
+  /**
+   * @brief Static constructor
+   * @param numTuples The number of tuples in the array.
+   * @param tDims The actual dimensions of the Tuples
+   * @param compDims The number of elements in each axis dimension.
+   * @param name The name of the array
+   * @param allocate Will all the memory be allocated at time of construction
+   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
+   */
+  static Pointer CreateArray(const comp_dims_type& tupleDims, const comp_dims_type& compDims, const QString& name, bool allocate = true)
+  {
+    if(name.isEmpty())
+    {
+      return NullPointer();
+    }
+
+    size_t numTuples = std::accumulate(tupleDims.begin(), tupleDims.end(), 1, std::multiplies<>());
+
+    auto d = new DataArray<T>(numTuples, name, compDims, allocate);
+    if(allocate)
+    {
+      if(d->allocate() < 0)
+      {
+        // Could not allocate enough memory, reset the pointer to null and return
+        delete d;
+        return DataArray<T>::NullPointer();
+      }
+    }
+    Pointer ptr(d);
+    return ptr;
+  }
+
+  //========================================= Instance Constructing DataArray Objects =================================
+  /**
+   * @brief createNewArray Creates a new DataArray object using the same POD type as the existing instance
+   * @param numTuples The number of tuples in the array.
+   * @param rank The number of dimensions of the attribute on each Tuple
+   * @param dims The actual dimensions of the attribute on each Tuple
+   * @param name The name of the array
+   * @param allocate Will all the memory be allocated at time of construction
+   * @return
+   */
+  IDataArray::Pointer createNewArray(size_t numTuples, int rank, const size_t* compDims, const QString& name, bool allocate = true) override
+  {
+    IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, rank, compDims, name, allocate);
+    return p;
+  }
+
+  /**
+   * @brief createNewArray
+   * @param numTuples The number of tuples in the array.
+   * @param compDims The number of elements in each axis dimension.
+   * @param name The name of the array
+   * @param allocate Will all the memory be allocated at time of construction
+   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
+   */
+  IDataArray::Pointer createNewArray(size_t numTuples, const comp_dims_type& compDims, const QString& name, bool allocate = true) override
+  {
+    IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, compDims, name, allocate);
+    return p;
+  }
+
+  //========================================= Begin API =================================
   /**
    * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
    * can be a primitive like char, float, int or the name of a class.
@@ -223,153 +442,6 @@ public:
   }
 
   /**
-   * @brief Static constructor
-   * @param numElements The number of elements in the internal array.
-   * @param name The name of the array
-   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
-   */
-  static Pointer CreateArray(size_t numElements, const QString& name, bool allocate = true)
-  {
-    if(name.isEmpty())
-    {
-      return NullPointer();
-    }
-    QVector<size_t> cDims(1, 1);
-    auto d = new DataArray<T>(numElements, cDims, name, allocate);
-    if(allocate)
-    {
-      if(d->allocate() < 0)
-      {
-        // Could not allocate enough memory, reset the pointer to null and return
-        delete d;
-        return DataArray<T>::NullPointer();
-      }
-    }
-    Pointer ptr(d);
-    return ptr;
-  }
-
-  /**
-   * @brief Static constructor
-   * @param numTuples The number of tuples in the array.
-   * @param rank The number of dimensions of the attribute on each Tuple
-   * @param dims The actual dimensions of the attribute on each Tuple
-   * @param name The name of the array
-   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
-   */
-  static Pointer CreateArray(size_t numTuples, int rank, const size_t* dims, const QString& name, bool allocate = true)
-  {
-    if(name.isEmpty())
-    {
-      return NullPointer();
-    }
-    QVector<size_t> cDims(rank);
-    for(int i = 0; i < rank; i++)
-    {
-      cDims[i] = dims[i];
-    }
-    auto d = new DataArray<T>(numTuples, cDims, name, allocate);
-    if(allocate)
-    {
-      if(d->allocate() < 0)
-      {
-        // Could not allocate enough memory, reset the pointer to null and return
-        delete d;
-        return DataArray<T>::NullPointer();
-      }
-    }
-    Pointer ptr(d);
-    return ptr;
-  }
-
-  /**
-   * @brief Static constructor
-   * @param numTuples The number of tuples in the array.
-   * @param dims The actual dimensions of the attribute on each Tuple
-   * @param name The name of the array
-   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
-   */
-  static Pointer CreateArray(size_t numTuples, const std::vector<size_t>& cDims, const QString& name, bool allocate = true)
-  {
-    if(name.isEmpty())
-    {
-      return NullPointer();
-    }
-    DataArray<T>* d = new DataArray<T>(numTuples, QVector<size_t>::fromStdVector(cDims), name, allocate);
-    if(allocate)
-    {
-      if(d->allocate() < 0)
-      {
-        // Could not allocate enough memory, reset the pointer to null and return
-        delete d;
-        return DataArray<T>::NullPointer();
-      }
-    }
-    Pointer ptr(d);
-    return ptr;
-  }
-
-  /**
-   * @brief Static constructor
-   * @param numTuples The number of tuples in the array.
-   * @param dims The actual dimensions of the attribute on each Tuple
-   * @param name The name of the array
-   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
-   */
-  static Pointer CreateArray(size_t numTuples, QVector<size_t> cDims, const QString& name, bool allocate = true)
-  {
-    if(name.isEmpty())
-    {
-      return NullPointer();
-    }
-    auto d = new DataArray<T>(numTuples, cDims, name, allocate);
-    if(allocate)
-    {
-      if(d->allocate() < 0)
-      {
-        // Could not allocate enough memory, reset the pointer to null and return
-        delete d;
-        return DataArray<T>::NullPointer();
-      }
-    }
-    Pointer ptr(d);
-    return ptr;
-  }
-
-  /**
-   * @brief Static constructor
-   * @param numTuples The number of tuples in the array.
-   * @param tDims The actual dimensions of the Tuples
-   * @param cDims The actual dimensions of the attribute on each Tuple
-   * @param name The name of the array
-   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
-   */
-  static Pointer CreateArray(QVector<size_t> tDims, QVector<size_t> cDims, const QString& name, bool allocate = true)
-  {
-    if(name.isEmpty())
-    {
-      return NullPointer();
-    }
-    size_t numTuples = tDims[0];
-    for(int i = 1; i < tDims.size(); i++)
-    {
-      numTuples *= tDims[i];
-    }
-    auto d = new DataArray<T>(numTuples, cDims, name, allocate);
-    if(allocate)
-    {
-      if(d->allocate() < 0)
-      {
-        // Could not allocate enough memory, reset the pointer to null and return
-        delete d;
-        return DataArray<T>::NullPointer();
-      }
-    }
-    Pointer ptr(d);
-    return ptr;
-  }
-
-  /**
    * @brief Static Method to create a DataArray from a QVector through a deep copy of the data
    * contained in the vector. The number of components will be set to 1.
    * @param vec The vector to copy the data from
@@ -388,7 +460,7 @@ public:
   }
 
   /**
-   * @brief Static Method to create a DataArray from a QVector through a deep copy of the data
+   * @brief Static Method to create a DataArray from a std::vector through a deep copy of the data
    * contained in the vector. The number of components will be set to 1.
    * @param vec The vector to copy the data from
    * @param name The name of the array
@@ -396,7 +468,7 @@ public:
    */
   static Pointer FromStdVector(std::vector<T>& vec, const QString& name, bool allocate = true)
   {
-    QVector<size_t> cDims(1, 1);
+    comp_dims_type cDims(1, 1);
     Pointer p = CreateArray(vec.size(), cDims, name, allocate);
     if(nullptr != p.get())
     {
@@ -433,10 +505,10 @@ public:
    * @param ownsData
    * @return
    */
-  static Pointer WrapPointer(T* data, size_t numTuples, QVector<size_t> cDims, const QString& name, bool ownsData)
+  static Pointer WrapPointer(T* data, size_t numTuples, const comp_dims_type& compDims, const QString& name, bool ownsData)
   {
     // Allocate on the heap
-    auto d = new DataArray(numTuples, cDims, name, false);
+    auto d = new DataArray(numTuples, name, compDims, false);
     // Wrap that heap pointer with a shared_pointer to make it reference counted
     Pointer p(d);
 
@@ -531,46 +603,6 @@ public:
       return true;
     }
     return false;
-  }
-
-  /**
-   * @brief createNewArray
-   * @param numTuples
-   * @param rank
-   * @param dims
-   * @param name
-   * @return
-   */
-  IDataArray::Pointer createNewArray(size_t numTuples, int rank, size_t* dims, const QString& name, bool allocate = true) override
-  {
-    IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, rank, dims, name, allocate);
-    return p;
-  }
-
-  /**
-   * @brief createNewArray
-   * @param numTuples
-   * @param dims
-   * @param name
-   * @return
-   */
-  IDataArray::Pointer createNewArray(size_t numTuples, std::vector<size_t> dims, const QString& name, bool allocate = true) override
-  {
-    IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, dims, name, allocate);
-    return p;
-  }
-
-  /**
-   * @brief createNewArray
-   * @param numTuples
-   * @param dims
-   * @param name
-   * @return
-   */
-  IDataArray::Pointer createNewArray(size_t numTuples, QVector<size_t> dims, const QString& name, bool allocate = true) override
-  {
-    IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, dims, name, allocate);
-    return p;
   }
 
   /**
@@ -678,7 +710,7 @@ public:
    * @param idxs The indices to remove
    * @return error code.
    */
-  int eraseTuples(QVector<size_t>& idxs) override
+  int eraseTuples(comp_dims_type& idxs) override
   {
     int err = 0;
 
@@ -743,9 +775,9 @@ public:
       return 0;
     }
 
-    QVector<size_t> srcIdx(idxs.size() + 1);
-    QVector<size_t> destIdx(idxs.size() + 1);
-    QVector<size_t> copyElements(idxs.size() + 1);
+    comp_dims_type srcIdx(idxs.size() + 1);
+    comp_dims_type destIdx(idxs.size() + 1);
+    comp_dims_type copyElements(idxs.size() + 1);
     srcIdx[0] = 0;
     destIdx[0] = 0;
     copyElements[0] = (idxs[0] - 0) * m_NumComponents;
@@ -841,9 +873,9 @@ public:
    * at each tuple then this will return a single element QVector. If you have a 1x3 array (like EUler Angles) then
    * this will return a 3 Element QVector.
    */
-  QVector<size_t> getComponentDimensions() override
+  comp_dims_type getComponentDimensions() override
   {
-    return QVector<size_type>::fromStdVector(m_CompDims);
+    return m_CompDims;
   }
 
   /**
@@ -1299,7 +1331,7 @@ public:
    * @param parentId
    * @return
    */
-  int writeH5Data(hid_t parentId, QVector<size_t> tDims) override
+  int writeH5Data(hid_t parentId, comp_dims_type tDims) override
   {
     if(m_Array == nullptr)
     {
@@ -1439,7 +1471,7 @@ public:
     m_IsAllocated = true;
     setName(p->getName());
     m_NumTuples = p->getNumberOfTuples();
-    m_CompDims = p->getComponentDimensions().toStdVector();
+    m_CompDims = p->getComponentDimensions();
     m_NumComponents = p->getNumberOfComponents();
 
     // Tell the intermediate DataArray to release ownership of the data as we are going to be responsible
@@ -1476,70 +1508,6 @@ public:
       }
       ptr += size; // increment the pointer
     }
-  }
-
-  //========================================= STL INTERFACE COMPATIBILITY =================================
-
-  using comp_dims_type = std::vector<size_t>;
-  using size_type = size_t;
-  using value_type = T;
-  using reference = T&;
-  using iterator_category = std::input_iterator_tag;
-  using pointer = T*;
-  using difference_type = value_type;
-
-  DataArray() = default;
-  /**
-   * @brief DataArray
-   * @param ntuples
-   * @param name
-   * @param allocate
-   */
-  DataArray(size_t ntuples, const std::string& name, bool allocate = true)
-  : IDataArray(QString::fromStdString(name))
-  {
-    m_NumComponents = 1;
-    if(allocate)
-    {
-      resizeTuples(ntuples);
-    }
-    else
-    {
-      m_Size = ntuples;
-      m_MaxId = (ntuples == 0) ? 0 : ntuples - 1;
-      m_NumTuples = ntuples;
-      m_NumComponents = 1;
-    }
-  }
-
-  /**
-   * @brief DataArray
-   * @param ntuples
-   * @param cdims
-   * @param name
-   * @param allocate
-   */
-  DataArray(size_t ntuples, comp_dims_type cdims, const std::string& name, bool allocate = true)
-  : IDataArray(QString::fromStdString(name))
-  , m_NumTuples(ntuples)
-  , m_CompDims(std::move(cdims))
-  {
-    m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), 1, std::multiplies<T>());
-    m_InitValue = static_cast<T>(0);
-    if(allocate)
-    {
-      m_Array = resizeAndExtend(m_NumTuples * m_NumComponents);
-    }
-    else
-    {
-      m_Size = m_NumTuples * m_NumComponents;
-      m_MaxId = (m_Size == 0) ? 0 : m_Size - 1;
-    }
-  }
-
-  ~DataArray() override
-  {
-    clear();
   }
 
   //========================================= STL INTERFACE COMPATIBILITY =================================
@@ -1983,32 +1951,6 @@ public:
   // =================================== END STL COMPATIBLE INTERFACe ===================================================
 
 protected:
-  /**
-   * @brief Protected Constructor
-   * @param numTuples The number of elements in the internal array.
-   * @param rank The number of dimensions the attribute on each Tuple has.
-   * @param dims The actual dimensions the attribute on each Tuple has.
-   * @param takeOwnership Will the class clean up the memory. Default=true
-   */
-  DataArray(size_t numTuples, const QVector<size_t>& compDims, const QString& name, bool ownsData = true)
-  : IDataArray(name)
-  , m_NumTuples(numTuples)
-  , m_OwnsData(ownsData)
-  {
-    // Set the Component Dimensions and compute the number of components at each tuple for caching
-    m_CompDims = std::vector<size_type>(compDims.begin(), compDims.end());
-    m_NumComponents = m_CompDims[0];
-    for(int i = 1; i < m_CompDims.size(); i++)
-    {
-      m_NumComponents = m_NumComponents * m_CompDims[i];
-    }
-
-    m_Size = m_NumTuples * m_NumComponents;
-    m_MaxId = (m_Size > 0) ? m_Size - 1 : m_Size;
-
-    m_InitValue = static_cast<T>(0);
-    //  MUD_FLAP_0 = MUD_FLAP_1 = MUD_FLAP_2 = MUD_FLAP_3 = MUD_FLAP_4 = MUD_FLAP_5 = 0xABABABABABABABABul;
-  }
 
   /**
    * @brief deallocates the memory block
@@ -2186,7 +2128,7 @@ private:
   size_t m_NumTuples = 0;
   size_t m_NumComponents = 1;
   T m_InitValue = static_cast<T>(0);
-  std::vector<size_t> m_CompDims = {1};
+  comp_dims_type m_CompDims = {1};
   bool m_IsAllocated = false;
   bool m_OwnsData = true;
 };

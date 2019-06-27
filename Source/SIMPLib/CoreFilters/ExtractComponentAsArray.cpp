@@ -150,7 +150,7 @@ void ExtractComponentAsArray::dataCheck()
     return;
   }
 
-  QVector<size_t> cDims(1, 1);
+  std::vector<size_t> cDims(1, 1);
   DataArrayPath tempPath(getSelectedArrayPath().getDataContainerName(), getSelectedArrayPath().getAttributeMatrixName(), getNewArrayArrayName());
   m_NewArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_InArrayPtr.lock(), DataArrayID);
 }

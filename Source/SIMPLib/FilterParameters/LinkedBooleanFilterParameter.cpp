@@ -49,7 +49,7 @@ LinkedBooleanFilterParameter::~LinkedBooleanFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 LinkedBooleanFilterParameter::Pointer LinkedBooleanFilterParameter::New(const QString& humanLabel, const QString& propertyName, const bool& defaultValue, Category category,
-                                                                        SetterCallbackType setterCallback, GetterCallbackType getterCallback, QStringList conditionalProperties, int groupIndex)
+                                                                        const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, QStringList conditionalProperties, int groupIndex)
 {
   LinkedBooleanFilterParameter::Pointer ptr = LinkedBooleanFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

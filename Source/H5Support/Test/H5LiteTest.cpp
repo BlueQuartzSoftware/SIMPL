@@ -364,14 +364,14 @@ public:
     attributeKey = "VectorAttribute<" + attributeKey + ">";
 
     int32_t numElements = DIM0;
-    QVector<hsize_t> dims(1, DIM0);
+    std::vector<hsize_t> dims(1, DIM0);
 
-    QVector<T> data(DIM0, 0);
+    std::vector<T> data(DIM0, 0);
     for(int i = 0; i < numElements; ++i)
     {
       data[i] = (T)(i);
     }
-    QVector<T> rData(numElements, 0); // allocate and zero out the memory
+    std::vector<T> rData(numElements, 0); // allocate and zero out the memory
     err = QH5Lite::readVectorAttribute(file_id, dsetName, attributeKey, rData);
     DREAM3D_REQUIRE(err >= 0);
     DREAM3D_REQUIRE(data == rData);

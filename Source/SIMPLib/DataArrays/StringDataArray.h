@@ -58,7 +58,7 @@ class SIMPLib_EXPORT StringDataArray : public IDataArray
   // clang-format off
   PYB11_CREATE_BINDINGS(StringDataArray SUPER IDataArray)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
-  PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QVector<size_t> QString bool)
+  PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t std::vector<size_t> QString bool)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_METHOD(QString getValue ARGS size_t,i)
   PYB11_METHOD(void setValue ARGS size_t,i const.QString.&,value)
@@ -69,7 +69,7 @@ class SIMPLib_EXPORT StringDataArray : public IDataArray
 public:
   SIMPL_SHARED_POINTERS(StringDataArray)
   SIMPL_STATIC_NEW_MACRO(StringDataArray)
-  SIMPL_TYPE_MACRO_SUPER(StringDataArray, IDataArray)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(StringDataArray, IDataArray)
   SIMPL_CLASS_VERSION(2)
 
   /**
@@ -89,7 +89,7 @@ public:
    * @param allocate
    * @return
    */
-  static Pointer CreateArray(size_t numTuples, QVector<size_t> compDims, const QString& name, bool allocate = true);
+  static Pointer CreateArray(size_t numTuples, const std::vector<size_t>& compDims, const QString& name, bool allocate = true);
   /**
    * @brief createNewArray
    * @param numElements
@@ -97,7 +97,7 @@ public:
    * @param name
    * @return
    */
-  IDataArray::Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true) override;
+  IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief createNewArray
@@ -107,7 +107,7 @@ public:
    * @param allocate
    * @return
    */
-  IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override;
+  IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief createNewArray
@@ -117,7 +117,7 @@ public:
    * @param allocate
    * @return
    */
-  IDataArray::Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true) override;
+  // IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief ~StringDataArray
@@ -185,7 +185,7 @@ public:
 
   int getNumberOfComponents() override;
 
-  QVector<size_t> getComponentDimensions() override;
+  std::vector<size_t> getComponentDimensions() override;
 
   // Description:
   // Set/Get the dimension (n) of the rank. Must be >= 1. Make sure that
@@ -215,7 +215,7 @@ public:
    * @param idxs The indices to remove
    * @return error code.
    */
-  int eraseTuples(QVector<size_t>& idxs) override;
+  int eraseTuples(std::vector<size_t>& idxs) override;
 
   /**
    * @brief Copies a Tuple from one position to another.
@@ -326,7 +326,7 @@ public:
    * @param parentId
    * @return
    */
-  int writeH5Data(hid_t parentId, QVector<size_t> tDims) override;
+  int writeH5Data(hid_t parentId, std::vector<size_t> tDims) override;
 
   /**
    * @brief writeXdmfAttribute

@@ -93,8 +93,7 @@ class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterP
      * @return
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       ComparisonInputsAdvanced defaultValue, Category category, SetterCallbackType setterCallback,
-                       GetterCallbackType getterCallback, QVector<QString> choices,
+                       ComparisonInputsAdvanced defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, QVector<QString> choices,
                        bool showOperators, int groupIndex = -1);
 
     ~ComparisonSelectionAdvancedFilterParameter() override;

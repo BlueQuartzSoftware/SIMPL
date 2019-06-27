@@ -73,7 +73,7 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
   //float tol = 0.000001;
   QVector<float> torigin(3, 0);
   QVector<float> tspacing(3, 1);
-  QVector<size_t> tDims(3, 1);
+  std::vector<size_t> tDims(3, 1);
   // Get Input image properties
   ImagePointer inputPtr = dynamic_cast<ImageType*>(this->GetInput(0));
   typename ImageType::PointType origin = inputPtr->GetOrigin();
@@ -119,10 +119,10 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
   DataContainer::Pointer dataContainer = outputPtr->Get();
   ImagePointer inputPtr = dynamic_cast<ImageType*>(this->GetInput(0));
   // Create data array
-  QVector<size_t> cDims = ITKDream3DHelper::GetComponentsDimensions<PixelType>();
+  std::vector<size_t> cDims = ITKDream3DHelper::GetComponentsDimensions<PixelType>();
   IGeometry::Pointer geom = dataContainer->getGeometry();
   ImageGeom::Pointer imageGeom = std::dynamic_pointer_cast<ImageGeom>(geom);
-  QVector<size_t> tDims = imageGeom->getDimensions().toContainer<QVector<size_t>>();
+  std::vector<size_t> tDims = imageGeom->getDimensions().toContainer<std::vector<size_t>>();
 
   AttributeMatrix::Pointer attrMat;
   if( dataContainer->doesAttributeMatrixExist(m_AttributeMatrixArrayName.c_str()))
@@ -135,7 +135,7 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
 	}
 	// Check that if size does not match, there are no other data array than the one we expect.
 	// That makes it possible to modify the attribute matrix without having to worry.
-	QVector<size_t> matDims = attrMat->getTupleDimensions();
+	std::vector<size_t> matDims = attrMat->getTupleDimensions();
 	if (matDims != tDims)
 	{
     if (! ((attrMat->doesAttributeArrayExist(m_DataArrayName.c_str()) && attrMat->getNumAttributeArrays() == 1)

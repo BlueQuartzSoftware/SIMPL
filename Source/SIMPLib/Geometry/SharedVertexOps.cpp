@@ -38,7 +38,7 @@
 // -----------------------------------------------------------------------------
 SharedVertexList::Pointer GEOM_CLASS_NAME::CreateSharedVertexList(size_t numVertices, bool allocate)
 {
-  QVector<size_t> vertDims(1, 3);
+  std::vector<size_t> vertDims = {3};
   SharedVertexList::Pointer vertices = SharedVertexList::CreateArray(numVertices, vertDims, SIMPL::Geometry::SharedVertexList, allocate);
   vertices->initializeWithZeros();
   return vertices;
