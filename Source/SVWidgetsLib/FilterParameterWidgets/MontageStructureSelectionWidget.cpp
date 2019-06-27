@@ -189,7 +189,7 @@ void MontageStructureSelectionWidget::afterPreflight()
     return;
   }
 
-  QString currentName = m_Ui->montageSelectionComboBox->currentText();
+  QString currentName = m_FilterParameter->getGetterCallback()();
   QStringList montageNames = dca->getMontageCollection().getNameList();
   
   QSignalBlocker blocker(m_Ui->montageSelectionComboBox);
