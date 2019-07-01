@@ -33,8 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
@@ -123,7 +121,7 @@ public:
 
     dca->addOrReplaceDataContainer(dc);
 
-    QVector<size_t> dims = QVector<size_t>();
+    std::vector<size_t> dims = std::vector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
     dc->addOrReplaceAttributeMatrix(am);
@@ -158,7 +156,7 @@ public:
 
     dca->addOrReplaceDataContainer(dc);
 
-    QVector<size_t> dims = QVector<size_t>();
+    std::vector<size_t> dims = std::vector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
     dc->addOrReplaceAttributeMatrix(am);
@@ -195,7 +193,7 @@ public:
 
     dca->addOrReplaceDataContainer(dc);
 
-    QVector<size_t> dims = QVector<size_t>();
+    std::vector<size_t> dims = std::vector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
     dc->addOrReplaceAttributeMatrix(am);
@@ -230,7 +228,7 @@ public:
 
     dca->addOrReplaceDataContainer(dc);
 
-    QVector<size_t> dims = QVector<size_t>();
+    std::vector<size_t> dims = std::vector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
     dc->addOrReplaceAttributeMatrix(am);

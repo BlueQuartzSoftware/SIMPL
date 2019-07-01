@@ -35,8 +35,6 @@
 
 #pragma once
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFile>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -94,7 +92,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> std::shared_ptr<DataArray<T>> createDataArray(const QString& daName, const std::vector<std::vector<T>>& data, const QVector<size_t>& tupleDims, const QVector<size_t>& cDims)
+  template <typename T>
+  std::shared_ptr<DataArray<T>> createDataArray(const QString& daName, const std::vector<std::vector<T>>& data, const std::vector<size_t>& tupleDims, const std::vector<size_t>& cDims)
   {
     typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName);
     for(size_t i = 0; i < da->getNumberOfTuples(); i++)
@@ -107,7 +106,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> std::shared_ptr<DataArray<T>> createDataArray(const QString& daName, const QVector<size_t>& tupleDims, const QVector<size_t>& cDims)
+  template <typename T>
+  std::shared_ptr<DataArray<T>> createDataArray(const QString& daName, const std::vector<size_t>& tupleDims, const std::vector<size_t>& cDims)
   {
     typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName);
     for(size_t i = 0; i < da->getSize(); i++)
@@ -950,9 +950,9 @@ public:
 
 private:
   QString m_FilterName = QString("CopyObject");
-  QVector<size_t> m_Dims1 = {1};
-  QVector<size_t> m_Dims2 = {2};
-  QVector<size_t> m_Dims3 = {3};
-  QVector<size_t> m_Dims4 = {4};
-  QVector<size_t> m_Dims8 = {8};
+  std::vector<size_t> m_Dims1 = {1};
+  std::vector<size_t> m_Dims2 = {2};
+  std::vector<size_t> m_Dims3 = {3};
+  std::vector<size_t> m_Dims4 = {4};
+  std::vector<size_t> m_Dims8 = {8};
 };

@@ -36,7 +36,6 @@
 
 #include <QtGui/QPainter>
 
-#include <QtCore/QObject>
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 

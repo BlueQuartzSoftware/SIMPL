@@ -33,11 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
 #include <QtCore/QFile>
-#include <QtCore/QFileInfo>
-#include <QtCore/QPluginLoader>
 
 //#include "Applications/DREAM3D/DREAM3DApplication.h"
 

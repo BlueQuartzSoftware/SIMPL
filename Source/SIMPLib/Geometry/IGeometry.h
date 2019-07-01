@@ -55,12 +55,12 @@ class QTextStream;
 using MeshIndexType = size_t;
 using MeshIndexArrayType = DataArray<MeshIndexType>;
 using SharedVertexList = FloatArrayType;
-using SharedEdgeList = DataArray<MeshIndexType>;
-using SharedTriList = DataArray<MeshIndexType>;
-using SharedQuadList = DataArray<MeshIndexType>;
-using SharedTetList = DataArray<MeshIndexType>;
-using SharedHexList = DataArray<MeshIndexType>;
-using SharedFaceList = DataArray<MeshIndexType>;
+using SharedEdgeList = MeshIndexArrayType;
+using SharedTriList = MeshIndexArrayType;
+using SharedQuadList = MeshIndexArrayType;
+using SharedTetList = MeshIndexArrayType;
+using SharedHexList = MeshIndexArrayType;
+using SharedFaceList = MeshIndexArrayType;
 using ElementDynamicList = DynamicListArray<uint16_t, MeshIndexType>;
 
 /**
@@ -209,7 +209,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
     SIMPL_INSTANCE_PROPERTY(float, TimeValue)
     SIMPL_INSTANCE_PROPERTY(bool, EnableTimeSeries)
     SIMPL_INSTANCE_PROPERTY(ITransformContainer::Pointer, TransformContainer)
-    SIMPL_INSTANCE_PROPERTY(LengthUnit, Units)
+    SIMPL_INSTANCE_PROPERTY(IGeometry::LengthUnit, Units)
 
     // -----------------------------------------------------------------------------
     // Connectivity

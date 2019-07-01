@@ -285,7 +285,7 @@ int H5PrecipitateStatsDataDelegate::writePrecipitateStatsData(PrecipitateStatsDa
   // Write the Misorientation Bins
   if(nullptr != data->getMisorientationBins().get())
   {
-    QVector<size_t> tDims(1, data->getMisorientationBins()->getNumberOfTuples());
+    std::vector<size_t> tDims(1, data->getMisorientationBins()->getNumberOfTuples());
     err = data->getMisorientationBins()->writeH5Data(groupId, tDims);
   }
 
@@ -294,7 +294,7 @@ int H5PrecipitateStatsDataDelegate::writePrecipitateStatsData(PrecipitateStatsDa
   // Write the ODF
   if(nullptr != data->getODF().get())
   {
-    QVector<size_t> tDims(1, data->getODF()->getNumberOfTuples());
+    std::vector<size_t> tDims(1, data->getODF()->getNumberOfTuples());
     err = data->getODF()->writeH5Data(groupId, tDims);
   }
   err = writeWeightsData(groupId, SIMPL::StringConstants::ODFWeights, data->getODF_Weights());
@@ -302,7 +302,7 @@ int H5PrecipitateStatsDataDelegate::writePrecipitateStatsData(PrecipitateStatsDa
   // Write the Axis ODF
   if(nullptr != data->getAxisOrientation().get())
   {
-    QVector<size_t> tDims(1, data->getAxisOrientation()->getNumberOfTuples());
+    std::vector<size_t> tDims(1, data->getAxisOrientation()->getNumberOfTuples());
     err = data->getAxisOrientation()->writeH5Data(groupId, tDims);
   }
   err = writeWeightsData(groupId, SIMPL::StringConstants::AxisODFWeights, data->getAxisODF_Weights());
@@ -326,7 +326,7 @@ int H5PrecipitateStatsDataDelegate::writeVectorOfArrays(hid_t pid, VectorOfFloat
     err = -1;
     if(nullptr != colData[c] && colData[c]->getSize() > 0)
     {
-      QVector<size_t> tDims(1, colData[c]->getNumberOfTuples());
+      std::vector<size_t> tDims(1, colData[c]->getNumberOfTuples());
       err = colData[c]->writeH5Data(pid, tDims);
       if(err < 0)
       {
@@ -371,7 +371,7 @@ int H5PrecipitateStatsDataDelegate::readVectorOfArrays(hid_t pid, VectorOfFloatA
 int H5PrecipitateStatsDataDelegate::readMDFWeights(hid_t pid, PrecipitateStatsData* data)
 {
   int err = 0;
-  QVector<size_t> dims(1, 1);
+  std::vector<size_t> dims(1, 1);
   FloatArrayType::Pointer angles = FloatArrayType::CreateArray(1, dims, SIMPL::StringConstants::Angle);
   FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Weight);
   dims[0] = 3;
@@ -813,7 +813,7 @@ int H5PrecipitateStatsDataDelegate::writeBinNumbers(PrecipitateStatsData* data, 
   {
     data->generateBinNumbers();
   }
-  QVector<size_t> tDims(1, data->getBinNumbers()->getNumberOfTuples());
+  std::vector<size_t> tDims(1, data->getBinNumbers()->getNumberOfTuples());
   return data->getBinNumbers()->writeH5Data(groupId, tDims);
 }
 

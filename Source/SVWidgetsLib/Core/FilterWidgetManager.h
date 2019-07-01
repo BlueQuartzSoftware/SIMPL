@@ -38,7 +38,6 @@
 
 #include <QtCore/QString>
 #include <QtCore/QMap>
-#include <QtCore/QSet>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 

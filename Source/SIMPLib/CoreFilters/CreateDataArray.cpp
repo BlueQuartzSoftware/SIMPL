@@ -35,7 +35,6 @@
 
 #include "CreateDataArray.h"
 
-#include <QtCore/QDateTime>
 
 #include <limits>
 #include <random>
@@ -353,7 +352,7 @@ void CreateDataArray::dataCheck()
     QString ss = QObject::tr("The Created DataArrayPath is invalid. Please select the Data Container, Attribute Matrix and set an output DataArray name.");
     setErrorCondition(-8051, ss);
   }
-  QVector<size_t> cDims(1, getNumberOfComponents());
+  std::vector<size_t> cDims(1, getNumberOfComponents());
   if(getErrorCode() < 0)
   {
     return;

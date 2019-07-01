@@ -454,7 +454,7 @@ QString ImportASCIIDataWizard::getInputFilePath()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<size_t> ImportASCIIDataWizard::getTupleDims()
+std::vector<size_t> ImportASCIIDataWizard::getTupleDims()
 {
   DataFormatPage* dfPage = dynamic_cast<DataFormatPage*>(page(DataFormat));
   if(nullptr != dfPage)
@@ -462,7 +462,7 @@ QVector<size_t> ImportASCIIDataWizard::getTupleDims()
     return dfPage->getTupleTable()->getData();
   }
 
-  return QVector<size_t>();
+  return std::vector<size_t>();
 }
 
 // -----------------------------------------------------------------------------

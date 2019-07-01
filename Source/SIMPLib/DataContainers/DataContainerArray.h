@@ -40,7 +40,6 @@
 
 #include <QtCore/QObject> // for Q_OBJECT
 #include <QtCore/QString>
-#include <QtCore/QList>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -443,8 +442,8 @@ public:
      * @param cDims The component dimensions of the IDataArray subclass
      * @return Valid or nullptr shared pointer based on availability of the array
      */
-    template<class ArrayType, class Filter>
-    typename ArrayType::Pointer getPrereqArrayFromPath(Filter* filter, const DataArrayPath& path, QVector<size_t> cDims)
+    template <class ArrayType, class Filter>
+    typename ArrayType::Pointer getPrereqArrayFromPath(Filter* filter, const DataArrayPath& path, std::vector<size_t> cDims)
     {
 
       QString ss;
@@ -576,12 +575,8 @@ public:
      * @param dims The dimensions of the components of the AttributeArray
      * @return A Shared Pointer to the newly created array
      */
-    template<class ArrayType, class Filter, typename T>
-    typename ArrayType::Pointer createNonPrereqArrayFromPath(Filter* filter,
-                                                             const DataArrayPath& path,
-                                                             T initValue,
-                                                             QVector<size_t> compDims,
-                                                             const QString& property = "",
+    template <class ArrayType, class Filter, typename T>
+    typename ArrayType::Pointer createNonPrereqArrayFromPath(Filter* filter, const DataArrayPath& path, T initValue, const std::vector<size_t>& compDims, const QString& property = "",
                                                              RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       typename ArrayType::Pointer dataArray = ArrayType::NullPointer();

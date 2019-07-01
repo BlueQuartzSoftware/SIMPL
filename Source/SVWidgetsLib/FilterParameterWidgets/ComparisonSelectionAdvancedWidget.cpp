@@ -35,7 +35,6 @@
 
 #include "ComparisonSelectionAdvancedWidget.h"
 
-#include <QtWidgets/QMenu>
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"

@@ -89,7 +89,7 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const bool& defaultValue, Category category,
-                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                        QStringList conditionalProperties, int groupIndex = -1);
 
     ~LinkedBooleanFilterParameter() override;

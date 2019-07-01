@@ -38,15 +38,9 @@
 #include <stack>
 #include <vector>
 
-#include <QtCore/QSharedPointer>
 
-#include <QtGui/QPainter>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListView>
-#include <QtWidgets/QStatusBar>
-#include <QtWidgets/QTableWidget>
-#include <QtWidgets/QTextEdit>
-#include <QtWidgets/QVBoxLayout>
 
 #include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/Messages/AbstractMessage.h"
@@ -88,7 +82,7 @@ public:
 
   using IndexedFilterObject = std::pair<int, PipelineFilterObject*>;
 
-  SIMPL_INSTANCE_PROPERTY(PipelineViewState, PipelineState)
+  SIMPL_INSTANCE_PROPERTY(SVPipelineView::PipelineViewState, PipelineState)
 
   SIMPL_GET_PROPERTY(QAction*, ActionEnableFilter)
   SIMPL_GET_PROPERTY(QAction*, ActionCut)

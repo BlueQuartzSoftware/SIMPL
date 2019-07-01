@@ -392,18 +392,14 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
 
   out << QStringLiteral("\"\"\"") << "\n";
   out << "\n";
+  out  << "from .dream3d import simpl\n";
+
   QString shortLibName = m_LibName;
   shortLibName.replace("_py", "");
-
-  if(isSIMPLib.compare("TRUE") == 0)
+  if(isSIMPLib != "TRUE")
   {
-    shortLibName = QString("simpl");
+    out  << "from .dream3d import " << shortLibName << "\n\n\n";
   }
-  out
-      //<< "import dream3d\n"
-      << "from .dream3d import simpl\n"
-      << "from .dream3d import " << shortLibName << "\n"
-      << "\n";
 
   iter.toFront();
   while(iter.hasNext())
@@ -425,7 +421,13 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
     {
       docCodes = pythonicCodes[2];
     }
+    
+    if(shortLibName == "dream3d")
+    {
+      shortLibName = "simpl";
+    }
     bodyCodes = bodyCodes.replace("@shortLibName@", shortLibName);
+    
     if(aClass.compare("AbstractFilter") == 0 && isSIMPLib.compare("FALSE") == 0)
     {
       continue;

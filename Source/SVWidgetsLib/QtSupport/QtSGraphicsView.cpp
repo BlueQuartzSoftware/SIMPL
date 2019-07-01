@@ -35,17 +35,16 @@
 
 #include "QtSGraphicsView.h"
 
+#include <QtCore/QDebug>
 #include <QtCore/QFileInfo>
 #include <QtCore/QMimeData>
 #include <QtCore/QUrl>
-#include <QtCore/QtDebug>
 
 #include <QtGui/QDragEnterEvent>
 #include <QtGui/QDragLeaveEvent>
 #include <QtGui/QDropEvent>
 #include <QtGui/QImageReader>
 #include <QtGui/QPixmap>
-#include <QtWidgets/QGraphicsPolygonItem>
 #include <QtWidgets/QWidget>
 
 // -----------------------------------------------------------------------------

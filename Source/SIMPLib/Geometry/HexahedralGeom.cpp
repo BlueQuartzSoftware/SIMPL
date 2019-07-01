@@ -333,7 +333,7 @@ void HexahedralGeom::deleteElementNeighbors()
 // -----------------------------------------------------------------------------
 int HexahedralGeom::findElementCentroids()
 {
-  QVector<size_t> cDims(1, 3);
+  std::vector<size_t> cDims(1, 3);
   m_HexCentroids = FloatArrayType::CreateArray(getNumberOfHexas(), cDims, SIMPL::StringConstants::HexCentroids);
   GeometryHelpers::Topology::FindElementCentroids<size_t>(m_HexList, m_VertexList, m_HexCentroids);
   if(m_HexCentroids.get() == nullptr)
@@ -373,7 +373,7 @@ void HexahedralGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 int HexahedralGeom::findElementSizes()
 {
-  QVector<size_t> cDims(1, 1);
+  std::vector<size_t> cDims(1, 1);
   size_t numHexs = getNumberOfHexas();
   m_HexSizes = FloatArrayType::CreateArray(numHexs, cDims, SIMPL::StringConstants::HexVolumes, (numHexs != 0));
   GeometryHelpers::Topology::FindHexVolumes<size_t>(m_HexList, m_VertexList, m_HexSizes);
@@ -413,7 +413,7 @@ void HexahedralGeom::deleteElementSizes()
 // -----------------------------------------------------------------------------
 int HexahedralGeom::findUnsharedEdges()
 {
-  QVector<size_t> cDims(1, 2);
+  std::vector<size_t> cDims(1, 2);
   m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList, false);
   GeometryHelpers::Connectivity::FindUnsharedHexEdges<size_t>(m_HexList, m_UnsharedEdgeList);
   if(m_UnsharedEdgeList.get() == nullptr)
@@ -452,7 +452,7 @@ void HexahedralGeom::deleteUnsharedEdges()
 // -----------------------------------------------------------------------------
 int HexahedralGeom::findUnsharedFaces()
 {
-  QVector<size_t> cDims(1, 4);
+  std::vector<size_t> cDims(1, 4);
   m_UnsharedQuadList = SharedQuadList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedFaceList, false);
   GeometryHelpers::Connectivity::FindUnsharedHexFaces<size_t>(m_HexList, m_UnsharedQuadList);
   if(m_UnsharedQuadList.get() == nullptr)
@@ -742,60 +742,35 @@ int HexahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   herr_t err = 0;
   SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
-  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
-  DataArray<uint64_t>::Pointer tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedHexList, parentId, preflight, err);
-  // Now create the correct type and pass in the pointer to tempTris.
-  SharedHexList::Pointer hexas =
-      SharedHexList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
-  // Release the ownership of the memory from TempTris and essentially pass it to tris.
-  tempUInt64->releaseOwnership();
+
+  MeshIndexArrayType::Pointer hexas = GeometryHelpers::GeomIO::ReadMeshIndexListFromHDF5(SIMPL::Geometry::SharedHexList, parentId, preflight, err);
   if(hexas.get() == nullptr || vertices.get() == nullptr)
   {
     return -1;
   }
+
   size_t numHexas = hexas->getNumberOfTuples();
   size_t numVerts = vertices->getNumberOfTuples();
-  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
-  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedQuadList, parentId, preflight, err);
-  // Now create the correct type and pass in the pointer to tempTris.
-  SharedQuadList::Pointer quads =
-      SharedQuadList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
-  // Release the ownership of the memory from TempTris and essentially pass it to tris.
-  tempUInt64->releaseOwnership();
-  if(err < 0 && err != -2)
-  {
-    return -1;
-  }
-  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
-  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::UnsharedFaceList, parentId, preflight, err);
-  // Now create the correct type and pass in the pointer to tempTris.
-  SharedQuadList::Pointer bQuads =
-      SharedQuadList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
-  // Release the ownership of the memory from TempTris and essentially pass it to tris.
-  tempUInt64->releaseOwnership();
-  if(err < 0 && err != -2)
-  {
-    return -1;
-  }
-  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
-  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
-  // Now create the correct type and pass in the pointer to tempTris.
-  SharedEdgeList::Pointer edges =
-      SharedEdgeList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
-  // Release the ownership of the memory from TempTris and essentially pass it to tris.
-  tempUInt64->releaseOwnership();
+
+  MeshIndexArrayType::Pointer quads = GeometryHelpers::GeomIO::ReadMeshIndexListFromHDF5(SIMPL::Geometry::SharedQuadList, parentId, preflight, err);
   if(err < 0 && err != -2)
   {
     return -1;
   }
 
-  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
-  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::UnsharedEdgeList, parentId, preflight, err);
-  // Now create the correct type and pass in the pointer to tempTris.
-  SharedEdgeList::Pointer bEdges =
-      SharedEdgeList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
-  // Release the ownership of the memory from TempTris and essentially pass it to tris.
-  tempUInt64->releaseOwnership();
+  MeshIndexArrayType::Pointer bQuads = GeometryHelpers::GeomIO::ReadMeshIndexListFromHDF5(SIMPL::Geometry::UnsharedFaceList, parentId, preflight, err);
+  if(err < 0 && err != -2)
+  {
+    return -1;
+  }
+
+  MeshIndexArrayType::Pointer edges = GeometryHelpers::GeomIO::ReadMeshIndexListFromHDF5(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
+  if(err < 0 && err != -2)
+  {
+    return -1;
+  }
+
+  MeshIndexArrayType::Pointer bEdges = GeometryHelpers::GeomIO::ReadMeshIndexListFromHDF5(SIMPL::Geometry::UnsharedEdgeList, parentId, preflight, err);
   if(err < 0 && err != -2)
   {
     return -1;

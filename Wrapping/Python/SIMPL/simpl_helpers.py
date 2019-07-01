@@ -38,7 +38,7 @@ def CreateAttributeMatrix(dims, name, type):
     name -- The name of the AttributeMatrix
     type -- the type of the AttributeMatrix
     """
-    am = simpl.AttributeMatrix.Create(dims, name, type)
+    am = simpl.AttributeMatrix.New(dims, name, type)
     return am
 
 

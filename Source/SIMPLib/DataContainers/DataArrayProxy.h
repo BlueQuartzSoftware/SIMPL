@@ -35,13 +35,13 @@
 
 #pragma once
 
-#include <QtCore/QJsonArray>
-#include <QtCore/QJsonObject>
-#include <QtCore/QMetaType>
-#include <QtCore/QString>
-#include <QtCore/QVector>
+#include <vector>
 
 #include <hdf5.h>
+
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
+#include <QtCore/QString>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -55,13 +55,13 @@ class SIMPLib_EXPORT DataArrayProxy
 {
   PYB11_CREATE_BINDINGS(DataArrayProxy)
   PYB11_CREATION()
-  PYB11_PROPERTY(QVector<size_t> TupleDims READ getTupleDims WRITE setTupleDims)
-  PYB11_PROPERTY(QVector<size_t> CompDims READ getCompDims WRITE setCompDims)
+  PYB11_PROPERTY(std::vector<size_t> TupleDims READ getTupleDims WRITE setTupleDims)
+  PYB11_PROPERTY(std::vector<size_t> CompDims READ getCompDims WRITE setCompDims)
   PYB11_PROPERTY(QString Path READ getPath WRITE setPath)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(uint8_t Flag READ getFlag WRITE setFlag)
 public:
-  using CompDimsVector = QVector<QVector<size_t>>;
+  using CompDimsVector = std::vector<std::vector<size_t>>;
 
   // This enumeration is not a class enumeration because it is not possible to
   // do a bit-wise NOT operation on a class enumeration value.  We need to be
@@ -216,25 +216,25 @@ public:
    * @brief setTupleDims
    * @param tDims
    */
-  void setTupleDims(const QVector<size_t>& tDims);
+  void setTupleDims(const std::vector<size_t>& tDims);
 
   /**
    * @brief getTupleDims
    * @return
    */
-  QVector<size_t> getTupleDims() const;
+  std::vector<size_t> getTupleDims() const;
 
   /**
    * @brief setCompDims
    * @param cDims
    */
-  void setCompDims(const QVector<size_t>& cDims);
+  void setCompDims(const std::vector<size_t>& cDims);
 
   /**
    * @brief getCompDims
    * @return
    */
-  QVector<size_t> getCompDims() const;
+  std::vector<size_t> getCompDims() const;
 
 private:
   uint8_t m_Flag = SIMPL::Unchecked;
@@ -242,22 +242,22 @@ private:
   QString m_Path;
   QString m_Name;
   QString m_ObjectType;
-  QVector<size_t> m_TupleDims;
-  QVector<size_t> m_CompDims;
+  std::vector<size_t> m_TupleDims;
+  std::vector<size_t> m_CompDims;
 
   /**
    * @brief writeVector
    * @param vector
    * @return
    */
-  QJsonArray writeVector(QVector<size_t> vector) const;
+  QJsonArray writeVector(const std::vector<size_t>& vector) const;
 
   /**
    * @brief readVector
    * @param jsonArray
    * @return
    */
-  QVector<size_t> readVector(QJsonArray jsonArray);
+  std::vector<size_t> readVector(QJsonArray jsonArray);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(DataArrayProxy::PrimitiveTypeFlags)

@@ -3,7 +3,6 @@
 
 #include <QtCore/QDebug>
 #include <QtGui/QPainter>
-#include <QtGui/QMouseEvent>
 #include <QtWidgets/QStyleOption>
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"

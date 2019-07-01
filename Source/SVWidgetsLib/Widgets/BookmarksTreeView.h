@@ -36,9 +36,7 @@
 
 #pragma once
 
-#include <QtWidgets/QApplication>
 
-#include <QtCore/QJsonObject>
 
 #include <QtWidgets/QMenu>
 #include <QtGui/QMouseEvent>

@@ -246,7 +246,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     yarrays.push_back(rectgrid->getYBounds());
     zarrays.push_back(rectgrid->getZBounds());
 
-    QVector<size_t> cDims(1, 1);
+    std::vector<size_t> cDims(1, 1);
 
     m_XBoundsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getXBoundsArrayPath(), 0, cDims, "", RectGrid_XBoundsID);
     if(m_XBoundsPtr.lock())
@@ -291,7 +291,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     QVector<IDataArray::Pointer> arrays;
     arrays.push_back(vertex->getVertices());
 
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
 
     m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath0(), 0, cDims, "", Vert_SharedVertexID);
     if(m_VertsPtr.lock())
@@ -316,7 +316,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     varrays.push_back(edge->getVertices());
     earrays.push_back(edge->getEdges());
 
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
 
     m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath1(), 0, cDims, "", Edge_SharedVertexID);
     if(m_VertsPtr.lock())
@@ -354,7 +354,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     varrays.push_back(triangle->getVertices());
     earrays.push_back(triangle->getTriangles());
 
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
 
     m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath2(), 0, cDims, "", Tri_SharedVertexID);
     if(m_VertsPtr.lock())
@@ -390,7 +390,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     varrays.push_back(quad->getVertices());
     earrays.push_back(quad->getQuads());
 
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
 
     m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath3(), 0, cDims, "", Quad_SharedVertexID);
     if(m_VertsPtr.lock())
@@ -428,7 +428,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     varrays.push_back(tet->getVertices());
     earrays.push_back(tet->getTetrahedra());
 
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
 
     m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath4(), 0, cDims, "", Tet_SharedVertexID);
     if(m_VertsPtr.lock())
@@ -466,7 +466,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     varrays.push_back(hex->getVertices());
     earrays.push_back(hex->getHexahedra());
 
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
 
     m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath5(), 0, cDims, "", Hex_SharedVertexID);
     if(m_VertsPtr.lock())

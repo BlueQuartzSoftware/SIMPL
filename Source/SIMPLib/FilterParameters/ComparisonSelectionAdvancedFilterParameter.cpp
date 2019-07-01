@@ -35,7 +35,6 @@
 
 #include "ComparisonSelectionAdvancedFilterParameter.h"
 
-#include <QtCore/QJsonArray>
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/ComparisonValue.h"
@@ -57,7 +56,7 @@ ComparisonSelectionAdvancedFilterParameter::~ComparisonSelectionAdvancedFilterPa
 //
 // -----------------------------------------------------------------------------
 ComparisonSelectionAdvancedFilterParameter::Pointer ComparisonSelectionAdvancedFilterParameter::New(const QString& humanLabel, const QString& propertyName, ComparisonInputsAdvanced defaultValue, Category category,
-                                                                                    SetterCallbackType setterCallback, GetterCallbackType getterCallback, QVector<QString> choices, bool showOperators,
+                                                                                    const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, QVector<QString> choices, bool showOperators,
                                                                                     int groupIndex)
 {
   ComparisonSelectionAdvancedFilterParameter::Pointer ptr = ComparisonSelectionAdvancedFilterParameter::New();

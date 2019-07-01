@@ -47,9 +47,7 @@
 #include <hdf5.h>
 
 #include <QtCore/QObject>
-#include <QtCore/QList>
 #include <QtCore/QString>
-#include <QtCore/QMap>
 #include <QtCore/QVector>
 
 //-- DREAM3D Includes
@@ -88,13 +86,13 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureC
 {
   // clang-format off
   PYB11_CREATE_BINDINGS(AttributeMatrix)
-  PYB11_STATIC_CREATION(Create ARGS std::vector<size_t> QString AttributeMatrix::Type)
+  PYB11_STATIC_CREATION(New ARGS std::vector<size_t> QString AttributeMatrix::Type)
   
   PYB11_ENUMERATION(Type)
   PYB11_ENUMERATION(Category)
  
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
-  PYB11_PROPERTY(QVector<size_t> TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
+  PYB11_PROPERTY(std::vector<size_t> TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
 
   PYB11_METHOD(bool doesAttributeArrayExist ARGS Name)
   PYB11_METHOD(bool addOrReplaceAttributeArray OVERLOAD const.IDataArray::Pointer.&,Data)
@@ -173,7 +171,7 @@ public:
     Unknown = 999, //!<
   };
 
-  using Categories = QVector<Category>;
+  using Categories = std::vector<Category>;
 
   /**
    * @brief New Creates an AttributeMatrix with the give name
@@ -182,74 +180,61 @@ public:
    * @param attrType The type of AttributeMatrix, one of
    * @return
    */
-  static Pointer New(const QVector<size_t> &tupleDims, const QString& name, AttributeMatrix::Type attrType)
+  static Pointer New(const std::vector<size_t>& tupleDims, const QString& name, AttributeMatrix::Type attrType)
   {
     Pointer sharedPtr(new AttributeMatrix(tupleDims, name, attrType));
     return sharedPtr;
   }
 
   /**
-   * @brief New Creates an AttributeMatrix with the give name
-   * @param tupleDims The dimensions of the Attribute matrix given in the order fastest moving to slowest moving (XYZ)
-   * @param name The name of the AttributeMatrix. Each AttributeMatrix should have a unique name.
-   * @param attrType The type of AttributeMatrix, one of
+   * @brief ReadAttributeMatrixStructure
+   * @param containerId
+   * @param dataContainer
+   * @param h5InternalPath
+   */
+  static void ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, SIMPLH5DataReaderRequirements* req, const QString& h5InternalPath);
+
+  /**
+   * @brief Creates and returns a DataArrayPath for the AttributeMatrix
    * @return
    */
-  static Pointer Create(const std::vector<size_t> &tupleDims, const QString& name, AttributeMatrix::Type attrType)
+  DataArrayPath getDataArrayPath() const override;
+
+  /**
+   * @brief Type
+   */
+  SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Type, Type)
+
+  /**
+   * @brief Adds the IDataArray to the AttributeMatrix.
+   * @param data The IDataArray::Pointer that will hold the data
+   * @return Bool: True if the addition happened, FALSE if an IDataArray with the same name already exists.
+   */
+  bool addOrReplaceAttributeArray(const IDataArray::Pointer& data)
   {
-    Pointer sharedPtr(new AttributeMatrix(QVector<size_t>::fromStdVector(tupleDims), name, static_cast<AttributeMatrix::Type>(attrType)));
-    return sharedPtr;
+    // Can not insert a null IDataArray object
+    if(data.get() == nullptr)
+    {
+      return false;
+    }
+    if(getNumberOfTuples() != data->getNumberOfTuples())
+    {
+      qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
+      qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
+    }
+    Q_ASSERT(getNumberOfTuples() == data->getNumberOfTuples());
+    return insertOrAssign(data);
   }
 
-    /**
-     * @brief ReadAttributeMatrixStructure
-     * @param containerId
-     * @param dataContainer
-     * @param h5InternalPath
-     */
-    static void ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, SIMPLH5DataReaderRequirements* req, const QString& h5InternalPath);
-
-    /**
-     * @brief Creates and returns a DataArrayPath for the AttributeMatrix
-     * @return
-     */
-    DataArrayPath getDataArrayPath() const override;
-
-    /**
-    * @brief Type
-    */
-    SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Type, Type)
-
-    /**
-     * @brief Adds the IDataArray to the AttributeMatrix.
-     * @param data The IDataArray::Pointer that will hold the data
-     * @return Bool: True if the addition happened, FALSE if an IDataArray with the same name already exists.
-     */
-    bool addOrReplaceAttributeArray(const IDataArray::Pointer& data)
-    {
-      // Can not insert a null IDataArray object
-      if(data.get() == nullptr)
-      {
-        return false;
-      }
-      if(getNumberOfTuples() != data->getNumberOfTuples())
-      {
-        qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
-        qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
-      }
-      Q_ASSERT(getNumberOfTuples() == data->getNumberOfTuples());
-      return insertOrAssign(data);
-    }
-    
-    /**
-     * @brief Returns the array for a given named array or the equivelant to a
-     * null pointer if the name does not exist.
-     * @param name The name of the data array
-     */
-    IDataArray::Pointer getAttributeArray(const QString& name)
-    {
-      return getChildByName(name);
-    }
+  /**
+   * @brief Returns the array for a given named array or the equivelant to a
+   * null pointer if the name does not exist.
+   * @param name The name of the data array
+   */
+  IDataArray::Pointer getAttributeArray(const QString& name)
+  {
+    return getChildByName(name);
+  }
 
     /**
      * @brief getAttributeArray
@@ -334,7 +319,7 @@ public:
     * @brief Resizes an array from the Attribute Matrix
     * @param size The new size of the array
     */
-    void resizeAttributeArrays(const QVector<size_t>& tDims);
+    void resizeAttributeArrays(const std::vector<size_t>& tDims);
 
     /**
      * @brief Returns bool of whether a named array exists
@@ -351,11 +336,8 @@ public:
      * @param cDims The component Dimensions of the Data Array
      * @return A valid IDataArray Subclass if the array exists otherwise a null shared pointer.
      */
-    template<class ArrayType, class Filter>
-    typename ArrayType::Pointer getPrereqArray(Filter* filter,
-                                               QString attributeArrayName,
-                                               int err,
-                                               QVector<size_t> cDims)
+    template <class ArrayType, class Filter>
+    typename ArrayType::Pointer getPrereqArray(Filter* filter, QString attributeArrayName, int err, std::vector<size_t> cDims)
     {
       QString ss;
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
@@ -455,11 +437,8 @@ public:
      * @param dims The dimensions of the components of the AttributeArray
      * @return A Shared Pointer to the newly created array
      */
-    template<class ArrayType, class Filter, typename T>
-    typename ArrayType::Pointer createNonPrereqArray(Filter* filter,
-                                                     const QString& attributeArrayName,
-                                                     T initValue,
-                                                     QVector<size_t> compDims,
+    template <class ArrayType, class Filter, typename T>
+    typename ArrayType::Pointer createNonPrereqArray(Filter* filter, const QString& attributeArrayName, T initValue, const std::vector<size_t>& compDims,
                                                      RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
@@ -512,8 +491,8 @@ public:
     * @param name The name that the array will be known by
     * @param dims The size the data on each tuple
     */
-    template<class ArrayType, class Filter, typename T>
-    void createAndAddAttributeArray(Filter* filter, const QString& name, T initValue, QVector<size_t> compDims, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
+    template <class ArrayType, class Filter, typename T>
+    void createAndAddAttributeArray(Filter* filter, const QString& name, T initValue, std::vector<size_t> compDims, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       bool allocateData = false;
       if(nullptr == filter) { allocateData = true; }
@@ -610,14 +589,13 @@ public:
      * @brief Sets the Tuple Dimensions for the Attribute Matrix
      * @param tupleDims
      */
-    void setTupleDimensions(const QVector<size_t>& tupleDims);
+    void setTupleDimensions(const std::vector<size_t>& tupleDims);
 
     /**
      * @brief Returns the Tuple Dimensions of the AttributeMatrix
      * @return
      */
-    QVector<size_t> getTupleDimensions();
-
+    std::vector<size_t> getTupleDimensions();
 
     /**
     * @brief Returns the number of Tuples that the feature data has. For example if there are 32 features
@@ -676,7 +654,7 @@ public:
     virtual QString getInfoString(SIMPL::InfoStringFormat format);
 
   protected:
-    AttributeMatrix(const QVector<size_t>& tDims, const QString& name, AttributeMatrix::Type attrType);
+    AttributeMatrix(const std::vector<size_t>& tDims, const QString& name, AttributeMatrix::Type attrType);
 
     /**
      * @brief writeXdmfAttributeData
@@ -706,7 +684,7 @@ public:
                                                  const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType = 0);
 
   private:
-    QVector<size_t> m_TupleDims;
+    std::vector<size_t> m_TupleDims;
 
     AttributeMatrix(const AttributeMatrix&);
     void operator =(const AttributeMatrix&);

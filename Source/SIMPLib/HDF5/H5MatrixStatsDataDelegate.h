@@ -36,7 +36,6 @@
 
 #pragma once
 
-#include <QtCore/QString>
 
 #include <hdf5.h>
 

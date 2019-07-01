@@ -38,7 +38,6 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
-#include <QtCore/QFileInfo>
 #include <QtCore/QString>
 #include <QtCore/QVector>
 
@@ -245,7 +244,7 @@ public:
     DREAM3D_REQUIRED(result, ==, true)
 
     // Create the attribute matrix
-    QVector<size_t> dims(1, k_ArraySize);
+    std::vector<size_t> dims(1, k_ArraySize);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
 
     // Create the data container
@@ -350,7 +349,7 @@ public:
     DREAM3D_REQUIRED(result, ==, true)
 
     // Create the attribute matrix
-    QVector<size_t> dims(1, k_ArraySize);
+    std::vector<size_t> dims(1, k_ArraySize);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
 
     // Create the data container
@@ -450,7 +449,7 @@ public:
     DREAM3D_REQUIRED(result, ==, true)
 
     // Create the attribute matrix
-    QVector<size_t> dims(1, k_ArraySize);
+    std::vector<size_t> dims(1, k_ArraySize);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
 
     // Create the data container
@@ -560,7 +559,7 @@ public:
     DREAM3D_REQUIRED(result, ==, true)
 
     // Create the attribute matrix
-    QVector<size_t> dims(1, k_ArraySize);
+    std::vector<size_t> dims(1, k_ArraySize);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
 
     // Create the data container
@@ -698,7 +697,7 @@ public:
     DREAM3D_REQUIRED(result, ==, true)
 
     // Create the attribute matrix
-    QVector<size_t> dims(1, k_ArraySize);
+    std::vector<size_t> dims(1, k_ArraySize);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
 
     // Create the data container
@@ -808,7 +807,7 @@ public:
     DREAM3D_REQUIRED(result, ==, true)
 
     // Create the attribute matrix
-    QVector<size_t> dims(1, k_ArraySize);
+    std::vector<size_t> dims(1, k_ArraySize);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
 
     // Create the data container

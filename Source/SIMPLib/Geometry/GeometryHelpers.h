@@ -64,12 +64,14 @@ public:
 
   /**
    * @brief ReadMeshFromHDF5
-   * @param listName
-   * @param parentId
-   * @param preflight
+   * @param listName The name of the DataSet
+   * @param parentId The HDF5
+   * @param preflight Are we in preflight mode. If TRUE then the underlying memory for the array will *not* be allocated
+   * @param err Any error that occured.
    * @return
    */
-  template <typename ListType> static typename ListType::Pointer ReadListFromHDF5(const QString& listName, hid_t parentId, bool preflight, herr_t& err)
+  template <typename ListType>
+  static typename ListType::Pointer ReadListFromHDF5(const QString& listName, hid_t parentId, bool preflight, herr_t& err)
   {
     QVector<hsize_t> dims;
     H5T_class_t type_class;
@@ -92,31 +94,22 @@ public:
   }
 
   /**
+   * @brief ReadIndexListFromHDF5
+   * @param listName The name of the DataSet
+   * @param parentId The HDF5
+   * @param preflight Are we in preflight mode. If TRUE then the underlying memory for the array will *not* be allocated
+   * @param err Any error that occured.
+   * @return
+   */
+  static MeshIndexArrayType::Pointer ReadMeshIndexListFromHDF5(const QString& listName, hid_t parentId, bool preflight, herr_t& err);
+
+  /**
    * @brief ReadMetaDataFromHDF5
    * @param parentId
    * @param geometry
    * @return
    */
-  static int ReadMetaDataFromHDF5(hid_t parentId, IGeometry::Pointer geometry)
-  {
-    herr_t err = 0;
-    unsigned int spatialDims = 0;
-    QString geomName = "";
-    err = QH5Lite::readScalarAttribute(parentId, SIMPL::Geometry::Geometry, SIMPL::Geometry::SpatialDimensionality, spatialDims);
-    if(err < 0)
-    {
-      return err;
-    }
-    err = QH5Lite::readStringAttribute(parentId, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryName, geomName);
-    if(err < 0)
-    {
-      return err;
-    }
-    geometry->setSpatialDimensionality(spatialDims);
-    geometry->setName(geomName);
-
-    return 1;
-  }
+  static int ReadMetaDataFromHDF5(hid_t parentId, const IGeometry::Pointer& geometry);
 
   /**
    * @brief WriteListToHDF5
@@ -124,17 +117,7 @@ public:
    * @param list
    * @return
    */
-  static int WriteListToHDF5(hid_t parentId, IDataArray::Pointer list)
-  {
-    herr_t err = 0;
-    if(list->getNumberOfTuples() == 0)
-    {
-      return err;
-    }
-    QVector<size_t> tDims(1, list->getNumberOfTuples());
-    err = list->writeH5Data(parentId, tDims);
-    return err;
-  }
+  static int WriteListToHDF5(hid_t parentId, const IDataArray::Pointer& list);
 
   /**
    * @brief ReadDynamicListFromHDF5
@@ -187,7 +170,8 @@ public:
    * @param name
    * @return
    */
-  template <typename T, typename K> static int WriteDynamicListToHDF5(hid_t parentId, typename DynamicListArray<T, K>::Pointer dynamicList, size_t numElems, const QString& name)
+  template <typename T, typename K>
+  static int WriteDynamicListToHDF5(hid_t parentId, typename DynamicListArray<T, K>::Pointer dynamicList, size_t numElems, const QString& name)
   {
     herr_t err = 0;
     if(numElems == 0)

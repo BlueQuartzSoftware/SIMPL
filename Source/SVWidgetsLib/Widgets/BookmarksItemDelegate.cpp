@@ -33,11 +33,9 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QFileInfo>
 
 #include <QtWidgets/QLineEdit>
 
-#include <QtGui/QIntValidator>
 #include <QtGui/QPainter>
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"

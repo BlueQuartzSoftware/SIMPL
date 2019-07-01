@@ -51,7 +51,7 @@ DynamicTableFilterParameter::~DynamicTableFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QString& humanLabel, const QString& propertyName, DynamicTableData defaultTableData, FilterParameter::Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QString& humanLabel, const QString& propertyName, DynamicTableData defaultTableData, FilterParameter::Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
   DynamicTableFilterParameter::Pointer ptr = DynamicTableFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

@@ -36,13 +36,11 @@
 #include "AbstractIOFileWidget.h"
 
 #include <QtCore/QDir>
-#include <QtCore/QMetaProperty>
 #include <QtCore/QFileInfo>
 
 #include <QtGui/QPainter>
 #include <QtGui/QKeyEvent>
 
-#include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMenu>
 
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
@@ -230,9 +228,12 @@ void AbstractIOFileWidget::on_m_LineEdit_editingFinished()
   }
 
   QtSFileUtils::VerifyPathExists(path, m_LineEdit);
+  if(m_LineEdit->text() != m_CurrentText)
+  {
+    emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+  }
   m_CurrentText = m_LineEdit->text();
   setValidFilePath(m_LineEdit->text());
-  emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
 // -----------------------------------------------------------------------------

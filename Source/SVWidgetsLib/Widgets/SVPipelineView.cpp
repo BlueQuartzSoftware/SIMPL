@@ -37,14 +37,10 @@
 #include <iostream>
 #include <utility>
 
-#include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QMimeData>
-#include <QtCore/QSharedPointer>
-#include <QtCore/QSignalMapper>
-#include <QtCore/QTemporaryFile>
 #include <QtCore/QThread>
 #include <QtCore/QUrl>
 
@@ -55,16 +51,11 @@
 #include <QtGui/QDragMoveEvent>
 #include <QtGui/QDropEvent>
 #include <QtGui/QMouseEvent>
+#include <QtGui/QPainter>
 #include <QtGui/QPixmap>
 
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMessageBox>
-#include <QtWidgets/QProgressDialog>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QScrollBar>
-#include <QtWidgets/QVBoxLayout>
 
 #include "SIMPLib/Common/DocRequestManager.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -101,10 +92,10 @@
 
 class ExecutionResultInvalidException : public std::exception
 {
-   const char* what () const noexcept
-   {
-      return "The execution result of a pipeline was invalid.";
-   }
+  const char* what() const noexcept override
+  {
+    return "The execution result of a pipeline was invalid.";
+  }
 };
 
 // -----------------------------------------------------------------------------
@@ -982,9 +973,9 @@ QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
   p.begin(&dragPixmap);
   p.setOpacity(0.70);
   int offset = 0;
-  for(int i = 0; i < indexes.size(); i++)
+  for(const auto& listItem : indexes)
   {
-    QPixmap currentPixmap = delegate->createPixmap(indexes[i]);
+    QPixmap currentPixmap = delegate->createPixmap(listItem);
     p.drawPixmap(0, offset, currentPixmap);
     offset = offset + indexPixmap.size().height() + spacing();
   }
@@ -1674,12 +1665,11 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
   }
 
   QString ext = fi.suffix();
-  QString name = fi.fileName();
+  // QString name = fi.fileName();
   QString baseName = fi.baseName();
 
   if(ext == "dream3d")
   {
-#if 0
     QtSFileDragMessageBox* msgBox = new QtSFileDragMessageBox(this);
     msgBox->exec();
     msgBox->deleteLater();
@@ -1688,18 +1678,17 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
     {
       return 0;
     }
-    else if(msgBox->didPressOkBtn() == true)
+
+    if(msgBox->didPressOkBtn())
     {
-      if(msgBox->isExtractPipelineBtnChecked() == false)
-#endif
+      if(!msgBox->isExtractPipelineBtnChecked())
       {
         DataContainerReader::Pointer reader = DataContainerReader::New();
         reader->setInputFile(filePath);
-
         addFilter(reader, insertIndex);
         return 1;
       }
-    //}
+    }
   }
 
   // Read the pipeline from the file

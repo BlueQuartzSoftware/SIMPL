@@ -37,7 +37,6 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QString>
-#include <QtCore/QTextStream>
 #include <QtCore/QVector>
 
 #include "SIMPLib/Common/Constants.h"

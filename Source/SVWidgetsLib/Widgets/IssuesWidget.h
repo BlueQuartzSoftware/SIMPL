@@ -36,7 +36,6 @@
 #pragma once
 
 #include <QtWidgets/QWidget>
-#include <QtWidgets/QMainWindow>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/IObserver.h"

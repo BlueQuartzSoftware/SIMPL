@@ -37,7 +37,6 @@
 #pragma once
 
 #include <QtCore/QStack>
-#include <QtCore/QQueue>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -55,7 +54,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
     PYB11_PROPERTY(QString InfixEquation READ getInfixEquation WRITE setInfixEquation)
     PYB11_PROPERTY(DataArrayPath CalculatedArray READ getCalculatedArray WRITE setCalculatedArray)
-    PYB11_PROPERTY(AngleUnits Units READ getUnits WRITE setUnits)
+    PYB11_PROPERTY(ArrayCalculator::AngleUnits Units READ getUnits WRITE setUnits)
     PYB11_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
   public:
@@ -80,7 +79,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     SIMPL_FILTER_PARAMETER(DataArrayPath, CalculatedArray)
     Q_PROPERTY(DataArrayPath CalculatedArray READ getCalculatedArray WRITE setCalculatedArray)
 
-    SIMPL_FILTER_PARAMETER(AngleUnits, Units)
+    SIMPL_FILTER_PARAMETER(ArrayCalculator::AngleUnits, Units)
     Q_PROPERTY(AngleUnits Units READ getUnits WRITE setUnits)
 
     SIMPL_FILTER_PARAMETER(SIMPL::ScalarTypes::Type, ScalarType)

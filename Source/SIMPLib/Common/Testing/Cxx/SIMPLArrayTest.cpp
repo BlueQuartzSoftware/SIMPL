@@ -36,7 +36,6 @@
 #include <list>
 #include <vector>
 
-#include <QtCore/QList>
 #include <QtCore/QVector>
 
 #include "SIMPLib/Common/SIMPLArray.hpp"

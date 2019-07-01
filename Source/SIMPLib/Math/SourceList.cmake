@@ -7,6 +7,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MatrixMath.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/QuaternionMath.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RadialDistributionFunction.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RdfData.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibMath.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibRandom.h
 )
@@ -14,6 +15,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/GeometryMath.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MatrixMath.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RadialDistributionFunction.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RdfData.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibMath.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibRandom.cpp
 )

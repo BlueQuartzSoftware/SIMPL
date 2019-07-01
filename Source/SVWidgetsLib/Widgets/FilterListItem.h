@@ -36,8 +36,6 @@
 #pragma once
 
 #include <QtCore/QList>
-#include <QtCore/QVariant>
-#include <QtCore/QVector>
 
 #include <QtGui/QIcon>
 
@@ -62,7 +60,7 @@ class SVWidgetsLib_EXPORT FilterListItem
     SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
     SIMPL_INSTANCE_PROPERTY(QString, ClassName)
     SIMPL_INSTANCE_PROPERTY(QIcon, Icon)
-    SIMPL_INSTANCE_PROPERTY(ItemType, ItemType)
+    SIMPL_INSTANCE_PROPERTY(FilterListItem::ItemType, ItemType)
 
     FilterListItem* child(int number);
     FilterListItem* parent();

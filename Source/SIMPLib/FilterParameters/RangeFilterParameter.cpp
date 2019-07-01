@@ -49,7 +49,7 @@ RangeFilterParameter::~RangeFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 RangeFilterParameter::Pointer RangeFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QPair<double, double>& defaultPair, Category category,
-                                                        SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+                                                        const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
   RangeFilterParameter::Pointer ptr = RangeFilterParameter::New();

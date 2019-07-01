@@ -32,6 +32,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include "SIMPLib/SIMPLib.h"
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -52,12 +54,12 @@ class SIMPLib_EXPORT SIMPLH5DataReaderRequirements
     
     virtual ~SIMPLH5DataReaderRequirements();
 
-    typedef QVector< QVector<size_t> > QVectorSizeT;
+    using QVectorSizeT = std::vector<std::vector<size_t>>;
 
     SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DCGeometryTypes)
     SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Types, AMTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<QString>, DATypes)
-    SIMPL_INSTANCE_PROPERTY(QVectorSizeT, ComponentDimensions)
+    SIMPL_INSTANCE_PROPERTY(SIMPLH5DataReaderRequirements::QVectorSizeT, ComponentDimensions)
 
   private:
 

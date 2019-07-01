@@ -35,8 +35,6 @@
 
 #pragma once
 
-#include <QtCore/QList>
-#include <QtCore/QMetaType>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 

@@ -49,7 +49,7 @@ FourthOrderPolynomialFilterParameter::~FourthOrderPolynomialFilterParameter() = 
 //
 // -----------------------------------------------------------------------------
 FourthOrderPolynomialFilterParameter::Pointer FourthOrderPolynomialFilterParameter::New(const QString& humanLabel, const QString& propertyName, const Float4thOrderPoly_t& defaultValue,
-                                                                                        Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+                                                                                        Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
   FourthOrderPolynomialFilterParameter::Pointer ptr = FourthOrderPolynomialFilterParameter::New();

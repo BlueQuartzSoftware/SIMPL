@@ -37,10 +37,9 @@
 #include <QtCore/QUrl>
 #include <QtCore/QString>
 
-#include <QtWidgets/QApplication>
-
-
 #include "SVWidgetsLib/SVWidgetsLib.h"
+
+class QWidget;
 
 /**
  * @brief The QtSHelpUrlGenerator class generates a QUrl that contains a path to the specified help file

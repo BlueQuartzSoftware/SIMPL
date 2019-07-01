@@ -87,8 +87,7 @@ public:
      * @return
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const bool& defaultValue, Category category, SetterCallbackType setterCallback,
-    GetterCallbackType getterCallback, int groupIndex = -1);
+    const bool& defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex = -1);
 
     ~BooleanFilterParameter() override;
 

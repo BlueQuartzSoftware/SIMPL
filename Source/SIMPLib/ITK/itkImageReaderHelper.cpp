@@ -266,8 +266,8 @@ ITK_IMAGE_READER_CLASS_NAME
   image->setSpacing(tspacing);
   container->setGeometry(image);
 
-  QVector<size_t> cDims = ITKDream3DHelper::GetComponentsDimensions<TPixel>();
-  QVector<size_t> qTdims = {tDims[0], tDims[1], tDims[2]};
+  std::vector<size_t> cDims = ITKDream3DHelper::GetComponentsDimensions<TPixel>();
+  std::vector<size_t> qTdims = {tDims[0], tDims[1], tDims[2]};
   AttributeMatrix::Pointer cellAttrMat = container->createNonPrereqAttributeMatrix(this, dataArrayPath.getAttributeMatrixName(), qTdims, AttributeMatrix::Type::Cell);
   if(getErrorCode() < 0)
   {

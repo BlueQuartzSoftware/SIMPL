@@ -51,7 +51,7 @@
     Type::Pointer Type##Ptr = std::dynamic_pointer_cast<Type>(Array);                                                                                                                                  \
     if(nullptr != Type##Ptr)                                                                                                                                                                           \
     {                                                                                                                                                                                                  \
-      QVector<size_t> dims = Array->getComponentDimensions();                                                                                                                                          \
+      std::vector<size_t> dims = Array->getComponentDimensions();                                                                                                                                      \
       Detail::ConvertData<Type>(this, Type##Ptr.get(), dims, DataContainer, ScalarType, AttributeMatrixName, OutputName);                                                                              \
       completed = true;                                                                                                                                                                                \
     }                                                                                                                                                                                                  \
@@ -69,7 +69,8 @@ template <typename T>
  * @param attributeMatrixName Name of target AttributeMatrix
  * @param name Name of converted array
  */
-void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::NumericTypes::Type scalarType, const QString attributeMatrixName, const QString& name)
+void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims, DataContainer::Pointer m, SIMPL::NumericTypes::Type scalarType, const QString attributeMatrixName,
+                 const QString& name)
 {
   size_t voxels = ptr->getNumberOfTuples();
   size_t size = ptr->getSize();
@@ -267,7 +268,7 @@ void ConvertData::dataCheck()
       return;
     }
 
-    QVector<size_t> dims = p->getComponentDimensions();
+    std::vector<size_t> dims = p->getComponentDimensions();
     size_t voxels = cellAttrMat->getNumberOfTuples();
     if(m_ScalarType == SIMPL::NumericTypes::Type::Int8)
     {

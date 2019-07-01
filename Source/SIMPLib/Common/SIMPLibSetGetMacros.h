@@ -220,9 +220,11 @@ public:     \
     return superclass::IsTypeOf(type); \
   }
 
-#define SIMPL_CLASS_VERSION(vers)\
-  virtual int getClassVersion() { return vers; }
-
+#define SIMPL_CLASS_VERSION(vers)                                                                                                                                                                      \
+  int getClassVersion() override                                                                                                                                                                       \
+  {                                                                                                                                                                                                    \
+    return vers;                                                                                                                                                                                       \
+  }
 
 //------------------------------------------------------------------------------
 // Macros for Properties

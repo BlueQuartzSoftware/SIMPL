@@ -33,8 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFile>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -153,14 +151,14 @@ public:
     DataContainer::Pointer m = DataContainer::New("ConditionalSetValueTest");
 
     // Create Attribute Matrices with different tDims to test validation of tuple compatibility
-    QVector<size_t> tDims(1, 10);
+    std::vector<size_t> tDims(1, 10);
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "ConditionalSetValueAttrMat", AttributeMatrix::Type::Cell);
 
     m->addOrReplaceAttributeMatrix(attrMat);
 
     dca->addOrReplaceDataContainer(m);
 
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
     int32_t initVal = 10;
 
     CREATE_DATA_ARRAY(uint8_t, attrMat, tDims, cDims, initVal, 3, err);

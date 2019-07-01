@@ -33,8 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
@@ -68,12 +66,12 @@ public:
 
     dca->addOrReplaceDataContainer(dc);
 
-    QVector<size_t> dims;
+    std::vector<size_t> dims;
     dims.push_back(2);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
     dc->addOrReplaceAttributeMatrix(am);
 
-    QVector<size_t> cdims;
+    std::vector<size_t> cdims;
     cdims.push_back(2);
     DataArray<int>::Pointer da = DataArray<int>::CreateArray(2, cdims, "DataArray");
     da->setComponent(0, 0, 1);

@@ -35,9 +35,7 @@
 
 #include "ArrayCalculator.h"
 
-#include <QtCore/QMapIterator>
 #include <QtCore/QRegularExpression>
-#include <QtCore/QVectorIterator>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.h"
@@ -267,7 +265,7 @@ void ArrayCalculator::dataCheck()
 
   AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getAttributeMatrix(m_SelectedAttributeMatrix);
 
-  QVector<size_t> cDims;
+  std::vector<size_t> cDims;
   ICalculatorArray::ValueType resultType = ICalculatorArray::ValueType::Unknown;
 
   for(const auto& item1 : parsedInfix)
@@ -279,7 +277,7 @@ void ArrayCalculator::dataCheck()
       ICalculatorArray::Pointer array1 = std::dynamic_pointer_cast<ICalculatorArray>(item1);
       if (item1->isArray())
       {
-        if(!cDims.isEmpty() && resultType == ICalculatorArray::ValueType::Array && cDims != array1->getArray()->getComponentDimensions())
+        if(!cDims.empty() && resultType == ICalculatorArray::ValueType::Array && cDims != array1->getArray()->getComponentDimensions())
         {
           QString ss = QObject::tr("Attribute Array symbols in the infix expression have mismatching component dimensions");
           setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_COMP_DIMS), ss);
@@ -806,7 +804,7 @@ void ArrayCalculator::parseMinusSign(QString token, QVector<CalculatorItem::Poin
 void ArrayCalculator::parseNumericValue(QString token, QVector<CalculatorItem::Pointer>& parsedInfix, double number)
 {
   // This is a number, so create an array with numOfTuples equal to 1 and set the value into it
-  DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "INTERNAL_USE_ONLY_NumberArray");
+  DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, std::vector<size_t>(1, 1), "INTERNAL_USE_ONLY_NumberArray");
   ptr->setValue(0, number);
   CalculatorItem::Pointer itemPtr = CalculatorArray<double>::New(ptr, ICalculatorArray::Number, !getInPreflight());
   parsedInfix.push_back(itemPtr);

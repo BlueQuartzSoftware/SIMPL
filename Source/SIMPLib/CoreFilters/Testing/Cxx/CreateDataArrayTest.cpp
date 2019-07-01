@@ -33,8 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
@@ -171,7 +169,7 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
     dca->addOrReplaceDataContainer(m);
-    AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(QVector<size_t>(1, 1), SIMPL::Defaults::AttributeMatrixName, AttributeMatrix::Type::Generic);
+    AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(std::vector<size_t>(1, 1), SIMPL::Defaults::AttributeMatrixName, AttributeMatrix::Type::Generic);
     m->addOrReplaceAttributeMatrix(attrMatrix);
     return dca;
   }

@@ -158,7 +158,7 @@ void CropVertexGeometry::dataCheck()
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
   m_AttrMatList = m->getAttributeMatrixNames();
-  QVector<size_t> tDims(1, 0);
+  std::vector<size_t> tDims(1, 0);
   QList<QString> tempDataArrayList;
   DataArrayPath tempPath;
   AttributeMatrix::Type tempAttrMatType = AttributeMatrix::Type::Vertex;
@@ -189,7 +189,7 @@ void CropVertexGeometry::dataCheck()
           IDataArray::Pointer tmpDataArray = tmpAttrMat->getPrereqIDataArray<IDataArray, AbstractFilter>(this, data_array, -90002);
           if(getErrorCode() >= 0)
           {
-            QVector<size_t> cDims = tmpDataArray->getComponentDimensions();
+            std::vector<size_t> cDims = tmpDataArray->getComponentDimensions();
             TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, tmpDataArray);
           }
         }
@@ -287,7 +287,7 @@ void CropVertexGeometry::execute()
     crop->setCoords(i, coords);
   }
 
-  QVector<size_t> tDims(1, croppedPoints.size());
+  std::vector<size_t> tDims(1, croppedPoints.size());
 
   for(auto&& attr_mat : m_AttrMatList)
   {

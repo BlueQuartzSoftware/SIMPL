@@ -1,4 +1,4 @@
-﻿/* ============================================================================
+/* ============================================================================
  * Copyright (c) 2017 BlueQuartz Software, LLC
  * All rights reserved.
  *
@@ -34,29 +34,17 @@
 
 #include <cmath>
 
-#include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QMimeData>
-#include <QtCore/QSettings>
 #include <QtCore/QString>
-#include <QtCore/QTimer>
 #include <QtCore/QUrl>
-#include <QtCore/QVariant>
 
-#include <QtGui/QCloseEvent>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
 
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QDesktopWidget>
-#include <QtWidgets/QDockWidget>
 #include <QtWidgets/QFileDialog>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMenu>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QStatusBar>
 
 #include "H5Support/H5Lite.h"
 #include "H5Support/H5Utilities.h"
@@ -978,7 +966,7 @@ std::tuple<herr_t, QString> ImportHDF5DatasetWidget::bestGuessCDims(const QStrin
   AttributeMatrix::Pointer am = m_Filter->getDataContainerArray()->getAttributeMatrix(amPath);
   if(am != nullptr)
   {
-    QVector<size_t> amTupleDims = am->getTupleDimensions();
+    std::vector<size_t> amTupleDims = am->getTupleDimensions();
     int fileDimsSize = fileDims.size();
 
     //      // Calculate the prime factors of the attribute matrix tuple dimensions

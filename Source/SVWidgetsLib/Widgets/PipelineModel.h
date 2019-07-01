@@ -35,7 +35,6 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QVariant>
 
-#include <QtWidgets/QAction>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"

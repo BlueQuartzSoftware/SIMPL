@@ -36,16 +36,13 @@
 
 #pragma once
 
-#include <QtWidgets/QApplication>
 
-#include <QtCore/QJsonObject>
 
 #include <QtCore/QModelIndex>
 #include <QtGui/QDragEnterEvent>
 #include <QtGui/QDragMoveEvent>
 #include <QtGui/QDropEvent>
 #include <QtGui/QMouseEvent>
-#include <QtWidgets/QMenu>
 #include <QtWidgets/QTreeView>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"

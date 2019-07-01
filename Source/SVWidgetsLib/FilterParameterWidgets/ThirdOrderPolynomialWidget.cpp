@@ -35,8 +35,6 @@
 
 #include "ThirdOrderPolynomialWidget.h"
 
-#include <QtCore/QMetaProperty>
-#include <QtCore/QSignalMapper>
 
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"

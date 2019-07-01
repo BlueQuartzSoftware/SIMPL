@@ -52,8 +52,8 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t int size_t* QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t std::vector<size_t> QString bool)
-  PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QVector<size_t> QString bool)
-  PYB11_STATIC_CREATION(CreateArray OVERLOAD QVector<size_t> QVector<size_t> QString bool)
+  PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t std::vector<size_t> QString bool)
+  PYB11_STATIC_CREATION(CreateArray OVERLOAD std::vector<size_t> std::vector<size_t> QString bool)
   PYB11_METHOD(void setStatsData ARGS int,index StatsData::Pointer,statsData)
   PYB11_METHOD(StatsData::Pointer getStatsData ARGS int,index)
   PYB11_METHOD(void fillArrayWithNewStatsData OVERLOAD size_t,n PhaseType::Type*,phase_types)
@@ -85,7 +85,7 @@ public:
    * @param allocate
    * @return
    */
-  static Pointer CreateArray(size_t numTuples, int rank, size_t* dims, const QString& name, bool allocate = true);
+  static Pointer CreateArray(size_t numTuples, int rank, const size_t* dims, const QString& name, bool allocate = true);
 
   /**
    * @brief CreateArray
@@ -95,17 +95,7 @@ public:
    * @param allocate
    * @return
    */
-  static Pointer CreateArray(size_t numTuples, std::vector<size_t> cDims, const QString& name, bool allocate = true);
-
-  /**
-   * @brief CreateArray
-   * @param numTuples
-   * @param cDims
-   * @param name
-   * @param allocate
-   * @return
-   */
-  static Pointer CreateArray(size_t numTuples, QVector<size_t> cDims, const QString& name, bool allocate = true);
+  static Pointer CreateArray(size_t numTuples, const std::vector<size_t>& cDims, const QString& name, bool allocate = true);
 
   /**
    * @brief CreateArray
@@ -115,7 +105,7 @@ public:
    * @param allocate
    * @return
    */
-  static Pointer CreateArray(QVector<size_t> tDims, QVector<size_t> cDims, const QString& name, bool allocate = true);
+  static Pointer CreateArray(const std::vector<size_t>& tDims, const std::vector<size_t>& cDims, const QString& name, bool allocate = true);
 
   /**
    * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
@@ -132,11 +122,9 @@ public:
 
   SIMPL_INSTANCE_PROPERTY(QVector<StatsData::Pointer>, StatsDataArray)
 
-  IDataArray::Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true) override;
+  IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) override;
 
-  IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override;
-
-  IDataArray::Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true) override;
+  IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief
@@ -226,7 +214,7 @@ public:
    * @brief getComponentDimensions
    * @return
    */
-  QVector<size_t> getComponentDimensions() override;
+  std::vector<size_t> getComponentDimensions() override;
 
   /**
    * @brief Returns the number of bytes that make up the data type.
@@ -245,7 +233,7 @@ public:
    * @param idxs The indices to remove
    * @return error code.
    */
-  int eraseTuples(QVector<size_t>& idxs) override;
+  int eraseTuples(std::vector<size_t>& idxs) override;
 
   /**
    * @brief Copies a Tuple from one position to another.
@@ -333,7 +321,7 @@ public:
    * @param parentId
    * @return
    */
-  int writeH5Data(hid_t parentId, QVector<size_t> tDims) override;
+  int writeH5Data(hid_t parentId, std::vector<size_t> tDims) override;
 
   /**
    * @brief readH5Data

@@ -366,7 +366,7 @@ void FindDerivatives::dataCheck()
 
   int cDims = m_InArrayPtr.lock()->getNumberOfComponents();
   cDims *= 3;
-  QVector<size_t> dims(1, cDims);
+  std::vector<size_t> dims(1, cDims);
 
   m_DerivativesArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(
       this, getDerivativesArrayPath(), 0, dims, "", DerivativesArrayID);    /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */

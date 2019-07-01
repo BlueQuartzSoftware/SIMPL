@@ -74,7 +74,7 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const int& defaultValue, Category category,
-                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                        QVector<QString> choices, QStringList linkedProperties,
                        int groupIndex = -1);
 

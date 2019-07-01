@@ -37,8 +37,6 @@
 
 #include <iostream>
 
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QMainWindow>
 #include <QtWidgets/QTableWidgetItem>
 
 #include "SIMPLib/Common/DocRequestManager.h"

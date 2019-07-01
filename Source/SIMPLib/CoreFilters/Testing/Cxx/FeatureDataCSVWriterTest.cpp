@@ -35,7 +35,6 @@
 
 #pragma once
 
-#include <QtCore/QCoreApplication>
 #include <QtCore/QFile>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -379,10 +378,10 @@ public:
     static const size_t yDim(2);
     static const size_t zDim(3);
 
-    QVector<size_t> tupleDims = {xDim, yDim, zDim};
-    QVector<size_t> cDims = {2};
-    QVector<size_t> cDimsFloat = {3};
-    QVector<size_t> cDimsNeighbor = {1};
+    std::vector<size_t> tupleDims = {xDim, yDim, zDim};
+    std::vector<size_t> cDims = {2};
+    std::vector<size_t> cDimsFloat = {3};
+    std::vector<size_t> cDimsNeighbor = {1};
 
     // Create DataContainerArray
 

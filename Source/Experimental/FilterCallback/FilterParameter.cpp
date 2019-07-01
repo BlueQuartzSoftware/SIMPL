@@ -61,7 +61,7 @@ void Int32Parameter::writeJson(QJsonObject& json) const
   json[QString::fromStdString(getPropertyName())] = m_GetterCallback();
 }
 
-Int32Parameter::Int32Parameter(const std::string& humanLabel, const std::string& propertyName, int defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+Int32Parameter::Int32Parameter(const std::string& humanLabel, const std::string& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
   : IFilterParameter(humanLabel, propertyName, category, groupIndex)
   , m_DefaultValue(defaultValue)
   , m_SetterCallback(setterCallback)
@@ -110,7 +110,7 @@ void DoubleParameter::writeJson(QJsonObject& json) const
 }
 
 
-DoubleParameter::DoubleParameter(const std::string& humanLabel, const std::string& propertyName, double defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+DoubleParameter::DoubleParameter(const std::string& humanLabel, const std::string& propertyName, double defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
   : IFilterParameter(humanLabel, propertyName, category, groupIndex)
   , m_DefaultValue(defaultValue)
   , m_SetterCallback(setterCallback)
@@ -169,7 +169,7 @@ void DataArrayPathParameter::writeJson(QJsonObject& json) const
   }
 }
 
-DataArrayPathParameter::DataArrayPathParameter(const std::string& humanLabel, const std::string& propertyName, const DataArrayPath &defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+DataArrayPathParameter::DataArrayPathParameter(const std::string& humanLabel, const std::string& propertyName, const DataArrayPath &defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
   : IFilterParameter(humanLabel, propertyName, category, groupIndex)
   , m_DefaultValue(defaultValue)
   , m_SetterCallback(setterCallback)

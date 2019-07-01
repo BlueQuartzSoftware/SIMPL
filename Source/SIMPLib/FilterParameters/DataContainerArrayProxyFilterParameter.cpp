@@ -54,7 +54,7 @@ DataContainerArrayProxyFilterParameter::~DataContainerArrayProxyFilterParameter(
 //
 // -----------------------------------------------------------------------------
 DataContainerArrayProxyFilterParameter::Pointer DataContainerArrayProxyFilterParameter::New(const QString& humanLabel, const QString& propertyName, DataContainerArrayProxy defaultValue,
-                                                                                            Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                                                                                            Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                                                                                             DataContainerArrayProxy proxy, Qt::CheckState defValue, int groupIndex)
 {
   DataContainerArrayProxyFilterParameter::Pointer ptr = DataContainerArrayProxyFilterParameter::New();

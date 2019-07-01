@@ -37,9 +37,6 @@
 
 #include <vector>
 
-#include <QtCore/QModelIndex>
-#include <QtCore/QUuid>
-#include <QtCore/QVariant>
 
 #include <QtWidgets/QUndoCommand>
 

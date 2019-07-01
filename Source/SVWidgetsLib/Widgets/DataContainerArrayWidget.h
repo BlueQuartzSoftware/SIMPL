@@ -1,13 +1,7 @@
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
 
 #include <QtWidgets/QWidget>
-#include <QtGui/QStandardItemModel>
-#include <QtCore/QItemSelectionModel>
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
 

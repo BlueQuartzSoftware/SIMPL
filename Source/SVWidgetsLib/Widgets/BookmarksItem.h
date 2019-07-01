@@ -36,8 +36,6 @@
 #pragma once
 
 #include <QtCore/QList>
-#include <QtCore/QVariant>
-#include <QtCore/QVector>
 
 #include <QtGui/QIcon>
 
@@ -71,7 +69,7 @@ class SVWidgetsLib_EXPORT BookmarksItem
 
     SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
     SIMPL_INSTANCE_PROPERTY(QIcon, Icon)
-    SIMPL_INSTANCE_PROPERTY(ItemType, ItemType)
+    SIMPL_INSTANCE_PROPERTY(BookmarksItem::ItemType, ItemType)
 
     BookmarksItem* child(int number);
     BookmarksItem* parent();

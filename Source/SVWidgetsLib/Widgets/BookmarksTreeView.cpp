@@ -45,7 +45,6 @@
 #include <QtGui/QDrag>
 #include <QtGui/QMouseEvent>
 
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>

@@ -32,8 +32,6 @@
 #pragma once
 
 #include <QtCore/QModelIndex>
-#include <QtCore/QTimer>
-#include <QtCore/QVariantAnimation>
 
 #include <QtWidgets/QStyledItemDelegate>
 

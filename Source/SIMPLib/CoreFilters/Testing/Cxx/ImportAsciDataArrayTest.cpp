@@ -66,7 +66,7 @@ public:
     dc->setGeometry(imageGeom);
     dca->addOrReplaceDataContainer(dc);
 
-    QVector<size_t> tDims = {m_XDim, m_YDim, m_ZDim};
+    std::vector<size_t> tDims = {m_XDim, m_YDim, m_ZDim};
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "AttributeMatrix", AttributeMatrix::Type::Generic);
 
     dc->addOrReplaceAttributeMatrix(attrMat);

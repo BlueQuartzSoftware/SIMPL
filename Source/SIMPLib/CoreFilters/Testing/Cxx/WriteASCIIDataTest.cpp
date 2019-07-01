@@ -38,7 +38,6 @@
 #include <iostream>
 #include <string>
 
-#include <QtCore/QDir>
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/Constants.h"
@@ -90,7 +89,7 @@ public:
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
-    AttributeMatrix::Pointer am = AttributeMatrix::New(QVector<size_t>(1, k_ArraySize), "TestAttributeMatrix", AttributeMatrix::Type::Any);
+    AttributeMatrix::Pointer am = AttributeMatrix::New(std::vector<size_t>(1, k_ArraySize), "TestAttributeMatrix", AttributeMatrix::Type::Any);
 
     StringDataArray::Pointer strArray = StringDataArray::CreateArray(k_ArraySize, k_ArrayName, true);
     strArray->setValue(0, QString("Foo"));

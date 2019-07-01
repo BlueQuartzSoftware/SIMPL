@@ -81,7 +81,7 @@ namespace itk
  * \wikiexample{SimpleOperations/SetPixels,Set specified pixels to specified values}
  * \endwiki
  */
-template <typename TPixel, unsigned int VImageDimension = 2> class Dream3DImage : public Image<TPixel, VImageDimension>
+template <typename TPixel, unsigned int VImageDimension = 2> class ITK_TEMPLATE_EXPORT Dream3DImage : public Image<TPixel, VImageDimension>
 {
 public:
   /** Standard class typedefs */
@@ -263,6 +263,11 @@ public:
   {
     return NeighborhoodAccessorFunctorType();
   }
+
+#if ITK_VERSION_MAJOR == 5
+  /** Work around casting issue. */
+  void CopyInformation(const DataObject* data) override;
+#endif
 
 protected:
   Dream3DImage();

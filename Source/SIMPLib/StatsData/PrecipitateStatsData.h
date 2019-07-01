@@ -45,6 +45,8 @@
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/StatsData/StatsData.h"
 #include "SIMPLib/Math/RadialDistributionFunction.h"
+#include "SIMPLib/Math/RdfData.h"
+
 
 typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
 

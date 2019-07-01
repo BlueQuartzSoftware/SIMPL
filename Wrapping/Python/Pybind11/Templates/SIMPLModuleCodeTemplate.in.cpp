@@ -78,9 +78,9 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
   {                                                                                                                                                                                                    \
     using DataArrayType = DataArray<T>;                                                                                                                                                                \
     PySharedPtrClass<DataArrayType> instance(m, #NAME, parent, py::buffer_protocol());                                                                                                                 \
-    instance.def(py::init([](size_t numElements, QString name, bool allocate) { return DataArrayType::CreateArray(numElements, name, allocate); }))                                                    \
+    instance.def(py::init([](size_t numElements, QString name, T initValue) { return DataArrayType::CreateArray(numElements, name, initValue); }))                                                    \
         .def(py::init([](T* ptr, size_t numElements, std::vector<size_t> cDims, QString name, bool ownsData) {                                                                                         \
-          return DataArrayType::WrapPointer(ptr, numElements, QVector<size_t>::fromStdVector(cDims), name, ownsData);                                                                                  \
+          return DataArrayType::WrapPointer(ptr, numElements, cDims, name, ownsData);                                                                                  \
         }))                                                                                                                                                                                            \
         .def(py::init([](py::array_t<T, py::array::c_style> b, std::vector<size_t> cDims, QString name, bool ownsData) {                                                                               \
           ssize_t numElements = 1;                                                                                                                                                                     \
@@ -90,7 +90,7 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
             numElements *= b.shape(e);                                                                                                                                                                 \
           }                                                                                                                                                                                            \
           numElements /= cDims[0];                                                                                                                                                                     \
-          return DataArrayType::WrapPointer(reinterpret_cast<T*>(b.mutable_data(0)), static_cast<size_t>(numElements), QVector<size_t>::fromStdVector(cDims), name, ownsData);                         \
+          return DataArrayType::WrapPointer(reinterpret_cast<T*>(b.mutable_data(0)), static_cast<size_t>(numElements), cDims, name, ownsData);                         \
         })) /* Class instance method setValue */                                                                                                                                                       \
         .def("setValue", &DataArrayType::setValue, py::arg("index"), py::arg("value"))                                                                                                                 \
         .def("getValue", &DataArrayType::getValue, py::arg("index"))                                                                                                                                   \
@@ -263,17 +263,18 @@ PYBIND11_MODULE(dream3d, m)
       }))
   ;
 
+#if 0
   // Handle QVector of size_t
-  py::class_<QVector<size_t>>(mod, "Dims")
+  py::class_<std::vector<size_t>>(mod, "Dims")
 	  .def(py::init<>([](py::list dimensions) {
-	  QVector<size_t> dims = QVector<size_t>();
+	  std::vector<size_t> dims = std::vector<size_t>();
 	  for (auto dimension : dimensions)
 	  {
 		  dims.push_back(py::cast<size_t>(dimension));
 	  }
 	  return dims;
       }))
-	  .def("__repr__", [](const QVector<size_t> &dims) {
+	  .def("__repr__", [](const std::vector<size_t> &dims) {
 		  py::list dimensions;
 		  for (size_t dim : dims)
 		  {
@@ -281,7 +282,7 @@ PYBIND11_MODULE(dream3d, m)
 		  }
 		  return dimensions;
 	  })
-	  .def("__str__", [](const QVector<size_t> &dims) {
+	  .def("__str__", [](const std::vector<size_t> &dims) {
 		  py::list dimensions;
 		  for (size_t dim : dims)
 		  {
@@ -289,10 +290,11 @@ PYBIND11_MODULE(dream3d, m)
 		  }
       return py::str(dimensions);
 	  })
-	  .def("__getitem__", [](const QVector<size_t> &dims, int key) {
+	  .def("__getitem__", [](const std::vector<size_t> &dims, int key) {
 		  return dims[key];
 	  })
   ;
+#endif
 
   // Handle QSet of QString
   py::class_<QSet<QString>>(mod, "StringSet")

@@ -49,7 +49,7 @@ InputPathFilterParameter::~InputPathFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 InputPathFilterParameter::Pointer InputPathFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                SetterCallbackType setterCallback, GetterCallbackType getterCallback, const QString& fileExtension, const QString& fileType,
+                                                                const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const QString& fileExtension, const QString& fileType,
                                                                 int groupIndex)
 {
   InputPathFilterParameter::Pointer ptr = InputPathFilterParameter::New();

@@ -37,10 +37,7 @@
 
 
 #include <QtCore/QObject>
-#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
-#include <QtWidgets/QMenu>
-#include <QtGui/QShowEvent>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"

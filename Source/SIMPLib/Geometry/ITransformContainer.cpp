@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2009-2018 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -27,67 +27,11 @@
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 * The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
+*    United States Air Force Prime Contract FA8650-15-D-5231
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#pragma once
+#include "ITransformContainer.h"
 
+ITransformContainer::ITransformContainer() = default;
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <QtCore/QAbstractTableModel>
-
-#include <QtWidgets/QWidget>
-
-#include "SIMPLib/Filtering/AbstractFilter.h"
-
-#include "SVWidgetsLib/SVWidgetsLib.h"
-
-/**
-* @brief
-* @author
-* @version
-*/
-class SIMPLib_EXPORT DynamicTableData : public QObject
-{
-    Q_OBJECT
-
-  public:
-    DynamicTableData();
-    DynamicTableData(std::vector<std::vector<double> > data, int nRows, int nCols, QStringList rHeaders = QStringList(), QStringList cHeaders = QStringList());
-    DynamicTableData(QAbstractItemModel* model);
-
-    virtual ~DynamicTableData();
-
-    std::vector<std::vector<double> > getTableData();
-    void setTableData(std::vector<std::vector<double> > data);
-
-    QStringList getRowHeaders();
-    void setRowHeaders(QStringList rHeaders);
-
-    QStringList getColHeaders();
-    void setColHeaders(QStringList cHeaders);
-
-    int getNumRows();
-    void setNumRows(int nRows);
-
-    int getNumCols();
-    void setNumCols(int nCols);
-
-    static QAbstractItemModel* convertToModel(DynamicTableData data);
-
-    DynamicTableData(const DynamicTableData& rhs);
-    void operator=(const DynamicTableData& rhs);
-
-  private:
-    std::vector<std::vector<double> > tableData;
-    QStringList rowHeaders;
-    QStringList colHeaders;
-    int numRows;
-    int numCols;
-};
-
-Q_DECLARE_METATYPE(DynamicTableData)
-
+ITransformContainer::~ITransformContainer() = default;

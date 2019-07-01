@@ -35,10 +35,7 @@
 
 #pragma once
 
-#include <QtCore/QUuid>
-#include <QtGui/QBrush>
 #include <QtGui/QIcon>
-#include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
 
 #include "SIMPLib/Common/IObserver.h"

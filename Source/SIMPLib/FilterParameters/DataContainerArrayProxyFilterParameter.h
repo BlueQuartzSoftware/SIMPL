@@ -91,8 +91,7 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
      * @return
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       DataContainerArrayProxy defaultValue, Category category, SetterCallbackType setterCallback,
-                       GetterCallbackType getterCallback, DataContainerArrayProxy proxy,
+                       DataContainerArrayProxy defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, DataContainerArrayProxy proxy,
                        Qt::CheckState defState, int groupIndex = -1);
 
     ~DataContainerArrayProxyFilterParameter() override;

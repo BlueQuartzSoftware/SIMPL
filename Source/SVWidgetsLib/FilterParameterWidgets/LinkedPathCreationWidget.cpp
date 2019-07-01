@@ -33,10 +33,7 @@
 
 #include "LinkedPathCreationWidget.h"
 
-#include <QtCore/QMetaProperty>
 
-#include <QtCore/QPropertyAnimation>
-#include <QtCore/QSequentialAnimationGroup>
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 

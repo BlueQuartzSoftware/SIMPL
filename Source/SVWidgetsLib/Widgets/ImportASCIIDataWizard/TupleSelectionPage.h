@@ -36,7 +36,6 @@
 
 #pragma once
 
-#include <QtWidgets/QWizardPage>
 
 #include "AbstractWizardPage.h"
 

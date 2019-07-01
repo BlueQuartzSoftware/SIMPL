@@ -76,13 +76,13 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     using SetterCallbackType = std::function<void(DataArrayPath)>;
     using GetterCallbackType = std::function<DataArrayPath(void)>;
 
-    typedef struct
+    using RequirementType = struct
     {
       IGeometry::Types dcGeometryTypes;
       AttributeMatrix::Types amTypes;
       QVector<QString> daTypes;
-      QVector< QVector<size_t> > componentDimensions;
-    } RequirementType;
+      std::vector<std::vector<size_t>> componentDimensions;
+    };
 
     /**
      * @brief New This function instantiates an instance of the DataArraySelectionFilterParameter.  Specifying a RequirementType will
@@ -106,8 +106,8 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const DataArrayPath& defaultValue, Category category,
-                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                       const RequirementType req, int groupIndex = -1);
+                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                       RequirementType req, int groupIndex = -1);
 
     ~DataArraySelectionFilterParameter() override;
 
@@ -183,7 +183,7 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     * @param DefaultComponentDimensions Default component dimensions required for Attribute Array selections
     * @return
     */
-    SIMPL_INSTANCE_PROPERTY(QVector< QVector<size_t> >, DefaultComponentDimensions)
+    SIMPL_INSTANCE_PROPERTY(std::vector<std::vector<size_t>>, DefaultComponentDimensions)
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property

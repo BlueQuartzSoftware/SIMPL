@@ -37,14 +37,12 @@
 
 #include <iostream>
 
+#include <QtCore/QDebug>
 #include <QtCore/QMimeData>
 #include <QtCore/QString>
-#include <QtCore/QtDebug>
 #include <QtGui/QDragEnterEvent>
-#include <QtGui/QDragLeaveEvent>
 #include <QtGui/QDragMoveEvent>
 #include <QtGui/QDropEvent>
-#include <QtGui/QMouseEvent>
 
 // -----------------------------------------------------------------------------
 //

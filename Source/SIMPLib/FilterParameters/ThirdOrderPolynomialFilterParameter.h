@@ -89,7 +89,7 @@ public:
    */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const Float3rdOrderPoly_t& defaultValue, Category category,
-    SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+    const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
     int groupIndex = -1);
 
     ~ThirdOrderPolynomialFilterParameter() override;

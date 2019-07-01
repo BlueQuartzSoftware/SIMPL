@@ -34,8 +34,6 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
 
 #include "ui_TupleTableWidget.h"
@@ -67,9 +65,9 @@ class TupleTableWidget : public QWidget, private Ui::TupleTableWidget
     */
     void setupGui();
 
-    QVector<size_t> getData();
+    std::vector<size_t> getData();
 
-    void addTupleDimensions(QVector<size_t> tupleDims);
+    void addTupleDimensions(std::vector<size_t> tupleDims);
     void clearTupleDimensions();
 
     bool didUseEdit();
@@ -85,7 +83,7 @@ class TupleTableWidget : public QWidget, private Ui::TupleTableWidget
     void on_tupleTable_itemChanged(QTableWidgetItem* item);
 
   signals:
-    void tupleDimsChanged(QVector<size_t> tupleDims);
+    void tupleDimsChanged(std::vector<size_t> tupleDims);
 
   private:
     void updateDynamicButtons();

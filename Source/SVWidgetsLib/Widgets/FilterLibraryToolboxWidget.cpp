@@ -36,7 +36,6 @@
 
 #include <QtCore/QFileInfo>
 
-#include <QtWidgets/QMainWindow>
 
 #include "SIMPLib/Common/DocRequestManager.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"

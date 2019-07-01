@@ -37,14 +37,9 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
-#include <QtCore/QMetaProperty>
-#include <QtCore/QPropertyAnimation>
-#include <QtCore/QSequentialAnimationGroup>
 #include <QtWidgets/QFileDialog>
-#include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QVBoxLayout>
 
 #include "SIMPLib/Common/DocRequestManager.h"

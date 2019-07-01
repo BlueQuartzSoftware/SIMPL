@@ -36,8 +36,6 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <QtCore/QSignalMapper>
 
 #include <QtWidgets/QWidget>
 

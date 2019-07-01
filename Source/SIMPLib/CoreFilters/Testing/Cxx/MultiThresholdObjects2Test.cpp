@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QCoreApplication>
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -90,9 +89,9 @@ public:
     size_t dims[1] = {20};
     image->setDimensions(dims);
 
-    QVector<size_t> tDims(1, 0);
+    std::vector<size_t> tDims(1, 0);
     tDims[0] = 20;
-    QVector<size_t> cDims(1);
+    std::vector<size_t> cDims(1);
     cDims[0] = 1;
     float fnum = 0.0f;
     int inum = 0;

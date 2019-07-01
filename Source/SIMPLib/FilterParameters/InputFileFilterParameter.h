@@ -89,8 +89,7 @@ public:
      * @return
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, Category category, SetterCallbackType setterCallback,
-    GetterCallbackType getterCallback, const QString& fileExtension = QString(""),
+    const QString& defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const QString& fileExtension = QString(""),
     const QString& fileType = QString(""), int groupIndex = -1);
 
     ~InputFileFilterParameter() override;

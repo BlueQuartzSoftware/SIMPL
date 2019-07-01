@@ -46,7 +46,6 @@
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QPushButton>
 
 #include "SIMPLib/Common/Constants.h"
 

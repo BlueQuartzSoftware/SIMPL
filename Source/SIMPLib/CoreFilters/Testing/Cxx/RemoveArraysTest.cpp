@@ -33,13 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFile>
-#include <QtCore/QJsonArray>
-#include <QtCore/QJsonDocument>
-#include <QtCore/QJsonObject>
-#include <QtCore/QJsonParseError>
-#include <QtCore/QObject>
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -69,13 +62,13 @@ public:
   // -----------------------------------------------------------------------------
   AbstractFilter::Pointer createFilter()
   {
-    QVector<size_t> vec;
+    std::vector<size_t> vec;
     vec.push_back(1);
 
     const QString arrayName = "DataArray";
     DataArray<uint>::Pointer da = DataArray<uint>::CreateArray(1, vec, arrayName);
 
-    QVector<size_t> sizeList;
+    std::vector<size_t> sizeList;
     sizeList.push_back(1);
     sizeList.push_back(1);
     sizeList.push_back(1);

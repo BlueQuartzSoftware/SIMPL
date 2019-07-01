@@ -33,8 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
@@ -88,7 +86,7 @@ public:
     // incorrect geometry
     TriangleGeom::Pointer triGeom = TriangleGeom::New();
 
-    QVector<size_t> dims;
+    std::vector<size_t> dims;
     dims.push_back(3);
     DataArray<float>::Pointer verts = DataArray<float>::CreateArray(3, dims, "Vertices");
     verts->setComponent(0, 0, -1);
@@ -103,7 +101,7 @@ public:
     verts->setComponent(2, 1, 1);
     verts->setComponent(2, 2, 0);
 
-    QVector<size_t> dims2;
+    std::vector<size_t> dims2;
     dims2.push_back(3);
     SharedTriList::Pointer tris = SharedTriList::CreateArray(1, dims2, "Triangles");
 

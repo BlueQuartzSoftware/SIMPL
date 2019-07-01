@@ -31,8 +31,6 @@
 
 #include "PipelineModel.h"
 
-#include <QtWidgets>
-
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"

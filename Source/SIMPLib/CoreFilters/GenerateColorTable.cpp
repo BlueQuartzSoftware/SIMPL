@@ -21,7 +21,7 @@ enum createdPathID : RenameDataPath::DataID_t {
 //
 // -----------------------------------------------------------------------------
 template <typename T>
-int findRightBinIndex(T nValue, QVector<float> binPoints)
+int findRightBinIndex(T nValue, std::vector<float> binPoints)
 {
   /* This is a brute-force way of finding the proper bins.
      We will need to change this method to a binary search. */
@@ -37,7 +37,7 @@ int findRightBinIndex(T nValue, QVector<float> binPoints)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int findRightBinIndex_Binary(float nValue, QVector<float> binPoints)
+int findRightBinIndex_Binary(float nValue, std::vector<float> binPoints)
 {
   int min = 0, max = binPoints.size() - 1;
   while (min < max)
@@ -63,13 +63,13 @@ template <typename T>
 class GenerateColorTableImpl
 {
 public:
-  GenerateColorTableImpl(typename DataArray<T>::Pointer arrayPtr, QVector<float> binPoints,
-                         std::vector<std::vector<double> > controlPoints, int numControlColors, UInt8ArrayType::Pointer colorArray) :
-    m_ArrayPtr(arrayPtr),
-    m_BinPoints(binPoints),
-    m_NumControlColors(numControlColors),
-    m_ControlPoints(controlPoints),
-    m_ColorArray(colorArray)
+  GenerateColorTableImpl(typename DataArray<T>::Pointer arrayPtr, std::vector<float> binPoints, std::vector<std::vector<double>> controlPoints, int numControlColors,
+                         UInt8ArrayType::Pointer colorArray)
+  : m_ArrayPtr(arrayPtr)
+  , m_BinPoints(std::move(binPoints))
+  , m_NumControlColors(numControlColors)
+  , m_ControlPoints(std::move(controlPoints))
+  , m_ColorArray(std::move(colorArray))
   {
     m_ArrayMin = arrayPtr->getValue(0);
     m_ArrayMax = arrayPtr->getValue(0);
@@ -132,7 +132,7 @@ public:
   }
 private:
   typename DataArray<T>::Pointer                        m_ArrayPtr;
-  QVector<float>                                        m_BinPoints;
+  std::vector<float> m_BinPoints;
   T                                                     m_ArrayMin;
   T                                                     m_ArrayMax;
   int                                                   m_NumControlColors;
@@ -158,7 +158,7 @@ void generateColorArray(typename DataArray<T>::Pointer arrayPtr, QJsonArray pres
   std::vector<std::vector<double> > controlPoints(numControlColors, std::vector<double>(numComponents));
 
   // Migrate colorControlPoints values from QJsonArray to 2D array.  Store A-values in binPoints vector.
-  QVector<float> binPoints;
+  std::vector<float> binPoints;
   for (int i=0; i<numControlColors; i++)
   {
     for (int j=0; j<numComponents; j++)
@@ -182,7 +182,7 @@ void generateColorArray(typename DataArray<T>::Pointer arrayPtr, QJsonArray pres
   DataArrayPath tmpPath = selectedDAP;
   tmpPath.setDataArrayName(rgbArrayName);
 
-  UInt8ArrayType::Pointer colorArray = dca->getPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(nullptr, tmpPath, QVector<size_t>(1, 3));
+  UInt8ArrayType::Pointer colorArray = dca->getPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(nullptr, tmpPath, std::vector<size_t>(1, 3));
   if (colorArray.get() == nullptr) { return; }
 
   ParallelDataAlgorithm dataAlg;
@@ -256,7 +256,7 @@ void GenerateColorTable::dataCheck()
   DataArrayPath tmpPath = getSelectedDataArrayPath();
   tmpPath.setDataArrayName(getRgbArrayName());
 
-  getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(this, tmpPath, 0, QVector<size_t>(1, 3), "", ColorArrayID);
+  getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(this, tmpPath, 0, std::vector<size_t>(1, 3), "", ColorArrayID);
 }
 
 // -----------------------------------------------------------------------------
@@ -285,59 +285,59 @@ void GenerateColorTable::execute()
     return;
   }
 
-  if (getDataContainerArray()->getPrereqArrayFromPath<Int8ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
+  if(getDataContainerArray()->getPrereqArrayFromPath<Int8ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), {static_cast<size_t>(1)}).get() != nullptr)
   {
-    Int8ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<Int8ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
+    Int8ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<Int8ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), {static_cast<size_t>(1)});
     generateColorArray<int8_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRgbArrayName(), getDataContainerArray());
   }
-  else if (getDataContainerArray()->getPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
+  else if(getDataContainerArray()->getPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), {static_cast<size_t>(1)}).get() != nullptr)
   {
-    UInt8ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
+    UInt8ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), {static_cast<size_t>(1)});
     generateColorArray<uint8_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRgbArrayName(), getDataContainerArray());
   }
-  else if (getDataContainerArray()->getPrereqArrayFromPath<Int16ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
+  else if(getDataContainerArray()->getPrereqArrayFromPath<Int16ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), {static_cast<size_t>(1)}).get() != nullptr)
   {
-    Int16ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<Int16ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
+    Int16ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<Int16ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), {static_cast<size_t>(1)});
     generateColorArray<int16_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRgbArrayName(), getDataContainerArray());
   }
-  else if (getDataContainerArray()->getPrereqArrayFromPath<UInt16ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
+  else if(getDataContainerArray()->getPrereqArrayFromPath<UInt16ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), {static_cast<size_t>(1)}).get() != nullptr)
   {
-    UInt16ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<UInt16ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
+    UInt16ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<UInt16ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), {static_cast<size_t>(1)});
     generateColorArray<uint16_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRgbArrayName(), getDataContainerArray());
   }
-  else if (getDataContainerArray()->getPrereqArrayFromPath<Int32ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
+  else if(getDataContainerArray()->getPrereqArrayFromPath<Int32ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), {static_cast<size_t>(1)}).get() != nullptr)
   {
-    Int32ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<Int32ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
+    Int32ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<Int32ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), {static_cast<size_t>(1)});
     generateColorArray<int32_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRgbArrayName(), getDataContainerArray());
   }
-  else if (getDataContainerArray()->getPrereqArrayFromPath<UInt32ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
+  else if(getDataContainerArray()->getPrereqArrayFromPath<UInt32ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), {static_cast<size_t>(1)}).get() != nullptr)
   {
-    UInt32ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<UInt32ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
+    UInt32ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<UInt32ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), {static_cast<size_t>(1)});
     generateColorArray<uint32_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRgbArrayName(), getDataContainerArray());
   }
-  else if (getDataContainerArray()->getPrereqArrayFromPath<Int64ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
+  else if(getDataContainerArray()->getPrereqArrayFromPath<Int64ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), {static_cast<size_t>(1)}).get() != nullptr)
   {
-    Int64ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<Int64ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
+    Int64ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<Int64ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), {static_cast<size_t>(1)});
     generateColorArray<int64_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRgbArrayName(), getDataContainerArray());
   }
-  else if (getDataContainerArray()->getPrereqArrayFromPath<UInt64ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
+  else if(getDataContainerArray()->getPrereqArrayFromPath<UInt64ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), {static_cast<size_t>(1)}).get() != nullptr)
   {
-    UInt64ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<UInt64ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
+    UInt64ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<UInt64ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), {static_cast<size_t>(1)});
     generateColorArray<uint64_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRgbArrayName(), getDataContainerArray());
   }
-  else if (getDataContainerArray()->getPrereqArrayFromPath<DoubleArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
+  else if(getDataContainerArray()->getPrereqArrayFromPath<DoubleArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), {static_cast<size_t>(1)}).get() != nullptr)
   {
-    DoubleArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<DoubleArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
+    DoubleArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<DoubleArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), {static_cast<size_t>(1)});
     generateColorArray<double>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRgbArrayName(), getDataContainerArray());
   }
-  else if (getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
+  else if(getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), {static_cast<size_t>(1)}).get() != nullptr)
   {
-    FloatArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
+    FloatArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), {static_cast<size_t>(1)});
     generateColorArray<float>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRgbArrayName(), getDataContainerArray());
   }
-  else if (getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
+  else if(getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), {static_cast<size_t>(1)}).get() != nullptr)
   {
-    BoolArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
+    BoolArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), {static_cast<size_t>(1)});
     generateColorArray<bool>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRgbArrayName(), getDataContainerArray());
   }
   else

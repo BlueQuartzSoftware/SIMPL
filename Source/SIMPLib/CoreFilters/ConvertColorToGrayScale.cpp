@@ -285,7 +285,7 @@ void ConvertColorToGrayScale::dataCheck()
   AttributeMatrix::Pointer outAM;
   if(m_CreateNewAttributeMatrix)
   {
-    QVector<size_t> tDims = inAM->getTupleDimensions();
+    std::vector<size_t> tDims = inAM->getTupleDimensions();
 
     outAM = dc->createNonPrereqAttributeMatrix(this, getOutputAttributeMatrixName(), tDims, AttributeMatrix::Type::Cell);
     if(getErrorCode() < 0 || nullptr == outAM.get())
@@ -308,7 +308,7 @@ void ConvertColorToGrayScale::dataCheck()
     {
       return;
     }
-    QVector<size_t> outCDims(1, 1);
+    std::vector<size_t> outCDims(1, 1);
     if(outAM.get() == nullptr)
     {
       outAM = dc->getPrereqAttributeMatrix(this, inputAMPath.getAttributeMatrixName(), -62105);

@@ -33,12 +33,9 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QtCore/QDebug>
 #include <QtCore/QFile>
-#include <QtCore/QSettings>
 #include <QtCore/QString>
-#include <QtCore/QtDebug>
 
 #include "SIMPLib/Common/Constants.h"
 
@@ -121,7 +118,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void initializeDataArrays(DataContainer::Pointer m, QVector<size_t> cDims)
+  void initializeDataArrays(DataContainer::Pointer m, std::vector<size_t> cDims)
   {
     for(auto& am : m->getChildren())
     {
@@ -164,7 +161,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void initializeAttributeMatrices(DataContainer::Pointer m, QVector<size_t> tDimsVert, QVector<size_t> tDimsCell)
+  void initializeAttributeMatrices(DataContainer::Pointer m, std::vector<size_t> tDimsVert, std::vector<size_t> tDimsCell)
   {
     AttributeMatrix::Pointer attrMat;
     QString ss = QObject::tr("AttrMatType%1").arg(0);
@@ -285,8 +282,8 @@ public:
     FDTEST_CREATE_DATA_CONTAINER(QuadDC, quads, dca);
     FDTEST_CREATE_DATA_CONTAINER(TetDC, tets, dca);
 
-    QVector<size_t> tDims(1, 100);
-    QVector<size_t> tDims2(1, 1);
+    std::vector<size_t> tDims(1, 100);
+    std::vector<size_t> tDims2(1, 1);
     initializeAttributeMatrices(_nullGeomContainer, tDims, tDims);
     tDims[0] = 1000;
     initializeAttributeMatrices(_imageContainer, tDims, tDims);
@@ -301,7 +298,7 @@ public:
     initializeAttributeMatrices(_quadsContainer, tDims, tDims2);
     initializeAttributeMatrices(_tetsContainer, tDims, tDims2);
 
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> cDims(1, 3);
 
     initializeDataArrays(_nullGeomContainer, cDims);
     initializeDataArrays(_imageContainer, cDims);
@@ -352,8 +349,8 @@ public:
     QVariant var;
     bool propWasSet;
     int err = 0;
-    QVector<size_t> checkDims;
-    QVector<size_t> cDims(1, 3);
+    std::vector<size_t> checkDims;
+    std::vector<size_t> cDims(1, 3);
     QString derivativeName = "Derivatives";
     DataArrayPath derivs;
     IDataArray::Pointer data;

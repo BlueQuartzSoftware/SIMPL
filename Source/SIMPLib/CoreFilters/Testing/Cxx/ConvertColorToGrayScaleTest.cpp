@@ -35,7 +35,6 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include <QTextStream>
-#include <QtCore/QCoreApplication>
 #include <QtCore/QFile>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -296,7 +295,7 @@ class ConvertColorToGrayScaleTest
     }
   }
 
-  static DataContainer::Pointer createVertexGeometryDataContainer(const DataArray<uint8_t>::Pointer& aa, const QVector<size_t>& tDims)
+  static DataContainer::Pointer createVertexGeometryDataContainer(const DataArray<uint8_t>::Pointer& aa, const std::vector<size_t>& tDims)
   {
     AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
     am->insertOrAssign(aa);
@@ -478,8 +477,8 @@ public:
     int err = 0;
 
     const QString aaName = SIMPL::VertexData::SurfaceMeshNodes;
-    const QVector<size_t> tDims{16};
-    const QVector<size_t> cDims{3, 1, 1};
+    const std::vector<size_t> tDims{16};
+    const std::vector<size_t> cDims{3, 1, 1};
 
     DataArray<uint8_t>::Pointer testAA{DataArray<uint8_t>::CreateArray(tDims, cDims, aaName)};
     SetDataArrayTestValues(testAA);

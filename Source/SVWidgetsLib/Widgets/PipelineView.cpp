@@ -37,7 +37,6 @@
 
 #include <QtWidgets/QUndoStack>
 #include <QtWidgets/QUndoCommand>
-#include <QtWidgets/QWidget>
 
 // -----------------------------------------------------------------------------
 //

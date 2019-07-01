@@ -35,14 +35,8 @@
 
 #include "AttributeMatrixCreationWidget.h"
 
-#include <QtCore/QList>
-#include <QtCore/QMetaProperty>
-#include <QtCore/QSignalMapper>
 
-#include <QtGui/QStandardItemModel>
 
-#include <QtWidgets/QListWidgetItem>
-#include <QtWidgets/QMenu>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"

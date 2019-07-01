@@ -37,8 +37,8 @@
 
 #include <QtCore/QSignalMapper>
 
-#include <QtWidgets/QMenu>
 #include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QMenu>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Utilities/StringOperations.h"
@@ -83,7 +83,7 @@ void DataFormatPage::setupGui()
   dataView->setModel(m_ASCIIDataModel.data());
 
   connect(dataView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), this, SLOT(updateSelection(const QItemSelection&, const QItemSelection&)));
-  connect(tupleDimsTable, SIGNAL(tupleDimsChanged(QVector<size_t>)), this, SLOT(checkTupleDimensions(QVector<size_t>)));
+  connect(tupleDimsTable, SIGNAL(tupleDimsChanged(std::vector<size_t>)), this, SLOT(checkTupleDimensions(std::vector<size_t>)));
   connect(amName, SIGNAL(textEdited(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
   headersIndexLineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("[1-9][0-9]*"), headersIndexLineEdit));
@@ -115,7 +115,7 @@ void DataFormatPage::setupGui()
 //  amTuplesLabel->setText(QString::number(numOfDataLines));
 
   tupleDimsTable->blockSignals(true);
-  tupleDimsTable->addTupleDimensions(QVector<size_t>(1, numOfDataLines));
+  tupleDimsTable->addTupleDimensions(std::vector<size_t>(1, numOfDataLines));
   tupleDimsTable->blockSignals(false);
 
   selectedDCBtn->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
@@ -452,7 +452,7 @@ void DataFormatPage::createAMSelectionMenu()
   // Loop over the data containers until we find the proper data container
   DataContainerArray::Container containers = dca->getDataContainers();
   QVector<QString> daTypes;// = m_FilterParameter->getDefaultAttributeArrayTypes();
-  QVector<QVector<size_t>> cDims;// = m_FilterParameter->getDefaultComponentDimensions();
+  QVector<std::vector<size_t>> cDims;// = m_FilterParameter->getDefaultComponentDimensions();
   QVector<AttributeMatrix::Type> amTypes;// = m_FilterParameter->getDefaultAttributeMatrixTypes();
   IGeometry::Types geomTypes;// = m_FilterParameter->getDefaultGeometryTypes();
 
@@ -709,7 +709,7 @@ void DataFormatPage::on_startRowSpin_valueChanged(int value)
   if(!tupleDimsTable->didUseEdit())
   {
     tupleDimsTable->clearTupleDimensions();
-    tupleDimsTable->addTupleDimensions(QVector<size_t>(1, numOfDataLines));
+    tupleDimsTable->addTupleDimensions(std::vector<size_t>(1, numOfDataLines));
   }
   checkTupleDimensions(getTupleTable()->getData());
 
@@ -956,7 +956,7 @@ void DataFormatPage::updateSelection(const QItemSelection& selected, const QItem
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataFormatPage::checkTupleDimensions(QVector<size_t> tupleDims)
+bool DataFormatPage::checkTupleDimensions(std::vector<size_t> tupleDims)
 {
   if(!validateTupleDimensions(tupleDims))
   {
@@ -977,7 +977,7 @@ bool DataFormatPage::checkTupleDimensions(QVector<size_t> tupleDims)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataFormatPage::validateTupleDimensions(QVector<size_t> tupleDims)
+bool DataFormatPage::validateTupleDimensions(std::vector<size_t> tupleDims)
 {
   size_t tupleTotal = 1;
 

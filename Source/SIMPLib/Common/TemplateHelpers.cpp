@@ -37,7 +37,8 @@
 using namespace TemplateHelpers;
 
 // -----------------------------------------------------------------------------
-IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType, RenameDataPath::DataID_t id)
+IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const std::vector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType,
+                                                              RenameDataPath::DataID_t id)
 {
 
   IDataArrayShPtr ptr = IDataArray::NullPointer();
@@ -99,7 +100,8 @@ IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f,
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayWkPtr CreateNonPrereqArrayFromTypeEnum::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, int arrayType, double initValue, RenameDataPath::DataID_t id)
+IDataArrayWkPtr CreateNonPrereqArrayFromTypeEnum::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const std::vector<size_t>& compDims, int arrayType, double initValue,
+                                                             RenameDataPath::DataID_t id)
 {
   IDataArrayShPtr ptr = IDataArray::NullPointer();
 
@@ -150,16 +152,16 @@ IDataArrayWkPtr CreateNonPrereqArrayFromTypeEnum::operator()(AbstractFilter* f, 
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, const size_t& numTuples, const QVector<size_t>& compDims, const QString& arrayName, bool allocate,
+IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, const size_t& numTuples, const std::vector<size_t>& compDims, const QString& arrayName, bool allocate,
                                                      const IDataArrayShPtr& sourceArrayType)
 {
   CreateArrayFromArrayType classInstance;
-  QVector<size_t> tupleDims(1, numTuples);
+  std::vector<size_t> tupleDims = {numTuples};
   return classInstance(f, tupleDims, compDims, arrayName, allocate, sourceArrayType);
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, const QVector<size_t>& tupleDims, const QVector<size_t>& compDims, const QString& arrayName, bool allocate,
+IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, const std::vector<size_t>& tupleDims, const std::vector<size_t>& compDims, const QString& arrayName, bool allocate,
                                                      const IDataArrayShPtr& sourceArrayType)
 {
   IDataArrayShPtr ptr = IDataArray::NullPointer();
@@ -221,15 +223,16 @@ IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, const QV
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const size_t& numTuples, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type)
+IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const size_t& numTuples, const std::vector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type)
 {
   CreateArrayFromType classInstance;
-  QVector<size_t> tupleDims(1, numTuples);
+  std::vector<size_t> tupleDims(1, numTuples);
   return classInstance(f, tupleDims, compDims, arrayName, allocate, type);
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const QVector<size_t>& tupleDims, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type)
+IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const std::vector<size_t>& tupleDims, const std::vector<size_t>& compDims, const QString& arrayName, bool allocate,
+                                                const QString& type)
 {
   IDataArrayShPtr ptr = IDataArray::NullPointer();
 
@@ -287,7 +290,7 @@ IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const QVector
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayWkPtr GetPrereqArrayFromPath::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, QVector<size_t>& compDims)
+IDataArrayWkPtr GetPrereqArrayFromPath::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, std::vector<size_t>& compDims)
 {
   IDataArrayShPtr retPtr = IDataArray::NullPointer();
   DataContainer::Pointer volDataCntr = f->getDataContainerArray()->getPrereqDataContainer(f, arrayPath.getDataContainerName(), false);
@@ -311,7 +314,7 @@ IDataArrayWkPtr GetPrereqArrayFromPath::operator()(AbstractFilter* f, const Data
     f->setErrorCondition(Errors::MissingArray, ss);
     return retPtr;
   }
-  if(compDims.isEmpty())
+  if(compDims.empty())
   {
     compDims = templ_ptr->getComponentDimensions();
   }

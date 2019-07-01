@@ -27,7 +27,7 @@ def DataArrayTest():
     shape = simpl.VectorSizeT([4, 5, 2])
     cellAm = sc.CreateAttributeMatrix(shape, "CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell)
     dc.addOrReplaceAttributeMatrix(cellAm)
-
+    shape = [4,5,2]
     # Create the Component Dimensions for the Array, 1 Component in this case
     cDims = simpl.VectorSizeT([1])
 

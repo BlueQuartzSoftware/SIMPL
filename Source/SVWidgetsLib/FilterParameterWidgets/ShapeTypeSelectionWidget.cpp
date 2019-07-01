@@ -35,8 +35,6 @@
 
 #include "ShapeTypeSelectionWidget.h"
 
-#include <QtCore/QList>
-#include <QtCore/QMetaProperty>
 
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>

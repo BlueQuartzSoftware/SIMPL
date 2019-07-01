@@ -38,7 +38,7 @@
 // -----------------------------------------------------------------------------
 SharedTetList::Pointer GEOM_CLASS_NAME::CreateSharedTetList(size_t numTets, bool allocate)
 {
-  QVector<size_t> tetDims(1, 4);
+  std::vector<size_t> tetDims(1, 4);
   SharedTetList::Pointer tets = SharedTetList::CreateArray(numTets, tetDims, SIMPL::Geometry::SharedTetList, allocate);
   tets->initializeWithZeros();
   return tets;

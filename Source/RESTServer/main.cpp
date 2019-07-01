@@ -38,14 +38,12 @@
 #include <iostream>
 
 // Qt Includes
-#include <QtCore/QCommandLineOption>
-#include <QtCore/QCommandLineParser>
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDebug>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QSettings>
 #include <QtCore/QString>
-#include <QtCore/QtDebug>
 
 #include "QtWebApp/httpserver/ServerSettings.h"
 #include "QtWebApp/httpserver/httplistener.h"

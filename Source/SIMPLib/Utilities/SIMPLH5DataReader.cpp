@@ -34,11 +34,9 @@
 
 #include <sstream>
 
-#include <QtCore/QTextStream>
-
 #include "SIMPLib/Common/IObserver.h"
-#include "SIMPLib/DataContainers/DataContainerBundle.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainerBundle.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
 #include "H5Support/QH5Utilities.h"

@@ -6,7 +6,6 @@
 #include <array>
 #include <numeric>
 
-#include <QtCore/QCoreApplication>
 #include <QtCore/QFile>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -90,7 +89,7 @@ public:
     imageGeomDC->setGeometry(imageGeom);
 
     // Create the Cell AttributeMatrix
-    AttributeMatrix::Pointer cellAttrMat = AttributeMatrix::Create(dims, k_CellAttrMatName, AttributeMatrix::Type::Cell);
+    AttributeMatrix::Pointer cellAttrMat = AttributeMatrix::New(dims, k_CellAttrMatName, AttributeMatrix::Type::Cell);
     imageGeomDC->addOrReplaceAttributeMatrix(cellAttrMat);
 
     // Create a cell attribute array
@@ -102,7 +101,7 @@ public:
     dims[0] = 1;
     dims[1] = 2;
     dims[2] = 3;
-    AttributeMatrix::Pointer featureAttrMat = AttributeMatrix::Create(dims, k_FeatureAttrMatName, AttributeMatrix::Type::CellFeature);
+    AttributeMatrix::Pointer featureAttrMat = AttributeMatrix::New(dims, k_FeatureAttrMatName, AttributeMatrix::Type::CellFeature);
     imageGeomDC->addOrReplaceAttributeMatrix(featureAttrMat);
 
     // Create a feature attribute array

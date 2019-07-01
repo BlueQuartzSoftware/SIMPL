@@ -428,14 +428,14 @@ void ImportAsciDataArray::dataCheck()
     return;
   }
 
-  QVector<size_t> tDims = attrMat->getTupleDimensions();
+  std::vector<size_t> tDims = attrMat->getTupleDimensions();
   size_t totalDim = 1;
-  for(int i = 0; i < tDims.size(); i++)
+  for(size_t i = 0; i < tDims.size(); i++)
   {
     totalDim = totalDim * tDims[i];
   }
 
-  QVector<size_t> cDims(1, m_NumberOfComponents);
+  std::vector<size_t> cDims(1, m_NumberOfComponents);
   if(m_ScalarType == SIMPL::NumericTypes::Type::Int8)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter, int8_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
@@ -517,7 +517,7 @@ void ImportAsciDataArray::execute()
 
   char delimiter = converSelectedDelimiter();
 
-  QVector<size_t> cDims(1, m_NumberOfComponents);
+  std::vector<size_t> cDims(1, m_NumberOfComponents);
   int32_t err = 0;
   if(m_ScalarType == SIMPL::NumericTypes::Type::Int8)
   {

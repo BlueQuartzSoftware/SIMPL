@@ -36,7 +36,6 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include <QtCore/QSet>
 #include <QtCore/QString>
 
 #include <QtGui/QFont>

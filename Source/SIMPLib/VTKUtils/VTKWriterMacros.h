@@ -35,7 +35,6 @@
 
 #pragma once
 
-#include <QtCore/QtEndian>
 
 #include "SIMPLib/Utilities/SIMPLibEndian.h"
 #include "SIMPLib/SIMPLibVersion.h"

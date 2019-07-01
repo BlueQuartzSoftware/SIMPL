@@ -40,10 +40,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
 #include <QtCore/QJsonObject>
-#include <QtCore/QJsonArray>
 #include <QtCore/QStack>
 
-#include <QtWidgets/QTreeWidget>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/FilterLibraryTreeWidget.h"
