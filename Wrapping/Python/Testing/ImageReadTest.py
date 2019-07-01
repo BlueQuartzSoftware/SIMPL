@@ -45,12 +45,12 @@ def ImageReadTest():
     dca.addOrReplaceDataContainer(dc)
 
     # Create an AttributeMatrix and add it to the DataContainer
-    amShape = simpl.Dims([shape[1], shape[0], 1])
+    amShape = simpl.VectorSizeT([shape[1], shape[0], 1])
     cellAm = sc.CreateAttributeMatrix(amShape, "CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell)
     dc.addOrReplaceAttributeMatrix(cellAm)
 
     # Create an AttributeArray from the image data and add it to the AttributeMatrix
-    cDims = simpl.Dims([1])
+    cDims = simpl.VectorSizeT([1])
     name = "slice_11.tiff"
     array = simpl.UInt8ArrayType(z_flat, cDims, name, False)
     cellAm.addOrReplaceAttributeArray(array)

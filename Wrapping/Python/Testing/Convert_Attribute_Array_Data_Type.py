@@ -18,7 +18,7 @@ def convert_data_test():
     dc = sc.CreateDataContainer("ImageDataContainer")
     dca.addOrReplaceDataContainer(dc)
  
-    shape = simpl.Dims([4, 5, 2])
+    shape = simpl.VectorSizeT([4, 5, 2])
     cellAm = sc.CreateAttributeMatrix(shape, "CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell)
     dc.addOrReplaceAttributeMatrix(cellAm)   
     

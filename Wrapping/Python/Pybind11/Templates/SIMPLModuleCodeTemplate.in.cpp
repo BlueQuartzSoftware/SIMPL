@@ -263,6 +263,7 @@ PYBIND11_MODULE(dream3d, m)
       }))
   ;
 
+#if 0
   // Handle QVector of size_t
   py::class_<std::vector<size_t>>(mod, "Dims")
 	  .def(py::init<>([](py::list dimensions) {
@@ -293,6 +294,7 @@ PYBIND11_MODULE(dream3d, m)
 		  return dims[key];
 	  })
   ;
+#endif
 
   // Handle QSet of QString
   py::class_<QSet<QString>>(mod, "StringSet")

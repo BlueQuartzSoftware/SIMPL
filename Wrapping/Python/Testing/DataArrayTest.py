@@ -24,12 +24,12 @@ def DataArrayTest():
     dc = sc.CreateDataContainer("ImageDataContainer")
     dca.addOrReplaceDataContainer(dc)
 
-    shape = simpl.Dims([4, 5, 2])
+    shape = simpl.VectorSizeT([4, 5, 2])
     cellAm = sc.CreateAttributeMatrix(shape, "CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell)
     dc.addOrReplaceAttributeMatrix(cellAm)
     shape = [4,5,2]
     # Create the Component Dimensions for the Array, 1 Component in this case
-    cDims = simpl.Dims([1])
+    cDims = simpl.VectorSizeT([1])
 
     arrayTypes = [np.int8, np.uint8, np.int16, np.uint16, np.int32, np.uint32, np.int64, np.uint64, np.float32, np.double]
     # We store each return numpy array in order to keep it in scope. If we let it

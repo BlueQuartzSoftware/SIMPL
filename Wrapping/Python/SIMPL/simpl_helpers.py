@@ -132,7 +132,7 @@ def ConvertToDataArray(name, array, componentDimensions = 1):
     # Get shape
     shape = array.shape
     # Determine cDims
-    cDims = simpl.Dims([componentDimensions])  # Default is 1
+    cDims = simpl.VectorSizeT([componentDimensions])  # Default is 1
 
     # Determine type
     type = array.dtype

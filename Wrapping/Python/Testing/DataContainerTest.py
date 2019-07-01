@@ -29,7 +29,7 @@ def DataContainerTest() :
   assert dc.Name == "ImageDataContainer"
   
   amType = simpl.AttributeMatrix.Type.Cell
-  tupleDims = simpl.Dims([5,4,3])
+  tupleDims = simpl.VectorSizeT([5,4,3])
   amName = "CellAttributeMatrix"
   am = sc.CreateAttributeMatrix(tupleDims, amName, amType)
 
