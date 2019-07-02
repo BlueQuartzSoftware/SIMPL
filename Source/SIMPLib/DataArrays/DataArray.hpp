@@ -202,7 +202,7 @@ public:
     {
       cDims[i] = dims[i];
     }
-    auto d = new DataArray<T>(numTuples, name, cDims, allocate);
+    auto d = new DataArray<T>(numTuples, name, cDims, static_cast<T>(0), allocate);
     if(allocate)
     {
       if(d->allocate() < 0)
@@ -230,7 +230,7 @@ public:
     {
       return NullPointer();
     }
-    DataArray<T>* d = new DataArray<T>(numTuples, name, compDims, allocate);
+    DataArray<T>* d = new DataArray<T>(numTuples, name, compDims, static_cast<T>(0), allocate);
     if(allocate)
     {
       if(d->allocate() < 0)
@@ -262,7 +262,7 @@ public:
 
     size_t numTuples = std::accumulate(tupleDims.begin(), tupleDims.end(), 1, std::multiplies<>());
 
-    auto d = new DataArray<T>(numTuples, name, compDims, allocate);
+    auto d = new DataArray<T>(numTuples, name, compDims, static_cast<T>(0), allocate);
     if(allocate)
     {
       if(d->allocate() < 0)
@@ -699,7 +699,10 @@ public:
     {
       return;
     }
-    std::for_each(begin() + offset, end(), [=](T& n) { n = initValue; });
+    for(size_t i = offset; i < m_Size; i++)
+    {
+      m_Array[i] = initValue;
+    }
   }
 
   /**
@@ -1871,7 +1874,10 @@ public:
   void assign(size_type n, const value_type& val) // fill (2)
   {
     resizeAndExtend(n);
-    std::for_each(begin(), end(), [=](T& n) { n = val; });
+    for(size_t i = 0; i < n; i++)
+    {
+      m_Array[i] = val;
+    }
   }
 
   /**
