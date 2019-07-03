@@ -570,7 +570,12 @@ class StructArray : public IDataArray
 
     IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override
     {
-      IDataArray::Pointer daCopy = createNewArray(getNumberOfTuples(), getComponentDimensions(), getName(), m_IsAllocated);
+      bool allocate = m_IsAllocated;
+      if(forceNoAllocate)
+      {
+        allocate = false;
+      }
+      IDataArray::Pointer daCopy = createNewArray(getNumberOfTuples(), getComponentDimensions(), getName(), allocate);
       if(m_IsAllocated && !forceNoAllocate)
       {
         T* src = getPointer(0);
