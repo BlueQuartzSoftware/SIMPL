@@ -66,7 +66,7 @@ public:
     vec.push_back(1);
 
     const QString arrayName = "DataArray";
-    DataArray<uint>::Pointer da = DataArray<uint>::CreateArray(1, vec, arrayName);
+    DataArray<uint>::Pointer da = DataArray<uint>::CreateArray(1, vec, arrayName, true);
 
     std::vector<size_t> sizeList;
     sizeList.push_back(1);

@@ -79,7 +79,7 @@ public:
 
     std::vector<size_t> dims;
     dims.push_back(3);
-    DataArray<float>::Pointer verts = DataArray<float>::CreateArray(3, dims, "Vertices");
+    DataArray<float>::Pointer verts = DataArray<float>::CreateArray(3, dims, "Vertices", true);
     verts->setComponent(0, 0, -1);
     verts->setComponent(0, 1, 0);
     verts->setComponent(0, 2, 0);
@@ -94,7 +94,7 @@ public:
 
     std::vector<size_t> dims2;
     dims2.push_back(3);
-    SharedTriList::Pointer tris = SharedTriList::CreateArray(1, dims2, "Triangles");
+    SharedTriList::Pointer tris = SharedTriList::CreateArray(1, dims2, "Triangles", true);
 
     tris->setComponent(0, 0, 0);
     tris->setComponent(0, 1, 1);

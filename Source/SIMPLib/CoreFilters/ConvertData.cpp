@@ -77,7 +77,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims
 
   if(scalarType == SIMPL::NumericTypes::Type::Int8)
   {
-    Int8ArrayType::Pointer p = Int8ArrayType::CreateArray(voxels, dims, name);
+    Int8ArrayType::Pointer p = Int8ArrayType::CreateArray(voxels, dims, name, true);
     m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
     for(size_t v = 0; v < size; ++v)
     {
@@ -86,7 +86,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims
   }
   else if(scalarType == SIMPL::NumericTypes::Type::UInt8)
   {
-    UInt8ArrayType::Pointer p = UInt8ArrayType::CreateArray(voxels, dims, name);
+    UInt8ArrayType::Pointer p = UInt8ArrayType::CreateArray(voxels, dims, name, true);
     m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
     for(size_t v = 0; v < size; ++v)
     {
@@ -95,7 +95,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Int16)
   {
-    Int16ArrayType::Pointer p = Int16ArrayType::CreateArray(voxels, dims, name);
+    Int16ArrayType::Pointer p = Int16ArrayType::CreateArray(voxels, dims, name, true);
     m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
     for(size_t v = 0; v < size; ++v)
     {
@@ -104,7 +104,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims
   }
   else if(scalarType == SIMPL::NumericTypes::Type::UInt16)
   {
-    UInt16ArrayType::Pointer p = UInt16ArrayType::CreateArray(voxels, dims, name);
+    UInt16ArrayType::Pointer p = UInt16ArrayType::CreateArray(voxels, dims, name, true);
     m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
     for(size_t v = 0; v < size; ++v)
     {
@@ -113,7 +113,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Int32)
   {
-    Int32ArrayType::Pointer p = Int32ArrayType::CreateArray(voxels, dims, name);
+    Int32ArrayType::Pointer p = Int32ArrayType::CreateArray(voxels, dims, name, true);
     m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
     for(size_t v = 0; v < size; ++v)
     {
@@ -122,7 +122,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims
   }
   else if(scalarType == SIMPL::NumericTypes::Type::UInt32)
   {
-    UInt32ArrayType::Pointer p = UInt32ArrayType::CreateArray(voxels, dims, name);
+    UInt32ArrayType::Pointer p = UInt32ArrayType::CreateArray(voxels, dims, name, true);
     m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
     for(size_t v = 0; v < size; ++v)
     {
@@ -131,7 +131,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Int64)
   {
-    Int64ArrayType::Pointer p = Int64ArrayType::CreateArray(voxels, dims, name);
+    Int64ArrayType::Pointer p = Int64ArrayType::CreateArray(voxels, dims, name, true);
     m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
     for(size_t v = 0; v < size; ++v)
     {
@@ -140,7 +140,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims
   }
   else if(scalarType == SIMPL::NumericTypes::Type::UInt64)
   {
-    UInt64ArrayType::Pointer p = UInt64ArrayType::CreateArray(voxels, dims, name);
+    UInt64ArrayType::Pointer p = UInt64ArrayType::CreateArray(voxels, dims, name, true);
     m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
     for(size_t v = 0; v < size; ++v)
     {
@@ -149,7 +149,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Float)
   {
-    FloatArrayType::Pointer p = FloatArrayType::CreateArray(voxels, dims, name);
+    FloatArrayType::Pointer p = FloatArrayType::CreateArray(voxels, dims, name, true);
     m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
     for(size_t v = 0; v < size; ++v)
     {
@@ -158,7 +158,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Double)
   {
-    DoubleArrayType::Pointer p = DoubleArrayType::CreateArray(voxels, dims, name);
+    DoubleArrayType::Pointer p = DoubleArrayType::CreateArray(voxels, dims, name, true);
     m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
     for(size_t v = 0; v < size; ++v)
     {
@@ -167,7 +167,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Bool)
   {
-    BoolArrayType::Pointer p = BoolArrayType::CreateArray(voxels, dims, name);
+    BoolArrayType::Pointer p = BoolArrayType::CreateArray(voxels, dims, name, true);
     m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
     for(size_t v = 0; v < size; ++v)
     {

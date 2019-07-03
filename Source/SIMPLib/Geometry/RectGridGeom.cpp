@@ -848,7 +848,7 @@ void RectGridGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 int RectGridGeom::findElementSizes()
 {
-  m_VoxelSizes = FloatArrayType::CreateArray(getNumberOfElements(), SIMPL::StringConstants::VoxelSizes);
+  m_VoxelSizes = FloatArrayType::CreateArray(getNumberOfElements(), SIMPL::StringConstants::VoxelSizes, true);
 
   float* sizes = m_VoxelSizes->getPointer(0);
   float* xBnds = m_xBounds->getPointer(0);

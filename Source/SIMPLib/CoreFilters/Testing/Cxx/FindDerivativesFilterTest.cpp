@@ -122,37 +122,37 @@ public:
   {
     for(auto& am : m->getChildren())
     {
-      DoubleArrayType::Pointer dblArray = DoubleArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_D");
+      DoubleArrayType::Pointer dblArray = DoubleArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_D", true);
       dblArray->initializeWithValue(5);
       am->insertOrAssign(dblArray);
-      FloatArrayType::Pointer fltArray = FloatArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_F");
+      FloatArrayType::Pointer fltArray = FloatArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_F", true);
       fltArray->initializeWithValue(5);
       am->insertOrAssign(fltArray);
-      Int8ArrayType::Pointer int8Array = Int8ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I8");
+      Int8ArrayType::Pointer int8Array = Int8ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I8", true);
       int8Array->initializeWithValue(5);
       am->insertOrAssign(int8Array);
-      UInt8ArrayType::Pointer uint8Array = UInt8ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI8");
+      UInt8ArrayType::Pointer uint8Array = UInt8ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI8", true);
       uint8Array->initializeWithValue(5);
       am->insertOrAssign(uint8Array);
-      Int16ArrayType::Pointer int16Array = Int16ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I16");
+      Int16ArrayType::Pointer int16Array = Int16ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I16", true);
       int16Array->initializeWithValue(5);
       am->insertOrAssign(int16Array);
-      UInt16ArrayType::Pointer uint16Array = UInt16ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI16");
+      UInt16ArrayType::Pointer uint16Array = UInt16ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI16", true);
       uint16Array->initializeWithValue(5);
       am->insertOrAssign(uint16Array);
-      Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I32");
+      Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I32", true);
       int32Array->initializeWithValue(5);
       am->insertOrAssign(int32Array);
-      UInt32ArrayType::Pointer uint32Array = UInt32ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI32");
+      UInt32ArrayType::Pointer uint32Array = UInt32ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI32", true);
       uint32Array->initializeWithValue(5);
       am->insertOrAssign(uint32Array);
-      Int64ArrayType::Pointer int64Array = Int64ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I64");
+      Int64ArrayType::Pointer int64Array = Int64ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I64", true);
       int64Array->initializeWithValue(5);
       am->insertOrAssign(int64Array);
-      UInt64ArrayType::Pointer uint64Array = UInt64ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI64");
+      UInt64ArrayType::Pointer uint64Array = UInt64ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI64", true);
       uint64Array->initializeWithValue(5);
       am->insertOrAssign(uint64Array);
-      BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_BOOL");
+      BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_BOOL", true);
       boolArray->initializeWithZeros();
       am->insertOrAssign(boolArray);
     }
@@ -204,9 +204,9 @@ public:
     image->setOrigin(0.0f, 0.0f, 0.0f);
     image->setSpacing(1.0f, 1.0f, 1.0f);
     rectGrid->setDimensions(SizeVec3Type(10, 10, 10));
-    FloatArrayType::Pointer xBounds = FloatArrayType::CreateArray(11, SIMPL::Geometry::xBoundsList);
-    FloatArrayType::Pointer yBounds = FloatArrayType::CreateArray(11, SIMPL::Geometry::yBoundsList);
-    FloatArrayType::Pointer zBounds = FloatArrayType::CreateArray(11, SIMPL::Geometry::zBoundsList);
+    FloatArrayType::Pointer xBounds = FloatArrayType::CreateArray(11, SIMPL::Geometry::xBoundsList, true);
+    FloatArrayType::Pointer yBounds = FloatArrayType::CreateArray(11, SIMPL::Geometry::yBoundsList, true);
+    FloatArrayType::Pointer zBounds = FloatArrayType::CreateArray(11, SIMPL::Geometry::zBoundsList, true);
     float* xBoundsPtr = xBounds->getPointer(0);
     float* yBoundsPtr = yBounds->getPointer(0);
     float* zBoundsPtr = zBounds->getPointer(0);

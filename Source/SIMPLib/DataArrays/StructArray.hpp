@@ -102,12 +102,6 @@ class StructArray : public IDataArray
       return p;
     }
 
-    //    IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override
-    //    {
-    //      IDataArray::Pointer p = StructArray<T>::CreateArray(numElements, name, allocate);
-    //      return p;
-    //    }
-
     /**
      * @brief Destructor
      */

@@ -99,25 +99,25 @@ VectorOfFloatArray StatsData::CreateCorrelatedDistributionArrays(uint32_t distri
   if(distributionType == SIMPL::DistributionType::Beta)
   {
     v.resize(SIMPL::DistributionType::BetaColumnCount);
-    v[0] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Alpha);
+    v[0] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Alpha, true);
     v[0]->initializeWithZeros();
-    v[1] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Beta);
+    v[1] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Beta, true);
     v[1]->initializeWithZeros();
   }
   else if(distributionType == SIMPL::DistributionType::LogNormal)
   {
     v.resize(SIMPL::DistributionType::LogNormalColumnCount);
-    v[0] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Average);
+    v[0] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Average, true);
     v[0]->initializeWithZeros();
-    v[1] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::StandardDeviation);
+    v[1] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::StandardDeviation, true);
     v[1]->initializeWithZeros();
   }
   else if(distributionType == SIMPL::DistributionType::Power)
   {
     v.resize(SIMPL::DistributionType::PowerLawColumnCount);
-    v[0] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Alpha);
+    v[0] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Alpha, true);
     v[0]->initializeWithZeros();
-    v[1] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::MinimumValue);
+    v[1] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::MinimumValue, true);
     v[1]->initializeWithZeros();
   }
   else if(distributionType == SIMPL::DistributionType::UnknownDistributionType)
@@ -135,17 +135,17 @@ FloatArrayType::Pointer StatsData::CreateDistributionArrays(uint32_t distributio
   FloatArrayType::Pointer v;
   if(distributionType == SIMPL::DistributionType::Beta)
   {
-    v = FloatArrayType::CreateArray(SIMPL::DistributionType::BetaColumnCount, SIMPL::StringConstants::Feature_Size_Distribution);
+    v = FloatArrayType::CreateArray(SIMPL::DistributionType::BetaColumnCount, SIMPL::StringConstants::Feature_Size_Distribution, true);
     v->initializeWithZeros();
   }
   else if(distributionType == SIMPL::DistributionType::LogNormal)
   {
-    v = FloatArrayType::CreateArray(SIMPL::DistributionType::LogNormalColumnCount, SIMPL::StringConstants::Feature_Size_Distribution);
+    v = FloatArrayType::CreateArray(SIMPL::DistributionType::LogNormalColumnCount, SIMPL::StringConstants::Feature_Size_Distribution, true);
     v->initializeWithZeros();
   }
   else if(distributionType == SIMPL::DistributionType::Power)
   {
-    v = FloatArrayType::CreateArray(SIMPL::DistributionType::PowerLawColumnCount, SIMPL::StringConstants::Feature_Size_Distribution);
+    v = FloatArrayType::CreateArray(SIMPL::DistributionType::PowerLawColumnCount, SIMPL::StringConstants::Feature_Size_Distribution, true);
     v->initializeWithZeros();
   }
   return v;

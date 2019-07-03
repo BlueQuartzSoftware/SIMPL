@@ -182,7 +182,7 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
       if(getFileIsBinary() == true)
       {
         size_t totalSize = xDim * yDim * zDim;
-        typename DataArray<T>::Pointer bufferPtr = DataArray<T>::CreateArray(totalSize, "JUNK");
+        typename DataArray<T>::Pointer bufferPtr = DataArray<T>::CreateArray(totalSize, "JUNK", true);
         // Read all the xpoints in one shot into a buffer
         inStream.read(reinterpret_cast<char*>(bufferPtr->getPointer(0)), (totalSize * sizeof(T)));
         if(inStream.gcount() != static_cast<std::streamsize>(totalSize * sizeof(T)))

@@ -98,7 +98,7 @@ public:
   template <typename T>
   std::shared_ptr<DataArray<T>> createDataArray(const QString& daName, const std::vector<std::vector<T>>& data, const std::vector<size_t>& tupleDims, const std::vector<size_t>& cDims)
   {
-    typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName);
+    typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName, true);
     for(int i = 0; i < da->getNumberOfTuples(); i++)
     {
       da->setTuple(i, data[i]);
@@ -523,21 +523,21 @@ public:
 
     // Create Bounds Arrays
 
-    DataArray<float>::Pointer daXBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, k_XBoundsDAName);
+    DataArray<float>::Pointer daXBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, k_XBoundsDAName, true);
     for(size_t i = 0; i < daXBounds->getSize(); i++)
     {
       daXBounds->setValue(i, i);
     }
     boundsAM->insertOrAssign(daXBounds);
 
-    DataArray<float>::Pointer daYBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, k_YBoundsDAName);
+    DataArray<float>::Pointer daYBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, k_YBoundsDAName, true);
     for(size_t i = 0; i < daYBounds->getSize(); i++)
     {
       daYBounds->setValue(i, i);
     }
     boundsAM->insertOrAssign(daYBounds);
 
-    DataArray<float>::Pointer daZBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, k_ZBoundsDAName);
+    DataArray<float>::Pointer daZBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, k_ZBoundsDAName, true);
     for(size_t i = 0; i < daZBounds->getSize(); i++)
     {
       daZBounds->setValue(i, i);
@@ -546,7 +546,7 @@ public:
 
     // Create bad xBounds arrays
 
-    DataArray<float>::Pointer daBadXBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, k_BadXBoundsDAName);
+    DataArray<float>::Pointer daBadXBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, k_BadXBoundsDAName, true);
     for(size_t i = 0; i < daBadXBounds->getSize(); i++)
     {
       daBadXBounds->setValue(i, i);

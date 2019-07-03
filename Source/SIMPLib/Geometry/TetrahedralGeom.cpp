@@ -369,7 +369,7 @@ void TetrahedralGeom::deleteElementNeighbors()
 int TetrahedralGeom::findElementCentroids()
 {
   std::vector<size_t> cDims(1, 3);
-  m_TetCentroids = FloatArrayType::CreateArray(getNumberOfTets(), cDims, SIMPL::StringConstants::TetCentroids);
+  m_TetCentroids = FloatArrayType::CreateArray(getNumberOfTets(), cDims, SIMPL::StringConstants::TetCentroids, true);
   GeometryHelpers::Topology::FindElementCentroids<size_t>(m_TetList, m_VertexList, m_TetCentroids);
   if(m_TetCentroids.get() == nullptr)
   {
@@ -409,7 +409,7 @@ void TetrahedralGeom::deleteElementCentroids()
 int TetrahedralGeom::findElementSizes()
 {
   std::vector<size_t> cDims(1, 1);
-  m_TetSizes = FloatArrayType::CreateArray(getNumberOfTets(), cDims, SIMPL::StringConstants::TetVolumes);
+  m_TetSizes = FloatArrayType::CreateArray(getNumberOfTets(), cDims, SIMPL::StringConstants::TetVolumes, true);
   GeometryHelpers::Topology::FindTetVolumes<size_t>(m_TetList, m_VertexList, m_TetSizes);
   if(m_TetSizes.get() == nullptr)
   {
@@ -448,7 +448,7 @@ void TetrahedralGeom::deleteElementSizes()
 int TetrahedralGeom::findUnsharedEdges()
 {
   std::vector<size_t> cDims(1, 2);
-  m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList);
+  m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList, true);
   GeometryHelpers::Connectivity::FindUnsharedTetEdges<size_t>(m_TetList, m_UnsharedEdgeList);
   if(m_UnsharedEdgeList.get() == nullptr)
   {
@@ -487,7 +487,7 @@ void TetrahedralGeom::deleteUnsharedEdges()
 int TetrahedralGeom::findUnsharedFaces()
 {
   std::vector<size_t> cDims(1, 3);
-  m_UnsharedTriList = SharedTriList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedFaceList);
+  m_UnsharedTriList = SharedTriList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedFaceList, true);
   GeometryHelpers::Connectivity::FindUnsharedTetFaces<size_t>(m_TetList, m_UnsharedTriList);
   if(m_UnsharedTriList.get() == nullptr)
   {

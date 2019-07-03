@@ -84,7 +84,7 @@ public:
   template <typename T>
   std::shared_ptr<DataArray<T>> createDataArray(const QString& daName, const std::vector<std::vector<T>>& data, const std::vector<size_t>& tupleDims, const std::vector<size_t>& cDims)
   {
-    typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName);
+    typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName, true);
     for(int i = 0; i < da->getNumberOfTuples(); i++)
     {
       da->setTuple(i, data[i]);
@@ -125,7 +125,7 @@ public:
     dc->addOrReplaceAttributeMatrix(featureAM);
 
     // Create Cell FeatureIds array
-    typename DataArray<int32_t>::Pointer cellFeatureIds = DataArray<int32_t>::CreateArray(cellAM->getNumberOfTuples(), k_CellFeatureIdsArrayName);
+    typename DataArray<int32_t>::Pointer cellFeatureIds = DataArray<int32_t>::CreateArray(cellAM->getNumberOfTuples(), k_CellFeatureIdsArrayName, true);
     cellAM->insertOrAssign(cellFeatureIds);
 
     for(size_t y = 0; y < 3; y++)
@@ -138,7 +138,7 @@ public:
     }
 
     //Create an array in teh Feature Attribute Matrix with 3 values since we created 3 features in the cell attribute matrix
-    typename DataArray<T>::Pointer avgTempValue = DataArray<T>::CreateArray(3, k_FeatureDataArrayName);
+    typename DataArray<T>::Pointer avgTempValue = DataArray<T>::CreateArray(3, k_FeatureDataArrayName, true);
     featureAM->insertOrAssign(avgTempValue);
     for(int i = 0; i < 3; i++)
     {

@@ -66,7 +66,8 @@ void NegativeOperator::calculate(AbstractFilter* filter, DataArrayPath calculate
   {
     ICalculatorArray::Pointer arrayPtr = executionStack.pop();
 
-    DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(arrayPtr->getArray()->getNumberOfTuples(), arrayPtr->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());
+    DoubleArrayType::Pointer newArray =
+        DoubleArrayType::CreateArray(arrayPtr->getArray()->getNumberOfTuples(), arrayPtr->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName(), true);
 
     int numComps = newArray->getNumberOfComponents();
     for(int i = 0; i < newArray->getNumberOfTuples(); i++)

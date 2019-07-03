@@ -169,7 +169,7 @@ template <typename DataType> void findDerivs(IDataArray::Pointer inDataPtr, Doub
 {
   typename DataArray<DataType>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<DataType>>(inDataPtr);
   IGeometry::Pointer geom = m->getGeometry();
-  DoubleArrayType::Pointer dblInArray = DoubleArrayType::CreateArray(inputDataPtr->getNumberOfTuples(), inputDataPtr->getComponentDimensions(), "FIND_DERIVS_INTERNAL_USE_ONLY");
+  DoubleArrayType::Pointer dblInArray = DoubleArrayType::CreateArray(inputDataPtr->getNumberOfTuples(), inputDataPtr->getComponentDimensions(), "FIND_DERIVS_INTERNAL_USE_ONLY", true);
 
   size_t size = inputDataPtr->getSize();
 
@@ -408,7 +408,7 @@ void FindDerivatives::execute()
   if(m_Interpolate)
   {
     DoubleArrayType::Pointer interpolatedValues =
-        DoubleArrayType::CreateArray(m_InArrayPtr.lock()->getNumberOfTuples(), m_InArrayPtr.lock()->getComponentDimensions(), "FIND_DERIVATIVES_INTERNAL_USE_ONLY");
+        DoubleArrayType::CreateArray(m_InArrayPtr.lock()->getNumberOfTuples(), m_InArrayPtr.lock()->getComponentDimensions(), "FIND_DERIVATIVES_INTERNAL_USE_ONLY", true);
     EXECUTE_FUNCTION_TEMPLATE(this, interpolateCellValues, m_InArrayPtr.lock(), m_InArrayPtr.lock(), interpolatedValues, m)
 
     geom->findDerivatives(interpolatedValues, m_DerivativesArrayPtr.lock(), this);

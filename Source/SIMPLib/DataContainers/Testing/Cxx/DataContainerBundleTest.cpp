@@ -71,7 +71,7 @@ public:
   void AddDataArray(AttributeMatrix::Pointer am, const QString name, std::vector<size_t>& tDims, std::vector<size_t>& cDims)
   {
 
-    typename DataArray<T>::Pointer data = DataArray<T>::CreateArray(tDims, cDims, name);
+    typename DataArray<T>::Pointer data = DataArray<T>::CreateArray(tDims, cDims, name, true);
 
     am->insertOrAssign(data);
   }

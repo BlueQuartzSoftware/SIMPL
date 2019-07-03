@@ -171,7 +171,7 @@ template <typename T> IDataArray::Pointer copyData(IDataArray::Pointer inputData
   }
 
   std::vector<size_t> cDims = inputData->getComponentDimensions();
-  typename DataArray<T>::Pointer cell = DataArray<T>::CreateArray(totalPoints, cDims, cellArrayName);
+  typename DataArray<T>::Pointer cell = DataArray<T>::CreateArray(totalPoints, cDims, cellArrayName, true);
 
   T* fPtr = feature->getPointer(0);
   T* cPtr = cell->getPointer(0);

@@ -189,7 +189,7 @@ public:
 
     // this is the conditional array
     QString name = "ConditionalArray";
-    BoolArrayType::Pointer condArrayPtr = BoolArrayType::CreateArray(tDims, cDims, name);
+    BoolArrayType::Pointer condArrayPtr = BoolArrayType::CreateArray(tDims, cDims, name, true);
     attrMat->insertOrAssign(condArrayPtr);
     condArrayPtr->initializeWithValue(true);
     // Set some of the values to false int he conditional array

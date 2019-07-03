@@ -646,7 +646,7 @@ class NeighborList : public IDataArray
       {
         m_NumNeighborsArrayName = getName() + "_NumNeighbors";
       }
-      Int32ArrayType::Pointer numNeighborsPtr = Int32ArrayType::CreateArray(m_Array.size(), m_NumNeighborsArrayName);
+      Int32ArrayType::Pointer numNeighborsPtr = Int32ArrayType::CreateArray(m_Array.size(), m_NumNeighborsArrayName, true);
       int32_t* numNeighbors = numNeighborsPtr->getPointer(0);
       size_t total = 0;
       for(size_t dIdx = 0; dIdx < m_Array.size(); ++dIdx)

@@ -94,8 +94,8 @@ public:
     float fnum = 0.0f;
     int inum = 0;
     AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Cell);
-    DataArray<float>::Pointer data = DataArray<float>::CreateArray(tDims, cDims, "TestArrayFloat");
-    DataArray<int32_t>::Pointer data1 = DataArray<int32_t>::CreateArray(tDims, cDims, "TestArrayInt");
+    DataArray<float>::Pointer data = DataArray<float>::CreateArray(tDims, cDims, "TestArrayFloat", true);
+    DataArray<int32_t>::Pointer data1 = DataArray<int32_t>::CreateArray(tDims, cDims, "TestArrayInt", true);
 
     // Fill the float array with {.01,.02,.03,.04,.05,.06,.07,.08,.09,.10,.11,.12,.13,.14,.15.,16,.17,.18,.19,.20}
     // Fill the int array with { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 }
