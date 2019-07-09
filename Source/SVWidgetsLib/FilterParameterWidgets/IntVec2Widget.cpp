@@ -129,4 +129,10 @@ void IntVec2Widget::beforePreflight()
 // -----------------------------------------------------------------------------
 void IntVec2Widget::afterPreflight()
 {
+  if(getFilterParameter() != nullptr)
+  {
+    IntVec2Type data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<IntVec2Type>();
+    xData->setText(QString::number(data[0]));
+    yData->setText(QString::number(data[1]));
+  }
 }
