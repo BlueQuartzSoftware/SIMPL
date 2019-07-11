@@ -53,6 +53,15 @@ public:
   using DimensionsType = IVec3<double>;
   using BoundsType = IVec6<double>;
 
+  using EnumType = uint32_t;
+  enum class CollectionMethod : EnumType
+  {
+    RowByRow = 0,
+    ColumnByColumn,
+    SnakeByRows,
+    SnakeByColumns
+  };
+
   SIMPL_SHARED_POINTERS(GridMontage)
 
   /**

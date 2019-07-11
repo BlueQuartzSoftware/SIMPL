@@ -371,14 +371,6 @@ public:
       return dc;
     }
 
-    /**
-     * @brief createNonPrereqGridMontage
-     * @param filter
-     * @param montageName
-     * @param size
-     * @param dcNames
-     */
-    AbstractMontageShPtr createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames = QStringList());
 
     /**
      * @brief createNonPrereqDataContainer
@@ -400,6 +392,17 @@ public:
      */
     template<typename Filter>
     DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
+  /**
+   * @brief createNonPrereqGridMontage
+   * @param filter
+   * @param montageName
+   * @param size
+   * @param dcNames
+   * @param collectionType
+   * @return
+   */
+  AbstractMontageShPtr createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames = QStringList(),
+                                                  GridMontage::CollectionMethod collectionMethod = GridMontage::CollectionMethod::RowByRow);
     {
       if(dataContainerName.isEmpty())
       {
