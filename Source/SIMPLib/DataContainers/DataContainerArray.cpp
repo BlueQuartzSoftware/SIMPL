@@ -32,6 +32,7 @@
  *    United States Prime Contract Navy N00173-07-C-2068
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 #include "DataContainerArray.h"
 
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
@@ -516,7 +517,8 @@ AbstractMontageShPtr DataContainerArray::getPrereqMontage(AbstractFilter* filter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames)
+AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames,
+                                                                    GridMontage::CollectionMethod collectionMethod)
 {
   GridMontage::Pointer montage = GridMontage::New(montageName, size[0], size[1], size[2]);
 
@@ -527,18 +529,43 @@ AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilt
   }
 
   QStringListIterator dcNameIter(dcNames);
-  for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
+
+  switch(collectionMethod)
   {
-    for(size_t row = 0; row < size[0] && dcNameIter.hasNext(); row++)
+  case GridMontage::CollectionMethod::CombOrder:
+    for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
     {
-      for(size_t col = 0; col < size[1] && dcNameIter.hasNext(); col++)
+      for(size_t row = 0; row < size[0] && dcNameIter.hasNext(); row++)
       {
-        GridTileIndex index = montage->getTileIndex(row, col, depth);
-        QString dcName = dcNameIter.next();
-        DataContainer::Pointer dc = getPrereqDataContainer(filter, dcName);
-        montage->setDataContainer(index, dc);
+        for(size_t col = 0; col < size[1] && dcNameIter.hasNext(); col++)
+        {
+          setMontageTileFromDataContainerName(filter, row, col, depth, montage, dcNameIter.next());
+        }
       }
     }
+    break;
+  case GridMontage::CollectionMethod::SnakeOrder:
+    for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
+    {
+      for(size_t row = 0; row < size[0] && dcNameIter.hasNext(); row++)
+      {
+        if(row % 2 == 0)
+        {
+          for(size_t col = 0; col < size[1] && dcNameIter.hasNext(); col++)
+          {
+            setMontageTileFromDataContainerName(filter, row, col, depth, montage, dcNameIter.next());
+          }
+        }
+        else
+        {
+          for(int64_t col = static_cast<int64_t>(size[1] - 1); col >= 0 && dcNameIter.hasNext(); col--)
+          {
+            setMontageTileFromDataContainerName(filter, row, col, depth, montage, dcNameIter.next());
+          }
+        }
+      }
+    }
+    break;
   }
 
   if(!addMontage(montage))
@@ -548,6 +575,16 @@ AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilt
   }
 
   return montage;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArray::setMontageTileFromDataContainerName(AbstractFilter* filter, size_t row, size_t col, size_t depth, const GridMontage::Pointer& montage, const QString& dcName)
+{
+  GridTileIndex index = montage->getTileIndex(row, col, depth);
+  DataContainer::Pointer dc = getPrereqDataContainer(filter, dcName);
+  montage->setDataContainer(index, dc);
 }
 
 // -----------------------------------------------------------------------------

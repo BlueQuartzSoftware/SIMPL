@@ -53,6 +53,13 @@ public:
   using DimensionsType = IVec3<double>;
   using BoundsType = IVec6<double>;
 
+  using EnumType = uint32_t;
+  enum class CollectionMethod : EnumType
+  {
+    CombOrder = 0,
+    SnakeOrder
+  };
+
   SIMPL_SHARED_POINTERS(GridMontage)
 
   /**
