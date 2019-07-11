@@ -533,7 +533,6 @@ AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilt
   switch(collectionMethod)
   {
   case GridMontage::CollectionMethod::RowByRow:
-  {
     for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
     {
       for(size_t row = 0; row < size[0] && dcNameIter.hasNext(); row++)
@@ -544,9 +543,8 @@ AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilt
         }
       }
     }
-  }
+    break;
   case GridMontage::CollectionMethod::ColumnByColumn:
-  {
     for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
     {
       for(size_t col = 0; col < size[1] && dcNameIter.hasNext(); col++)
@@ -557,9 +555,8 @@ AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilt
         }
       }
     }
-  }
+    break;
   case GridMontage::CollectionMethod::SnakeByRows:
-  {
     for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
     {
       for(size_t row = 0; row < size[0] && dcNameIter.hasNext(); row++)
@@ -580,9 +577,8 @@ AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilt
         }
       }
     }
-  }
+    break;
   case GridMontage::CollectionMethod::SnakeByColumns:
-  {
     for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
     {
       for(size_t col = 0; col < size[1] && dcNameIter.hasNext(); col++)
@@ -603,7 +599,7 @@ AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilt
         }
       }
     }
-  }
+    break;
   }
 
   if(!addMontage(montage))
