@@ -56,8 +56,8 @@ public:
   using EnumType = uint32_t;
   enum class CollectionMethod : EnumType
   {
-    RowByRow = 0,
-    ColumnByColumn,
+    CombByRows = 0,
+    CombByColumns,
     SnakeByRows,
     SnakeByColumns
   };
