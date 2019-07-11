@@ -502,7 +502,7 @@ template<typename T> IDataArray::Pointer convertArray(const DoubleArrayType::Poi
 
   double* rawInputarray = inputArray->getPointer(0);
 
-  typename DataArray<T>::Pointer convertedArrayPtr = DataArray<T>::CreateArray(inputArray->getNumberOfTuples(), inputArray->getComponentDimensions(), inputArray->getName());
+  typename DataArray<T>::Pointer convertedArrayPtr = DataArray<T>::CreateArray(inputArray->getNumberOfTuples(), inputArray->getComponentDimensions(), inputArray->getName(), true);
   T* rawOutputArray = convertedArrayPtr->getPointer(0);
 
   int count = inputArray->getSize();
@@ -804,7 +804,7 @@ void ArrayCalculator::parseMinusSign(QString token, QVector<CalculatorItem::Poin
 void ArrayCalculator::parseNumericValue(QString token, QVector<CalculatorItem::Pointer>& parsedInfix, double number)
 {
   // This is a number, so create an array with numOfTuples equal to 1 and set the value into it
-  DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, std::vector<size_t>(1, 1), "INTERNAL_USE_ONLY_NumberArray");
+  DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, std::vector<size_t>(1, 1), "INTERNAL_USE_ONLY_NumberArray", true);
   ptr->setValue(0, number);
   CalculatorItem::Pointer itemPtr = CalculatorArray<double>::New(ptr, ICalculatorArray::Number, !getInPreflight());
   parsedInfix.push_back(itemPtr);

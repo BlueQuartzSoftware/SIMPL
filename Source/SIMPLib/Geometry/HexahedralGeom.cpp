@@ -334,7 +334,7 @@ void HexahedralGeom::deleteElementNeighbors()
 int HexahedralGeom::findElementCentroids()
 {
   std::vector<size_t> cDims(1, 3);
-  m_HexCentroids = FloatArrayType::CreateArray(getNumberOfHexas(), cDims, SIMPL::StringConstants::HexCentroids);
+  m_HexCentroids = FloatArrayType::CreateArray(getNumberOfHexas(), cDims, SIMPL::StringConstants::HexCentroids, true);
   GeometryHelpers::Topology::FindElementCentroids<size_t>(m_HexList, m_VertexList, m_HexCentroids);
   if(m_HexCentroids.get() == nullptr)
   {

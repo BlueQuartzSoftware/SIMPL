@@ -73,7 +73,7 @@ public:
 
     std::vector<size_t> cdims;
     cdims.push_back(2);
-    DataArray<int>::Pointer da = DataArray<int>::CreateArray(2, cdims, "DataArray");
+    DataArray<int>::Pointer da = DataArray<int>::CreateArray(2, cdims, "DataArray", true);
     da->setComponent(0, 0, 1);
     da->setComponent(0, 1, 2);
     da->setComponent(1, 0, 3);

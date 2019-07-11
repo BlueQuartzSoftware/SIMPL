@@ -32,7 +32,7 @@ def AttributeMatrixAccessTest():
     dca.addOrReplaceDataContainer(dc)
     
     amType = simpl.AttributeMatrix.Type.Cell
-    tupleDims = simpl.Dims([5,4,3])
+    tupleDims = simpl.VectorSizeT([5,4,3])
     am = simpl.AttributeMatrix.New(tupleDims, "CellAttributeMatrix", amType)
     dc.addOrReplaceAttributeMatrix(am)
 

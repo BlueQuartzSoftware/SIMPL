@@ -341,7 +341,7 @@ void QuadGeom::deleteElementNeighbors()
 int QuadGeom::findElementCentroids()
 {
   std::vector<size_t> cDims(1, 3);
-  m_QuadCentroids = FloatArrayType::CreateArray(getNumberOfQuads(), cDims, SIMPL::StringConstants::QuadCentroids);
+  m_QuadCentroids = FloatArrayType::CreateArray(getNumberOfQuads(), cDims, SIMPL::StringConstants::QuadCentroids, true);
   GeometryHelpers::Topology::FindElementCentroids<size_t>(m_QuadList, m_VertexList, m_QuadCentroids);
   if(m_QuadCentroids.get() == nullptr)
   {
@@ -380,7 +380,7 @@ void QuadGeom::deleteElementCentroids()
 int QuadGeom::findElementSizes()
 {
   std::vector<size_t> cDims(1, 1);
-  m_QuadSizes = FloatArrayType::CreateArray(getNumberOfQuads(), cDims, SIMPL::StringConstants::QuadAreas);
+  m_QuadSizes = FloatArrayType::CreateArray(getNumberOfQuads(), cDims, SIMPL::StringConstants::QuadAreas, true);
   GeometryHelpers::Topology::Find2DElementAreas<size_t>(m_QuadList, m_VertexList, m_QuadSizes);
   if(m_QuadSizes.get() == nullptr)
   {
@@ -419,7 +419,7 @@ void QuadGeom::deleteElementSizes()
 int QuadGeom::findUnsharedEdges()
 {
   std::vector<size_t> cDims(1, 2);
-  m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList);
+  m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList, true);
   GeometryHelpers::Connectivity::Find2DUnsharedEdges<size_t>(m_QuadList, m_UnsharedEdgeList);
   if(m_UnsharedEdgeList.get() == nullptr)
   {

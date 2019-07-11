@@ -405,7 +405,7 @@ public:
 
     // Create DataArrayInt (add in under checkFilter)
 
-    DataArray<int32_t>::Pointer da = DataArray<int32_t>::CreateArray(tupleDims, cDims, k_DataArrayIntName);
+    DataArray<int32_t>::Pointer da = DataArray<int32_t>::CreateArray(tupleDims, cDims, k_DataArrayIntName, true);
     for(size_t i = 0; i < da->getSize(); i++)
     {
       da->setValue(i, i);
@@ -414,7 +414,7 @@ public:
 
     // Create DataArrayFloat
 
-    DataArray<float>::Pointer daFloat = DataArray<float>::CreateArray(tupleDims, cDimsFloat, k_DataArrayFloatName);
+    DataArray<float>::Pointer daFloat = DataArray<float>::CreateArray(tupleDims, cDimsFloat, k_DataArrayFloatName, true);
     for(size_t i = 0; i < daFloat->getSize(); i++)
     {
       if(i % 2 == 0)
@@ -430,7 +430,7 @@ public:
 
     // Create NeighborLists (must be int32_t)
 
-    NeighborList<int32_t>::Pointer nl = NeighborList<int32_t>::CreateArray(tupleDims, cDimsNeighbor, k_NeighborListName);
+    NeighborList<int32_t>::Pointer nl = NeighborList<int32_t>::CreateArray(tupleDims, cDimsNeighbor, k_NeighborListName, true);
     for(size_t i = 0; i < nl->getNumberOfTuples(); i++)
     {
       nl->addEntry(i, i);
@@ -438,7 +438,7 @@ public:
     }
     am->insertOrAssign(nl);
 
-    NeighborList<int32_t>::Pointer nl2 = NeighborList<int32_t>::CreateArray(tupleDims, cDimsNeighbor, k_NeighborListName2);
+    NeighborList<int32_t>::Pointer nl2 = NeighborList<int32_t>::CreateArray(tupleDims, cDimsNeighbor, k_NeighborListName2, true);
     for(size_t i = 0; i < nl2->getNumberOfTuples(); i++)
     {
       nl2->addEntry(i, i * 3);

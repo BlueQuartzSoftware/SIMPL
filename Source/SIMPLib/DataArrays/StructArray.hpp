@@ -102,12 +102,6 @@ class StructArray : public IDataArray
       return p;
     }
 
-    //    IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override
-    //    {
-    //      IDataArray::Pointer p = StructArray<T>::CreateArray(numElements, name, allocate);
-    //      return p;
-    //    }
-
     /**
      * @brief Destructor
      */
@@ -570,7 +564,12 @@ class StructArray : public IDataArray
 
     IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override
     {
-      IDataArray::Pointer daCopy = createNewArray(getNumberOfTuples(), getComponentDimensions(), getName(), m_IsAllocated);
+      bool allocate = m_IsAllocated;
+      if(forceNoAllocate)
+      {
+        allocate = false;
+      }
+      IDataArray::Pointer daCopy = createNewArray(getNumberOfTuples(), getComponentDimensions(), getName(), allocate);
       if(m_IsAllocated && !forceNoAllocate)
       {
         T* src = getPointer(0);

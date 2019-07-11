@@ -172,7 +172,7 @@ template <typename T> IDataArray::Pointer copyCellData(AbstractFilter* filter, I
   }
 
   std::vector<size_t> dims = inputData->getComponentDimensions();
-  typename DataArray<T>::Pointer feature = DataArray<T>::CreateArray(features, dims, createdArrayName);
+  typename DataArray<T>::Pointer feature = DataArray<T>::CreateArray(features, dims, createdArrayName, true);
 
   T* fPtr = feature->getPointer(0);
   T* cPtr = cell->getPointer(0);

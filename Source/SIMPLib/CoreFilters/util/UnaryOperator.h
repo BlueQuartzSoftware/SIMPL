@@ -78,7 +78,7 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
     ICalculatorArray::Pointer arrayPtr = executionStack.pop();                                                                                                                                         \
                                                                                                                                                                                                        \
     DoubleArrayType::Pointer newArray =                                                                                                                                                                \
-        DoubleArrayType::CreateArray(arrayPtr->getArray()->getNumberOfTuples(), arrayPtr->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());                               \
+        DoubleArrayType::CreateArray(arrayPtr->getArray()->getNumberOfTuples(), arrayPtr->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName(), true);                         \
                                                                                                                                                                                                        \
     int numComps = newArray->getNumberOfComponents();                                                                                                                                                  \
     for(int i = 0; i < newArray->getNumberOfTuples(); i++)                                                                                                                                             \
@@ -103,7 +103,7 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
     ICalculatorArray::Pointer arrayPtr = executionStack.pop();                                                                                                                                         \
                                                                                                                                                                                                        \
     DoubleArrayType::Pointer newArray =                                                                                                                                                                \
-        DoubleArrayType::CreateArray(arrayPtr->getArray()->getNumberOfTuples(), arrayPtr->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());                               \
+        DoubleArrayType::CreateArray(arrayPtr->getArray()->getNumberOfTuples(), arrayPtr->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName(), true);                         \
                                                                                                                                                                                                        \
     int numComps = newArray->getNumberOfComponents();                                                                                                                                                  \
     for(int i = 0; i < newArray->getNumberOfTuples(); i++)                                                                                                                                             \
@@ -136,7 +136,7 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
     ICalculatorArray::Pointer arrayPtr = executionStack.pop();                                                                                                                                         \
                                                                                                                                                                                                        \
     DoubleArrayType::Pointer newArray =                                                                                                                                                                \
-        DoubleArrayType::CreateArray(arrayPtr->getArray()->getNumberOfTuples(), arrayPtr->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());                               \
+        DoubleArrayType::CreateArray(arrayPtr->getArray()->getNumberOfTuples(), arrayPtr->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName(), true);                         \
                                                                                                                                                                                                        \
     int numComps = newArray->getNumberOfComponents();                                                                                                                                                  \
     for(int i = 0; i < newArray->getNumberOfTuples(); i++)                                                                                                                                             \
@@ -160,4 +160,3 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
     executionStack.push(CalculatorArray<double>::New(newArray, arrayPtr->getType(), true));                                                                                                            \
     return;                                                                                                                                                                                            \
   }
-

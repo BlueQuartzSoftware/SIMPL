@@ -55,7 +55,7 @@ IDataArray::Pointer readH5Dataset(hid_t locId, const QString& datasetPath, const
   herr_t err = -1;
   IDataArray::Pointer ptr;
 
-  ptr = DataArray<T>::CreateArray(numOfTuples, cDims, datasetPath);
+  ptr = DataArray<T>::CreateArray(numOfTuples, cDims, datasetPath, true);
 
   T* data = (T*)(ptr->getVoidPointer(0));
   err = QH5Lite::readPointerDataset(locId, datasetPath, data);

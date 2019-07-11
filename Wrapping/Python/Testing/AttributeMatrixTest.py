@@ -9,7 +9,7 @@ from dream3d import simpl_test_dirs as sd
 def AttributeMatrixTest():
     # Create an AttributeMatrix
     amType = simpl.AttributeMatrix.Type.Cell
-    tupleDims = simpl.Dims([5, 4, 3])
+    tupleDims = simpl.VectorSizeT([5,4,3])
     amName = "CellAttributeMatrix"
     am = sc.CreateAttributeMatrix(tupleDims, amName, amType)
 

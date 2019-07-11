@@ -110,7 +110,7 @@ public:
   // -----------------------------------------------------------------------------
   Vec3IntListPointer_t initializeStructArray()
   {
-    Vec3IntListPointer_t nodes = Vec3IntList_t::CreateArray(k_ArraySize, kArrayName);
+    Vec3IntListPointer_t nodes = Vec3IntList_t::CreateArray(k_ArraySize, kArrayName, true);
     size_t nTuples = nodes->getNumberOfTuples();
     DREAM3D_REQUIRE_EQUAL(k_ArraySize, nTuples)
     bool isAllocated = nodes->isAllocated();

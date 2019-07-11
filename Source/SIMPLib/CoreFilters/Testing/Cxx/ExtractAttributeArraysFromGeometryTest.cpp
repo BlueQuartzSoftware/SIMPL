@@ -94,7 +94,7 @@ public:
   template <typename T>
   std::shared_ptr<DataArray<T>> createDataArray(const QString& daName, const std::vector<std::vector<T>>& data, const std::vector<size_t>& tupleDims, const std::vector<size_t>& cDims)
   {
-    typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName);
+    typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName, true);
     for(int i = 0; i < da->getNumberOfTuples(); i++)
     {
       da->setTuple(i, data[i]);
@@ -143,19 +143,19 @@ public:
 
     // Create Geometry
 
-    DataArray<float>::Pointer daXBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, "X");
+    DataArray<float>::Pointer daXBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, "X", true);
     for(size_t i = 0; i < daXBounds->getSize(); i++)
     {
       daXBounds->setValue(i, i);
     }
 
-    DataArray<float>::Pointer daYBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, "Y");
+    DataArray<float>::Pointer daYBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, "Y", true);
     for(size_t i = 0; i < daYBounds->getSize(); i++)
     {
       daYBounds->setValue(i, i);
     }
 
-    DataArray<float>::Pointer daZBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, "Z");
+    DataArray<float>::Pointer daZBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, "Z", true);
     for(size_t i = 0; i < daZBounds->getSize(); i++)
     {
       daZBounds->setValue(i, i);

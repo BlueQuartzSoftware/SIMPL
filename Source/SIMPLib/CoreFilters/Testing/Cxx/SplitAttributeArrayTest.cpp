@@ -67,43 +67,43 @@ public:
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
     AttributeMatrix::Pointer am1 = AttributeMatrix::New(std::vector<size_t>(1, 10), "AttributeMatrix", AttributeMatrix::Type::Any);
 
-    UInt32ArrayType::Pointer mcArray1 = UInt32ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array uint32_t");
+    UInt32ArrayType::Pointer mcArray1 = UInt32ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array uint32_t", true);
     fillDataArray<uint32_t>(mcArray1);
 
-    BoolArrayType::Pointer mcArray2 = BoolArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array bool");
+    BoolArrayType::Pointer mcArray2 = BoolArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array bool", true);
     fillDataArray(mcArray2);
 
-    UCharArrayType::Pointer mcArray3 = UCharArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array unsigned char");
+    UCharArrayType::Pointer mcArray3 = UCharArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array unsigned char", true);
     fillDataArray<unsigned char>(mcArray3);
 
-    Int8ArrayType::Pointer mcArray4 = Int8ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array int8_t");
+    Int8ArrayType::Pointer mcArray4 = Int8ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array int8_t", true);
     fillDataArray<int8_t>(mcArray4);
 
-    UInt8ArrayType::Pointer mcArray5 = UInt8ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array uint8_t");
+    UInt8ArrayType::Pointer mcArray5 = UInt8ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array uint8_t", true);
     fillDataArray<uint8_t>(mcArray5);
 
-    Int16ArrayType::Pointer mcArray6 = Int16ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array int16_t");
+    Int16ArrayType::Pointer mcArray6 = Int16ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array int16_t", true);
     fillDataArray<int16_t>(mcArray6);
 
-    UInt16ArrayType::Pointer mcArray7 = UInt16ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array uint16_t");
+    UInt16ArrayType::Pointer mcArray7 = UInt16ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array uint16_t", true);
     fillDataArray<uint16_t>(mcArray7);
 
-    Int32ArrayType::Pointer mcArray8 = Int32ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array int32_t");
+    Int32ArrayType::Pointer mcArray8 = Int32ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array int32_t", true);
     fillDataArray<int32_t>(mcArray8);
 
-    Int64ArrayType::Pointer mcArray9 = Int64ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array int64_t");
+    Int64ArrayType::Pointer mcArray9 = Int64ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array int64_t", true);
     fillDataArray<int64_t>(mcArray9);
 
-    UInt64ArrayType::Pointer mcArray10 = UInt64ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array uint64_t");
+    UInt64ArrayType::Pointer mcArray10 = UInt64ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array uint64_t", true);
     fillDataArray<uint64_t>(mcArray10);
 
-    FloatArrayType::Pointer mcArray11 = FloatArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array float");
+    FloatArrayType::Pointer mcArray11 = FloatArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array float", true);
     fillDataArray<float>(mcArray11);
 
-    DoubleArrayType::Pointer mcArray12 = DoubleArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array double");
+    DoubleArrayType::Pointer mcArray12 = DoubleArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array double", true);
     fillDataArray<double>(mcArray12);
 
-    SizeTArrayType::Pointer mcArray13 = SizeTArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array size_t");
+    SizeTArrayType::Pointer mcArray13 = SizeTArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 5), "MultiComponent Array size_t", true);
     fillDataArray<size_t>(mcArray13);
 
     am1->insertOrAssign(mcArray1);

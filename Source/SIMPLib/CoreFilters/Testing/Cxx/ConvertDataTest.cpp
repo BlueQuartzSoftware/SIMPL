@@ -79,40 +79,40 @@ public:
     switch(dataType)
     {
     case SIMPL::NumericTypes::Type::Int8:
-      da = DataArray<int8_t>::CreateArray(2, cdims, "DataArray");
+      da = DataArray<int8_t>::CreateArray(2, cdims, "DataArray", true);
       break;
     case SIMPL::NumericTypes::Type::UInt8:
-      da = DataArray<uint8_t>::CreateArray(2, cdims, "DataArray");
+      da = DataArray<uint8_t>::CreateArray(2, cdims, "DataArray", true);
       break;
     case SIMPL::NumericTypes::Type::Int16:
-      da = DataArray<int16_t>::CreateArray(2, cdims, "DataArray");
+      da = DataArray<int16_t>::CreateArray(2, cdims, "DataArray", true);
       break;
     case SIMPL::NumericTypes::Type::UInt16:
-      da = DataArray<uint16_t>::CreateArray(2, cdims, "DataArray");
+      da = DataArray<uint16_t>::CreateArray(2, cdims, "DataArray", true);
       break;
     case SIMPL::NumericTypes::Type::Int32:
-      da = DataArray<int32_t>::CreateArray(2, cdims, "DataArray");
+      da = DataArray<int32_t>::CreateArray(2, cdims, "DataArray", true);
       break;
     case SIMPL::NumericTypes::Type::UInt32:
-      da = DataArray<uint32_t>::CreateArray(2, cdims, "DataArray");
+      da = DataArray<uint32_t>::CreateArray(2, cdims, "DataArray", true);
       break;
     case SIMPL::NumericTypes::Type::Int64:
-      da = DataArray<int64_t>::CreateArray(2, cdims, "DataArray");
+      da = DataArray<int64_t>::CreateArray(2, cdims, "DataArray", true);
       break;
     case SIMPL::NumericTypes::Type::UInt64:
-      da = DataArray<uint64_t>::CreateArray(2, cdims, "DataArray");
+      da = DataArray<uint64_t>::CreateArray(2, cdims, "DataArray", true);
       break;
     case SIMPL::NumericTypes::Type::Float:
-      da = DataArray<float>::CreateArray(2, cdims, "DataArray");
+      da = DataArray<float>::CreateArray(2, cdims, "DataArray", true);
       break;
     case SIMPL::NumericTypes::Type::Double:
-      da = DataArray<double>::CreateArray(2, cdims, "DataArray");
+      da = DataArray<double>::CreateArray(2, cdims, "DataArray", true);
       break;
     case SIMPL::NumericTypes::Type::Bool:
-      da = DataArray<bool>::CreateArray(2, cdims, "DataArray");
+      da = DataArray<bool>::CreateArray(2, cdims, "DataArray", true);
       break;
     case SIMPL::NumericTypes::Type::SizeT:
-      da = DataArray<size_t>::CreateArray(2, cdims, "DataArray");
+      da = DataArray<size_t>::CreateArray(2, cdims, "DataArray", true);
       break;
     case SIMPL::NumericTypes::Type::UnknownNumType:
       break;

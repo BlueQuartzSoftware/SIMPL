@@ -164,7 +164,7 @@ FloatArrayType::Pointer TransformationStatsData::generateBinNumbers()
   if(!bins.empty())
   {
     // Copy this into the DataArray<float>
-    m_BinNumbers = FloatArrayType::CreateArray(bins.size(), SIMPL::StringConstants::BinNumber);
+    m_BinNumbers = FloatArrayType::CreateArray(bins.size(), SIMPL::StringConstants::BinNumber, true);
     ::memcpy(m_BinNumbers->getVoidPointer(0), &(bins.front()), bins.size() * sizeof(float));
   }
   return m_BinNumbers;

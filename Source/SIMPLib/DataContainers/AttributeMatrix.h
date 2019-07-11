@@ -566,7 +566,7 @@ public:
       typename ArrayType::Pointer array = std::dynamic_pointer_cast<ArrayType>(targetDestArray);
       if (nullptr == array.get())
       {
-        typename ArrayType::Pointer dat = ArrayType::CreateArray(1, "JUNK-INTERNAL-USE-ONLY");
+        typename ArrayType::Pointer dat = ArrayType::CreateArray(1, "JUNK-INTERNAL-USE-ONLY", true);
         QString ss = QObject::tr(" - The filter requested an array named '%1' with type '%2' from the filter '%3'.\n"
                                  "An Array with name '%4' is stored in the %5 but is of type %6\n")
                      .arg(arrayName).arg(dat->getTypeAsString()).arg(getNameOfClass()).arg(arrayName).arg(getNameOfClass()).arg(targetDestArray->getTypeAsString());

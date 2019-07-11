@@ -312,7 +312,7 @@ void EdgeGeom::deleteElementNeighbors()
 int EdgeGeom::findElementCentroids()
 {
   std::vector<size_t> cDims(1, 3);
-  m_EdgeCentroids = FloatArrayType::CreateArray(getNumberOfElements(), cDims, SIMPL::StringConstants::EdgeCentroids);
+  m_EdgeCentroids = FloatArrayType::CreateArray(getNumberOfElements(), cDims, SIMPL::StringConstants::EdgeCentroids, true);
   GeometryHelpers::Topology::FindElementCentroids<size_t>(m_EdgeList, m_VertexList, m_EdgeCentroids);
   if(m_EdgeCentroids.get() == nullptr)
   {
@@ -350,7 +350,7 @@ void EdgeGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 int EdgeGeom::findElementSizes()
 {
-  m_EdgeSizes = FloatArrayType::CreateArray(getNumberOfElements(), SIMPL::StringConstants::EdgeLengths);
+  m_EdgeSizes = FloatArrayType::CreateArray(getNumberOfElements(), SIMPL::StringConstants::EdgeLengths, true);
 
   float* sizes = m_EdgeSizes->getPointer(0);
   float vert0[3] = {0.0f, 0.0f, 0.0f};

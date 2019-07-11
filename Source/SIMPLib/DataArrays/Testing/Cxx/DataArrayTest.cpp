@@ -129,7 +129,7 @@ public:
   {
     int err = 0;
     std::vector<size_t> dims(1, NUM_COMPONENTS_2);
-    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_TUPLES_2, dims, "TestcopyTuples");
+    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_TUPLES_2, dims, "TestcopyTuples", true);
     DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
 
     for(size_t i = 0; i < NUM_TUPLES_2; ++i)
@@ -183,7 +183,7 @@ public:
   {
     // Test dropping of front elements only
     {
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS, "Test1");
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS, "Test1", true);
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_ELEMENTS; ++i)
       {
@@ -205,7 +205,7 @@ public:
     // Test Dropping of internal elements
     {
       std::vector<size_t> dims(1, NUM_COMPONENTS_2);
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test2");
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test2", true);
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_TUPLES_2; ++i)
       {
@@ -231,7 +231,7 @@ public:
     // Test Dropping of internal elements
     {
       std::vector<size_t> dims(1, NUM_COMPONENTS_2);
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test3");
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test3", true);
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_TUPLES_2; ++i)
       {
@@ -256,7 +256,7 @@ public:
     // Test Dropping of internal continuous elements
     {
       std::vector<size_t> dims(1, NUM_COMPONENTS_2);
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test4");
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test4", true);
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_TUPLES_2; ++i)
       {
@@ -281,7 +281,7 @@ public:
     // Test Dropping of Front and Back Elements
     {
       std::vector<size_t> dims(1, NUM_COMPONENTS_2);
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test5");
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test5", true);
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_TUPLES_2; ++i)
       {
@@ -304,7 +304,7 @@ public:
     // Test Dropping of Back Elements
     {
       std::vector<size_t> dims(1, NUM_COMPONENTS_2);
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test6");
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS_2, dims, "Test6", true);
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_TUPLES_2; ++i)
       {
@@ -327,7 +327,7 @@ public:
     // Test Dropping of indices larger than the number of tuples
     {
       std::vector<size_t> dims(1, NUM_COMPONENTS_2);
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_TUPLES_2, dims, "Test6");
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_TUPLES_2, dims, "Test6", true);
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_TUPLES_2; ++i)
       {
@@ -456,7 +456,7 @@ public:
   {
     int32_t* ptr = nullptr;
     {
-      Int32ArrayType::Pointer d = Int32ArrayType::CreateArray(0, "Test7");
+      Int32ArrayType::Pointer d = Int32ArrayType::CreateArray(0, "Test7", true);
       DREAM3D_REQUIRE_EQUAL(0, d->getSize());
       DREAM3D_REQUIRE_EQUAL(0, d->getNumberOfTuples());
       ptr = d->getPointer(0);
@@ -466,7 +466,7 @@ public:
 
     {
       std::vector<size_t> dims(1, NUM_COMPONENTS);
-      Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray(NUM_ELEMENTS, dims, "Test8");
+      Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray(NUM_ELEMENTS, dims, "Test8", true);
       ptr = int32Array->getPointer(0);
       DREAM3D_REQUIRE_EQUAL(int32Array->isAllocated(), true);
       DREAM3D_REQUIRE_EQUAL(NUM_ELEMENTS, int32Array->getNumberOfTuples());
@@ -632,7 +632,7 @@ public:
     std::vector<size_t> tDims(10);
     AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "AttributeMatrix", AttributeMatrix::Type::Cell);
 
-    typename NeighborList<T>::Pointer neiList = NeighborList<T>::CreateArray(10, "NeighborList");
+    typename NeighborList<T>::Pointer neiList = NeighborList<T>::CreateArray(10, "NeighborList", true);
 
     for(int i = 0; i < 10; ++i)
     {
@@ -809,25 +809,14 @@ public:
     size_t dims[RANK] = {DIM0, DIM1, DIM2};
     int numComp = 1;
     {
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, "TEST");
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, "TEST", true);
       err = ValidateArrayForType<T>(array, numTuples, numComp);
       DREAM3D_REQUIRED(err, >=, 0)
     }
 
     {
       numComp = DIM0 * DIM1 * DIM2;
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, rank, dims, "TEST");
-      err = ValidateArrayForType<T>(array, numTuples, numComp);
-      DREAM3D_REQUIRED(err, >=, 0)
-    }
-
-    {
-      numComp = DIM0 * DIM1 * DIM2;
-      std::vector<size_t> vDims(3, 0);
-      vDims[0] = DIM0;
-      vDims[1] = DIM1;
-      vDims[2] = DIM2;
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, vDims, "TEST");
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, rank, dims, "TEST", true);
       err = ValidateArrayForType<T>(array, numTuples, numComp);
       DREAM3D_REQUIRED(err, >=, 0)
     }
@@ -838,7 +827,18 @@ public:
       vDims[0] = DIM0;
       vDims[1] = DIM1;
       vDims[2] = DIM2;
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, vDims, "TEST");
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, vDims, "TEST", true);
+      err = ValidateArrayForType<T>(array, numTuples, numComp);
+      DREAM3D_REQUIRED(err, >=, 0)
+    }
+
+    {
+      numComp = DIM0 * DIM1 * DIM2;
+      std::vector<size_t> vDims(3, 0);
+      vDims[0] = DIM0;
+      vDims[1] = DIM1;
+      vDims[2] = DIM2;
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, vDims, "TEST", true);
       err = ValidateArrayForType<T>(array, numTuples, numComp);
       DREAM3D_REQUIRED(err, >=, 0)
     }
@@ -849,7 +849,7 @@ public:
       vDims[0] = DIM0;
       vDims[1] = DIM1;
       vDims[2] = DIM2;
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(tDims, vDims, "TEST");
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(tDims, vDims, "TEST", true);
       err = ValidateArrayForType<T>(array, tDims[0] * tDims[1], numComp);
       DREAM3D_REQUIRED(err, >=, 0)
     }
@@ -871,7 +871,8 @@ public:
         unsigned char* cptr = nullptr;
 
         std::vector<size_t> tDims(1, 10);
-        typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(DIM0, "TEST");
+        typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(DIM0, "TEST", 
+true);
         array->initializeWithZeros();
         cptr = reinterpret_cast<uint8_t*>(array->getPointer(0));
 

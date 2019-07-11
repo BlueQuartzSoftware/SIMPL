@@ -53,8 +53,8 @@ H5TransformationStatsDataDelegate::~H5TransformationStatsDataDelegate() = defaul
 // -----------------------------------------------------------------------------
 VectorOfFloatArray H5TransformationStatsDataDelegate::createBetaDistributionArrays()
 {
-  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Alpha);
-  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Beta);
+  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Alpha, true);
+  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Beta, true);
   QVector<FloatArrayType::Pointer> vect;
   vect.push_back(alphas);
   vect.push_back(betas);
@@ -66,8 +66,8 @@ VectorOfFloatArray H5TransformationStatsDataDelegate::createBetaDistributionArra
 // -----------------------------------------------------------------------------
 VectorOfFloatArray H5TransformationStatsDataDelegate::createLogNormalDistributionArrays()
 {
-  FloatArrayType::Pointer avgs = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Average);
-  FloatArrayType::Pointer sd = FloatArrayType::CreateArray(0, SIMPL::StringConstants::StandardDeviation);
+  FloatArrayType::Pointer avgs = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Average, true);
+  FloatArrayType::Pointer sd = FloatArrayType::CreateArray(0, SIMPL::StringConstants::StandardDeviation, true);
   QVector<FloatArrayType::Pointer> vect;
   vect.push_back(avgs);
   vect.push_back(sd);
@@ -149,7 +149,7 @@ int H5TransformationStatsDataDelegate::readTransformationStatsData(Transformatio
   err = readDistributionData(groupId, SIMPL::StringConstants::Feature_SizeVOmega3_Distributions, data->getFeatureSize_Omegas());
 
   // Read the Misorientation Bins
-  FloatArrayType::Pointer misoBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::MisorientationBins);
+  FloatArrayType::Pointer misoBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::MisorientationBins, true);
   err = misoBins->readH5Data(groupId);
   if(err < 0)
   {
@@ -159,7 +159,7 @@ int H5TransformationStatsDataDelegate::readTransformationStatsData(Transformatio
   err = readMDFWeights(groupId, data);
 
   // Read the ODF Data
-  FloatArrayType::Pointer odfBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::ODF);
+  FloatArrayType::Pointer odfBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::ODF, true);
   err = odfBins->readH5Data(groupId);
   if(err < 0)
   {
@@ -169,7 +169,7 @@ int H5TransformationStatsDataDelegate::readTransformationStatsData(Transformatio
   err = readODFWeights(groupId, data);
 
   // Read the Axis ODF Data
-  FloatArrayType::Pointer axisOdfBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::AxisOrientation);
+  FloatArrayType::Pointer axisOdfBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::AxisOrientation, true);
   err = axisOdfBins->readH5Data(groupId);
   if(err < 0)
   {
@@ -325,10 +325,10 @@ int H5TransformationStatsDataDelegate::readMDFWeights(hid_t pid, TransformationS
 {
   int err = 0;
   std::vector<size_t> dims(1, 1);
-  FloatArrayType::Pointer angles = FloatArrayType::CreateArray(1, dims, SIMPL::StringConstants::Angle);
-  FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Weight);
+  FloatArrayType::Pointer angles = FloatArrayType::CreateArray(1, dims, SIMPL::StringConstants::Angle, true);
+  FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Weight, true);
   dims[0] = 3;
-  FloatArrayType::Pointer axis = FloatArrayType::CreateArray(3, dims, SIMPL::StringConstants::Axis);
+  FloatArrayType::Pointer axis = FloatArrayType::CreateArray(3, dims, SIMPL::StringConstants::Axis, true);
 
   VectorOfFloatArray mdfWeights;
   mdfWeights.push_back(angles);
@@ -355,11 +355,11 @@ int H5TransformationStatsDataDelegate::readODFWeights(hid_t pid, TransformationS
 
   int err = 0;
 
-  FloatArrayType::Pointer euler1 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler1);
-  FloatArrayType::Pointer euler2 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler2);
-  FloatArrayType::Pointer euler3 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler3);
-  FloatArrayType::Pointer weight = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Weight);
-  FloatArrayType::Pointer sigma = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Sigma);
+  FloatArrayType::Pointer euler1 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler1, true);
+  FloatArrayType::Pointer euler2 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler2, true);
+  FloatArrayType::Pointer euler3 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler3, true);
+  FloatArrayType::Pointer weight = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Weight, true);
+  FloatArrayType::Pointer sigma = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Sigma, true);
 
   VectorOfFloatArray odfWeights;
   odfWeights.push_back(euler1);
@@ -389,11 +389,11 @@ int H5TransformationStatsDataDelegate::readAxisODFWeights(hid_t pid, Transformat
 
   int err = 0;
 
-  FloatArrayType::Pointer euler1 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler1);
-  FloatArrayType::Pointer euler2 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler2);
-  FloatArrayType::Pointer euler3 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler3);
-  FloatArrayType::Pointer sigma = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Sigma);
-  FloatArrayType::Pointer weight = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Weight);
+  FloatArrayType::Pointer euler1 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler1, true);
+  FloatArrayType::Pointer euler2 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler2, true);
+  FloatArrayType::Pointer euler3 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler3, true);
+  FloatArrayType::Pointer sigma = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Sigma, true);
+  FloatArrayType::Pointer weight = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Weight, true);
 
   VectorOfFloatArray odfWeights;
   odfWeights.push_back(euler1);
@@ -649,7 +649,7 @@ int H5TransformationStatsDataDelegate::writeBinNumbers(TransformationStatsData* 
 int H5TransformationStatsDataDelegate::readBinNumbers(TransformationStatsData* data, hid_t groupId)
 {
   int err = 0;
-  FloatArrayType::Pointer p = FloatArrayType::CreateArray(1, SIMPL::StringConstants::BinNumber);
+  FloatArrayType::Pointer p = FloatArrayType::CreateArray(1, SIMPL::StringConstants::BinNumber, true);
   err = p->readH5Data(groupId);
   data->setBinNumbers(p);
   return err;

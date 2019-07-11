@@ -554,9 +554,15 @@ class NeighborList : public IDataArray
      */
     IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override
     {
-      typename NeighborList<T>::Pointer daCopyPtr = NeighborList<T>::CreateArray(getNumberOfTuples(), getName(), m_IsAllocated);
+      bool allocate = m_IsAllocated;
+      if(forceNoAllocate)
+      {
+        allocate = false;
+      }
 
-      if(!forceNoAllocate)
+      typename NeighborList<T>::Pointer daCopyPtr = NeighborList<T>::CreateArray(getNumberOfTuples(), getName(), allocate);
+
+      if(m_IsAllocated && !forceNoAllocate)
       {
         size_t count = (m_IsAllocated ? getNumberOfTuples(): 0);
         for(size_t i = 0; i < count; i++)
@@ -640,7 +646,7 @@ class NeighborList : public IDataArray
       {
         m_NumNeighborsArrayName = getName() + "_NumNeighbors";
       }
-      Int32ArrayType::Pointer numNeighborsPtr = Int32ArrayType::CreateArray(m_Array.size(), m_NumNeighborsArrayName);
+      Int32ArrayType::Pointer numNeighborsPtr = Int32ArrayType::CreateArray(m_Array.size(), m_NumNeighborsArrayName, true);
       int32_t* numNeighbors = numNeighborsPtr->getPointer(0);
       size_t total = 0;
       for(size_t dIdx = 0; dIdx < m_Array.size(); ++dIdx)
