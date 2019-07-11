@@ -53,7 +53,7 @@
 template <class T>
 class NamedCollection : public INamedCollection
 {
-  using Self = typename NamedCollection<T>;
+  using Self = NamedCollection<T>;
 
 public:
   using ChildType = typename std::shared_ptr<T>;

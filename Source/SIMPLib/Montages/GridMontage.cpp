@@ -455,7 +455,7 @@ GridMontage::BoundsType GridMontage::getBounds() const
     {
       continue;
     }
-    
+
     if(nullptr != std::dynamic_pointer_cast<IGeometryGrid>(geom))
     {
       IGeometryGrid::Pointer grid = std::dynamic_pointer_cast<IGeometryGrid>(geom);
@@ -465,8 +465,8 @@ GridMontage::BoundsType GridMontage::getBounds() const
 
       double coords[3];
 
-      //float halfRes[3] = { 0, 0, 0 };
-      //float spacing[3] = { 1, 1, 1 };
+      // float halfRes[3] = { 0, 0, 0 };
+      // float spacing[3] = { 1, 1, 1 };
 
       // calculate origin point
       {
@@ -511,12 +511,12 @@ GridMontage::BoundsType GridMontage::getBounds() const
         maxZ = std::max(maxZ, coords[2]);
       }
 
-      //minX -= halfRes[0];
-      //maxX -= halfRes[0];
-      //minY -= halfRes[1];
-      //maxY -= halfRes[1];
-      //minZ -= halfRes[2];
-      //minZ -= halfRes[2];
+      // minX -= halfRes[0];
+      // maxX -= halfRes[0];
+      // minY -= halfRes[1];
+      // maxY -= halfRes[1];
+      // minZ -= halfRes[2];
+      // minZ -= halfRes[2];
     }
   }
 
@@ -527,7 +527,7 @@ GridMontage::BoundsType GridMontage::getBounds() const
   extent[3] = maxY;
   extent[4] = minZ;
   extent[5] = maxZ;
-  
+
   return extent;
 }
 
@@ -546,15 +546,15 @@ QString GridMontage::getInfoString() const
   htmlGenerator.addTitle("Montage Info");
   htmlGenerator.addValue("Name", getName());
   htmlGenerator.addValue("Type", "Grid");
-  htmlGenerator.addValue("Number of Tiles", usa.toString(getTileCount()));
+  htmlGenerator.addValue("Number of Tiles", usa.toString(static_cast<uint64_t>(getTileCount())));
   htmlGenerator.addSpacer();
   htmlGenerator.addTitle("Tile Dimensions");
-  htmlGenerator.addValue("Rows", usa.toString(getRowCount()));
-  htmlGenerator.addValue("Columns", usa.toString(getColumnCount()));
-  htmlGenerator.addValue("Depth", usa.toString(getDepthCount()));
+  htmlGenerator.addValue("Rows", usa.toString(static_cast<uint64_t>(getRowCount())));
+  htmlGenerator.addValue("Columns", usa.toString(static_cast<uint64_t>(getColumnCount())));
+  htmlGenerator.addValue("Depth", usa.toString(static_cast<uint64_t>(getDepthCount())));
 
   htmlGenerator.addSpacer();
-  
+
   htmlGenerator.addTitle("Geometry Info");
   const QString lengthUnitStr = getLenthUnitString();
   htmlGenerator.addValue("Length Unit", lengthUnitStr);
@@ -590,7 +590,7 @@ int GridMontage::writeH5Data(hid_t groupId) const
 
   // Write Dimensions
   const SizeVec3Type dims = getGridSize();
-  err = QH5Lite::writeScalarDataset(montageId,"X Dim", dims[0]);
+  err = QH5Lite::writeScalarDataset(montageId, "X Dim", dims[0]);
   if(err < 0)
   {
     return err;
@@ -619,7 +619,6 @@ int GridMontage::writeH5Data(hid_t groupId) const
     {
       dcNameList << dc->getName();
     }
-    
   }
 
   char sep = 0x1E; // Use the ASCII 'record separator' value (Decimal value 30) to separate the names
