@@ -382,7 +382,7 @@ public:
    * @return
    */
   AbstractMontageShPtr createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames = QStringList(),
-                                                  GridMontage::CollectionMethod collectionMethod = GridMontage::CollectionMethod::CombByRows);
+                                                  GridMontage::CollectionMethod collectionMethod = GridMontage::CollectionMethod::CombOrder);
 
   /**
    * @brief createNonPrereqDataContainer

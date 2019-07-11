@@ -532,7 +532,7 @@ AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilt
 
   switch(collectionMethod)
   {
-  case GridMontage::CollectionMethod::CombByRows:
+  case GridMontage::CollectionMethod::CombOrder:
     for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
     {
       for(size_t row = 0; row < size[0] && dcNameIter.hasNext(); row++)
@@ -544,7 +544,7 @@ AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilt
       }
     }
     break;
-  case GridMontage::CollectionMethod::SnakeByRows:
+  case GridMontage::CollectionMethod::SnakeOrder:
     for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
     {
       for(size_t row = 0; row < size[0] && dcNameIter.hasNext(); row++)

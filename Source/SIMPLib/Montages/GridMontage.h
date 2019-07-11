@@ -56,8 +56,8 @@ public:
   using EnumType = uint32_t;
   enum class CollectionMethod : EnumType
   {
-    CombByRows = 0,
-    SnakeByRows
+    CombOrder = 0,
+    SnakeOrder
   };
 
   SIMPL_SHARED_POINTERS(GridMontage)
