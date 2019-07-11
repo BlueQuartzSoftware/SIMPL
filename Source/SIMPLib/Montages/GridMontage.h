@@ -57,9 +57,7 @@ public:
   enum class CollectionMethod : EnumType
   {
     CombByRows = 0,
-    CombByColumns,
-    SnakeByRows,
-    SnakeByColumns
+    SnakeByRows
   };
 
   SIMPL_SHARED_POINTERS(GridMontage)

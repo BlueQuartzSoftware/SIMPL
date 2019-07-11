@@ -544,18 +544,6 @@ AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilt
       }
     }
     break;
-  case GridMontage::CollectionMethod::CombByColumns:
-    for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
-    {
-      for(size_t col = 0; col < size[1] && dcNameIter.hasNext(); col++)
-      {
-        for(size_t row = 0; row < size[0] && dcNameIter.hasNext(); row++)
-        {
-          setMontageTileFromDataContainerName(filter, row, col, depth, montage, dcNameIter.next());
-        }
-      }
-    }
-    break;
   case GridMontage::CollectionMethod::SnakeByRows:
     for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
     {
@@ -571,28 +559,6 @@ AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilt
         else
         {
           for(int64_t col = static_cast<int64_t>(size[1] - 1); col >= 0 && dcNameIter.hasNext(); col--)
-          {
-            setMontageTileFromDataContainerName(filter, row, col, depth, montage, dcNameIter.next());
-          }
-        }
-      }
-    }
-    break;
-  case GridMontage::CollectionMethod::SnakeByColumns:
-    for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
-    {
-      for(size_t col = 0; col < size[1] && dcNameIter.hasNext(); col++)
-      {
-        if(col % 2 == 0)
-        {
-          for(size_t row = 0; row < size[0] && dcNameIter.hasNext(); row++)
-          {
-            setMontageTileFromDataContainerName(filter, row, col, depth, montage, dcNameIter.next());
-          }
-        }
-        else
-        {
-          for(int64_t row = static_cast<int64_t>(size[0] - 1); row >= 0 && dcNameIter.hasNext(); row--)
           {
             setMontageTileFromDataContainerName(filter, row, col, depth, montage, dcNameIter.next());
           }
