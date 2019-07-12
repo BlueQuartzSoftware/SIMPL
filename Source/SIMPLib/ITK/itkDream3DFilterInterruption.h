@@ -3,31 +3,29 @@
 #include <itkCommand.h>
 #include <itkProcessObject.h>
 
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
 namespace itk
 {
 
 class Dream3DFilterInterruption : public Command
 {
 public:
-  /** Standard class typedefs. */
-  typedef Dream3DFilterInterruption Self;
-  typedef Command Superclass;
-  typedef SmartPointer<Self> Pointer;
-  typedef SmartPointer<const Self> ConstPointer;
-  itkNewMacro(Dream3DFilterInterruption);
-  itkSetObjectMacro(Filter, AbstractFilter);
+  ITK_DISALLOW_COPY_AND_ASSIGN(Dream3DFilterInterruption);
 
-private:
-  AbstractFilter* m_Filter;
-  Dream3DFilterInterruption()
-  {
-    m_Filter = nullptr;
-  }
+  /** Standard class type aliases. */
+  using Self = Dream3DFilterInterruption;
+  using Pointer = SmartPointer<Self>;
 
-public:
+  /** Method for creation through the object factory. */
+  itkNewMacro(Self);
+
+  /** Run-time type information (and related methods). */
+  itkTypeMacro(Dream3DFilterInterruption, itk::Command);
+
   void Execute(Object* caller, const EventObject& event) override
   {
-    if(m_Filter && m_Filter->getCancel())
+    if(m_Filter != nullptr && m_Filter->getCancel())
     {
       ProcessObject* po = dynamic_cast<ProcessObject*>(caller);
       if(po)
@@ -42,9 +40,21 @@ public:
     object->AbortGenerateDataOn();
   }
 
-  void Execute(const Object*, const EventObject&) override // has to be implemented
+  void Execute(const Object* o_not_used, const EventObject& eo_not_used) override // has to be implemented
   {
   }
+
+  void SetFilter(AbstractFilter* filter)
+  {
+    m_Filter = filter;
+  }
+
+protected:
+  Dream3DFilterInterruption() = default;
+  ~Dream3DFilterInterruption() override = default;
+
+private:
+  AbstractFilter* m_Filter = nullptr;
 };
 
 } // namespace itk

@@ -43,46 +43,83 @@
 #include <vnl/vnl_sparse_matrix_linear_system.h>
 #include <vnl/vnl_vector.h>
 
-int main(int argc, char** argv)
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
+#include "itkCommand.h"
+#include "itkProcessObject.h"
+
+namespace itk
 {
-  vnl_sparse_matrix<double> A(10000, 1000);
+class ProgressObserver : public itk::Command
+{
+public:
+  ITK_DISALLOW_COPY_AND_ASSIGN(ProgressObserver);
 
-  vcl_vector<int> cols(50);
-  vcl_vector<double> vals(50);
+  /** Standard class type aliases. */
+  using Self = ProgressObserver;
+  using Pointer = SmartPointer<Self>;
 
-  for(int row_ = 0; row_ < 10000; ++row_)
+  /** Method for creation through the object factory. */
+  itkNewMacro(Self);
+
+  /** Run-time type information (and related methods). */
+  itkTypeMacro(ProgressObserver, itk::Command);
+
+  void Execute(itk::Object* caller, const itk::EventObject& event) override
   {
-    double sum = 0;
-    for(int i = 0; i < 50; ++i)
+    Execute((const itk::Object*)caller, event);
+  }
+
+  void Execute(const itk::Object* caller, const itk::EventObject& event) override
+  {
+    if(!itk::ProgressEvent().CheckEvent(&event))
     {
-      cols[i] = vcl_rand() % 999;
-      vals[i] = (double)vcl_rand() / (double)RAND_MAX;
-      sum += vals[i];
+      return;
+    }
+    const auto* processObject = dynamic_cast<const itk::ProcessObject*>(caller);
+    if(processObject == nullptr)
+    {
+      return;
     }
     A.set_row(row_, cols, vals);
     A.scale_row(row_, 1.0 / sum);
   }
 
-  vnl_vector<double> x(1000);
-  for(int i = 0; i < 1000; ++i)
-  {
-    x[i] = (double)vcl_rand() / (double)RAND_MAX;
+    QString progressStr = QString::number(processObject->GetProgress() * 100, 'f', 0);
+
+    QString ss;
+    if(m_MessagePrefix.isEmpty())
+    {
+      ss = QObject::tr("%1%").arg(progressStr);
+    }
+    else
+    {
+      ss = QObject::tr("%1: %2%").arg(m_MessagePrefix).arg(progressStr);
+    }
+
+    if(m_Filter != nullptr)
+    {
+      m_Filter->notifyStatusMessage(ss);
+    }
   }
 
-  vnl_vector<double> b(10000);
-  A.mult(x, b);
-
-  for(int i = 0; i < 10000; ++i)
+  void SetMessagePrefix(const QString& prefix)
   {
-    b[i] += 0.01 * (((double)vcl_rand() / (double)RAND_MAX) - 0.5);
+    m_MessagePrefix = prefix;
   }
 
-  vnl_sparse_matrix_linear_system<double> linear_system(A, b);
-  vnl_lsqr lsqr(linear_system);
-  vnl_vector<double> result(1000);
-  lsqr.minimize(result);
-  lsqr.diagnose_outcome(vcl_cerr);
+  void SetFilter(AbstractFilter* filter)
+  {
+    m_Filter = filter;
+  }
 
-  vcl_cerr << "Ground truth relative residual : " << (x - result).two_norm() / x.two_norm() << vcl_endl;
-  return EXIT_SUCCESS;
-}
+protected:
+  ProgressObserver() = default;
+
+  ~ProgressObserver() override = default;
+
+private:
+  AbstractFilter* m_Filter = nullptr;
+  QString m_MessagePrefix;
+};
+} // namespace itk
