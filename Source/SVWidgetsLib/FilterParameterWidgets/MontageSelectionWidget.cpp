@@ -116,11 +116,11 @@ void MontageSelectionWidget::setupGui()
   // Connect widget signals
   connect(m_Ui->prefixStringEdit, &QtSStringEdit::valueChanged, this, &MontageSelectionWidget::causePreflight);
   connect(m_Ui->suffixStringEdit, &QtSStringEdit::valueChanged, this, &MontageSelectionWidget::causePreflight);
-  connect(m_Ui->paddingSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
-  connect(m_Ui->rowStartSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
-  connect(m_Ui->rowEndSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
-  connect(m_Ui->colStartSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
-  connect(m_Ui->colEndSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
+  connect(m_Ui->paddingSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
+  connect(m_Ui->rowStartSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
+  connect(m_Ui->rowEndSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
+  connect(m_Ui->colStartSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
+  connect(m_Ui->colEndSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
 }
 
 // -----------------------------------------------------------------------------
