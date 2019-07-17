@@ -10,56 +10,47 @@ namespace ITKDream3DHelper
 
 template <class PixelType> QVector<size_t> GetComponentsDimensions_impl(PixelType*)
 {
-  QVector<size_t> cDims(1, 1);
-  return cDims;
+  return {1};
 }
 
 template <class PixelType> QVector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 36>*)
 {
-  QVector<size_t> cDims(1, 36);
-  return cDims;
+  return {36};
 }
 
 template <class PixelType> QVector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 3>*)
 {
-  QVector<size_t> cDims(1, 3);
-  return cDims;
+  return {3};
 }
 
 template <class PixelType> QVector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 2>*)
 {
-  QVector<size_t> cDims(1, 2);
-  return cDims;
+  return {2};
 }
 
 template <class PixelType> QVector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 4>*)
 {
-  QVector<size_t> cDims(1, 4);
-  return cDims;
+  return {4};
 }
 
 template <class PixelType> QVector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 11>*)
 {
-  QVector<size_t> cDims(1, 11);
-  return cDims;
+  return {11};
 }
 
 template <class PixelType> QVector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 10>*)
 {
-  QVector<size_t> cDims(1, 10);
-  return cDims;
+  return {10};
 }
 
 template <class PixelType> QVector<size_t> GetComponentsDimensions_impl(itk::RGBPixel<PixelType>*)
 {
-  QVector<size_t> cDims(1, 3);
-  return cDims;
+  return {3};
 }
 
 template <class PixelType> QVector<size_t> GetComponentsDimensions_impl(itk::RGBAPixel<PixelType>*)
 {
-  QVector<size_t> cDims(1, 4);
-  return cDims;
+  return {4};
 }
 
 template <class PixelType> QVector<size_t> GetComponentsDimensions()
