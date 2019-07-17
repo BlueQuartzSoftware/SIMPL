@@ -103,36 +103,36 @@
 namespace
 {
 
-class JsonObserver : public IObserver
-{
-public:
-  JsonObserver() = default;
-  ~JsonObserver() override = default;
-
-  JsonObserver(const JsonObserver&) = delete;            // Copy Constructor Not Implemented
-  JsonObserver(JsonObserver&&) = delete;                 // Move Constructor Not Implemented
-  JsonObserver& operator=(const JsonObserver&) = delete; // Copy Assignment Not Implemented
-  JsonObserver& operator=(JsonObserver&&) = delete;      // Move Assignment Not Implemented
-
-  void processPipelineMessage(const PipelineMessage& pm) override
+  class JsonObserver : public IObserver
   {
-    m_ErrorCode = pm.getCode();
-    m_ErrorMessage = pm.getText();
-  }
+  public:
+    JsonObserver() = default;
+    ~JsonObserver() override = default;
 
-  QString getErrorMessage()
-  {
-    return m_ErrorMessage;
-  }
-  int32_t getErrorCode()
-  {
-    return m_ErrorCode;
-  }
+    JsonObserver(const JsonObserver&) = delete;            // Copy Constructor Not Implemented
+    JsonObserver(JsonObserver&&) = delete;                 // Move Constructor Not Implemented
+    JsonObserver& operator=(const JsonObserver&) = delete; // Copy Assignment Not Implemented
+    JsonObserver& operator=(JsonObserver&&) = delete;      // Move Assignment Not Implemented
 
-private:
-  QString m_ErrorMessage;
-  int32_t m_ErrorCode = 0;
-};
+    void processPipelineMessage(const PipelineMessage& pm) override
+    {
+      m_ErrorCode = pm.getCode();
+      m_ErrorMessage = pm.getText();
+    }
+
+    QString getErrorMessage()
+    {
+      return m_ErrorMessage;
+    }
+    int32_t getErrorCode()
+    {
+      return m_ErrorCode;
+    }
+
+  private:
+    QString m_ErrorMessage;
+    int32_t m_ErrorCode = 0;
+  };
 } // namespace
 // -----------------------------------------------------------------------------
 //
@@ -878,9 +878,9 @@ QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
   p.begin(&dragPixmap);
   p.setOpacity(0.70);
   int offset = 0;
-  for(int i = 0; i < indexes.size(); i++)
+  for(const auto& listItem : indexes)
   {
-    QPixmap currentPixmap = delegate->createPixmap(indexes[i]);
+    QPixmap currentPixmap = delegate->createPixmap(listItem);
     p.drawPixmap(0, offset, currentPixmap);
     offset = offset + indexPixmap.size().height() + spacing();
   }
@@ -1564,12 +1564,11 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
   }
 
   QString ext = fi.suffix();
-  QString name = fi.fileName();
+  // QString name = fi.fileName();
   QString baseName = fi.baseName();
 
   if(ext == "dream3d")
   {
-#if 0
     QtSFileDragMessageBox* msgBox = new QtSFileDragMessageBox(this);
     msgBox->exec();
     msgBox->deleteLater();
@@ -1578,18 +1577,17 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
     {
       return 0;
     }
-    else if(msgBox->didPressOkBtn() == true)
+
+    if(msgBox->didPressOkBtn())
     {
-      if(msgBox->isExtractPipelineBtnChecked() == false)
-#endif
+      if(!msgBox->isExtractPipelineBtnChecked())
       {
         DataContainerReader::Pointer reader = DataContainerReader::New();
         reader->setInputFile(filePath);
-
         addFilter(reader, insertIndex);
         return 1;
       }
-    //}
+    }
   }
 
   // Read the pipeline from the file
