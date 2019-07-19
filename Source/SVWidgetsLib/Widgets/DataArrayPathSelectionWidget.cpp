@@ -354,9 +354,26 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   {
     return false;
   }
+  using SizeTVectorType = std::vector<size_t>;
 
-  bool b = !FilterParameterWidgetUtils::VectorContains<size_t>(reqs.componentDimensions, da->getComponentDimensions());
-  return !(!reqs.componentDimensions.empty() && !b);
+  if(reqs.componentDimensions.empty())
+  {
+    return true;
+  }
+  std::vector<SizeTVectorType> reqComps = reqs.componentDimensions;
+  std::vector<size_t> daComp = da->getComponentDimensions();
+  bool contains = false;
+  for(const auto& reqComp : reqComps)
+  {
+    if(reqComp == daComp)
+    {
+      contains = true;
+      break;
+    }
+  }
+
+  // bool b = !FilterParameterWidgetUtils::VectorContains<size_t>(reqComp, daComp);
+  return contains;
 }
 
 // -----------------------------------------------------------------------------
