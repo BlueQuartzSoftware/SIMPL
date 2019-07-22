@@ -300,6 +300,26 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+std::list<DataArrayPath> AbstractFilter::getCreatedPathsNotRenamed()
+{
+  std::list<DataArrayPath> createdPaths = getCreatedPaths();
+  const DataArrayPath::RenameContainer renamedPaths = getRenamedPaths();
+
+  for(const auto& renamedPath : renamedPaths)
+  {
+    auto iter = std::find(createdPaths.begin(), createdPaths.end(), std::get<0>(renamedPath));
+    if(iter != createdPaths.end())
+    {
+      createdPaths.erase(iter);
+    }
+  }
+
+  return createdPaths;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 std::list<DataArrayPath> AbstractFilter::getDeletedPaths()
 {
   return std::list<DataArrayPath>();

@@ -741,8 +741,27 @@ int FilterPipeline::preflightPipeline()
     // Do not preflight disabled filters
     if(filter->getEnabled())
     {
-      filter->setDataContainerArray(dca);
+      filter->setDataContainerArray(dca->deepCopy(true));
 #if RENAME_ENABLED
+      filter->preflight();
+      // Check if an existing renamed path was created by this filter
+#if 1
+      const std::list<DataArrayPath> createdPaths = filter->getCreatedPathsNotRenamed();
+      for (const DataArrayPath& createdPath : createdPaths)
+      {
+        for (const DataArrayPath::RenameType& rename : renamedPaths)
+        {
+          const DataArrayPath& originalPath = std::get<0>(rename);
+          if (originalPath == createdPath)
+          {
+            const auto iter = std::find(renamedPaths.begin(), renamedPaths.end(), rename);
+            renamedPaths.erase(iter);
+            break;
+          }
+        }
+      }
+#endif
+
       if(filter->property("HasRenameValues").toBool())
       {
         filter->renameDataArrayPaths(renamedPaths);
@@ -752,6 +771,7 @@ int FilterPipeline::preflightPipeline()
         filter->setProperty("HasRenameValues", true);
       }
 #endif
+      filter->setDataContainerArray(dca);
       setCurrentFilter(filter);
       connectFilterNotifications(filter.get());
       filter->clearRenamedPaths();
@@ -778,23 +798,6 @@ int FilterPipeline::preflightPipeline()
           }
         }
       }
-// Check if an existing renamed path was created by this filter
-#if 1
-      const std::list<DataArrayPath> createdPaths = filter->getCreatedPaths();
-      for(const DataArrayPath& createdPath : createdPaths)
-      {
-        for(const DataArrayPath::RenameType& rename : renamedPaths)
-        {
-          const DataArrayPath& originalPath = std::get<0>(rename);
-          if(originalPath == createdPath)
-          {
-            const auto iter = std::find(renamedPaths.begin(), renamedPaths.end(), rename);
-            renamedPaths.erase(iter);
-            break;
-          }
-        }
-      }
-#endif
       const QString testFilterName = filter->getHumanLabel();
       // Filter renamed existing DataArrayPaths
       const DataArrayPath::RenameContainer newRenamePaths = filter->getRenamedPaths();

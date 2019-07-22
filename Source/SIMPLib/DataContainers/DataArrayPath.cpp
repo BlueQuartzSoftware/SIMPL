@@ -46,6 +46,11 @@
 // -----------------------------------------------------------------------------
 DataArrayPath::HashType DataArrayPath::GetHash(const QString& name)
 {
+  if(name.isEmpty())
+  {
+    return 0;
+  }
+
   std::hash<std::string> hashFn;
   return hashFn(name.toStdString());
 }

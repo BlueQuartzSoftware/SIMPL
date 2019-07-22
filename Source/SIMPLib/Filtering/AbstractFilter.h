@@ -311,6 +311,8 @@ public:
    */
   std::list<DataArrayPath> getCreatedPaths();
 
+  std::list<DataArrayPath> getCreatedPathsNotRenamed();
+
   /**
    * @brief Returns the list of deleted data paths.
    * @return
