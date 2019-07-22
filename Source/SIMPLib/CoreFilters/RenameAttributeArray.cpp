@@ -263,8 +263,9 @@ DataArrayPath::RenameContainer RenameAttributeArray::getRenamedPaths()
   DataArrayPath newPath = getSelectedArrayPath();
   newPath.setDataArrayName(getNewArrayName());
 
-  DataArrayPath::RenameContainer container = AbstractFilter::getRenamedPaths();
-  container.push_back(std::make_pair(oldPath, newPath));
+  DataArrayPath::RenameContainer container;
+  DataArrayPath::RenameType rename = { oldPath, newPath };
+  container.push_back(rename);
 
   return container;
 }

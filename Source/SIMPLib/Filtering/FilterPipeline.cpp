@@ -35,18 +35,18 @@
 
 #include "FilterPipeline.h"
 
+#include "SIMPLib/CoreFilters/EmptyFilter.h"
+#include "SIMPLib/Filtering/FilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Messages/AbstractMessageHandler.h"
-#include "SIMPLib/Messages/FilterProgressMessage.h"
 #include "SIMPLib/Messages/FilterErrorMessage.h"
+#include "SIMPLib/Messages/FilterProgressMessage.h"
 #include "SIMPLib/Messages/FilterStatusMessage.h"
 #include "SIMPLib/Messages/FilterWarningMessage.h"
 #include "SIMPLib/Messages/PipelineErrorMessage.h"
 #include "SIMPLib/Messages/PipelineProgressMessage.h"
 #include "SIMPLib/Messages/PipelineStatusMessage.h"
 #include "SIMPLib/Messages/PipelineWarningMessage.h"
-#include "SIMPLib/CoreFilters/EmptyFilter.h"
-#include "SIMPLib/Filtering/FilterFactory.hpp"
-#include "SIMPLib/Filtering/FilterManager.h"
 
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
@@ -59,31 +59,34 @@
  */
 class FilterPipelineMessageHandler : public AbstractMessageHandler
 {
-  public:
-    explicit FilterPipelineMessageHandler(FilterPipeline* pipeline) : m_Pipeline(pipeline) {}
+public:
+  explicit FilterPipelineMessageHandler(FilterPipeline* pipeline)
+  : m_Pipeline(pipeline)
+  {
+  }
 
-    /**
-     * @brief Converts filter progress messages into pipeline progress messages.  This enables the overall pipeline
-     * progress to update along with the filter's progress updates
-     */
-    void processMessage(const FilterProgressMessage* msg) const override
-    {
-      int filterProgress = msg->getProgressValue();
-      float filterProgressStep = (1.0f / m_Pipeline->size()) * filterProgress / 100.0f;
-      int pipelineProgress = static_cast<int>((static_cast<float>(msg->getPipelineIndex()) / (m_Pipeline->size()) + filterProgressStep) * 100.0f);
-      m_Pipeline->notifyProgressMessage(pipelineProgress, "");
-    }
+  /**
+   * @brief Converts filter progress messages into pipeline progress messages.  This enables the overall pipeline
+   * progress to update along with the filter's progress updates
+   */
+  void processMessage(const FilterProgressMessage* msg) const override
+  {
+    int filterProgress = msg->getProgressValue();
+    float filterProgressStep = (1.0f / m_Pipeline->size()) * filterProgress / 100.0f;
+    int pipelineProgress = static_cast<int>((static_cast<float>(msg->getPipelineIndex()) / (m_Pipeline->size()) + filterProgressStep) * 100.0f);
+    m_Pipeline->notifyProgressMessage(pipelineProgress, "");
+  }
 
-  private:
-    FilterPipeline* m_Pipeline = nullptr;
+private:
+  FilterPipeline* m_Pipeline = nullptr;
 };
 
 class PipelineIdleException : public std::exception
 {
-   const char* what () const noexcept
-   {
-      return "A pipeline that was finishing execution was marked as in the idle state.";
-   }
+  const char* what() const noexcept
+  {
+    return "A pipeline that was finishing execution was marked as in the idle state.";
+  }
 };
 
 // -----------------------------------------------------------------------------
@@ -612,7 +615,7 @@ void FilterPipeline::updatePrevNextFilters()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::setErrorCondition(int code, const QString &messageText)
+void FilterPipeline::setErrorCondition(int code, const QString& messageText)
 {
   m_ErrorCode = code;
   PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New(getName(), messageText, code);
@@ -691,7 +694,7 @@ void FilterPipeline::connectFilterNotifications(AbstractFilter* filter)
     connect(filter, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), messageReceiver, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
   }
 
-  connect(filter, &AbstractFilter::messageGenerated, [=] (AbstractMessage::Pointer msg) {
+  connect(filter, &AbstractFilter::messageGenerated, [=](AbstractMessage::Pointer msg) {
     FilterPipelineMessageHandler msgHandler(this);
     msg->visit(&msgHandler);
   });
@@ -740,7 +743,14 @@ int FilterPipeline::preflightPipeline()
     {
       filter->setDataContainerArray(dca);
 #if RENAME_ENABLED
-      filter->renameDataArrayPaths(renamedPaths);
+      if(filter->property("HasRenameValues").toBool())
+      {
+        filter->renameDataArrayPaths(renamedPaths);
+      }
+      else
+      {
+        filter->setProperty("HasRenameValues", true);
+      }
 #endif
       setCurrentFilter(filter);
       connectFilterNotifications(filter.get());
@@ -752,9 +762,8 @@ int FilterPipeline::preflightPipeline()
       preflightError |= filter->getErrorCode();
       filter->setDataContainerArray(dca->deepCopy(false));
 #if RENAME_ENABLED
-      const std::list<DataArrayPath> deletedPaths = filter->getDeletedPaths();
-
       // Check if an existing renamed path was deleted by this filter
+      const std::list<DataArrayPath> deletedPaths = filter->getDeletedPaths();
       for(const DataArrayPath& deletedPath : deletedPaths)
       {
         for(const DataArrayPath::RenameType& rename : renamedPaths)
@@ -769,6 +778,24 @@ int FilterPipeline::preflightPipeline()
           }
         }
       }
+// Check if an existing renamed path was created by this filter
+#if 1
+      const std::list<DataArrayPath> createdPaths = filter->getCreatedPaths();
+      for(const DataArrayPath& createdPath : createdPaths)
+      {
+        for(const DataArrayPath::RenameType& rename : renamedPaths)
+        {
+          const DataArrayPath& originalPath = std::get<0>(rename);
+          if(originalPath == createdPath)
+          {
+            const auto iter = std::find(renamedPaths.begin(), renamedPaths.end(), rename);
+            renamedPaths.erase(iter);
+            break;
+          }
+        }
+      }
+#endif
+      const QString testFilterName = filter->getHumanLabel();
       // Filter renamed existing DataArrayPaths
       const DataArrayPath::RenameContainer newRenamePaths = filter->getRenamedPaths();
       for(const DataArrayPath::RenameType& newRename : newRenamePaths)
@@ -850,7 +877,7 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
   for(const auto& filt : m_Pipeline)
   {
     int filtIndex = filt->getPipelineIndex();
-    QString ss = QObject::tr("[%1/%2] %3").arg(filtIndex+1).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
+    QString ss = QObject::tr("[%1/%2] %3").arg(filtIndex + 1).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
     notifyStatusMessage(ss);
 
     emit filt->filterInProgress(filt.get());
@@ -858,7 +885,7 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
     // Do not execute disabled filters
     if(filt->getEnabled())
     {
-//      filt->setMessagePrefix(ss);
+      //      filt->setMessagePrefix(ss);
       connectFilterNotifications(filt.get());
       filt->setDataContainerArray(m_Dca);
       setCurrentFilter(filt);
@@ -868,7 +895,7 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
       err = filt->getErrorCode();
       if(err < 0)
       {
-        ss = QObject::tr("[%1/%2] %3 caused an error during execution.").arg(filtIndex+1).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
+        ss = QObject::tr("[%1/%2] %3 caused an error during execution.").arg(filtIndex + 1).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
         setErrorCondition(err, ss);
 
         notifyProgressMessage(100, "");

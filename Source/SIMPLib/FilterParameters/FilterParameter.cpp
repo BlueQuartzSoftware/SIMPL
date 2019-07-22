@@ -78,6 +78,11 @@ void FilterParameter::writeJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
 {
+  if(getCategory() == FilterParameter::Category::CreatedArray)
+  {
+    return;
+  }
+
   QVariant var = filter->property(qPrintable(getPropertyName()));
   if(!var.isValid())
   {
@@ -87,6 +92,10 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArr
   if(var.canConvert<DataArrayPath>())
   {
     DataArrayPath path = var.value<DataArrayPath>();
+    if(path == renamePath.first)
+    {
+      return;
+    }
     if(path.updatePath(renamePath))
     {
       var.setValue(path);
