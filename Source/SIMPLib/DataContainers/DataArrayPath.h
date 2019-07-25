@@ -185,6 +185,8 @@ private:
      */
     static bool CheckRenamePath(const DataContainerArrayShPtr& oldDca, const DataContainerArrayShPtr& newDca, const DataArrayPath& oldPath, const DataArrayPath& newPath);
 
+    static bool CanReplaceRenamePath(const RenameType& originalPair, const RenameType& newPair);
+
     /**
      * @brief Returns the DataType matching the current path.
      * @return
@@ -194,25 +196,49 @@ private:
       return m_DataType;
     }
 
+    /**
+     * @brief Returns the DataContainer name
+     * @return
+     */
     QString getDataContainerName() const
     {
       return m_DataContainerName;
     }
 
+    /**
+     * @brief Returns the AttributeMatrix name
+     * @return
+     */
     QString getAttributeMatrixName() const
     {
       return m_AttributeMatrixName;
     }
 
+    /**
+     * @brief Returns the DataArray name
+     * @return
+     */
     QString getDataArrayName() const
     {
       return m_DataArrayName;
     }
 
+    /**
+     * @brief Sets the DataContainer name and updates the hash
+     * @param name
+     */
     void setDataContainerName(const QString& name);
 
+    /**
+     * @brief Sets the AttributeMatrix name and updates the hash
+     * @param name
+     */
     void setAttributeMatrixName(const QString& name);
 
+    /**
+     * @brief Sets the DataArray name and updates the hash
+     * @param name
+     */
     void setDataArrayName(const QString& name);
 
     /**

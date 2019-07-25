@@ -404,6 +404,14 @@ DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(const DataCon
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool DataArrayPath::CanReplaceRenamePath(const RenameType& originalPair, const RenameType& newPair)
+{
+  return originalPair.first == newPair.first && originalPair.second != newPair.second;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayPath::updateDataType()
 {
   const bool dcEmpty = m_DataContainerName.isEmpty();
