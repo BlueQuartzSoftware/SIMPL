@@ -87,9 +87,11 @@ class SIMPLib_EXPORT RdfData
   protected:
     RdfData();
 
-  private:
-    RdfData(const RdfData&) = delete;        // Copy Constructor Not Implemented
-    void operator=(const RdfData&) = delete; // Move assignment Not Implemented
+  public:
+    RdfData(const RdfData&) = delete;            // Copy Constructor Not Implemented
+    RdfData(RdfData&&) = delete;                 // Move Constructor Not Implemented
+    RdfData& operator=(const RdfData&) = delete; // Copy Assignment Not Implemented
+    RdfData& operator=(RdfData&&) = delete;      // Move Assignment Not Implemented
 };
 
 

@@ -47,9 +47,7 @@
 //
 // -----------------------------------------------------------------------------
 RdfData::RdfData()
-: m_MinDistance(0.0f)
-, m_MaxDistance(0.0f)
-, m_NumberOfBins(50)
+: m_NumberOfBins(50)
 , m_DistributionType(SIMPL::StringConstants::UnknownDistribution)
 {
   m_BoxResolution[0] = 0.1f;
