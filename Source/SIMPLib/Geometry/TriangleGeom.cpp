@@ -340,7 +340,7 @@ void TriangleGeom::deleteElementNeighbors()
 int TriangleGeom::findElementCentroids()
 {
   std::vector<size_t> cDims(1, 3);
-  m_TriangleCentroids = FloatArrayType::CreateArray(getNumberOfTris(), cDims, SIMPL::StringConstants::TriangleCentroids);
+  m_TriangleCentroids = FloatArrayType::CreateArray(getNumberOfTris(), cDims, SIMPL::StringConstants::TriangleCentroids, true);
   GeometryHelpers::Topology::FindElementCentroids<size_t>(m_TriList, m_VertexList, m_TriangleCentroids);
   if(m_TriangleCentroids.get() == nullptr)
   {
@@ -379,7 +379,7 @@ void TriangleGeom::deleteElementCentroids()
 int TriangleGeom::findElementSizes()
 {
   std::vector<size_t> cDims(1, 1);
-  m_TriangleSizes = FloatArrayType::CreateArray(getNumberOfTris(), cDims, SIMPL::StringConstants::TriangleAreas);
+  m_TriangleSizes = FloatArrayType::CreateArray(getNumberOfTris(), cDims, SIMPL::StringConstants::TriangleAreas, true);
   GeometryHelpers::Topology::Find2DElementAreas<size_t>(m_TriList, m_VertexList, m_TriangleSizes);
   if(m_TriangleSizes.get() == nullptr)
   {
@@ -418,7 +418,7 @@ void TriangleGeom::deleteElementSizes()
 int TriangleGeom::findUnsharedEdges()
 {
   std::vector<size_t> cDims(1, 2);
-  m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList);
+  m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList, true);
   GeometryHelpers::Connectivity::Find2DUnsharedEdges<size_t>(m_TriList, m_UnsharedEdgeList);
   if(m_UnsharedEdgeList.get() == nullptr)
   {

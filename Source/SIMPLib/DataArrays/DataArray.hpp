@@ -95,8 +95,8 @@ public:
    */
   DataArray(size_t numTuples, const QString& name, T initValue)
   : IDataArray(name)
+  , m_InitValue(initValue)
   {
-    m_NumComponents = 1;
     resizeTuples(numTuples);
   }
 
@@ -161,7 +161,7 @@ public:
    * @param allocate Will all the memory be allocated at time of construction
    * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
    */
-  static Pointer CreateArray(size_t numTuples, const QString& name, bool allocate = true)
+  static Pointer CreateArray(size_t numTuples, const QString& name, bool allocate)
   {
     if(name.isEmpty())
     {
@@ -191,7 +191,7 @@ public:
    * @param allocate Will all the memory be allocated at time of construction
    * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
    */
-  static Pointer CreateArray(size_t numTuples, int rank, const size_t* dims, const QString& name, bool allocate = true)
+  static Pointer CreateArray(size_t numTuples, int rank, const size_t* dims, const QString& name, bool allocate)
   {
     if(name.isEmpty())
     {
@@ -202,7 +202,7 @@ public:
     {
       cDims[i] = dims[i];
     }
-    auto d = new DataArray<T>(numTuples, name, cDims, allocate);
+    auto d = new DataArray<T>(numTuples, name, cDims, static_cast<T>(0), allocate);
     if(allocate)
     {
       if(d->allocate() < 0)
@@ -224,13 +224,13 @@ public:
    * @param allocate Will all the memory be allocated at time of construction
    * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
    */
-  static Pointer CreateArray(size_t numTuples, const comp_dims_type& compDims, const QString& name, bool allocate = true)
+  static Pointer CreateArray(size_t numTuples, const comp_dims_type& compDims, const QString& name, bool allocate)
   {
     if(name.isEmpty())
     {
       return NullPointer();
     }
-    DataArray<T>* d = new DataArray<T>(numTuples, name, compDims, allocate);
+    DataArray<T>* d = new DataArray<T>(numTuples, name, compDims, static_cast<T>(0), allocate);
     if(allocate)
     {
       if(d->allocate() < 0)
@@ -253,7 +253,7 @@ public:
    * @param allocate Will all the memory be allocated at time of construction
    * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
    */
-  static Pointer CreateArray(const comp_dims_type& tupleDims, const comp_dims_type& compDims, const QString& name, bool allocate = true)
+  static Pointer CreateArray(const comp_dims_type& tupleDims, const comp_dims_type& compDims, const QString& name, bool allocate)
   {
     if(name.isEmpty())
     {
@@ -262,7 +262,7 @@ public:
 
     size_t numTuples = std::accumulate(tupleDims.begin(), tupleDims.end(), 1, std::multiplies<>());
 
-    auto d = new DataArray<T>(numTuples, name, compDims, allocate);
+    auto d = new DataArray<T>(numTuples, name, compDims, static_cast<T>(0), allocate);
     if(allocate)
     {
       if(d->allocate() < 0)
@@ -286,7 +286,7 @@ public:
    * @param allocate Will all the memory be allocated at time of construction
    * @return
    */
-  IDataArray::Pointer createNewArray(size_t numTuples, int rank, const size_t* compDims, const QString& name, bool allocate = true) override
+  IDataArray::Pointer createNewArray(size_t numTuples, int rank, const size_t* compDims, const QString& name, bool allocate) override
   {
     IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, rank, compDims, name, allocate);
     return p;
@@ -300,13 +300,180 @@ public:
    * @param allocate Will all the memory be allocated at time of construction
    * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
    */
-  IDataArray::Pointer createNewArray(size_t numTuples, const comp_dims_type& compDims, const QString& name, bool allocate = true) override
+  IDataArray::Pointer createNewArray(size_t numTuples, const comp_dims_type& compDims, const QString& name, bool allocate) override
   {
     IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, compDims, name, allocate);
     return p;
   }
 
+  /**
+   * @brief Static Method to create a DataArray from a QVector through a deep copy of the data
+   * contained in the vector. The number of components will be set to 1.
+   * @param vec The vector to copy the data from
+   * @param name The name of the array
+   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
+   */
+  static Pointer FromQVector(QVector<T>& vec, const QString& name)
+  {
+
+    Pointer p = CreateArray(vec.size(), name, true);
+    if(nullptr != p.get())
+    {
+      std::memcpy(p->getPointer(0), vec.data(), vec.size() * sizeof(T));
+    }
+    return p;
+  }
+
+  /**
+   * @brief Static Method to create a DataArray from a std::vector through a deep copy of the data
+   * contained in the vector. The number of components will be set to 1.
+   * @param vec The vector to copy the data from
+   * @param name The name of the array
+   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
+   */
+  static Pointer FromStdVector(std::vector<T>& vec, const QString& name)
+  {
+    comp_dims_type cDims = {1};
+    Pointer p = CreateArray(vec.size(), cDims, name, true);
+    if(nullptr != p.get())
+    {
+      std::memcpy(p->getPointer(0), &(vec.front()), vec.size() * sizeof(T));
+    }
+    return p;
+  }
+
+  /**
+   * @brief FromPointer Creates a DataArray<T> object with a <b>DEEP COPY</b> of the data
+   * @param data
+   * @param size
+   * @param name
+   * @return
+   */
+  static Pointer CopyFromPointer(T* data, size_t size, const QString& name)
+  {
+    Pointer p = CreateArray(size, name, true);
+    if(nullptr != p.get())
+    {
+      std::memcpy(p->getPointer(0), data, size * sizeof(T));
+    }
+    return p;
+  }
+
+  /**
+   * @brief WrapPointer Creates a DataArray<T> object that references the pointer. The original caller can
+   * set if the memory should be "free()'ed" when the object goes away. The original memory MUST have been
+   * "alloc()'ed" and <b>NOT</b> new 'ed.
+   * @param data
+   * @param numTuples
+   * @param cDims
+   * @param name
+   * @param ownsData
+   * @return
+   */
+  static Pointer WrapPointer(T* data, size_t numTuples, const comp_dims_type& compDims, const QString& name, bool ownsData)
+  {
+    // Allocate on the heap
+    auto d = new DataArray(numTuples, name, compDims, static_cast<T>(0), false);
+    // Wrap that heap pointer with a shared_pointer to make it reference counted
+    Pointer p(d);
+
+    p->m_Array = data;        // Now set the internal array to the raw pointer
+    p->m_OwnsData = ownsData; // Set who owns the data, i.e., who is going to "free" the memory
+    if(nullptr != data)
+    {
+      p->m_IsAllocated = true;
+    }
+
+    return p;
+  }
+
   //========================================= Begin API =================================
+
+  /**
+   * @brief deepCopy
+   * @param forceNoAllocate
+   * @return
+   */
+  IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override
+  {
+    bool allocate = m_IsAllocated;
+    if(forceNoAllocate)
+    {
+      allocate = false;
+    }
+    IDataArray::Pointer daCopy = createNewArray(getNumberOfTuples(), getComponentDimensions(), getName(), allocate);
+    if(m_IsAllocated && !forceNoAllocate)
+    {
+      T* src = getPointer(0);
+      void* dest = daCopy->getVoidPointer(0);
+      size_t totalBytes = (getNumberOfTuples() * getNumberOfComponents() * sizeof(T));
+      std::memcpy(dest, src, totalBytes);
+    }
+    return daCopy;
+  }
+
+  /**
+   * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
+   * can be a primitive like char, float, int or the name of a class.
+   * @return
+   */
+
+  SIMPL::NumericTypes::Type getType()
+  {
+    T value = static_cast<T>(0x00);
+    if(typeid(value) == typeid(int8_t))
+    {
+      return SIMPL::NumericTypes::Type::Int8;
+    }
+    if(typeid(value) == typeid(uint8_t))
+    {
+      return SIMPL::NumericTypes::Type::UInt8;
+    }
+
+    if(typeid(value) == typeid(int16_t))
+    {
+      return SIMPL::NumericTypes::Type::Int16;
+    }
+    if(typeid(value) == typeid(uint16_t))
+    {
+      return SIMPL::NumericTypes::Type::UInt16;
+    }
+
+    if(typeid(value) == typeid(int32_t))
+    {
+      return SIMPL::NumericTypes::Type::Int32;
+    }
+    if(typeid(value) == typeid(uint32_t))
+    {
+      return SIMPL::NumericTypes::Type::UInt32;
+    }
+
+    if(typeid(value) == typeid(int64_t))
+    {
+      return SIMPL::NumericTypes::Type::Int64;
+    }
+    if(typeid(value) == typeid(uint64_t))
+    {
+      return SIMPL::NumericTypes::Type::UInt64;
+    }
+
+    if(typeid(value) == typeid(float))
+    {
+      return SIMPL::NumericTypes::Type::Float;
+    }
+    if(typeid(value) == typeid(double))
+    {
+      return SIMPL::NumericTypes::Type::Double;
+    }
+
+    if(typeid(value) == typeid(bool))
+    {
+      return SIMPL::NumericTypes::Type::Bool;
+    }
+
+    return SIMPL::NumericTypes::Type::UnknownNumType;
+  }
+
   /**
    * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
    * can be a primitive like char, float, int or the name of a class.
@@ -378,150 +545,6 @@ public:
       precision = 1;
     }
   }
-
-  /**
-   * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
-   * can be a primitive like char, float, int or the name of a class.
-   * @return
-   */
-
-  SIMPL::NumericTypes::Type getType()
-  {
-    T value = static_cast<T>(0x00);
-    if(typeid(value) == typeid(int8_t))
-    {
-      return SIMPL::NumericTypes::Type::Int8;
-    }
-    if(typeid(value) == typeid(uint8_t))
-    {
-      return SIMPL::NumericTypes::Type::UInt8;
-    }
-
-    if(typeid(value) == typeid(int16_t))
-    {
-      return SIMPL::NumericTypes::Type::Int16;
-    }
-    if(typeid(value) == typeid(uint16_t))
-    {
-      return SIMPL::NumericTypes::Type::UInt16;
-    }
-
-    if(typeid(value) == typeid(int32_t))
-    {
-      return SIMPL::NumericTypes::Type::Int32;
-    }
-    if(typeid(value) == typeid(uint32_t))
-    {
-      return SIMPL::NumericTypes::Type::UInt32;
-    }
-
-    if(typeid(value) == typeid(int64_t))
-    {
-      return SIMPL::NumericTypes::Type::Int64;
-    }
-    if(typeid(value) == typeid(uint64_t))
-    {
-      return SIMPL::NumericTypes::Type::UInt64;
-    }
-
-    if(typeid(value) == typeid(float))
-    {
-      return SIMPL::NumericTypes::Type::Float;
-    }
-    if(typeid(value) == typeid(double))
-    {
-      return SIMPL::NumericTypes::Type::Double;
-    }
-
-    if(typeid(value) == typeid(bool))
-    {
-      return SIMPL::NumericTypes::Type::Bool;
-    }
-
-    return SIMPL::NumericTypes::Type::UnknownNumType;
-  }
-
-  /**
-   * @brief Static Method to create a DataArray from a QVector through a deep copy of the data
-   * contained in the vector. The number of components will be set to 1.
-   * @param vec The vector to copy the data from
-   * @param name The name of the array
-   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
-   */
-  static Pointer FromQVector(QVector<T>& vec, const QString& name, bool allocate = true)
-  {
-
-    Pointer p = CreateArray(vec.size(), name, allocate);
-    if(nullptr != p.get())
-    {
-      std::memcpy(p->getPointer(0), vec.data(), vec.size() * sizeof(T));
-    }
-    return p;
-  }
-
-  /**
-   * @brief Static Method to create a DataArray from a std::vector through a deep copy of the data
-   * contained in the vector. The number of components will be set to 1.
-   * @param vec The vector to copy the data from
-   * @param name The name of the array
-   * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
-   */
-  static Pointer FromStdVector(std::vector<T>& vec, const QString& name, bool allocate = true)
-  {
-    comp_dims_type cDims(1, 1);
-    Pointer p = CreateArray(vec.size(), cDims, name, allocate);
-    if(nullptr != p.get())
-    {
-      std::memcpy(p->getPointer(0), &(vec.front()), vec.size() * sizeof(T));
-    }
-    return p;
-  }
-
-  /**
-   * @brief FromPointer Creates a DataArray<T> object with a <b>DEEP COPY</b> of the data
-   * @param data
-   * @param size
-   * @param name
-   * @return
-   */
-  static Pointer CopyFromPointer(T* data, size_t size, const QString& name, bool allocate = true)
-  {
-    Pointer p = CreateArray(size, name, allocate);
-    if(nullptr != p.get())
-    {
-      std::memcpy(p->getPointer(0), data, size * sizeof(T));
-    }
-    return p;
-  }
-
-  /**
-   * @brief WrapPointer Creates a DataArray<T> object that references the pointer. The original caller can
-   * set if the memory should be "free()'ed" when the object goes away. The original memory MUST have been
-   * "alloc()'ed" and <b>NOT</b> new 'ed.
-   * @param data
-   * @param numTuples
-   * @param cDims
-   * @param name
-   * @param ownsData
-   * @return
-   */
-  static Pointer WrapPointer(T* data, size_t numTuples, const comp_dims_type& compDims, const QString& name, bool ownsData)
-  {
-    // Allocate on the heap
-    auto d = new DataArray(numTuples, name, compDims, false);
-    // Wrap that heap pointer with a shared_pointer to make it reference counted
-    Pointer p(d);
-
-    p->m_Array = data;        // Now set the internal array to the raw pointer
-    p->m_OwnsData = ownsData; // Set who owns the data, i.e., who is going to "free" the memory
-    if(nullptr != data)
-    {
-      p->m_IsAllocated = true;
-    }
-
-    return p;
-  }
-
   // This line must be here, because we are overloading the copyData pure virtual function in IDataArray.
   // This is required so that other classes can call this version of copyData from the subclasses.
   using IDataArray::copyFromArray;
@@ -699,7 +722,10 @@ public:
     {
       return;
     }
-    std::for_each(begin() + offset, end(), [=](T& n) { n = initValue; });
+    for(size_t i = offset; i < m_Size; i++)
+    {
+      m_Array[i] = initValue;
+    }
   }
 
   /**
@@ -1309,24 +1335,6 @@ public:
   }
 
   /**
-   * @brief deepCopy
-   * @param forceNoAllocate
-   * @return
-   */
-  IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override
-  {
-    IDataArray::Pointer daCopy = createNewArray(getNumberOfTuples(), getComponentDimensions(), getName(), m_IsAllocated);
-    if(m_IsAllocated && !forceNoAllocate)
-    {
-      T* src = getPointer(0);
-      void* dest = daCopy->getVoidPointer(0);
-      size_t totalBytes = (getNumberOfTuples() * getNumberOfComponents() * sizeof(T));
-      std::memcpy(dest, src, totalBytes);
-    }
-    return daCopy;
-  }
-
-  /**
    *
    * @param parentId
    * @return
@@ -1871,7 +1879,10 @@ public:
   void assign(size_type n, const value_type& val) // fill (2)
   {
     resizeAndExtend(n);
-    std::for_each(begin(), end(), [=](T& n) { n = val; });
+    for(size_t i = 0; i < n; i++)
+    {
+      m_Array[i] = val;
+    }
   }
 
   /**

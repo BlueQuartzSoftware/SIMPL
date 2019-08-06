@@ -86,7 +86,7 @@ public:
   template <typename T>
   std::shared_ptr<DataArray<T>> createDataArray(const QString& daName, const std::vector<size_t>& tupleDims, const std::vector<size_t>& cDims)
   {
-    typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName);
+    typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName, true);
     for(size_t i = 0; i < da->getNumberOfTuples(); i++)
     {
       for(int j = 0; j < da->getNumberOfComponents(); j++)

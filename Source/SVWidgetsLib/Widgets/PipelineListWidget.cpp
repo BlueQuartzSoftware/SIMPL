@@ -188,10 +188,17 @@ QString PipelineListWidget::getStartPipelineInProgressStyle(float percent)
 
   QString cssStr;
   QTextStream ss(&cssStr);
+  float offset = 0.001f;
+  // At the end of the pipeline the percent will = 1.0 and the next stop will be 1.001 which QGradiant does not like
+  // Force it to just 1.0 to remove warnings.
+  if(percent >= 1.0f)
+  {
+    offset = 0.0f;
+  }
   ss << "QPushButton { ";
   ss << QString("background: qlineargradient(x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgb(29, 168, 29), stop:%1 rgb(29, 168, 29), stop:%2 rgb(0, 118, 6), stop:1 rgb(0, 118, 6));\n")
             .arg(percent)
-            .arg(percent + 0.001);
+            .arg(percent + offset);
   ss << "color: white;\n";
   ss << "border-radius: 0px;\n";
   ss << fontString;

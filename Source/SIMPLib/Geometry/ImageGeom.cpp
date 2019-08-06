@@ -818,7 +818,7 @@ int ImageGeom::findElementSizes()
   {
     return -1;
   }
-  m_VoxelSizes = FloatArrayType::CreateArray(getNumberOfElements(), SIMPL::StringConstants::VoxelSizes);
+  m_VoxelSizes = FloatArrayType::CreateArray(getNumberOfElements(), SIMPL::StringConstants::VoxelSizes, true);
   m_VoxelSizes->initializeWithValue(res[0] * res[1] * res[2]);
   return 1;
 }

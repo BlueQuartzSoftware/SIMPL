@@ -110,7 +110,7 @@ public:
   // -----------------------------------------------------------------------------
   StringDataArray::Pointer initializeStringDataArray()
   {
-    StringDataArray::Pointer data = StringDataArray::CreateArray(k_ArraySize, kArrayName);
+    StringDataArray::Pointer data = StringDataArray::CreateArray(k_ArraySize, kArrayName, true);
 
     size_t nTuples = data->getNumberOfTuples();
     DREAM3D_REQUIRE_EQUAL(k_ArraySize, nTuples)

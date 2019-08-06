@@ -108,7 +108,8 @@ IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, const st
 // -----------------------------------------------------------------------------
 // IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate)
 //{
-//  IDataArray::Pointer p = StringDataArray::CreateArray(numElements, name, allocate);
+//  IDataArray::Pointer p = StringDataArray::CreateArray(numElements, name,
+// allocate);
 //  return p;
 //}
 
@@ -376,7 +377,7 @@ void StringDataArray::initializeWithValue(const std::string& value)
 // -----------------------------------------------------------------------------
 IDataArray::Pointer StringDataArray::deepCopy(bool forceNoAllocate)
 {
-  StringDataArray::Pointer daCopy = StringDataArray::CreateArray(getNumberOfTuples(), getName());
+  StringDataArray::Pointer daCopy = StringDataArray::CreateArray(getNumberOfTuples(), getName(), true);
   if(!forceNoAllocate)
   {
     for(std::vector<QString>::size_type i = 0; i < m_Array.size(); ++i)

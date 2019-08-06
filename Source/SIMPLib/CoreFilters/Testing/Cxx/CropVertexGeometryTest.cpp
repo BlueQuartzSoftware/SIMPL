@@ -88,7 +88,7 @@ public:
   template <typename T>
   std::shared_ptr<DataArray<T>> createDataArray(const QString& daName, const std::vector<std::vector<T>>& data, const std::vector<size_t>& tupleDims, const std::vector<size_t>& cDims)
   {
-    typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName);
+    typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName, true);
     for(int i = 0; i < da->getNumberOfTuples(); i++)
     {
       da->setTuple(i, data[i]);
@@ -153,7 +153,7 @@ public:
 
     // Create extra DataArray to be copied
 
-    FloatArrayType::Pointer da = DataArray<float>::CreateArray(m_Dims4, m_Dims3, k_DataArray0Name);
+    FloatArrayType::Pointer da = DataArray<float>::CreateArray(m_Dims4, m_Dims3, k_DataArray0Name, true);
     for(int i = 0; i < da->getSize(); i++)
     {
       da->setValue(i, i + 0.5f);

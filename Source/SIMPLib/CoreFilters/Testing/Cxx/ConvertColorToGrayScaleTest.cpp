@@ -480,7 +480,7 @@ public:
     const std::vector<size_t> tDims{16};
     const std::vector<size_t> cDims{3, 1, 1};
 
-    DataArray<uint8_t>::Pointer testAA{DataArray<uint8_t>::CreateArray(tDims, cDims, aaName)};
+    DataArray<uint8_t>::Pointer testAA{DataArray<uint8_t>::CreateArray(tDims, cDims, aaName, true)};
     SetDataArrayTestValues(testAA);
 
     // NOTE: This filter has no geometry requirements

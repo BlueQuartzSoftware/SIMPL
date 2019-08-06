@@ -40,50 +40,52 @@
 namespace ITKDream3DHelper
 {
 
-template <class PixelType>
-std::vector<size_t> GetComponentsDimensions_impl(PixelType*)
+template <class PixelType> std::vector<size_t> GetComponentsDimensions_impl(PixelType*)
 {
-  std::vector<size_t> cDims(1, 1);
-  return cDims;
+  return {1};
 }
 
-template <class PixelType>
-std::vector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 36>*)
+template <class PixelType> std::vector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 36>*)
 {
-  std::vector<size_t> cDims(36, 1);
-  return cDims;
+  return {36};
 }
 
-template <class PixelType>
-std::vector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 3>*)
+template <class PixelType> std::vector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 3>*)
 {
-  std::vector<size_t> cDims(3, 1);
-  return cDims;
+  return {3};
 }
 
-template <class PixelType>
-std::vector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 2>*)
+template <class PixelType> std::vector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 2>*)
 {
-  std::vector<size_t> cDims(2, 1);
-  return cDims;
+  return {2};
 }
 
-template <class PixelType>
-std::vector<size_t> GetComponentsDimensions_impl(itk::RGBPixel<PixelType>*)
+template <class PixelType> std::vector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 4>*)
 {
-  std::vector<size_t> cDims(1, 3);
-  return cDims;
+  return {4};
 }
 
-template <class PixelType>
-std::vector<size_t> GetComponentsDimensions_impl(itk::RGBAPixel<PixelType>*)
+template <class PixelType> std::vector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 11>*)
 {
-  std::vector<size_t> cDims(1, 4);
-  return cDims;
+  return {11};
 }
 
-template <class PixelType>
-std::vector<size_t> GetComponentsDimensions()
+template <class PixelType> std::vector<size_t> GetComponentsDimensions_impl(itk::Vector<PixelType, 10>*)
+{
+  return {10};
+}
+
+template <class PixelType> std::vector<size_t> GetComponentsDimensions_impl(itk::RGBPixel<PixelType>*)
+{
+  return {3};
+}
+
+template <class PixelType> std::vector<size_t> GetComponentsDimensions_impl(itk::RGBAPixel<PixelType>*)
+{
+  return {4};
+}
+
+template <class PixelType> std::vector<size_t> GetComponentsDimensions()
 {
   return GetComponentsDimensions_impl(static_cast<PixelType*>(0));
 }

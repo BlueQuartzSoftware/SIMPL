@@ -69,7 +69,7 @@
 #define helper(a, b) a##b
 
 #define MAKE_ARRAY(m_msgType, name)                                                                                                                                                                    \
-  IDataArray::Pointer m_msgType##Ptr = DataArray<m_msgType>::CreateArray(5, name);                                                                                                                     \
+  IDataArray::Pointer m_msgType##Ptr = DataArray<m_msgType>::CreateArray(5, name, true);                                                                                                               \
   dataContainer->addCellData(name, m_msgType##Ptr);
 
 #define TEST_DATA_CONTAINER(Type, DCType)                                                                                                                                                              \
@@ -194,7 +194,7 @@ public:
       }
     }
     name = name + "]";
-    typename DataArray<T>::Pointer foo = DataArray<T>::CreateArray(attrMat->getTupleDimensions(), compDims, "RENAME_ME");
+    typename DataArray<T>::Pointer foo = DataArray<T>::CreateArray(attrMat->getTupleDimensions(), compDims, "RENAME_ME", true);
     foo->setName(foo->getFullNameOfClass() + name);
     foo->initializeWithValue(static_cast<T>(1));
     attrMat->insertOrAssign(foo);
@@ -209,7 +209,7 @@ public:
   void CreateStringArray(AttributeMatrix::Pointer attrMat, std::vector<size_t> compDims)
   {
     QString name("ExampleStringDataArray");
-    StringDataArray::Pointer data = StringDataArray::CreateArray(attrMat->getNumberOfTuples(), name);
+    StringDataArray::Pointer data = StringDataArray::CreateArray(attrMat->getNumberOfTuples(), name, true);
     for(size_t i = 0; i < attrMat->getNumberOfTuples(); i++)
     {
       QString value = QString("string_%1").arg(i);
@@ -322,14 +322,14 @@ public:
     m->addOrReplaceAttributeMatrix(attrMatrix);
 
     int size = nx * ny * nz;
-    Int32ArrayType::Pointer featureIds = Int32ArrayType::CreateArray(size, SIMPL::CellData::FeatureIds);
+    Int32ArrayType::Pointer featureIds = Int32ArrayType::CreateArray(size, SIMPL::CellData::FeatureIds, true);
     for(int i = 0; i < size; ++i)
     {
       featureIds->setValue(i, i + DataContainerIOTest::Offset);
     }
     attrMatrix->insertOrAssign(featureIds);
 
-    BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(size, SIMPL::CellData::BoundaryCells);
+    BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(size, SIMPL::CellData::BoundaryCells, true);
     for(int i = 0; i < size; ++i)
     {
       boolArray->setValue(i, i + DataContainerIOTest::Offset);
@@ -337,7 +337,7 @@ public:
     attrMatrix->insertOrAssign(boolArray);
 
     std::vector<size_t> dims(1, 3);
-    FloatArrayType::Pointer avgEuler = FloatArrayType::CreateArray(size, dims, SIMPL::FeatureData::AxisEulerAngles);
+    FloatArrayType::Pointer avgEuler = FloatArrayType::CreateArray(size, dims, SIMPL::FeatureData::AxisEulerAngles, true);
     for(int32_t i = 0; i < size; ++i)
     {
       avgEuler->setComponent(i, 0, i * 0.665f);
@@ -351,7 +351,7 @@ public:
     AttributeMatrix::Pointer ensemAttrMat = AttributeMatrix::New(tupleDims, getCellEnsembleAttributeMatrixName(), AttributeMatrix::Type::CellEnsemble);
     m->addOrReplaceAttributeMatrix(ensemAttrMat);
 
-    FloatArrayType::Pointer surfArea = FloatArrayType::CreateArray(4, SIMPL::EnsembleData::TotalSurfaceAreas);
+    FloatArrayType::Pointer surfArea = FloatArrayType::CreateArray(4, SIMPL::EnsembleData::TotalSurfaceAreas, true);
     for(int i = 0; i < 4; ++i)
     {
       surfArea->setValue(i, i + 41.2f);
@@ -486,7 +486,7 @@ public:
     DREAM3D_REQUIRE_VALID_POINTER(attrMat.get())
 
     // Now create an Array and add it to the Attribute Matrix
-    typename T::Pointer p = T::CreateArray(5, "Test");
+    typename T::Pointer p = T::CreateArray(5, "Test", true);
 
     tDims[0] = 5;
     attrMat->resizeAttributeArrays(tDims);
@@ -1099,8 +1099,8 @@ public:
 
     const QString k_DC0("DCO");
     const QString k_DC1("DC1");
-    Int32ArrayType::Pointer am0 = Int32ArrayType::CreateArray(100, k_DC0);
-    Int32ArrayType::Pointer am1 = Int32ArrayType::CreateArray(100, k_DC1);
+    Int32ArrayType::Pointer am0 = Int32ArrayType::CreateArray(100, k_DC0, true);
+    Int32ArrayType::Pointer am1 = Int32ArrayType::CreateArray(100, k_DC1, true);
 
     result = am->addOrReplaceAttributeArray(am0);
     DREAM3D_REQUIRED(true, ==, result);
@@ -1154,7 +1154,7 @@ public:
     DREAM3D_REQUIRED(am->empty(), ==, true)
     for(int i = 0; i < 10; i++)
     {
-      Int32ArrayType::Pointer aa = Int32ArrayType::CreateArray(100, "Foo" + QString::number(i));
+      Int32ArrayType::Pointer aa = Int32ArrayType::CreateArray(100, "Foo" + QString::number(i), true);
       am->addOrReplaceAttributeArray(aa);
       //   std::cout << dca->size() << std::endl;
       DREAM3D_REQUIRED(am->size(), ==, i + 1)

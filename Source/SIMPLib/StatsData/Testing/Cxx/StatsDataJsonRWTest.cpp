@@ -179,8 +179,8 @@ public:
     // Feature Size Distribution
     {
       VectorOfFloatArray data;
-      FloatArrayType::Pointer d1 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Average);
-      FloatArrayType::Pointer d2 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::StandardDeviation);
+      FloatArrayType::Pointer d1 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Average, true);
+      FloatArrayType::Pointer d2 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::StandardDeviation, true);
       data.push_back(d1);
       data.push_back(d2);
       d1->setValue(0, 1.1f);
@@ -206,13 +206,13 @@ public:
 
     // Write the Misorientation Weights
     {
-      FloatArrayType::Pointer angles = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Angle);
+      FloatArrayType::Pointer angles = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Angle, true);
       angles->initializeWithValue(45.0f);
       std::vector<size_t> vec;
       vec.push_back(3);
-      FloatArrayType::Pointer axis = FloatArrayType::CreateArray(1, vec, SIMPL::StringConstants::Axis);
+      FloatArrayType::Pointer axis = FloatArrayType::CreateArray(1, vec, SIMPL::StringConstants::Axis, true);
       axis->initializeWithValue(1.0);
-      FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Weight);
+      FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Weight, true);
       weight->initializeWithValue(1000.0f);
       arrays.clear();
       arrays.push_back(angles);
@@ -223,15 +223,15 @@ public:
 
     // Write the ODF
     {
-      FloatArrayType::Pointer e1 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Euler1);
+      FloatArrayType::Pointer e1 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Euler1, true);
       e1->initializeWithValue(45.0f);
-      FloatArrayType::Pointer e2 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Euler2);
+      FloatArrayType::Pointer e2 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Euler2, true);
       e2->initializeWithValue(30.0f);
-      FloatArrayType::Pointer e3 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Euler3);
+      FloatArrayType::Pointer e3 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Euler3, true);
       e3->initializeWithValue(60.0f);
-      FloatArrayType::Pointer sigma = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Sigma);
+      FloatArrayType::Pointer sigma = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Sigma, true);
       sigma->initializeWithValue(2.0);
-      FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Weight);
+      FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Weight, true);
       weight->initializeWithValue(100000.0f);
       arrays.clear();
       arrays.push_back(e1);

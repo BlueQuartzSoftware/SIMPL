@@ -74,11 +74,11 @@ class SIMPLib_EXPORT BinaryOperator : public CalculatorOperator
     DoubleArrayType::Pointer newArray;                                                                                                                                                                 \
     if(array1->getType() == ICalculatorArray::Array)                                                                                                                                                   \
     {                                                                                                                                                                                                  \
-      newArray = DoubleArrayType::CreateArray(array1->getArray()->getNumberOfTuples(), array1->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());                          \
+      newArray = DoubleArrayType::CreateArray(array1->getArray()->getNumberOfTuples(), array1->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName(), true);                    \
     }                                                                                                                                                                                                  \
     else                                                                                                                                                                                               \
     {                                                                                                                                                                                                  \
-      newArray = DoubleArrayType::CreateArray(array2->getArray()->getNumberOfTuples(), array2->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());                          \
+      newArray = DoubleArrayType::CreateArray(array2->getArray()->getNumberOfTuples(), array2->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName(), true);                    \
     }                                                                                                                                                                                                  \
                                                                                                                                                                                                        \
     int numComps = newArray->getNumberOfComponents();                                                                                                                                                  \
@@ -103,4 +103,3 @@ class SIMPLib_EXPORT BinaryOperator : public CalculatorOperator
     }                                                                                                                                                                                                  \
     return;                                                                                                                                                                                            \
   }
-

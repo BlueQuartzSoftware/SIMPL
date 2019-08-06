@@ -183,7 +183,7 @@
 // Select vector, RGB/RGBA, or scalar images
 #define Dream3DTemplateAliasMacroPixelType(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)                                                                               \
   std::vector<size_t> cDims = ptr->getComponentDimensions();                                                                                                                                           \
-  if(cDims.size() > 1)                                                                                                                                                                                 \
+  if(cDims[0] > 1 && DREAM3D_USE_Vector == 1)                                                                                                                                                          \
   {                                                                                                                                                                                                    \
     Dream3DTemplateAliasMacroCaseVectorImage0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, DREAM3D_USE_Vector);                                                       \
   }                                                                                                                                                                                                    \
@@ -199,7 +199,7 @@
     }                                                                                                                                                                                                  \
     else                                                                                                                                                                                               \
     {                                                                                                                                                                                                  \
-      setErrorCondition(errorCondition, QString("Size of tuple not handled:%1").arg(cDims[0]));                                                                                                        \
+      setErrorCondition(errorCondition, QString("Value of Component Dimension not Handled: cDims[0] = %1").arg(cDims[0]));                                                                             \
     }                                                                                                                                                                                                  \
   }
 
@@ -237,44 +237,59 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Define the input and output pixel types, depending on 'isTypeOUT' value. This is required for
 // vectors because it is not possible to pass a macro argument that contains a comma.
-#define DefineVectorPixelTypes_0(typeIN, typeOUT, vDim)                       \
-  typedef itk::Vector<typeIN, vDim> InputPixelType; \
-  typedef itk::Vector<typeIN, vDim> OutputPixelType;
-#define DefineVectorPixelTypes_1(typeIN, typeOUT, vDim)                       \
-  typedef itk::Vector<typeIN, vDim> InputPixelType; \
-  typedef typeOUT OutputPixelType;
+#define DefineVectorPixelTypes_0(typeIN, typeOUT, vDim)                                                                                                                                                \
+  using InputPixelType = itk::Vector<typeIN, vDim>;                                                                                                                                                    \
+  using OutputPixelType = itk::Vector<typeIN, vDim>;
+#define DefineVectorPixelTypes_1(typeIN, typeOUT, vDim)                                                                                                                                                \
+  using InputPixelType = itk::Vector<typeIN, vDim>;                                                                                                                                                    \
+  using OutputPixelType = typeOUT;
+
 // Expands the value of 'Vector' that is 0 if the filter does not accept 'Vector' images, and '1' if it does.
 #define Dream3DTemplateAliasMacroCaseVectorImage0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, Vector)        \
   Dream3DTemplateAliasMacroCaseVectorImage1(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, Vector)
+
 #define Dream3DTemplateAliasMacroCaseVectorImage1(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, Vector)        \
   Dream3DTemplateAliasMacroCaseVectorImage1_##Vector(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)
+
 // Vector images not accepted, throw an error message if a vector image is given.
 #define Dream3DTemplateAliasMacroCaseVectorImage1_0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)                                                                      \
   setErrorCondition(                                                                                                                                                                                   \
       errorCondition,                                                                                                                                                                                  \
-      "Vector not supported. Try converting the selected input image to an image with scalar components using 'ITK::RGB to Luminance ImageFilter' or 'Convert Rgb To GrayScale' filters");             \
+      "Vector not supported. Try converting the selected input image to an image with scalar components using 'ITK::RGB to Luminance ImageFilter' or 'Convert Rgb To GrayScale' filters");
+
 // Vector images: Call the given function with the correct dimension after defining the input and output vector types.
 #define Dream3DTemplateAliasMacroCaseVectorImage1_1(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)                                                                      \
-  if(cDims.size() == 2)                                                                                                                                                                                \
+  if(cDims[0] == 2)                                                                                                                                                                                    \
   {                                                                                                                                                                                                    \
     DefineVectorPixelTypes_##isTypeOUT(typeIN, typeOUT, 2);                                                                                                                                            \
     Dream3DTemplateAliasMacroCaseIf(InputPixelType, OutputPixelType, call, typeOUTTypename, dimension);                                                                                                \
   }                                                                                                                                                                                                    \
-  else if(cDims.size() == 3)                                                                                                                                                                           \
+  else if(cDims[0] == 3)                                                                                                                                                                               \
   {                                                                                                                                                                                                    \
     DefineVectorPixelTypes_##isTypeOUT(typeIN, typeOUT, 3);                                                                                                                                            \
     Dream3DTemplateAliasMacroCaseIf(InputPixelType, OutputPixelType, call, typeOUTTypename, dimension);                                                                                                \
   }                                                                                                                                                                                                    \
-  else if(cDims.size() == 36)                                                                                                                                                                          \
+  else if(cDims[0] == 11)                                                                                                                                                                              \
+  {                                                                                                                                                                                                    \
+    DefineVectorPixelTypes_##isTypeOUT(typeIN, typeOUT, 11);                                                                                                                                           \
+    Dream3DTemplateAliasMacroCaseIf(InputPixelType, OutputPixelType, call, typeOUTTypename, dimension);                                                                                                \
+  }                                                                                                                                                                                                    \
+  else if(cDims[0] == 10)                                                                                                                                                                              \
+  {                                                                                                                                                                                                    \
+    DefineVectorPixelTypes_##isTypeOUT(typeIN, typeOUT, 10);                                                                                                                                           \
+    Dream3DTemplateAliasMacroCaseIf(InputPixelType, OutputPixelType, call, typeOUTTypename, dimension);                                                                                                \
+  }                                                                                                                                                                                                    \
+  else if(cDims[0] == 36)                                                                                                                                                                              \
   {                                                                                                                                                                                                    \
     DefineVectorPixelTypes_##isTypeOUT(typeIN, typeOUT, 36);                                                                                                                                           \
     Dream3DTemplateAliasMacroCaseIf(InputPixelType, OutputPixelType, call, typeOUTTypename, dimension);                                                                                                \
   }                                                                                                                                                                                                    \
   else                                                                                                                                                                                                 \
   {                                                                                                                                                                                                    \
-    setErrorCondition(                                                                                                                                                                                 \
-        errorCondition,                                                                                                                                                                                \
-        "Vector dimension not supported. Try converting the selected input image to an image with scalar components using 'ITK::RGB to Luminance ImageFilter' or 'Convert Rgb To GrayScale' filters"); \
+    QString errorMessage = QString("Vector dimension not supported. cDims[0] = %1 Try converting the selected input image to an image with scalar components using 'ITK::RGB to Luminance "            \
+                                   "ImageFilter' or 'Convert Rgb To GrayScale' filters")                                                                                                               \
+                               .arg(cDims.size());                                                                                                                                                     \
+    setErrorCondition(errorCondition, errorMessage);                                                                                                                                                   \
   }
 
 //////////////////////////////////////////////////////////////////////////////
