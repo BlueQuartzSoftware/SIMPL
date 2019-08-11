@@ -37,7 +37,7 @@
 //
 // -----------------------------------------------------------------------------
 SIMPLRange::SIMPLRange()
-: m_Range({0, 0})
+: m_Range({{0, 0}})
 {
 }
 
@@ -45,7 +45,7 @@ SIMPLRange::SIMPLRange()
 //
 // -----------------------------------------------------------------------------
 SIMPLRange::SIMPLRange(size_t begin, size_t end)
-: m_Range({begin, end})
+: m_Range({{begin, end}})
 {
 }
 
@@ -54,7 +54,7 @@ SIMPLRange::SIMPLRange(size_t begin, size_t end)
 //
 // -----------------------------------------------------------------------------
 SIMPLRange::SIMPLRange(const tbb::blocked_range<size_t>& r)
-: m_Range({r.begin(), r.end()})
+: m_Range({{r.begin(), r.end()}})
 {
 }
 #endif

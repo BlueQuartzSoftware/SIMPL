@@ -37,7 +37,7 @@
 //
 // -----------------------------------------------------------------------------
 SIMPLRange3D::SIMPLRange3D()
-: m_Range({0, 0, 0, 0, 0, 0})
+: m_Range({{0, 0, 0, 0, 0, 0}})
 {
 }
 
@@ -45,7 +45,7 @@ SIMPLRange3D::SIMPLRange3D()
 //
 // -----------------------------------------------------------------------------
 SIMPLRange3D::SIMPLRange3D(size_t x, size_t y, size_t z)
-: m_Range({0, x, 0, y, 0, z})
+: m_Range({{0, x, 0, y, 0, z}})
 {
 }
 
@@ -53,7 +53,7 @@ SIMPLRange3D::SIMPLRange3D(size_t x, size_t y, size_t z)
 //
 // -----------------------------------------------------------------------------
 SIMPLRange3D::SIMPLRange3D(size_t xMin, size_t xMax, size_t yMin, size_t yMax, size_t zMin, size_t zMax)
-: m_Range({xMin, xMax, yMin, yMax, zMin, zMax})
+: m_Range({{xMin, xMax, yMin, yMax, zMin, zMax}})
 {
 }
 
@@ -62,7 +62,7 @@ SIMPLRange3D::SIMPLRange3D(size_t xMin, size_t xMax, size_t yMin, size_t yMax, s
 //
 // -----------------------------------------------------------------------------
 SIMPLRange3D::SIMPLRange3D(const tbb::blocked_range3d<size_t>& r)
-: m_Range({r.pages().begin(), r.pages().end(), r.rows().begin(), r.rows().end(), r.cols().begin(), r.cols().end()})
+: m_Range({{r.pages().begin(), r.pages().end(), r.rows().begin(), r.rows().end(), r.cols().begin(), r.cols().end()}})
 {
 }
 #endif
@@ -80,7 +80,7 @@ SIMPLRange3D::RangeType SIMPLRange3D::getRange() const
 // -----------------------------------------------------------------------------
 SIMPLRange3D::DimensionRange SIMPLRange3D::getXRange() const
 {
-  return {m_Range[0], m_Range[1]};
+  return {{m_Range[0], m_Range[1]}};
 }
 
 // -----------------------------------------------------------------------------
@@ -88,7 +88,7 @@ SIMPLRange3D::DimensionRange SIMPLRange3D::getXRange() const
 // -----------------------------------------------------------------------------
 SIMPLRange3D::DimensionRange SIMPLRange3D::getYRange() const
 {
-  return {m_Range[2], m_Range[3]};
+  return {{m_Range[2], m_Range[3]}};
 }
 
 // -----------------------------------------------------------------------------
@@ -96,7 +96,7 @@ SIMPLRange3D::DimensionRange SIMPLRange3D::getYRange() const
 // -----------------------------------------------------------------------------
 SIMPLRange3D::DimensionRange SIMPLRange3D::getZRange() const
 {
-  return {m_Range[4], m_Range[5]};
+  return {{m_Range[4], m_Range[5]}};
 }
 
 // -----------------------------------------------------------------------------
