@@ -185,6 +185,12 @@ private:
      */
     static bool CheckRenamePath(const DataContainerArrayShPtr& oldDca, const DataContainerArrayShPtr& newDca, const DataArrayPath& oldPath, const DataArrayPath& newPath);
 
+    /**
+     * @brief Checks if two rename values are compatible to be merged together.
+     * @param originalPair
+     * @param newPair
+     * @return
+     */
     static bool CanReplaceRenamePath(const RenameType& originalPair, const RenameType& newPair);
 
     /**

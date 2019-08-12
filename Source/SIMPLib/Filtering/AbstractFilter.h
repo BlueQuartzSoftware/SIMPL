@@ -311,6 +311,10 @@ public:
    */
   std::list<DataArrayPath> getCreatedPaths();
 
+  /**
+   * @brief Returns a list of DataArrayPaths created but not renamed by the filter.
+   * @return
+   */
   std::list<DataArrayPath> getCreatedPathsNotRenamed();
 
   /**
