@@ -746,7 +746,7 @@ int FilterPipeline::preflightPipeline()
       const DataArrayPath::RenameContainer origRenamedPaths = filter->getRenamedPaths();
       filter->preflight();
       // Check if an existing renamed path was created by this filter
-      std::list<DataArrayPath> createdPaths = filter->getCreatedPaths():
+      std::list<DataArrayPath> createdPaths = filter->getCreatedPaths();
       for(const auto& origRenamedPath : origRenamedPaths)
       {
         createdPaths.push_back(origRenamedPath.second);
