@@ -56,6 +56,7 @@ class SIMPLib_EXPORT IDataStructureNode
 {
 public:
   SIMPL_SHARED_POINTERS(IDataStructureNode)
+  SIMPL_TYPE_MACRO(IDataStructureNode)
 
   using ParentType = AbstractDataStructureContainer;
   // using ParentWkPtr = std::weak_ptr<ParentType>;

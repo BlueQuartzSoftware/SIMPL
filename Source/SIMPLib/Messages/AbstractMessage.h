@@ -49,32 +49,38 @@ class AbstractMessageHandler;
  */
 class SIMPLib_EXPORT AbstractMessage
 {
-  public:
-    SIMPL_SHARED_POINTERS(AbstractMessage)
-    SIMPL_TYPE_MACRO(AbstractMessage)
+  // clang-format off
+  PYB11_CREATE_BINDINGS(AbstractMessage)
+  PYB11_PROPERTY(QString MessageText READ getMessageText WRITE setMessageText)
+  PYB11_METHOD(QString generateMessageString)
+  // clang-format on
 
-    virtual ~AbstractMessage();
+public:
+  SIMPL_SHARED_POINTERS(AbstractMessage)
+  SIMPL_TYPE_MACRO(AbstractMessage)
 
-    SIMPL_INSTANCE_STRING_PROPERTY(MessageText)
+  virtual ~AbstractMessage();
 
-    /**
-     * @brief This method creates and returns a message string
-     */
-    virtual QString generateMessageString() const = 0;
+  SIMPL_INSTANCE_STRING_PROPERTY(MessageText)
 
-    /**
-     * @brief Method that allows the visitation of a message by a message handler.  This
-     * is part of the double-dispatch API that allows observers to be able to perform
-     * subclass specific operations on messages that they receive.
-     * @param msgHandler The observer's message handler
-     */
-    virtual void visit(AbstractMessageHandler* msgHandler) const = 0;
+  /**
+   * @brief This method creates and returns a message string
+   */
+  virtual QString generateMessageString() const = 0;
 
-  protected:
-    AbstractMessage();
-    AbstractMessage(const QString& msgText);
+  /**
+   * @brief Method that allows the visitation of a message by a message handler.  This
+   * is part of the double-dispatch API that allows observers to be able to perform
+   * subclass specific operations on messages that they receive.
+   * @param msgHandler The observer's message handler
+   */
+  virtual void visit(AbstractMessageHandler* msgHandler) const = 0;
 
-  private:
+protected:
+  AbstractMessage();
+  AbstractMessage(const QString& msgText);
+
+private:
 
 };
 Q_DECLARE_METATYPE(AbstractMessage::Pointer)

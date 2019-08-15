@@ -30,12 +30,14 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 #endif
 
 #include <utility>
+#include <typeinfo>
 
 #include <QtCore/QDateTime>
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/Common/ShapeType.h"
+#include "SIMPLib/Utilities/PythonSupport.h"
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 #include "SIMPLib/FilterParameters/AxisAngleInput.h"
@@ -78,90 +80,111 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
   {                                                                                                                                                                                                    \
     using DataArrayType = DataArray<T>;                                                                                                                                                                \
     PySharedPtrClass<DataArrayType> instance(m, #NAME, parent, py::buffer_protocol());                                                                                                                 \
-    instance.def(py::init([](size_t numElements, QString name, T initValue) { return std::shared_ptr<DataArrayType>(new DataArrayType(numElements, name, initValue)); }))                                                    \
-        .def(py::init([](T* ptr, size_t numElements, std::vector<size_t> cDims, QString name, bool ownsData) {                                                                                         \
-          return DataArrayType::WrapPointer(ptr, numElements, cDims, name, ownsData);                                                                                  \
-        }))                                                                                                                                                                                            \
-        .def(py::init([](py::array_t<T, py::array::c_style> b, QString name, bool ownsData) {                                                                                                          \
-          py::buffer_info buf = b.request();                                                                                                                                                           \
-          std::vector<ssize_t> shape = buf.shape;                                                                                                                                                      \
-          ssize_t ndim = buf.ndim;                                                                                                                                                                     \
-          size_t numTuples = 0;                                                                                                                                                                        \
-          QVector<size_t> cDims;                                                                                                                                                                       \
-          if(ndim == 0)                                                                                                                                                                                \
-          {                                                                                                                                                                                            \
-            numTuples = 1;                                                                                                                                                                             \
-            cDims.resize(1);                                                                                                                                                                           \
-            cDims[0] = 1;                                                                                                                                                                              \
-          }                                                                                                                                                                                            \
-          else if(ndim == 1)                                                                                                                                                                           \
-          {                                                                                                                                                                                            \
-            numTuples = static_cast<size_t>(shape.front());                                                                                                                                            \
-            cDims.resize(1);                                                                                                                                                                           \
-            cDims[0] = 1;                                                                                                                                                                              \
-          }                                                                                                                                                                                            \
-          else                                                                                                                                                                                         \
-          {                                                                                                                                                                                            \
-            numTuples = static_cast<size_t>(shape.front());                                                                                                                                            \
-            cDims.resize(ndim - 1);                                                                                                                                                                    \
-            for(ssize_t e = 0; e < ndim - 1; e++)                                                                                                                                                      \
-            {                                                                                                                                                                                          \
-              cDims[e] = static_cast<size_t>(shape[e + 1]);                                                                                                                                            \
-            }                                                                                                                                                                                          \
-          }                                                                                                                                                                                            \
-          return DataArrayType::WrapPointer(reinterpret_cast<T*>(b.mutable_data(0)), numTuples, cDims, name, ownsData);                                                                                \
-        })) /* Class instance method setValue */                                                                                                                                                       \
-        .def("setValue", &DataArrayType::setValue, py::arg("index"), py::arg("value"))                                                                                                                 \
-        .def("getValue", &DataArrayType::getValue, py::arg("index"))                                                                                                                                   \
-        .def_property("Data", &DataArrayType::getArray, &DataArrayType::setArray, py::return_value_policy::reference)                                                                                  \
-        .def_property("Name", &DataArrayType::getName, &DataArrayType::setName)                                                                                                                        \
-        .def("Cleanup", []() { return DataArrayType::NullPointer(); })                                                                                                                                 \
-        .def_buffer([](DataArrayType &m) -> py::buffer_info {                                                                                                                                          \
-          int nComp = m.getNumberOfComponents();                                                                                                                                                       \
-          size_t numTuples = m.getNumberOfTuples();                                                                                                                                                    \
-          ssize_t ndim = 0;                                                                                                                                                                            \
-          std::vector<ssize_t> shape;                                                                                                                                                                  \
-          std::vector<ssize_t> strides;                                                                                                                                                                \
-          if(nComp == 1)                                                                                                                                                                               \
-          {                                                                                                                                                                                            \
-            ndim = 1;                                                                                                                                                                                  \
-            shape.resize(ndim);                                                                                                                                                                        \
-            shape[0] = numTuples;                                                                                                                                                                      \
-            strides.resize(ndim);                                                                                                                                                                      \
-            strides[0] = sizeof(T);                                                                                                                                                                    \
-          }                                                                                                                                                                                            \
-          else                                                                                                                                                                                         \
-          {                                                                                                                                                                                            \
-            QVector<size_t> cDims = m.getComponentDimensions();                                                                                                                                        \
-            ndim = static_cast<ssize_t>(cDims.size()) + 1;                                                                                                                                             \
-            shape.resize(ndim);                                                                                                                                                                        \
-            shape[0] = numTuples;                                                                                                                                                                      \
-            for(ssize_t e = 0; e < ndim - 1; e++)                                                                                                                                                      \
-            {                                                                                                                                                                                          \
-              shape[e + 1] = static_cast<ssize_t>(cDims[e]);                                                                                                                                           \
-            }                                                                                                                                                                                          \
-            ssize_t cur = 1;                                                                                                                                                                           \
-            std::vector<ssize_t> rshape(shape);                                                                                                                                                        \
-            std::reverse(std::begin(rshape), std::end(rshape));                                                                                                                                        \
-            for(auto val : rshape)                                                                                                                                                                     \
-            {                                                                                                                                                                                          \
-              strides.push_back(cur * val * sizeof(T));                                                                                                                                                \
-              cur *= val;                                                                                                                                                                              \
-            }                                                                                                                                                                                          \
-            strides.pop_back();                                                                                                                                                                        \
-            auto front = std::begin(strides);                                                                                                                                                          \
-            strides.insert(front, sizeof(T));                                                                                                                                                          \
-            std::reverse(std::begin(strides), std::end(strides));                                                                                                                                      \
-          }                                                                                                                                                                                            \
-          return py::buffer_info(                                                                                                                                                                      \
-            m.getPointer(0),                                                                                                                                                                           \
-            sizeof(T),                                                                                                                                                                                 \
-            py::format_descriptor<T>::format(),                                                                                                                                                        \
-            ndim,                                                                                                                                                                                      \
-            shape,                                                                                                                                                                                     \
-            strides                                                                                                                                                                                    \
-          );                                                                                                                                                                                           \
-        });                                                                                                                                                                                            \
+    instance                                                                                                                                                                                          \
+      .def(py::init([](size_t numElements, QString name, T initValue) {                                                                                                                                 \
+        return PythonSupport::Create##NAME(numElements, name, initValue);            \
+      }))                                                                                                                      \
+      .def(py::init([](size_t numElements, std::vector<size_t> cDims, QString name, T initValue) {                                                                                                  \
+        return PythonSupport::Create##NAME(numElements, cDims, name, initValue);                                                                                                                   \
+      }))                                                                                                                                                                                              \
+      .def(py::init([](T* ptr, size_t numTuples, std::vector<size_t> cDims, QString name, bool ownsData) {                                                                                         \
+        return PythonSupport::Wrap##NAME(ptr, numTuples, cDims, name, ownsData);                                                                                                                    \
+      }))                                                                                                                                                                                              \
+      .def(py::init([](py::array_t<T, py::array::c_style> b, QString name, bool ownsData) {                                                                                                          \
+        py::buffer_info buf = b.request();                                                                                                                                                           \
+        std::vector<ssize_t> shape = buf.shape;                                                                                                                                                      \
+        ssize_t ndim = buf.ndim;                                                                                                                                                                     \
+        size_t numTuples = 0;                                                                                                                                                                        \
+        std::vector<size_t> cDims;                                                                                                                                                                       \
+        if(ndim == 0)                                                                                                                                                                                \
+        {                                                                                                                                                                                            \
+          numTuples = 1;                                                                                                                                                                             \
+          cDims.resize(1);                                                                                                                                                                           \
+          cDims[0] = 1;                                                                                                                                                                              \
+        }                                                                                                                                                                                            \
+        else if(ndim == 1)                                                                                                                                                                           \
+        {                                                                                                                                                                                            \
+          numTuples = static_cast<size_t>(shape.front());                                                                                                                                            \
+          cDims.resize(1);                                                                                                                                                                           \
+          cDims[0] = 1;                                                                                                                                                                              \
+        }                                                                                                                                                                                            \
+        else                                                                                                                                                                                         \
+        {                                                                                                                                                                                            \
+          numTuples = static_cast<size_t>(shape.front());                                                                                                                                            \
+          cDims.resize(ndim - 1);                                                                                                                                                                    \
+          for(ssize_t e = 0; e < ndim - 1; e++)                                                                                                                                                      \
+          {                                                                                                                                                                                          \
+            cDims[e] = static_cast<size_t>(shape[e + 1]);                                                                                                                                            \
+          }                                                                                                                                                                                          \
+        }                                                                                                                                                                                            \
+          return PythonSupport::Wrap##NAME(reinterpret_cast<T*>(b.mutable_data(0)), numTuples, cDims, name, ownsData);                                                                                          \
+      })) /* Class instance method setValue */                                                                                                                                                       \
+      .def("setValue", &DataArrayType::setValue, py::arg("index"), py::arg("value"))                                                                                                                 \
+      .def("getValue", &DataArrayType::getValue, py::arg("index"))                                                                                                                                   \
+      .def_property("Data", &DataArrayType::getArray, &DataArrayType::setArray, py::return_value_policy::reference)                                                                                  \
+      .def_property("Name", &DataArrayType::getName, &DataArrayType::setName)                                                                                                                        \
+      .def("Cleanup", []() { return DataArrayType::NullPointer(); })                                                                                                                                 \
+      .def_buffer([](DataArrayType &m) -> py::buffer_info {                                                                                                                                          \
+        int nComp = m.getNumberOfComponents();                                                                                                                                                       \
+        size_t numTuples = m.getNumberOfTuples();                                                                                                                                                    \
+        ssize_t ndim = 0;                                                                                                                                                                            \
+        std::vector<ssize_t> shape;                                                                                                                                                                  \
+        std::vector<ssize_t> strides;                                                                                                                                                                \
+        if(nComp == 1)                                                                                                                                                                               \
+        {                                                                                                                                                                                            \
+          ndim = 1;                                                                                                                                                                                  \
+          shape.resize(ndim);                                                                                                                                                                        \
+          shape[0] = numTuples;                                                                                                                                                                      \
+          strides.resize(ndim);                                                                                                                                                                      \
+          strides[0] = sizeof(T);                                                                                                                                                                    \
+        }                                                                                                                                                                                            \
+        else                                                                                                                                                                                         \
+        {                                                                                                                                                                                            \
+          std::vector<size_t> cDims = m.getComponentDimensions();                                                                                                                                        \
+          ndim = static_cast<ssize_t>(cDims.size()) + 1;                                                                                                                                             \
+          shape.resize(ndim);                                                                                                                                                                        \
+          shape[0] = numTuples;                                                                                                                                                                      \
+          for(ssize_t e = 0; e < ndim - 1; e++)                                                                                                                                                      \
+          {                                                                                                                                                                                          \
+            shape[e + 1] = static_cast<ssize_t>(cDims[e]);                                                                                                                                           \
+          }                                                                                                                                                                                          \
+          ssize_t cur = 1;                                                                                                                                                                           \
+          std::vector<ssize_t> rshape(shape);                                                                                                                                                        \
+          std::reverse(std::begin(rshape), std::end(rshape));                                                                                                                                        \
+          for(auto val : rshape)                                                                                                                                                                     \
+          {                                                                                                                                                                                          \
+            strides.push_back(cur * val * sizeof(T));                                                                                                                                                \
+            cur *= val;                                                                                                                                                                              \
+          }                                                                                                                                                                                          \
+          strides.pop_back();                                                                                                                                                                        \
+          auto front = std::begin(strides);                                                                                                                                                          \
+          strides.insert(front, sizeof(T));                                                                                                                                                          \
+          std::reverse(std::begin(strides), std::end(strides));                                                                                                                                      \
+        }                                                                                                                                                                                            \
+        return py::buffer_info(                                                                                                                                                                      \
+          m.getPointer(0),                                                                                                                                                                           \
+          sizeof(T),                                                                                                                                                                                 \
+          py::format_descriptor<T>::format(),                                                                                                                                                        \
+          ndim,                                                                                                                                                                                      \
+          shape,                                                                                                                                                                                     \
+          strides                                                                                                                                                                                    \
+        );                                                                                                                                                                                           \
+      })                                \
+      .def("__repr__", [](DataArrayType &a)  {        \
+        std::stringstream ss;\
+        ss <<  "<'" << a.getFullNameOfClass().toStdString() << "  NAME=" << a.getName().toStdString() \
+        << ": TUPLES: " << a.getNumberOfTuples()\
+        << "  COMPONENTS: [";                     \
+        std::vector<size_t> comps = a.getComponentDimensions();  \
+        bool first = true;                            \
+        for(const auto& c : comps)  {             \
+          if(!first) { ss << ","; }                \
+          ss << c;         \
+          first = false;                           \
+        }                                          \
+        ss << "]'>";                \
+        return ss.str();           \
+      })   \
     ;                                                                                                                                                                                                  \
     return instance;                                                                                                                                                                                   \
 }
@@ -184,86 +207,86 @@ PYB11_DEFINE_DATAARRAY_INIT(double, DoubleArrayType);
 
 #define PYB11_DEFINE_SIMPLARRAY_2_INIT(T, NAME)\
   py::class_<NAME>(mod, #NAME)\
-	  .def(py::init<>([](py::list values) {\
+    .def(py::init<>([](py::list values) {\
       NAME vec = NAME(py::cast<T>(values[0]), py::cast<T>(values[1]));\
       return vec;\
     }))\
-	  .def("__repr__", [](const NAME &inValues) {\
-		  py::list outValues;\
-		  for (T value : inValues) { outValues.append(value); }\
-		  return outValues;\
-	  })\
-	  .def("__str__", [](const NAME &inValues) {\
-		  py::list outValues;\
-		  for (T value : inValues) { outValues.append(value); }\
+    .def("__repr__", [](const NAME &inValues) {\
+      py::list outValues;\
+      for (T value : inValues) { outValues.append(value); }\
+      return outValues;\
+    })\
+    .def("__str__", [](const NAME &inValues) {\
+      py::list outValues;\
+      for (T value : inValues) { outValues.append(value); }\
       return py::str(outValues);\
-	  })\
-	  .def("__getitem__", [](const NAME &values, int index) {\
-		  return values[index];\
-	  })\
+    })\
+    .def("__getitem__", [](const NAME &values, int index) {\
+      return values[index];\
+    })\
   ;
 
 #define PYB11_DEFINE_SIMPLARRAY_3_INIT(T, NAME)\
   py::class_<NAME>(mod, #NAME)\
-	  .def(py::init<>([](py::list values) {\
+    .def(py::init<>([](py::list values) {\
       NAME vec = NAME(py::cast<T>(values[0]), py::cast<T>(values[1]), py::cast<T>(values[2]));\
       return vec;\
     }))\
-	  .def("__repr__", [](const NAME &inValues) {\
-		  py::list outValues;\
-		  for (T value : inValues) { outValues.append(value); }\
-		  return outValues;\
-	  })\
-	  .def("__str__", [](const NAME &inValues) {\
-		  py::list outValues;\
-		  for (T value : inValues) { outValues.append(value); }\
+    .def("__repr__", [](const NAME &inValues) {\
+      py::list outValues;\
+      for (T value : inValues) { outValues.append(value); }\
+      return outValues;\
+    })\
+    .def("__str__", [](const NAME &inValues) {\
+      py::list outValues;\
+      for (T value : inValues) { outValues.append(value); }\
       return py::str(outValues);\
-	  })\
-	  .def("__getitem__", [](const NAME &values, int index) {\
-		  return values[index];\
-	  })\
+    })\
+    .def("__getitem__", [](const NAME &values, int index) {\
+      return values[index];\
+    })\
   ;
 
 #define PYB11_DEFINE_SIMPLARRAY_4_INIT(T, NAME)\
   py::class_<NAME>(mod, #NAME)\
-	  .def(py::init<>([](py::list values) {\
+    .def(py::init<>([](py::list values) {\
       NAME vec = NAME(py::cast<T>(values[0]), py::cast<T>(values[1]), py::cast<T>(values[2]), py::cast<T>(values[3]));\
       return vec;\
     }))\
-	  .def("__repr__", [](const NAME &inValues) {\
-		  py::list outValues;\
-		  for (T value : inValues) { outValues.append(value); }\
-		  return outValues;\
-	  })\
-	  .def("__str__", [](const NAME &inValues) {\
-		  py::list outValues;\
-		  for (T value : inValues) { outValues.append(value); }\
+    .def("__repr__", [](const NAME &inValues) {\
+      py::list outValues;\
+      for (T value : inValues) { outValues.append(value); }\
+      return outValues;\
+    })\
+    .def("__str__", [](const NAME &inValues) {\
+      py::list outValues;\
+      for (T value : inValues) { outValues.append(value); }\
       return py::str(outValues);\
-	  })\
-	  .def("__getitem__", [](const NAME &values, int index) {\
-		  return values[index];\
-	  })\
+    })\
+    .def("__getitem__", [](const NAME &values, int index) {\
+      return values[index];\
+    })\
   ;
 
 #define PYB11_DEFINE_SIMPLARRAY_6_INIT(T, NAME)\
   py::class_<NAME>(mod, #NAME)\
-	  .def(py::init<>([](py::list values) {\
+    .def(py::init<>([](py::list values) {\
       NAME vec = NAME(py::cast<T>(values[0]), py::cast<T>(values[1]), py::cast<T>(values[2]), py::cast<T>(values[3]), py::cast<T>(values[4]), py::cast<T>(values[5]));\
       return vec;\
     }))\
-	  .def("__repr__", [](const NAME &inValues) {\
-		  py::list outValues;\
-		  for (T value : inValues) { outValues.append(value); }\
-		  return outValues;\
-	  })\
-	  .def("__str__", [](const NAME &inValues) {\
-		  py::list outValues;\
-		  for (T value : inValues) { outValues.append(value); }\
+    .def("__repr__", [](const NAME &inValues) {\
+      py::list outValues;\
+      for (T value : inValues) { outValues.append(value); }\
+      return outValues;\
+    })\
+    .def("__str__", [](const NAME &inValues) {\
+      py::list outValues;\
+      for (T value : inValues) { outValues.append(value); }\
       return py::str(outValues);\
-	  })\
-	  .def("__getitem__", [](const NAME &values, int index) {\
-		  return values[index];\
-	  })\
+    })\
+    .def("__getitem__", [](const NAME &values, int index) {\
+      return values[index];\
+    })\
   ;
 
 //------------------------------------------------------------------------------
@@ -302,110 +325,110 @@ PYBIND11_MODULE(dream3d, m)
   PYB11_DEFINE_SIMPLARRAY_6_INIT(int32_t, IntVec6Type)
 
   py::class_<AxisAngleInput_t>(mod, "AxisAngleInput")
-	  .def(py::init< const float &, const float &, const float &, const float &>())
+    .def(py::init< const float &, const float &, const float &, const float &>())
   ;
 
   py::class_<FileListInfo_t>(mod, "FileListInfo")
-	  .def(py::init <> ([] ( const int & paddingDigits, const unsigned int & ordering, const int & startIndex,
-		  const int & endIndex, const int & incrementIndex, const py::str & inputPath, const py::str & filePrefix,
-		  const py::str & fileSuffix, const py::str &fileExtension)
+    .def(py::init <> ([] ( const int & paddingDigits, const unsigned int & ordering, const int & startIndex,
+      const int & endIndex, const int & incrementIndex, const py::str & inputPath, const py::str & filePrefix,
+      const py::str & fileSuffix, const py::str &fileExtension)
       {
-				FileListInfo_t fileListInfo;
-				fileListInfo.PaddingDigits = paddingDigits;
-				fileListInfo.Ordering = ordering;
-				fileListInfo.StartIndex = startIndex;
-				fileListInfo.EndIndex = endIndex;
-				fileListInfo.IncrementIndex = incrementIndex;
-				QString InputPath = QString::fromStdString(py::cast<std::string>(inputPath));
-				QString FilePrefix = QString::fromStdString(py::cast<std::string>(filePrefix));
-				QString FileSuffix = QString::fromStdString(py::cast<std::string>(fileSuffix));
-				QString FileExtension = QString::fromStdString(py::cast<std::string>(fileExtension));
-				fileListInfo.InputPath = InputPath;
-				fileListInfo.FilePrefix = FilePrefix;
-				fileListInfo.FileSuffix = FileSuffix;
-				fileListInfo.FileExtension = FileExtension;
-				return fileListInfo;
+        FileListInfo_t fileListInfo;
+        fileListInfo.PaddingDigits = paddingDigits;
+        fileListInfo.Ordering = ordering;
+        fileListInfo.StartIndex = startIndex;
+        fileListInfo.EndIndex = endIndex;
+        fileListInfo.IncrementIndex = incrementIndex;
+        QString InputPath = QString::fromStdString(py::cast<std::string>(inputPath));
+        QString FilePrefix = QString::fromStdString(py::cast<std::string>(filePrefix));
+        QString FileSuffix = QString::fromStdString(py::cast<std::string>(fileSuffix));
+        QString FileExtension = QString::fromStdString(py::cast<std::string>(fileExtension));
+        fileListInfo.InputPath = InputPath;
+        fileListInfo.FilePrefix = FilePrefix;
+        fileListInfo.FileSuffix = FileSuffix;
+        fileListInfo.FileExtension = FileExtension;
+        return fileListInfo;
       }))
   ;
 
 #if 0
   // Handle QVector of size_t
   py::class_<std::vector<size_t>>(mod, "Dims")
-	  .def(py::init<>([](py::list dimensions) {
-	  std::vector<size_t> dims = std::vector<size_t>();
-	  for (auto dimension : dimensions)
-	  {
-		  dims.push_back(py::cast<size_t>(dimension));
-	  }
-	  return dims;
+    .def(py::init<>([](py::list dimensions) {
+    std::vector<size_t> dims = std::vector<size_t>();
+    for (auto dimension : dimensions)
+    {
+      dims.push_back(py::cast<size_t>(dimension));
+    }
+    return dims;
       }))
-	  .def("__repr__", [](const std::vector<size_t> &dims) {
-		  py::list dimensions;
-		  for (size_t dim : dims)
-		  {
-			  dimensions.append(dim);
-		  }
-		  return dimensions;
-	  })
-	  .def("__str__", [](const std::vector<size_t> &dims) {
-		  py::list dimensions;
-		  for (size_t dim : dims)
-		  {
-			  dimensions.append(dim);
-		  }
+    .def("__repr__", [](const std::vector<size_t> &dims) {
+      py::list dimensions;
+      for (size_t dim : dims)
+      {
+        dimensions.append(dim);
+      }
+      return dimensions;
+    })
+    .def("__str__", [](const std::vector<size_t> &dims) {
+      py::list dimensions;
+      for (size_t dim : dims)
+      {
+        dimensions.append(dim);
+      }
       return py::str(dimensions);
-	  })
-	  .def("__getitem__", [](const std::vector<size_t> &dims, int key) {
-		  return dims[key];
-	  })
+    })
+    .def("__getitem__", [](const std::vector<size_t> &dims, int key) {
+      return dims[key];
+    })
   ;
 #endif
 
   // Handle QSet of QString
   py::class_<QSet<QString>>(mod, "StringSet")
-	  .def(py::init<>([](py::set stringSet) {
-	  QSet<QString> newQStringSet = QSet<QString>();
-	  for (auto newString : stringSet)
-	  {
-		  newQStringSet.insert(py::cast<QString>(newString));
-	  }
-	  return newQStringSet;
+    .def(py::init<>([](py::set stringSet) {
+    QSet<QString> newQStringSet = QSet<QString>();
+    for (auto newString : stringSet)
+    {
+      newQStringSet.insert(py::cast<QString>(newString));
+    }
+    return newQStringSet;
       }))
   ;
 
   // Handle QDateTime
   py::class_<QDateTime>(mod, "DateTime")
-	  .def(py::init<>([](int year, int month, int day, int seconds) {
-	  QDateTime dateTime(QDate(year, month, day));
-	  dateTime.setTime_t(seconds);
-	  return dateTime;
+    .def(py::init<>([](int year, int month, int day, int seconds) {
+    QDateTime dateTime(QDate(year, month, day));
+    dateTime.setTime_t(seconds);
+    return dateTime;
       }))
   ;
 
   // Handle QJsonArray
   py::class_<QJsonArray>(mod, "JsonArray")
-	  .def(py::init<>([](py::list values) {
-	  QJsonArray qJsonArray;
-	  for (auto value : values) {
-		  QJsonValue qJsonValue(py::cast<double>(value));
-		  qJsonArray.push_back(qJsonValue);
-	  }
-	  return qJsonArray;
+    .def(py::init<>([](py::list values) {
+    QJsonArray qJsonArray;
+    for (auto value : values) {
+      QJsonValue qJsonValue(py::cast<double>(value));
+      qJsonArray.push_back(qJsonValue);
+    }
+    return qJsonArray;
       }))
   ;
 
   py::class_<QList<ImportHDF5Dataset::DatasetImportInfo>>(mod, "DatasetImportInfoList")
      .def(py::init<>([](py::list values) {
-	  QList<ImportHDF5Dataset::DatasetImportInfo> datasetImportInfoList;
-	  for (auto value : values) {
-		  py::list valueAsList = py::cast<py::list>(value);
-		  ImportHDF5Dataset::DatasetImportInfo datasetImportInfo;
-		  datasetImportInfo.dataSetPath = py::cast<QString>(valueAsList[0]);
-		  datasetImportInfo.componentDimensions = py::cast<QString>(valueAsList[1]);
-		  datasetImportInfoList.push_back(datasetImportInfo);
-	  }
-	  return datasetImportInfoList;
-	  }));
+    QList<ImportHDF5Dataset::DatasetImportInfo> datasetImportInfoList;
+    for (auto value : values) {
+      py::list valueAsList = py::cast<py::list>(value);
+      ImportHDF5Dataset::DatasetImportInfo datasetImportInfo;
+      datasetImportInfo.dataSetPath = py::cast<QString>(valueAsList[0]);
+      datasetImportInfo.componentDimensions = py::cast<QString>(valueAsList[1]);
+      datasetImportInfoList.push_back(datasetImportInfo);
+    }
+    return datasetImportInfoList;
+    }));
 
   /* STL Binding code */
   py::bind_vector<std::vector<int8_t>>(mod, "VectorInt8");
@@ -434,45 +457,45 @@ PYBIND11_MODULE(dream3d, m)
 
   /* Enumeration code for Comparison Operators */
   py::enum_<SIMPL::Comparison::Enumeration>(mod, "ComparisonOperators")
-	  .value("LessThan", SIMPL::Comparison::Enumeration::Operator_LessThan)
-	  .value("GreaterThan", SIMPL::Comparison::Enumeration::Operator_GreaterThan)
-	  .value("Equal", SIMPL::Comparison::Enumeration::Operator_Equal)
-	  .value("NotEqual", SIMPL::Comparison::Enumeration::Operator_NotEqual)
-	  .value("Unknown", SIMPL::Comparison::Enumeration::Operator_Unknown)
-	  .export_values();
+    .value("LessThan", SIMPL::Comparison::Enumeration::Operator_LessThan)
+    .value("GreaterThan", SIMPL::Comparison::Enumeration::Operator_GreaterThan)
+    .value("Equal", SIMPL::Comparison::Enumeration::Operator_Equal)
+    .value("NotEqual", SIMPL::Comparison::Enumeration::Operator_NotEqual)
+    .value("Unknown", SIMPL::Comparison::Enumeration::Operator_Unknown)
+    .export_values();
 
   /* Enumeration code for Delimiter types */
   py::enum_<SIMPL::DelimiterTypes::Type>(mod, "DelimiterTypes")
-	  .value("Comma", SIMPL::DelimiterTypes::Type::Comma)
-	  .value("Semicolon", SIMPL::DelimiterTypes::Type::Semicolon)
-	  .value("Colon", SIMPL::DelimiterTypes::Type::Colon)
-	  .value("Tab", SIMPL::DelimiterTypes::Type::Tab)
-	  .value("Space", SIMPL::DelimiterTypes::Type::Space)
-	  .export_values();
+    .value("Comma", SIMPL::DelimiterTypes::Type::Comma)
+    .value("Semicolon", SIMPL::DelimiterTypes::Type::Semicolon)
+    .value("Colon", SIMPL::DelimiterTypes::Type::Colon)
+    .value("Tab", SIMPL::DelimiterTypes::Type::Tab)
+    .value("Space", SIMPL::DelimiterTypes::Type::Space)
+    .export_values();
 
   /* Enumeration code for PhaseType */
   py::enum_<PhaseType::Type>(mod, "PhaseType")
-	  .value("Primary", PhaseType::Type::Primary)
-	  .value("Precipitate", PhaseType::Type::Precipitate)
-	  .value("Transformation", PhaseType::Type::Transformation)
-	  .value("Matrix", PhaseType::Type::Matrix)
-	  .value("Boundary", PhaseType::Type::Boundary)
-	  .value("Unknown", PhaseType::Type::Unknown)
-	  .value("Any", PhaseType::Type::Any)
-	  .export_values();
+    .value("Primary", PhaseType::Type::Primary)
+    .value("Precipitate", PhaseType::Type::Precipitate)
+    .value("Transformation", PhaseType::Type::Transformation)
+    .value("Matrix", PhaseType::Type::Matrix)
+    .value("Boundary", PhaseType::Type::Boundary)
+    .value("Unknown", PhaseType::Type::Unknown)
+    .value("Any", PhaseType::Type::Any)
+    .export_values();
 
   /* Enumeration code for ShapeType */
   py::enum_<ShapeType::Type>(mod, "ShapeType")
-	  .value("Ellipsoid", ShapeType::Type::Ellipsoid)
-	  .value("SuperEllipsoid", ShapeType::Type::SuperEllipsoid)
-	  .value("CubeOctahedron", ShapeType::Type::CubeOctahedron)
-	  .value("CylinderA", ShapeType::Type::CylinderA)
-	  .value("CylinderB", ShapeType::Type::CylinderB)
-	  .value("CylinderC", ShapeType::Type::CylinderC)
-	  .value("ShapeTypeEnd", ShapeType::Type::ShapeTypeEnd)
-	  .value("Unknown", ShapeType::Type::Unknown)
-	  .value("Any", ShapeType::Type::Any)
-	  .export_values();
+    .value("Ellipsoid", ShapeType::Type::Ellipsoid)
+    .value("SuperEllipsoid", ShapeType::Type::SuperEllipsoid)
+    .value("CubeOctahedron", ShapeType::Type::CubeOctahedron)
+    .value("CylinderA", ShapeType::Type::CylinderA)
+    .value("CylinderB", ShapeType::Type::CylinderB)
+    .value("CylinderC", ShapeType::Type::CylinderC)
+    .value("ShapeTypeEnd", ShapeType::Type::ShapeTypeEnd)
+    .value("Unknown", ShapeType::Type::Unknown)
+    .value("Any", ShapeType::Type::Any)
+    .export_values();
 
   /* Enumeration code for Crystal Structures */
   py::enum_<EnsembleInfo::CrystalStructure>(mod, "CrystalStructure")
@@ -513,25 +536,25 @@ PYBIND11_MODULE(dream3d, m)
 
   /* Enumeration code for AngleUnits */
   py::enum_<ArrayCalculator::AngleUnits>(mod, "AngleUnits")
-	  .value("Radians", ArrayCalculator::AngleUnits::Radians)
-	  .value("Degrees", ArrayCalculator::AngleUnits::Degrees)
-	  .export_values();
+    .value("Radians", ArrayCalculator::AngleUnits::Radians)
+    .value("Degrees", ArrayCalculator::AngleUnits::Degrees)
+    .export_values();
 
   py::enum_<SIMPL::NumericTypes::Type>(mod, "NumericTypes")
-	  .value("Int8", SIMPL::NumericTypes::Type::Int8)
-	  .value("UInt8", SIMPL::NumericTypes::Type::UInt8)
-	  .value("Int16", SIMPL::NumericTypes::Type::Int16)
-	  .value("UInt16", SIMPL::NumericTypes::Type::UInt16)
-	  .value("Int32", SIMPL::NumericTypes::Type::Int32)
-	  .value("UInt32", SIMPL::NumericTypes::Type::UInt32)
-	  .value("Int64", SIMPL::NumericTypes::Type::Int64)
-	  .value("UInt64", SIMPL::NumericTypes::Type::UInt64)
-	  .value("Float", SIMPL::NumericTypes::Type::Float)
-	  .value("Double", SIMPL::NumericTypes::Type::Double)
-	  .value("Bool", SIMPL::NumericTypes::Type::Bool)
-	  .value("SizeT", SIMPL::NumericTypes::Type::SizeT)
-	  .value("UnknownNumType", SIMPL::NumericTypes::Type::UnknownNumType)
-	  .export_values();
+    .value("Int8", SIMPL::NumericTypes::Type::Int8)
+    .value("UInt8", SIMPL::NumericTypes::Type::UInt8)
+    .value("Int16", SIMPL::NumericTypes::Type::Int16)
+    .value("UInt16", SIMPL::NumericTypes::Type::UInt16)
+    .value("Int32", SIMPL::NumericTypes::Type::Int32)
+    .value("UInt32", SIMPL::NumericTypes::Type::UInt32)
+    .value("Int64", SIMPL::NumericTypes::Type::Int64)
+    .value("UInt64", SIMPL::NumericTypes::Type::UInt64)
+    .value("Float", SIMPL::NumericTypes::Type::Float)
+    .value("Double", SIMPL::NumericTypes::Type::Double)
+    .value("Bool", SIMPL::NumericTypes::Type::Bool)
+    .value("SizeT", SIMPL::NumericTypes::Type::SizeT)
+    .value("UnknownNumType", SIMPL::NumericTypes::Type::UnknownNumType)
+    .export_values();
 
 
   /* Init codes for classes in the Module */
@@ -539,6 +562,7 @@ PYBIND11_MODULE(dream3d, m)
 
   /* Init codes for the DataArray<T> classes */
   PySharedPtrClass<Int8ArrayType> @LIB_NAME@_Int8ArrayType = declareInt8ArrayType(mod, @LIB_NAME@_IDataArray);
+  
   PySharedPtrClass<UInt8ArrayType> @LIB_NAME@_UInt8ArrayType = declareUInt8ArrayType(mod, @LIB_NAME@_IDataArray);
 
   PySharedPtrClass<Int16ArrayType> @LIB_NAME@_Int16ArrayType = declareInt16ArrayType(mod, @LIB_NAME@_IDataArray);

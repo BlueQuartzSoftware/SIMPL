@@ -26,6 +26,9 @@
 /* define to 1 if we are supporting ITK Filters */
 #cmakedefine SIMPL_USE_ITK
 
+/* define if Python wrapping is enabled through Pybind11 */
+#cmakedefine SIMPL_ENABLE_PYTHON
+
 /* define to 1 if we are checking relative paths */
 #cmakedefine SIMPL_RELATIVE_PATH_CHECK @SIMPL_RELATIVE_PATH_CHECK@
 
