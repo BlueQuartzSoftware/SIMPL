@@ -166,7 +166,7 @@ std::vector<unsigned char> SIMPLColorTable::GetColorTable(size_t numColors, QJso
     unsigned char r = 0;
     unsigned char g = 0;
     unsigned char b = 0;
-    if(currentBinIndex < controlColorsCount - 2)
+    if(currentBinIndex < controlColorsCount - 1)
     {
       r = (controlPoints[currentBinIndex][1] * (1.0 - currFraction) + controlPoints[currentBinIndex + 1][1] * currFraction) * 255;
       g = (controlPoints[currentBinIndex][2] * (1.0 - currFraction) + controlPoints[currentBinIndex + 1][2] * currFraction) * 255;
