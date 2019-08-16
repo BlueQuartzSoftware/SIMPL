@@ -33,6 +33,7 @@
 #pragma once
 
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief This class is here for the sole reason of fixing dynamic_pointer_cast across library boundaries when the python
@@ -45,7 +46,7 @@
   static NAME::Pointer Create##NAME(size_t numTuples, const QString& name, TYPE initValue);                                                                                                            \
   static NAME::Pointer Create##NAME(size_t numTuples, NAME::comp_dims_type& cDims, const QString& name, TYPE initValue);
 
-class PythonSupport
+class SIMPLib_EXPORT PythonSupport
 {
 
 public:
