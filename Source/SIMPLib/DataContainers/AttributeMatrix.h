@@ -526,7 +526,7 @@ public:
       // Make sure the types are the same
       IDataArray::Pointer ida = getAttributeArray(arrayName);     
       typename ArrayType::Pointer targetDestArray = std::dynamic_pointer_cast< ArrayType >(ida);
-      if (targetDestArray.get() == 0)
+      if(targetDestArray.get() == nullptr)
       {
         if (nullptr != filter)
         {

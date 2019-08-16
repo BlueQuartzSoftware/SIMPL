@@ -10,6 +10,30 @@ except ImportError:
     raise RuntimeError("This module depends on the numpy module. Please make\
 sure that it is installed properly.")
 
+def ReadDREAM3DFile(data_container_array, input_file ):
+    '''
+    Executes the filter DataContainerReader and returns the error. This will read the entire
+    file into memory.
+
+    :param DataContainerArray data_container_array: The DataContainerArray that the filter will use.
+    :param QString input_file: Sets the InputFile value.
+    :return: ErrorCode produced by the filter
+    :rtype: int
+    '''
+    
+    # Create a DataContainerReader and read the DataStructure into a proxy
+    data_container_reader = simpl.DataContainerReader.New()
+    dcaProxy = data_container_reader.readDataContainerArrayStructure(input_file)
+
+    # Now that we have our DataContainerProxy, read the file
+    data_container_reader = simpl.DataContainerReader.New()
+    data_container_reader.setDataContainerArray(data_container_array)
+    data_container_reader.InputFile = input_file
+    data_container_reader.OverwriteExistingDataContainers = True
+    data_container_reader.InputFileDataContainerArrayProxy = dcaProxy
+    data_container_reader.execute()
+    executeError = data_container_reader.ErrorCode
+    return executeError
 
 def CreateDataContainerArray():
     """
@@ -75,107 +99,44 @@ def CreateDataArray(name, shape, cDims, type):
     type -- The numpy type of array to create: 8,16,32,64 signed/unsiged and 32/64 floats are supported
     """
     # Create a numpy array of ones to hold our data
-    num_array = np.ndarray(shape, dtype=type, order="C")
-
+    ashape = np.append([np.prod(shape)], cDims)
+    # Create a numpy array to hold our data
+    num_array = np.ndarray(ashape, dtype=type, order="C")
+    # Get the numpy array as contiguous
     z = np.asarray(num_array)
     if not z.flags.contiguous:
         z = np.ascontiguousarray(z)
     z.fill(0)
-
-    shape = z.shape
     assert z.flags.contiguous, 'Only contiguous arrays are supported.'
     assert not np.issubdtype(z.dtype, np.complex128), \
             "Complex numpy arrays cannot be converted to vtk arrays."\
             "Use real() or imag() to get a component of the array before"\
             " passing it to vtk."
-
-    # Get the Pointer to the numpy array
-    z_flat = np.ravel(z)
-    
-    #np.info(z)
     
     # Declare the number of components for the array
     if type == np.int8:
-        array = simpl.Int8ArrayType(z_flat, cDims, name, False)
+        array = simpl.Int8ArrayType(z, name, False)
     elif type == np.uint8:
-        array = simpl.UInt8ArrayType(z_flat, cDims, name, False)
+        array = simpl.UInt8ArrayType(z, name, False)
     elif type == np.int16:
-        array = simpl.Int16ArrayType(z_flat, cDims, name, False)
+        array = simpl.Int16ArrayType(z, name, False)
     elif type == np.uint16:
-        array = simpl.UInt16ArrayType(z_flat, cDims, name, False)
+        array = simpl.UInt16ArrayType(z, name, False)
     elif type == np.int32:
-        array = simpl.Int32ArrayType(z_flat, cDims, name, False)
+        array = simpl.Int32ArrayType(z, name, False)
     elif type == np.uint32:
-        array = simpl.UInt32ArrayType(z_flat, cDims, name, False)
+        array = simpl.UInt32ArrayType(z, name, False)
     elif type == np.int64:
-        array = simpl.Int64ArrayType(z_flat, cDims, name, False)
+        array = simpl.Int64ArrayType(z, name, False)
     elif type == np.uint64:
-        array = simpl.UInt64ArrayType(z_flat, cDims, name, False)
+        array = simpl.UInt64ArrayType(z, name, False)
     elif type == np.float32:
-        array = simpl.FloatArrayType(z_flat, cDims, name, False)
+        array = simpl.FloatArrayType(z, name, False)
     elif type == np.double:
-        array = simpl.DoubleArrayType(z_flat, cDims, name, False)     
+        array = simpl.DoubleArrayType(z, name, False)     
     
     # we need to return the 'z' numpy array so it does not go out of scope.
     return (z, array)
-
-
-def ConvertToDataArray(name, array, componentDimensions = 1):
-    """
-    Converts a numpy array into a Data Array for DREAM3D.
-    \nKeyword arguments:
-    \nname:  The name of the DataArray
-    \narray: The numpy array to be converted
-    """
-    # Make sure it is a numpy array
-    # array = np.asanyarray(array)
-    # Get shape
-    shape = array.shape
-    # Determine cDims
-    cDims = simpl.VectorSizeT([componentDimensions])  # Default is 1
-
-    # Determine type
-    type = array.dtype
-    # Make sure it is contiguous
-    z = np.asarray(array)
-    if not z.flags.contiguous:
-        z = np.ascontiguousarray(z)
-
-    shape = z.shape
-    assert z.flags.contiguous, 'Only contiguous arrays are supported.'
-    assert not np.issubdtype(z.dtype, np.complex128), \
-        'Complex numpy arrays cannot be converted to vtk arrays.' \
-        'Use real() or imag() to get a component of the array before' \
-        ' passing it to vtk.'
-
-    # Flatten
-    z_flat = np.ravel(z)
-
-    # Declare the number of components for the array
-    if type == np.int8:
-        da = simpl.Int8ArrayType(z_flat, cDims, name, False)
-    elif type == np.uint8:
-        da = simpl.UInt8ArrayType(z_flat, cDims, name, False)
-    elif type == np.int16:
-        da = simpl.Int16ArrayType(z_flat, cDims, name, False)
-    elif type == np.uint16:
-        da = simpl.UInt16ArrayType(z_flat, cDims, name, False)
-    elif type == np.int32:
-        da = simpl.Int32ArrayType(z_flat, cDims, name, False)
-    elif type == np.uint32:
-        da = simpl.UInt32ArrayType(z_flat, cDims, name, False)
-    elif type == np.int64:
-        da = simpl.Int64ArrayType(z_flat, cDims, name, False)
-    elif type == np.uint64:
-        da = simpl.UInt64ArrayType(z_flat, cDims, name, False)
-    elif type == np.float32:
-        da = simpl.FloatArrayType(z_flat, cDims, name, False)
-    elif type == np.double:
-        da = simpl.DoubleArrayType(z_flat, cDims, name, False)
-
-    # we need to return the 'z' numpy array so it does not go out of scope.
-    return (z_flat, da)
-
 
 def CreateDataContainerProxy(dca, data_array_paths):
     """
