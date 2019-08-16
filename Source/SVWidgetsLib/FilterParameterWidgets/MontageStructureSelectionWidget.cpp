@@ -123,6 +123,10 @@ void MontageStructureSelectionWidget::setupGui()
   {
     QString montageName = getter();
     QSignalBlocker selectionBlocker(m_Ui->montageSelectionComboBox);
+    if(m_Ui->montageSelectionComboBox->findText(montageName) == -1)
+    {
+      m_Ui->montageSelectionComboBox->addItem(montageName);
+    }
     m_Ui->montageSelectionComboBox->setCurrentText(montageName);
   }
 
@@ -155,6 +159,10 @@ QString MontageStructureSelectionWidget::checkStringValues(const QString& curDcN
 // -----------------------------------------------------------------------------
 void MontageStructureSelectionWidget::setMontageName(const QString& montage)
 {
+  if(m_Ui->montageSelectionComboBox->findText(montage) == -1)
+  {
+    m_Ui->montageSelectionComboBox->addItem(montage);
+  }
   m_Ui->montageSelectionComboBox->setCurrentText(montage);
 
   m_DidCausePreflight = true;

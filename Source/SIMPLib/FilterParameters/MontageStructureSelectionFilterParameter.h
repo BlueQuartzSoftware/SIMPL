@@ -63,7 +63,7 @@ public:
   SIMPL_STATIC_NEW_MACRO(MontageStructureSelectionFilterParameter)
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MontageStructureSelectionFilterParameter, FilterParameter)
 
-  using SetterCallbackType = std::function<void(QString)>;
+  using SetterCallbackType = std::function<void(const QString&)>;
   using GetterCallbackType = std::function<QString(void)>;
 
   /**
