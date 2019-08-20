@@ -100,7 +100,6 @@ void AbstractFilter::setCancel(bool value)
 // -----------------------------------------------------------------------------
 void AbstractFilter::renameDataArrayPath(const DataArrayPath::RenameType& renamePath)
 {
-  #if 1
   // If the path is created here, do not rename
   for(const auto& createdPath : m_CreatedPaths)
   {
@@ -108,12 +107,7 @@ void AbstractFilter::renameDataArrayPath(const DataArrayPath::RenameType& rename
     {
       return;
     }
-    else
-    {
-      int foo = 0;
-    }
   }
-  #endif
 
   // Some filter parameters handle paths as nothing but a QString (i.e. DataContainerSelectionFilterParameter)
   // This does not store data in a way that represents what is stored or in a consistent manner with anything else.
@@ -281,10 +275,9 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
   }
   else
   {
+    // Add all paths if this is the first filter in the pipeline
     DataContainerArray::Pointer dca = getDataContainerArray();
-
-    // Check if the DataContainerArray is valid
-    if(dca)
+    if(nullptr != dca)
     {
       // Add all paths if there is no previous filter to compare to
       for(const DataContainer::Pointer& dc : dca->getDataContainers())

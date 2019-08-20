@@ -753,6 +753,7 @@ int FilterPipeline::preflightPipeline()
       }
       for(const DataArrayPath& createdPath : createdPaths)
       {
+        // Using iterator over range-based for to utilize std::list.erase(iterator)
         for(auto iter = renamedPaths.begin(); iter != renamedPaths.end(); iter++)
         {
           const DataArrayPath& originalPath = (*iter).first;
@@ -764,6 +765,7 @@ int FilterPipeline::preflightPipeline()
         }
       }
 
+      // Avoid renaming filters as soon as they are added to the pipeline
       if(filter->property("HasRenameValues").toBool())
       {
         filter->renameDataArrayPaths(renamedPaths);
@@ -800,7 +802,6 @@ int FilterPipeline::preflightPipeline()
           }
         }
       }
-      const QString testFilterName = filter->getHumanLabel();
       // Filter renamed existing DataArrayPaths
       const DataArrayPath::RenameContainer newRenamePaths = filter->getRenamedPaths();
       for(const DataArrayPath::RenameType& newRename : newRenamePaths)
