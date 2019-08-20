@@ -178,6 +178,10 @@ if( "${SIMPL_USE_MULTITHREADED_ALGOS}" STREQUAL "ON")
   list(APPEND ${PROJECT_NAME}_LINK_LIBS TBB::tbb TBB::tbbmalloc)
 endif()
 
+if(SIMPL_USE_ITK)
+  list(APPEND ${PROJECT_NAME}_LINK_LIBS ${ITK_LIBRARIES})
+ENDIF()
+
 #-- Add a library for the SIMPLib Code
 add_library(${PROJECT_NAME} ${LIB_TYPE} ${Project_SRCS} )
 CMP_AddDefinitions(TARGET ${PROJECT_NAME})

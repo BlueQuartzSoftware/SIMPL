@@ -684,11 +684,7 @@ public:
     }
 
     size_t newSize = m_Size;
-#if defined(AIM_USE_SSE) && defined(__SSE2__)
-    m_Array = static_cast<T*>(_mm_malloc(newSize * sizeof(T), 16));
-#else
-    m_Array = (T*)malloc(newSize * sizeof(T));
-#endif
+    m_Array = new T[newSize]();
     if(!m_Array)
     {
       qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
@@ -766,7 +762,8 @@ public:
     size_t newSize = (getNumberOfTuples() - idxs.size()) * m_NumComponents;
 
     // Create a new m_Array to copy into
-    T* newArray = (T*)malloc(newSize * sizeof(T));
+    T* newArray = new T[newSize]();
+
     // Splat AB across the array so we know if we are copying the values or not
     ::memset(newArray, 0xAB, newSize * sizeof(T));
 
@@ -2008,12 +2005,8 @@ protected:
         Q_ASSERT(false);
       }
 #endif
+    delete[](m_Array);
 
-#if defined(AIM_USE_SSE) && defined(__SSE2__)
-    _mm_free(m_buffer);
-#else
-    free(m_Array);
-#endif
     m_Array = nullptr;
     m_IsAllocated = false;
   }
@@ -2076,7 +2069,8 @@ protected:
     {
       // The old array is owned by the user so we cannot try to
       // reallocate it.  Just allocate new memory that we will own.
-      newArray = (T*)malloc(newSize * sizeof(T));
+      newArray = new T[newSize]();
+
       if(!newArray)
       {
         qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
@@ -2088,8 +2082,8 @@ protected:
     }
     else if(!dontUseRealloc)
     {
-      // Try to reallocate with minimal memory usage and possibly avoid copying.
-      newArray = (T*)realloc(m_Array, newSize * sizeof(T));
+      newArray = new T[newSize]();
+
       if(!newArray)
       {
         qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
@@ -2098,7 +2092,7 @@ protected:
     }
     else
     {
-      newArray = (T*)malloc(newSize * sizeof(T));
+      newArray = new T[newSize]();
       if(!newArray)
       {
         qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";

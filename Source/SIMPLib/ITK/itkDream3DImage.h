@@ -31,6 +31,7 @@
 // SIMPLib/ITK includes
 #include "SIMPLib/ITK/itkSupportConstants.h"
 
+#if 0
 namespace itk
 {
 /** \class Dream3DImage
@@ -81,7 +82,8 @@ namespace itk
  * \wikiexample{SimpleOperations/SetPixels,Set specified pixels to specified values}
  * \endwiki
  */
-template <typename TPixel, unsigned int VImageDimension = 2> class ITK_TEMPLATE_EXPORT Dream3DImage : public Image<TPixel, VImageDimension>
+template <typename TPixel, unsigned int VImageDimension = 2>
+class ITK_TEMPLATE_EXPORT Dream3DImage : public Image<TPixel, VImageDimension>
 {
 public:
   /** Standard class typedefs */
@@ -290,3 +292,4 @@ private:
 #include "itkDream3DImage.hxx"
 #endif
 
+#endif

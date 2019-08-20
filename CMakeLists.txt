@@ -380,6 +380,14 @@ install(
 # --------------------------------------------------------------------
 # Use ITK
 option(SIMPL_USE_ITK "Use ITK For Image Processing" ON)
+if(SIMPL_USE_ITK)
+  # --------------------------------------------------------------------
+  # find ITK so that we can figure out the version of ITK the user has selected
+  # Does not register IO factories. It will be done by each plugin that needs it.
+  set(ITK_NO_IO_FACTORY_REGISTER_MANAGER TRUE)
+  find_package(ITK REQUIRED)
+  include(${CMP_SOURCE_DIR}/ITKSupport/IncludeITK.cmake)
+endif()
 
 # -----------------------------------------------------------------------
 # Add in the Necessary HDF5 Support Sources into a library

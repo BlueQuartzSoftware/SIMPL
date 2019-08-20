@@ -24,7 +24,7 @@ public:
   using Superclass = ProcessObject;
   using Pointer = SmartPointer<Self>;
 
-  using ImageType = typename itk::Dream3DImage<PixelType, VDimension>;
+  using ImageType = typename itk::Image<PixelType, VDimension>;
   using ImagePointer = typename ImageType::Pointer;
   using ValueType = typename itk::NumericTraits<PixelType>::ValueType;
   using DataArrayPixelType = typename ::DataArray<ValueType>;

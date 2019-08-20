@@ -192,13 +192,9 @@ class StructArray : public IDataArray
         return 1;
       }
 
-
       size_t newSize = this->m_Size;
-#if defined ( AIM_USE_SSE ) && defined ( __SSE2__ )
-      Array = static_cast<T*>( _mm_malloc (newSize * sizeof(T), 16) );
-#else
-      m_Array = (T*)malloc(newSize * sizeof(T));
-#endif
+      m_Array = new T[newSize]();
+
       if (!m_Array)
       {
         qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. " ;
@@ -283,7 +279,7 @@ class StructArray : public IDataArray
       T* currentSrc = nullptr;
 
       // Create a new Array to copy into
-      T* newArray = (T*)malloc(newSize * sizeof(T));
+      T* newArray = new T[newSize]();
       // Splat AB across the array so we know if we are copying the values or not
       ::memset(newArray, 0xAB, newSize * sizeof(T));
 
@@ -761,11 +757,8 @@ class StructArray : public IDataArray
       }
 #endif
 
-#if defined ( AIM_USE_SSE ) && defined ( __SSE2__ )
-      _mm_free( this->m_buffer );
-#else
-      free(m_Array);
-#endif
+      delete[](m_Array);
+
       m_Array = nullptr;
       this->m_IsAllocated = false;
     }
@@ -812,7 +805,7 @@ class StructArray : public IDataArray
       {
         // The old array is owned by the user so we cannot try to
         // reallocate it.  Just allocate new memory that we will own.
-        newArray = (T*)malloc(newSize * sizeof(T));
+        newArray = new T[newSize]();
         if (!newArray)
         {
           qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. " ;
@@ -825,8 +818,8 @@ class StructArray : public IDataArray
       else if (!dontUseRealloc)
       {
         // Try to reallocate with minimal memory usage and possibly avoid copying.
-        newArray = (T*)realloc(m_Array, newSize * sizeof(T));
-        if (!newArray)
+        newArray = new T[newSize]();
+        if(!newArray)
         {
           qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. " ;
           return 0;
@@ -834,8 +827,8 @@ class StructArray : public IDataArray
       }
       else
       {
-        newArray = (T*)malloc(newSize * sizeof(T));
-        if (!newArray)
+        newArray = new T[newSize]();
+        if(!newArray)
         {
           qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. " ;
           return 0;

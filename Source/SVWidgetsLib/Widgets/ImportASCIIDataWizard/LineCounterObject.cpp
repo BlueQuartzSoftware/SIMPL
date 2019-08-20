@@ -71,7 +71,7 @@ void LineCounterObject::run()
 {
   // Validate that the file is an ASCII file
   int64_t bufferSize = 262144;
-  char* buffer;
+  std::vector<char> buffer;
   int64_t result;
 
   // Obtain the file size
@@ -103,8 +103,8 @@ void LineCounterObject::run()
   }
 
   // Allocate the buffer
-  buffer = (char*)malloc(sizeof(char) * actualSize);
-  if(buffer == nullptr)
+  buffer.resize(actualSize);
+  if(buffer.data() == nullptr)
   {
     QString errorStr = "Error: Unable to allocate memory to read in data from \"" + m_FilePath + "\"";
     fputs(errorStr.toStdString().c_str(), stderr);
@@ -115,7 +115,7 @@ void LineCounterObject::run()
   while(!qFile.atEnd())
   {
     // Copy the file contents into the buffer
-    result = qFile.read(buffer, actualSize);
+    result = qFile.read(buffer.data(), actualSize);
 
     // Check the buffer for new lines and carriage returns
     int64_t fiveThresh = fileSize / 20.0;
@@ -145,7 +145,6 @@ void LineCounterObject::run()
 
   // Close the file and free the memory from the buffer
   qFile.close();
-  free(buffer);
 
   emit finished();
 }

@@ -177,7 +177,7 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
       ::memcpy(data->getPointer(0), reinterpret_cast<ValueType*>(inputPtr->GetBufferPointer()), imageGeom->getNumberOfElements() * sizeof(ValueType));
     }
   }
-  attrMat->insertOrAssign(data);
+  attrMat->addOrReplaceAttributeArray(data);
   outputPtr->Set(dataContainer);
 }
 
