@@ -136,7 +136,7 @@ void MultiDataArraySelectionWidget::setupGui()
 
   connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
-  connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SLOT(attributeMatrixPathUpdated()));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
 
   connect(m_SelectedAttributeMatrixPath, SIGNAL(dataArrayPathSelectionLocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionLocked(QToolButton*)));
@@ -203,39 +203,26 @@ bool MultiDataArraySelectionWidget::eventFilter(QObject* obj, QEvent* event)
 }
 
 // -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::attributeMatrixSelected(QString path)
+void MultiDataArraySelectionWidget::attributeMatrixPathUpdated()
 {
-  setSelectedPath(path);
-
-  m_DidCausePreflight = true;
-  emit parametersChanged();
-  m_DidCausePreflight = false;
+  setSelectedPath(m_SelectedAttributeMatrixPath->getDataArrayPath());
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::setSelectedPath(QString path)
-{
-  DataArrayPath amPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
-  setSelectedPath(amPath);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::setSelectedPath(DataArrayPath amPath)
+void MultiDataArraySelectionWidget::setSelectedPath(const DataArrayPath& amPath)
 {
   if(amPath.isEmpty())
   {
     return;
   }
 
-  m_SelectedAttributeMatrixPath->setDataArrayPath(amPath);
   availableArraysListWidget->clear();
   selectedArraysListWidget->clear();
+  m_DidCausePreflight = true;
+  emit parametersChanged();
+  m_DidCausePreflight = false;
 }
 
 // -----------------------------------------------------------------------------
@@ -285,7 +272,6 @@ void MultiDataArraySelectionWidget::on_selectBtn_clicked()
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::on_deselectBtn_clicked()
 {
-  // QModelIndexList indexList = selectedArraysListWidget->selectionModel()->selectedRows();
   QList<QListWidgetItem*> items = selectedArraysListWidget->selectedItems();
   foreach(QListWidgetItem* item, items)
   {
@@ -407,7 +393,7 @@ void MultiDataArraySelectionWidget::removeNonexistantPaths(QVector<DataArrayPath
 
   if(reloadPath && !amPath.isEmpty())
   {
-    setSelectedPath(amPath.serialize(Detail::Delimiter));
+    setSelectedPath(amPath);
   }
 }
 
