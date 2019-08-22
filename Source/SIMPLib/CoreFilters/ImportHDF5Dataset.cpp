@@ -313,9 +313,9 @@ void ImportHDF5Dataset::dataCheck()
                     .arg(locale.toString(numOfAMTuples))
                     .arg(locale.toString(totalComponents))
                     .arg(locale.toString(numOfAMTuples * totalComponents))
-                    .arg(locale.toString(static_cast<uint64_t>(hdf5TotalElements)))
+                    .arg(locale.toString(static_cast<qulonglong>(hdf5TotalElements)))
                     .arg(locale.toString(numOfAMTuples * totalComponents))
-                    .arg(locale.toString(static_cast<uint64_t>(hdf5TotalElements)));
+                    .arg(locale.toString(static_cast<qulonglong>(hdf5TotalElements)));
 
       setErrorCondition(-20008);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
