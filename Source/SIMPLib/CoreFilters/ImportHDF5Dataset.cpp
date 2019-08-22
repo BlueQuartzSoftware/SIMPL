@@ -243,7 +243,7 @@ void ImportHDF5Dataset::dataCheck()
     stream << tr("HDF5 File Path: %1\n").arg(m_HDF5FilePath);
     stream << tr("HDF5 Dataset Path: %1\n").arg(datasetPath);
 
-    int hdf5TotalElements = 1;
+    size_t hdf5TotalElements = 1;
     stream << tr("    No. of Dimension(s): ") << locale.toString(dims.size()) << "\n";
     stream << tr("    Dimension Size(s): ");
     for(int i = 0; i < dims.size(); i++)
@@ -256,7 +256,7 @@ void ImportHDF5Dataset::dataCheck()
       }
     }
     stream << "\n";
-    stream << tr("    Total HDF5 Dataset Element Count: %1\n").arg(locale.toString(hdf5TotalElements));
+    stream << tr("    Total HDF5 Dataset Element Count: \n") << hdf5TotalElements << "\n";
     stream << "-------------------------------------------\n";
     stream << "Current Data Structure Information: \n";
 
@@ -313,9 +313,9 @@ void ImportHDF5Dataset::dataCheck()
                     .arg(locale.toString(numOfAMTuples))
                     .arg(locale.toString(totalComponents))
                     .arg(locale.toString(numOfAMTuples * totalComponents))
-                    .arg(locale.toString(hdf5TotalElements))
+                    .arg(locale.toString(static_cast<uint64_t>(hdf5TotalElements)))
                     .arg(locale.toString(numOfAMTuples * totalComponents))
-                    .arg(locale.toString(hdf5TotalElements));
+                    .arg(locale.toString(static_cast<uint64_t>(hdf5TotalElements)));
 
       setErrorCondition(-20008);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());

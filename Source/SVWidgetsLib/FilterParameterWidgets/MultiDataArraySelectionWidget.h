@@ -112,8 +112,6 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-    void attributeMatrixSelected(QString path);
-
   protected slots:
     void on_upBtn_clicked();
     void on_downBtn_clicked();
@@ -129,14 +127,14 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
 
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
+    void attributeMatrixPathUpdated();
+
   private:
     bool m_DidCausePreflight;
 
     MultiDataArraySelectionFilterParameter* m_FilterParameter;
 
-    void setSelectedPath(QString path);
-
-    void setSelectedPath(DataArrayPath amPath);
+    void setSelectedPath(const DataArrayPath& amPath);
 
     void removeNonexistantPaths(QVector<DataArrayPath> &paths);
 
