@@ -438,7 +438,7 @@ private:
       // Handle renaming of the same path.
       // Rename path should be removed if the path was recreated,
       // thus this signifies that a filter's rename was changed.
-      if(newOldPath == oldOldPath)
+      if((newOldPath == oldOldPath) && (oldNewPath != newNewPath))
       {
         return std::make_pair(true, RenameType{ oldNewPath, newNewPath });
       }
