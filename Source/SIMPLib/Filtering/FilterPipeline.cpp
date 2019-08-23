@@ -50,6 +50,7 @@
 
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Utilities/StringOperations.h"
 
 #define RENAME_ENABLED 1
@@ -743,32 +744,11 @@ int FilterPipeline::preflightPipeline()
     {
       filter->setDataContainerArray(dca->deepCopy(true));
 #if RENAME_ENABLED
-      const DataArrayPath::RenameContainer origRenamedPaths = filter->getRenamedPaths();
-      filter->preflight();
-      // Check if an existing renamed path was created by this filter
-      std::list<DataArrayPath> createdPaths = filter->getCreatedPaths();
-      for(const auto& origRenamedPath : origRenamedPaths)
-      {
-        createdPaths.push_back(origRenamedPath.second);
-      }
-      for(const DataArrayPath& createdPath : createdPaths)
-      {
-        // Using iterator over range-based for to utilize std::list.erase(iterator)
-        for(auto iter = renamedPaths.begin(); iter != renamedPaths.end(); iter++)
-        {
-          const DataArrayPath& originalPath = (*iter).first;
-          if(originalPath == createdPath)
-          {
-            renamedPaths.erase(iter);
-            break;
-          }
-        }
-      }
-
       // Avoid renaming filters as soon as they are added to the pipeline
       if(filter->property("HasRenameValues").toBool())
       {
         filter->renameDataArrayPaths(renamedPaths);
+        RenameDataPath::CalculateRenamedPaths(filter, renamedPaths);
       }
       else
       {
@@ -792,7 +772,7 @@ int FilterPipeline::preflightPipeline()
       {
         for(const DataArrayPath::RenameType& rename : renamedPaths)
         {
-          const DataArrayPath& originalPath = std::get<0>(rename);
+          const DataArrayPath& originalPath = rename.first;
           // const DataArrayPath& renamePath = std::get<1>(rename);
           if(originalPath == deletedPath)
           {
@@ -820,18 +800,6 @@ int FilterPipeline::preflightPipeline()
         // Add the new rename path
         renamedPaths.push_back(newRename);
       }
-      // Check changes to rename paths
-      for(const DataArrayPath::RenameType& oldRename : origRenamedPaths)
-      {
-        for(const DataArrayPath::RenameType& newRename : newRenamePaths)
-        {
-          if(DataArrayPath::CanReplaceRenamePath(oldRename, newRename))
-          {
-            renamedPaths.push_back({ oldRename.second, newRename.second });
-            break;
-          }
-        }
-      }
 #endif
     }
 #if RENAME_ENABLED
@@ -845,8 +813,8 @@ int FilterPipeline::preflightPipeline()
       const DataArrayPath::RenameContainer filterRenamedPaths = filter->getRenamedPaths();
       for(const DataArrayPath::RenameType& renameType : filterRenamedPaths)
       {
-        const DataArrayPath& oldPath = std::get<0>(renameType);
-        const DataArrayPath& newPath = std::get<1>(renameType);
+        const DataArrayPath& oldPath = renameType.first;
+        const DataArrayPath& newPath = renameType.second;
 
         renamedPaths.push_back(std::make_pair(newPath, oldPath));
       }
