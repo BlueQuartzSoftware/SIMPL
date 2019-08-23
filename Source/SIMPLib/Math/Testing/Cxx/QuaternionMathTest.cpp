@@ -84,7 +84,7 @@ public:
     {
       float dir[3] = {1.0f, 2.0f, 3.0f};
       MatrixMath::Normalize3x1(dir);
-      MatrixMath::Multiply3x1withConstant(dir, -1);
+      MatrixMath::Multiply3x1withConstant(dir, -1.0f);
     }
   }
 
