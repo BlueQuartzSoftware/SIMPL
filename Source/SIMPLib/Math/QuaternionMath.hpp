@@ -108,6 +108,20 @@ class QuaternionMath
           throw std::range_error("Invalid Quaternion index");
         }
       }
+      template <typename K>
+      inline void setValues(typename QuaternionMath<K>::Quaternion& in)
+      {
+        x = in.x;
+        y = in.y;
+        z = in.z;
+        w = in.w;
+      }
+
+      template <typename K>
+      typename QuaternionMath<K>::Quaternion toType()
+      {
+        return QuaternionMath<K>::New(x, y, z, w);
+      }
     };
 
     enum Order
@@ -170,6 +184,28 @@ class QuaternionMath
       q.y = y;
       q.z = z;
       q.w = w;
+      return q;
+    }
+
+    template <typename K>
+    static Quaternion FromType(K x, K y, K z, K w)
+    {
+      Quaternion q;
+      q.x = static_cast<T>(x);
+      q.y = static_cast<T>(y);
+      q.z = static_cast<T>(z);
+      q.w = static_cast<T>(w);
+      return q;
+    }
+
+    template <typename K>
+    static Quaternion FromType(typename QuaternionMath<K>::Quaternion& in)
+    {
+      Quaternion q;
+      q.x = static_cast<T>(in.x);
+      q.y = static_cast<T>(in.y);
+      q.z = static_cast<T>(in.z);
+      q.w = static_cast<T>(in.w);
       return q;
     }
 
@@ -445,7 +481,7 @@ class QuaternionMath
     static void GetMisorientationVector(Quaternion& qr, T misoVec[3])
     {
       T qw = qr.w;
-      SIMPLibMath::boundF(qw, -1.0, 1.0);
+      SIMPLibMath::bound(qw, static_cast<T>(-1.0), static_cast<T>(1.0));
       T constVal = 0.0;
       if(qw == 1.0 || qw == -1.0) { constVal = 0.0; }
       else { constVal = 2 * acos(qw) / (sqrt(1.0 - (qw * qw))); }

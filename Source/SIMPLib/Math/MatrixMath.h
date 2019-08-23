@@ -64,7 +64,19 @@ class SIMPLib_EXPORT MatrixMath
      * @param g2
      * @param outMat
      */
-    static void Multiply3x3with3x3(float g1[3][3], float g2[3][3], float outMat[3][3]);
+    template <typename T>
+    static void Multiply3x3with3x3(T g1[3][3], T g2[3][3], T outMat[3][3])
+    {
+      outMat[0][0] = g1[0][0] * g2[0][0] + g1[0][1] * g2[1][0] + g1[0][2] * g2[2][0];
+      outMat[0][1] = g1[0][0] * g2[0][1] + g1[0][1] * g2[1][1] + g1[0][2] * g2[2][1];
+      outMat[0][2] = g1[0][0] * g2[0][2] + g1[0][1] * g2[1][2] + g1[0][2] * g2[2][2];
+      outMat[1][0] = g1[1][0] * g2[0][0] + g1[1][1] * g2[1][0] + g1[1][2] * g2[2][0];
+      outMat[1][1] = g1[1][0] * g2[0][1] + g1[1][1] * g2[1][1] + g1[1][2] * g2[2][1];
+      outMat[1][2] = g1[1][0] * g2[0][2] + g1[1][1] * g2[1][2] + g1[1][2] * g2[2][2];
+      outMat[2][0] = g1[2][0] * g2[0][0] + g1[2][1] * g2[1][0] + g1[2][2] * g2[2][0];
+      outMat[2][1] = g1[2][0] * g2[0][1] + g1[2][1] * g2[1][1] + g1[2][2] * g2[2][1];
+      outMat[2][2] = g1[2][0] * g2[0][2] + g1[2][1] * g2[1][2] + g1[2][2] * g2[2][2];
+    }
 
     /**
      * @brief Performs the Matrix Multiplication of g1 and g2 and puts the result into outMat. (Single Precision version)
@@ -81,6 +93,7 @@ class SIMPLib_EXPORT MatrixMath
      * @param outMat
      */
     static void Multiply3x3with3x1(double g1[3][3], double g2[3], double outMat[3]);
+    static void Multiply3x3with3x1(double g1[3][3], double g2[3], float outMat[3]);
 
     /**
      * @brief Performs the Matrix Addition of g1 and g2 and puts the result into outMat. (Single Precision version)
@@ -149,6 +162,13 @@ class SIMPLib_EXPORT MatrixMath
      * @param outMat
      */
     static void Transpose3x3(float g[3][3], float outMat[3][3]);
+
+    /**
+     * @brief Transposes the 3x3 matrix and places the result into outMat
+     * @param g
+     * @param outMat
+     */
+    static void Transpose3x3(double g[3][3], double outMat[3][3]);
 
     /**
      * @brief Inverts the 3x3 matrix and places the result into outMat
