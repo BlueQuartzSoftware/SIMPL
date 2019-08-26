@@ -135,23 +135,23 @@ private:
      */
     virtual ~DataArrayPath();
 
-        /**
-    * @brief checks that a vector of paths have the same data container and attribute matrix
-    * @return true if the paths in the vector have the same data container and attribute matrix, false otherwise
-    */
+    /**
+     * @brief checks that a vector of paths have the same data container and attribute matrix
+     * @return true if the paths in the vector have the same data container and attribute matrix, false otherwise
+     */
     static bool ValidateVector(const QVector<DataArrayPath>& other);
 
     /**
-    * @brief Gets the data array names from a QVector of DataArrayPaths.
-    * @return Returns the data array names from a QVector of DataArrayPaths, in a QList.
-    */
+     * @brief Gets the data array names from a QVector of DataArrayPaths.
+     * @return Returns the data array names from a QVector of DataArrayPaths, in a QList.
+     */
     static QList<QString> GetDataArrayNames(const QVector<DataArrayPath>& paths);
 
     /**
-    * @brief Gets the attribute matrix path from a QVector of DataArrayPaths.
-    * @return Returns the attribute matrix path as a DataArrayPath from a QVector
-    * of DataArrayPaths.
-    */
+     * @brief Gets the attribute matrix path from a QVector of DataArrayPaths.
+     * @return Returns the attribute matrix path as a DataArrayPath from a QVector
+     * of DataArrayPaths.
+     */
     static DataArrayPath GetAttributeMatrixPath(const QVector<DataArrayPath>& paths);
 
     /**
@@ -162,28 +162,11 @@ private:
     static QVector<DataArrayPath> ConvertToQVector(QStringList& paths);
 
     /**
-    * @brief serialize Deserializes the string into a DataArrayPath, using the specified delimiter.
-    * @param delimiter
-    * @return
-    */
-    static DataArrayPath Deserialize(const QString& str, const QString& delimiter);
-
-    /**
-     * @brief checks for and returns any updated DataArrayPaths between two sets
-     * @param oldPaths
-     * @param newPaths
+     * @brief serialize Deserializes the string into a DataArrayPath, using the specified delimiter.
+     * @param delimiter
      * @return
      */
-    static RenameContainer CheckForRenamedPaths(const DataContainerArrayShPtr& oldDca, const DataContainerArrayShPtr& newDca, const std::list<DataArrayPath>& oldPaths, const std::list<DataArrayPath>& newPaths);
-
-    /**
-     * @brief checks if the targets of the old DataArrayPath and new DataArrayPath are compatible in their given DataContainerArrays
-     * @param oldDca
-     * @param newDca
-     * @param oldPath
-     * @param newPath
-     */
-    static bool CheckRenamePath(const DataContainerArrayShPtr& oldDca, const DataContainerArrayShPtr& newDca, const DataArrayPath& oldPath, const DataArrayPath& newPath);
+    static DataArrayPath Deserialize(const QString& str, const QString& delimiter);
 
     /**
      * @brief Returns the DataType matching the current path.
@@ -194,25 +177,49 @@ private:
       return m_DataType;
     }
 
+    /**
+     * @brief Returns the DataContainer name
+     * @return
+     */
     QString getDataContainerName() const
     {
       return m_DataContainerName;
     }
 
+    /**
+     * @brief Returns the AttributeMatrix name
+     * @return
+     */
     QString getAttributeMatrixName() const
     {
       return m_AttributeMatrixName;
     }
 
+    /**
+     * @brief Returns the DataArray name
+     * @return
+     */
     QString getDataArrayName() const
     {
       return m_DataArrayName;
     }
 
+    /**
+     * @brief Sets the DataContainer name and updates the hash
+     * @param name
+     */
     void setDataContainerName(const QString& name);
 
+    /**
+     * @brief Sets the AttributeMatrix name and updates the hash
+     * @param name
+     */
     void setAttributeMatrixName(const QString& name);
 
+    /**
+     * @brief Sets the DataArray name and updates the hash
+     * @param name
+     */
     void setDataArrayName(const QString& name);
 
     /**
@@ -298,10 +305,10 @@ private:
     bool hasSameDataContainer(const DataArrayPath& other) const;
 
     /**
-    * @brief checks that two paths share the same attribute matrix
-    * @param other The other path
-    * @return true if the two paths share the same attribute matrix, false otherwise
-    */
+     * @brief checks that two paths share the same attribute matrix
+     * @param other The other path
+     * @return true if the two paths share the same attribute matrix, false otherwise
+     */
     bool hasSameAttributeMatrix(const DataArrayPath& other) const;
 
     /**
@@ -422,16 +429,23 @@ private:
      */
     static std::pair<bool, RenameType> CreateLinkingRename(const RenameType& oldRename, const RenameType& newRename)
     {
-      const DataArrayPath& oldOldPath = std::get<0>(oldRename);
-      const DataArrayPath& oldNewPath = std::get<1>(oldRename);
+      const DataArrayPath& oldOldPath = oldRename.first;
+      const DataArrayPath& oldNewPath = oldRename.second;
 
-      const DataArrayPath& newOldPath = std::get<0>(newRename);
-      const DataArrayPath& newNewPath = std::get<1>(newRename);
+      const DataArrayPath& newOldPath = newRename.first;
+      const DataArrayPath& newNewPath = newRename.second;
+
+      // Handle renaming of the same path.
+      // Rename path should be removed if the path was recreated,
+      // thus this signifies that a filter's rename was changed.
+      if((newOldPath == oldOldPath) && (oldNewPath != newNewPath))
+      {
+        return std::make_pair(true, RenameType{ oldNewPath, newNewPath });
+      }
 
       // Require newOldPath to be a subset of oldNewPath
-      // Require newOldPath != oldNewPath
       const bool isSubset = newOldPath.isSubset(oldNewPath);
-      if(!isSubset || (newOldPath == oldNewPath))
+      if(!isSubset)
       {
         return std::make_pair(false, RenameType{});
       }
@@ -461,17 +475,17 @@ private:
     }
 
     /**
-    * @brief Writes the contents of the proxy to the json object 'json'
-    * @param json
-    * @return
-    */
+     * @brief Writes the contents of the proxy to the json object 'json'
+     * @param json
+     * @return
+     */
     void writeJson(QJsonObject& json) const;
 
     /**
-    * @brief Reads the contents of the the json object 'json' into the proxy
-    * @param json
-    * @return
-    */
+     * @brief Reads the contents of the the json object 'json' into the proxy
+     * @param json
+     * @return
+     */
     bool readJson(QJsonObject& json);
 
     /**

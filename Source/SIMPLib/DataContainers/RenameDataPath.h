@@ -34,11 +34,17 @@
 #pragma once
 
 #include <cstddef>
+#include <memory>
+#include <utility>
 
 #include "SIMPLib/SIMPLib.h"
 
 class AbstractFilter;
 class DataArrayPath;
+class DataContainerArray;
+
+using AbstractFilterShPtr = std::shared_ptr<AbstractFilter>;
+using DataContainerArrayShPtr = std::shared_ptr<DataContainerArray>;
 
 /**
  * @brief RenameDataPath is used by DataContainerArray, DataContainer, and AttributeMatrix
@@ -49,6 +55,10 @@ class DataArrayPath;
  */
 namespace RenameDataPath
 {
+  using RenamePathType = std::pair<DataArrayPath, DataArrayPath>;
+  using RenameContainer = std::list<RenamePathType>;
+  using PossibleRename = std::pair<bool, RenamePathType>;
+
   /**
    * @brief DataID_t is used as the ID type when creating DataArrayPaths through 
    * createNonPrereq* methods inside AbstractFilter::dataCheck().  This ID is 
@@ -71,4 +81,44 @@ namespace RenameDataPath
    * @param path The new DataArrayPath
    */
   void SIMPLib_EXPORT AlertFilterCreatedPath(AbstractFilter* filter, DataID_t id, const DataArrayPath& path);
+
+  /**
+   * @brief Checks if two rename values are compatible to be merged together.
+   * @param originalPair
+   * @param newPair
+   * @return
+   */
+  bool SIMPLib_EXPORT CanReplaceRenamePath(const RenamePathType& originalPair, const RenamePathType& newPair);
+
+  /**
+   * @brief checks if the targets of the old DataArrayPath and new DataArrayPath are compatible in their given DataContainerArrays
+   * @param oldDca
+   * @param newDca
+   * @param oldPath
+   * @param newPath
+   */
+  bool SIMPLib_EXPORT CheckRenamePath(const DataContainerArrayShPtr& oldDca, const DataContainerArrayShPtr& newDca, const DataArrayPath& oldPath, const DataArrayPath& newPath);
+
+  /**
+   * @brief checks for and returns any updated DataArrayPaths between two sets
+   * @param oldPaths
+   * @param newPaths
+   * @return
+   */
+  RenameContainer SIMPLib_EXPORT CheckForRenamedPaths(const DataContainerArrayShPtr& oldDca, const DataContainerArrayShPtr& newDca, const std::list<DataArrayPath>& oldPaths, const std::list<DataArrayPath>& newPaths);
+  
+  /**
+   * @brief Calculate the rename paths for the given filter and removes rename paths as required by created paths.
+   * The updated rename paths are added to the list parameter.
+   * @param filter
+   * @param renamePaths
+   */
+  void SIMPLib_EXPORT CalculateRenamedPaths(const AbstractFilterShPtr& filter, RenameContainer& renamedPaths);
+
+  /**
+   * @brief Merges a list of DataArrayPath renames into an existing list.
+   * @param list
+   * @param newRenames
+   */
+  void SIMPLib_EXPORT MergeRenamedPaths(RenameContainer& list, const RenameContainer& newRenames);
 }

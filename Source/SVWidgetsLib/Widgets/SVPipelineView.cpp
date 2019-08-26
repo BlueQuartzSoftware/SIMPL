@@ -565,9 +565,8 @@ FilterPipeline::Pointer SVPipelineView::getFilterPipeline()
   {
     QModelIndex childIndex = model->index(i, PipelineItem::Contents);
 
-    PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(childIndex, PipelineModel::WidgetStateRole).toInt());
     PipelineItem::AnimationType animationType = static_cast<PipelineItem::AnimationType>(model->data(childIndex, PipelineModel::Roles::AnimationTypeRole).toInt());
-    if(childIndex.isValid() && wState != PipelineItem::WidgetState::Disabled && (animationType == PipelineItem::AnimationType::None || animationType == PipelineItem::AnimationType::Add))
+    if(childIndex.isValid() && (animationType == PipelineItem::AnimationType::None || animationType == PipelineItem::AnimationType::Add))
     {
       AbstractFilter::Pointer filter = model->filter(childIndex);
       Breakpoint::Pointer breakpoint = std::dynamic_pointer_cast<Breakpoint>(filter);
@@ -576,7 +575,7 @@ FilterPipeline::Pointer SVPipelineView::getFilterPipeline()
         connect(pipeline.get(), SIGNAL(pipelineCanceled()), breakpoint.get(), SLOT(resumePipeline()));
       }
 
-      pipeline->pushBack(filter);
+      pipeline->pushBack(filter); 
     }
   }
 
