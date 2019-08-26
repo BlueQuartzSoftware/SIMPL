@@ -52,7 +52,7 @@ def ImageReadTest():
     # Create an AttributeArray from the image data and add it to the AttributeMatrix
     cDims = simpl.VectorSizeT([1])
     name = "slice_11.tiff"
-    array = simpl.UInt8ArrayType(z_flat, cDims, name, False)
+    array = simpl.UInt8ArrayType(z_flat, name, False)
     cellAm.addOrReplaceAttributeArray(array)
 
     # Create a Geometry Object and store it in the DataContainer

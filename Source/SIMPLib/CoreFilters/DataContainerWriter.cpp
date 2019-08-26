@@ -239,13 +239,13 @@ void DataContainerWriter::execute()
     err = dc->writeAttributeMatricesToHDF5(dcGid);
     if(err < 0)
     {
-      setErrorCondition(-803, "Error writing DataContainer AttributeMatrices");
+      setErrorCondition(err, "Error writing DataContainer AttributeMatrices");
       return;
     }
     err = dc->writeMeshToHDF5(dcGid, m_WriteXdmfFile);
     if(err < 0)
     {
-      setErrorCondition(-804, "Error writing DataContainer Geometry");
+      setErrorCondition(err, "Error writing DataContainer Geometry");
       return;
     }
     if(m_WriteXdmfFile && geometry.get() != nullptr)
@@ -265,7 +265,7 @@ void DataContainerWriter::execute()
       err = dc->writeXdmf(xdmfOut, hdfFileName);
       if(err < 0)
       {
-        setErrorCondition(-805, "Error writing Xdmf File");
+        setErrorCondition(err, "Error writing Xdmf File");
         return;
       }
     }

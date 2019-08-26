@@ -6,25 +6,13 @@
 namespace itk
 {
 
-template< typename PixelType, unsigned int VDimension >
-InPlaceDream3DDataToImageFilter<PixelType, VDimension>::InPlaceDream3DDataToImageFilter()
-{
-  m_DataContainer = DataContainer::NullPointer();
-  m_InPlace = true;
-  m_PixelContainerWillOwnTheBuffer = false;
-}
+template <typename PixelType, unsigned int VDimension>
+InPlaceDream3DDataToImageFilter<PixelType, VDimension>::InPlaceDream3DDataToImageFilter() = default;
+template <typename PixelType, unsigned int VDimension>
+InPlaceDream3DDataToImageFilter<PixelType, VDimension>::~InPlaceDream3DDataToImageFilter() = default;
 
-
-template< typename PixelType, unsigned int VDimension >
-InPlaceDream3DDataToImageFilter<PixelType, VDimension>::~InPlaceDream3DDataToImageFilter()
-{
-}
-
-
-template< typename PixelType, unsigned int VDimension>
-void
-InPlaceDream3DDataToImageFilter< PixelType, VDimension >
-::SetInput(DataContainer::Pointer& dc)
+template <typename PixelType, unsigned int VDimension>
+void InPlaceDream3DDataToImageFilter<PixelType, VDimension>::SetInput(DataContainer::Pointer& dc)
 {
   if (!(dc == m_DataContainer))
   {
@@ -33,11 +21,8 @@ InPlaceDream3DDataToImageFilter< PixelType, VDimension >
   }
 }
 
-
-template< typename PixelType, unsigned int VDimension>
-void
-InPlaceDream3DDataToImageFilter< PixelType, VDimension >
-::VerifyPreconditions() ITKv5_CONST
+template <typename PixelType, unsigned int VDimension>
+void InPlaceDream3DDataToImageFilter<PixelType, VDimension>::VerifyPreconditions() ITKv5_CONST
 {
   if (m_DataContainer == DataContainer::NullPointer() )
   {

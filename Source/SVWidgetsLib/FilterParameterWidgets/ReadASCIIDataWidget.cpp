@@ -515,7 +515,7 @@ void ReadASCIIDataWidget::updateDataArrayPath(QString propertyName, const DataAr
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
 
-  if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
+  if(m_ImportWizard != nullptr && propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
   {
     m_ImportWizard->updateDataArrayPath(renamePath);
   }

@@ -51,7 +51,7 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
 
   public:
     SIMPL_SHARED_POINTERS(IDataArray)
-    SIMPL_TYPE_MACRO(IDataArray)
+    SIMPL_TYPE_MACRO_SUPER(IDataArray, IDataStructureNode)
 
     /**
      * This templated method is used to get at the low level pointer that points

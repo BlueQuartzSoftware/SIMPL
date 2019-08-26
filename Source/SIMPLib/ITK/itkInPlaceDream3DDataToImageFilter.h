@@ -15,16 +15,16 @@ class InPlaceDream3DDataToImageFilter : public ImageSource<itk::Dream3DImage<Pix
 {
 public:
   /** Standard class typedefs. */
-  typedef InPlaceDream3DDataToImageFilter Self;
-  typedef SmartPointer<Self> Pointer;
+  using Self = InPlaceDream3DDataToImageFilter;
+  using Pointer = SmartPointer<Self>;
 
-  typedef typename itk::Dream3DImage<PixelType, VDimension> ImageType;
-  typedef typename ImageType::PixelContainerType ImportImageContainerType;
-  typedef typename ImageType::Pointer ImagePointer;
-  typedef typename itk::NumericTraits<PixelType>::ValueType ValueType;
-  typedef typename ::DataArray<ValueType> DataArrayPixelType;
-  typedef typename itk::ImageSource<ImageType> Superclass;
-  typedef typename itk::SizeValueType SizeValueType;
+  using ImageType = typename itk::Dream3DImage<PixelType, VDimension>;
+  using ImportImageContainerType = typename ImageType::PixelContainerType;
+  using ImagePointer = typename ImageType::Pointer;
+  using ValueType = typename itk::NumericTraits<PixelType>::ValueType;
+  using DataArrayPixelType = typename ::DataArray<ValueType>;
+  using Superclass = typename itk::ImageSource<ImageType>;
+  using SizeValueType = typename itk::SizeValueType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -47,23 +47,27 @@ public:
 
 protected:
   InPlaceDream3DDataToImageFilter();
-  virtual ~InPlaceDream3DDataToImageFilter();
+  ~InPlaceDream3DDataToImageFilter();
 
-  virtual void VerifyPreconditions() ITKv5_CONST override;
+  void VerifyPreconditions() ITKv5_CONST override;
 
-  virtual void GenerateOutputInformation() override;
-  virtual void GenerateData() override;
-  DataContainer::Pointer m_DataContainer;
+  void GenerateOutputInformation() override;
+  void GenerateData() override;
+  DataContainer::Pointer m_DataContainer = DataContainer::NullPointer();
 
 private:
-  InPlaceDream3DDataToImageFilter(const InPlaceDream3DDataToImageFilter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const InPlaceDream3DDataToImageFilter&) = delete;                  // Move assignment Not Implemented
   using Superclass::SetInput;
   std::string m_DataArrayName;
   std::string m_AttributeMatrixArrayName;
   typename ImportImageContainerType::Pointer m_ImportImageContainer;
-  bool m_InPlace;                        // enable the possibility of in-place
-  bool m_PixelContainerWillOwnTheBuffer; // By default, this filter does not take data ownership
+  bool m_InPlace = true;                         // enable the possibility of in-place
+  bool m_PixelContainerWillOwnTheBuffer = false; // By default, this filter does not take data ownership
+
+public:
+  InPlaceDream3DDataToImageFilter(const InPlaceDream3DDataToImageFilter&) = delete;            // Copy Constructor Not Implemented
+  InPlaceDream3DDataToImageFilter(InPlaceDream3DDataToImageFilter&&) = delete;                 // Move Constructor Not Implemented
+  InPlaceDream3DDataToImageFilter& operator=(const InPlaceDream3DDataToImageFilter&) = delete; // Copy Assignment Not Implemented
+  InPlaceDream3DDataToImageFilter& operator=(InPlaceDream3DDataToImageFilter&&) = delete;      // Move Assignment Not Implemented
 };
 } // namespace itk
 

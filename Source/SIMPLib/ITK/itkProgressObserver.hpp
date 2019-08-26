@@ -40,72 +40,78 @@
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
-#include "itkProcessObject.h"
 #include "itkCommand.h"
+#include "itkProcessObject.h"
 
 namespace itk
 {
 class ProgressObserver : public itk::Command
 {
-  public:
-    SIMPL_SHARED_POINTERS(ProgressObserver)
-    SIMPL_STATIC_NEW_MACRO(ProgressObserver)
+public:
+  ITK_DISALLOW_COPY_AND_ASSIGN(ProgressObserver);
 
-    void Execute(itk::Object* caller, const itk::EventObject& event) override
+  /** Standard class type aliases. */
+  using Self = ProgressObserver;
+  using Pointer = SmartPointer<Self>;
+
+  /** Method for creation through the object factory. */
+  itkNewMacro(Self);
+
+  /** Run-time type information (and related methods). */
+  itkTypeMacro(ProgressObserver, itk::Command);
+
+  void Execute(itk::Object* caller, const itk::EventObject& event) override
+  {
+    Execute((const itk::Object*)caller, event);
+  }
+
+  void Execute(const itk::Object* caller, const itk::EventObject& event) override
+  {
+    if(!itk::ProgressEvent().CheckEvent(&event))
     {
-      Execute((const itk::Object*)caller, event);
+      return;
+    }
+    const auto* processObject = dynamic_cast<const itk::ProcessObject*>(caller);
+    if(processObject == nullptr)
+    {
+      return;
     }
 
-    void Execute(const itk::Object* caller, const itk::EventObject& event) override
+    QString progressStr = QString::number(processObject->GetProgress() * 100, 'f', 0);
+
+    QString ss;
+    if(m_MessagePrefix.isEmpty())
     {
-      if(!itk::ProgressEvent().CheckEvent(&event))
-      {
-        return;
-      }
-      const auto* processObject = dynamic_cast<const itk::ProcessObject*>(caller);
-      if(!processObject)
-      {
-        return;
-      }
-
-      QString progressStr = QString::number(processObject->GetProgress() * 100);
-
-      QString ss;
-      if (m_MessagePrefix.isEmpty())
-      {
-        ss = QObject::tr("%1%").arg(progressStr);
-      }
-      else
-      {
-        ss = QObject::tr("%1: %2%").arg(m_MessagePrefix).arg(progressStr);
-      }
-
-      if (m_Filter)
-      {
-        m_Filter->notifyStatusMessage(ss);
-      }
+      ss = QObject::tr("%1%").arg(progressStr);
+    }
+    else
+    {
+      ss = QObject::tr("%1: %2%").arg(m_MessagePrefix).arg(progressStr);
     }
 
-    void setMessagePrefix(const QString &prefix)
+    if(m_Filter != nullptr)
     {
-      m_MessagePrefix = prefix;
+      m_Filter->notifyStatusMessage(ss);
     }
+  }
 
-    void setFilter(AbstractFilter* filter)
-    {
-      m_Filter = filter;
-    }
+  void SetMessagePrefix(const QString& prefix)
+  {
+    m_MessagePrefix = prefix;
+  }
 
-  protected:
-    ProgressObserver() {}
+  void SetFilter(AbstractFilter* filter)
+  {
+    m_Filter = filter;
+  }
 
-  private:
-    AbstractFilter* m_Filter = nullptr;
-    QString m_MessagePrefix;
+protected:
+  ProgressObserver() = default;
 
-    ProgressObserver(const ProgressObserver&) = delete; // Copy Constructor Not Implemented
-    ProgressObserver(ProgressObserver&&) = delete;      // Move Constructor Not Implemented
-    ProgressObserver& operator=(const ProgressObserver&) = delete; // Copy Assignment Not Implemented
-    ProgressObserver& operator=(ProgressObserver&&) = delete;      // Move Assignment Not Implemented
+  ~ProgressObserver() override = default;
+
+private:
+  AbstractFilter* m_Filter = nullptr;
+  QString m_MessagePrefix;
 };
-} // end of itk namespace
+} // namespace itk

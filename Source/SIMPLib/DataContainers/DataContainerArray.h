@@ -70,6 +70,10 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
 
   PYB11_METHOD(bool addOrReplaceDataContainer ARGS DataContainer)
   PYB11_METHOD(bool insertOrAssign ARGS DataContainer)
+
+  PYB11_METHOD(DataContainer::Pointer getDataContainer OVERLOAD const.QString.&,Name)
+  PYB11_METHOD(DataContainer::Pointer getDataContainer OVERLOAD const.DataArrayPath.&,Path)
+
   PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.QString.&,Name CONST_METHOD)
   PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
 
@@ -78,7 +82,6 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
   PYB11_METHOD(bool renameDataContainer OVERLOAD const.DataArrayPath.&,OldPath const.DataArrayPath.&,NewPath )
 
   PYB11_METHOD(void clearDataContainers)
-  //PYB11_METHOD(XXXX getDataContainerNames)
   PYB11_METHOD(int getNumDataContainers)
   PYB11_METHOD(void duplicateDataContainer ARGS OldName, NewName)
 
@@ -91,7 +94,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
 public:
   SIMPL_SHARED_POINTERS(DataContainerArray)
   SIMPL_STATIC_NEW_MACRO(DataContainerArray)
-  SIMPL_TYPE_MACRO(DataContainerArray)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerArray, IDataStructureContainerNode<DataContainer>)
 
   using Container = ChildCollection;
   using MontageCollection = NamedCollection<AbstractMontage>;

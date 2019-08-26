@@ -147,6 +147,7 @@ if(SIMPL_BUILD_TESTING)
     "Remove_Component_From_Array"
     "Rename_Attribute_Array"
     "Split_Attribute_Array"
+    "NumPy_Round_Trip"
   )
 
   foreach(test ${SIMPL_PYTHON_TESTS})

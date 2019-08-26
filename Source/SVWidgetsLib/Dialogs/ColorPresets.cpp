@@ -63,22 +63,22 @@ public:
   // -----------------------------------------------------------------------------
   QJsonArray GetPresets()
   {
-    if (this->Presets.empty())
+    if(this->m_Presets.empty())
     {
       this->LoadPresets();
     }
-    return this->Presets;
+    return this->m_Presets;
   }
 
 private:
-  QJsonArray Presets;
+  QJsonArray m_Presets;
 
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
   void LoadPresets()
   {
-    if(!Presets.empty())
+    if(!m_Presets.empty())
     {
       return;
     }
@@ -94,15 +94,16 @@ private:
         // "Failed to parse presets file" error
         return;
       }
-      Presets = doc.array();
 
-      for (int i=0; i<Presets.size(); i++)
+      QJsonArray allPresets = doc.array();
+      for(const auto& preset : allPresets)
       {
-        QJsonObject preset = Presets[i].toObject();
-        if (preset["ColorSpace"].toString() != "RGB")
+        QJsonObject obj = preset.toObject();
+        if((obj["ColorSpace"].toString() == "RGB")
+           //|| (obj["ColorSpace"].toString() == "HSV")
+        )
         {
-          Presets.removeAt(i);
-          i--;
+          m_Presets.append(preset);
         }
       }
     }
@@ -195,7 +196,6 @@ QPixmap ColorPresets::getPixmapFromPreset(unsigned int index)
   {
     return QPixmap();
   }
-
   if (presetObj.contains("RGBPoints") && presetObj["RGBPoints"].isArray())
   {
     QJsonArray presetArray = presetObj["RGBPoints"].toArray();
