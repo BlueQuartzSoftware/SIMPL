@@ -578,7 +578,7 @@ class SIMPLib_EXPORT MatrixMath
      * @param a
      */
     template <typename T>
-    static float Magnitude4x1(T a[4])
+    static T Magnitude4x1(T a[4])
     {
       return (sqrt((a[0] * a[0]) + (a[1] * a[1]) + (a[2] * a[2]) + (a[3] * a[3])));
     }
