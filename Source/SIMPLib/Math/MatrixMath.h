@@ -86,7 +86,7 @@ class SIMPLib_EXPORT MatrixMath
      * @param outMat
      */
     template <typename T>
-    static void Multiply3x3with3x1(const T g1[3][3], const T g2[3], T outMat[3])
+    static void Multiply3x3with3x1(const T g1[3][3], const T* g2, T* outMat)
     {
       outMat[0] = g1[0][0] * g2[0] + g1[0][1] * g2[1] + g1[0][2] * g2[2];
       outMat[1] = g1[1][0] * g2[0] + g1[1][1] * g2[1] + g1[1][2] * g2[2];

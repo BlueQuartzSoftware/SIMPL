@@ -42,7 +42,6 @@
 #include "SIMPLib/Math/MatrixMath.h"
 #include "SIMPLib/Math/QuaternionMath.hpp"
 #include "SIMPLib/SIMPLib.h"
-
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
@@ -93,6 +92,8 @@ public:
   // -----------------------------------------------------------------------------
   void TestQuat_t()
   {
+    using QuaternionMathF = QuaternionMath<float>;
+    using QuatF = QuaternionMathF::Quaternion;
     QuatF p = QuaternionMathF::New(1.0f, 0.0f, 0.0f, 1.0f);
     QuatF q = QuaternionMathF::New(0.0f, 1.0f, 0.0f, 2.0f);
     QuatF out = QuaternionMathF::New(0.0f, 0.0f, 0.0f, 0.0f);

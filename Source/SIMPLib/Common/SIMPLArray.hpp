@@ -730,7 +730,6 @@ using FloatVec3Type = IVec3<float>;
 using IntVec3Type = IVec3<int>;
 using SizeVec3Type = IVec3<size_t>;
 
-using QuaternionType = IVec4<float>;
 using FloatVec4Type = IVec4<float>;
 using IntVec4Type = IVec4<int>;
 using SizeVec4Type = IVec4<size_t>;
