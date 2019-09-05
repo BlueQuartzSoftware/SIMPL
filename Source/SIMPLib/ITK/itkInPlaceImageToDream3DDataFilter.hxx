@@ -35,12 +35,8 @@ InPlaceImageToDream3DDataFilter< PixelType, VDimension >
   outputPtr->Set(dc);
 }
 
-
-
-template< typename PixelType, unsigned int VDimension>
-ProcessObject::DataObjectPointer
-InPlaceImageToDream3DDataFilter< PixelType, VDimension >
-::MakeOutput(ProcessObject::DataObjectPointerArraySizeType)
+template <typename PixelType, unsigned int VDimension>
+ProcessObject::DataObjectPointer InPlaceImageToDream3DDataFilter<PixelType, VDimension>::MakeOutput(ProcessObject::DataObjectPointerArraySizeType input)
 {
   return DecoratorType::New().GetPointer();
 }

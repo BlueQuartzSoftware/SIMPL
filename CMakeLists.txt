@@ -376,6 +376,23 @@ install(
     Devel
 )
 
+# -----------------------------------------------------------------------
+# Add in the Necessary HDF5 Support Sources into a library
+# -----------------------------------------------------------------------
+add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/H5Support ${PROJECT_BINARY_DIR}/H5Support)
+
+# -----------------------------------------------------------------------
+# Add in the support to host the documentation over a thin-http server
+# -----------------------------------------------------------------------
+add_subdirectory(${SIMPLProj_SOURCE_DIR}/ThirdParty/QtWebApp )
+
+# -----------------------------------------------------------------------
+# This needs to be set here as we are going to look for files in this directory
+# -----------------------------------------------------------------------
+if("${FilterWidgetsLib_BINARY_DIR}" STREQUAL "")
+  set(FilterWidgetsLib_BINARY_DIR ${SIMPLProj_BINARY_DIR}/FilterWidgetsLib)
+endif()
+
 
 # --------------------------------------------------------------------
 # Use ITK
@@ -387,24 +404,12 @@ if(SIMPL_USE_ITK)
   set(ITK_NO_IO_FACTORY_REGISTER_MANAGER TRUE)
   find_package(ITK REQUIRED)
   include(${CMP_SOURCE_DIR}/ITKSupport/IncludeITK.cmake)
-endif()
 
-# -----------------------------------------------------------------------
-# Add in the Necessary HDF5 Support Sources into a library
-# -----------------------------------------------------------------------
-add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/H5Support ${PROJECT_BINARY_DIR}/H5Support)
-
-# -----------------------------------------------------------------------
-# Add in the support to host the documentation over a thin-http server
-# -----------------------------------------------------------------------
-add_subdirectory(${SIMPLProj_SOURCE_DIR}/ThirdParty/QtWebApp )
-
-
-# -----------------------------------------------------------------------
-# This needs to be set here as we are going to look for files in this directory
-# -----------------------------------------------------------------------
-if("${FilterWidgetsLib_BINARY_DIR}" STREQUAL "")
-  set(FilterWidgetsLib_BINARY_DIR ${SIMPLProj_BINARY_DIR}/FilterWidgetsLib)
+  # --- ONLY Mac OS using ITK 5 needs SimpleITKExplicit
+  get_property(ITK_VERSION_MAJOR GLOBAL PROPERTY ITK_VERSION_MAJOR)
+  if(APPLE AND "${ITK_VERSION_MAJOR}" STREQUAL "5")
+    add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SimpleITKExplicit ${PROJECT_BINARY_DIR}/SimpleITKExplicit)
+  endif()
 endif()
 
 # -----------------------------------------------------------------------

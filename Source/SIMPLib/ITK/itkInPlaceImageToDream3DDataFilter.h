@@ -1,17 +1,17 @@
 #pragma once
 
-#include "itkDream3DImage.h"
-#include "itkGetComponentsDimensions.h"
-
-#include "SIMPLib/DataContainers/DataContainerArray.h"
-
-#include <itkProcessObject.h>
-#include <itkSimpleDataObjectDecorator.h>
-
+#include <itkImage.h>
 #include <itkNumericTraits.h>
 #include <itkNumericTraitsRGBAPixel.h>
 #include <itkNumericTraitsRGBPixel.h>
 #include <itkNumericTraitsVectorPixel.h>
+#include <itkProcessObject.h>
+#include <itkSimpleDataObjectDecorator.h>
+
+#include "SIMPLib/ITK/itkGetComponentsDimensions.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+
+
 
 namespace itk
 {
@@ -34,7 +34,10 @@ public:
   itkNewMacro(Self);
   itkTypeMacro(InPlaceImageToDream3DDataFilter, ProcessObject);
 
-  virtual void SetInput(const ImageType* image);
+  InPlaceImageToDream3DDataFilter(const InPlaceImageToDream3DDataFilter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const InPlaceImageToDream3DDataFilter&) = delete;                  // Move assignment Not Implemented
+
+  virtual void SetInput(const ImageType* input);
 
   DecoratorType* GetOutput();
   const DecoratorType* GetOutput() const;
@@ -54,10 +57,10 @@ public:
 
 protected:
   InPlaceImageToDream3DDataFilter();
-  virtual ~InPlaceImageToDream3DDataFilter();
+  ~InPlaceImageToDream3DDataFilter() override;
 
-  virtual void VerifyPreconditions() ITKv5_CONST override;
-  ProcessObject::DataObjectPointer MakeOutput(ProcessObject::DataObjectPointerArraySizeType) override;
+  void VerifyPreconditions() ITKv5_CONST override;
+  ProcessObject::DataObjectPointer MakeOutput(ProcessObject::DataObjectPointerArraySizeType input) override;
 
   void GenerateData() override;
   void GenerateOutputInformation() override;
@@ -66,8 +69,7 @@ protected:
 
 private:
   using Superclass::SetInput;
-  InPlaceImageToDream3DDataFilter(const InPlaceImageToDream3DDataFilter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const InPlaceImageToDream3DDataFilter&) = delete;                  // Move assignment Not Implemented
+
   std::string m_DataArrayName;
   std::string m_AttributeMatrixArrayName;
   bool m_InPlace; // enable the possibility of in-place

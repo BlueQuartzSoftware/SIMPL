@@ -1,11 +1,12 @@
 #pragma once
 
-#include "itkDream3DImage.h"
 #include <itkImportImageFilter.h>
 #include <itkNumericTraits.h>
 #include <itkNumericTraitsRGBAPixel.h>
 #include <itkNumericTraitsRGBPixel.h>
 #include <itkNumericTraitsVectorPixel.h>
+
+#include "SIMPLib/ITK/itkImportDream3DImageContainer.h"
 
 class DataContainer;
 using DataContainerShPtr = std::shared_ptr<DataContainer>;
