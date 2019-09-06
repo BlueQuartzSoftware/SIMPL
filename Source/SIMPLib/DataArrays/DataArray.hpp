@@ -2039,9 +2039,9 @@ protected:
    */
   virtual T* resizeAndExtend(size_t size)
   {
-    T* newArray;
-    size_t newSize;
-    size_t oldSize;
+    T* newArray = nullptr;
+    size_t newSize = 0;
+    size_t oldSize = 0;
 
     if(size == m_Size) // Requested size is equal to current size.  Do nothing.
     {
@@ -2056,54 +2056,23 @@ protected:
       clear();
       return m_Array;
     }
-    // OS X's realloc does not free memory if the new block is smaller.  This
-    // is a very serious problem and causes huge amount of memory to be
-    // wasted. Do not use realloc on the Mac.
-    bool dontUseRealloc = false;
-#if defined __APPLE__
-    dontUseRealloc = true;
-#endif
 
-    // Allocate a new array if we DO NOT own the current array
-    if((nullptr != m_Array) && (false == m_OwnsData))
+    newArray = new T[newSize]();
+    if(!newArray)
     {
-      // The old array is owned by the user so we cannot try to
-      // reallocate it.  Just allocate new memory that we will own.
-      newArray = new T[newSize]();
+      qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
+      return nullptr;
+    }
 
-      if(!newArray)
-      {
-        qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
-        return nullptr;
-      }
-
-      // Copy the data from the old array.
+    // Copy the data from the old array.
+    if(m_Array != nullptr)
+    {
       std::memcpy(newArray, m_Array, (newSize < m_Size ? newSize : m_Size) * sizeof(T));
     }
-    else if(!dontUseRealloc)
-    {
-      newArray = new T[newSize]();
 
-      if(!newArray)
-      {
-        qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
-        return nullptr;
-      }
-    }
-    else
+    // Allocate a new array if we DO NOT own the current array
+    if((nullptr != m_Array) && m_OwnsData)
     {
-      newArray = new T[newSize]();
-      if(!newArray)
-      {
-        qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
-        return nullptr;
-      }
-
-      // Copy the data from the old array.
-      if(m_Array != nullptr)
-      {
-        std::memcpy(newArray, m_Array, (newSize < m_Size ? newSize : m_Size) * sizeof(T));
-      }
       // Free the old array
       deallocate();
     }
