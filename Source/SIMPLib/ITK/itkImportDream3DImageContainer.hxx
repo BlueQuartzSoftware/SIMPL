@@ -59,7 +59,7 @@ ImportDream3DImageContainer<TElementIdentifier, TElement>
 
   try
   {
-    data = (Element*)(malloc(sizeof(TElement) * size));
+    data = new TElement[size]();
     if(UseDefaultConstructor)
     {
       new(data) Element(); // POD types initialized to 0, others use default constructor.
@@ -88,7 +88,7 @@ ImportDream3DImageContainer<TElementIdentifier, TElement>
   {
     Element* data = this->GetBufferPointer();
     data->~Element();
-    free(data);
+    delete[](data);
     this->SetImportPointer(nullptr);
   }
   Superclass::DeallocateManagedMemory();

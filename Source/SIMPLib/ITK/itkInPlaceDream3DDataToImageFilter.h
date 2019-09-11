@@ -1,25 +1,29 @@
 #pragma once
 
-#include "itkDream3DImage.h"
 #include <itkImportImageFilter.h>
 #include <itkNumericTraits.h>
 #include <itkNumericTraitsRGBAPixel.h>
 #include <itkNumericTraitsRGBPixel.h>
 #include <itkNumericTraitsVectorPixel.h>
 
+#include "SIMPLib/ITK/itkImportDream3DImageContainer.h"
+
+class DataContainer;
+using DataContainerShPtr = std::shared_ptr<DataContainer>;
+
 namespace itk
 {
 
 template <typename PixelType, unsigned int VDimension>
-class InPlaceDream3DDataToImageFilter : public ImageSource<itk::Dream3DImage<PixelType, VDimension>>
+class InPlaceDream3DDataToImageFilter : public ImageSource<itk::Image<PixelType, VDimension>>
 {
 public:
   /** Standard class typedefs. */
   using Self = InPlaceDream3DDataToImageFilter;
   using Pointer = SmartPointer<Self>;
 
-  using ImageType = typename itk::Dream3DImage<PixelType, VDimension>;
-  using ImportImageContainerType = typename ImageType::PixelContainerType;
+  using ImageType = typename itk::Image<PixelType, VDimension>;
+  using ImportImageContainerType = ImportDream3DImageContainer<itk::SizeValueType, PixelType>;
   using ImagePointer = typename ImageType::Pointer;
   using ValueType = typename itk::NumericTraits<PixelType>::ValueType;
   using DataArrayPixelType = typename ::DataArray<ValueType>;
@@ -53,7 +57,7 @@ protected:
 
   void GenerateOutputInformation() override;
   void GenerateData() override;
-  DataContainer::Pointer m_DataContainer = DataContainer::NullPointer();
+  DataContainerShPtr m_DataContainer;
 
 private:
   using Superclass::SetInput;
