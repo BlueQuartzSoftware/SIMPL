@@ -10,6 +10,7 @@
 
 #include "SIMPLib/ITK/itkGetComponentsDimensions.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/ITK/itkSupportConstants.h"
 
 
 

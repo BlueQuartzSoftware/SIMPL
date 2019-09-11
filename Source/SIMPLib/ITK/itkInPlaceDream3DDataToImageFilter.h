@@ -7,6 +7,7 @@
 #include <itkNumericTraitsVectorPixel.h>
 
 #include "SIMPLib/ITK/itkImportDream3DImageContainer.h"
+#include "SIMPLib/ITK/itkSupportConstants.h"
 
 class DataContainer;
 using DataContainerShPtr = std::shared_ptr<DataContainer>;
@@ -28,7 +29,7 @@ public:
   using ValueType = typename itk::NumericTraits<PixelType>::ValueType;
   using DataArrayPixelType = typename ::DataArray<ValueType>;
   using Superclass = typename itk::ImageSource<ImageType>;
-  using SizeValueType = typename itk::SizeValueType;
+  //using SizeValueType = typename itk::SizeValueType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
