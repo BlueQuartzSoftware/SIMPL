@@ -684,11 +684,7 @@ public:
     }
 
     size_t newSize = m_Size;
-#if defined(AIM_USE_SSE) && defined(__SSE2__)
-    m_Array = static_cast<T*>(_mm_malloc(newSize * sizeof(T), 16));
-#else
-    m_Array = (T*)malloc(newSize * sizeof(T));
-#endif
+    m_Array = new T[newSize]();
     if(!m_Array)
     {
       qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
@@ -766,7 +762,8 @@ public:
     size_t newSize = (getNumberOfTuples() - idxs.size()) * m_NumComponents;
 
     // Create a new m_Array to copy into
-    T* newArray = (T*)malloc(newSize * sizeof(T));
+    T* newArray = new T[newSize]();
+
     // Splat AB across the array so we know if we are copying the values or not
     ::memset(newArray, 0xAB, newSize * sizeof(T));
 
@@ -2007,12 +2004,8 @@ protected:
         Q_ASSERT(false);
       }
 #endif
+    delete[](m_Array);
 
-#if defined(AIM_USE_SSE) && defined(__SSE2__)
-    _mm_free(m_buffer);
-#else
-    free(m_Array);
-#endif
     m_Array = nullptr;
     m_IsAllocated = false;
   }
@@ -2045,9 +2038,9 @@ protected:
    */
   virtual T* resizeAndExtend(size_t size)
   {
-    T* newArray;
-    size_t newSize;
-    size_t oldSize;
+    T* newArray = nullptr;
+    size_t newSize = 0;
+    size_t oldSize = 0;
 
     if(size == m_Size) // Requested size is equal to current size.  Do nothing.
     {
@@ -2062,53 +2055,23 @@ protected:
       clear();
       return m_Array;
     }
-    // OS X's realloc does not free memory if the new block is smaller.  This
-    // is a very serious problem and causes huge amount of memory to be
-    // wasted. Do not use realloc on the Mac.
-    bool dontUseRealloc = false;
-#if defined __APPLE__
-    dontUseRealloc = true;
-#endif
 
-    // Allocate a new array if we DO NOT own the current array
-    if((nullptr != m_Array) && (false == m_OwnsData))
+    newArray = new T[newSize]();
+    if(!newArray)
     {
-      // The old array is owned by the user so we cannot try to
-      // reallocate it.  Just allocate new memory that we will own.
-      newArray = (T*)malloc(newSize * sizeof(T));
-      if(!newArray)
-      {
-        qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
-        return nullptr;
-      }
+      qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
+      return nullptr;
+    }
 
-      // Copy the data from the old array.
+    // Copy the data from the old array.
+    if(m_Array != nullptr)
+    {
       std::memcpy(newArray, m_Array, (newSize < m_Size ? newSize : m_Size) * sizeof(T));
     }
-    else if(!dontUseRealloc)
-    {
-      // Try to reallocate with minimal memory usage and possibly avoid copying.
-      newArray = (T*)realloc(m_Array, newSize * sizeof(T));
-      if(!newArray)
-      {
-        qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
-        return nullptr;
-      }
-    }
-    else
-    {
-      newArray = (T*)malloc(newSize * sizeof(T));
-      if(!newArray)
-      {
-        qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
-        return nullptr;
-      }
 
-      // Copy the data from the old array.
-      if(m_Array != nullptr)
-      {
-        std::memcpy(newArray, m_Array, (newSize < m_Size ? newSize : m_Size) * sizeof(T));
-      }
+    // Allocate a new array if we DO NOT own the current array
+    if((nullptr != m_Array) && m_OwnsData)
+    {
       // Free the old array
       deallocate();
     }

@@ -35,12 +35,8 @@ InPlaceImageToDream3DDataFilter< PixelType, VDimension >
   outputPtr->Set(dc);
 }
 
-
-
-template< typename PixelType, unsigned int VDimension>
-ProcessObject::DataObjectPointer
-InPlaceImageToDream3DDataFilter< PixelType, VDimension >
-::MakeOutput(ProcessObject::DataObjectPointerArraySizeType)
+template <typename PixelType, unsigned int VDimension>
+ProcessObject::DataObjectPointer InPlaceImageToDream3DDataFilter<PixelType, VDimension>::MakeOutput(ProcessObject::DataObjectPointerArraySizeType input)
 {
   return DecoratorType::New().GetPointer();
 }
@@ -177,7 +173,7 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
       ::memcpy(data->getPointer(0), reinterpret_cast<ValueType*>(inputPtr->GetBufferPointer()), imageGeom->getNumberOfElements() * sizeof(ValueType));
     }
   }
-  attrMat->insertOrAssign(data);
+  attrMat->addOrReplaceAttributeArray(data);
   outputPtr->Set(dataContainer);
 }
 

@@ -197,10 +197,15 @@ void TetrahedralGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 void TetrahedralGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if((data->getType() != AttributeMatrix::Type::Vertex && data->getType() != AttributeMatrix::Type::Edge && data->getType() != AttributeMatrix::Type::Face) ||
-     data->getType() != AttributeMatrix::Type::Cell)
+  bool validType = false;
+  if(data->getType() == AttributeMatrix::Type::Vertex || data->getType() == AttributeMatrix::Type::Edge || data->getType() == AttributeMatrix::Type::Face ||
+     data->getType() == AttributeMatrix::Type::Cell)
   {
     // TetrahedralGeom can only accept vertex, edge, face or cell Attribute Matrices
+    validType = true;
+  }
+  if(!validType)
+  {
     return;
   }
   if(data->getType() == AttributeMatrix::Type::Vertex && static_cast<size_t>(data->getNumberOfTuples()) != getNumberOfVertices())

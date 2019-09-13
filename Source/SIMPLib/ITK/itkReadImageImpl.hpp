@@ -46,6 +46,8 @@
 // ImageProcessing Plugin
 #include "itkBridge.h"
 
+#error THIS FILE IS NOT USED
+
 /**
  * @brief This is a private implementation for the filter that handles the actual algorithm implementation details
  * for us like figuring out if we can use this private implementation with the data array that is assigned.

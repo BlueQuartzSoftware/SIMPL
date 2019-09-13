@@ -108,9 +108,9 @@ class StructArray : public IDataArray
     ~StructArray() override
     {
       //qDebug() << "~StructArrayTemplate '" << m_Name << "'" ;
-      if ((nullptr != m_Array) && (true == this->_ownsData))
+      if((nullptr != m_Array) && (true == m_OwnsData))
       {
-        _deallocate();
+        deallocate();
       }
     }
 
@@ -159,7 +159,7 @@ class StructArray : public IDataArray
      */
     void takeOwnership() override
     {
-      this->_ownsData = true;
+      m_OwnsData = true;
     }
 
     /**
@@ -169,7 +169,7 @@ class StructArray : public IDataArray
      */
     void releaseOwnership() override
     {
-      this->_ownsData = false;
+      m_OwnsData = false;
     }
 
     /**
@@ -178,34 +178,30 @@ class StructArray : public IDataArray
      */
     int32_t Allocate()
     {
-      if ((nullptr != m_Array) && (true == this->_ownsData))
+      if((nullptr != m_Array) && (true == m_OwnsData))
       {
-        _deallocate();
+        deallocate();
       }
       m_Array = nullptr;
-      this->_ownsData = true;
-      this->m_IsAllocated = false;
+      m_OwnsData = true;
+      m_IsAllocated = false;
 
-      if (this->m_Size == 0)
+      if(m_Size == 0)
       {
         initialize();
         return 1;
       }
 
+      size_t newSize = m_Size;
+      m_Array = new T[newSize]();
 
-      size_t newSize = this->m_Size;
-#if defined ( AIM_USE_SSE ) && defined ( __SSE2__ )
-      Array = static_cast<T*>( _mm_malloc (newSize * sizeof(T), 16) );
-#else
-      m_Array = (T*)malloc(newSize * sizeof(T));
-#endif
       if (!m_Array)
       {
         qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. " ;
         return -1;
       }
-      this->m_IsAllocated = true;
-      this->m_Size = newSize;
+      m_IsAllocated = true;
+      m_Size = newSize;
       return 1;
     }
 
@@ -214,15 +210,15 @@ class StructArray : public IDataArray
      */
     virtual void initialize()
     {
-      if (nullptr != m_Array && true == this->_ownsData)
+      if(nullptr != m_Array && true == m_OwnsData)
       {
-        _deallocate();
+        deallocate();
       }
       m_Array = nullptr;
-      this->m_Size = 0;
-      this->_ownsData = true;
-      this->m_MaxId = 0;
-      this->m_IsAllocated = false;
+      m_Size = 0;
+      m_OwnsData = true;
+      m_MaxId = 0;
+      m_IsAllocated = false;
     }
 
     /**
@@ -231,7 +227,7 @@ class StructArray : public IDataArray
     void initializeWithZeros() override
     {
       size_t typeSize = sizeof(T);
-      ::memset(m_Array, 0, this->m_Size * typeSize);
+      ::memset(m_Array, 0, m_Size * typeSize);
     }
 
     /**
@@ -239,7 +235,7 @@ class StructArray : public IDataArray
      */
     void initializeWithValue(T value, size_t offset = 0)
     {
-      for (size_t i = offset; i < this->m_Size; i++)
+      for(size_t i = offset; i < m_Size; i++)
       {
         m_Array[i] = value;
       }
@@ -275,7 +271,10 @@ class StructArray : public IDataArray
       // off the end of the array and return an error code.
       for(std::vector<size_t>::size_type i = 0; i < idxs.size(); ++i)
       {
-        if (idxs[i] > this->m_MaxId) { return -100; }
+        if(idxs[i] > m_MaxId)
+        {
+          return -100;
+        }
       }
 
       // Calculate the new size of the array to copy into
@@ -283,14 +282,14 @@ class StructArray : public IDataArray
       T* currentSrc = nullptr;
 
       // Create a new Array to copy into
-      T* newArray = (T*)malloc(newSize * sizeof(T));
+      T* newArray = new T[newSize]();
       // Splat AB across the array so we know if we are copying the values or not
       ::memset(newArray, 0xAB, newSize * sizeof(T));
 
       // Keep the current Destination Pointer
       T* currentDest = newArray;
       size_t j = 0;
-      int k = 0;
+      size_t k = 0;
       // Find the first chunk to copy by walking the idxs array until we get an
       // index that is NOT a continuous increment from the start
       for (k = 0; k < idxs.size(); ++k)
@@ -309,11 +308,11 @@ class StructArray : public IDataArray
       {
         currentSrc = m_Array + (j);
         ::memcpy(currentDest, currentSrc, (getNumberOfTuples() - idxs.size()) * sizeof(T));
-        _deallocate(); // We are done copying - delete the current Array
-        this->m_Size = newSize;
+        deallocate(); // We are done copying - delete the current Array
+        m_Size = newSize;
         m_Array = newArray;
-        this->_ownsData = true;
-        this->m_MaxId = newSize - 1;
+        m_OwnsData = true;
+        m_MaxId = newSize - 1;
         return 0;
       }
 
@@ -324,7 +323,7 @@ class StructArray : public IDataArray
       destIdx[0] = 0;
       copyElements[0] = (idxs[0] - 0);
 
-      for (int i = 1; i < srcIdx.size(); ++i)
+      for(size_t i = 1; i < srcIdx.size(); ++i)
       {
         srcIdx[i] = (idxs[i - 1] + 1);
 
@@ -349,15 +348,15 @@ class StructArray : public IDataArray
       }
 
       // We are done copying - delete the current Array
-      _deallocate();
+      deallocate();
 
       // Allocation was successful.  Save it.
-      this->m_Size = newSize;
+      m_Size = newSize;
       m_Array = newArray;
       // This object has now allocated its memory and owns it.
-      this->_ownsData = true;
+      m_OwnsData = true;
 
-      this->m_MaxId = newSize - 1;
+      m_MaxId = newSize - 1;
 
       return err;
     }
@@ -370,7 +369,7 @@ class StructArray : public IDataArray
      */
     int copyTuple(size_t currentPos, size_t newPos) override
     {
-      size_t max =  ((this->m_MaxId + 1));
+      size_t max = ((m_MaxId + 1));
       if (currentPos >= max
           || newPos >= max )
       {return -1;}
@@ -465,7 +464,7 @@ class StructArray : public IDataArray
     size_t getNumberOfTuples() override
     {
       if (m_Size == 0) { return 0; }
-      return (this->m_MaxId + 1);
+      return (m_MaxId + 1);
     }
 
     /**
@@ -525,7 +524,7 @@ class StructArray : public IDataArray
     {
       if (i >= m_Size) { return nullptr;}
 
-      return (void*)(&(m_Array[i]));
+      return reinterpret_cast<void*>(m_Array + i);
     }
 
 
@@ -541,7 +540,7 @@ class StructArray : public IDataArray
 #ifndef NDEBUG
       if (m_Size > 0) { Q_ASSERT(i < m_Size);}
 #endif
-      return (T*)(&(m_Array[i]));
+      return reinterpret_cast<T*>(m_Array + i);
     }
 
     /**
@@ -587,7 +586,7 @@ class StructArray : public IDataArray
      */
     int32_t resizeTotalElements(size_t size) override
     {
-      if (this->resizeAndExtend(size) || size == 0)
+      if(resizeAndExtend(size) || size == 0)
       {
         return 1;
       }
@@ -726,11 +725,11 @@ class StructArray : public IDataArray
      * @param numElements The number of elements in the internal array.
      * @param takeOwnership Will the class clean up the memory. Default=true
      */
-    StructArray(size_t numElements, bool ownsData = true) :
-      m_Array(nullptr),
-      m_Size(numElements),
-      _ownsData(ownsData),
-      m_IsAllocated(false)
+    StructArray(size_t numElements, bool ownsData = true)
+    : m_Array(nullptr)
+    , m_Size(numElements)
+    , m_OwnsData(ownsData)
+    , m_IsAllocated(false)
     {
       m_MaxId = (m_Size > 0) ? m_Size - 1 : m_Size;
       //  MUD_FLAP_0 = MUD_FLAP_1 = MUD_FLAP_2 = MUD_FLAP_3 = MUD_FLAP_4 = MUD_FLAP_5 = 0xABABABABABABABABul;
@@ -739,7 +738,7 @@ class StructArray : public IDataArray
     /**
      * @brief deallocates the memory block
      */
-    void _deallocate()
+    void deallocate()
     {
       // We are going to splat 0xABABAB across the first value of the array as a debugging aid
       unsigned char* cptr = reinterpret_cast<unsigned char*>(m_Array);
@@ -765,13 +764,10 @@ class StructArray : public IDataArray
       }
 #endif
 
-#if defined ( AIM_USE_SSE ) && defined ( __SSE2__ )
-      _mm_free( this->m_buffer );
-#else
-      free(m_Array);
-#endif
+      delete[](m_Array);
+
       m_Array = nullptr;
-      this->m_IsAllocated = false;
+      m_IsAllocated = false;
     }
 
     /**
@@ -781,87 +777,50 @@ class StructArray : public IDataArray
      */
     virtual T* resizeAndExtend(size_t size)
     {
-      T* newArray;
-      size_t newSize;
+      T* newArray = nullptr;
+      size_t newSize = 0;
 
-      if (size > this->m_Size)
-      {
-        newSize = size;
-      }
-      else if (size == this->m_Size) // Requested size is equal to current size.  Do nothing.
+      if(size == m_Size) // Requested size is equal to current size.  Do nothing.
       {
         return m_Array;
       }
-      else // Requested size is smaller than current size.  Squeeze the memory.
-      {
-        newSize = size;
-      }
+      newSize = size;
 
       // Wipe out the array completely if new size is zero.
       if (newSize == 0)
       {
-        this->initialize();
+        initialize();
         return m_Array;
       }
-      // OS X's realloc does not free memory if the new block is smaller.  This
-      // is a very serious problem and causes huge amount of memory to be
-      // wasted. Do not use realloc on the Mac.
-      bool dontUseRealloc = false;
-#if defined __APPLE__
-      dontUseRealloc = true;
-#endif
+
+      newArray = new T[newSize]();
+      if(!newArray)
+      {
+        qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
+        return nullptr;
+      }
+
+      // Copy the data from the old array.
+      if(m_Array != nullptr)
+      {
+        std::memcpy(newArray, m_Array, (newSize < m_Size ? newSize : m_Size) * sizeof(T));
+      }
 
       // Allocate a new array if we DO NOT own the current array
-      if ((nullptr != m_Array) && (false == this->_ownsData))
+      if((nullptr != m_Array) && m_OwnsData)
       {
-        // The old array is owned by the user so we cannot try to
-        // reallocate it.  Just allocate new memory that we will own.
-        newArray = (T*)malloc(newSize * sizeof(T));
-        if (!newArray)
-        {
-          qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. " ;
-          return 0;
-        }
-
-        // Copy the data from the old array.
-        memcpy(newArray, m_Array, (newSize < this->m_Size ? newSize : this->m_Size) * sizeof(T));
-      }
-      else if (!dontUseRealloc)
-      {
-        // Try to reallocate with minimal memory usage and possibly avoid copying.
-        newArray = (T*)realloc(m_Array, newSize * sizeof(T));
-        if (!newArray)
-        {
-          qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. " ;
-          return 0;
-        }
-      }
-      else
-      {
-        newArray = (T*)malloc(newSize * sizeof(T));
-        if (!newArray)
-        {
-          qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. " ;
-          return 0;
-        }
-
-        // Copy the data from the old array.
-        if (m_Array != nullptr)
-        {
-          memcpy(newArray, m_Array, (newSize < this->m_Size ? newSize : this->m_Size) * sizeof(T));
-        }
         // Free the old array
-        _deallocate();
+        deallocate();
       }
 
       // Allocation was successful.  Save it.
-      this->m_Size = newSize;
+      m_Size = newSize;
       m_Array = newArray;
       // This object has now allocated its memory and owns it.
-      this->_ownsData = true;
+      m_OwnsData = true;
 
-      this->m_MaxId = newSize - 1;
-      this->m_IsAllocated = true;
+      m_MaxId = newSize - 1;
+      m_IsAllocated = true;
 
       return m_Array;
     }
@@ -873,7 +832,7 @@ class StructArray : public IDataArray
     //  unsigned long long int MUD_FLAP_1;
     size_t m_Size;
     //  unsigned long long int MUD_FLAP_4;
-    bool _ownsData;
+    bool m_OwnsData;
     //  unsigned long long int MUD_FLAP_2;
     size_t m_MaxId;
 
