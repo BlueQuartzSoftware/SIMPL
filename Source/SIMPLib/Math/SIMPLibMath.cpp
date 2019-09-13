@@ -738,42 +738,6 @@ float SIMPLibMath::incompletebetaps(float a, float b, float x, float maxgam)
   return result;
 }
 
-void SIMPLibMath::boundD(double& val, double min, double max)
-{
-  if(val < min)
-  {
-    val = min;
-  }
-  else if(val > max)
-  {
-    val = max;
-  }
-}
-
-void SIMPLibMath::boundF(float& val, float min, float max)
-{
-  if(val < min)
-  {
-    val = min;
-  }
-  else if(val > max)
-  {
-    val = max;
-  }
-}
-
-void SIMPLibMath::boundI(int& val, int min, int max)
-{
-  if(val < min)
-  {
-    val = min;
-  }
-  else if(val > max)
-  {
-    val = max;
-  }
-}
-
 std::vector<double> SIMPLibMath::linspace(double minVal, double maxVal, int dim)
 {
   std::vector<double> result;

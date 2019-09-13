@@ -18,18 +18,17 @@
 template<typename T, typename K>
 class ArrayHelpers
 {
-  public:
+public:
+  virtual ~ArrayHelpers() = default;
 
-    virtual ~ArrayHelpers(){}
-
-    static void splat(T& a, const K val)
+  static void splat(T& a, const K val)
+  {
+    size_t size = a.size();
+    for(size_t i = 0; i < size; i++)
     {
-      size_t size = a.size();
-      for(size_t i = 0; i < size; i++)
-      {
-        a[i] = val;
-      }
+      a[i] = val;
     }
+  }
 
     static T multiply(const T& a, const T& b)
     {
