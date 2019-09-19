@@ -250,7 +250,7 @@ void ImportHDF5Dataset::dataCheck()
       }
     }
     stream << "\n";
-    stream << tr("    Total HDF5 Dataset Element Count: \n") << hdf5TotalElements << "\n";
+    stream << tr("    Total HDF5 Dataset Element Count: ") << hdf5TotalElements << "\n";
     stream << "-------------------------------------------\n";
     stream << "Current Data Structure Information: \n";
 

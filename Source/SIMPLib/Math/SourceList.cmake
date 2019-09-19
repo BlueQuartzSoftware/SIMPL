@@ -5,7 +5,6 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ArrayHelpers.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/GeometryMath.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MatrixMath.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/QuaternionMath.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RadialDistributionFunction.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RdfData.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibMath.h
