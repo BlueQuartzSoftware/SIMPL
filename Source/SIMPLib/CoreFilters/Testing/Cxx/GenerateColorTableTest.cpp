@@ -55,6 +55,70 @@
 
 #include "SIMPLib/CoreFilters/GenerateColorTable.h"
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString createErrorMessageFromJsonParseError(const QJsonParseError& parseError)
+{
+  QString msg;
+  QTextStream ss(&msg);
+
+  switch(parseError.error)
+  {
+  case QJsonParseError::NoError:
+    ss << "No Error";
+    break;
+  case QJsonParseError::UnterminatedObject:
+    ss << "Json Parsing Error: " << parseError.error << " of type UnterminatedObject. An object is not correctly terminated with a closing curly bracket";
+    break;
+  case QJsonParseError::MissingNameSeparator:
+    ss << "Json Parsing Error: " << parseError.error << " of type MissingNameSeparator. A comma separating different items is missing";
+    break;
+  case QJsonParseError::UnterminatedArray:
+    ss << "Json Parsing Error: " << parseError.error << " of type UnterminatedArray. The array is not correctly terminated with a closing square bracket";
+    break;
+  case QJsonParseError::MissingValueSeparator:
+    ss << "Json Parsing Error: " << parseError.error << " of type MissingValueSeparator. A colon separating keys from values inside objects is missing";
+    break;
+  case QJsonParseError::IllegalValue:
+    ss << "Json Parsing Error: " << parseError.error << " of type IllegalValue. The value is illegal";
+    break;
+  case QJsonParseError::TerminationByNumber:
+    ss << "Json Parsing Error: " << parseError.error << " of type TerminationByNumber. The input stream ended while parsing a number";
+    break;
+  case QJsonParseError::IllegalNumber:
+    ss << "Json Parsing Error: " << parseError.error << " of type IllegalNumber. The number is not well formed";
+    break;
+  case QJsonParseError::IllegalEscapeSequence:
+    ss << "Json Parsing Error: " << parseError.error << " of type IllegalEscapeSequence. An illegal escape sequence occurred in the input";
+    break;
+  case QJsonParseError::IllegalUTF8String:
+    ss << "Json Parsing Error: " << parseError.error << " of type IllegalUTF8String. An illegal UTF8 sequence occurred in the input";
+    break;
+  case QJsonParseError::UnterminatedString:
+    ss << "Json Parsing Error: " << parseError.error << " of type UnterminatedString. A string wasn't terminated with a quote";
+    break;
+  case QJsonParseError::MissingObject:
+    ss << "Json Parsing Error: " << parseError.error << " of type MissingObject. An object was expected but couldn't be found";
+    break;
+  case QJsonParseError::DeepNesting:
+    ss << "Json Parsing Error: " << parseError.error << " of type DeepNesting. The JSON document is too deeply nested for the parser to parse it";
+    break;
+  case QJsonParseError::DocumentTooLarge:
+    ss << "Json Parsing Error: " << parseError.error << " of type DocumentTooLarge. The JSON document is too large for the parser to parse it";
+    break;
+  case QJsonParseError::GarbageAtEnd:
+    ss << "Json Parsing Error: " << parseError.error << " of type GarbageAtEnd. The parsed document contains additional garbage characters at the end";
+    break;
+  default:
+    ss << "Json Parsing Error: " << parseError.error << " is of an unknown type.";
+    break;
+  }
+  ss << "\nThe error occurred at offset " << parseError.offset << ".\nReported error message is: " << parseError.errorString();
+
+  return msg;
+}
+
 class GenerateColorTableTest
 {
 
@@ -109,6 +173,7 @@ public:
       QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
       if(parseError.error != QJsonParseError::NoError)
       {
+        std::cout << createErrorMessageFromJsonParseError(parseError).toStdString() << std::endl;
         // "Failed to parse presets file" error
         DREAM3D_REQUIRE_EQUAL(0, -1);
       }

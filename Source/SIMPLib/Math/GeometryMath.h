@@ -68,6 +68,7 @@ class SIMPLib_EXPORT GeometryMath
      * @return
      */
     static float CosThetaBetweenVectors(const float a[3], const float b[3]);
+    static double CosThetaBetweenVectors(const double a[3], const double b[3]);
 
     /**
      * @brief Computes the angle in RADIANS between 2 vectors.

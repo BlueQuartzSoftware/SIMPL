@@ -156,6 +156,7 @@ namespace SIMPLib
     static const double k_360OverPi = 360.0 / M_PI;
     static const double k_180OverPi = 180.0 / M_PI;
     static const double k_PiOver2 = M_PI / 2.0;
+    static const double k_PiOver3 = M_PI / 3.0;
     static const double k_PiOver4 = M_PI / 4.0;
     static const double k_PiOver8 = M_PI / 8.0;
     static const double k_PiOver12 = M_PI / 12.0;
@@ -184,18 +185,26 @@ namespace SIMPLib
 }
 
 
-
-
-
 class SIMPLibMath
 {
   public:
     virtual ~SIMPLibMath();
 
     static SIMPLib_EXPORT float Gamma(float);
-    static SIMPLib_EXPORT void boundF(float& val, float min, float max);
-    static SIMPLib_EXPORT void boundI(int& val, int min, int max);
-    static SIMPLib_EXPORT void boundD(double& val, double min, double max);
+
+    template <typename T>
+    static void bound(T& val, T min, T max)
+    {
+      if(val < min)
+      {
+        val = min;
+      }
+      else if(val > max)
+      {
+        val = max;
+      }
+    }
+
     static SIMPLib_EXPORT float erf(float);
     static SIMPLib_EXPORT float erfc(float);
     static SIMPLib_EXPORT float gammastirf(float);
@@ -204,8 +213,6 @@ class SIMPLibMath
     static SIMPLib_EXPORT float incompletebetafe(float, float, float, float, float);
     static SIMPLib_EXPORT float incompletebetafe2(float, float, float, float, float);
     static SIMPLib_EXPORT float incompletebetaps(float, float, float, float);
-
-
 
     /**
      * @brief generates a linearly space array between 2 numbers (inclusive, assumes first number <= second number) [as matlabs linspace]

@@ -59,7 +59,7 @@ class SIMPLib_EXPORT Observer : public QObject, public IObserver
 
   public:
     Observer();
-    SIMPL_TYPE_MACRO_SUPER(Observer, IObserver)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Observer, IObserver)
 
     ~Observer() override;
 

@@ -87,6 +87,10 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArr
   if(var.canConvert<DataArrayPath>())
   {
     DataArrayPath path = var.value<DataArrayPath>();
+    if(path == renamePath.first)
+    {
+      return;
+    }
     if(path.updatePath(renamePath))
     {
       var.setValue(path);

@@ -178,6 +178,14 @@ if( "${SIMPL_USE_MULTITHREADED_ALGOS}" STREQUAL "ON")
   list(APPEND ${PROJECT_NAME}_LINK_LIBS TBB::tbb TBB::tbbmalloc)
 endif()
 
+#-----------------------------------------------------
+# --- ONLY Mac OS using ITK 5 needs SimpleITKExplicit
+get_property(ITK_VERSION_MAJOR GLOBAL PROPERTY ITK_VERSION_MAJOR)
+if(APPLE AND "${ITK_VERSION_MAJOR}" STREQUAL "5" AND SIMPL_USE_ITK)
+  message(STATUS "SimpleITKExplicit Enabled for APPLE build")
+  list(APPEND ${PROJECT_NAME}_LINK_LIBS SimpleITKExplicit)
+endif()
+
 #-- Add a library for the SIMPLib Code
 add_library(${PROJECT_NAME} ${LIB_TYPE} ${Project_SRCS} )
 CMP_AddDefinitions(TARGET ${PROJECT_NAME})

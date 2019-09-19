@@ -17,9 +17,7 @@
 class ITK_IMAGE_READER_CLASS_NAME : public AbstractFilter
 {
 public:
-  ITK_IMAGE_READER_CLASS_NAME()
-  {
-  }
+  ITK_IMAGE_READER_CLASS_NAME() = deafult;
   ~ITK_IMAGE_READER_CLASS_NAME() = default;
 
 protected:
@@ -39,7 +37,7 @@ protected:
   void readImage(const DataArrayPath& dataArrayPath, bool dataCheck);
 
   template <typename TPixel, unsigned int dimensions>
-  void readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Dream3DImage<TPixel, dimensions>>::Pointer& reader, DataContainer::Pointer& container);
+  void readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Image<TPixel, dimensions>>::Pointer& reader, DataContainer::Pointer& container);
 };
 
 #endif
@@ -146,7 +144,7 @@ ITK_IMAGE_READER_CLASS_NAME
     return;
   }
 
-  using ImageType = itk::Dream3DImage<TPixel, dimensions>;
+  using ImageType = itk::Image<TPixel, dimensions>;
   using ReaderType = itk::ImageFileReader<ImageType>;
   using ToDream3DType = itk::InPlaceImageToDream3DDataFilter<TPixel, dimensions>;
 
@@ -240,11 +238,10 @@ ITK_IMAGE_READER_CLASS_NAME
 //
 // -----------------------------------------------------------------------------
 template <typename TPixel, unsigned int dimensions>
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Dream3DImage<TPixel, dimensions>>::Pointer& reader, DataContainer::Pointer& container)
+void ITK_IMAGE_READER_CLASS_NAME ::readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Image<TPixel, dimensions>>::Pointer& reader,
+                                                              DataContainer::Pointer& container)
 {
-  using ImageType = itk::Dream3DImage<TPixel, dimensions>;
+  using ImageType = itk::Image<TPixel, dimensions>;
   using ValueType = typename itk::NumericTraits<TPixel>::ValueType;
   reader->UpdateOutputInformation();
   const typename ImageType::PointType origin = reader->GetOutput()->GetOrigin();
