@@ -262,7 +262,7 @@ public:
    * @param progress
    * @param messageText
    */
-  void notifyProgressMessage(int progress, const QString& messageText);
+  void notifyProgressMessage(int progress, const QString& messageText) override;
 
   /**
    * @brief clearErrorCondition
@@ -318,7 +318,7 @@ protected:
   void updatePrevNextFilters();
 
 signals:
-  void messageGenerated(AbstractMessage::Pointer message);
+  //  void messageGenerated(AbstractMessage::Pointer message);
 
   /**
    * @brief This method is emitted from the pipeline and signals a pipeline pause
