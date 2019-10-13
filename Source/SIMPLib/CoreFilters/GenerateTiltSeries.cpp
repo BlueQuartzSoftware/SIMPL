@@ -6,6 +6,12 @@
 
 #include <thread>
 
+#define GTS_GENERATE_DEBUG_ARRAYS 0
+// If we are writing out all the arrays for debugging then we MUST be single threaded.
+#if(GTS_GENERATE_DEBUG_ARRAYS == 1)
+#undef SIMPL_USE_PARALLEL_ALGORITHMS
+#endif
+
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 #include <tbb/task_group.h>
 #include <tbb/task_scheduler_init.h>
@@ -50,8 +56,6 @@ static const double epsijkd = -1.0;
 } // namespace Rotations
 
 #endif
-
-#define GTS_GENERATE_DEBUG_ARRAYS 1
 
 namespace Detail
 {
@@ -420,6 +424,10 @@ void GenerateTiltSeries::execute()
   size_t gridIndex = 0;
   for(float currentDeg = 0.0f; currentDeg < 180.0f; currentDeg += increment)
   {
+    QString msg;
+    QTextStream out(&msg);
+    out << "Generating Tilt " << currentDeg << " (Deg)";
+    notifyStatusMessage(msg);
     QString gridDCName = QString(Detail::k_ImageGridNamePattern).arg(gridIndex);
     DataContainer::Pointer gridDC = dca->getDataContainer(gridDCName);
 
