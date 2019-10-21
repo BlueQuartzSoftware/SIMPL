@@ -714,6 +714,7 @@ void SVPipelineView::copySelectedFilters()
   }
 
   JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+  jsonWriter->setExpandReaderFilters(false);
   QString jsonString = jsonWriter->writePipelineToString(pipeline, "Pipeline");
 
   QClipboard* clipboard = QApplication::clipboard();
