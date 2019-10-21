@@ -46,11 +46,11 @@ namespace Rotations
 namespace Constants
 {
 #if DREAM3D_PASSIVE_ROTATION
-static const float epsijk = 1.0f;
+const float epsijk = 1.0f;
 // static const double epsijkd = 1.0;
 #elif DREAM3D_ACTIVE_ROTATION
-static const float epsijk = -1.0f;
-static const double epsijkd = -1.0;
+const float epsijk = -1.0f;
+const double epsijkd = -1.0;
 #endif
 } // namespace Constants
 } // namespace Rotations
@@ -180,10 +180,7 @@ public:
       {
         continue;
       }
-      else
-      {
-        outputData->copyFromArray(outputVoxelIndex, inputData, inputVoxelIndex, 1);
-      }
+      outputData->copyFromArray(outputVoxelIndex, inputData, inputVoxelIndex, 1);
     }
 
 #if GTS_GENERATE_DEBUG_ARRAYS
