@@ -47,11 +47,9 @@
 //
 // -----------------------------------------------------------------------------
 JsonFilterParametersWriter::JsonFilterParametersWriter()
-:
- m_ExpandReaderFilters(true)
+: m_ExpandReaderFilters(true)
 , m_MaxFilterIndex(-1)
 , m_CurrentIndex(0)
-
 {
 }
 
@@ -59,7 +57,8 @@ JsonFilterParametersWriter::JsonFilterParametersWriter()
 //
 // -----------------------------------------------------------------------------
 JsonFilterParametersWriter::JsonFilterParametersWriter(QString& fileName, QString& pipelineName, int& numFilters)
-: m_MaxFilterIndex(-1)
+: m_ExpandReaderFilters(true)
+, m_MaxFilterIndex(-1)
 , m_CurrentIndex(0)
 {
   m_FileName = fileName;
