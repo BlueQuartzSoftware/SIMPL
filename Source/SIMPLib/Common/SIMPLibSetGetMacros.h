@@ -221,7 +221,7 @@ public:                                                                         
   }
 
 #define SIMPL_CLASS_VERSION(vers)                                                                                                                                                                      \
-  int getClassVersion() override                                                                                                                                                                       \
+  int getClassVersion() const override                                                                                                                                                                       \
   {                                                                                                                                                                                                    \
     return vers;                                                                                                                                                                                       \
   }

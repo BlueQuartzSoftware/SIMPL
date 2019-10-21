@@ -83,7 +83,7 @@ public:
    * @brief size
    * @return
    */
-  size_t size()
+  size_t size() const
   {
     return m_Size;
   }
@@ -93,7 +93,7 @@ public:
    * @param forceNoAllocate
    * @return
    */
-  Pointer deepCopy(bool forceNoAllocate = false)
+  Pointer deepCopy(bool forceNoAllocate = false) const
   {
     DynamicListArray::Pointer copy = DynamicListArray::New();
     std::vector<T> linkCounts(m_Size, 0);
@@ -135,7 +135,7 @@ public:
    * @param ptId
    * @return
    */
-  ElementList& getElementList(size_t ptId)
+  ElementList& getElementList(size_t ptId) const
   {
     return this->m_Array[ptId];
   }
@@ -196,7 +196,7 @@ public:
    * @param ptId
    * @return
    */
-  T getNumberOfElements(size_t ptId)
+  T getNumberOfElements(size_t ptId) const
   {
     return this->m_Array[ptId].ncells;
   }
@@ -206,7 +206,7 @@ public:
    * @param ptId
    * @return
    */
-  K* getElementListPointer(size_t ptId)
+  K* getElementListPointer(size_t ptId) const
   {
     return this->m_Array[ptId].cells;
   }

@@ -217,7 +217,7 @@ class NeighborList : public IDataArray
      * @param name
      * @return
      */
-    IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) override
+    IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) const override
     {
       return NeighborList<T>::CreateArray(numElements, rank, dims, name, allocate);
     }
@@ -229,7 +229,7 @@ class NeighborList : public IDataArray
      * @param name
      * @return
      */
-    IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) override
+    IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) const override
     {
       return NeighborList<T>::CreateArray(numElements, dims, name, allocate);
     }
@@ -256,7 +256,7 @@ class NeighborList : public IDataArray
      * @brief isAllocated
      * @return
      */
-    bool isAllocated() override { return true; }
+    bool isAllocated() const override { return true; }
 
     /**
      * @brief Gives this array a human readable name
@@ -280,7 +280,7 @@ class NeighborList : public IDataArray
      * can be a primitive like char, float, int or the name of a class.
      * @return
      */
-    void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) override
+    void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const override
     {
       T value = 0x00;
       xdmfTypeName = "UNKNOWN";
@@ -308,7 +308,7 @@ class NeighborList : public IDataArray
      * @brief getTypeAsString
      * @return
      */
-    QString getTypeAsString() override { return NeighborList<T>::ClassName();}
+    QString getTypeAsString() const override { return NeighborList<T>::ClassName();}
 
     /**
      * @brief takeOwnership
@@ -479,7 +479,7 @@ class NeighborList : public IDataArray
     /**
      * @brief Returns the number of elements in the internal array.
      */
-    size_t getNumberOfTuples() override
+    size_t getNumberOfTuples() const override
     {
       return m_NumTuples;
     }
@@ -490,7 +490,7 @@ class NeighborList : public IDataArray
      * of the internal storage arrays for this class.
      * @return
      */
-    size_t getSize() override
+    size_t getSize() const override
     {
       size_t total = 0;
       for(size_t dIdx = 0; dIdx < m_Array.size(); ++dIdx)
@@ -510,13 +510,13 @@ class NeighborList : public IDataArray
      * @brief getNumberOfComponents
      * @return
      */
-    int getNumberOfComponents() override { return 1; }
+    int getNumberOfComponents() const override { return 1; }
 
     /**
      * @brief getComponentDimensions
      * @return
      */
-    std::vector<size_t> getComponentDimensions() override
+    std::vector<size_t> getComponentDimensions() const override
     {
       std::vector<size_t> dims = {1};
       return dims;
@@ -532,13 +532,13 @@ class NeighborList : public IDataArray
      * @brief getRank
      * @return
      */
-    int getRank() { return 1; }
+    int getRank() const { return 1; }
 
     /**
      * @brief getTypeSize
      * @return
      */
-    size_t getTypeSize() override  { return sizeof(SharedVectorType); }
+    size_t getTypeSize() const override  { return sizeof(SharedVectorType); }
 
     /**
      * @brief initializeWithZeros
@@ -552,7 +552,7 @@ class NeighborList : public IDataArray
      * @brief deepCopy
      * @return
      */
-    IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override
+    IDataArray::Pointer deepCopy(bool forceNoAllocate = false) const override
     {
       bool allocate = m_IsAllocated;
       if(forceNoAllocate)
@@ -605,7 +605,7 @@ class NeighborList : public IDataArray
     }
 
     //FIXME: These need to be implemented
-    void printTuple(QTextStream& out, size_t i, char delimiter = ',') override
+    void printTuple(QTextStream& out, size_t i, char delimiter = ',') const override
     {
       SharedVectorType sharedVec = m_Array[i];
       VectorType* vec = sharedVec.get();
@@ -623,7 +623,7 @@ class NeighborList : public IDataArray
      * @param i
      * @param j
      */
-    void printComponent(QTextStream& out, size_t i, int j) override
+    void printComponent(QTextStream& out, size_t i, int j) const override
     {
       Q_ASSERT(false);
     }
@@ -633,7 +633,7 @@ class NeighborList : public IDataArray
      * @param parentId
      * @return
      */
-    int writeH5Data(hid_t parentId, std::vector<size_t> tDims) override
+    int writeH5Data(hid_t parentId, std::vector<size_t> tDims) const override
     {
       int err = 0;
 
@@ -642,11 +642,15 @@ class NeighborList : public IDataArray
       // can compare this with what is written in the file. If they are
       // different we are going to overwrite what is in the file with what
       // we compute here.
-      if(m_NumNeighborsArrayName.isEmpty())
+
+      QString numNeighborsArrayName = m_NumNeighborsArrayName;
+
+      if(numNeighborsArrayName.isEmpty())
       {
-        m_NumNeighborsArrayName = getName() + "_NumNeighbors";
+        numNeighborsArrayName = getName() + "_NumNeighbors";
       }
-      Int32ArrayType::Pointer numNeighborsPtr = Int32ArrayType::CreateArray(m_Array.size(), m_NumNeighborsArrayName, true);
+
+      Int32ArrayType::Pointer numNeighborsPtr = Int32ArrayType::CreateArray(m_Array.size(), numNeighborsArrayName, true);
       int32_t* numNeighbors = numNeighborsPtr->getPointer(0);
       size_t total = 0;
       for(size_t dIdx = 0; dIdx < m_Array.size(); ++dIdx)
@@ -657,7 +661,7 @@ class NeighborList : public IDataArray
 
       // Check to see if the NumNeighbors is already written to the file
       bool rewrite = false;
-      if(!QH5Lite::datasetExists(parentId, m_NumNeighborsArrayName))
+      if(!QH5Lite::datasetExists(parentId, numNeighborsArrayName))
       {
         // The NumNeighbors Array is NOT already in the file so write it to the file
         numNeighborsPtr->writeH5Data(parentId, tDims);
@@ -667,7 +671,7 @@ class NeighborList : public IDataArray
         // The NumNeighbors array is in the dream3d file so read it up into memory and compare with what
         // we have in memory.
         std::vector<int32_t> fileNumNeigh(m_Array.size());
-        err = QH5Lite::readVectorDataset(parentId, m_NumNeighborsArrayName, fileNumNeigh);
+        err = QH5Lite::readVectorDataset(parentId, numNeighborsArrayName, fileNumNeigh);
         if (err < 0)
         {
           return -602;
@@ -753,7 +757,7 @@ class NeighborList : public IDataArray
           return -610;
         }
 
-        err = QH5Lite::writeStringAttribute(parentId, getName(), "Linked NumNeighbors Dataset", m_NumNeighborsArrayName);
+        err = QH5Lite::writeStringAttribute(parentId, getName(), "Linked NumNeighbors Dataset", numNeighborsArrayName);
         if(err < 0)
         {
           return -608;
@@ -771,7 +775,7 @@ class NeighborList : public IDataArray
      * @return
      */
     int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName,
-                                   const QString& groupPath, const QString& label) override
+                                   const QString& groupPath, const QString& label) const override
     {
       int precision = 0;
       QString xdmfTypeName;
@@ -791,7 +795,7 @@ class NeighborList : public IDataArray
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    QString getInfoString(SIMPL::InfoStringFormat format) override
+    QString getInfoString(SIMPL::InfoStringFormat format) const override
     {
       QString info;
       QTextStream ss (&info);
@@ -837,8 +841,15 @@ class NeighborList : public IDataArray
         return err;
       }
 
+      QString numNeighborsArrayName = m_NumNeighborsArrayName;
+
+      if(numNeighborsArrayName.isEmpty())
+      {
+        numNeighborsArrayName = getName() + "_NumNeighbors";
+      }
+
       // Read the Attribute Off the data set to find the name of the array that holds all the sizes
-      err = QH5Lite::readStringAttribute(parentId, getName(), "Linked NumNeighbors Dataset", m_NumNeighborsArrayName);
+      err = QH5Lite::readStringAttribute(parentId, getName(), "Linked NumNeighbors Dataset", numNeighborsArrayName);
       if(err < 0)
       {
         return err;
@@ -848,9 +859,9 @@ class NeighborList : public IDataArray
       std::vector<int32_t> numNeighbors;
 
       // Check to see if the NumNeighbors exists in the file, which it must.
-      if(QH5Lite::datasetExists(parentId, m_NumNeighborsArrayName))
+      if(QH5Lite::datasetExists(parentId, numNeighborsArrayName))
       {
-        err = QH5Lite::readVectorDataset(parentId, m_NumNeighborsArrayName, numNeighbors);
+        err = QH5Lite::readVectorDataset(parentId, numNeighborsArrayName, numNeighbors);
         if(err < 0)
         {
           return -702;
@@ -950,7 +961,7 @@ class NeighborList : public IDataArray
      * @param ok
      * @return
      */
-    T getValue(int grainId, int index, bool& ok)
+    T getValue(int grainId, int index, bool& ok) const
     {
 #ifndef NDEBUG
       if (m_Array.size() > 0u) { Q_ASSERT(grainId < static_cast<int>(m_Array.size()));}
@@ -968,7 +979,7 @@ class NeighborList : public IDataArray
      * @brief getNumberOfLists
      * @return
      */
-    int getNumberOfLists()
+    int getNumberOfLists() const
     {
       return static_cast<int>(m_Array.size());
     }
@@ -978,7 +989,7 @@ class NeighborList : public IDataArray
      * @param grainId
      * @return
      */
-    int getListSize(int grainId)
+    int getListSize(int grainId) const
     {
 #ifndef NDEBUG
       if (m_Array.size() > 0u) { Q_ASSERT(grainId < static_cast<int>(m_Array.size()));}
@@ -986,7 +997,7 @@ class NeighborList : public IDataArray
       return static_cast<int>(m_Array[grainId]->size());
     }
 
-    VectorType& getListReference(int grainId)
+    VectorType& getListReference(int grainId) const
     {
 #ifndef NDEBUG
       if (m_Array.size() > 0u) { Q_ASSERT(grainId < static_cast<int>(m_Array.size()));}
@@ -999,7 +1010,7 @@ class NeighborList : public IDataArray
      * @param grainId
      * @return
      */
-    SharedVectorType getList(int grainId)
+    SharedVectorType getList(int grainId) const
     {
 #ifndef NDEBUG
       if (m_Array.size() > 0u) { Q_ASSERT(grainId < static_cast<int>(m_Array.size()));}
@@ -1012,7 +1023,7 @@ class NeighborList : public IDataArray
      * @param grainId
      * @return
      */
-    VectorType copyOfList(int grainId)
+    VectorType copyOfList(int grainId) const
     {
 #ifndef NDEBUG
       if (m_Array.size() > 0u) { Q_ASSERT(grainId < static_cast<int>(m_Array.size()));}
@@ -1056,7 +1067,6 @@ class NeighborList : public IDataArray
      */
     NeighborList(size_t numTuples, const QString name)
     : IDataArray(name)
-    , m_NumNeighborsArrayName("")
     , m_NumTuples(numTuples)
     , m_IsAllocated(false)
     {

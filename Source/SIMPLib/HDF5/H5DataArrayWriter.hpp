@@ -67,7 +67,7 @@ class H5DataArrayWriter
      * @return
      */
     template <typename IDataArrayType>
-    static int writeDataArrayAttributes(hid_t gid, IDataArrayType* dataArray, std::vector<size_t> tDims, std::vector<size_t> cDims)
+    static int writeDataArrayAttributes(hid_t gid, const IDataArrayType* dataArray, std::vector<size_t> tDims, std::vector<size_t> cDims)
     {
       int err = QH5Lite::writeScalarAttribute(gid, dataArray->getName(), SIMPL::HDF5::DataArrayVersion, dataArray->getClassVersion());
       if(err < 0)
@@ -116,7 +116,7 @@ class H5DataArrayWriter
      * @return
      */
     template <class T>
-    static int writeDataArray(hid_t gid, T* dataArray, std::vector<size_t> tDims)
+    static int writeDataArray(hid_t gid, const T* dataArray, std::vector<size_t> tDims)
     {
       int err = 0;
 
@@ -194,7 +194,7 @@ class H5DataArrayWriter
      * @return
      */
     template<class T>
-    static int writeStringDataArray(hid_t gid, T* dataArray)
+    static int writeStringDataArray(hid_t gid, const T* dataArray)
     {
       int err = 0;
 

@@ -97,7 +97,7 @@ public:
    * @param name
    * @return
    */
-  IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) override;
+  IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) const override;
 
   /**
    * @brief createNewArray
@@ -107,7 +107,7 @@ public:
    * @param allocate
    * @return
    */
-  IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) override;
+  IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) const override;
 
   /**
    * @brief createNewArray
@@ -128,7 +128,7 @@ public:
    * @brief isAllocated
    * @return
    */
-  bool isAllocated() override;
+  bool isAllocated() const override;
 
   /**
    * @brief Gives this array a human readable name
@@ -147,12 +147,12 @@ public:
    * can be a primitive like char, float, int or the name of a class.
    * @return
    */
-  void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) override;
+  void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const override;
   /**
    * @brief getTypeAsString
    * @return
    */
-  QString getTypeAsString() override;
+  QString getTypeAsString() const override;
 
   /**
    * @brief
@@ -175,17 +175,17 @@ public:
   /**
    * @brief Returns the number of Tuples in the array.
    */
-  size_t getNumberOfTuples() override;
+  size_t getNumberOfTuples() const override;
 
   /**
    * @brief Return the number of elements in the array
    * @return
    */
-  size_t getSize() override;
+  size_t getSize() const override;
 
-  int getNumberOfComponents() override;
+  int getNumberOfComponents() const override;
 
-  std::vector<size_t> getComponentDimensions() override;
+  std::vector<size_t> getComponentDimensions() const override;
 
   // Description:
   // Set/Get the dimension (n) of the rank. Must be >= 1. Make sure that
@@ -196,7 +196,7 @@ public:
    * @brief getRank
    * @return
    */
-  int getRank();
+  int getRank() const;
 
   /**
    * @brief Returns the number of bytes that make up the data type.
@@ -205,7 +205,7 @@ public:
    * 4 = 32 bit integer/Float
    * 8 = 64 bit integer/Double
    */
-  size_t getTypeSize() override;
+  size_t getTypeSize() const override;
 
   /**
    * @brief Removes Tuples from the Array. If the size of the vector is Zero nothing is done. If the size of the
@@ -279,7 +279,7 @@ public:
    * @param forceNoAllocate
    * @return
    */
-  IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override;
+  IDataArray::Pointer deepCopy(bool forceNoAllocate = false) const override;
 
   /**
    * @brief Reseizes the internal array
@@ -305,7 +305,7 @@ public:
    * @param i
    * @param delimiter
    */
-  void printTuple(QTextStream& out, size_t i, char delimiter = ',') override;
+  void printTuple(QTextStream& out, size_t i, char delimiter = ',') const override;
 
   /**
    * @brief printComponent
@@ -313,20 +313,20 @@ public:
    * @param i
    * @param j
    */
-  void printComponent(QTextStream& out, size_t i, int j) override;
+  void printComponent(QTextStream& out, size_t i, int j) const override;
 
   /**
    * @brief getFullNameOfClass
    * @return
    */
-  QString getFullNameOfClass();
+  QString getFullNameOfClass() const;
 
   /**
    *
    * @param parentId
    * @return
    */
-  int writeH5Data(hid_t parentId, std::vector<size_t> tDims) override;
+  int writeH5Data(hid_t parentId, std::vector<size_t> tDims) const override;
 
   /**
    * @brief writeXdmfAttribute
@@ -336,14 +336,14 @@ public:
    * @param groupPath
    * @return
    */
-  int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) override;
+  int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) const override;
 
   /**
    * @brief getInfoString
    * @return Returns a formatted string that contains general infomation about
    * the instance of the object.
    */
-  QString getInfoString(SIMPL::InfoStringFormat format) override;
+  QString getInfoString(SIMPL::InfoStringFormat format) const override;
 
   /**
    * @brief readH5Data
@@ -364,7 +364,7 @@ public:
    * @param i
    * @return
    */
-  QString getValue(size_t i);
+  QString getValue(size_t i) const;
 
 protected:
   /**
