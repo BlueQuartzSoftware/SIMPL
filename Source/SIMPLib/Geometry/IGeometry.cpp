@@ -427,7 +427,7 @@ void IGeometry::setName(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString IGeometry::getName()
+QString IGeometry::getName() const
 {
   return m_Name;
 }
@@ -435,7 +435,7 @@ QString IGeometry::getName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Type IGeometry::getGeometryType()
+IGeometry::Type IGeometry::getGeometryType() const
 {
   return m_GeometryType;
 }
@@ -443,7 +443,7 @@ IGeometry::Type IGeometry::getGeometryType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString IGeometry::getGeometryTypeAsString()
+QString IGeometry::getGeometryTypeAsString() const
 {
   return m_GeometryTypeName;
 }
@@ -474,7 +474,7 @@ void IGeometry::sendThreadSafeProgressMessage(int64_t counter, int64_t max)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-unsigned int IGeometry::getXdmfGridType()
+unsigned int IGeometry::getXdmfGridType() const
 {
   return m_XdmfGridType;
 }
@@ -482,7 +482,7 @@ unsigned int IGeometry::getXdmfGridType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-unsigned int IGeometry::getUnitDimensionality()
+unsigned int IGeometry::getUnitDimensionality() const
 {
   return m_UnitDimensionality;
 }
@@ -498,7 +498,7 @@ void IGeometry::setSpatialDimensionality(unsigned int spatialDims)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-unsigned int IGeometry::getSpatialDimensionality()
+unsigned int IGeometry::getSpatialDimensionality() const
 {
   return m_SpatialDimensionality;
 }
@@ -506,10 +506,9 @@ unsigned int IGeometry::getSpatialDimensionality()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::Pointer IGeometry::getAttributeMatrix(const QString& name)
+AttributeMatrix::Pointer IGeometry::getAttributeMatrix(const QString& name) const
 {
-  AttributeMatrixMap_t::iterator it;
-  it = m_AttributeMatrices.find(name);
+  AttributeMatrixMap_t::const_iterator it = m_AttributeMatrices.find(name);
   if(it == m_AttributeMatrices.end())
   {
     return AttributeMatrix::NullPointer();
@@ -522,8 +521,7 @@ AttributeMatrix::Pointer IGeometry::getAttributeMatrix(const QString& name)
 // -----------------------------------------------------------------------------
 AttributeMatrix::Pointer IGeometry::removeAttributeMatrix(const QString& name)
 {
-  QMap<QString, AttributeMatrix::Pointer>::iterator it;
-  it = m_AttributeMatrices.find(name);
+  AttributeMatrixMap_t::iterator it = m_AttributeMatrices.find(name);
   if(it == m_AttributeMatrices.end())
   {
     // DO NOT return a NullPointer for any reason other than "Attribute Matrix was not found"
@@ -537,7 +535,7 @@ AttributeMatrix::Pointer IGeometry::removeAttributeMatrix(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int IGeometry::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf))
+int IGeometry::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)) const
 {
   herr_t err = 0;
   if(m_TransformContainer)
@@ -549,6 +547,9 @@ int IGeometry::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf
   return err;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 int IGeometry::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   herr_t err = 0;

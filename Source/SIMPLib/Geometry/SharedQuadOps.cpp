@@ -70,7 +70,7 @@ void GEOM_CLASS_NAME::setQuads(SharedQuadList::Pointer quads)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedQuadList::Pointer GEOM_CLASS_NAME::getQuads()
+SharedQuadList::Pointer GEOM_CLASS_NAME::getQuads() const
 {
   return m_QuadList;
 }
@@ -90,7 +90,7 @@ void GEOM_CLASS_NAME::setVertsAtQuad(size_t quadId, size_t verts[4])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertsAtQuad(size_t quadId, size_t verts[4])
+void GEOM_CLASS_NAME::getVertsAtQuad(size_t quadId, size_t verts[4]) const
 {
   size_t* Quad = m_QuadList->getTuplePointer(quadId);
   verts[0] = Quad[0];
@@ -102,7 +102,7 @@ void GEOM_CLASS_NAME::getVertsAtQuad(size_t quadId, size_t verts[4])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertCoordsAtQuad(size_t quadId, float vert1[3], float vert2[3], float vert3[3], float vert4[3])
+void GEOM_CLASS_NAME::getVertCoordsAtQuad(size_t quadId, float vert1[3], float vert2[3], float vert3[3], float vert4[3]) const
 {
   size_t* Quad = m_QuadList->getTuplePointer(quadId);
   float* tmp1 = m_VertexList->getTuplePointer(Quad[0]);
@@ -126,7 +126,7 @@ void GEOM_CLASS_NAME::getVertCoordsAtQuad(size_t quadId, float vert1[3], float v
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t* GEOM_CLASS_NAME::getQuadPointer(size_t i)
+size_t* GEOM_CLASS_NAME::getQuadPointer(size_t i) const
 {
   return m_QuadList->getTuplePointer(i);
 }
@@ -134,7 +134,7 @@ size_t* GEOM_CLASS_NAME::getQuadPointer(size_t i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t GEOM_CLASS_NAME::getNumberOfQuads()
+size_t GEOM_CLASS_NAME::getNumberOfQuads() const
 {
   return m_QuadList->getNumberOfTuples();
 }
