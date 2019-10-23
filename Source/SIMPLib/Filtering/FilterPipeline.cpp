@@ -52,6 +52,9 @@
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Utilities/StringOperations.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Filtering/FilterManager.h"
+#include "SIMPLib/Filtering/FilterFactory.hpp"
+#include "SIMPLib/CoreFilters/EmptyFilter.h"
 
 #define RENAME_ENABLED 1
 

@@ -6,6 +6,9 @@
 #include <itkNumericTraitsRGBPixel.h>
 #include <itkNumericTraitsVectorPixel.h>
 
+#include "SIMPLib/ITK/itkImportDream3DImageContainer.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
+
 class DataContainer;
 using DataContainerShPtrType = std::shared_ptr<DataContainer>;
 
@@ -55,7 +58,7 @@ protected:
 
   void GenerateOutputInformation() override;
   void GenerateData() override;
-  DataContainerShPtr m_DataContainer;
+  DataContainerShPtrType m_DataContainer;
 
 private:
   using Superclass::SetInput;

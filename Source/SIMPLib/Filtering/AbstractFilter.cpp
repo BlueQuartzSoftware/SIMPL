@@ -46,6 +46,7 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Filtering/FilterManager.h"
 
 // -----------------------------------------------------------------------------
 //

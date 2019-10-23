@@ -39,6 +39,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/QUuid>
+#include <QtCore/QJsonObject>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observable.h"
