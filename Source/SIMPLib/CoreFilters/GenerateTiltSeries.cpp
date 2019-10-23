@@ -547,6 +547,11 @@ std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> GenerateTiltSeries::gener
   size_t gridPrimAxisDim = static_cast<size_t>(std::ceil((iEnd - iStart) / iIncr));
   size_t gridSecondAxisDim = static_cast<size_t>(std::ceil((jEnd - jStart) / jIncr));
   size_t totalElements = gridPrimAxisDim * gridSecondAxisDim;
+  if(totalElements == 0)
+  {
+    return {FloatArrayType::NullPointer(), ImageGeom::NullPointer()};
+  }
+
   std::array<float, 2> halfSpacing = {resampleSpacing[xAxis] / 2.0f, resampleSpacing[yAxis] / 2.0f};
 
   ImageGeom::Pointer newGridGeom = ImageGeom::CreateGeometry("Grid Geometry");

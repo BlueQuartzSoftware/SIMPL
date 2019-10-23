@@ -33,9 +33,9 @@ public:
 
   ~GenerateTiltSeries() override;
 
-  const int32_t k_XAxis = 0;
-  const int32_t k_YAxis = 1;
-  const int32_t k_ZAxis = 2;
+  static constexpr int32_t k_XAxis = 0;
+  static constexpr int32_t k_YAxis = 1;
+  static constexpr int32_t k_ZAxis = 2;
 
   SIMPL_FILTER_PARAMETER(int, RotationAxis)
   Q_PROPERTY(int RotationAxis READ getRotationAxis WRITE setRotationAxis)
