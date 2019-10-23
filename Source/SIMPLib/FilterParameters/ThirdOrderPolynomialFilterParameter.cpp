@@ -117,7 +117,7 @@ ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter
 }
 
 // -----------------------------------------------------------------------------
-const QString ThirdOrderPolynomialFilterParameter::getNameOfClass() const
+QString ThirdOrderPolynomialFilterParameter::getNameOfClass() const
 {
   return QString("ThirdOrderPolynomialFilterParameter");
 }

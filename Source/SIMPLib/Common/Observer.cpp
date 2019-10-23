@@ -57,7 +57,7 @@ void Observer::processPipelineMessage(const AbstractMessage::Pointer& pm)
 }
 
 // -----------------------------------------------------------------------------
-const QString Observer::getNameOfClass() const
+QString Observer::getNameOfClass() const
 {
   return QString("_SUPERObserver");
 }

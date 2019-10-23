@@ -113,7 +113,7 @@ ChoiceFilterParameter::Pointer ChoiceFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ChoiceFilterParameter::getNameOfClass() const
+QString ChoiceFilterParameter::getNameOfClass() const
 {
   return QString("ChoiceFilterParameter");
 }

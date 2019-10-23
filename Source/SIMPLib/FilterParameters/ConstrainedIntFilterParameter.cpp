@@ -110,7 +110,7 @@ ConstrainedIntFilterParameter::Pointer ConstrainedIntFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ConstrainedIntFilterParameter::getNameOfClass() const
+QString ConstrainedIntFilterParameter::getNameOfClass() const
 {
   return QString("ConstrainedIntFilterParameter");
 }

@@ -692,7 +692,7 @@ JsonFilterParametersReader::Pointer JsonFilterParametersReader::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString JsonFilterParametersReader::getNameOfClass() const
+QString JsonFilterParametersReader::getNameOfClass() const
 {
   return QString("JsonFilterParametersReader");
 }

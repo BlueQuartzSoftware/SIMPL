@@ -48,7 +48,7 @@ class SIMPLib_EXPORT IObserver
     /**
      * @brief Returns the name of the class for IObserver
      */
-    virtual const QString getNameOfClass() const;
+    virtual QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for IObserver
      */

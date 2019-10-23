@@ -118,7 +118,7 @@ ShapeOps::Pointer ShapeOps::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString ShapeOps::getNameOfClass() const
+QString ShapeOps::getNameOfClass() const
 {
   return QString("ShapeOps");
 }

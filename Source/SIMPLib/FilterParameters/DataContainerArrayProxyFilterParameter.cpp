@@ -140,7 +140,7 @@ DataContainerArrayProxyFilterParameter::Pointer DataContainerArrayProxyFilterPar
 }
 
 // -----------------------------------------------------------------------------
-const QString DataContainerArrayProxyFilterParameter::getNameOfClass() const
+QString DataContainerArrayProxyFilterParameter::getNameOfClass() const
 {
   return QString("DataContainerArrayProxyFilterParameter");
 }

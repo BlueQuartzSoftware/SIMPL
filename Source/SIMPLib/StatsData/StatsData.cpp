@@ -429,7 +429,7 @@ StatsData::Pointer StatsData::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString StatsData::getNameOfClass() const
+QString StatsData::getNameOfClass() const
 {
   return QString("StatsData");
 }

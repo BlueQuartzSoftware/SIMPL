@@ -104,7 +104,7 @@ FilterErrorMessage::Pointer FilterErrorMessage::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString FilterErrorMessage::getNameOfClass() const
+QString FilterErrorMessage::getNameOfClass() const
 {
   return QString("FilterErrorMessage");
 }

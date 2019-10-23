@@ -75,7 +75,7 @@ class SIMPLib_EXPORT StringFilterParameter : public FilterParameter
     /**
      * @brief Returns the name of the class for StringFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for StringFilterParameter
      */

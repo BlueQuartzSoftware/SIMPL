@@ -79,7 +79,7 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
     /**
      * @brief Returns the name of the class for MultiAttributeMatrixSelectionFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for MultiAttributeMatrixSelectionFilterParameter
      */

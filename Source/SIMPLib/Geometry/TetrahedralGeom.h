@@ -60,7 +60,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
     /**
      * @brief Returns the name of the class for TetrahedralGeom
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for TetrahedralGeom
      */

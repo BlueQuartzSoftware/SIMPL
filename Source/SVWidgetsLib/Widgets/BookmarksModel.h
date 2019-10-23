@@ -63,7 +63,7 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
     /**
      * @brief Returns the name of the class for BookmarksModel
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for BookmarksModel
      */

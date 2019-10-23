@@ -54,7 +54,7 @@ public:
   /**
    * @brief Returns the name of the class for AbstractMessage
    */
-  const QString getNameOfClass() const override
+  QString getNameOfClass() const override
   {
     return QString("PipelineFilterWidgetFactory<Widget>");
   }

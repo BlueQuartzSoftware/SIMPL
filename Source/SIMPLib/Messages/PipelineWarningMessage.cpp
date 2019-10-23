@@ -102,7 +102,7 @@ PipelineWarningMessage::Pointer PipelineWarningMessage::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString PipelineWarningMessage::getNameOfClass() const
+QString PipelineWarningMessage::getNameOfClass() const
 {
   return QString("PipelineWarningMessage");
 }

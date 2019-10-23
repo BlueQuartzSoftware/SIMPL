@@ -108,7 +108,7 @@ ParagraphFilterParameter::Pointer ParagraphFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ParagraphFilterParameter::getNameOfClass() const
+QString ParagraphFilterParameter::getNameOfClass() const
 {
   return QString("ParagraphFilterParameter");
 }

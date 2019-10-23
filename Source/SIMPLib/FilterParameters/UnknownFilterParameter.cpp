@@ -81,7 +81,7 @@ UnknownFilterParameter::Pointer UnknownFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString UnknownFilterParameter::getNameOfClass() const
+QString UnknownFilterParameter::getNameOfClass() const
 {
   return QString("UnknownFilterParameter");
 }

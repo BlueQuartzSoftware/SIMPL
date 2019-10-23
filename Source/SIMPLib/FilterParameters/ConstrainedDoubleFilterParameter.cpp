@@ -109,7 +109,7 @@ ConstrainedDoubleFilterParameter::Pointer ConstrainedDoubleFilterParameter::New(
 }
 
 // -----------------------------------------------------------------------------
-const QString ConstrainedDoubleFilterParameter::getNameOfClass() const
+QString ConstrainedDoubleFilterParameter::getNameOfClass() const
 {
   return QString("ConstrainedDoubleFilterParameter");
 }

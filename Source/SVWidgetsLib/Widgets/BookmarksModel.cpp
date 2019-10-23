@@ -1007,7 +1007,7 @@ QString BookmarksModel::getBookmarksPrefsPath()
 }
 
 // -----------------------------------------------------------------------------
-const QString BookmarksModel::getNameOfClass() const
+QString BookmarksModel::getNameOfClass() const
 {
   return QString("BookmarksModel");
 }

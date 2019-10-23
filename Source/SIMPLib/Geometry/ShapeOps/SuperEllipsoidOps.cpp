@@ -121,7 +121,7 @@ SuperEllipsoidOps::Pointer SuperEllipsoidOps::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString SuperEllipsoidOps::getNameOfClass() const
+QString SuperEllipsoidOps::getNameOfClass() const
 {
   return QString("SuperEllipsoidOps");
 }

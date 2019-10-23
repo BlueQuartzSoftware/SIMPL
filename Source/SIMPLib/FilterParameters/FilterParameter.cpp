@@ -139,7 +139,7 @@ FilterParameter::Pointer FilterParameter::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString FilterParameter::getNameOfClass() const
+QString FilterParameter::getNameOfClass() const
 {
   return QString("FilterParameter");
 }

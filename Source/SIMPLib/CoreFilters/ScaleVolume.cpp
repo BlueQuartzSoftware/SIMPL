@@ -288,7 +288,7 @@ AbstractFilter::Pointer ScaleVolume::newFilterInstance(bool copyFilterParameters
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getCompiledLibraryName() const
+QString ScaleVolume::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -296,7 +296,7 @@ const QString ScaleVolume::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getBrandingString() const
+QString ScaleVolume::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -304,7 +304,7 @@ const QString ScaleVolume::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getFilterVersion() const
+QString ScaleVolume::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -315,7 +315,7 @@ const QString ScaleVolume::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getGroupName() const
+QString ScaleVolume::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -323,7 +323,7 @@ const QString ScaleVolume::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ScaleVolume::getUuid()
+QUuid ScaleVolume::getUuid() const
 {
   return QUuid("{3cf44c27-9149-5548-945a-deef1dc994a8}");
 }
@@ -331,7 +331,7 @@ const QUuid ScaleVolume::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getSubGroupName() const
+QString ScaleVolume::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::SpatialFilters;
 }
@@ -339,7 +339,7 @@ const QString ScaleVolume::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getHumanLabel() const
+QString ScaleVolume::getHumanLabel() const
 {
   return "Change Scaling of Volume";
 }
@@ -362,7 +362,7 @@ std::shared_ptr<ScaleVolume> ScaleVolume::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getNameOfClass() const
+QString ScaleVolume::getNameOfClass() const
 {
   return QString("ScaleVolume");
 }

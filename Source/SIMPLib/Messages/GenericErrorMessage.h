@@ -58,7 +58,7 @@ class SIMPLib_EXPORT GenericErrorMessage : public AbstractErrorMessage
     /**
      * @brief Returns the name of the class for GenericErrorMessage
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for GenericErrorMessage
      */

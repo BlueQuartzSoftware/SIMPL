@@ -49,7 +49,7 @@ ConstrainedFilterParameter::Pointer ConstrainedFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ConstrainedFilterParameter::getNameOfClass() const
+QString ConstrainedFilterParameter::getNameOfClass() const
 {
   return QString("ConstrainedFilterParameter<T>");
 }

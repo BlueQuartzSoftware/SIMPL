@@ -778,7 +778,7 @@ QuadGeom::Pointer QuadGeom::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString QuadGeom::getNameOfClass() const
+QString QuadGeom::getNameOfClass() const
 {
   return QString("QuadGeom");
 }

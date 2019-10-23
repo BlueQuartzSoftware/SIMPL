@@ -488,7 +488,7 @@ VertexGeom::Pointer VertexGeom::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString VertexGeom::getNameOfClass() const
+QString VertexGeom::getNameOfClass() const
 {
   return QString("VertexGeom");
 }

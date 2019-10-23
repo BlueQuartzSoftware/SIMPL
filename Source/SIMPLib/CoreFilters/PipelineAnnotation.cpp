@@ -123,7 +123,7 @@ AbstractFilter::Pointer PipelineAnnotation::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineAnnotation::getCompiledLibraryName() const
+QString PipelineAnnotation::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -131,7 +131,7 @@ const QString PipelineAnnotation::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineAnnotation::getBrandingString() const
+QString PipelineAnnotation::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -139,7 +139,7 @@ const QString PipelineAnnotation::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineAnnotation::getFilterVersion() const
+QString PipelineAnnotation::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -150,7 +150,7 @@ const QString PipelineAnnotation::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineAnnotation::getGroupName() const
+QString PipelineAnnotation::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -158,7 +158,7 @@ const QString PipelineAnnotation::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid PipelineAnnotation::getUuid()
+QUuid PipelineAnnotation::getUuid() const
 {
   return QUuid("{8cc2198b-6a9d-5bf4-b8c0-b0878bb57f10}");
 }
@@ -166,7 +166,7 @@ const QUuid PipelineAnnotation::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineAnnotation::getSubGroupName() const
+QString PipelineAnnotation::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -174,7 +174,7 @@ const QString PipelineAnnotation::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineAnnotation::getHumanLabel() const
+QString PipelineAnnotation::getHumanLabel() const
 {
   return "Pipeline Annotation";
 }
@@ -197,7 +197,7 @@ std::shared_ptr<PipelineAnnotation> PipelineAnnotation::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString PipelineAnnotation::getNameOfClass() const
+QString PipelineAnnotation::getNameOfClass() const
 {
   return QString("PipelineAnnotation");
 }

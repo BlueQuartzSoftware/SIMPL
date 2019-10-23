@@ -840,7 +840,7 @@ H5FilterParametersWriter::Pointer H5FilterParametersWriter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString H5FilterParametersWriter::getNameOfClass() const
+QString H5FilterParametersWriter::getNameOfClass() const
 {
   return QString("H5FilterParametersWriter");
 }

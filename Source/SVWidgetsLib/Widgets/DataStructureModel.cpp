@@ -509,7 +509,7 @@ QModelIndex DataStructureModel::sibling(int row, int column, const QModelIndex& 
 #endif
 
 // -----------------------------------------------------------------------------
-const QString DataStructureModel::getNameOfClass() const
+QString DataStructureModel::getNameOfClass() const
 {
   return QString("DataStructureModel");
 }

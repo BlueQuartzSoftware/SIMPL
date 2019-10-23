@@ -91,7 +91,7 @@ H5StatsDataDelegate::Pointer H5StatsDataDelegate::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString H5StatsDataDelegate::getNameOfClass() const
+QString H5StatsDataDelegate::getNameOfClass() const
 {
   return QString("H5StatsDataDelegate");
 }

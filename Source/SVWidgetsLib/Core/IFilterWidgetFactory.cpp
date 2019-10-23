@@ -70,7 +70,7 @@ IFilterWidgetFactory::Pointer IFilterWidgetFactory::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString IFilterWidgetFactory::getNameOfClass() const
+QString IFilterWidgetFactory::getNameOfClass() const
 {
   return QString("IFilterWidgetFactory");
 }

@@ -672,7 +672,7 @@ AbstractFilter::Pointer ExtractAttributeArraysFromGeometry::newFilterInstance(bo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractAttributeArraysFromGeometry::getCompiledLibraryName() const
+QString ExtractAttributeArraysFromGeometry::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -680,7 +680,7 @@ const QString ExtractAttributeArraysFromGeometry::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractAttributeArraysFromGeometry::getBrandingString() const
+QString ExtractAttributeArraysFromGeometry::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -688,7 +688,7 @@ const QString ExtractAttributeArraysFromGeometry::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractAttributeArraysFromGeometry::getFilterVersion() const
+QString ExtractAttributeArraysFromGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -699,7 +699,7 @@ const QString ExtractAttributeArraysFromGeometry::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractAttributeArraysFromGeometry::getGroupName() const
+QString ExtractAttributeArraysFromGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -707,7 +707,7 @@ const QString ExtractAttributeArraysFromGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ExtractAttributeArraysFromGeometry::getUuid()
+QUuid ExtractAttributeArraysFromGeometry::getUuid() const
 {
   return QUuid("{2060a933-b6f5-50fd-9382-a008a5cef17f}");
 }
@@ -715,7 +715,7 @@ const QUuid ExtractAttributeArraysFromGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractAttributeArraysFromGeometry::getSubGroupName() const
+QString ExtractAttributeArraysFromGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GeometryFilters;
 }
@@ -723,7 +723,7 @@ const QString ExtractAttributeArraysFromGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractAttributeArraysFromGeometry::getHumanLabel() const
+QString ExtractAttributeArraysFromGeometry::getHumanLabel() const
 {
   return "Extract Attribute Arrays from Geometry";
 }
@@ -746,7 +746,7 @@ std::shared_ptr<ExtractAttributeArraysFromGeometry> ExtractAttributeArraysFromGe
 }
 
 // -----------------------------------------------------------------------------
-const QString ExtractAttributeArraysFromGeometry::getNameOfClass() const
+QString ExtractAttributeArraysFromGeometry::getNameOfClass() const
 {
   return QString("ExtractAttributeArraysFromGeometry");
 }

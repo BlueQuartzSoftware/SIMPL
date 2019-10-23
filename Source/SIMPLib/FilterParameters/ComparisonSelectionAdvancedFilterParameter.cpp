@@ -174,7 +174,7 @@ ComparisonSelectionAdvancedFilterParameter::Pointer ComparisonSelectionAdvancedF
 }
 
 // -----------------------------------------------------------------------------
-const QString ComparisonSelectionAdvancedFilterParameter::getNameOfClass() const
+QString ComparisonSelectionAdvancedFilterParameter::getNameOfClass() const
 {
   return QString("ComparisonSelectionAdvancedFilterParameter");
 }

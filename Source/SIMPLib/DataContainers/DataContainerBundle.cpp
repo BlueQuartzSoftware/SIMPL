@@ -273,7 +273,7 @@ DataContainerBundle::Pointer DataContainerBundle::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString DataContainerBundle::getNameOfClass() const
+QString DataContainerBundle::getNameOfClass() const
 {
   return QString("DataContainerBundle");
 }

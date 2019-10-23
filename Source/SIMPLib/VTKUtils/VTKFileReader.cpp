@@ -309,7 +309,7 @@ VTKFileReader::Pointer VTKFileReader::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString VTKFileReader::getNameOfClass() const
+QString VTKFileReader::getNameOfClass() const
 {
   return QString("VTKFileReader");
 }

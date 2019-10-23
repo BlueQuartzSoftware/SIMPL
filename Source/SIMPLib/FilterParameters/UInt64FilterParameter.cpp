@@ -110,7 +110,7 @@ UInt64FilterParameter::Pointer UInt64FilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString UInt64FilterParameter::getNameOfClass() const
+QString UInt64FilterParameter::getNameOfClass() const
 {
   return QString("UInt64FilterParameter");
 }

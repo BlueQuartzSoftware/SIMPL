@@ -49,7 +49,7 @@ AbstractErrorMessage::Pointer AbstractErrorMessage::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString AbstractErrorMessage::getNameOfClass() const
+QString AbstractErrorMessage::getNameOfClass() const
 {
   return QString("AbstractErrorMessage");
 }

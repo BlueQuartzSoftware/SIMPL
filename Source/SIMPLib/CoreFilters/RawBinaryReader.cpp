@@ -461,7 +461,7 @@ AbstractFilter::Pointer RawBinaryReader::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getCompiledLibraryName() const
+QString RawBinaryReader::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -469,7 +469,7 @@ const QString RawBinaryReader::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getBrandingString() const
+QString RawBinaryReader::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -477,7 +477,7 @@ const QString RawBinaryReader::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getFilterVersion() const
+QString RawBinaryReader::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -488,7 +488,7 @@ const QString RawBinaryReader::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getGroupName() const
+QString RawBinaryReader::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -496,7 +496,7 @@ const QString RawBinaryReader::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid RawBinaryReader::getUuid()
+QUuid RawBinaryReader::getUuid() const
 {
   return QUuid("{0791f556-3d73-5b1e-b275-db3f7bb6850d}");
 }
@@ -504,7 +504,7 @@ const QUuid RawBinaryReader::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getSubGroupName() const
+QString RawBinaryReader::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -512,7 +512,7 @@ const QString RawBinaryReader::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getHumanLabel() const
+QString RawBinaryReader::getHumanLabel() const
 {
   return "Raw Binary Importer";
 }
@@ -535,7 +535,7 @@ std::shared_ptr<RawBinaryReader> RawBinaryReader::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getNameOfClass() const
+QString RawBinaryReader::getNameOfClass() const
 {
   return QString("RawBinaryReader");
 }

@@ -59,7 +59,7 @@ class SVWidgetsLib_EXPORT FilterWidgetManager
     /**
      * @brief Returns the name of the class for FilterWidgetManager
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for FilterWidgetManager
      */

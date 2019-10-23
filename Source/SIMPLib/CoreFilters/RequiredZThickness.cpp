@@ -216,7 +216,7 @@ AbstractFilter::Pointer RequiredZThickness::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getCompiledLibraryName() const
+QString RequiredZThickness::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -224,7 +224,7 @@ const QString RequiredZThickness::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getGroupName() const
+QString RequiredZThickness::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -232,7 +232,7 @@ const QString RequiredZThickness::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid RequiredZThickness::getUuid()
+QUuid RequiredZThickness::getUuid() const
 {
   return QUuid("{1fe19578-6856-55f2-adc8-2236fac22c25}");
 }
@@ -240,7 +240,7 @@ const QUuid RequiredZThickness::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getSubGroupName() const
+QString RequiredZThickness::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -248,7 +248,7 @@ const QString RequiredZThickness::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getHumanLabel() const
+QString RequiredZThickness::getHumanLabel() const
 {
   return "Required Z Dimension (Image Geometry)";
 }
@@ -267,7 +267,7 @@ RequiredZThickness::Pointer RequiredZThickness::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getNameOfClass() const
+QString RequiredZThickness::getNameOfClass() const
 {
   return QString("RequiredZThickness");
 }

@@ -111,7 +111,7 @@ NumericTypeFilterParameter::Pointer NumericTypeFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString NumericTypeFilterParameter::getNameOfClass() const
+QString NumericTypeFilterParameter::getNameOfClass() const
 {
   return QString("NumericTypeFilterParameter");
 }

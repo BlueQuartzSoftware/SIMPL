@@ -94,7 +94,7 @@ class SIMPLib_EXPORT BoundaryStatsData : public StatsData
     /**
      * @brief Returns the name of the class for BoundaryStatsData
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for BoundaryStatsData
      */

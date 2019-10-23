@@ -52,7 +52,7 @@ IGeometryGrid::Pointer IGeometryGrid::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString IGeometryGrid::getNameOfClass() const
+QString IGeometryGrid::getNameOfClass() const
 {
   return QString("IGeometryGrid");
 }

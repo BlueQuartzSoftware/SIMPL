@@ -169,7 +169,7 @@ CompositeTransformContainer::Pointer CompositeTransformContainer::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString CompositeTransformContainer::getNameOfClass() const
+QString CompositeTransformContainer::getNameOfClass() const
 {
   return QString("CompositeTransformContainer");
 }

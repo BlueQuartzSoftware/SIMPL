@@ -303,7 +303,7 @@ AbstractFilter::Pointer WriteTriangleGeometry::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getCompiledLibraryName() const
+QString WriteTriangleGeometry::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -311,7 +311,7 @@ const QString WriteTriangleGeometry::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getBrandingString() const
+QString WriteTriangleGeometry::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -319,7 +319,7 @@ const QString WriteTriangleGeometry::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getFilterVersion() const
+QString WriteTriangleGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -330,7 +330,7 @@ const QString WriteTriangleGeometry::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getGroupName() const
+QString WriteTriangleGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -338,7 +338,7 @@ const QString WriteTriangleGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid WriteTriangleGeometry::getUuid()
+QUuid WriteTriangleGeometry::getUuid() const
 {
   return QUuid("{5e523ec1-49ac-541e-a4ba-6fa725798b91}");
 }
@@ -346,7 +346,7 @@ const QUuid WriteTriangleGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getSubGroupName() const
+QString WriteTriangleGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::OutputFilters;
 }
@@ -354,7 +354,7 @@ const QString WriteTriangleGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getHumanLabel() const
+QString WriteTriangleGeometry::getHumanLabel() const
 {
   return "Export Triangle Geometry";
 }
@@ -377,7 +377,7 @@ std::shared_ptr<WriteTriangleGeometry> WriteTriangleGeometry::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getNameOfClass() const
+QString WriteTriangleGeometry::getNameOfClass() const
 {
   return QString("WriteTriangleGeometry");
 }

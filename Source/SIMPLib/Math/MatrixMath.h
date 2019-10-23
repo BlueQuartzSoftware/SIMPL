@@ -63,7 +63,7 @@ class SIMPLib_EXPORT MatrixMath
     /**
      * @brief Returns the name of the class for MatrixMath
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for MatrixMath
      */

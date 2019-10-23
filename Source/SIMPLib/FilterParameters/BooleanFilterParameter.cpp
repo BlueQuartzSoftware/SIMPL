@@ -109,7 +109,7 @@ BooleanFilterParameter::Pointer BooleanFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString BooleanFilterParameter::getNameOfClass() const
+QString BooleanFilterParameter::getNameOfClass() const
 {
   return QString("BooleanFilterParameter");
 }

@@ -58,7 +58,7 @@ class SIMPLib_EXPORT FilterErrorMessage : public AbstractErrorMessage
     /**
      * @brief Returns the name of the class for FilterErrorMessage
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for FilterErrorMessage
      */

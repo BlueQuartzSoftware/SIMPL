@@ -940,7 +940,7 @@ AttributeMatrix::Pointer AttributeMatrix::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString AttributeMatrix::getNameOfClass() const
+QString AttributeMatrix::getNameOfClass() const
 {
   return QString("AttributeMatrix");
 }

@@ -236,7 +236,7 @@ QUrl QtSDocServer::GenerateHTMLUrl(const QString &className)
 }
 
 // -----------------------------------------------------------------------------
-const QString QtSDocServer::getNameOfClass() const
+QString QtSDocServer::getNameOfClass() const
 {
   return QString("QtSDocServer");
 }

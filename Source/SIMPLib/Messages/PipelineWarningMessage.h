@@ -58,7 +58,7 @@ class SIMPLib_EXPORT PipelineWarningMessage : public AbstractWarningMessage
     /**
      * @brief Returns the name of the class for PipelineWarningMessage
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for PipelineWarningMessage
      */

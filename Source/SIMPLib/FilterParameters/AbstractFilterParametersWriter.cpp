@@ -528,7 +528,7 @@ int AbstractFilterParametersWriter::writeValue(const QString& name, const QPair<
 }
 
 // -----------------------------------------------------------------------------
-const QString AbstractFilterParametersWriter::getNameOfClass() const
+QString AbstractFilterParametersWriter::getNameOfClass() const
 {
   return QString("AbstractFilterParametersWriter");
 }

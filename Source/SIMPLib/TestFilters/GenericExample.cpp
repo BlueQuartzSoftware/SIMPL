@@ -442,7 +442,7 @@ AbstractFilter::Pointer GenericExample::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getCompiledLibraryName() const
+QString GenericExample::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -450,7 +450,7 @@ const QString GenericExample::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getGroupName() const
+QString GenericExample::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -458,7 +458,7 @@ const QString GenericExample::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid GenericExample::getUuid()
+QUuid GenericExample::getUuid() const
 {
   return QUuid("{b1b9da5c-4ad8-5b61-9615-2a3e17b38970}");
 }
@@ -466,7 +466,7 @@ const QUuid GenericExample::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getSubGroupName() const
+QString GenericExample::getSubGroupName() const
 {
   return "Test";
 }
@@ -474,7 +474,7 @@ const QString GenericExample::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getHumanLabel() const
+QString GenericExample::getHumanLabel() const
 {
   return "Generic Example";
 }
@@ -497,7 +497,7 @@ std::shared_ptr<GenericExample> GenericExample::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString GenericExample::getNameOfClass() const
+QString GenericExample::getNameOfClass() const
 {
   return QString("GenericExample");
 }

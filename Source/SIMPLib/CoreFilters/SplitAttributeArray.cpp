@@ -225,7 +225,7 @@ AbstractFilter::Pointer SplitAttributeArray::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getCompiledLibraryName() const
+QString SplitAttributeArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -233,7 +233,7 @@ const QString SplitAttributeArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getBrandingString() const
+QString SplitAttributeArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -241,7 +241,7 @@ const QString SplitAttributeArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getFilterVersion() const
+QString SplitAttributeArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -252,7 +252,7 @@ const QString SplitAttributeArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getGroupName() const
+QString SplitAttributeArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -260,7 +260,7 @@ const QString SplitAttributeArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid SplitAttributeArray::getUuid()
+QUuid SplitAttributeArray::getUuid() const
 {
   return QUuid("{5ecf77f4-a38a-52ab-b4f6-0fb8a9c5cb9c}");
 }
@@ -268,7 +268,7 @@ const QUuid SplitAttributeArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getSubGroupName() const
+QString SplitAttributeArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -276,7 +276,7 @@ const QString SplitAttributeArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getHumanLabel() const
+QString SplitAttributeArray::getHumanLabel() const
 {
   return "Split Multicomponent Attribute Array";
 }
@@ -299,7 +299,7 @@ std::shared_ptr<SplitAttributeArray> SplitAttributeArray::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getNameOfClass() const
+QString SplitAttributeArray::getNameOfClass() const
 {
   return QString("SplitAttributeArray");
 }

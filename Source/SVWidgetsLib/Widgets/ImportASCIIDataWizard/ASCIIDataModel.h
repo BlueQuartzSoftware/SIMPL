@@ -48,7 +48,7 @@ public:
   /**
    * @brief Returns the name of the class for ASCIIDataModel
    */
-  const QString getNameOfClass() const;
+  QString getNameOfClass() const;
   /**
    * @brief Returns the name of the class for ASCIIDataModel
    */

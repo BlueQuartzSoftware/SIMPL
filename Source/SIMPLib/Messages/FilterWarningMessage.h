@@ -58,7 +58,7 @@ class SIMPLib_EXPORT FilterWarningMessage : public AbstractWarningMessage
     /**
      * @brief Returns the name of the class for FilterWarningMessage
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for FilterWarningMessage
      */

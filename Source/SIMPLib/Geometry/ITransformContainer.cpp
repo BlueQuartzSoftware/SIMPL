@@ -43,7 +43,7 @@ ITransformContainer::Pointer ITransformContainer::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString ITransformContainer::getNameOfClass() const
+QString ITransformContainer::getNameOfClass() const
 {
   return QString("ITransformContainer");
 }

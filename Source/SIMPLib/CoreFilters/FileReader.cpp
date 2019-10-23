@@ -116,7 +116,7 @@ std::shared_ptr<FileReader> FileReader::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString FileReader::getNameOfClass() const
+QString FileReader::getNameOfClass() const
 {
   return QString("FileReader");
 }

@@ -47,7 +47,7 @@ AbstractStatusMessage::Pointer AbstractStatusMessage::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString AbstractStatusMessage::getNameOfClass() const
+QString AbstractStatusMessage::getNameOfClass() const
 {
   return QString("AbstractStatusMessage");
 }

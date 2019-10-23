@@ -86,7 +86,7 @@ EllipsoidOps::Pointer EllipsoidOps::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString EllipsoidOps::getNameOfClass() const
+QString EllipsoidOps::getNameOfClass() const
 {
   return QString("EllipsoidOps");
 }

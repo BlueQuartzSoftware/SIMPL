@@ -121,7 +121,7 @@ H5MatrixStatsDataDelegate::Pointer H5MatrixStatsDataDelegate::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString H5MatrixStatsDataDelegate::getNameOfClass() const
+QString H5MatrixStatsDataDelegate::getNameOfClass() const
 {
   return QString("H5MatrixStatsDataDelegate");
 }

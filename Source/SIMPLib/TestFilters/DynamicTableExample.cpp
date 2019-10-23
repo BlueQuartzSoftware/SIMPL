@@ -200,7 +200,7 @@ AbstractFilter::Pointer DynamicTableExample::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DynamicTableExample::getCompiledLibraryName() const
+QString DynamicTableExample::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -208,7 +208,7 @@ const QString DynamicTableExample::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DynamicTableExample::getGroupName() const
+QString DynamicTableExample::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -216,7 +216,7 @@ const QString DynamicTableExample::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid DynamicTableExample::getUuid()
+QUuid DynamicTableExample::getUuid() const
 {
   return QUuid("{7baae579-69bf-5559-a876-d0ef1cab77eb}");
 }
@@ -224,7 +224,7 @@ const QUuid DynamicTableExample::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DynamicTableExample::getSubGroupName() const
+QString DynamicTableExample::getSubGroupName() const
 {
   return "Test";
 }
@@ -232,7 +232,7 @@ const QString DynamicTableExample::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DynamicTableExample::getHumanLabel() const
+QString DynamicTableExample::getHumanLabel() const
 {
   return "Dynamic Table Example";
 }
@@ -255,7 +255,7 @@ std::shared_ptr<DynamicTableExample> DynamicTableExample::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString DynamicTableExample::getNameOfClass() const
+QString DynamicTableExample::getNameOfClass() const
 {
   return QString("DynamicTableExample");
 }

@@ -51,7 +51,7 @@ IDataContainerBundle::Pointer IDataContainerBundle::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString IDataContainerBundle::getNameOfClass() const
+QString IDataContainerBundle::getNameOfClass() const
 {
   return QString("IDataContainerBundle");
 }

@@ -189,7 +189,7 @@ ComparisonSelectionFilterParameter::Pointer ComparisonSelectionFilterParameter::
 }
 
 // -----------------------------------------------------------------------------
-const QString ComparisonSelectionFilterParameter::getNameOfClass() const
+QString ComparisonSelectionFilterParameter::getNameOfClass() const
 {
   return QString("ComparisonSelectionFilterParameter");
 }

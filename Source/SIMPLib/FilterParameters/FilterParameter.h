@@ -68,7 +68,7 @@ class SIMPLib_EXPORT FilterParameter
     /**
      * @brief Returns the name of the class for FilterParameter
      */
-    virtual const QString getNameOfClass() const;
+    virtual QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for FilterParameter
      */

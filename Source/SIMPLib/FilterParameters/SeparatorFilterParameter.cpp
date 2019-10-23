@@ -81,7 +81,7 @@ SeparatorFilterParameter::Pointer SeparatorFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString SeparatorFilterParameter::getNameOfClass() const
+QString SeparatorFilterParameter::getNameOfClass() const
 {
   return QString("SeparatorFilterParameter");
 }

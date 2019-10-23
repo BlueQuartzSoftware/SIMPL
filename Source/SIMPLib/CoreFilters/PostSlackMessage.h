@@ -74,7 +74,7 @@ public:
   /**
    * @brief Returns the name of the class for PostSlackMessage
    */
-  const QString getNameOfClass() const override;
+  QString getNameOfClass() const override;
   /**
    * @brief Returns the name of the class for PostSlackMessage
    */
@@ -133,62 +133,62 @@ public:
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    const QString getBrandingString() const override;
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+   */
+  QString getBrandingString() const override;
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    const QString getFilterVersion() const override;
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  QString getFilterVersion() const override;
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getGroupName() const override;
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getGroupName() const override;
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getSubGroupName() const override;
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getSubGroupName() const override;
 
-    /**
-     * @brief getUuid Return the unique identifier for this filter.
-     * @return A QUuid object.
-     */
-    const QUuid getUuid() override;
+  /**
+   * @brief getUuid Return the unique identifier for this filter.
+   * @return A QUuid object.
+   */
+  QUuid getUuid() const override;
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    const QString getHumanLabel() const override;
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  QString getHumanLabel() const override;
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void setupFilterParameters() override;
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void setupFilterParameters() override;
 
-    /**
-     * @brief execute Reimplemented from @see AbstractFilter class
-     */
-    void execute() override;
+  /**
+   * @brief execute Reimplemented from @see AbstractFilter class
+   */
+  void execute() override;
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    void preflight() override;
+  /**
+   * @brief preflight Reimplemented from @see AbstractFilter class
+   */
+  void preflight() override;
 
 signals:
   /**

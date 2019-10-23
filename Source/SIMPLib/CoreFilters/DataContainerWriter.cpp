@@ -448,7 +448,7 @@ AbstractFilter::Pointer DataContainerWriter::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getCompiledLibraryName() const
+QString DataContainerWriter::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -456,7 +456,7 @@ const QString DataContainerWriter::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getBrandingString() const
+QString DataContainerWriter::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -464,7 +464,7 @@ const QString DataContainerWriter::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getFilterVersion() const
+QString DataContainerWriter::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -475,7 +475,7 @@ const QString DataContainerWriter::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getGroupName() const
+QString DataContainerWriter::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -483,7 +483,7 @@ const QString DataContainerWriter::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid DataContainerWriter::getUuid()
+QUuid DataContainerWriter::getUuid() const
 {
   return QUuid("{3fcd4c43-9d75-5b86-aad4-4441bc914f37}");
 }
@@ -491,7 +491,7 @@ const QUuid DataContainerWriter::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getSubGroupName() const
+QString DataContainerWriter::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::OutputFilters;
 }
@@ -499,7 +499,7 @@ const QString DataContainerWriter::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getHumanLabel() const
+QString DataContainerWriter::getHumanLabel() const
 {
   return "Write DREAM.3D Data File";
 }
@@ -522,7 +522,7 @@ std::shared_ptr<DataContainerWriter> DataContainerWriter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getNameOfClass() const
+QString DataContainerWriter::getNameOfClass() const
 {
   return QString("DataContainerWriter");
 }

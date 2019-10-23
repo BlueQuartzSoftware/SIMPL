@@ -61,7 +61,7 @@ void IObserver::processPipelineMessage(const AbstractMessage::Pointer& pm)
 }
 
 // -----------------------------------------------------------------------------
-const QString IObserver::getNameOfClass() const
+QString IObserver::getNameOfClass() const
 {
   return QString("IObserver");
 }

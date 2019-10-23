@@ -58,7 +58,7 @@ class SIMPLib_EXPORT PluginProxy
     /**
      * @brief Returns the name of the class for PluginProxy
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for PluginProxy
      */

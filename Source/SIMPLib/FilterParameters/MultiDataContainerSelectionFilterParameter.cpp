@@ -242,7 +242,7 @@ MultiDataContainerSelectionFilterParameter::Pointer MultiDataContainerSelectionF
 }
 
 // -----------------------------------------------------------------------------
-const QString MultiDataContainerSelectionFilterParameter::getNameOfClass() const
+QString MultiDataContainerSelectionFilterParameter::getNameOfClass() const
 {
   return QString("MultiDataContainerSelectionFilterParameter");
 }

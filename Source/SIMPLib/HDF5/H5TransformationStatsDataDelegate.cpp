@@ -669,7 +669,7 @@ H5TransformationStatsDataDelegate::Pointer H5TransformationStatsDataDelegate::Ne
 }
 
 // -----------------------------------------------------------------------------
-const QString H5TransformationStatsDataDelegate::getNameOfClass() const
+QString H5TransformationStatsDataDelegate::getNameOfClass() const
 {
   return QString("H5TransformationStatsDataDelegate");
 }

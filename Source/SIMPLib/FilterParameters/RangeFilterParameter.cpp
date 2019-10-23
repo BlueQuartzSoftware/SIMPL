@@ -121,7 +121,7 @@ RangeFilterParameter::Pointer RangeFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString RangeFilterParameter::getNameOfClass() const
+QString RangeFilterParameter::getNameOfClass() const
 {
   return QString("RangeFilterParameter");
 }

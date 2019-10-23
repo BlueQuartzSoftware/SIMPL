@@ -143,7 +143,7 @@ DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParamet
 }
 
 // -----------------------------------------------------------------------------
-const QString DataContainerCreationFilterParameter::getNameOfClass() const
+QString DataContainerCreationFilterParameter::getNameOfClass() const
 {
   return QString("DataContainerCreationFilterParameter");
 }

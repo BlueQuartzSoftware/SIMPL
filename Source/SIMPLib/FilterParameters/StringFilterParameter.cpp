@@ -108,7 +108,7 @@ StringFilterParameter::Pointer StringFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString StringFilterParameter::getNameOfClass() const
+QString StringFilterParameter::getNameOfClass() const
 {
   return QString("StringFilterParameter");
 }

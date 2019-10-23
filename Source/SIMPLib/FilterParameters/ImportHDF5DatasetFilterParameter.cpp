@@ -132,7 +132,7 @@ ImportHDF5DatasetFilterParameter::Pointer ImportHDF5DatasetFilterParameter::New(
 }
 
 // -----------------------------------------------------------------------------
-const QString ImportHDF5DatasetFilterParameter::getNameOfClass() const
+QString ImportHDF5DatasetFilterParameter::getNameOfClass() const
 {
   return QString("ImportHDF5DatasetFilterParameter");
 }

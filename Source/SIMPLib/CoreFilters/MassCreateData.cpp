@@ -155,7 +155,7 @@ AbstractFilter::Pointer MassCreateData::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MassCreateData::getCompiledLibraryName() const
+QString MassCreateData::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -163,7 +163,7 @@ const QString MassCreateData::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MassCreateData::getBrandingString() const
+QString MassCreateData::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -171,7 +171,7 @@ const QString MassCreateData::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MassCreateData::getFilterVersion() const
+QString MassCreateData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -182,7 +182,7 @@ const QString MassCreateData::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MassCreateData::getGroupName() const
+QString MassCreateData::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -190,7 +190,7 @@ const QString MassCreateData::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MassCreateData::getHumanLabel() const
+QString MassCreateData::getHumanLabel() const
 {
   return "Mass Create Data Containers";
 }
@@ -198,7 +198,7 @@ const QString MassCreateData::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid MassCreateData::getUuid()
+QUuid MassCreateData::getUuid() const
 {
   return QUuid("{816fbe6b-7c38-581b-b149-3f839fb65b95}");
 }
@@ -206,7 +206,7 @@ const QUuid MassCreateData::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MassCreateData::getSubGroupName() const
+QString MassCreateData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -229,7 +229,7 @@ std::shared_ptr<MassCreateData> MassCreateData::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString MassCreateData::getNameOfClass() const
+QString MassCreateData::getNameOfClass() const
 {
   return QString("MassCreateData");
 }

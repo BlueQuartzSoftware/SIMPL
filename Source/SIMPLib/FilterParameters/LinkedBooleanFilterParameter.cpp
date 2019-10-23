@@ -109,7 +109,7 @@ LinkedBooleanFilterParameter::Pointer LinkedBooleanFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString LinkedBooleanFilterParameter::getNameOfClass() const
+QString LinkedBooleanFilterParameter::getNameOfClass() const
 {
   return QString("LinkedBooleanFilterParameter");
 }

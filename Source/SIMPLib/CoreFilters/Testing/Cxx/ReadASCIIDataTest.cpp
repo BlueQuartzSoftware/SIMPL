@@ -79,7 +79,7 @@ public:
   /**
    * @brief Returns the name of the class for ReadASCIIDataTest
    */
-  const QString getNameOfClass() const
+  QString getNameOfClass() const
   {
     return QString("ReadASCIIDataTest");
   }

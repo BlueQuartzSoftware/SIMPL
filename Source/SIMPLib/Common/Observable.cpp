@@ -148,7 +148,7 @@ void Observable::notifyProgressMessageWithPrefix(int progress, const QString &pr
 }
 
 // -----------------------------------------------------------------------------
-const QString Observable::getNameOfClass() const
+QString Observable::getNameOfClass() const
 {
   return QString("Observable");
 }

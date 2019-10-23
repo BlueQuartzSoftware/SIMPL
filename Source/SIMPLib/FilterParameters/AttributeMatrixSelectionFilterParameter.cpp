@@ -206,7 +206,7 @@ AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterP
 }
 
 // -----------------------------------------------------------------------------
-const QString AttributeMatrixSelectionFilterParameter::getNameOfClass() const
+QString AttributeMatrixSelectionFilterParameter::getNameOfClass() const
 {
   return QString("AttributeMatrixSelectionFilterParameter");
 }

@@ -58,7 +58,7 @@ class SIMPLib_EXPORT PipelineProgressMessage : public AbstractProgressMessage
     /**
      * @brief Returns the name of the class for PipelineProgressMessage
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for PipelineProgressMessage
      */

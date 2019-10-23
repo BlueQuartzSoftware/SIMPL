@@ -26,7 +26,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
     /**
      * @brief Returns the name of the class for HexahedralGeom
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for HexahedralGeom
      */

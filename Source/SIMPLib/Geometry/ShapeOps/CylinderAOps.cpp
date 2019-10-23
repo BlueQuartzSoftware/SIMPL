@@ -91,7 +91,7 @@ CylinderAOps::Pointer CylinderAOps::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString CylinderAOps::getNameOfClass() const
+QString CylinderAOps::getNameOfClass() const
 {
   return QString("CylinderAOps");
 }

@@ -73,7 +73,7 @@ class SIMPLib_EXPORT AbstractFilterParametersReader
     /**
      * @brief Returns the name of the class for AbstractFilterParametersReader
      */
-    virtual const QString getNameOfClass() const;
+    virtual QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for AbstractFilterParametersReader
      */

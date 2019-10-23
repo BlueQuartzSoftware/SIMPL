@@ -315,7 +315,7 @@ bool FilterListModel::isEmpty()
 }
 
 // -----------------------------------------------------------------------------
-const QString FilterListModel::getNameOfClass() const
+QString FilterListModel::getNameOfClass() const
 {
   return QString("FilterListModel");
 }

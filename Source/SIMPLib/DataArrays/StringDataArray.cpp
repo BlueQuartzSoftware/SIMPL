@@ -551,7 +551,7 @@ StringDataArray::Pointer StringDataArray::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString StringDataArray::getNameOfClass() const
+QString StringDataArray::getNameOfClass() const
 {
   return QString("StringDataArray");
 }

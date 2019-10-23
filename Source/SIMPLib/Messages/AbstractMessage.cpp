@@ -61,7 +61,7 @@ AbstractMessage::Pointer AbstractMessage::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString AbstractMessage::getNameOfClass() const
+QString AbstractMessage::getNameOfClass() const
 {
   return QString("AbstractMessage");
 }

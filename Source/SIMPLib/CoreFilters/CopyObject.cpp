@@ -275,7 +275,7 @@ AbstractFilter::Pointer CopyObject::newFilterInstance(bool copyFilterParameters)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyObject::getCompiledLibraryName() const
+QString CopyObject::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -283,7 +283,7 @@ const QString CopyObject::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyObject::getBrandingString() const
+QString CopyObject::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -291,7 +291,7 @@ const QString CopyObject::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyObject::getFilterVersion() const
+QString CopyObject::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -301,7 +301,7 @@ const QString CopyObject::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyObject::getGroupName() const
+QString CopyObject::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -309,7 +309,7 @@ const QString CopyObject::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CopyObject::getUuid()
+QUuid CopyObject::getUuid() const
 {
   return QUuid("{088ef69b-ca98-51a9-97ac-369862015d71}");
 }
@@ -317,7 +317,7 @@ const QUuid CopyObject::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyObject::getSubGroupName() const
+QString CopyObject::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::ConversionFilters;
 }
@@ -325,7 +325,7 @@ const QString CopyObject::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyObject::getHumanLabel() const
+QString CopyObject::getHumanLabel() const
 {
   return "Copy Object";
 }
@@ -348,7 +348,7 @@ std::shared_ptr<CopyObject> CopyObject::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString CopyObject::getNameOfClass() const
+QString CopyObject::getNameOfClass() const
 {
   return QString("CopyObject");
 }

@@ -294,7 +294,7 @@ AbstractFilter::Pointer ConditionalSetValue::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getCompiledLibraryName() const
+QString ConditionalSetValue::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -302,7 +302,7 @@ const QString ConditionalSetValue::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getBrandingString() const
+QString ConditionalSetValue::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -310,7 +310,7 @@ const QString ConditionalSetValue::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getFilterVersion() const
+QString ConditionalSetValue::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -321,7 +321,7 @@ const QString ConditionalSetValue::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getGroupName() const
+QString ConditionalSetValue::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -329,7 +329,7 @@ const QString ConditionalSetValue::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ConditionalSetValue::getUuid()
+QUuid ConditionalSetValue::getUuid() const
 {
   return QUuid("{47cafe63-83cc-5826-9521-4fb5bea684ef}");
 }
@@ -337,7 +337,7 @@ const QUuid ConditionalSetValue::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getSubGroupName() const
+QString ConditionalSetValue::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -345,7 +345,7 @@ const QString ConditionalSetValue::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getHumanLabel() const
+QString ConditionalSetValue::getHumanLabel() const
 {
   return "Replace Value in Array (Conditional)";
 }
@@ -368,7 +368,7 @@ std::shared_ptr<ConditionalSetValue> ConditionalSetValue::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getNameOfClass() const
+QString ConditionalSetValue::getNameOfClass() const
 {
   return QString("ConditionalSetValue");
 }

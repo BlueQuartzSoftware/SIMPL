@@ -120,7 +120,7 @@ FloatVec2FilterParameter::Pointer FloatVec2FilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString FloatVec2FilterParameter::getNameOfClass() const
+QString FloatVec2FilterParameter::getNameOfClass() const
 {
   return QString("FloatVec2FilterParameter");
 }

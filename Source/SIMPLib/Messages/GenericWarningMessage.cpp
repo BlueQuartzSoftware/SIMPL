@@ -101,7 +101,7 @@ GenericWarningMessage::Pointer GenericWarningMessage::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString GenericWarningMessage::getNameOfClass() const
+QString GenericWarningMessage::getNameOfClass() const
 {
   return QString("GenericWarningMessage");
 }

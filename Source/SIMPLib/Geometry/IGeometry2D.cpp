@@ -52,7 +52,7 @@ IGeometry2D::Pointer IGeometry2D::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString IGeometry2D::getNameOfClass() const
+QString IGeometry2D::getNameOfClass() const
 {
   return QString("IGeometry2D");
 }

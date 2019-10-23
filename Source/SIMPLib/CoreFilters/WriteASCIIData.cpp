@@ -610,7 +610,7 @@ AbstractFilter::Pointer WriteASCIIData::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getCompiledLibraryName() const
+QString WriteASCIIData::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -618,7 +618,7 @@ const QString WriteASCIIData::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getBrandingString() const
+QString WriteASCIIData::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -626,7 +626,7 @@ const QString WriteASCIIData::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getFilterVersion() const
+QString WriteASCIIData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -637,7 +637,7 @@ const QString WriteASCIIData::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getGroupName() const
+QString WriteASCIIData::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -645,7 +645,7 @@ const QString WriteASCIIData::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid WriteASCIIData::getUuid()
+QUuid WriteASCIIData::getUuid() const
 {
   return QUuid("{5fbf9204-2c6c-597b-856a-f4612adbac38}");
 }
@@ -653,7 +653,7 @@ const QUuid WriteASCIIData::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getSubGroupName() const
+QString WriteASCIIData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::OutputFilters;
 }
@@ -661,7 +661,7 @@ const QString WriteASCIIData::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getHumanLabel() const
+QString WriteASCIIData::getHumanLabel() const
 {
   return "Export ASCII Data";
 }
@@ -684,7 +684,7 @@ std::shared_ptr<WriteASCIIData> WriteASCIIData::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getNameOfClass() const
+QString WriteASCIIData::getNameOfClass() const
 {
   return QString("WriteASCIIData");
 }

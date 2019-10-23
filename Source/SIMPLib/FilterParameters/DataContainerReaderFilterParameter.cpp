@@ -120,7 +120,7 @@ DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::
 }
 
 // -----------------------------------------------------------------------------
-const QString DataContainerReaderFilterParameter::getNameOfClass() const
+QString DataContainerReaderFilterParameter::getNameOfClass() const
 {
   return QString("DataContainerReaderFilterParameter");
 }

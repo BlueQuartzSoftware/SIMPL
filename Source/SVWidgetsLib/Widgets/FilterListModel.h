@@ -53,7 +53,7 @@ class SVWidgetsLib_EXPORT FilterListModel : public QAbstractItemModel
     /**
      * @brief Returns the name of the class for FilterListModel
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for FilterListModel
      */

@@ -115,7 +115,7 @@ InputFileFilterParameter::Pointer InputFileFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString InputFileFilterParameter::getNameOfClass() const
+QString InputFileFilterParameter::getNameOfClass() const
 {
   return QString("InputFileFilterParameter");
 }

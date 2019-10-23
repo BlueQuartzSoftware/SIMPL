@@ -129,7 +129,7 @@ ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::Ne
 }
 
 // -----------------------------------------------------------------------------
-const QString ShapeTypeSelectionFilterParameter::getNameOfClass() const
+QString ShapeTypeSelectionFilterParameter::getNameOfClass() const
 {
   return QString("ShapeTypeSelectionFilterParameter");
 }

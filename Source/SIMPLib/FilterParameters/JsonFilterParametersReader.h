@@ -62,7 +62,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     /**
      * @brief Returns the name of the class for JsonFilterParametersReader
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for JsonFilterParametersReader
      */

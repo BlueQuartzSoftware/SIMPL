@@ -116,7 +116,7 @@ AxisAngleFilterParameter::Pointer AxisAngleFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString AxisAngleFilterParameter::getNameOfClass() const
+QString AxisAngleFilterParameter::getNameOfClass() const
 {
   return QString("AxisAngleFilterParameter");
 }

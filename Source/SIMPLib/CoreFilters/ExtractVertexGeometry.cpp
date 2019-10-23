@@ -314,7 +314,7 @@ AbstractFilter::Pointer ExtractVertexGeometry::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractVertexGeometry::getCompiledLibraryName() const
+QString ExtractVertexGeometry::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -322,7 +322,7 @@ const QString ExtractVertexGeometry::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractVertexGeometry::getBrandingString() const
+QString ExtractVertexGeometry::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -330,7 +330,7 @@ const QString ExtractVertexGeometry::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractVertexGeometry::getFilterVersion() const
+QString ExtractVertexGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -341,7 +341,7 @@ const QString ExtractVertexGeometry::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractVertexGeometry::getGroupName() const
+QString ExtractVertexGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -349,7 +349,7 @@ const QString ExtractVertexGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractVertexGeometry::getSubGroupName() const
+QString ExtractVertexGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::ConversionFilters;
 }
@@ -357,7 +357,7 @@ const QString ExtractVertexGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractVertexGeometry::getHumanLabel() const
+QString ExtractVertexGeometry::getHumanLabel() const
 {
   return "Extract Vertex Geometry";
 }
@@ -365,7 +365,7 @@ const QString ExtractVertexGeometry::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ExtractVertexGeometry::getUuid()
+QUuid ExtractVertexGeometry::getUuid() const
 {
   return QUuid("{bc8a91ca-0cee-59c6-b5cb-acc1aab8617f}");
 }
@@ -388,7 +388,7 @@ std::shared_ptr<ExtractVertexGeometry> ExtractVertexGeometry::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ExtractVertexGeometry::getNameOfClass() const
+QString ExtractVertexGeometry::getNameOfClass() const
 {
   return QString("_SUPERExtractVertexGeometry");
 }

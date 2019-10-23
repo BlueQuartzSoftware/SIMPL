@@ -84,7 +84,7 @@ PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParamet
 }
 
 // -----------------------------------------------------------------------------
-const QString PreflightUpdatedValueFilterParameter::getNameOfClass() const
+QString PreflightUpdatedValueFilterParameter::getNameOfClass() const
 {
   return QString("PreflightUpdatedValueFilterParameter");
 }

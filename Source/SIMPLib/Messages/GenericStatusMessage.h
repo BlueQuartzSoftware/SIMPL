@@ -58,7 +58,7 @@ class SIMPLib_EXPORT GenericStatusMessage : public AbstractStatusMessage
     /**
      * @brief Returns the name of the class for GenericStatusMessage
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for GenericStatusMessage
      */

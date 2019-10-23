@@ -409,7 +409,7 @@ void ASCIIDataModel::clearHeaders(Qt::Orientation orientation)
 }
 
 // -----------------------------------------------------------------------------
-const QString ASCIIDataModel::getNameOfClass() const
+QString ASCIIDataModel::getNameOfClass() const
 {
   return QString("ASCIIDataModel");
 }

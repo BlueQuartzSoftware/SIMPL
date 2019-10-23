@@ -81,7 +81,7 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     /**
      * @brief Returns the name of the class for DataArraySelectionFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for DataArraySelectionFilterParameter
      */

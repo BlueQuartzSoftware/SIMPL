@@ -109,7 +109,7 @@ IntFilterParameter::Pointer IntFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString IntFilterParameter::getNameOfClass() const
+QString IntFilterParameter::getNameOfClass() const
 {
   return QString("IntFilterParameter");
 }

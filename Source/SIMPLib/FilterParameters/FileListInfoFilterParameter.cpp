@@ -119,7 +119,7 @@ FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString FileListInfoFilterParameter::getNameOfClass() const
+QString FileListInfoFilterParameter::getNameOfClass() const
 {
   return QString("FileListInfoFilterParameter");
 }

@@ -112,7 +112,7 @@ LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString LinkedChoicesFilterParameter::getNameOfClass() const
+QString LinkedChoicesFilterParameter::getNameOfClass() const
 {
   return QString("LinkedChoicesFilterParameter");
 }

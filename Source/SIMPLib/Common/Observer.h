@@ -61,7 +61,7 @@ class SIMPLib_EXPORT Observer : public QObject, public IObserver
     /**
      * @brief Returns the name of the class for _SUPERObserver
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for _SUPERObserver
      */

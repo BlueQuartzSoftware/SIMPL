@@ -56,7 +56,7 @@ class SIMPLib_EXPORT SeparatorFilterParameter : public FilterParameter
     /**
      * @brief Returns the name of the class for SeparatorFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for SeparatorFilterParameter
      */

@@ -70,7 +70,7 @@ class SIMPLib_EXPORT Observable : public QObject
     /**
      * @brief Returns the name of the class for Observable
      */
-    virtual const QString getNameOfClass() const;
+    virtual QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for Observable
      */

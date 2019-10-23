@@ -194,7 +194,7 @@ AbstractFilter::Pointer ApplyImageTransforms::newFilterInstance(bool copyFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyImageTransforms::getCompiledLibraryName() const
+QString ApplyImageTransforms::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -202,7 +202,7 @@ const QString ApplyImageTransforms::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyImageTransforms::getBrandingString() const
+QString ApplyImageTransforms::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -210,7 +210,7 @@ const QString ApplyImageTransforms::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyImageTransforms::getFilterVersion() const
+QString ApplyImageTransforms::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -221,7 +221,7 @@ const QString ApplyImageTransforms::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyImageTransforms::getGroupName() const
+QString ApplyImageTransforms::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -229,7 +229,7 @@ const QString ApplyImageTransforms::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyImageTransforms::getSubGroupName() const
+QString ApplyImageTransforms::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::ImageFilters;
 }
@@ -237,7 +237,7 @@ const QString ApplyImageTransforms::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyImageTransforms::getHumanLabel() const
+QString ApplyImageTransforms::getHumanLabel() const
 {
   return "Apply Image Transforms";
 }
@@ -245,7 +245,7 @@ const QString ApplyImageTransforms::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ApplyImageTransforms::getUuid()
+QUuid ApplyImageTransforms::getUuid() const
 {
   return QUuid("{a4bd18bc-3306-5e41-bc41-4cb4248226bd}");
 }
@@ -268,7 +268,7 @@ std::shared_ptr<ApplyImageTransforms> ApplyImageTransforms::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ApplyImageTransforms::getNameOfClass() const
+QString ApplyImageTransforms::getNameOfClass() const
 {
   return QString("_SUPERApplyImageTransforms");
 }

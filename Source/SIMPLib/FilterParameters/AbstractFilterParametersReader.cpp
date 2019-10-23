@@ -554,7 +554,7 @@ QPair<double, double> AbstractFilterParametersReader::readPairOfDoubles(const QS
 }
 
 // -----------------------------------------------------------------------------
-const QString AbstractFilterParametersReader::getNameOfClass() const
+QString AbstractFilterParametersReader::getNameOfClass() const
 {
   return QString("AbstractFilterParametersReader");
 }

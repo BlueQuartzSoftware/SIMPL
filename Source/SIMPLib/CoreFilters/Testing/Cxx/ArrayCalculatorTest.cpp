@@ -65,7 +65,7 @@ public:
   /**
    * @brief Returns the name of the class for DummyObserver
    */
-  const QString getNameOfClass() const
+  QString getNameOfClass() const
   {
     return QString("DummyObserver");
   }
@@ -101,7 +101,7 @@ public:
   /**
    * @brief Returns the name of the class for ArrayCalculatorTest
    */
-  const QString getNameOfClass() const
+  QString getNameOfClass() const
   {
     return QString("ArrayCalculatorTest");
   }

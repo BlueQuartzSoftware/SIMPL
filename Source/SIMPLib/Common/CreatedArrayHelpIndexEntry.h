@@ -55,7 +55,7 @@ class SIMPLib_EXPORT CreatedArrayHelpIndexEntry
     /**
      * @brief Returns the name of the class for CreatedArrayHelpIndexEntry
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for CreatedArrayHelpIndexEntry
      */

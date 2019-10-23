@@ -210,7 +210,7 @@ AbstractFilter::Pointer CreateStringArray::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getCompiledLibraryName() const
+QString CreateStringArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -218,7 +218,7 @@ const QString CreateStringArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getBrandingString() const
+QString CreateStringArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -226,7 +226,7 @@ const QString CreateStringArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getFilterVersion() const
+QString CreateStringArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -237,7 +237,7 @@ const QString CreateStringArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getGroupName() const
+QString CreateStringArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -245,7 +245,7 @@ const QString CreateStringArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CreateStringArray::getUuid()
+QUuid CreateStringArray::getUuid() const
 {
   return QUuid("{e6b9a566-c5eb-5e3a-87de-7fe65d1d12b6}");
 }
@@ -253,7 +253,7 @@ const QUuid CreateStringArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getSubGroupName() const
+QString CreateStringArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -261,7 +261,7 @@ const QString CreateStringArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getHumanLabel() const
+QString CreateStringArray::getHumanLabel() const
 {
   return "Create String Array";
 }
@@ -284,7 +284,7 @@ std::shared_ptr<CreateStringArray> CreateStringArray::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getNameOfClass() const
+QString CreateStringArray::getNameOfClass() const
 {
   return QString("CreateStringArray");
 }

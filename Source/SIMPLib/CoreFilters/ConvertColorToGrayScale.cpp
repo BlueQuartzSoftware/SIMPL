@@ -435,7 +435,7 @@ AbstractFilter::Pointer ConvertColorToGrayScale::newFilterInstance(bool copyFilt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertColorToGrayScale::getCompiledLibraryName() const
+QString ConvertColorToGrayScale::getCompiledLibraryName() const
 {
   return  Core::CoreBaseName;
 }
@@ -443,7 +443,7 @@ const QString ConvertColorToGrayScale::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertColorToGrayScale::getBrandingString() const
+QString ConvertColorToGrayScale::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -451,7 +451,7 @@ const QString ConvertColorToGrayScale::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertColorToGrayScale::getFilterVersion() const
+QString ConvertColorToGrayScale::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -462,7 +462,7 @@ const QString ConvertColorToGrayScale::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertColorToGrayScale::getGroupName() const
+QString ConvertColorToGrayScale::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -470,7 +470,7 @@ const QString ConvertColorToGrayScale::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ConvertColorToGrayScale::getUuid()
+QUuid ConvertColorToGrayScale::getUuid() const
 {
   return QUuid("{eb5a89c4-4e71-59b1-9719-d10a652d961e}");
 }
@@ -478,7 +478,7 @@ const QUuid ConvertColorToGrayScale::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertColorToGrayScale::getSubGroupName() const
+QString ConvertColorToGrayScale::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::ImageFilters;
 }
@@ -486,7 +486,7 @@ const QString ConvertColorToGrayScale::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertColorToGrayScale::getHumanLabel() const
+QString ConvertColorToGrayScale::getHumanLabel() const
 {
   return "Color to GrayScale";
 }
@@ -509,7 +509,7 @@ std::shared_ptr<ConvertColorToGrayScale> ConvertColorToGrayScale::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ConvertColorToGrayScale::getNameOfClass() const
+QString ConvertColorToGrayScale::getNameOfClass() const
 {
   return QString("ConvertColorToGrayScale");
 }

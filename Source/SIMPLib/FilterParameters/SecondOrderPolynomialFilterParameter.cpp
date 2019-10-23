@@ -117,7 +117,7 @@ SecondOrderPolynomialFilterParameter::Pointer SecondOrderPolynomialFilterParamet
 }
 
 // -----------------------------------------------------------------------------
-const QString SecondOrderPolynomialFilterParameter::getNameOfClass() const
+QString SecondOrderPolynomialFilterParameter::getNameOfClass() const
 {
   return QString("SecondOrderPolynomialFilterParameter");
 }

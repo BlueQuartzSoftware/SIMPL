@@ -855,7 +855,7 @@ StatsDataArray::Pointer StatsDataArray::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString StatsDataArray::getNameOfClass() const
+QString StatsDataArray::getNameOfClass() const
 {
   return QString("StatsDataArray");
 }

@@ -1076,7 +1076,7 @@ AbstractFilter::Pointer ArrayCalculator::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getCompiledLibraryName() const
+QString ArrayCalculator::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -1084,7 +1084,7 @@ const QString ArrayCalculator::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getBrandingString() const
+QString ArrayCalculator::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -1092,7 +1092,7 @@ const QString ArrayCalculator::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getFilterVersion() const
+QString ArrayCalculator::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -1103,7 +1103,7 @@ const QString ArrayCalculator::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getGroupName() const
+QString ArrayCalculator::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -1111,7 +1111,7 @@ const QString ArrayCalculator::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ArrayCalculator::getUuid()
+QUuid ArrayCalculator::getUuid() const
 {
   return QUuid("{7ff0ebb3-7b0d-5ff7-b9d8-5147031aca10}");
 }
@@ -1119,7 +1119,7 @@ const QUuid ArrayCalculator::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getSubGroupName() const
+QString ArrayCalculator::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -1127,7 +1127,7 @@ const QString ArrayCalculator::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getHumanLabel() const
+QString ArrayCalculator::getHumanLabel() const
 {
   return "Attribute Array Calculator";
 }
@@ -1150,7 +1150,7 @@ std::shared_ptr<ArrayCalculator> ArrayCalculator::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getNameOfClass() const
+QString ArrayCalculator::getNameOfClass() const
 {
   return QString("ArrayCalculator");
 }

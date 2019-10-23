@@ -192,7 +192,7 @@ DataArrayCreationFilterParameter::Pointer DataArrayCreationFilterParameter::New(
 }
 
 // -----------------------------------------------------------------------------
-const QString DataArrayCreationFilterParameter::getNameOfClass() const
+QString DataArrayCreationFilterParameter::getNameOfClass() const
 {
   return QString("DataArrayCreationFilterParameter");
 }

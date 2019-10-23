@@ -117,7 +117,7 @@ FourthOrderPolynomialFilterParameter::Pointer FourthOrderPolynomialFilterParamet
 }
 
 // -----------------------------------------------------------------------------
-const QString FourthOrderPolynomialFilterParameter::getNameOfClass() const
+QString FourthOrderPolynomialFilterParameter::getNameOfClass() const
 {
   return QString("FourthOrderPolynomialFilterParameter");
 }

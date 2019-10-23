@@ -228,7 +228,7 @@ AbstractFilter::Pointer LinkFeatureMapToElementArray::newFilterInstance(bool cop
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LinkFeatureMapToElementArray::getCompiledLibraryName() const
+QString LinkFeatureMapToElementArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -236,7 +236,7 @@ const QString LinkFeatureMapToElementArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LinkFeatureMapToElementArray::getBrandingString() const
+QString LinkFeatureMapToElementArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -244,7 +244,7 @@ const QString LinkFeatureMapToElementArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LinkFeatureMapToElementArray::getFilterVersion() const
+QString LinkFeatureMapToElementArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -255,7 +255,7 @@ const QString LinkFeatureMapToElementArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LinkFeatureMapToElementArray::getGroupName() const
+QString LinkFeatureMapToElementArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -263,7 +263,7 @@ const QString LinkFeatureMapToElementArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid LinkFeatureMapToElementArray::getUuid()
+QUuid LinkFeatureMapToElementArray::getUuid() const
 {
   return QUuid("{0e1c45f6-ed7a-5279-8a5c-a2d5cc6bfead}");
 }
@@ -271,7 +271,7 @@ const QUuid LinkFeatureMapToElementArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LinkFeatureMapToElementArray::getSubGroupName() const
+QString LinkFeatureMapToElementArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -279,7 +279,7 @@ const QString LinkFeatureMapToElementArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LinkFeatureMapToElementArray::getHumanLabel() const
+QString LinkFeatureMapToElementArray::getHumanLabel() const
 {
   return "Link Feature Attribute Matrix to Element Attribute Array";
 }
@@ -302,7 +302,7 @@ std::shared_ptr<LinkFeatureMapToElementArray> LinkFeatureMapToElementArray::New(
 }
 
 // -----------------------------------------------------------------------------
-const QString LinkFeatureMapToElementArray::getNameOfClass() const
+QString LinkFeatureMapToElementArray::getNameOfClass() const
 {
   return QString("LinkFeatureMapToElementArray");
 }

@@ -101,7 +101,7 @@ GenericProgressMessage::Pointer GenericProgressMessage::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString GenericProgressMessage::getNameOfClass() const
+QString GenericProgressMessage::getNameOfClass() const
 {
   return QString("GenericProgressMessage");
 }

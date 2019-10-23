@@ -334,7 +334,7 @@ LinkedPathCreationFilterParameter::Pointer LinkedPathCreationFilterParameter::Ne
 }
 
 // -----------------------------------------------------------------------------
-const QString LinkedPathCreationFilterParameter::getNameOfClass() const
+QString LinkedPathCreationFilterParameter::getNameOfClass() const
 {
   return QString("LinkedPathCreationFilterParameter");
 }

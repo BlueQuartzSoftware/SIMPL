@@ -149,7 +149,7 @@ AbstractFilter::Pointer CreateDataContainer::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getCompiledLibraryName() const
+QString CreateDataContainer::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -157,7 +157,7 @@ const QString CreateDataContainer::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getBrandingString() const
+QString CreateDataContainer::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -165,7 +165,7 @@ const QString CreateDataContainer::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getFilterVersion() const
+QString CreateDataContainer::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -176,7 +176,7 @@ const QString CreateDataContainer::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getGroupName() const
+QString CreateDataContainer::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -184,7 +184,7 @@ const QString CreateDataContainer::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getHumanLabel() const
+QString CreateDataContainer::getHumanLabel() const
 {
   return "Create Data Container";
 }
@@ -192,7 +192,7 @@ const QString CreateDataContainer::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CreateDataContainer::getUuid()
+QUuid CreateDataContainer::getUuid() const
 {
   return QUuid("{816fbe6b-7c38-581b-b149-3f839fb65b93}");
 }
@@ -200,7 +200,7 @@ const QUuid CreateDataContainer::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getSubGroupName() const
+QString CreateDataContainer::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -223,7 +223,7 @@ std::shared_ptr<CreateDataContainer> CreateDataContainer::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getNameOfClass() const
+QString CreateDataContainer::getNameOfClass() const
 {
   return QString("CreateDataContainer");
 }

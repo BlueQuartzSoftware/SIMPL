@@ -102,7 +102,7 @@ PipelineProgressMessage::Pointer PipelineProgressMessage::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString PipelineProgressMessage::getNameOfClass() const
+QString PipelineProgressMessage::getNameOfClass() const
 {
   return QString("PipelineProgressMessage");
 }

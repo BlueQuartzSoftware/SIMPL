@@ -137,7 +137,7 @@ DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString DynamicTableFilterParameter::getNameOfClass() const
+QString DynamicTableFilterParameter::getNameOfClass() const
 {
   return QString("DynamicTableFilterParameter");
 }

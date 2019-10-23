@@ -300,7 +300,7 @@ public:
   /**
    * @brief Returns the name of the class for ItkBridge<ComponentType>
    */
-  const QString getNameOfClass() const;
+  QString getNameOfClass() const;
   /**
    * @brief Returns the name of the class for ItkBridge<ComponentType>
    */

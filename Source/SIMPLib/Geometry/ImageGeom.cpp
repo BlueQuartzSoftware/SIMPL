@@ -1197,7 +1197,7 @@ ImageGeom::Pointer ImageGeom::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ImageGeom::getNameOfClass() const
+QString ImageGeom::getNameOfClass() const
 {
   return QString("ImageGeom");
 }

@@ -53,7 +53,7 @@ class SIMPLib_EXPORT ConstrainedFilterParameter : public FilterParameter
     /**
      * @brief Returns the name of the class for ConstrainedFilterParameter<T>
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for ConstrainedFilterParameter<T>
      */

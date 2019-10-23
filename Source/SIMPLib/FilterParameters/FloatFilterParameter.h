@@ -76,7 +76,7 @@ class SIMPLib_EXPORT FloatFilterParameter : public FilterParameter
     /**
      * @brief Returns the name of the class for FloatFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for FloatFilterParameter
      */

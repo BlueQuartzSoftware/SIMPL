@@ -98,7 +98,7 @@ GenericStatusMessage::Pointer GenericStatusMessage::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString GenericStatusMessage::getNameOfClass() const
+QString GenericStatusMessage::getNameOfClass() const
 {
   return QString("GenericStatusMessage");
 }

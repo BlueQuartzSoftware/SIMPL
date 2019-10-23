@@ -245,7 +245,7 @@ MultiAttributeMatrixSelectionFilterParameter::Pointer MultiAttributeMatrixSelect
 }
 
 // -----------------------------------------------------------------------------
-const QString MultiAttributeMatrixSelectionFilterParameter::getNameOfClass() const
+QString MultiAttributeMatrixSelectionFilterParameter::getNameOfClass() const
 {
   return QString("MultiAttributeMatrixSelectionFilterParameter");
 }

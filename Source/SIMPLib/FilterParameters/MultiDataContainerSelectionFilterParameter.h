@@ -79,7 +79,7 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
     /**
      * @brief Returns the name of the class for MultiDataContainerSelectionFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for MultiDataContainerSelectionFilterParameter
      */

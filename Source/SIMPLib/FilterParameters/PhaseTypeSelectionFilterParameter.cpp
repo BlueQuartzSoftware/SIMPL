@@ -150,7 +150,7 @@ PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::Ne
 }
 
 // -----------------------------------------------------------------------------
-const QString PhaseTypeSelectionFilterParameter::getNameOfClass() const
+QString PhaseTypeSelectionFilterParameter::getNameOfClass() const
 {
   return QString("PhaseTypeSelectionFilterParameter");
 }

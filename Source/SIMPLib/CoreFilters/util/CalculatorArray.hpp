@@ -58,7 +58,7 @@ public:
   /**
    * @brief Returns the name of the class for AbstractMessage
    */
-  virtual const QString getNameOfClass() const
+  virtual QString getNameOfClass() const
   {
     return QString("CalculatorArray<T>");
   }

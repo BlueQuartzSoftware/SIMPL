@@ -177,7 +177,7 @@ CubeOctohedronOps::Pointer CubeOctohedronOps::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString CubeOctohedronOps::getNameOfClass() const
+QString CubeOctohedronOps::getNameOfClass() const
 {
   return QString("CubeOctohedronOps");
 }

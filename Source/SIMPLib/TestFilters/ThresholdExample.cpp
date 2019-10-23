@@ -209,7 +209,7 @@ AbstractFilter::Pointer ThresholdExample::newFilterInstance(bool copyFilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ThresholdExample::getCompiledLibraryName() const
+QString ThresholdExample::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -217,7 +217,7 @@ const QString ThresholdExample::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ThresholdExample::getGroupName() const
+QString ThresholdExample::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -225,7 +225,7 @@ const QString ThresholdExample::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ThresholdExample::getUuid()
+QUuid ThresholdExample::getUuid() const
 {
   return QUuid("{bd013013-ba0f-52be-a7b7-187665c92a9e}");
 }
@@ -233,7 +233,7 @@ const QUuid ThresholdExample::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ThresholdExample::getSubGroupName() const
+QString ThresholdExample::getSubGroupName() const
 {
   return "Test";
 }
@@ -241,7 +241,7 @@ const QString ThresholdExample::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ThresholdExample::getHumanLabel() const
+QString ThresholdExample::getHumanLabel() const
 {
   return "Threshold Example";
 }
@@ -264,7 +264,7 @@ std::shared_ptr<ThresholdExample> ThresholdExample::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ThresholdExample::getNameOfClass() const
+QString ThresholdExample::getNameOfClass() const
 {
   return QString("ThresholdExample");
 }

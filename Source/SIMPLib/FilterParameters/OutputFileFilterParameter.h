@@ -75,7 +75,7 @@ class SIMPLib_EXPORT OutputFileFilterParameter : public FilterParameter
     /**
      * @brief Returns the name of the class for OutputFileFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for OutputFileFilterParameter
      */

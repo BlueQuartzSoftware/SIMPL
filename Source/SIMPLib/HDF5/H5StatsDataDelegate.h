@@ -66,7 +66,7 @@ class SIMPLib_EXPORT H5StatsDataDelegate
     /**
      * @brief Returns the name of the class for H5StatsDataDelegate
      */
-    virtual const QString getNameOfClass() const;
+    virtual QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for H5StatsDataDelegate
      */

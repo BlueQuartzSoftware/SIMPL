@@ -508,7 +508,7 @@ DataContainerArray::Pointer DataContainerArray::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString DataContainerArray::getNameOfClass() const
+QString DataContainerArray::getNameOfClass() const
 {
   return QString("DataContainerArray");
 }

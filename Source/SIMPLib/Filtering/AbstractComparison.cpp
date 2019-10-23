@@ -95,7 +95,7 @@ AbstractComparison::Pointer AbstractComparison::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString AbstractComparison::getNameOfClass() const
+QString AbstractComparison::getNameOfClass() const
 {
   return QString("AbstractComparison");
 }

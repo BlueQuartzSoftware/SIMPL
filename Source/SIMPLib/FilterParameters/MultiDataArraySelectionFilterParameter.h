@@ -79,7 +79,7 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
     /**
      * @brief Returns the name of the class for MultiDataArraySelectionFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for MultiDataArraySelectionFilterParameter
      */

@@ -473,7 +473,7 @@ AbstractFilter::Pointer DataContainerReader::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getCompiledLibraryName() const
+QString DataContainerReader::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -481,7 +481,7 @@ const QString DataContainerReader::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getBrandingString() const
+QString DataContainerReader::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -489,7 +489,7 @@ const QString DataContainerReader::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getFilterVersion() const
+QString DataContainerReader::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -500,7 +500,7 @@ const QString DataContainerReader::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getGroupName() const
+QString DataContainerReader::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -508,7 +508,7 @@ const QString DataContainerReader::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid DataContainerReader::getUuid()
+QUuid DataContainerReader::getUuid() const
 {
   return QUuid("{043cbde5-3878-5718-958f-ae75714df0df}");
 }
@@ -516,7 +516,7 @@ const QUuid DataContainerReader::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getSubGroupName() const
+QString DataContainerReader::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -524,7 +524,7 @@ const QString DataContainerReader::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getHumanLabel() const
+QString DataContainerReader::getHumanLabel() const
 {
   return "Read DREAM.3D Data File";
 }
@@ -555,7 +555,7 @@ std::shared_ptr<DataContainerReader> DataContainerReader::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getNameOfClass() const
+QString DataContainerReader::getNameOfClass() const
 {
   return QString("DataContainerReader");
 }

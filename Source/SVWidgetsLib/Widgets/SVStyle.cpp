@@ -774,7 +774,7 @@ QString SVStyle::WrapTextWithHtmlStyle(const QString& msg, bool bold) const
 }
 
 // -----------------------------------------------------------------------------
-const QString SVStyle::getNameOfClass() const
+QString SVStyle::getNameOfClass() const
 {
   return QString("SVStyle");
 }

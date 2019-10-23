@@ -60,7 +60,7 @@ class SIMPLib_EXPORT GenerateColorTableFilterParameter : public FilterParameter
     /**
      * @brief Returns the name of the class for GenerateColorTableFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for GenerateColorTableFilterParameter
      */

@@ -55,7 +55,7 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
     /**
      * @brief Returns the name of the class for IGeometry3D
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for IGeometry3D
      */

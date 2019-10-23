@@ -646,7 +646,7 @@ H5PrimaryStatsDataDelegate::Pointer H5PrimaryStatsDataDelegate::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString H5PrimaryStatsDataDelegate::getNameOfClass() const
+QString H5PrimaryStatsDataDelegate::getNameOfClass() const
 {
   return QString("H5PrimaryStatsDataDelegate");
 }

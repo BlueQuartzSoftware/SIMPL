@@ -103,7 +103,7 @@ PipelineErrorMessage::Pointer PipelineErrorMessage::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString PipelineErrorMessage::getNameOfClass() const
+QString PipelineErrorMessage::getNameOfClass() const
 {
   return QString("PipelineErrorMessage");
 }

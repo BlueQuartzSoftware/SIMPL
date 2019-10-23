@@ -108,7 +108,7 @@ DynamicChoiceFilterParameter::Pointer DynamicChoiceFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString DynamicChoiceFilterParameter::getNameOfClass() const
+QString DynamicChoiceFilterParameter::getNameOfClass() const
 {
   return QString("DynamicChoiceFilterParameter");
 }

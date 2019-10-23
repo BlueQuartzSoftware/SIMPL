@@ -1278,7 +1278,7 @@ H5FilterParametersReader::Pointer H5FilterParametersReader::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString H5FilterParametersReader::getNameOfClass() const
+QString H5FilterParametersReader::getNameOfClass() const
 {
   return QString("H5FilterParametersReader");
 }

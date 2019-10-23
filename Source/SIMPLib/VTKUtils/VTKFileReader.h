@@ -98,7 +98,7 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
     /**
      * @brief Returns the name of the class for VTKFileReader
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for VTKFileReader
      */

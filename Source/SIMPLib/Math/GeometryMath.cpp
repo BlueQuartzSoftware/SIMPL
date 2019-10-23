@@ -1184,7 +1184,7 @@ GeometryMath::Pointer GeometryMath::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString GeometryMath::getNameOfClass() const
+QString GeometryMath::getNameOfClass() const
 {
   return QString("GeometryMath");
 }

@@ -73,7 +73,7 @@ class SIMPLib_EXPORT UInt64FilterParameter : public FilterParameter
     /**
      * @brief Returns the name of the class for UInt64FilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for UInt64FilterParameter
      */

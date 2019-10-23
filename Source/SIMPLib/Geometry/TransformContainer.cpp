@@ -178,7 +178,7 @@ TransformContainer::Pointer TransformContainer::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString TransformContainer::getNameOfClass() const
+QString TransformContainer::getNameOfClass() const
 {
   return QString("TransformContainer");
 }

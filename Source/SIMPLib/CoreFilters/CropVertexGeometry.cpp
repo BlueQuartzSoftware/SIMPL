@@ -340,7 +340,7 @@ AbstractFilter::Pointer CropVertexGeometry::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getCompiledLibraryName() const
+QString CropVertexGeometry::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -348,7 +348,7 @@ const QString CropVertexGeometry::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getBrandingString() const
+QString CropVertexGeometry::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -356,7 +356,7 @@ const QString CropVertexGeometry::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getFilterVersion() const
+QString CropVertexGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -367,7 +367,7 @@ const QString CropVertexGeometry::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getGroupName() const
+QString CropVertexGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -375,7 +375,7 @@ const QString CropVertexGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CropVertexGeometry::getUuid()
+QUuid CropVertexGeometry::getUuid() const
 {
   return QUuid("{f28cbf07-f15a-53ca-8c7f-b41a11dae6cc}");
 }
@@ -383,7 +383,7 @@ const QUuid CropVertexGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getSubGroupName() const
+QString CropVertexGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::CropCutFilters;
 }
@@ -391,7 +391,7 @@ const QString CropVertexGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getHumanLabel() const
+QString CropVertexGeometry::getHumanLabel() const
 {
   return "Crop Geometry (Vertex)";
 }
@@ -414,7 +414,7 @@ std::shared_ptr<CropVertexGeometry> CropVertexGeometry::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getNameOfClass() const
+QString CropVertexGeometry::getNameOfClass() const
 {
   return QString("CropVertexGeometry");
 }

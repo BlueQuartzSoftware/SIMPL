@@ -111,7 +111,7 @@ MontageSelectionFilterParameter::Pointer MontageSelectionFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString MontageSelectionFilterParameter::getNameOfClass() const
+QString MontageSelectionFilterParameter::getNameOfClass() const
 {
   return QString("MontageSelectionFilterParameter");
 }

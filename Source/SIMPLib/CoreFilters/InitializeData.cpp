@@ -532,7 +532,7 @@ AbstractFilter::Pointer InitializeData::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InitializeData::getCompiledLibraryName() const
+QString InitializeData::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -540,7 +540,7 @@ const QString InitializeData::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InitializeData::getBrandingString() const
+QString InitializeData::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -548,7 +548,7 @@ const QString InitializeData::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InitializeData::getFilterVersion() const
+QString InitializeData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -558,7 +558,7 @@ const QString InitializeData::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InitializeData::getGroupName() const
+QString InitializeData::getGroupName() const
 {
   return SIMPL::FilterGroups::ProcessingFilters;
 }
@@ -566,7 +566,7 @@ const QString InitializeData::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid InitializeData::getUuid()
+QUuid InitializeData::getUuid() const
 {
   return QUuid("{dfab9921-fea3-521c-99ba-48db98e43ff8}");
 }
@@ -574,7 +574,7 @@ const QUuid InitializeData::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InitializeData::getSubGroupName() const
+QString InitializeData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::ConversionFilters;
 }
@@ -582,7 +582,7 @@ const QString InitializeData::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString InitializeData::getHumanLabel() const
+QString InitializeData::getHumanLabel() const
 {
   return "Initialize Data";
 }
@@ -605,7 +605,7 @@ std::shared_ptr<InitializeData> InitializeData::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString InitializeData::getNameOfClass() const
+QString InitializeData::getNameOfClass() const
 {
   return QString("InitializeData");
 }

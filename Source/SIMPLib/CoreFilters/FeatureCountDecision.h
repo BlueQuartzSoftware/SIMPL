@@ -72,7 +72,7 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
     /**
      * @brief Returns the name of the class for FeatureCountDecision
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for FeatureCountDecision
      */
@@ -113,7 +113,7 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -123,23 +123,23 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class

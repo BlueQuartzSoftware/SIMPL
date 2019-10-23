@@ -66,7 +66,7 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
     /**
      * @brief Returns the name of the class for FileWriter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for FileWriter
      */

@@ -163,7 +163,7 @@ AbstractFilter::Pointer ErrorWarningFilter::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getCompiledLibraryName() const
+QString ErrorWarningFilter::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -171,7 +171,7 @@ const QString ErrorWarningFilter::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getBrandingString() const
+QString ErrorWarningFilter::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -179,7 +179,7 @@ const QString ErrorWarningFilter::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getFilterVersion() const
+QString ErrorWarningFilter::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -190,7 +190,7 @@ const QString ErrorWarningFilter::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getGroupName() const
+QString ErrorWarningFilter::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -198,7 +198,7 @@ const QString ErrorWarningFilter::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ErrorWarningFilter::getUuid()
+QUuid ErrorWarningFilter::getUuid() const
 {
   return QUuid("{c367f998-3cc8-5a24-8616-70b659c5ce46}");
 }
@@ -206,7 +206,7 @@ const QUuid ErrorWarningFilter::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getSubGroupName() const
+QString ErrorWarningFilter::getSubGroupName() const
 {
   return "Test";
 }
@@ -214,7 +214,7 @@ const QString ErrorWarningFilter::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getHumanLabel() const
+QString ErrorWarningFilter::getHumanLabel() const
 {
   return "Error Warning and Test Filter";
 }
@@ -237,7 +237,7 @@ std::shared_ptr<ErrorWarningFilter> ErrorWarningFilter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getNameOfClass() const
+QString ErrorWarningFilter::getNameOfClass() const
 {
   return QString("ErrorWarningFilter");
 }

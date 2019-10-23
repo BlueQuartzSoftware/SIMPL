@@ -74,7 +74,7 @@ class SIMPLib_EXPORT AbstractFilterParametersWriter
     /**
      * @brief Returns the name of the class for AbstractFilterParametersWriter
      */
-    virtual const QString getNameOfClass() const;
+    virtual QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for AbstractFilterParametersWriter
      */

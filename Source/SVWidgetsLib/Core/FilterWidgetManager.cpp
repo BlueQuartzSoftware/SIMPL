@@ -132,7 +132,7 @@ QWidget* FilterWidgetManager::createWidget(FilterParameter* parameter, AbstractF
 }
 
 // -----------------------------------------------------------------------------
-const QString FilterWidgetManager::getNameOfClass() const
+QString FilterWidgetManager::getNameOfClass() const
 {
   return QString("FilterWidgetManager");
 }

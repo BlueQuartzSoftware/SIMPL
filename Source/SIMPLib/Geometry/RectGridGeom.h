@@ -60,7 +60,7 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
     /**
      * @brief Returns the name of the class for RectGridGeom
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for RectGridGeom
      */

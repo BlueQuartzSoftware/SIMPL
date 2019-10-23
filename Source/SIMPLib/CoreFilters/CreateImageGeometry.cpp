@@ -212,7 +212,7 @@ AbstractFilter::Pointer CreateImageGeometry::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateImageGeometry::getCompiledLibraryName() const
+QString CreateImageGeometry::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -220,7 +220,7 @@ const QString CreateImageGeometry::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateImageGeometry::getBrandingString() const
+QString CreateImageGeometry::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -228,7 +228,7 @@ const QString CreateImageGeometry::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateImageGeometry::getFilterVersion() const
+QString CreateImageGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -239,7 +239,7 @@ const QString CreateImageGeometry::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateImageGeometry::getGroupName() const
+QString CreateImageGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -247,7 +247,7 @@ const QString CreateImageGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CreateImageGeometry::getUuid()
+QUuid CreateImageGeometry::getUuid() const
 {
   return QUuid("{f2132744-3abb-5d66-9cd9-c9a233b5c4aa}");
 }
@@ -255,7 +255,7 @@ const QUuid CreateImageGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateImageGeometry::getSubGroupName() const
+QString CreateImageGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -263,7 +263,7 @@ const QString CreateImageGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateImageGeometry::getHumanLabel() const
+QString CreateImageGeometry::getHumanLabel() const
 {
   return "Create Geometry (Image)";
 }
@@ -286,7 +286,7 @@ std::shared_ptr<CreateImageGeometry> CreateImageGeometry::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString CreateImageGeometry::getNameOfClass() const
+QString CreateImageGeometry::getNameOfClass() const
 {
   return QString("CreateImageGeometry");
 }

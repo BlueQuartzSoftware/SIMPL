@@ -108,7 +108,7 @@ GenerateColorTableFilterParameter::Pointer GenerateColorTableFilterParameter::Ne
 }
 
 // -----------------------------------------------------------------------------
-const QString GenerateColorTableFilterParameter::getNameOfClass() const
+QString GenerateColorTableFilterParameter::getNameOfClass() const
 {
   return QString("GenerateColorTableFilterParameter");
 }

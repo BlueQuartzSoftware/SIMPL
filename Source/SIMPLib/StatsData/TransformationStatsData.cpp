@@ -377,7 +377,7 @@ TransformationStatsData::Pointer TransformationStatsData::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString TransformationStatsData::getNameOfClass() const
+QString TransformationStatsData::getNameOfClass() const
 {
   return QString("TransformationStatsData");
 }

@@ -54,7 +54,7 @@ class SIMPLib_EXPORT PluginManager
     /**
      * @brief Returns the name of the class for PluginManager
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for PluginManager
      */

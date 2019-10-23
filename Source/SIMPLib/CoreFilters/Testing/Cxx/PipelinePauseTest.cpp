@@ -77,7 +77,7 @@ public:
   /**
    * @brief Returns the name of the class for PipelinePauseTest
    */
-  const QString getNameOfClass() const
+  QString getNameOfClass() const
   {
     return QString("PipelinePauseTest");
   }

@@ -1009,7 +1009,7 @@ FilterPipeline::Pointer FilterPipeline::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString FilterPipeline::getNameOfClass() const
+QString FilterPipeline::getNameOfClass() const
 {
   return QString("FilterPipeline");
 }

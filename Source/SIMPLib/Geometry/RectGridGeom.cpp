@@ -1199,7 +1199,7 @@ RectGridGeom::Pointer RectGridGeom::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString RectGridGeom::getNameOfClass() const
+QString RectGridGeom::getNameOfClass() const
 {
   return QString("RectGridGeom");
 }

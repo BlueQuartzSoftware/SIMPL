@@ -245,7 +245,7 @@ MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterPar
 }
 
 // -----------------------------------------------------------------------------
-const QString MultiDataArraySelectionFilterParameter::getNameOfClass() const
+QString MultiDataArraySelectionFilterParameter::getNameOfClass() const
 {
   return QString("MultiDataArraySelectionFilterParameter");
 }

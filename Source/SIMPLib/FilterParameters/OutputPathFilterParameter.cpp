@@ -111,7 +111,7 @@ OutputPathFilterParameter::Pointer OutputPathFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString OutputPathFilterParameter::getNameOfClass() const
+QString OutputPathFilterParameter::getNameOfClass() const
 {
   return QString("OutputPathFilterParameter");
 }

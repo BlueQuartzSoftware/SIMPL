@@ -79,7 +79,7 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
     /**
      * @brief Returns the name of the class for AttributeMatrixSelectionFilterParameter
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for AttributeMatrixSelectionFilterParameter
      */

@@ -146,7 +146,7 @@ void IDataStructureNode::setParentNode(ParentType* const parent)
 }
 
 // -----------------------------------------------------------------------------
-const QString IDataStructureNode::getNameOfClass() const
+QString IDataStructureNode::getNameOfClass() const
 {
   return QString("IDataStructureNode");
 }

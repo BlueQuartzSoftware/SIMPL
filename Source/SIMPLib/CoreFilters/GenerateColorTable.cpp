@@ -369,13 +369,13 @@ AbstractFilter::Pointer GenerateColorTable::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenerateColorTable::getCompiledLibraryName() const
+QString GenerateColorTable::getCompiledLibraryName() const
 { return Core::CoreBaseName; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenerateColorTable::getBrandingString() const
+QString GenerateColorTable::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -383,7 +383,7 @@ const QString GenerateColorTable::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenerateColorTable::getFilterVersion() const
+QString GenerateColorTable::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -394,13 +394,13 @@ const QString GenerateColorTable::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenerateColorTable::getGroupName() const
+QString GenerateColorTable::getGroupName() const
 { return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid GenerateColorTable::getUuid()
+QUuid GenerateColorTable::getUuid() const
 {
   return QUuid("{0d0a6535-6565-51c5-a3fc-fbc00008606d}");
 }
@@ -408,13 +408,13 @@ const QUuid GenerateColorTable::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenerateColorTable::getSubGroupName() const
+QString GenerateColorTable::getSubGroupName() const
 { return SIMPL::FilterSubGroups::ImageFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenerateColorTable::getHumanLabel() const
+QString GenerateColorTable::getHumanLabel() const
 { return "Generate Color Table"; }
 
 // -----------------------------------------------------------------------------
@@ -435,7 +435,7 @@ std::shared_ptr<GenerateColorTable> GenerateColorTable::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString GenerateColorTable::getNameOfClass() const
+QString GenerateColorTable::getNameOfClass() const
 {
   return QString("GenerateColorTable");
 }

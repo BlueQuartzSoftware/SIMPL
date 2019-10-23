@@ -235,7 +235,7 @@ DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::Ne
 }
 
 // -----------------------------------------------------------------------------
-const QString DataArraySelectionFilterParameter::getNameOfClass() const
+QString DataArraySelectionFilterParameter::getNameOfClass() const
 {
   return QString("DataArraySelectionFilterParameter");
 }

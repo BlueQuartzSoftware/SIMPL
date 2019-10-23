@@ -74,7 +74,7 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
     /**
      * @brief Returns the name of the class for LinkedDataContainerSelectionFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for LinkedDataContainerSelectionFilterParameter
      */

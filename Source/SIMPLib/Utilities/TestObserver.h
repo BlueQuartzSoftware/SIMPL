@@ -46,7 +46,7 @@ class SIMPLib_EXPORT TestObserver : public QObject, public IObserver
     /**
      * @brief Returns the name of the class for TestObserver
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for TestObserver
      */

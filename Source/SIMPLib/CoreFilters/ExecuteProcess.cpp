@@ -333,7 +333,7 @@ AbstractFilter::Pointer ExecuteProcess::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExecuteProcess::getCompiledLibraryName() const
+QString ExecuteProcess::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -341,7 +341,7 @@ const QString ExecuteProcess::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExecuteProcess::getBrandingString() const
+QString ExecuteProcess::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -349,7 +349,7 @@ const QString ExecuteProcess::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExecuteProcess::getFilterVersion() const
+QString ExecuteProcess::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -360,7 +360,7 @@ const QString ExecuteProcess::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExecuteProcess::getGroupName() const
+QString ExecuteProcess::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -368,7 +368,7 @@ const QString ExecuteProcess::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ExecuteProcess::getUuid()
+QUuid ExecuteProcess::getUuid() const
 {
   return QUuid("{8a2308ec-86cd-5636-9a0a-6c7d383e9e7f}");
 }
@@ -376,7 +376,7 @@ const QUuid ExecuteProcess::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExecuteProcess::getSubGroupName() const
+QString ExecuteProcess::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -384,7 +384,7 @@ const QString ExecuteProcess::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExecuteProcess::getHumanLabel() const
+QString ExecuteProcess::getHumanLabel() const
 {
   return "Execute Process";
 }
@@ -407,7 +407,7 @@ std::shared_ptr<ExecuteProcess> ExecuteProcess::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ExecuteProcess::getNameOfClass() const
+QString ExecuteProcess::getNameOfClass() const
 {
   return QString("ExecuteProcess");
 }

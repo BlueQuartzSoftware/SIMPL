@@ -892,7 +892,7 @@ TetrahedralGeom::Pointer TetrahedralGeom::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString TetrahedralGeom::getNameOfClass() const
+QString TetrahedralGeom::getNameOfClass() const
 {
   return QString("TetrahedralGeom");
 }

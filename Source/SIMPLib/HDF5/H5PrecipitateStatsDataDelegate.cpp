@@ -831,7 +831,7 @@ H5PrecipitateStatsDataDelegate::Pointer H5PrecipitateStatsDataDelegate::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString H5PrecipitateStatsDataDelegate::getNameOfClass() const
+QString H5PrecipitateStatsDataDelegate::getNameOfClass() const
 {
   return QString("H5PrecipitateStatsDataDelegate");
 }

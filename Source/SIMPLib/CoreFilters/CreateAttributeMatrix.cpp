@@ -208,7 +208,7 @@ AbstractFilter::Pointer CreateAttributeMatrix::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateAttributeMatrix::getCompiledLibraryName() const
+QString CreateAttributeMatrix::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -216,7 +216,7 @@ const QString CreateAttributeMatrix::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateAttributeMatrix::getBrandingString() const
+QString CreateAttributeMatrix::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -224,7 +224,7 @@ const QString CreateAttributeMatrix::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateAttributeMatrix::getFilterVersion() const
+QString CreateAttributeMatrix::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -235,7 +235,7 @@ const QString CreateAttributeMatrix::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateAttributeMatrix::getGroupName() const
+QString CreateAttributeMatrix::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -243,7 +243,7 @@ const QString CreateAttributeMatrix::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateAttributeMatrix::getHumanLabel() const
+QString CreateAttributeMatrix::getHumanLabel() const
 {
   return "Create Attribute Matrix";
 }
@@ -251,7 +251,7 @@ const QString CreateAttributeMatrix::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CreateAttributeMatrix::getUuid()
+QUuid CreateAttributeMatrix::getUuid() const
 {
   return QUuid("{93375ef0-7367-5372-addc-baa019b1b341}");
 }
@@ -259,7 +259,7 @@ const QUuid CreateAttributeMatrix::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateAttributeMatrix::getSubGroupName() const
+QString CreateAttributeMatrix::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -282,7 +282,7 @@ std::shared_ptr<CreateAttributeMatrix> CreateAttributeMatrix::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString CreateAttributeMatrix::getNameOfClass() const
+QString CreateAttributeMatrix::getNameOfClass() const
 {
   return QString("CreateAttributeMatrix");
 }

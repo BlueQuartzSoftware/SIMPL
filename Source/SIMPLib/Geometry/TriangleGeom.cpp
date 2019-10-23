@@ -775,7 +775,7 @@ TriangleGeom::Pointer TriangleGeom::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString TriangleGeom::getNameOfClass() const
+QString TriangleGeom::getNameOfClass() const
 {
   return QString("TriangleGeom");
 }

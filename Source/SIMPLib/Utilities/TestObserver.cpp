@@ -52,7 +52,7 @@ void TestObserver::processPipelineMessage(const AbstractMessage::Pointer& pm)
 }
 
 // -----------------------------------------------------------------------------
-const QString TestObserver::getNameOfClass() const
+QString TestObserver::getNameOfClass() const
 {
   return QString("TestObserver");
 }

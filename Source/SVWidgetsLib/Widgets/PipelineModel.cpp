@@ -818,7 +818,7 @@ QColor PipelineModel::getForegroundColor(const QModelIndex &index) const
 }
 
 // -----------------------------------------------------------------------------
-const QString PipelineModel::getNameOfClass() const
+QString PipelineModel::getNameOfClass() const
 {
   return QString("PipelineModel");
 }

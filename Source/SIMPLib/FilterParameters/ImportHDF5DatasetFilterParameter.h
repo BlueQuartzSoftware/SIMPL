@@ -51,7 +51,7 @@ public:
   /**
    * @brief Returns the name of the class for ImportHDF5DatasetFilterParameter
    */
-  const QString getNameOfClass() const;
+  QString getNameOfClass() const;
   /**
    * @brief Returns the name of the class for ImportHDF5DatasetFilterParameter
    */

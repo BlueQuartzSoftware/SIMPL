@@ -873,7 +873,7 @@ HexahedralGeom::Pointer HexahedralGeom::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString HexahedralGeom::getNameOfClass() const
+QString HexahedralGeom::getNameOfClass() const
 {
   return QString("HexahedralGeom");
 }

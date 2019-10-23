@@ -71,7 +71,7 @@ public:
   /**
    * @brief Returns the name of the class for ParagraphFilterParameter
    */
-  const QString getNameOfClass() const override;
+  QString getNameOfClass() const override;
   /**
    * @brief Returns the name of the class for ParagraphFilterParameter
    */

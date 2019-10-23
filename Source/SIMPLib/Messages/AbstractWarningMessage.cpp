@@ -49,7 +49,7 @@ AbstractWarningMessage::Pointer AbstractWarningMessage::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString AbstractWarningMessage::getNameOfClass() const
+QString AbstractWarningMessage::getNameOfClass() const
 {
   return QString("AbstractWarningMessage");
 }

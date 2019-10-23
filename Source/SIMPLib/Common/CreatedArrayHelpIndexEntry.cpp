@@ -62,7 +62,7 @@ CreatedArrayHelpIndexEntry::Pointer CreatedArrayHelpIndexEntry::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString CreatedArrayHelpIndexEntry::getNameOfClass() const
+QString CreatedArrayHelpIndexEntry::getNameOfClass() const
 {
   return QString("CreatedArrayHelpIndexEntry");
 }

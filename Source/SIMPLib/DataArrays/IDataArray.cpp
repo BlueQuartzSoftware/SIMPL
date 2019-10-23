@@ -48,7 +48,7 @@ IDataArray::Pointer IDataArray::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString IDataArray::getNameOfClass() const
+QString IDataArray::getNameOfClass() const
 {
   return QString("IDataArray");
 }

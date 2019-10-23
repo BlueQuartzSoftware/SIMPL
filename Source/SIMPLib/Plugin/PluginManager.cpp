@@ -185,7 +185,7 @@ QJsonArray PluginManager::toJsonArray() const
 }
 
 // -----------------------------------------------------------------------------
-const QString PluginManager::getNameOfClass() const
+QString PluginManager::getNameOfClass() const
 {
   return QString("PluginManager");
 }

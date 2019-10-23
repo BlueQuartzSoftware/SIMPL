@@ -64,7 +64,7 @@ public:
   /**
    * @brief Returns the name of the class for AbstractComparison
    */
-  virtual const QString getNameOfClass() const;
+  virtual QString getNameOfClass() const;
   /**
    * @brief Returns the name of the class for AbstractComparison
    */

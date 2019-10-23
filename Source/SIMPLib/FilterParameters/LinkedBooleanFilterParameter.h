@@ -75,7 +75,7 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
     /**
      * @brief Returns the name of the class for LinkedBooleanFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for LinkedBooleanFilterParameter
      */

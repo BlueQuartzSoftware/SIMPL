@@ -78,7 +78,7 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
     /**
      * @brief Returns the name of the class for DataContainerSelectionFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for DataContainerSelectionFilterParameter
      */

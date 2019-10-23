@@ -266,7 +266,7 @@ ComparisonSet::Pointer ComparisonSet::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ComparisonSet::getNameOfClass() const
+QString ComparisonSet::getNameOfClass() const
 {
   return QString("ComparisonSet");
 }

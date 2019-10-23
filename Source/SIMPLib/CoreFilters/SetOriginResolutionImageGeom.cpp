@@ -218,7 +218,7 @@ AbstractFilter::Pointer SetOriginResolutionImageGeom::newFilterInstance(bool cop
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SetOriginResolutionImageGeom::getCompiledLibraryName() const
+QString SetOriginResolutionImageGeom::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -226,7 +226,7 @@ const QString SetOriginResolutionImageGeom::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SetOriginResolutionImageGeom::getBrandingString() const
+QString SetOriginResolutionImageGeom::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -234,7 +234,7 @@ const QString SetOriginResolutionImageGeom::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SetOriginResolutionImageGeom::getFilterVersion() const
+QString SetOriginResolutionImageGeom::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -245,7 +245,7 @@ const QString SetOriginResolutionImageGeom::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SetOriginResolutionImageGeom::getGroupName() const
+QString SetOriginResolutionImageGeom::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -253,7 +253,7 @@ const QString SetOriginResolutionImageGeom::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid SetOriginResolutionImageGeom::getUuid()
+QUuid SetOriginResolutionImageGeom::getUuid() const
 {
   return QUuid("{6d3a3852-6251-5d2e-b749-6257fd0d8951}");
 }
@@ -261,7 +261,7 @@ const QUuid SetOriginResolutionImageGeom::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SetOriginResolutionImageGeom::getSubGroupName() const
+QString SetOriginResolutionImageGeom::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::SpatialFilters;
 }
@@ -269,7 +269,7 @@ const QString SetOriginResolutionImageGeom::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SetOriginResolutionImageGeom::getHumanLabel() const
+QString SetOriginResolutionImageGeom::getHumanLabel() const
 {
   return "Set Origin & Spacing (Image)";
 }
@@ -292,7 +292,7 @@ std::shared_ptr<SetOriginResolutionImageGeom> SetOriginResolutionImageGeom::New(
 }
 
 // -----------------------------------------------------------------------------
-const QString SetOriginResolutionImageGeom::getNameOfClass() const
+QString SetOriginResolutionImageGeom::getNameOfClass() const
 {
   return QString("SetOriginResolutionImageGeom");
 }

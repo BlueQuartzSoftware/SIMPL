@@ -95,7 +95,7 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     /**
      * @brief Returns the name of the class for TransformationStatsData
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for TransformationStatsData
      */

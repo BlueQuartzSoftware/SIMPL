@@ -77,7 +77,7 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
     /**
      * @brief Returns the name of the class for DataContainerArrayProxyFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for DataContainerArrayProxyFilterParameter
      */

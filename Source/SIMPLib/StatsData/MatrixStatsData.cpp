@@ -159,7 +159,7 @@ MatrixStatsData::Pointer MatrixStatsData::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString MatrixStatsData::getNameOfClass() const
+QString MatrixStatsData::getNameOfClass() const
 {
   return QString("MatrixStatsData");
 }

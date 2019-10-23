@@ -134,7 +134,7 @@ AbstractFilter::Pointer FilterGroup06::newFilterInstance(bool copyFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup06::getCompiledLibraryName() const
+QString FilterGroup06::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -142,7 +142,7 @@ const QString FilterGroup06::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup06::getBrandingString() const
+QString FilterGroup06::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -150,7 +150,7 @@ const QString FilterGroup06::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup06::getFilterVersion() const
+QString FilterGroup06::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -161,7 +161,7 @@ const QString FilterGroup06::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup06::getGroupName() const
+QString FilterGroup06::getGroupName() const
 {
   return SIMPL::FilterGroups::SamplingFilters;
 }
@@ -169,7 +169,7 @@ const QString FilterGroup06::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid FilterGroup06::getUuid()
+QUuid FilterGroup06::getUuid() const
 {
   return QUuid("{bed5f283-bc93-58a5-a538-6835e23f7c4f}");
 }
@@ -177,7 +177,7 @@ const QUuid FilterGroup06::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup06::getSubGroupName() const
+QString FilterGroup06::getSubGroupName() const
 {
   return "Test";
 }
@@ -185,7 +185,7 @@ const QString FilterGroup06::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup06::getHumanLabel() const
+QString FilterGroup06::getHumanLabel() const
 {
   return "SamplingFilters Test Filter";
 }
@@ -208,7 +208,7 @@ std::shared_ptr<FilterGroup06> FilterGroup06::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString FilterGroup06::getNameOfClass() const
+QString FilterGroup06::getNameOfClass() const
 {
   return QString("FilterGroup06");
 }

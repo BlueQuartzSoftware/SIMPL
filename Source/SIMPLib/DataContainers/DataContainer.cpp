@@ -902,7 +902,7 @@ DataContainer::Pointer DataContainer::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString DataContainer::getNameOfClass() const
+QString DataContainer::getNameOfClass() const
 {
   return QString("DataContainer");
 }

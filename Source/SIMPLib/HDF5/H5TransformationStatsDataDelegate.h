@@ -68,7 +68,7 @@ class SIMPLib_EXPORT H5TransformationStatsDataDelegate : public H5StatsDataDeleg
     /**
      * @brief Returns the name of the class for H5TransformationStatsDataDelegate
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for H5TransformationStatsDataDelegate
      */

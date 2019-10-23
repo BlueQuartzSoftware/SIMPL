@@ -675,7 +675,7 @@ EdgeGeom::Pointer EdgeGeom::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString EdgeGeom::getNameOfClass() const
+QString EdgeGeom::getNameOfClass() const
 {
   return QString("EdgeGeom");
 }

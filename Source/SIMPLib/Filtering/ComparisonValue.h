@@ -70,7 +70,7 @@ public:
   /**
    * @brief Returns the name of the class for ComparisonValue
    */
-  const QString getNameOfClass() const override;
+  QString getNameOfClass() const override;
   /**
    * @brief Returns the name of the class for ComparisonValue
    */

@@ -111,7 +111,7 @@ InputPathFilterParameter::Pointer InputPathFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString InputPathFilterParameter::getNameOfClass() const
+QString InputPathFilterParameter::getNameOfClass() const
 {
   return QString("InputPathFilterParameter");
 }

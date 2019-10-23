@@ -273,7 +273,7 @@ QJsonArray FilterManager::toJsonArray() const
 }
 
 // -----------------------------------------------------------------------------
-const QString FilterManager::getNameOfClass() const
+QString FilterManager::getNameOfClass() const
 {
   return QString("FilterManager");
 }

@@ -373,7 +373,7 @@ AbstractFilter::Pointer CombineAttributeArrays::newFilterInstance(bool copyFilte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getCompiledLibraryName() const
+QString CombineAttributeArrays::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -381,7 +381,7 @@ const QString CombineAttributeArrays::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getBrandingString() const
+QString CombineAttributeArrays::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -389,7 +389,7 @@ const QString CombineAttributeArrays::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getFilterVersion() const
+QString CombineAttributeArrays::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -400,7 +400,7 @@ const QString CombineAttributeArrays::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getGroupName() const
+QString CombineAttributeArrays::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -408,7 +408,7 @@ const QString CombineAttributeArrays::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CombineAttributeArrays::getUuid()
+QUuid CombineAttributeArrays::getUuid() const
 {
   return QUuid("{a6b50fb0-eb7c-5d9b-9691-825d6a4fe772}");
 }
@@ -416,7 +416,7 @@ const QUuid CombineAttributeArrays::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getSubGroupName() const
+QString CombineAttributeArrays::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -424,7 +424,7 @@ const QString CombineAttributeArrays::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getHumanLabel() const
+QString CombineAttributeArrays::getHumanLabel() const
 {
   return "Combine Attribute Arrays";
 }
@@ -447,7 +447,7 @@ std::shared_ptr<CombineAttributeArrays> CombineAttributeArrays::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getNameOfClass() const
+QString CombineAttributeArrays::getNameOfClass() const
 {
   return QString("CombineAttributeArrays");
 }

@@ -219,7 +219,7 @@ AbstractFilter::Pointer MaskCountDecision::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MaskCountDecision::getCompiledLibraryName() const
+QString MaskCountDecision::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -227,7 +227,7 @@ const QString MaskCountDecision::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MaskCountDecision::getGroupName() const
+QString MaskCountDecision::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -235,7 +235,7 @@ const QString MaskCountDecision::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid MaskCountDecision::getUuid()
+QUuid MaskCountDecision::getUuid() const
 {
   return QUuid("{34a19028-c50b-5dea-af0e-e06c798d3686}");
 }
@@ -243,7 +243,7 @@ const QUuid MaskCountDecision::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MaskCountDecision::getSubGroupName() const
+QString MaskCountDecision::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -251,7 +251,7 @@ const QString MaskCountDecision::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MaskCountDecision::getHumanLabel() const
+QString MaskCountDecision::getHumanLabel() const
 {
   return "Mask Count Decision";
 }
@@ -270,7 +270,7 @@ MaskCountDecision::Pointer MaskCountDecision::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString MaskCountDecision::getNameOfClass() const
+QString MaskCountDecision::getNameOfClass() const
 {
   return QString("MaskCountDecision");
 }

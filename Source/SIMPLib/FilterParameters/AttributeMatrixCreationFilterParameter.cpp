@@ -139,7 +139,7 @@ AttributeMatrixCreationFilterParameter::Pointer AttributeMatrixCreationFilterPar
 }
 
 // -----------------------------------------------------------------------------
-const QString AttributeMatrixCreationFilterParameter::getNameOfClass() const
+QString AttributeMatrixCreationFilterParameter::getNameOfClass() const
 {
   return QString("AttributeMatrixCreationFilterParameter");
 }

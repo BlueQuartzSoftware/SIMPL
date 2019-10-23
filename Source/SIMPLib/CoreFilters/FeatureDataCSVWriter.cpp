@@ -331,7 +331,7 @@ AbstractFilter::Pointer FeatureDataCSVWriter::newFilterInstance(bool copyFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureDataCSVWriter::getCompiledLibraryName() const
+QString FeatureDataCSVWriter::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -339,7 +339,7 @@ const QString FeatureDataCSVWriter::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureDataCSVWriter::getBrandingString() const
+QString FeatureDataCSVWriter::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -347,7 +347,7 @@ const QString FeatureDataCSVWriter::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureDataCSVWriter::getFilterVersion() const
+QString FeatureDataCSVWriter::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -358,7 +358,7 @@ const QString FeatureDataCSVWriter::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureDataCSVWriter::getGroupName() const
+QString FeatureDataCSVWriter::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -366,7 +366,7 @@ const QString FeatureDataCSVWriter::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid FeatureDataCSVWriter::getUuid()
+QUuid FeatureDataCSVWriter::getUuid() const
 {
   return QUuid("{737b8d5a-8622-50f9-9a8a-bfdb57608891}");
 }
@@ -374,7 +374,7 @@ const QUuid FeatureDataCSVWriter::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureDataCSVWriter::getSubGroupName() const
+QString FeatureDataCSVWriter::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::OutputFilters;
 }
@@ -382,7 +382,7 @@ const QString FeatureDataCSVWriter::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureDataCSVWriter::getHumanLabel() const
+QString FeatureDataCSVWriter::getHumanLabel() const
 {
   return "Export Feature Data as CSV File";
 }
@@ -426,7 +426,7 @@ std::shared_ptr<FeatureDataCSVWriter> FeatureDataCSVWriter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString FeatureDataCSVWriter::getNameOfClass() const
+QString FeatureDataCSVWriter::getNameOfClass() const
 {
   return QString("FeatureDataCSVWriter");
 }

@@ -55,7 +55,7 @@ class SIMPLib_EXPORT CylinderAOps : public ShapeOps
     /**
      * @brief Returns the name of the class for CylinderAOps
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for CylinderAOps
      */

@@ -229,7 +229,7 @@ AbstractFilter::Pointer ExtractComponentAsArray::newFilterInstance(bool copyFilt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getCompiledLibraryName() const
+QString ExtractComponentAsArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -237,7 +237,7 @@ const QString ExtractComponentAsArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getBrandingString() const
+QString ExtractComponentAsArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -245,7 +245,7 @@ const QString ExtractComponentAsArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getFilterVersion() const
+QString ExtractComponentAsArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -256,7 +256,7 @@ const QString ExtractComponentAsArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getGroupName() const
+QString ExtractComponentAsArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -264,7 +264,7 @@ const QString ExtractComponentAsArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ExtractComponentAsArray::getUuid()
+QUuid ExtractComponentAsArray::getUuid() const
 {
   return QUuid("{79d59b85-01e8-5c4a-a6e1-3fd3e2ceffb4}");
 }
@@ -272,7 +272,7 @@ const QUuid ExtractComponentAsArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getSubGroupName() const
+QString ExtractComponentAsArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -280,7 +280,7 @@ const QString ExtractComponentAsArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getHumanLabel() const
+QString ExtractComponentAsArray::getHumanLabel() const
 {
   return "Extract Component as Attribute Array";
 }
@@ -303,7 +303,7 @@ std::shared_ptr<ExtractComponentAsArray> ExtractComponentAsArray::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getNameOfClass() const
+QString ExtractComponentAsArray::getNameOfClass() const
 {
   return QString("ExtractComponentAsArray");
 }

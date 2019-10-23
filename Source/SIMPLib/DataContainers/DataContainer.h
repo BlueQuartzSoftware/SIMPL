@@ -110,7 +110,7 @@ public:
   /**
    * @brief Returns the name of the class for DataContainer
    */
-  const QString getNameOfClass() const override;
+  QString getNameOfClass() const override;
   /**
    * @brief Returns the name of the class for DataContainer
    */

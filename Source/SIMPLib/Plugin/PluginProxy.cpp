@@ -115,7 +115,7 @@ PluginProxy::Pointer PluginProxy::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString PluginProxy::getNameOfClass() const
+QString PluginProxy::getNameOfClass() const
 {
   return QString("PluginProxy");
 }

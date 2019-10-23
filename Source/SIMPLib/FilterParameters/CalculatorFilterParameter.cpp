@@ -145,7 +145,7 @@ CalculatorFilterParameter::Pointer CalculatorFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString CalculatorFilterParameter::getNameOfClass() const
+QString CalculatorFilterParameter::getNameOfClass() const
 {
   return QString("CalculatorFilterParameter");
 }

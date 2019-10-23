@@ -925,7 +925,7 @@ AbstractFilter::Pointer CreateGeometry::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getCompiledLibraryName() const
+QString CreateGeometry::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -933,7 +933,7 @@ const QString CreateGeometry::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getBrandingString() const
+QString CreateGeometry::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -941,7 +941,7 @@ const QString CreateGeometry::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getFilterVersion() const
+QString CreateGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -952,7 +952,7 @@ const QString CreateGeometry::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getGroupName() const
+QString CreateGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -960,7 +960,7 @@ const QString CreateGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CreateGeometry::getUuid()
+QUuid CreateGeometry::getUuid() const
 {
   return QUuid("{9ac220b9-14f9-581a-9bac-5714467589cc}");
 }
@@ -968,7 +968,7 @@ const QUuid CreateGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getSubGroupName() const
+QString CreateGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GeometryFilters;
 }
@@ -976,7 +976,7 @@ const QString CreateGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getHumanLabel() const
+QString CreateGeometry::getHumanLabel() const
 {
   return "Create Geometry";
 }
@@ -999,7 +999,7 @@ std::shared_ptr<CreateGeometry> CreateGeometry::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getNameOfClass() const
+QString CreateGeometry::getNameOfClass() const
 {
   return QString("CreateGeometry");
 }

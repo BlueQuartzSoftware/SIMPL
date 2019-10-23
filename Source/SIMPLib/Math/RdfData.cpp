@@ -169,7 +169,7 @@ RdfData::Pointer RdfData::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString RdfData::getNameOfClass() const
+QString RdfData::getNameOfClass() const
 {
   return QString("RdfData");
 }

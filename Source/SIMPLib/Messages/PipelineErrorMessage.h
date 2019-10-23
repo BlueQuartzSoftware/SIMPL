@@ -58,7 +58,7 @@ class SIMPLib_EXPORT PipelineErrorMessage : public AbstractErrorMessage
     /**
      * @brief Returns the name of the class for PipelineErrorMessage
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for PipelineErrorMessage
      */

@@ -737,7 +737,7 @@ AbstractFilter::Pointer ImportAsciDataArray::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getCompiledLibraryName() const
+QString ImportAsciDataArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -745,7 +745,7 @@ const QString ImportAsciDataArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getBrandingString() const
+QString ImportAsciDataArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -753,7 +753,7 @@ const QString ImportAsciDataArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getFilterVersion() const
+QString ImportAsciDataArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -764,7 +764,7 @@ const QString ImportAsciDataArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getGroupName() const
+QString ImportAsciDataArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -772,7 +772,7 @@ const QString ImportAsciDataArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ImportAsciDataArray::getUuid()
+QUuid ImportAsciDataArray::getUuid() const
 {
   return QUuid("{a7007472-29e5-5d0a-89a6-1aed11b603f8}");
 }
@@ -780,7 +780,7 @@ const QUuid ImportAsciDataArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getSubGroupName() const
+QString ImportAsciDataArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -788,7 +788,7 @@ const QString ImportAsciDataArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getHumanLabel() const
+QString ImportAsciDataArray::getHumanLabel() const
 {
   return "Import ASCII Attribute Array";
 }
@@ -811,7 +811,7 @@ std::shared_ptr<ImportAsciDataArray> ImportAsciDataArray::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getNameOfClass() const
+QString ImportAsciDataArray::getNameOfClass() const
 {
   return QString("ImportAsciDataArray");
 }

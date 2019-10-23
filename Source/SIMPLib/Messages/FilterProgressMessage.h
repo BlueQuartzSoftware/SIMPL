@@ -58,7 +58,7 @@ class SIMPLib_EXPORT FilterProgressMessage : public AbstractProgressMessage
     /**
      * @brief Returns the name of the class for FilterProgressMessage
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for FilterProgressMessage
      */

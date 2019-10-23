@@ -58,7 +58,7 @@ class SIMPLib_EXPORT GenericProgressMessage : public AbstractProgressMessage
     /**
      * @brief Returns the name of the class for GenericProgressMessage
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for GenericProgressMessage
      */

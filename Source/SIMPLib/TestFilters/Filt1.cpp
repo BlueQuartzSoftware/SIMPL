@@ -121,7 +121,7 @@ std::shared_ptr<Filt1> Filt1::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString Filt1::getNameOfClass() const
+QString Filt1::getNameOfClass() const
 {
   return QString("Filt1");
 }

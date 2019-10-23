@@ -75,7 +75,7 @@ class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
     /**
      * @brief Returns the name of the class for ChoiceFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for ChoiceFilterParameter
      */

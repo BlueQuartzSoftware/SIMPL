@@ -104,7 +104,7 @@ FilterProgressMessage::Pointer FilterProgressMessage::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString FilterProgressMessage::getNameOfClass() const
+QString FilterProgressMessage::getNameOfClass() const
 {
   return QString("FilterProgressMessage");
 }

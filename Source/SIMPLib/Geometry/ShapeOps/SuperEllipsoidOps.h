@@ -54,7 +54,7 @@ class SIMPLib_EXPORT SuperEllipsoidOps : public ShapeOps
     /**
      * @brief Returns the name of the class for SuperEllipsoidOps
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for SuperEllipsoidOps
      */

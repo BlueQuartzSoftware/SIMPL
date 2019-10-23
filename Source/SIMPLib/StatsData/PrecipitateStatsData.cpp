@@ -386,7 +386,7 @@ PrecipitateStatsData::Pointer PrecipitateStatsData::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString PrecipitateStatsData::getNameOfClass() const
+QString PrecipitateStatsData::getNameOfClass() const
 {
   return QString("PrecipitateStatsData");
 }

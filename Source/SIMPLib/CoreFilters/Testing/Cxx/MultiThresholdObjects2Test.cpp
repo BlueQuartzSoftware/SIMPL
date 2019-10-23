@@ -60,7 +60,7 @@ public:
   /**
    * @brief Returns the name of the class for MultiThresholdObjects2Test
    */
-  const QString getNameOfClass() const
+  QString getNameOfClass() const
   {
     return QString("MultiThresholdObjects2Test");
   }

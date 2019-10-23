@@ -61,7 +61,7 @@ class SIMPLib_EXPORT RdfData
     /**
      * @brief Returns the name of the class for RdfData
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for RdfData
      */

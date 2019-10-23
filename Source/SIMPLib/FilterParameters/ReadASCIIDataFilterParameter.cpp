@@ -97,7 +97,7 @@ ReadASCIIDataFilterParameter::Pointer ReadASCIIDataFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ReadASCIIDataFilterParameter::getNameOfClass() const
+QString ReadASCIIDataFilterParameter::getNameOfClass() const
 {
   return QString("ReadASCIIDataFilterParameter");
 }

@@ -383,7 +383,7 @@ AbstractFilter::Pointer CombineAttributeMatrices::newFilterInstance(bool copyFil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeMatrices::getCompiledLibraryName() const
+QString CombineAttributeMatrices::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -391,7 +391,7 @@ const QString CombineAttributeMatrices::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeMatrices::getBrandingString() const
+QString CombineAttributeMatrices::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -399,7 +399,7 @@ const QString CombineAttributeMatrices::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeMatrices::getFilterVersion() const
+QString CombineAttributeMatrices::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -410,7 +410,7 @@ const QString CombineAttributeMatrices::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeMatrices::getGroupName() const
+QString CombineAttributeMatrices::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -418,7 +418,7 @@ const QString CombineAttributeMatrices::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CombineAttributeMatrices::getUuid()
+QUuid CombineAttributeMatrices::getUuid() const
 {
   return QUuid("{334034e9-405f-51a3-9c3c-8d9c955835d9}");
 }
@@ -426,7 +426,7 @@ const QUuid CombineAttributeMatrices::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeMatrices::getSubGroupName() const
+QString CombineAttributeMatrices::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -434,7 +434,7 @@ const QString CombineAttributeMatrices::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeMatrices::getHumanLabel() const
+QString CombineAttributeMatrices::getHumanLabel() const
 {
   return "Combine Feature/Ensemble Attribute Matrices";
 }
@@ -457,7 +457,7 @@ std::shared_ptr<CombineAttributeMatrices> CombineAttributeMatrices::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString CombineAttributeMatrices::getNameOfClass() const
+QString CombineAttributeMatrices::getNameOfClass() const
 {
   return QString("CombineAttributeMatrices");
 }

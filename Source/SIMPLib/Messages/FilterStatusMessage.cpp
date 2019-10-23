@@ -101,7 +101,7 @@ FilterStatusMessage::Pointer FilterStatusMessage::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString FilterStatusMessage::getNameOfClass() const
+QString FilterStatusMessage::getNameOfClass() const
 {
   return QString("FilterStatusMessage");
 }

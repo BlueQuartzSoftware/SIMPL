@@ -145,7 +145,7 @@ LinkedDataContainerSelectionFilterParameter::Pointer LinkedDataContainerSelectio
 }
 
 // -----------------------------------------------------------------------------
-const QString LinkedDataContainerSelectionFilterParameter::getNameOfClass() const
+QString LinkedDataContainerSelectionFilterParameter::getNameOfClass() const
 {
   return QString("LinkedDataContainerSelectionFilterParameter");
 }

@@ -155,7 +155,7 @@ DataContainerSelectionFilterParameter::Pointer DataContainerSelectionFilterParam
 }
 
 // -----------------------------------------------------------------------------
-const QString DataContainerSelectionFilterParameter::getNameOfClass() const
+QString DataContainerSelectionFilterParameter::getNameOfClass() const
 {
   return QString("DataContainerSelectionFilterParameter");
 }

@@ -130,7 +130,7 @@ DoubleFilterParameter::Pointer DoubleFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString DoubleFilterParameter::getNameOfClass() const
+QString DoubleFilterParameter::getNameOfClass() const
 {
   return QString("DoubleFilterParameter");
 }

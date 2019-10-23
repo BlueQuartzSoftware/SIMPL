@@ -111,7 +111,7 @@ ScalarTypeFilterParameter::Pointer ScalarTypeFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ScalarTypeFilterParameter::getNameOfClass() const
+QString ScalarTypeFilterParameter::getNameOfClass() const
 {
   return QString("ScalarTypeFilterParameter");
 }

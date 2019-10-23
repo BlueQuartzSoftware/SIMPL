@@ -109,7 +109,7 @@ FloatFilterParameter::Pointer FloatFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString FloatFilterParameter::getNameOfClass() const
+QString FloatFilterParameter::getNameOfClass() const
 {
   return QString("FloatFilterParameter");
 }

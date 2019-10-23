@@ -74,7 +74,7 @@ public:
   /**
    * @brief Returns the name of the class for ThresholdExample
    */
-  const QString getNameOfClass() const override;
+  QString getNameOfClass() const override;
   /**
    * @brief Returns the name of the class for ThresholdExample
    */
@@ -122,27 +122,27 @@ public:
   * a different group if you want. The string returned here will be displayed
   * in the GUI for the filter
   */
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
   AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
   * a subgroup. It should be readable and understandable by humans.
   */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
   * @brief This method will instantiate all the end user settable options/parameters

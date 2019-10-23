@@ -592,7 +592,7 @@ IGeometry::Pointer IGeometry::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-const QString IGeometry::getNameOfClass() const
+QString IGeometry::getNameOfClass() const
 {
   return QString("IGeometry");
 }

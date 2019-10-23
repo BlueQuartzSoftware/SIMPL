@@ -64,7 +64,7 @@ class SIMPLib_EXPORT GeometryMath
     /**
      * @brief Returns the name of the class for GeometryMath
      */
-    const QString getNameOfClass() const;
+    QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for GeometryMath
      */

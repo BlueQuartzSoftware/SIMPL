@@ -179,7 +179,7 @@ BoundaryStatsData::Pointer BoundaryStatsData::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString BoundaryStatsData::getNameOfClass() const
+QString BoundaryStatsData::getNameOfClass() const
 {
   return QString("BoundaryStatsData");
 }

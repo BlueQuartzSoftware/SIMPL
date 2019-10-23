@@ -111,7 +111,7 @@ OutputFileFilterParameter::Pointer OutputFileFilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString OutputFileFilterParameter::getNameOfClass() const
+QString OutputFileFilterParameter::getNameOfClass() const
 {
   return QString("OutputFileFilterParameter");
 }

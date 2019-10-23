@@ -101,7 +101,7 @@ GenericErrorMessage::Pointer GenericErrorMessage::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString GenericErrorMessage::getNameOfClass() const
+QString GenericErrorMessage::getNameOfClass() const
 {
   return QString("GenericErrorMessage");
 }

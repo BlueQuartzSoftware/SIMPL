@@ -450,7 +450,7 @@ AbstractFilter::Pointer MultiThresholdObjects2::newFilterInstance(bool copyFilte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getCompiledLibraryName() const
+QString MultiThresholdObjects2::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -458,7 +458,7 @@ const QString MultiThresholdObjects2::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getBrandingString() const
+QString MultiThresholdObjects2::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -466,7 +466,7 @@ const QString MultiThresholdObjects2::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getFilterVersion() const
+QString MultiThresholdObjects2::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -476,7 +476,7 @@ const QString MultiThresholdObjects2::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getGroupName() const
+QString MultiThresholdObjects2::getGroupName() const
 {
   return SIMPL::FilterGroups::ProcessingFilters;
 }
@@ -484,7 +484,7 @@ const QString MultiThresholdObjects2::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid MultiThresholdObjects2::getUuid()
+QUuid MultiThresholdObjects2::getUuid() const
 {
   return QUuid("{686d5393-2b02-5c86-b887-dd81a8ae80f2}");
 }
@@ -492,7 +492,7 @@ const QUuid MultiThresholdObjects2::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getSubGroupName() const
+QString MultiThresholdObjects2::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::ThresholdFilters;
 }
@@ -500,7 +500,7 @@ const QString MultiThresholdObjects2::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getHumanLabel() const
+QString MultiThresholdObjects2::getHumanLabel() const
 {
   return "Threshold Objects (Advanced)";
 }
@@ -523,7 +523,7 @@ std::shared_ptr<MultiThresholdObjects2> MultiThresholdObjects2::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getNameOfClass() const
+QString MultiThresholdObjects2::getNameOfClass() const
 {
   return QString("MultiThresholdObjects2");
 }

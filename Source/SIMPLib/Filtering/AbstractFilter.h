@@ -121,7 +121,7 @@ public:
   /**
    * @brief Returns the name of the class for AbstractFilter
    */
-  const QString getNameOfClass() const override;
+  QString getNameOfClass() const override;
   /**
    * @brief Returns the name of the class for AbstractFilter
    */
@@ -143,34 +143,34 @@ public:
    * top level sorting in the GUI
    * @return Group name
    */
-  virtual const QString getGroupName() const;
+  virtual QString getGroupName() const;
 
   /**
    * @brief getSubGroupName Returns the subgroup name for the filter, which determines its
    * second level sorting in the GUI
    * @return Subgroup name
    */
-  virtual const QString getSubGroupName() const;
+  virtual QString getSubGroupName() const;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  virtual const QUuid getUuid();
-  
+  virtual QUuid getUuid() const;
+
   /**
    * @brief getHumanLabel Returns the human label for the filter, which determines its
    * primary labeling inthe GUI
    * @return Human lable
    */
-  virtual const QString getHumanLabel() const;
+  virtual QString getHumanLabel() const;
 
   /**
    * @brief getBrandingString Returns the branding string for the filter, which is a tag
    * used to denote the filter's association with a specific plugin
    * @return Branding string
    */
-  virtual const QString getBrandingString() const;
+  virtual QString getBrandingString() const;
 
   /**
    * @brief getCompiledLibraryName Returns the library name for the filter, which is the
@@ -178,13 +178,13 @@ public:
    * plugin
    * @return Compiled library name
    */
-  virtual const QString getCompiledLibraryName() const;
+  virtual QString getCompiledLibraryName() const;
 
   /**
    * @brief generateHtmlSummary Generates a brief HTML summary of the filter
    * @return HTML summary
    */
-  virtual const QString generateHtmlSummary() const;
+  virtual QString generateHtmlSummary() const;
 
   /**
    * @brief setupFilterParameters Instantiates the filter parameters that are allowed
@@ -262,7 +262,7 @@ public:
    * value is an empty string.
    * @return
    */
-  virtual const QString getFilterVersion() const;
+  virtual QString getFilterVersion() const;
 
   /**
    * @brief Setter property for DataContainerArray

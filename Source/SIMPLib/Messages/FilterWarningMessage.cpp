@@ -104,7 +104,7 @@ FilterWarningMessage::Pointer FilterWarningMessage::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString FilterWarningMessage::getNameOfClass() const
+QString FilterWarningMessage::getNameOfClass() const
 {
   return QString("FilterWarningMessage");
 }

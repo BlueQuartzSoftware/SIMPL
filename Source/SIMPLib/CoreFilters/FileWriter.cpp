@@ -125,7 +125,7 @@ std::shared_ptr<FileWriter> FileWriter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString FileWriter::getNameOfClass() const
+QString FileWriter::getNameOfClass() const
 {
   return QString("FileWriter");
 }

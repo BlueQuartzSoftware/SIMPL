@@ -181,7 +181,7 @@ H5BoundaryStatsDataDelegate::Pointer H5BoundaryStatsDataDelegate::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString H5BoundaryStatsDataDelegate::getNameOfClass() const
+QString H5BoundaryStatsDataDelegate::getNameOfClass() const
 {
   return QString("H5BoundaryStatsDataDelegate");
 }

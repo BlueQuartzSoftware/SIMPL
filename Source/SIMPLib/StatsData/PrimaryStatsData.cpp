@@ -367,7 +367,7 @@ PrimaryStatsData::Pointer PrimaryStatsData::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString PrimaryStatsData::getNameOfClass() const
+QString PrimaryStatsData::getNameOfClass() const
 {
   return QString("PrimaryStatsData");
 }

@@ -328,7 +328,7 @@ JsonFilterParametersWriter::Pointer JsonFilterParametersWriter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString JsonFilterParametersWriter::getNameOfClass() const
+QString JsonFilterParametersWriter::getNameOfClass() const
 {
   return QString("JsonFilterParametersWriter");
 }

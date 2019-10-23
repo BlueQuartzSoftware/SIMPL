@@ -189,7 +189,7 @@ ComparisonValue::Pointer ComparisonValue::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString ComparisonValue::getNameOfClass() const
+QString ComparisonValue::getNameOfClass() const
 {
   return QString("ComparisonValue");
 }

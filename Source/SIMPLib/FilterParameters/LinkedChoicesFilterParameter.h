@@ -59,7 +59,7 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
     /**
      * @brief Returns the name of the class for LinkedChoicesFilterParameter
      */
-    const QString getNameOfClass() const override;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for LinkedChoicesFilterParameter
      */

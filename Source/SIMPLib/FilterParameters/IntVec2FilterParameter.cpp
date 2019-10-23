@@ -120,7 +120,7 @@ IntVec2FilterParameter::Pointer IntVec2FilterParameter::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString IntVec2FilterParameter::getNameOfClass() const
+QString IntVec2FilterParameter::getNameOfClass() const
 {
   return QString("IntVec2FilterParameter");
 }

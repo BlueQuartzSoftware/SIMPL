@@ -202,7 +202,7 @@ AbstractFilter::Pointer RenameAttributeArray::newFilterInstance(bool copyFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getCompiledLibraryName() const
+QString RenameAttributeArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -210,7 +210,7 @@ const QString RenameAttributeArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getBrandingString() const
+QString RenameAttributeArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -218,7 +218,7 @@ const QString RenameAttributeArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getFilterVersion() const
+QString RenameAttributeArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -229,7 +229,7 @@ const QString RenameAttributeArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getGroupName() const
+QString RenameAttributeArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -237,7 +237,7 @@ const QString RenameAttributeArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid RenameAttributeArray::getUuid()
+QUuid RenameAttributeArray::getUuid() const
 {
   return QUuid("{53a5f731-2858-5e3e-bd43-8f2cf45d90ec}");
 }
@@ -245,7 +245,7 @@ const QUuid RenameAttributeArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getSubGroupName() const
+QString RenameAttributeArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -253,7 +253,7 @@ const QString RenameAttributeArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getHumanLabel() const
+QString RenameAttributeArray::getHumanLabel() const
 {
   return "Rename Attribute Array";
 }
@@ -292,7 +292,7 @@ std::shared_ptr<RenameAttributeArray> RenameAttributeArray::New()
 }
 
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getNameOfClass() const
+QString RenameAttributeArray::getNameOfClass() const
 {
   return QString("RenameAttributeArray");
 }
