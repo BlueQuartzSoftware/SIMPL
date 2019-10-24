@@ -1,4 +1,8 @@
 #pragma once
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wreturn-std-move"
+
 // clang-format off
 /* =============================================================================
  * BEGIN Template file Pybind11TopMatter.in.h
