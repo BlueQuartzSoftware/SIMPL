@@ -45,53 +45,54 @@
  */
 class SIMPLib_EXPORT GenericErrorMessage : public AbstractErrorMessage
 {
-  public:
-    using Self = GenericErrorMessage;
-    using Pointer = std::shared_ptr<Self>;
-    using ConstPointer = std::shared_ptr<const Self>;
-    using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
-    static Pointer NullPointer();
 
-    static Pointer New();
+public:
+  using Self = GenericErrorMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    /**
-     * @brief Returns the name of the class for GenericErrorMessage
-     */
-    QString getNameOfClass() const;
-    /**
-     * @brief Returns the name of the class for GenericErrorMessage
-     */
-    static QString ClassName();
+  static Pointer New();
 
-    virtual ~GenericErrorMessage();
+  /**
+   * @brief Returns the name of the class for GenericErrorMessage
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for GenericErrorMessage
+   */
+  static QString ClassName();
 
-    /**
-     * @brief New
-     * @param msgText
-     * @param code
-     * @return
-     */
-    static Pointer New(const QString& msgText, int code);
+  ~GenericErrorMessage() override;
 
-    /**
-     * @brief This method creates and returns a string for generic error messages
-     */
-    virtual QString generateMessageString() const override;
+  /**
+   * @brief New
+   * @param msgText
+   * @param code
+   * @return
+   */
+  static Pointer New(const QString& msgText, int code);
 
-    /**
-     * @brief Method that allows the visitation of a message by a message handler.  This
-     * is part of the double-dispatch API that allows observers to be able to perform
-     * subclass specific operations on messages that they receive.
-     * @param msgHandler The observer's message handler
-     */
-    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
+  /**
+   * @brief This method creates and returns a string for generic error messages
+   */
+  QString generateMessageString() const override;
 
-  protected:
-    GenericErrorMessage();
-    GenericErrorMessage(const QString& msgText, int code);
+  /**
+   * @brief Method that allows the visitation of a message by a message handler.  This
+   * is part of the double-dispatch API that allows observers to be able to perform
+   * subclass specific operations on messages that they receive.
+   * @param msgHandler The observer's message handler
+   */
+  void visit(AbstractMessageHandler* msgHandler) const override final;
 
-  private:
+protected:
+  GenericErrorMessage();
+  GenericErrorMessage(const QString& msgText, int code);
+
+private:
 };
 Q_DECLARE_METATYPE(GenericErrorMessage::Pointer)
 

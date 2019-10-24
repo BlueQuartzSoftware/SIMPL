@@ -45,54 +45,55 @@
  */
 class SIMPLib_EXPORT GenericWarningMessage : public AbstractWarningMessage
 {
-  public:
-    using Self = GenericWarningMessage;
-    using Pointer = std::shared_ptr<Self>;
-    using ConstPointer = std::shared_ptr<const Self>;
-    using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
-    static Pointer NullPointer();
 
-    static Pointer New();
+public:
+  using Self = GenericWarningMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    /**
-     * @brief Returns the name of the class for GenericWarningMessage
-     */
-    QString getNameOfClass() const;
-    /**
-     * @brief Returns the name of the class for GenericWarningMessage
-     */
-    static QString ClassName();
+  static Pointer New();
 
-    virtual ~GenericWarningMessage();
+  /**
+   * @brief Returns the name of the class for GenericWarningMessage
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for GenericWarningMessage
+   */
+  static QString ClassName();
 
-    /**
-     * @brief New
-     * @param humanLabel
-     * @param msg
-     * @param code
-     * @return
-     */
-    static Pointer New(const QString& msgText, int code);
+  ~GenericWarningMessage() override;
 
-    /**
-     * @brief This method creates and returns a string for generic warning messages
-     */
-    virtual QString generateMessageString() const override;
+  /**
+   * @brief New
+   * @param humanLabel
+   * @param msg
+   * @param code
+   * @return
+   */
+  static Pointer New(const QString& msgText, int code);
 
-    /**
-     * @brief Method that allows the visitation of a message by a message handler.  This
-     * is part of the double-dispatch API that allows observers to be able to perform
-     * subclass specific operations on messages that they receive.
-     * @param msgHandler The observer's message handler
-     */
-    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
+  /**
+   * @brief This method creates and returns a string for generic warning messages
+   */
+  QString generateMessageString() const override;
 
-  protected:
-    GenericWarningMessage();
-    GenericWarningMessage(const QString& msgText, int code);
+  /**
+   * @brief Method that allows the visitation of a message by a message handler.  This
+   * is part of the double-dispatch API that allows observers to be able to perform
+   * subclass specific operations on messages that they receive.
+   * @param msgHandler The observer's message handler
+   */
+  void visit(AbstractMessageHandler* msgHandler) const override final;
 
-  private:
+protected:
+  GenericWarningMessage();
+  GenericWarningMessage(const QString& msgText, int code);
+
+private:
 };
 Q_DECLARE_METATYPE(GenericWarningMessage::Pointer)
 

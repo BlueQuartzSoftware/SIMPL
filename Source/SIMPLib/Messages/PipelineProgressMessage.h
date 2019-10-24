@@ -45,66 +45,67 @@
  */
 class SIMPLib_EXPORT PipelineProgressMessage : public AbstractProgressMessage
 {
-  public:
-    using Self = PipelineProgressMessage;
-    using Pointer = std::shared_ptr<Self>;
-    using ConstPointer = std::shared_ptr<const Self>;
-    using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
-    static Pointer NullPointer();
 
-    static Pointer New();
+public:
+  using Self = PipelineProgressMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    /**
-     * @brief Returns the name of the class for PipelineProgressMessage
-     */
-    QString getNameOfClass() const;
-    /**
-     * @brief Returns the name of the class for PipelineProgressMessage
-     */
-    static QString ClassName();
+  static Pointer New();
 
-    virtual ~PipelineProgressMessage();
+  /**
+   * @brief Returns the name of the class for PipelineProgressMessage
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for PipelineProgressMessage
+   */
+  static QString ClassName();
 
-    /**
-     * @brief Setter property for PipelineName
-     */
-    void setPipelineName(const QString& value);
-    /**
-     * @brief Getter property for PipelineName
-     * @return Value of PipelineName
-     */
-    QString getPipelineName() const;
+  ~PipelineProgressMessage() override;
 
-    /**
-     * @brief New
-     * @param humanLabel
-     * @param pipelineIndex
-     * @param msg
-     * @param progress
-     * @return
-     */
-    static Pointer New(const QString &pipelineName, const QString& msgText, int progress);
+  /**
+   * @brief Setter property for PipelineName
+   */
+  void setPipelineName(const QString& value);
+  /**
+   * @brief Getter property for PipelineName
+   * @return Value of PipelineName
+   */
+  QString getPipelineName() const;
 
-    /**
-     * @brief This method creates and returns a string for pipeline progress messages
-     */
-    virtual QString generateMessageString() const override;
+  /**
+   * @brief New
+   * @param humanLabel
+   * @param pipelineIndex
+   * @param msg
+   * @param progress
+   * @return
+   */
+  static Pointer New(const QString& pipelineName, const QString& msgText, int progress);
 
-    /**
-     * @brief Method that allows the visitation of a message by a message handler.  This
-     * is part of the double-dispatch API that allows observers to be able to perform
-     * subclass specific operations on messages that they receive.
-     * @param msgHandler The observer's message handler
-     */
-    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
+  /**
+   * @brief This method creates and returns a string for pipeline progress messages
+   */
+  QString generateMessageString() const override;
 
-  protected:
-    PipelineProgressMessage();
-    PipelineProgressMessage(const QString &pipelineName, const QString& msgText, int progress);
+  /**
+   * @brief Method that allows the visitation of a message by a message handler.  This
+   * is part of the double-dispatch API that allows observers to be able to perform
+   * subclass specific operations on messages that they receive.
+   * @param msgHandler The observer's message handler
+   */
+  void visit(AbstractMessageHandler* msgHandler) const override final;
 
-  private:
-    QString m_PipelineName = {};
+protected:
+  PipelineProgressMessage();
+  PipelineProgressMessage(const QString& pipelineName, const QString& msgText, int progress);
+
+private:
+  QString m_PipelineName = {};
 };
 Q_DECLARE_METATYPE(PipelineProgressMessage::Pointer)
 

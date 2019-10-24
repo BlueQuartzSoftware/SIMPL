@@ -45,89 +45,90 @@
  */
 class SIMPLib_EXPORT FilterWarningMessage : public AbstractWarningMessage
 {
-  public:
-    using Self = FilterWarningMessage;
-    using Pointer = std::shared_ptr<Self>;
-    using ConstPointer = std::shared_ptr<const Self>;
-    using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
-    static Pointer NullPointer();
 
-    static Pointer New();
+public:
+  using Self = FilterWarningMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    /**
-     * @brief Returns the name of the class for FilterWarningMessage
-     */
-    QString getNameOfClass() const;
-    /**
-     * @brief Returns the name of the class for FilterWarningMessage
-     */
-    static QString ClassName();
+  static Pointer New();
 
-    virtual ~FilterWarningMessage();
+  /**
+   * @brief Returns the name of the class for FilterWarningMessage
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for FilterWarningMessage
+   */
+  static QString ClassName();
 
-    /**
-     * @brief Setter property for ClassName
-     */
-    void setClassName(const QString& value);
-    /**
-     * @brief Getter property for ClassName
-     * @return Value of ClassName
-     */
-    QString getClassName() const;
+  ~FilterWarningMessage() override;
 
-    /**
-     * @brief Setter property for HumanLabel
-     */
-    void setHumanLabel(const QString& value);
-    /**
-     * @brief Getter property for HumanLabel
-     * @return Value of HumanLabel
-     */
-    QString getHumanLabel() const;
+  /**
+   * @brief Setter property for ClassName
+   */
+  void setClassName(const QString& value);
+  /**
+   * @brief Getter property for ClassName
+   * @return Value of ClassName
+   */
+  QString getClassName() const;
 
-    /**
-     * @brief Setter property for PipelineIndex
-     */
-    void setPipelineIndex(int value);
-    /**
-     * @brief Getter property for PipelineIndex
-     * @return Value of PipelineIndex
-     */
-    int getPipelineIndex() const;
+  /**
+   * @brief Setter property for HumanLabel
+   */
+  void setHumanLabel(const QString& value);
+  /**
+   * @brief Getter property for HumanLabel
+   * @return Value of HumanLabel
+   */
+  QString getHumanLabel() const;
 
-    /**
-     * @brief New
-     * @param className
-     * @param humanLabel
-     * @param pipelineIndex
-     * @param msg
-     * @param code
-     * @return
-     */
-    static Pointer New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code);
+  /**
+   * @brief Setter property for PipelineIndex
+   */
+  void setPipelineIndex(int value);
+  /**
+   * @brief Getter property for PipelineIndex
+   * @return Value of PipelineIndex
+   */
+  int getPipelineIndex() const;
 
-    /**
-     * @brief This method creates and returns a string for filter warning messages
-     */
-    virtual QString generateMessageString() const override;
+  /**
+   * @brief New
+   * @param className
+   * @param humanLabel
+   * @param pipelineIndex
+   * @param msg
+   * @param code
+   * @return
+   */
+  static Pointer New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code);
 
-    /**
-     * @brief Method that allows the visitation of a message by a message handler.  This
-     * is part of the double-dispatch API that allows observers to be able to perform
-     * subclass specific operations on messages that they receive.
-     * @param msgHandler The observer's message handler
-     */
-    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
+  /**
+   * @brief This method creates and returns a string for filter warning messages
+   */
+  QString generateMessageString() const override;
 
-  protected:
-    FilterWarningMessage();
-    FilterWarningMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code);
+  /**
+   * @brief Method that allows the visitation of a message by a message handler.  This
+   * is part of the double-dispatch API that allows observers to be able to perform
+   * subclass specific operations on messages that they receive.
+   * @param msgHandler The observer's message handler
+   */
+  void visit(AbstractMessageHandler* msgHandler) const override final;
 
-  private:
-    QString m_ClassName = {};
-    QString m_HumanLabel = {};
-    int m_PipelineIndex = {};
+protected:
+  FilterWarningMessage();
+  FilterWarningMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code);
+
+private:
+  QString m_ClassName = {};
+  QString m_HumanLabel = {};
+  int m_PipelineIndex = {};
 };
 Q_DECLARE_METATYPE(FilterWarningMessage::Pointer)
 

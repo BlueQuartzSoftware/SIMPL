@@ -49,14 +49,6 @@ class AbstractMessageHandler;
 class SIMPLib_EXPORT AbstractMessage
 {
 
-#ifdef SIMPL_ENABLE_PYTHON
-  // clang-format off
-  PYB11_CREATE_BINDINGS(AbstractMessage)
-  PYB11_PROPERTY(QString MessageText READ getMessageText WRITE setMessageText)
-  PYB11_METHOD(QString generateMessageString)
-  // clang-format on
-#endif
-
 public:
   using Self = AbstractMessage;
   using Pointer = std::shared_ptr<Self>;

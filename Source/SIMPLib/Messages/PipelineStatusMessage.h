@@ -45,65 +45,66 @@
  */
 class SIMPLib_EXPORT PipelineStatusMessage : public AbstractStatusMessage
 {
-  public:
-    using Self = PipelineStatusMessage;
-    using Pointer = std::shared_ptr<Self>;
-    using ConstPointer = std::shared_ptr<const Self>;
-    using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
-    static Pointer NullPointer();
 
-    static Pointer New();
+public:
+  using Self = PipelineStatusMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    /**
-     * @brief Returns the name of the class for PipelineStatusMessage
-     */
-    QString getNameOfClass() const;
-    /**
-     * @brief Returns the name of the class for PipelineStatusMessage
-     */
-    static QString ClassName();
+  static Pointer New();
 
-    virtual ~PipelineStatusMessage();
+  /**
+   * @brief Returns the name of the class for PipelineStatusMessage
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for PipelineStatusMessage
+   */
+  static QString ClassName();
 
-    /**
-     * @brief Setter property for PipelineName
-     */
-    void setPipelineName(const QString& value);
-    /**
-     * @brief Getter property for PipelineName
-     * @return Value of PipelineName
-     */
-    QString getPipelineName() const;
+  ~PipelineStatusMessage() override;
 
-    /**
-     * @brief New
-     * @param humanLabel
-     * @param pipelineIndex
-     * @param msg
-     * @return
-     */
-    static Pointer New(const QString &pipelineName, const QString& msgText);
+  /**
+   * @brief Setter property for PipelineName
+   */
+  void setPipelineName(const QString& value);
+  /**
+   * @brief Getter property for PipelineName
+   * @return Value of PipelineName
+   */
+  QString getPipelineName() const;
 
-    /**
-     * @brief This method creates and returns a string for pipeline status messages
-     */
-    virtual QString generateMessageString() const override;
+  /**
+   * @brief New
+   * @param humanLabel
+   * @param pipelineIndex
+   * @param msg
+   * @return
+   */
+  static Pointer New(const QString& pipelineName, const QString& msgText);
 
-    /**
-     * @brief Method that allows the visitation of a message by a message handler.  This
-     * is part of the double-dispatch API that allows observers to be able to perform
-     * subclass specific operations on messages that they receive.
-     * @param msgHandler The observer's message handler
-     */
-    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
+  /**
+   * @brief This method creates and returns a string for pipeline status messages
+   */
+  QString generateMessageString() const override;
 
-  protected:
-    PipelineStatusMessage();
-    PipelineStatusMessage(const QString &pipelineName, const QString& msgText);
+  /**
+   * @brief Method that allows the visitation of a message by a message handler.  This
+   * is part of the double-dispatch API that allows observers to be able to perform
+   * subclass specific operations on messages that they receive.
+   * @param msgHandler The observer's message handler
+   */
+  void visit(AbstractMessageHandler* msgHandler) const override final;
 
-  private:
-    QString m_PipelineName = {};
+protected:
+  PipelineStatusMessage();
+  PipelineStatusMessage(const QString& pipelineName, const QString& msgText);
+
+private:
+  QString m_PipelineName = {};
 };
 Q_DECLARE_METATYPE(PipelineStatusMessage::Pointer)
 

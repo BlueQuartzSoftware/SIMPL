@@ -45,53 +45,54 @@
  */
 class SIMPLib_EXPORT GenericStatusMessage : public AbstractStatusMessage
 {
-  public:
-    using Self = GenericStatusMessage;
-    using Pointer = std::shared_ptr<Self>;
-    using ConstPointer = std::shared_ptr<const Self>;
-    using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
-    static Pointer NullPointer();
 
-    static Pointer New();
+public:
+  using Self = GenericStatusMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    /**
-     * @brief Returns the name of the class for GenericStatusMessage
-     */
-    QString getNameOfClass() const;
-    /**
-     * @brief Returns the name of the class for GenericStatusMessage
-     */
-    static QString ClassName();
+  static Pointer New();
 
-    virtual ~GenericStatusMessage();
+  /**
+   * @brief Returns the name of the class for GenericStatusMessage
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for GenericStatusMessage
+   */
+  static QString ClassName();
 
-    /**
-     * @brief New
-     * @param humanLabel
-     * @param msg
-     * @return
-     */
-    static Pointer New(const QString& msgText);
+  ~GenericStatusMessage() override;
 
-    /**
-     * @brief This method creates and returns a string for generic status messages
-     */
-    virtual QString generateMessageString() const override;
+  /**
+   * @brief New
+   * @param humanLabel
+   * @param msg
+   * @return
+   */
+  static Pointer New(const QString& msgText);
 
-    /**
-     * @brief Method that allows the visitation of a message by a message handler.  This
-     * is part of the double-dispatch API that allows observers to be able to perform
-     * subclass specific operations on messages that they receive.
-     * @param msgHandler The observer's message handler
-     */
-    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
+  /**
+   * @brief This method creates and returns a string for generic status messages
+   */
+  QString generateMessageString() const override;
 
-  protected:
-    GenericStatusMessage();
-    GenericStatusMessage(const QString& msgText);
+  /**
+   * @brief Method that allows the visitation of a message by a message handler.  This
+   * is part of the double-dispatch API that allows observers to be able to perform
+   * subclass specific operations on messages that they receive.
+   * @param msgHandler The observer's message handler
+   */
+  void visit(AbstractMessageHandler* msgHandler) const override final;
 
-  private:
+protected:
+  GenericStatusMessage();
+  GenericStatusMessage(const QString& msgText);
+
+private:
 };
 Q_DECLARE_METATYPE(GenericStatusMessage::Pointer)
 
