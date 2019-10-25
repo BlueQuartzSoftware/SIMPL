@@ -20,11 +20,11 @@ class SIMPLib_EXPORT PipelineListener : public QObject, public IObserver
   Q_OBJECT
 public:
   /**
-   * @brief Returns the name of the class for _SUPERPipelineListener
+   * @brief Returns the name of the class for PipelineListener
    */
   QString getNameOfClass() const override;
   /**
-   * @brief Returns the name of the class for _SUPERPipelineListener
+   * @brief Returns the name of the class for PipelineListener
    */
   static QString ClassName();
 

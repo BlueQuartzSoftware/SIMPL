@@ -56,11 +56,11 @@ class SIMPLib_EXPORT ApplyImageTransforms : public AbstractFilter
     static std::shared_ptr<ApplyImageTransforms> New();
 
     /**
-     * @brief Returns the name of the class for _SUPERApplyImageTransforms
+     * @brief Returns the name of the class for ApplyImageTransforms
      */
     QString getNameOfClass() const override;
     /**
-     * @brief Returns the name of the class for _SUPERApplyImageTransforms
+     * @brief Returns the name of the class for ApplyImageTransforms
      */
     static QString ClassName();
 

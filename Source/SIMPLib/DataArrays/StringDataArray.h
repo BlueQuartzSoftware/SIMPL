@@ -85,11 +85,11 @@ public:
   static Pointer New();
 
   /**
-   * @brief Returns the name of the class for _SUPERStringDataArray
+   * @brief Returns the name of the class for StringDataArray
    */
   QString getNameOfClass() const override;
   /**
-   * @brief Returns the name of the class for _SUPERStringDataArray
+   * @brief Returns the name of the class for StringDataArray
    */
   static QString ClassName();
 

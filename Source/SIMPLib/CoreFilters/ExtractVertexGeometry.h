@@ -73,11 +73,11 @@ public:
   static std::shared_ptr<ExtractVertexGeometry> New();
 
   /**
-   * @brief Returns the name of the class for _SUPERExtractVertexGeometry
+   * @brief Returns the name of the class for ExtractVertexGeometry
    */
   QString getNameOfClass() const override;
   /**
-   * @brief Returns the name of the class for _SUPERExtractVertexGeometry
+   * @brief Returns the name of the class for ExtractVertexGeometry
    */
   static QString ClassName();
 
