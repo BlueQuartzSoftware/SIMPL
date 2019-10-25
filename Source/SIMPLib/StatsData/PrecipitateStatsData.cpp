@@ -78,8 +78,7 @@ PhaseType::Type PrecipitateStatsData::getPhaseType()
 // -----------------------------------------------------------------------------
 FloatArrayType::Pointer PrecipitateStatsData::generateBinNumbers()
 {
-  float featureDiameterInfo[3];
-  std::tie(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[2]) = getFeatureDiameterInfo();
+  std::array<float, 3> featureDiameterInfo = getFeatureDiameterInfo();
   QVector<float> bins;
   float d = featureDiameterInfo[2];
   while(d <= featureDiameterInfo[1])
@@ -108,8 +107,7 @@ StatsData::Pointer PrecipitateStatsData::deepCopy()
   ptr->setPrecipBoundaryFraction(getPrecipBoundaryFraction());
   ptr->setName(getName());
 
-  std::array<float, 3> diamInfo = {0.0f, 0.0f, 0.0f};
-  std::tie(diamInfo[0], diamInfo[1], diamInfo[2]) = getFeatureDiameterInfo();
+  std::array<float, 3> diamInfo = getFeatureDiameterInfo();
   ptr->setFeatureDiameterInfo(diamInfo[0], diamInfo[1], diamInfo[2]);
 
   SD_DEEP_COPY_VECTOR(FeatureSizeDistribution);
@@ -218,8 +216,7 @@ void PrecipitateStatsData::writeJson(QJsonObject& json)
   json.insert(SIMPL::StringConstants::PrecipitateBoundaryFraction, getPrecipBoundaryFraction());
 
   // Write the Feature Diameter Info
-  float diamInfo[3];
-  std::tie(diamInfo[0], diamInfo[1], diamInfo[2]) = getFeatureDiameterInfo();
+  std::array<float, 3> diamInfo = getFeatureDiameterInfo();
   QJsonArray diamInfoArray = {diamInfo[0], diamInfo[1], diamInfo[2]};
   json.insert(SIMPL::StringConstants::Feature_Diameter_Info, diamInfoArray);
 

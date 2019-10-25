@@ -33,6 +33,7 @@
 #pragma once
 
 #include <QtCore/QWaitCondition>
+#include <QtCore/QMutex>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"

@@ -339,10 +339,10 @@ int H5PrecipitateStatsDataDelegate::writeVectorOfArrays(hid_t pid, VectorOfFloat
 int H5PrecipitateStatsDataDelegate::readVectorOfArrays(hid_t pid, VectorOfFloatArray colData)
 {
   int err = 0;
-
-  for(VectorOfFloatArray::iterator iter = colData.begin(); iter != colData.end(); ++iter)
+  for(auto& d : colData)
+  // for(VectorOfFloatArray::iterator iter = colData.begin(); iter != colData.end(); ++iter)
   {
-    FloatArrayType::Pointer d = *iter;
+    // FloatArrayType::Pointer d = *iter;
     err = d->readH5Data(pid);
     if(err < 0)
     {
@@ -564,17 +564,15 @@ int H5PrecipitateStatsDataDelegate::writeRDFDistributionData(hid_t pid, RdfData:
       }
       int32_t rank = 1;
       dims[0] = 3;
-      float boxRes[3] = {0.0f, 0.0f, 0.0f};
-      std::tie(boxRes[0], boxRes[1], boxRes[2]) = rdfData->getBoxResolution();
-      err = H5Lite::writePointerDataset(disId, SIMPL::StringConstants::RdfBoxRes.toStdString(), rank, dims.data(), boxRes);
+      std::array<float, 3> boxRes = rdfData->getBoxResolution();
+      err = H5Lite::writePointerDataset(disId, SIMPL::StringConstants::RdfBoxRes.toStdString(), rank, dims.data(), boxRes.data());
       if(err < 0)
       {
         return err;
       }
 
-      float boxDims[3] = {0.0f, 0.0f, 0.0f};
-      std::tie(boxDims[0], boxDims[1], boxDims[2]) = rdfData->getBoxSize();
-      err = H5Lite::writePointerDataset(disId, SIMPL::StringConstants::RdfBoxDims.toStdString(), rank, dims.data(), boxDims);
+      std::array<float, 3> boxDims = rdfData->getBoxSize();
+      err = H5Lite::writePointerDataset(disId, SIMPL::StringConstants::RdfBoxDims.toStdString(), rank, dims.data(), boxDims.data());
       if(err < 0)
       {
         return err;
@@ -769,10 +767,9 @@ int H5PrecipitateStatsDataDelegate::writeFeatureDiameterInfo(PrecipitateStatsDat
   /*
    * Feature Diameter Info is encode as 3 floats: BinStepSize, MaxDiameter, MinDiameter
    */
-  float featureDiameterInfo[3];
-  std::tie(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[2]) = data->getFeatureDiameterInfo();
+  std::array<float, 3> featureDiameterInfo = data->getFeatureDiameterInfo();
 
-  return QH5Lite::writePointerDataset(pid, SIMPL::StringConstants::Feature_Diameter_Info, rank, dims, featureDiameterInfo);
+  return QH5Lite::writePointerDataset(pid, SIMPL::StringConstants::Feature_Diameter_Info, rank, dims, featureDiameterInfo.data());
 }
 
 // -----------------------------------------------------------------------------

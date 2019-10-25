@@ -37,9 +37,21 @@
 
 #if defined(_MSC_VER)
 #define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers
+
+/*
+  "It's a known, long-standing bug in the compiler system's headers.  For
+  some reason the manufacturer, in its infinite wisdom, chose to #define
+  macros min() and max() in violation of the upper-case convention and so
+  break any legitimate functions with those names, including those in the
+  standard C++ library."
+  */
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #endif
 
 #include <limits>
+#include <cstdint>
 
 #include <QtCore/QString>
 
@@ -53,30 +65,29 @@
 namespace SIMPL
 {
 
-  typedef uint32_t Rgb;
-  const Rgb  RGB_MASK    = 0x00ffffff;                // masks RGB values
-  const QString PathSep("|");
-  static const uint8_t Unchecked = 0;
-  static const uint8_t PartiallyChecked = 1;
-  static const uint8_t Checked = 2;
+using Rgb = uint32_t;
+const Rgb RGB_MASK = 0x00ffffff; // masks RGB values
+const QString PathSep("|");
+static const uint8_t Unchecked = 0;
+static const uint8_t PartiallyChecked = 1;
+static const uint8_t Checked = 2;
 
-  enum InfoStringFormat
-  {
-    HtmlFormat = 0,
-//      JsonFormat,
-//      TextFormat,
-//      XmlFormat,
-    UnknownFormat
-  };
+enum InfoStringFormat
+{
+  HtmlFormat = 0,
+  //      JsonFormat,
+  //      TextFormat,
+  //      XmlFormat,
+  UnknownFormat
+};
 
-
-  /** @brief Constants defined for the Stacking order of images into a 3D Volume */
-  namespace RefFrameZDir
-  {
-    static const unsigned int LowtoHigh = 0;
-    static const unsigned int HightoLow = 1;
-    static const unsigned int UnknownRefFrameZDirection = 2;
-  }
+/** @brief Constants defined for the Stacking order of images into a 3D Volume */
+namespace RefFrameZDir
+{
+static const unsigned int LowtoHigh = 0;
+static const unsigned int HightoLow = 1;
+static const unsigned int UnknownRefFrameZDirection = 2;
+} // namespace RefFrameZDir
 
   namespace TypeNames
   {
@@ -203,7 +214,7 @@ namespace SIMPL
   {
     const QString None("None");
     const QString AnyPrimitive("Any");
-    static const size_t AnyComponentSize = std::numeric_limits<size_t>::max();
+    const size_t AnyComponentSize = std::numeric_limits<size_t>::max();
     //static const uint32_t AnyAttributeMatrix = std::numeric_limits<uint32_t>::max();
     //static const uint32_t AnyGeometry = std::numeric_limits<uint32_t>::max();
 
@@ -1060,7 +1071,7 @@ const signed int Horizontal = 0;
 const signed int Vertical = 1;
 const signed int Square = 2;
 };
-}
+} // namespace SIMPL
 
 namespace Core
 {
