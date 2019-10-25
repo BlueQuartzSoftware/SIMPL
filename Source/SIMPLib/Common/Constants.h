@@ -68,9 +68,9 @@ namespace SIMPL
 using Rgb = uint32_t;
 const Rgb RGB_MASK = 0x00ffffff; // masks RGB values
 const QString PathSep("|");
-static const uint8_t Unchecked = 0;
-static const uint8_t PartiallyChecked = 1;
-static const uint8_t Checked = 2;
+const uint8_t Unchecked = 0;
+const uint8_t PartiallyChecked = 1;
+const uint8_t Checked = 2;
 
 enum InfoStringFormat
 {
@@ -84,9 +84,9 @@ enum InfoStringFormat
 /** @brief Constants defined for the Stacking order of images into a 3D Volume */
 namespace RefFrameZDir
 {
-static const unsigned int LowtoHigh = 0;
-static const unsigned int HightoLow = 1;
-static const unsigned int UnknownRefFrameZDirection = 2;
+const unsigned int LowtoHigh = 0;
+const unsigned int HightoLow = 1;
+const unsigned int UnknownRefFrameZDirection = 2;
 } // namespace RefFrameZDir
 
   namespace TypeNames
@@ -115,22 +115,22 @@ static const unsigned int UnknownRefFrameZDirection = 2;
 
   namespace TypeEnums
   {
-    static const int Int8 = 0;
-    static const int UInt8 = 1;
-    static const int Int16 = 2;
-    static const int UInt16 = 3;
-    static const int Int32 = 4;
-    static const int UInt32 = 5;
-    static const int Int64 = 6;
-    static const int UInt64 = 7;
-    static const int Float = 8;
-    static const int Double = 9;
-    static const int Bool = 10;
-    static const int SizeT = 11;
+  const int Int8 = 0;
+  const int UInt8 = 1;
+  const int Int16 = 2;
+  const int UInt16 = 3;
+  const int Int32 = 4;
+  const int UInt32 = 5;
+  const int Int64 = 6;
+  const int UInt64 = 7;
+  const int Float = 8;
+  const int Double = 9;
+  const int Bool = 10;
+  const int SizeT = 11;
 
-    static const int UnknownType = 12;
-    const QString SupportedTypeList(TypeNames::Bool + ", " + TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " + TypeNames::Int32 + ", " +
-                                    TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double + ", " + TypeNames::SizeT);
+  const int UnknownType = 12;
+  const QString SupportedTypeList(TypeNames::Bool + ", " + TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " + TypeNames::Int32 + ", " +
+                                  TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double + ", " + TypeNames::SizeT);
   }
 
   namespace NumericTypes
@@ -215,8 +215,8 @@ static const unsigned int UnknownRefFrameZDirection = 2;
     const QString None("None");
     const QString AnyPrimitive("Any");
     const size_t AnyComponentSize = std::numeric_limits<size_t>::max();
-    //static const uint32_t AnyAttributeMatrix = std::numeric_limits<uint32_t>::max();
-    //static const uint32_t AnyGeometry = std::numeric_limits<uint32_t>::max();
+    // const uint32_t AnyAttributeMatrix = std::numeric_limits<uint32_t>::max();
+    // const uint32_t AnyGeometry = std::numeric_limits<uint32_t>::max();
 
     const QString AttributeMatrixName("AttributeMatrix");
     const QString ElementAttributeMatrixName("ElementAttributeMatrix");

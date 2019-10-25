@@ -338,9 +338,9 @@ class DataArrayPathParameter : public IFilterParameter
     std::string m_PropertyName = {};
     Category m_Category = {};
     int m_GroupIndex = {};
-    int m_DefaultValue = {};
-    double m_DefaultValue = {};
-    DataArrayPath m_DefaultValue = {};
+    int m_DefaultInt = {};
+    double m_DefaultDouble = {};
+    DataArrayPath m_DefaultDAP = {};
 
     DataArrayPathParameter(const DataArrayPathParameter&) = delete; // Copy Constructor Not Implemented
     void operator=(const DataArrayPathParameter&) = delete;         // Move assignment Not Implemented
