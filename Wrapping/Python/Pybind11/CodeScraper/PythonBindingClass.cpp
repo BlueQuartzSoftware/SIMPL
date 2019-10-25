@@ -801,6 +801,8 @@ QString PythonBindingClass::generateFooterCode()
 
   // Close up the Anonymous namespace
   out << "} /* End anonymous namespace */\n\n";
-  out << "#pragma clang diagnostic pop\n\n";
+  out << "#if !defined(_MSC_VER)\n";
+  out << "#pragma clang diagnostic pop\n";
+  out << "#endif\n";
   return code;
 }
