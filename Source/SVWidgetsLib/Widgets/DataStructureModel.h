@@ -57,7 +57,7 @@ class SVWidgetsLib_EXPORT DataStructureModel : public QStandardItemModel
     /**
      * @brief Returns the name of the class for DataStructureModel
      */
-    QString getNameOfClass() const;
+    virtual QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for DataStructureModel
      */

@@ -58,7 +58,7 @@ class SIMPLib_EXPORT ApplyImageTransforms : public AbstractFilter
     /**
      * @brief Returns the name of the class for _SUPERApplyImageTransforms
      */
-    QString getNameOfClass() const;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for _SUPERApplyImageTransforms
      */

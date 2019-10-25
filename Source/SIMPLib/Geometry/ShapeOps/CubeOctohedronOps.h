@@ -56,7 +56,7 @@ class SIMPLib_EXPORT CubeOctohedronOps : public ShapeOps
     /**
      * @brief Returns the name of the class for CubeOctohedronOps
      */
-    QString getNameOfClass() const;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for CubeOctohedronOps
      */

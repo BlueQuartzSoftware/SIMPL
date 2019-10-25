@@ -55,7 +55,7 @@ class SIMPLib_EXPORT CylinderBOps : public ShapeOps
     /**
      * @brief Returns the name of the class for CylinderBOps
      */
-    QString getNameOfClass() const;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for CylinderBOps
      */

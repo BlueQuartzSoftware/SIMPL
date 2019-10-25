@@ -22,7 +22,7 @@ public:
   /**
    * @brief Returns the name of the class for _SUPERPipelineListener
    */
-  QString getNameOfClass() const;
+  QString getNameOfClass() const override;
   /**
    * @brief Returns the name of the class for _SUPERPipelineListener
    */

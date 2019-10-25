@@ -73,7 +73,7 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     /**
      * @brief Returns the name of the class for SVStyle
      */
-    QString getNameOfClass() const;
+    virtual QString getNameOfClass() const;
     /**
      * @brief Returns the name of the class for SVStyle
      */

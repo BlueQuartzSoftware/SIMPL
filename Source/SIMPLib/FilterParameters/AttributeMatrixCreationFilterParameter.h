@@ -80,7 +80,7 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
     /**
      * @brief Returns the name of the class for AttributeMatrixCreationFilterParameter
      */
-    QString getNameOfClass() const;
+    QString getNameOfClass() const override;
     /**
      * @brief Returns the name of the class for AttributeMatrixCreationFilterParameter
      */

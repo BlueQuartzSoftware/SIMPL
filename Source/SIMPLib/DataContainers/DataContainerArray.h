@@ -108,7 +108,7 @@ public:
   /**
    * @brief Returns the name of the class for DataContainerArray
    */
-  QString getNameOfClass() const;
+  QString getNameOfClass() const override;
   /**
    * @brief Returns the name of the class for DataContainerArray
    */

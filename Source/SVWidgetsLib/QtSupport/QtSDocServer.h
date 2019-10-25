@@ -53,7 +53,7 @@ public:
   /**
    * @brief Returns the name of the class for QtSDocServer
    */
-  QString getNameOfClass() const;
+  virtual QString getNameOfClass() const;
   /**
    * @brief Returns the name of the class for QtSDocServer
    */
