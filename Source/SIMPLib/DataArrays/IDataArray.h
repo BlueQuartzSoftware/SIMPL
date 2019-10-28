@@ -78,8 +78,8 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
     IDataArray(const QString& name = "");
     ~IDataArray() override;
 
-    virtual Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) = 0;
-    virtual Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) = 0;
+    virtual Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) const = 0;
+    virtual Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) const = 0;
     // virtual Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) = 0;
 
     /**
@@ -88,12 +88,12 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
      */
     DataArrayPath getDataArrayPath() const override;
 
-    virtual int getClassVersion() = 0;
+    virtual int getClassVersion() const = 0;
 
     /**
      * @brief Has all the memory needed for this class been allocated?
      */
-    virtual bool isAllocated() = 0;
+    virtual bool isAllocated() const = 0;
 
     /**
      * @brief Makes this class responsible for freeing the memory.
@@ -119,17 +119,17 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
     /**
     * @brief Returns the number of Tuples in the array.
     */
-    virtual size_t getNumberOfTuples () = 0;
+    virtual size_t getNumberOfTuples() const = 0;
 
 
     /**
      * @brief Return the number of elements in the array
      * @return
      */
-    virtual size_t getSize() = 0;
+    virtual size_t getSize() const = 0;
 
-    virtual int getNumberOfComponents() = 0;
-    virtual std::vector<size_t> getComponentDimensions() = 0;
+    virtual int getNumberOfComponents() const = 0;
+    virtual std::vector<size_t> getComponentDimensions() const = 0;
 
     /**
      * @brief Returns the number of bytes that make up the data type.
@@ -138,14 +138,14 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
      * 4 = 32 bit integer/Float
      * 8 = 64 bit integer/Double
      */
-    virtual size_t getTypeSize() = 0;
+    virtual size_t getTypeSize() const = 0;
 
     /**
      * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
      * can be a primitive like char, float, int or the name of a class.
      * @return
      */
-    virtual void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) = 0;
+    virtual void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const = 0;
 
     /**
      * @brief Erases tuples based on a list of specific Tuple indices
@@ -237,7 +237,7 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
      * @param i
      * @param delimiter
      */
-    virtual void printTuple(QTextStream& out, size_t i, char delimiter = ',') = 0;
+    virtual void printTuple(QTextStream& out, size_t i, char delimiter = ',') const = 0;
 
     /**
      * @brief printComponent
@@ -245,14 +245,14 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
      * @param i
      * @param j
      */
-    virtual void printComponent(QTextStream& out, size_t i, int j) = 0;
+    virtual void printComponent(QTextStream& out, size_t i, int j) const = 0;
 
     /**
      * @brief deepCopy
      * @param forceNoAllocate
      * @return
      */
-    virtual IDataArray::Pointer deepCopy(bool forceNoAllocate = false) = 0;
+    virtual IDataArray::Pointer deepCopy(bool forceNoAllocate = false) const = 0;
 
     /**
      * @brief writeH5Data
@@ -260,7 +260,7 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
      * @param tDims
      * @return
      */
-    virtual int writeH5Data(hid_t parentId, std::vector<size_t> tDims) = 0;
+    virtual int writeH5Data(hid_t parentId, std::vector<size_t> tDims) const = 0;
 
     /**
      * @brief readH5Data
@@ -278,20 +278,20 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
      * @param label
      * @return
      */
-    virtual int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& label) = 0;
+    virtual int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& label) const = 0;
 
     /**
      * @brief getTypeAsString
      * @return
      */
-    virtual QString getTypeAsString() = 0;
+    virtual QString getTypeAsString() const = 0;
 
     /**
      * @brief getInfoString
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    virtual QString getInfoString(SIMPL::InfoStringFormat format) = 0;
+    virtual QString getInfoString(SIMPL::InfoStringFormat format) const = 0;
 
   protected:
 

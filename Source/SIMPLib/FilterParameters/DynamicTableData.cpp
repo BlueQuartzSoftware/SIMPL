@@ -490,7 +490,7 @@ std::vector<std::vector<double>> DynamicTableData::readData(QJsonObject object)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<std::vector<double>> DynamicTableData::getTableData()
+std::vector<std::vector<double>> DynamicTableData::getTableData() const
 {
   return m_TableData;
 }

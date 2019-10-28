@@ -511,17 +511,17 @@ FloatArrayType::Pointer RectGridGeom::getZBounds() const
 }
 
 // -----------------------------------------------------------------------------
-size_t RectGridGeom::getXPoints()
+size_t RectGridGeom::getXPoints() const
 {
   return m_Dimensions[0];
 }
 // -----------------------------------------------------------------------------
-size_t RectGridGeom::getYPoints()
+size_t RectGridGeom::getYPoints() const
 {
   return m_Dimensions[1];
 }
 // -----------------------------------------------------------------------------
-size_t RectGridGeom::getZPoints()
+size_t RectGridGeom::getZPoints() const
 {
   return m_Dimensions[2];
 }
@@ -529,7 +529,7 @@ size_t RectGridGeom::getZPoints()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getPlaneCoords(size_t idx[3], float coords[3])
+void RectGridGeom::getPlaneCoords(size_t idx[3], float coords[3]) const
 {
   float* xBnds = m_xBounds->getPointer(0);
   float* yBnds = m_yBounds->getPointer(0);
@@ -543,7 +543,7 @@ void RectGridGeom::getPlaneCoords(size_t idx[3], float coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getPlaneCoords(size_t x, size_t y, size_t z, float coords[3])
+void RectGridGeom::getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) const
 {
   float* xBnds = m_xBounds->getPointer(0);
   float* yBnds = m_yBounds->getPointer(0);
@@ -557,7 +557,7 @@ void RectGridGeom::getPlaneCoords(size_t x, size_t y, size_t z, float coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getPlaneCoords(size_t idx, float coords[3])
+void RectGridGeom::getPlaneCoords(size_t idx, float coords[3]) const
 {
   size_t column = idx % m_Dimensions[0];
   size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
@@ -575,7 +575,7 @@ void RectGridGeom::getPlaneCoords(size_t idx, float coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getPlaneCoords(size_t idx[3], double coords[3])
+void RectGridGeom::getPlaneCoords(size_t idx[3], double coords[3]) const
 {
   float* xBnds = m_xBounds->getPointer(0);
   float* yBnds = m_yBounds->getPointer(0);
@@ -589,7 +589,7 @@ void RectGridGeom::getPlaneCoords(size_t idx[3], double coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getPlaneCoords(size_t x, size_t y, size_t z, double coords[3])
+void RectGridGeom::getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) const
 {
   float* xBnds = m_xBounds->getPointer(0);
   float* yBnds = m_yBounds->getPointer(0);
@@ -603,7 +603,7 @@ void RectGridGeom::getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getPlaneCoords(size_t idx, double coords[3])
+void RectGridGeom::getPlaneCoords(size_t idx, double coords[3]) const
 {
   size_t column = idx % m_Dimensions[0];
   size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
@@ -621,7 +621,7 @@ void RectGridGeom::getPlaneCoords(size_t idx, double coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getCoords(size_t idx[3], float coords[3])
+void RectGridGeom::getCoords(size_t idx[3], float coords[3]) const
 {
   float* xBnds = m_xBounds->getPointer(0);
   float* yBnds = m_yBounds->getPointer(0);
@@ -635,7 +635,7 @@ void RectGridGeom::getCoords(size_t idx[3], float coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getCoords(size_t x, size_t y, size_t z, float coords[3])
+void RectGridGeom::getCoords(size_t x, size_t y, size_t z, float coords[3]) const
 {
   float* xBnds = m_xBounds->getPointer(0);
   float* yBnds = m_yBounds->getPointer(0);
@@ -649,7 +649,7 @@ void RectGridGeom::getCoords(size_t x, size_t y, size_t z, float coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getCoords(size_t idx, float coords[3])
+void RectGridGeom::getCoords(size_t idx, float coords[3]) const
 {
   size_t column = idx % m_Dimensions[0];
   size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
@@ -667,7 +667,7 @@ void RectGridGeom::getCoords(size_t idx, float coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getCoords(size_t idx[3], double coords[3])
+void RectGridGeom::getCoords(size_t idx[3], double coords[3]) const
 {
   float* xBnds = m_xBounds->getPointer(0);
   float* yBnds = m_yBounds->getPointer(0);
@@ -681,7 +681,7 @@ void RectGridGeom::getCoords(size_t idx[3], double coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getCoords(size_t x, size_t y, size_t z, double coords[3])
+void RectGridGeom::getCoords(size_t x, size_t y, size_t z, double coords[3]) const
 {
   float* xBnds = m_xBounds->getPointer(0);
   float* yBnds = m_yBounds->getPointer(0);
@@ -695,7 +695,7 @@ void RectGridGeom::getCoords(size_t x, size_t y, size_t z, double coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getCoords(size_t idx, double coords[3])
+void RectGridGeom::getCoords(size_t idx, double coords[3]) const
 {
   size_t column = idx % m_Dimensions[0];
   size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
@@ -748,7 +748,7 @@ void RectGridGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMat
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t RectGridGeom::getNumberOfElements()
+size_t RectGridGeom::getNumberOfElements() const
 {
   return (m_Dimensions[0] * m_Dimensions[1] * m_Dimensions[2]);
 }
@@ -764,7 +764,7 @@ int RectGridGeom::findElementsContainingVert()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer RectGridGeom::getElementsContainingVert()
+ElementDynamicList::Pointer RectGridGeom::getElementsContainingVert() const
 {
   return ElementDynamicList::NullPointer();
 }
@@ -794,7 +794,7 @@ int RectGridGeom::findElementNeighbors()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer RectGridGeom::getElementNeighbors()
+ElementDynamicList::Pointer RectGridGeom::getElementNeighbors() const
 {
   return ElementDynamicList::NullPointer();
 }
@@ -824,7 +824,7 @@ int RectGridGeom::findElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer RectGridGeom::getElementCentroids()
+FloatArrayType::Pointer RectGridGeom::getElementCentroids() const
 {
   return FloatArrayType::NullPointer();
 }
@@ -883,7 +883,7 @@ int RectGridGeom::findElementSizes()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer RectGridGeom::getElementSizes()
+FloatArrayType::Pointer RectGridGeom::getElementSizes() const
 {
   return m_VoxelSizes;
 }
@@ -907,7 +907,7 @@ void RectGridGeom::deleteElementSizes()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getParametricCenter(double pCoords[3])
+void RectGridGeom::getParametricCenter(double pCoords[3]) const
 {
   pCoords[0] = 0.5;
   pCoords[1] = 0.5;
@@ -917,7 +917,7 @@ void RectGridGeom::getParametricCenter(double pCoords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getShapeFunctions(double pCoords[3], double* shape)
+void RectGridGeom::getShapeFunctions(double pCoords[3], double* shape) const
 {
   double rm = 0.0;
   double sm = 0.0;
@@ -986,7 +986,7 @@ void RectGridGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int RectGridGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf))
+int RectGridGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)) const
 {
   herr_t err = 0;
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
@@ -1040,7 +1040,7 @@ int RectGridGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeX
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int RectGridGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
+int RectGridGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const
 {
   herr_t err = 0;
 
@@ -1082,7 +1082,7 @@ int RectGridGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileNam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString RectGridGeom::getInfoString(SIMPL::InfoStringFormat format)
+QString RectGridGeom::getInfoString(SIMPL::InfoStringFormat format) const
 {
   QString info;
   QTextStream ss(&info);
@@ -1124,7 +1124,7 @@ int RectGridGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Pointer RectGridGeom::deepCopy(bool forceNoAllocate)
+IGeometry::Pointer RectGridGeom::deepCopy(bool forceNoAllocate) const
 {
   FloatArrayType::Pointer xBounds = std::dynamic_pointer_cast<FloatArrayType>((getXBounds().get() == nullptr) ? nullptr : getXBounds()->deepCopy(forceNoAllocate));
   FloatArrayType::Pointer yBounds = std::dynamic_pointer_cast<FloatArrayType>((getYBounds().get() == nullptr) ? nullptr : getYBounds()->deepCopy(forceNoAllocate));

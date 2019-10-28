@@ -78,7 +78,7 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
      * @brief getNumberOfElements
      * @return
      */
-    size_t getNumberOfElements() override;
+    size_t getNumberOfElements() const override;
 
     /**
      * @brief findElementSizes
@@ -90,7 +90,7 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
      * @brief getElementSizes
      * @return
      */
-    FloatArrayType::Pointer getElementSizes() override;
+    FloatArrayType::Pointer getElementSizes() const override;
 
     /**
      * @brief deleteElementSizes
@@ -107,7 +107,7 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
      * @brief getElementsContainingVert
      * @return
      */
-    ElementDynamicList::Pointer getElementsContainingVert() override;
+    ElementDynamicList::Pointer getElementsContainingVert() const override;
 
     /**
      * @brief deleteElementsContainingVert
@@ -124,7 +124,7 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
      * @brief getElementNeighbors
      * @return
      */
-    ElementDynamicList::Pointer getElementNeighbors() override;
+    ElementDynamicList::Pointer getElementNeighbors() const override;
 
     /**
      * @brief deleteElementNeighbors
@@ -141,7 +141,7 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
      * @brief getElementCentroids
      * @return
      */
-    FloatArrayType::Pointer getElementCentroids() override;
+    FloatArrayType::Pointer getElementCentroids() const override;
 
     /**
      * @brief deleteElementCentroids
@@ -152,14 +152,14 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
      * @brief getParametricCenter
      * @param pCoords
      */
-    void getParametricCenter(double pCoords[3]) override;
+    void getParametricCenter(double pCoords[3]) const override;
 
     /**
      * @brief getShapeFunctions
      * @param pCoords
      * @param shape
      */
-    void getShapeFunctions(double pCoords[3], double* shape) override;
+    void getShapeFunctions(double pCoords[3], double* shape) const override;
 
     /**
      * @brief findDerivatives
@@ -173,7 +173,7 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    QString getInfoString(SIMPL::InfoStringFormat format) override;
+    QString getInfoString(SIMPL::InfoStringFormat format) const override;
 
     /**
      * @brief writeGeometryToHDF5
@@ -181,7 +181,7 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
      * @param writeXdmf
      * @return
      */
-    int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
+    int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) const override;
 
     /**
      * @brief writeXdmf
@@ -190,7 +190,7 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
      * @param hdfFileName
      * @return
      */
-    int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
+    int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const override;
 
     /**
      * @brief readGeometryFromHDF5
@@ -204,7 +204,7 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
      * @brief deepCopy
      * @return
      */
-    IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
+    IGeometry::Pointer deepCopy(bool forceNoAllocate = false) const override;
 
     /**
      * @brief addOrReplaceAttributeMatrix
@@ -217,23 +217,23 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
     void setDimensions(const SizeVec3Type& dims) override;
     SizeVec3Type getDimensions() const override;
 
-    size_t getXPoints() override;
-    size_t getYPoints() override;
-    size_t getZPoints() override;
+    size_t getXPoints() const override;
+    size_t getYPoints() const override;
+    size_t getZPoints() const override;
 
-    void getPlaneCoords(size_t idx[3], float coords[3]) override;
-    void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) override;
-    void getPlaneCoords(size_t idx, float coords[3]) override;
-    void getPlaneCoords(size_t idx[3], double coords[3]) override;
-    void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) override;
-    void getPlaneCoords(size_t idx, double coords[3]) override;
+    void getPlaneCoords(size_t idx[3], float coords[3]) const override;
+    void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) const override;
+    void getPlaneCoords(size_t idx, float coords[3]) const override;
+    void getPlaneCoords(size_t idx[3], double coords[3]) const override;
+    void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) const override;
+    void getPlaneCoords(size_t idx, double coords[3]) const override;
 
-    void getCoords(size_t idx[3], float coords[3]) override;
-    void getCoords(size_t x, size_t y, size_t z, float coords[3]) override;
-    void getCoords(size_t idx, float coords[3]) override;
-    void getCoords(size_t idx[3], double coords[3]) override;
-    void getCoords(size_t x, size_t y, size_t z, double coords[3]) override;
-    void getCoords(size_t idx, double coords[3]) override;
+    void getCoords(size_t idx[3], float coords[3]) const override;
+    void getCoords(size_t x, size_t y, size_t z, float coords[3]) const override;
+    void getCoords(size_t idx, float coords[3]) const override;
+    void getCoords(size_t idx[3], double coords[3]) const override;
+    void getCoords(size_t x, size_t y, size_t z, double coords[3]) const override;
+    void getCoords(size_t idx, double coords[3]) const override;
 
   protected:
 

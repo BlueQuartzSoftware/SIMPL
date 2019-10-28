@@ -223,7 +223,7 @@ void QuadGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix:
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t QuadGeom::getNumberOfElements()
+size_t QuadGeom::getNumberOfElements() const
 {
   return m_QuadList->getNumberOfTuples();
 }
@@ -267,7 +267,7 @@ int QuadGeom::findElementsContainingVert()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer QuadGeom::getElementsContainingVert()
+ElementDynamicList::Pointer QuadGeom::getElementsContainingVert() const
 {
   return m_QuadsContainingVert;
 }
@@ -314,7 +314,7 @@ int QuadGeom::findElementNeighbors()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer QuadGeom::getElementNeighbors()
+ElementDynamicList::Pointer QuadGeom::getElementNeighbors() const
 {
   return m_QuadNeighbors;
 }
@@ -353,7 +353,7 @@ int QuadGeom::findElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer QuadGeom::getElementCentroids()
+FloatArrayType::Pointer QuadGeom::getElementCentroids() const
 {
   return m_QuadCentroids;
 }
@@ -392,7 +392,7 @@ int QuadGeom::findElementSizes()
 // -----------------------------------------------------------------------------
 //z
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer QuadGeom::getElementSizes()
+FloatArrayType::Pointer QuadGeom::getElementSizes() const
 {
   return m_QuadSizes;
 }
@@ -431,7 +431,7 @@ int QuadGeom::findUnsharedEdges()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedEdgeList::Pointer QuadGeom::getUnsharedEdges()
+SharedEdgeList::Pointer QuadGeom::getUnsharedEdges() const
 {
   return m_UnsharedEdgeList;
 }
@@ -455,7 +455,7 @@ void QuadGeom::deleteUnsharedEdges()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::getParametricCenter(double pCoords[3])
+void QuadGeom::getParametricCenter(double pCoords[3]) const
 {
   pCoords[0] = 0.5;
   pCoords[1] = 0.5;
@@ -465,7 +465,7 @@ void QuadGeom::getParametricCenter(double pCoords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::getShapeFunctions(double pCoords[3], double* shape)
+void QuadGeom::getShapeFunctions(double pCoords[3], double* shape) const
 {
   double rm = 0.0;
   double sm = 0.0;
@@ -504,7 +504,7 @@ void QuadGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf))
+int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)) const
 {
   herr_t err = 0;
 
@@ -588,7 +588,7 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int QuadGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
+int QuadGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const
 {
   herr_t err = 0;
 
@@ -640,7 +640,7 @@ int QuadGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString QuadGeom::getInfoString(SIMPL::InfoStringFormat format)
+QString QuadGeom::getInfoString(SIMPL::InfoStringFormat format) const
 {
   QString info;
   QTextStream ss(&info);
@@ -724,7 +724,7 @@ int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Pointer QuadGeom::deepCopy(bool forceNoAllocate)
+IGeometry::Pointer QuadGeom::deepCopy(bool forceNoAllocate) const
 {
   SharedQuadList::Pointer quads = std::dynamic_pointer_cast<SharedQuadList>((getQuads().get() == nullptr) ? nullptr : getQuads()->deepCopy(forceNoAllocate));
   SharedVertexList::Pointer verts = std::dynamic_pointer_cast<SharedVertexList>((getVertices().get() == nullptr) ? nullptr : getVertices()->deepCopy(forceNoAllocate));

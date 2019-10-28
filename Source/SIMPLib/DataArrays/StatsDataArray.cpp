@@ -147,7 +147,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(const std::vector<size_t>& t
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate)
+IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate) const
 {
   return StatsDataArray::NullPointer();
 }
@@ -155,7 +155,7 @@ IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, int rank,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate)
+IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate) const
 {
   return StatsDataArray::NullPointer();
 }
@@ -163,7 +163,7 @@ IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, const std
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString StatsDataArray::getFullNameOfClass()
+QString StatsDataArray::getFullNameOfClass() const
 {
   return QString("Statistics");
 }
@@ -203,7 +203,7 @@ void* StatsDataArray::getVoidPointer(size_t i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t StatsDataArray::getNumberOfTuples()
+size_t StatsDataArray::getNumberOfTuples() const
 {
   return m_StatsDataArray.size();
 }
@@ -211,7 +211,7 @@ size_t StatsDataArray::getNumberOfTuples()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t StatsDataArray::getSize()
+size_t StatsDataArray::getSize() const
 {
   return m_StatsDataArray.size();
 }
@@ -219,7 +219,7 @@ size_t StatsDataArray::getSize()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::getNumberOfComponents()
+int StatsDataArray::getNumberOfComponents() const
 {
   return 1;
 }
@@ -227,7 +227,7 @@ int StatsDataArray::getNumberOfComponents()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<size_t> StatsDataArray::getComponentDimensions()
+std::vector<size_t> StatsDataArray::getComponentDimensions() const
 {
   std::vector<size_t> dims = {1};
   return dims;
@@ -236,7 +236,7 @@ std::vector<size_t> StatsDataArray::getComponentDimensions()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t StatsDataArray::getTypeSize()
+size_t StatsDataArray::getTypeSize() const
 {
   return sizeof(StatsData);
 }
@@ -372,7 +372,7 @@ void StatsDataArray::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer StatsDataArray::deepCopy(bool forceNoAllocate)
+IDataArray::Pointer StatsDataArray::deepCopy(bool forceNoAllocate) const
 {
   StatsDataArray::Pointer daCopyPtr = StatsDataArray::CreateArray(getNumberOfTuples() * getNumberOfComponents(), getName());
 
@@ -413,14 +413,14 @@ void StatsDataArray::resizeTuples(size_t numTuples)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StatsDataArray::printTuple(QTextStream& out, size_t i, char delimiter)
+void StatsDataArray::printTuple(QTextStream& out, size_t i, char delimiter) const
 {
   Q_ASSERT(false);
 }
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StatsDataArray::printComponent(QTextStream& out, size_t i, int j)
+void StatsDataArray::printComponent(QTextStream& out, size_t i, int j) const
 {
   Q_ASSERT(false);
 }
@@ -428,7 +428,7 @@ void StatsDataArray::printComponent(QTextStream& out, size_t i, int j)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::writeH5Data(hid_t parentId, std::vector<size_t> tDims)
+int StatsDataArray::writeH5Data(hid_t parentId, std::vector<size_t> tDims) const
 {
   herr_t err = 0;
   hid_t gid = QH5Utilities::createGroup(parentId, getName());
@@ -541,7 +541,7 @@ int StatsDataArray::readH5Data(hid_t parentId)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::writeToJson(QJsonObject& jsonRoot, UInt32ArrayType::Pointer crystalStructures)
+int StatsDataArray::writeToJson(QJsonObject& jsonRoot, UInt32ArrayType::Pointer crystalStructures) const
 {
   int error = 0;
 
@@ -635,7 +635,7 @@ int StatsDataArray::readFromJson(const QJsonObject& jsonRoot)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb)
+int StatsDataArray::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) const
 {
   out << "<!-- Xdmf is not supported for " << getNameOfClass() << " with type " << getTypeAsString() << " --> ";
   return -1;
@@ -644,7 +644,7 @@ int StatsDataArray::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString StatsDataArray::getInfoString(SIMPL::InfoStringFormat format)
+QString StatsDataArray::getInfoString(SIMPL::InfoStringFormat format) const
 {
   QString info;
   QTextStream ss(&info);
@@ -676,7 +676,7 @@ QString StatsDataArray::getInfoString(SIMPL::InfoStringFormat format)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString StatsDataArray::getTypeAsString()
+QString StatsDataArray::getTypeAsString() const
 {
   return "StatsDataArray";
 }
@@ -684,7 +684,7 @@ QString StatsDataArray::getTypeAsString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StatsDataArray::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision)
+void StatsDataArray::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const
 {
   xdmfTypeName = getNameOfClass();
   precision = 0;
@@ -693,7 +693,7 @@ void StatsDataArray::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool StatsDataArray::isAllocated()
+bool StatsDataArray::isAllocated() const
 {
   return m_IsAllocated;
 }
@@ -811,7 +811,7 @@ void StatsDataArray::fillArrayWithNewStatsData(size_t n, PhaseType::EnumType* ph
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StatsData::Pointer StatsDataArray::getStatsData(int idx)
+StatsData::Pointer StatsDataArray::getStatsData(int idx) const
 {
 #ifndef NDEBUG
   if(!m_StatsDataArray.empty())

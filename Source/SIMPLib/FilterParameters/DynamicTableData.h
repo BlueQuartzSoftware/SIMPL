@@ -129,7 +129,7 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
     /**
     * @brief Table data getter and setter
     */
-    std::vector<std::vector<double>> getTableData();
+    std::vector<std::vector<double>> getTableData() const;
     void setTableData(const std::vector<std::vector<double>>& data);
 
     /**

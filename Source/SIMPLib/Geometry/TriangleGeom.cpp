@@ -222,7 +222,7 @@ void TriangleGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMat
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t TriangleGeom::getNumberOfElements()
+size_t TriangleGeom::getNumberOfElements() const
 {
   return m_TriList->getNumberOfTuples();
 }
@@ -266,7 +266,7 @@ int TriangleGeom::findElementsContainingVert()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer TriangleGeom::getElementsContainingVert()
+ElementDynamicList::Pointer TriangleGeom::getElementsContainingVert() const
 {
   return m_TrianglesContainingVert;
 }
@@ -313,7 +313,7 @@ int TriangleGeom::findElementNeighbors()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer TriangleGeom::getElementNeighbors()
+ElementDynamicList::Pointer TriangleGeom::getElementNeighbors() const
 {
   return m_TriangleNeighbors;
 }
@@ -352,7 +352,7 @@ int TriangleGeom::findElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer TriangleGeom::getElementCentroids()
+FloatArrayType::Pointer TriangleGeom::getElementCentroids() const
 {
   return m_TriangleCentroids;
 }
@@ -391,7 +391,7 @@ int TriangleGeom::findElementSizes()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer TriangleGeom::getElementSizes()
+FloatArrayType::Pointer TriangleGeom::getElementSizes() const
 {
   return m_TriangleSizes;
 }
@@ -430,7 +430,7 @@ int TriangleGeom::findUnsharedEdges()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedEdgeList::Pointer TriangleGeom::getUnsharedEdges()
+SharedEdgeList::Pointer TriangleGeom::getUnsharedEdges() const
 {
   return m_UnsharedEdgeList;
 }
@@ -454,7 +454,7 @@ void TriangleGeom::deleteUnsharedEdges()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TriangleGeom::getParametricCenter(double pCoords[3])
+void TriangleGeom::getParametricCenter(double pCoords[3]) const
 {
   pCoords[0] = 1.0 / 3.0;
   pCoords[1] = 1.0 / 3.0;
@@ -464,7 +464,7 @@ void TriangleGeom::getParametricCenter(double pCoords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TriangleGeom::getShapeFunctions(double pCoords[3], double* shape)
+void TriangleGeom::getShapeFunctions(double pCoords[3], double* shape) const
 {
   (void)pCoords;
 
@@ -500,7 +500,7 @@ void TriangleGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int TriangleGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf))
+int TriangleGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)) const
 {
   herr_t err = 0;
 
@@ -585,7 +585,7 @@ int TriangleGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeX
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int TriangleGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
+int TriangleGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const
 {
   herr_t err = 0;
 
@@ -638,7 +638,7 @@ int TriangleGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileNam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString TriangleGeom::getInfoString(SIMPL::InfoStringFormat format)
+QString TriangleGeom::getInfoString(SIMPL::InfoStringFormat format) const
 {
   QString info;
   QTextStream ss(&info);
@@ -721,7 +721,7 @@ int TriangleGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Pointer TriangleGeom::deepCopy(bool forceNoAllocate)
+IGeometry::Pointer TriangleGeom::deepCopy(bool forceNoAllocate) const
 {
   SharedTriList::Pointer tris = std::dynamic_pointer_cast<SharedTriList>((getTriangles().get() == nullptr) ? nullptr : getTriangles()->deepCopy(forceNoAllocate));
   SharedVertexList::Pointer verts = std::dynamic_pointer_cast<SharedVertexList>((getVertices().get() == nullptr) ? nullptr : getVertices()->deepCopy(forceNoAllocate));
