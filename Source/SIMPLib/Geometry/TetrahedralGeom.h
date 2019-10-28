@@ -135,7 +135,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief getTriangles
      * @return
      */
-    SharedTriList::Pointer getTriangles();
+    SharedTriList::Pointer getTriangles() const;
 
     /**
      * @brief setVertsAtTri
@@ -149,7 +149,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param triId
      * @param verts
      */
-    void getVertsAtTri(size_t triId, size_t verts[3]);
+    void getVertsAtTri(size_t triId, size_t verts[3]) const;
 
     /**
      * @brief getVertCoordsAtTri
@@ -158,20 +158,20 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param vert2
      * @param vert3
      */
-    void getVertCoordsAtTri(size_t triId, float vert1[3], float vert2[3], float vert3[3]);
+    void getVertCoordsAtTri(size_t triId, float vert1[3], float vert2[3], float vert3[3]) const;
 
     /**
      * @brief getTriPointer
      * @param i
      * @return
      */
-    size_t* getTriPointer(size_t i);
+    size_t* getTriPointer(size_t i) const;
 
     /**
      * @brief getNumberOfTris
      * @return
      */
-    size_t getNumberOfTris();
+    size_t getNumberOfTris() const;
 
     // -----------------------------------------------------------------------------
     // Inherited from SharedTetOps
@@ -200,7 +200,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
     * @brief getTetrahedra
     * @return
     */
-    SharedTetList::Pointer getTetrahedra();
+    SharedTetList::Pointer getTetrahedra() const;
 
     /**
      * @brief setVertsAtTet
@@ -214,7 +214,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param tetId
      * @param verts
      */
-    void getVertsAtTet(size_t tetId, size_t verts[4]);
+    void getVertsAtTet(size_t tetId, size_t verts[4]) const;
 
     /**
      * @brief getVertCoordsAtTet
@@ -223,20 +223,20 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param vert2
      * @param vert3
      */
-    void getVertCoordsAtTet(size_t tetId, float vert1[3], float vert2[3], float vert3[3], float vert4[3]);
+    void getVertCoordsAtTet(size_t tetId, float vert1[3], float vert2[3], float vert3[3], float vert4[3]) const;
 
     /**
      * @brief getTetPointer
      * @param i
      * @return
      */
-    size_t* getTetPointer(size_t i);
+    size_t* getTetPointer(size_t i) const;
 
     /**
      * @brief getNumberOfTets
      * @return
      */
-    size_t getNumberOfTets();
+    size_t getNumberOfTets() const;
 
     // -----------------------------------------------------------------------------
     // Inherited from IGeometry
@@ -251,7 +251,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief getNumberOfElements
      * @return
      */
-    size_t getNumberOfElements() override;
+    size_t getNumberOfElements() const override;
 
     /**
      * @brief findElementSizes
@@ -263,7 +263,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief getElementSizes
      * @return
      */
-    FloatArrayType::Pointer getElementSizes() override;
+    FloatArrayType::Pointer getElementSizes() const override;
 
     /**
      * @brief deleteElementSizes
@@ -280,7 +280,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief getElementsContainingVert
      * @return
      */
-    ElementDynamicList::Pointer getElementsContainingVert() override;
+    ElementDynamicList::Pointer getElementsContainingVert() const override;
 
     /**
      * @brief deleteElementsContainingVert
@@ -297,7 +297,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief getElementNeighbors
      * @return
      */
-    ElementDynamicList::Pointer getElementNeighbors() override;
+    ElementDynamicList::Pointer getElementNeighbors() const override;
 
     /**
      * @brief deleteElementNeighbors
@@ -314,7 +314,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief getElementCentroids
      * @return
      */
-    FloatArrayType::Pointer getElementCentroids() override;
+    FloatArrayType::Pointer getElementCentroids() const override;
 
     /**
      * @brief deleteElementCentroids
@@ -325,14 +325,14 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief getParametricCenter
      * @param pCoords
      */
-    void getParametricCenter(double pCoords[3]) override;
+    void getParametricCenter(double pCoords[3]) const override;
 
     /**
      * @brief getShapeFunctions
      * @param pCoords
      * @param shape
      */
-    void getShapeFunctions(double pCoords[3], double* shape) override;
+    void getShapeFunctions(double pCoords[3], double* shape) const override;
 
     /**
      * @brief findDerivatives
@@ -346,7 +346,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    QString getInfoString(SIMPL::InfoStringFormat format) override;
+    QString getInfoString(SIMPL::InfoStringFormat format) const override;
 
     /**
      * @brief writeGeometryToHDF5
@@ -354,7 +354,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param writeXdmf
      * @return
      */
-    int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
+    int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) const override;
 
     /**
      * @brief writeXdmf
@@ -363,7 +363,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param hdfFileName
      * @return
      */
-    int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
+    int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const override;
 
     /**
      * @brief readGeometryFromHDF5
@@ -377,7 +377,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief deepCopy
      * @return
      */
-    IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
+    IGeometry::Pointer deepCopy(bool forceNoAllocate = false) const override;
 
     /**
      * @brief addOrReplaceAttributeMatrix
@@ -404,7 +404,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief getVertices
      * @return
      */
-    SharedVertexList::Pointer getVertices() override;
+    SharedVertexList::Pointer getVertices() const override;
 
     /**
      * @brief setCoords
@@ -418,20 +418,20 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param vertId
      * @param coords
      */
-    void getCoords(size_t vertId, float coords[3]) override;
+    void getCoords(size_t vertId, float coords[3]) const override;
 
     /**
      * @brief getVertexPointer
      * @param i
      * @return
      */
-    float* getVertexPointer(size_t i) override;
+    float* getVertexPointer(size_t i) const override;
 
     /**
      * @brief getNumberOfVertices
      * @return
      */
-    size_t getNumberOfVertices() override;
+    size_t getNumberOfVertices() const override;
 
     /**
      * @brief resizeEdgeList
@@ -443,7 +443,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief getEdges
      * @return
      */
-    SharedEdgeList::Pointer getEdges() override;
+    SharedEdgeList::Pointer getEdges() const override;
 
     /**
      * @brief setVerts
@@ -457,7 +457,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param edgeId
      * @param verts
      */
-    void getVertsAtEdge(size_t edgeId, size_t verts[2]) override;
+    void getVertsAtEdge(size_t edgeId, size_t verts[2]) const override;
 
     /**
      * @brief getVertCoordsAtEdge
@@ -465,20 +465,20 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param vert1
      * @param vert2
      */
-    void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) override;
+    void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) const override;
 
     /**
      * @brief getEdgePointer
      * @param i
      * @return
      */
-    size_t* getEdgePointer(size_t i) override;
+    size_t* getEdgePointer(size_t i) const override;
 
     /**
      * @brief getNumberOfEdges
      * @return
      */
-    size_t getNumberOfEdges() override;
+    size_t getNumberOfEdges() const override;
 
     /**
      * @brief findElementEdges
@@ -511,7 +511,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief getUnsharedEdges
      * @return
      */
-    SharedEdgeList::Pointer getUnsharedEdges() override;
+    SharedEdgeList::Pointer getUnsharedEdges() const override;
 
     /**
      * @brief deleteUnsharedEdges
@@ -527,7 +527,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief getUnsharedFaces
      * @return
      */
-    SharedEdgeList::Pointer getUnsharedFaces() override;
+    SharedEdgeList::Pointer getUnsharedFaces() const override;
 
     /**
      * @brief deleteUnsharedFaces

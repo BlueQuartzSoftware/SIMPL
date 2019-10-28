@@ -236,7 +236,7 @@ void TetrahedralGeom::addOrReplaceAttributeMatrix(const QString& name, Attribute
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t TetrahedralGeom::getNumberOfElements()
+size_t TetrahedralGeom::getNumberOfElements() const
 {
   return m_TetList->getNumberOfTuples();
 }
@@ -302,7 +302,7 @@ int TetrahedralGeom::findElementsContainingVert()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer TetrahedralGeom::getElementsContainingVert()
+ElementDynamicList::Pointer TetrahedralGeom::getElementsContainingVert() const
 {
   return m_TetsContainingVert;
 }
@@ -349,7 +349,7 @@ int TetrahedralGeom::findElementNeighbors()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer TetrahedralGeom::getElementNeighbors()
+ElementDynamicList::Pointer TetrahedralGeom::getElementNeighbors() const
 {
   return m_TetNeighbors;
 }
@@ -388,7 +388,7 @@ int TetrahedralGeom::findElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer TetrahedralGeom::getElementCentroids()
+FloatArrayType::Pointer TetrahedralGeom::getElementCentroids() const
 {
   return m_TetCentroids;
 }
@@ -428,7 +428,7 @@ int TetrahedralGeom::findElementSizes()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer TetrahedralGeom::getElementSizes()
+FloatArrayType::Pointer TetrahedralGeom::getElementSizes() const
 {
   return m_TetSizes;
 }
@@ -467,7 +467,7 @@ int TetrahedralGeom::findUnsharedEdges()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedEdgeList::Pointer TetrahedralGeom::getUnsharedEdges()
+SharedEdgeList::Pointer TetrahedralGeom::getUnsharedEdges() const
 {
   return m_UnsharedEdgeList;
 }
@@ -506,7 +506,7 @@ int TetrahedralGeom::findUnsharedFaces()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedTriList::Pointer TetrahedralGeom::getUnsharedFaces()
+SharedTriList::Pointer TetrahedralGeom::getUnsharedFaces() const
 {
   return m_UnsharedTriList;
 }
@@ -530,7 +530,7 @@ void TetrahedralGeom::deleteUnsharedFaces()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TetrahedralGeom::getParametricCenter(double pCoords[3])
+void TetrahedralGeom::getParametricCenter(double pCoords[3]) const
 {
   pCoords[0] = 0.25;
   pCoords[1] = 0.25;
@@ -540,7 +540,7 @@ void TetrahedralGeom::getParametricCenter(double pCoords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TetrahedralGeom::getShapeFunctions(double pCoords[3], double* shape)
+void TetrahedralGeom::getShapeFunctions(double pCoords[3], double* shape) const
 {
   (void)pCoords;
 
@@ -584,7 +584,7 @@ void TetrahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArra
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int TetrahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf))
+int TetrahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)) const
 {
   herr_t err = 0;
 
@@ -686,7 +686,7 @@ int TetrahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(wri
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int TetrahedralGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
+int TetrahedralGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const
 {
   herr_t err = 0;
 
@@ -739,7 +739,7 @@ int TetrahedralGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFile
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString TetrahedralGeom::getInfoString(SIMPL::InfoStringFormat format)
+QString TetrahedralGeom::getInfoString(SIMPL::InfoStringFormat format) const
 {
   QString info;
   QTextStream ss(&info);
@@ -836,7 +836,7 @@ int TetrahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Pointer TetrahedralGeom::deepCopy(bool forceNoAllocate)
+IGeometry::Pointer TetrahedralGeom::deepCopy(bool forceNoAllocate) const
 {
   SharedTetList::Pointer tets = std::dynamic_pointer_cast<SharedTetList>((getTetrahedra().get() == nullptr) ? nullptr : getTetrahedra()->deepCopy(forceNoAllocate));
   SharedVertexList::Pointer verts = std::dynamic_pointer_cast<SharedVertexList>((getVertices().get() == nullptr) ? nullptr : getVertices()->deepCopy(forceNoAllocate));

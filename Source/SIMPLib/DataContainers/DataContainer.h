@@ -187,12 +187,12 @@ public:
    * @brief Returns the geometry of the data container
    * @return
    */
-  virtual IGeometry::Pointer getGeometry();
+  virtual IGeometry::Pointer getGeometry() const;
 
   /**
    * @param format The format of the string to be returned.
    */
-  virtual QString getInfoString(SIMPL::InfoStringFormat format);
+  virtual QString getInfoString(SIMPL::InfoStringFormat format) const;
 
   /**
    * @brief Adds the data for a named array. If an AttributeMatrix with the same
@@ -210,7 +210,7 @@ public:
    * null pointer if the name does not exist.
    * @param name The name of the data array
    */
-  AttributeMatrixShPtr getAttributeMatrix(const QString& name)
+  AttributeMatrixShPtr getAttributeMatrix(const QString& name) const
   {
     return getChildByName(name);
   }
@@ -220,7 +220,7 @@ public:
    * null pointer if the name does not exist.
    * @param name The Name of the AttributeMatrix will be extracted from the DataArratPath object
    */
-  AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path)
+  AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path) const
   {
     // Could this be sped-up if we hashed DataArrayPath as well?
     if(path.getDataContainerName() != getName())
@@ -234,7 +234,7 @@ public:
    * @brief Returns bool of whether a named array exists
    * @param name The name of the data array
    */
-  bool doesAttributeMatrixExist(const QString& name)
+  bool doesAttributeMatrixExist(const QString& name) const
   {
     return contains(name);
   }
@@ -258,7 +258,7 @@ public:
    */
   virtual void clearAttributeMatrices();
 
-  Container_t getAttributeMatrices()
+  Container_t getAttributeMatrices() const
   {
     return getChildren();
   }
@@ -268,13 +268,13 @@ public:
    * Cell (Formerly Cell) group
    * @return
    */
-  virtual NameList getAttributeMatrixNames();
+  virtual NameList getAttributeMatrixNames() const;
 
   /**
    * @brief Returns the total number of arrays that are stored in the Cell group
    * @return
    */
-  int getNumAttributeMatrices()
+  int getNumAttributeMatrices() const
   {
     return static_cast<int>(size());
   }
@@ -283,7 +283,7 @@ public:
    * @brief getAllDataArrayPaths
    * @return
    */
-  virtual QVector<DataArrayPath> getAllDataArrayPaths();
+  virtual QVector<DataArrayPath> getAllDataArrayPaths() const;
 
   /**
    * @brief This method will check for the existance of a named AttributeMatrix. If that AttributeMatrix with the
@@ -294,7 +294,7 @@ public:
    * @param err The unique error value to generate derived error values from. This helps debugging.
    * @return Shared Pointer to an AttributeMatrix object.
    */
-  AttributeMatrixShPtr getPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, int err);
+  AttributeMatrixShPtr getPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, int err) const;
 
   /**
    * @brief createNonPrereqAttributeMatrix This method will create a new AttributeMatrix with the given tuple dimensions
@@ -338,7 +338,7 @@ public:
    * @brief Returns the geometry as the templated type
    * @return
    */
-  template <typename GeometryType> typename GeometryType::Pointer getGeometryAs()
+  template <typename GeometryType> typename GeometryType::Pointer getGeometryAs() const
   {
     typename GeometryType::Pointer geom = std::dynamic_pointer_cast<GeometryType>(getGeometry());
     return geom;
@@ -349,7 +349,7 @@ public:
    * @param filter
    * @return
    */
-  template <typename GeometryType, typename Filter> typename GeometryType::Pointer getPrereqGeometry(Filter* filter)
+  template <typename GeometryType, typename Filter> typename GeometryType::Pointer getPrereqGeometry(Filter* filter) const
   {
     typename GeometryType::Pointer geom = GeometryType::NullPointer();
     IGeometry::Pointer igeom = getGeometry();
@@ -390,7 +390,7 @@ public:
    * @brief Writes all the Attribute Matrices to HDF5 file
    * @return
    */
-  virtual int writeAttributeMatricesToHDF5(hid_t parentId);
+  virtual int writeAttributeMatricesToHDF5(hid_t parentId) const;
 
   /**
    * @brief Reads desired Attribute Matrices from HDF5 file
@@ -402,14 +402,14 @@ public:
    * @brief creates copy of dataContainer
    * @return
    */
-  virtual DataContainer::Pointer deepCopy(bool forceNoAllocate = false);
+  virtual DataContainer::Pointer deepCopy(bool forceNoAllocate = false) const;
 
   /**
    * @brief writeMeshToHDF5
    * @param dcGid
    * @return
    */
-  virtual int writeMeshToHDF5(hid_t dcGid, bool writeXdmf);
+  virtual int writeMeshToHDF5(hid_t dcGid, bool writeXdmf) const;
 
   /**
    * @brief writeXdmf
@@ -417,7 +417,7 @@ public:
    * @param hdfFileName
    * @return
    */
-  virtual int writeXdmf(QTextStream& out, const QString &hdfFileName);
+  virtual int writeXdmf(QTextStream& out, const QString &hdfFileName) const;
 
   /**
    * @brief readMeshDataFromHDF5
@@ -428,7 +428,7 @@ public:
   virtual int readMeshDataFromHDF5(hid_t dcGid, bool preflight);
 
 protected:
-  virtual void writeXdmfFooter(QTextStream& xdmf);
+  virtual void writeXdmfFooter(QTextStream& xdmf) const;
 
   DataContainer();
   explicit DataContainer(const QString& name);

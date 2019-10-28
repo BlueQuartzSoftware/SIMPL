@@ -75,33 +75,31 @@ public:
   virtual void setDimensions(const SizeVec3Type& dims) = 0;
   virtual SizeVec3Type getDimensions() const = 0;
 
-  virtual size_t getXPoints() = 0;
-  virtual size_t getYPoints() = 0;
-  virtual size_t getZPoints() = 0;
+  virtual size_t getXPoints() const = 0;
+  virtual size_t getYPoints() const = 0;
+  virtual size_t getZPoints() const = 0;
+  
+  virtual void getPlaneCoords(size_t idx[3], float coords[3]) const = 0;
+  virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) const = 0;
+  virtual void getPlaneCoords(size_t idx, float coords[3]) const = 0;
+  
+  virtual void getPlaneCoords(size_t idx[3], double coords[3]) const = 0;
+  virtual void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) const = 0;
+  virtual void getPlaneCoords(size_t idx, double coords[3]) const = 0;
 
-  virtual void getPlaneCoords(size_t idx[3], float coords[3]) = 0;
-  virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) = 0;
-  virtual void getPlaneCoords(size_t idx, float coords[3]) = 0;
-
-  virtual void getPlaneCoords(size_t idx[3], double coords[3]) = 0;
-  virtual void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) = 0;
-  virtual void getPlaneCoords(size_t idx, double coords[3]) = 0;
-
-  virtual void getCoords(size_t idx[3], float coords[3]) = 0;
-  virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]) = 0;
-  virtual void getCoords(size_t idx, float coords[3]) = 0;
-
-  virtual void getCoords(size_t idx[3], double coords[3]) = 0;
-  virtual void getCoords(size_t x, size_t y, size_t z, double coords[3]) = 0;
-  virtual void getCoords(size_t idx, double coords[3]) = 0;
+  virtual void getCoords(size_t idx[3], float coords[3]) const = 0;
+  virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]) const = 0;
+  virtual void getCoords(size_t idx, float coords[3]) const = 0;
+  
+  virtual void getCoords(size_t idx[3], double coords[3]) const = 0;
+  virtual void getCoords(size_t x, size_t y, size_t z, double coords[3]) const = 0;
+  virtual void getCoords(size_t idx, double coords[3]) const = 0;
 
 public:
   IGeometryGrid(const IGeometryGrid&) = delete;            // Copy Constructor Not Implemented
   IGeometryGrid(IGeometryGrid&&) = delete;                 // Move Constructor Not Implemented
   IGeometryGrid& operator=(const IGeometryGrid&) = delete; // Copy Assignment Not Implemented
   IGeometryGrid& operator=(IGeometryGrid&&) = delete;      // Move Assignment Not Implemented
-
-
 };
 
 

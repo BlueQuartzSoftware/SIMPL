@@ -84,7 +84,7 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      * @brief getVertices
      * @return
      */
-    virtual SharedVertexList::Pointer getVertices() = 0;
+    virtual SharedVertexList::Pointer getVertices() const = 0;
 
     /**
      * @brief setCoords
@@ -98,20 +98,20 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      * @param vertId
      * @param coords
      */
-    virtual void getCoords(size_t vertId, float coords[3]) = 0;
+    virtual void getCoords(size_t vertId, float coords[3]) const = 0;
 
     /**
      * @brief getVertexPointer
      * @param i
      * @return
      */
-    virtual float* getVertexPointer(size_t i) = 0;
+    virtual float* getVertexPointer(size_t i) const = 0;
 
     /**
      * @brief getNumberOfVertices
      * @return
      */
-    virtual size_t getNumberOfVertices() = 0;
+    virtual size_t getNumberOfVertices() const = 0;
 
     // -----------------------------------------------------------------------------
     // Inherited from SharedEdgeOps
@@ -127,7 +127,7 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      * @brief getEdges
      * @return
      */
-    virtual SharedEdgeList::Pointer getEdges() = 0;
+    virtual SharedEdgeList::Pointer getEdges() const = 0;
 
     /**
      * @brief setVerts
@@ -141,7 +141,7 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      * @param edgeId
      * @param verts
      */
-    virtual void getVertsAtEdge(size_t edgeId, size_t verts[2]) = 0;
+    virtual void getVertsAtEdge(size_t edgeId, size_t verts[2]) const = 0;
 
     /**
      * @brief getVertCoordsAtEdge
@@ -149,20 +149,20 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      * @param vert1
      * @param vert2
      */
-    virtual void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) = 0;
+    virtual void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) const = 0;
 
     /**
      * @brief getEdgePointer
      * @param i
      * @return
      */
-    virtual size_t* getEdgePointer(size_t i) = 0;
+    virtual size_t* getEdgePointer(size_t i) const = 0;
 
     /**
      * @brief getNumberOfEdges
      * @return
      */
-    virtual size_t getNumberOfEdges() = 0;
+    virtual size_t getNumberOfEdges() const = 0;
 
     // -----------------------------------------------------------------------------
     // Connectivity
@@ -203,7 +203,7 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      * @brief getUnsharedEdges
      * @return
      */
-    virtual SharedEdgeList::Pointer getUnsharedEdges() = 0;
+    virtual SharedEdgeList::Pointer getUnsharedEdges() const = 0;
 
     /**
      * @brief deleteUnsharedEdges
@@ -219,7 +219,7 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      * @brief getUnsharedFaces
      * @return
      */
-    virtual SharedEdgeList::Pointer getUnsharedFaces() = 0;
+    virtual SharedEdgeList::Pointer getUnsharedFaces() const = 0;
 
     /**
      * @brief deleteUnsharedFaces

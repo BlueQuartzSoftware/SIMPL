@@ -297,7 +297,7 @@ DataArrayPath AttributeMatrix::getDataArrayPath() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool AttributeMatrix::validateAttributeArraySizes()
+bool AttributeMatrix::validateAttributeArraySizes() const
 {
   int64_t arraySize = 0;
   int64_t matrixSize = getNumberOfTuples();
@@ -372,7 +372,7 @@ RenameErrorCodes AttributeMatrix::renameAttributeArray(const QString& oldname, c
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<size_t> AttributeMatrix::getTupleDimensions()
+std::vector<size_t> AttributeMatrix::getTupleDimensions() const
 {
   return m_TupleDims;
 }
@@ -388,7 +388,7 @@ void AttributeMatrix::setTupleDimensions(const std::vector<size_t>& tupleDims)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t AttributeMatrix::getNumberOfTuples()
+size_t AttributeMatrix::getNumberOfTuples() const
 {
   if(m_TupleDims.empty())
   {
@@ -510,7 +510,7 @@ AttributeMatrix::Container_t AttributeMatrix::getAttributeArrays() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::NameList AttributeMatrix::getAttributeArrayNames()
+AttributeMatrix::NameList AttributeMatrix::getAttributeArrayNames() const
 {
   return getNamesOfChildren();
 }
@@ -523,7 +523,7 @@ int AttributeMatrix::getNumAttributeArrays() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::Pointer AttributeMatrix::deepCopy(bool forceNoAllocate)
+AttributeMatrix::Pointer AttributeMatrix::deepCopy(bool forceNoAllocate) const
 {
   AttributeMatrix::Pointer newAttrMat = AttributeMatrix::New(getTupleDimensions(), getName(), getType());
 
@@ -543,7 +543,7 @@ AttributeMatrix::Pointer AttributeMatrix::deepCopy(bool forceNoAllocate)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AttributeMatrix::writeAttributeArraysToHDF5(hid_t parentId)
+int AttributeMatrix::writeAttributeArraysToHDF5(hid_t parentId) const
 {
   int err = 0;
 
@@ -670,7 +670,7 @@ int AttributeMatrix::readAttributeArraysFromHDF5(hid_t amGid, bool preflight, At
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AttributeMatrix::generateXdmfText(const QString& centering, const QString& dataContainerName, const QString& hdfFileName, const uint8_t gridType)
+QString AttributeMatrix::generateXdmfText(const QString& centering, const QString& dataContainerName, const QString& hdfFileName, const uint8_t gridType) const
 {
   QString xdmfText;
   QString block;
@@ -688,7 +688,7 @@ QString AttributeMatrix::generateXdmfText(const QString& centering, const QStrin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
+QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format) const
 {
   QString info;
   QTextStream ss(&info);
@@ -780,7 +780,7 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
 //
 // -----------------------------------------------------------------------------
 QString AttributeMatrix::writeXdmfAttributeDataHelper(int numComp, const QString& attrType, const QString& dataContainerName, const IDataArray::Pointer& array, const QString& centering, int precision,
-                                                      const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType)
+                                                      const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType) const
 {
   QString buf;
   QTextStream out(&buf);
@@ -887,7 +887,7 @@ QString AttributeMatrix::writeXdmfAttributeDataHelper(int numComp, const QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AttributeMatrix::writeXdmfAttributeData(const IDataArray::Pointer& array, const QString& centering, const QString& dataContainerName, const QString& hdfFileName, const uint8_t gridType)
+QString AttributeMatrix::writeXdmfAttributeData(const IDataArray::Pointer& array, const QString& centering, const QString& dataContainerName, const QString& hdfFileName, const uint8_t gridType) const
 {
   QString xdmfText;
   QTextStream out(&xdmfText);

@@ -240,14 +240,14 @@ public:
      * null pointer if the name does not exist.
      * @param name The name of the data array
      */
-    IDataArrayShPtrType getAttributeArray(const QString& name);
+    IDataArrayShPtrType getAttributeArray(const QString& name) const;
 
     /**
      * @brief getAttributeArray
      * @param path
      * @return
      */
-    IDataArrayShPtrType getAttributeArray(const DataArrayPath& path);
+    IDataArrayShPtrType getAttributeArray(const DataArrayPath& path) const;
 
     /**
     * @brief returns a IDataArray based object that is stored in the attribute matrix by a
@@ -255,7 +255,7 @@ public:
     * @param name The name of the array
     */
     template<class ArrayType>
-    typename ArrayType::Pointer getAttributeArrayAs(const QString& name)
+    typename ArrayType::Pointer getAttributeArrayAs(const QString& name) const
     {
       IDataArrayShPtrType iDataArray = getAttributeArray(name);
       return std::dynamic_pointer_cast< ArrayType >(iDataArray);
@@ -299,7 +299,7 @@ public:
     * Cell (Formerly Cell) group
     * @return
     */
-    virtual NameList getAttributeArrayNames();
+    virtual NameList getAttributeArrayNames() const;
 
     /**
     * @brief Returns the total number of arrays that are stored in the Cell group
@@ -317,7 +317,7 @@ public:
      * @brief Returns bool of whether a named array exists
      * @param name The name of the data array
      */
-    virtual bool validateAttributeArraySizes();
+    virtual bool validateAttributeArraySizes() const;
 
     /**
      * @brief getPrereqArray
@@ -329,7 +329,7 @@ public:
      * @return A valid IDataArray Subclass if the array exists otherwise a null shared pointer.
      */
     template <class ArrayType, class Filter>
-    typename ArrayType::Pointer getPrereqArray(Filter* filter, QString attributeArrayName, int err, std::vector<size_t> cDims)
+    typename ArrayType::Pointer getPrereqArray(Filter* filter, QString attributeArrayName, int err, std::vector<size_t> cDims) const
     {
       QString ss;
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
@@ -381,7 +381,7 @@ public:
      * @param err
      * @return
      */
-    template <class ArrayType, class Filter> typename ArrayType::Pointer getPrereqIDataArray(Filter* filter, const QString& attributeArrayName, int err)
+    template <class ArrayType, class Filter> typename ArrayType::Pointer getPrereqIDataArray(Filter* filter, const QString& attributeArrayName, int err) const
     {
       QString ss;
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
@@ -513,7 +513,7 @@ public:
      * @return
      */
     template<class ArrayType, class AbstractFilter>
-    bool dataArrayCompatibility(const QString& arrayName, int numComp, AbstractFilter* filter)
+    bool dataArrayCompatibility(const QString& arrayName, int numComp, AbstractFilter* filter) const
     {
       // Make sure the types are the same
       IDataArrayShPtrType ida = getAttributeArray(arrayName);
@@ -587,27 +587,27 @@ public:
      * @brief Returns the Tuple Dimensions of the AttributeMatrix
      * @return
      */
-    std::vector<size_t> getTupleDimensions();
+    std::vector<size_t> getTupleDimensions() const;
 
     /**
     * @brief Returns the number of Tuples that the feature data has. For example if there are 32 features
     * in during a set of filtering operations then the a value of '32' would be returned.
     * @return
     */
-    size_t getNumberOfTuples();
+    size_t getNumberOfTuples() const;
 
     /**
     * @brief creates and returns a copy of the attribute matrix
     * @return On error, will return a null pointer.  It is the responsibility of the calling function to check for errors and return an error message using the PipelineMessage
     */
-    virtual AttributeMatrix::Pointer deepCopy(bool forceNoAllocate = false);
+    virtual AttributeMatrix::Pointer deepCopy(bool forceNoAllocate = false) const;
 
     /**
      * @brief writeAttributeArraysToHDF5
      * @param parentId
      * @return
      */
-    virtual int writeAttributeArraysToHDF5(hid_t parentId);
+    virtual int writeAttributeArraysToHDF5(hid_t parentId) const;
 
     /**
      * @brief addAttributeArrayFromHDF5Path
@@ -635,7 +635,7 @@ public:
      * @param gridType
      * @return
      */
-    virtual QString generateXdmfText(const QString& centering, const QString& dataContainerName, const QString& hdfFileName, uint8_t gridType = 0);
+    virtual QString generateXdmfText(const QString& centering, const QString& dataContainerName, const QString& hdfFileName, uint8_t gridType = 0) const;
 
     /**
      * @brief getInfoString Returns a text string in the given format that has information
@@ -643,7 +643,7 @@ public:
      * @param format A value from the SIMPL::InfoStringFormat enumeration
      * @return
      */
-    virtual QString getInfoString(SIMPL::InfoStringFormat format);
+    virtual QString getInfoString(SIMPL::InfoStringFormat format) const;
 
   protected:
     AttributeMatrix(const std::vector<size_t>& tDims, const QString& name, AttributeMatrix::Type attrType);
@@ -657,7 +657,7 @@ public:
      * @param gridType
      * @return
      */
-    virtual QString writeXdmfAttributeData(const IDataArrayShPtrType& array, const QString& centering, const QString& dataContainerName, const QString& hdfFileName, uint8_t gridType = 0);
+    virtual QString writeXdmfAttributeData(const IDataArrayShPtrType& array, const QString& centering, const QString& dataContainerName, const QString& hdfFileName, uint8_t gridType = 0) const;
 
     /**
      * @brief writeXdmfAttributeDataHelper
@@ -673,7 +673,7 @@ public:
      * @return
      */
     virtual QString writeXdmfAttributeDataHelper(int numComp, const QString& attrType, const QString& dataContainerName, const IDataArrayShPtrType& array, const QString& centering, int precision,
-                                                 const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType = 0);
+                                                 const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType = 0) const;
 
   private:
 

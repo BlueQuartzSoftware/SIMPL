@@ -145,7 +145,7 @@ public:
    * @param boundingBox The bounding box will be stored in the input argument in the following order:
    * xMin, xMax, yMin, yMax, zMin, zMax
    */
-  FloatVec6Type getBoundingBox();
+  FloatVec6Type getBoundingBox() const;
 
   // -----------------------------------------------------------------------------
   // Inherited from IGeometry
@@ -160,7 +160,7 @@ public:
    * @brief getNumberOfElements
    * @return
    */
-  size_t getNumberOfElements() override;
+  size_t getNumberOfElements() const override;
 
   /**
    * @brief findElementSizes
@@ -172,7 +172,7 @@ public:
    * @brief getElementSizes
    * @return
    */
-  FloatArrayType::Pointer getElementSizes() override;
+  FloatArrayType::Pointer getElementSizes() const override;
 
   /**
    * @brief deleteElementSizes
@@ -189,7 +189,7 @@ public:
    * @brief getElementsContainingVert
    * @return
    */
-  ElementDynamicList::Pointer getElementsContainingVert() override;
+  ElementDynamicList::Pointer getElementsContainingVert() const override;
 
   /**
    * @brief deleteElementsContainingVert
@@ -206,7 +206,7 @@ public:
    * @brief getElementNeighbors
    * @return
    */
-  ElementDynamicList::Pointer getElementNeighbors() override;
+  ElementDynamicList::Pointer getElementNeighbors() const override;
 
   /**
    * @brief deleteElementNeighbors
@@ -223,7 +223,7 @@ public:
    * @brief getElementCentroids
    * @return
    */
-  FloatArrayType::Pointer getElementCentroids() override;
+  FloatArrayType::Pointer getElementCentroids() const override;
 
   /**
    * @brief deleteElementCentroids
@@ -234,14 +234,14 @@ public:
    * @brief getParametricCenter
    * @param pCoords
    */
-  void getParametricCenter(double pCoords[3]) override;
+  void getParametricCenter(double pCoords[3]) const override;
 
   /**
    * @brief getShapeFunctions
    * @param pCoords
    * @param shape
    */
-  void getShapeFunctions(double pCoords[3], double* shape) override;
+  void getShapeFunctions(double pCoords[3], double* shape) const override;
 
   /**
    * @brief findDerivatives
@@ -255,7 +255,7 @@ public:
    * @return Returns a formatted string that contains general infomation about
    * the instance of the object.
    */
-  QString getInfoString(SIMPL::InfoStringFormat format) override;
+  QString getInfoString(SIMPL::InfoStringFormat format) const override;
 
   /**
    * @brief writeGeometryToHDF5
@@ -263,7 +263,7 @@ public:
    * @param writeXdmf
    * @return
    */
-  int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
+  int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) const override;
 
   /**
    * @brief writeXdmf
@@ -272,7 +272,7 @@ public:
    * @param hdfFileName
    * @return
    */
-  int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
+  int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const override;
 
   /**
    * @brief readGeometryFromHDF5
@@ -286,7 +286,7 @@ public:
    * @brief deepCopy
    * @return
    */
-  IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
+  IGeometry::Pointer deepCopy(bool forceNoAllocate = false) const override;
 
   /**
    * @brief addOrReplaceAttributeMatrix
@@ -301,25 +301,25 @@ public:
   void setDimensions(const SizeVec3Type& dims) override;
   void setDimensions(size_t x, size_t y, size_t z);
 
-  size_t getXPoints() override;
-  size_t getYPoints() override;
-  size_t getZPoints() override;
+  size_t getXPoints() const override;
+  size_t getYPoints() const override;
+  size_t getZPoints() const override;
 
-  void getPlaneCoords(size_t idx[3], float coords[3]) override;
-  void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) override;
-  void getPlaneCoords(size_t idx, float coords[3]) override;
+  void getPlaneCoords(size_t idx[3], float coords[3]) const override;
+  void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) const override;
+  void getPlaneCoords(size_t idx, float coords[3]) const override;
 
-  void getPlaneCoords(size_t idx[3], double coords[3]) override;
-  void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) override;
-  void getPlaneCoords(size_t idx, double coords[3]) override;
+  void getPlaneCoords(size_t idx[3], double coords[3]) const override;
+  void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) const override;
+  void getPlaneCoords(size_t idx, double coords[3]) const override;
 
-  void getCoords(size_t idx[3], float coords[3]) override;
-  void getCoords(size_t x, size_t y, size_t z, float coords[3]) override;
-  void getCoords(size_t idx, float coords[3]) override;
+  void getCoords(size_t idx[3], float coords[3]) const override;
+  void getCoords(size_t x, size_t y, size_t z, float coords[3]) const override;
+  void getCoords(size_t idx, float coords[3]) const override;
 
-  void getCoords(size_t idx[3], double coords[3]) override;
-  void getCoords(size_t x, size_t y, size_t z, double coords[3]) override;
-  void getCoords(size_t idx, double coords[3]) override;
+  void getCoords(size_t idx[3], double coords[3]) const override;
+  void getCoords(size_t x, size_t y, size_t z, double coords[3]) const override;
+  void getCoords(size_t idx, double coords[3]) const override;
 
   // -----------------------------------------------------------------------------
   // Misc. ImageGeometry Methods

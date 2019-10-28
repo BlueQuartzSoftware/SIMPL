@@ -136,7 +136,7 @@ public:
    * @brief getVertices
    * @return
    */
-  SharedVertexList::Pointer getVertices();
+  SharedVertexList::Pointer getVertices() const;
 
   /**
    * @brief setCoords
@@ -150,20 +150,20 @@ public:
    * @param vertId
    * @param coords
    */
-  void getCoords(size_t vertId, float coords[3]);
+  void getCoords(size_t vertId, float coords[3]) const;
 
   /**
    * @brief getVertexPointer
    * @param i
    * @return
    */
-  float* getVertexPointer(size_t i);
+  float* getVertexPointer(size_t i) const;
 
   /**
    * @brief getNumberOfVertices
    * @return
    */
-  size_t getNumberOfVertices();
+  size_t getNumberOfVertices() const;
 
   // -----------------------------------------------------------------------------
   // Inherited from IGeometry
@@ -178,7 +178,7 @@ public:
    * @brief getNumberOfElements
    * @return
    */
-  size_t getNumberOfElements() override;
+  size_t getNumberOfElements() const override;
 
   /**
    * @brief findElementSizes
@@ -190,7 +190,7 @@ public:
    * @brief getElementSizes
    * @return
    */
-  FloatArrayType::Pointer getElementSizes() override;
+  FloatArrayType::Pointer getElementSizes() const override;
 
   /**
    * @brief deleteElementSizes
@@ -207,7 +207,7 @@ public:
    * @brief getElementsContainingVert
    * @return
    */
-  ElementDynamicList::Pointer getElementsContainingVert() override;
+  ElementDynamicList::Pointer getElementsContainingVert() const override;
 
   /**
    * @brief deleteElementsContainingVert
@@ -224,7 +224,7 @@ public:
    * @brief getElementNeighbors
    * @return
    */
-  ElementDynamicList::Pointer getElementNeighbors() override;
+  ElementDynamicList::Pointer getElementNeighbors() const override;
 
   /**
    * @brief deleteElementNeighbors
@@ -241,7 +241,7 @@ public:
    * @brief getElementCentroids
    * @return
    */
-  FloatArrayType::Pointer getElementCentroids() override;
+  FloatArrayType::Pointer getElementCentroids() const override;
 
   /**
    * @brief deleteElementCentroids
@@ -252,14 +252,14 @@ public:
    * @brief getParametricCenter
    * @param pCoords
    */
-  void getParametricCenter(double pCoords[3]) override;
+  void getParametricCenter(double pCoords[3]) const override;
 
   /**
    * @brief getShapeFunctions
    * @param pCoords
    * @param shape
    */
-  void getShapeFunctions(double pCoords[3], double* shape) override;
+  void getShapeFunctions(double pCoords[3], double* shape) const override;
 
   /**
    * @brief findDerivatives
@@ -273,7 +273,7 @@ public:
    * @return Returns a formatted string that contains general infomation about
    * the instance of the object.
    */
-  QString getInfoString(SIMPL::InfoStringFormat format) override;
+  QString getInfoString(SIMPL::InfoStringFormat format) const override;
 
   /**
    * @brief writeGeometryToHDF5
@@ -281,7 +281,7 @@ public:
    * @param writeXdmf
    * @return
    */
-  int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
+  int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) const override;
 
   /**
    * @brief writeXdmf
@@ -290,7 +290,7 @@ public:
    * @param hdfFileName
    * @return
    */
-  int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
+  int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const override;
 
   /**
    * @brief readGeometryFromHDF5
@@ -304,7 +304,7 @@ public:
    * @brief deepCopy
    * @return
    */
-  IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
+  IGeometry::Pointer deepCopy(bool forceNoAllocate = false) const override;
 
   /**
    * @brief addOrReplaceAttributeMatrix

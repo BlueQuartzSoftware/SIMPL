@@ -122,13 +122,13 @@ public:
      * @param name The name of the array
      * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
      */
-    IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) override
+    IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) const override
     {
       IDataArray::Pointer p = StructArray<T>::CreateArray(numElements, name, allocate);
       return p;
     }
 
-    IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) override
+    IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) const override
     {
       IDataArray::Pointer p = StructArray<T>::CreateArray(numElements, name, allocate);
       return p;
@@ -150,7 +150,7 @@ public:
      * @brief isAllocated
      * @return
      */
-    bool isAllocated() override
+    bool isAllocated() const override
     {
       return m_IsAllocated;
     }
@@ -161,7 +161,7 @@ public:
      * can be a primitive like char, float, int or the name of a class.
      * @return
      */
-    void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) override
+    void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const override
     {
       xdmfTypeName = getNameOfClass();
       precision = 0;
@@ -171,7 +171,7 @@ public:
      * @brief getTypeAsString
      * @return
      */
-    QString getTypeAsString() override { return "struct"; }
+    QString getTypeAsString() const override { return "struct"; }
 
     /**
     * @brief Returns the HDF Type for a given primitive value.
@@ -179,7 +179,7 @@ public:
     * from
     * @return The HDF5 native type for the value
     */
-    virtual QString getFullNameOfClass()
+    virtual QString getFullNameOfClass() const
     {
       QString theType = getTypeAsString();
       theType = "StructArray<" + theType + ">";
@@ -485,7 +485,7 @@ public:
      * 4 = 32 bit integer/Float
      * 8 = 64 bit integer/Double
      */
-    size_t getTypeSize() override
+    size_t getTypeSize() const override
     {
       return sizeof(T);
     }
@@ -493,7 +493,7 @@ public:
     /**
      * @brief Returns the number of elements in the internal array.
      */
-    size_t getNumberOfTuples() override
+    size_t getNumberOfTuples() const override
     {
       if (m_Size == 0) { return 0; }
       return (m_MaxId + 1);
@@ -503,7 +503,7 @@ public:
      * @brief getSize
      * @return
      */
-    size_t getSize() override
+    size_t getSize() const override
     {
       return m_Size;
     }
@@ -512,7 +512,7 @@ public:
      * @brief getNumberOfComponents
      * @return
      */
-    int getNumberOfComponents() override
+    int getNumberOfComponents() const override
     {
       return 1;
     }
@@ -521,7 +521,7 @@ public:
      * @brief getNumberOfComponents
      * @return
      */
-    std::vector<size_t> getComponentDimensions() override
+    std::vector<size_t> getComponentDimensions() const override
     {
       std::vector<size_t> dims(1, 1);
       return dims;
@@ -539,7 +539,7 @@ public:
      * @brief getRank
      * @return
      */
-    int getRank()
+    int getRank() const
     {
       return 1;
     }
@@ -567,7 +567,7 @@ public:
      * @param i The index to return the pointer to.
      * @return The pointer to the index
      */
-    virtual T* getPointer(size_t i)
+    virtual T* getPointer(size_t i) const
     {
 #ifndef NDEBUG
       if (m_Size > 0) { Q_ASSERT(i < m_Size);}
@@ -593,7 +593,7 @@ public:
       }
     }
 
-    IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override
+    IDataArray::Pointer deepCopy(bool forceNoAllocate = false) const override
     {
       bool allocate = m_IsAllocated;
       if(forceNoAllocate)
@@ -640,7 +640,7 @@ public:
      * @param i
      * @param delimiter
      */
-    void printTuple(QTextStream& out, size_t i, char delimiter = ',') override
+    void printTuple(QTextStream& out, size_t i, char delimiter = ',') const override
     {
       Q_ASSERT(false);
       //        for(int j = 0; j < NumberOfComponents; ++j)
@@ -656,7 +656,7 @@ public:
      * @param i
      * @param j
      */
-    void printComponent(QTextStream& out, size_t i, int j) override
+    void printComponent(QTextStream& out, size_t i, int j) const override
     {
       Q_ASSERT(false);
       //        out << Array[i + j];
@@ -668,7 +668,7 @@ public:
      * @param parentId
      * @return
      */
-    int writeH5Data(hid_t parentId, std::vector<size_t> tDims) override
+    int writeH5Data(hid_t parentId, std::vector<size_t> tDims) const override
     {
       Q_ASSERT(false);
       return -1;
@@ -684,7 +684,7 @@ public:
      * @return
      */
     int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName,
-                                   const QString& groupPath, const QString& labelb) override
+                                   const QString& groupPath, const QString& labelb) const override
     {
       out << "<!-- Xdmf is not supported for " << getNameOfClass() << " with type " << getTypeAsString() << " --> ";
       return -1;
@@ -695,7 +695,7 @@ public:
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    QString getInfoString(SIMPL::InfoStringFormat format) override
+    QString getInfoString(SIMPL::InfoStringFormat format) const override
     {
       QString info;
       QTextStream ss (&info);

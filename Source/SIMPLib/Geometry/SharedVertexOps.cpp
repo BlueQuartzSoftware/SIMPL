@@ -70,7 +70,7 @@ void GEOM_CLASS_NAME::setVertices(SharedVertexList::Pointer vertices)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedVertexList::Pointer GEOM_CLASS_NAME::getVertices()
+SharedVertexList::Pointer GEOM_CLASS_NAME::getVertices() const
 {
   return m_VertexList;
 }
@@ -89,7 +89,7 @@ void GEOM_CLASS_NAME::setCoords(size_t vertId, float coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getCoords(size_t vertId, float coords[3])
+void GEOM_CLASS_NAME::getCoords(size_t vertId, float coords[3]) const
 {
   float* Vert = m_VertexList->getTuplePointer(vertId);
   coords[0] = Vert[0];
@@ -100,7 +100,7 @@ void GEOM_CLASS_NAME::getCoords(size_t vertId, float coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-float* GEOM_CLASS_NAME::getVertexPointer(size_t i)
+float* GEOM_CLASS_NAME::getVertexPointer(size_t i) const
 {
   return m_VertexList->getTuplePointer(i);
 }
@@ -108,7 +108,7 @@ float* GEOM_CLASS_NAME::getVertexPointer(size_t i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t GEOM_CLASS_NAME::getNumberOfVertices()
+size_t GEOM_CLASS_NAME::getNumberOfVertices() const
 {
   return m_VertexList->getNumberOfTuples();
 }

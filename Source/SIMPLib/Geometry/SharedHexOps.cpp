@@ -35,7 +35,7 @@ void GEOM_CLASS_NAME::setHexahedra(SharedHexList::Pointer hexas)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedHexList::Pointer GEOM_CLASS_NAME::getHexahedra()
+SharedHexList::Pointer GEOM_CLASS_NAME::getHexahedra() const
 {
   return m_HexList;
 }
@@ -59,7 +59,7 @@ void GEOM_CLASS_NAME::setVertsAtHex(size_t hexId, size_t verts[8])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertsAtHex(size_t hexId, size_t verts[8])
+void GEOM_CLASS_NAME::getVertsAtHex(size_t hexId, size_t verts[8]) const
 {
   size_t* hex = m_HexList->getTuplePointer(hexId);
   verts[0] = hex[0];
@@ -75,7 +75,7 @@ void GEOM_CLASS_NAME::getVertsAtHex(size_t hexId, size_t verts[8])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertCoordsAtHex(size_t hexId, float vert1[3], float vert2[3], float vert3[3], float vert4[3], float vert5[3], float vert6[3], float vert7[3], float vert8[3])
+void GEOM_CLASS_NAME::getVertCoordsAtHex(size_t hexId, float vert1[3], float vert2[3], float vert3[3], float vert4[3], float vert5[3], float vert6[3], float vert7[3], float vert8[3]) const
 {
   size_t* hex = m_HexList->getTuplePointer(hexId);
   float* tmp1 = m_VertexList->getTuplePointer(hex[0]);
@@ -115,7 +115,7 @@ void GEOM_CLASS_NAME::getVertCoordsAtHex(size_t hexId, float vert1[3], float ver
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t* GEOM_CLASS_NAME::getHexPointer(size_t i)
+size_t* GEOM_CLASS_NAME::getHexPointer(size_t i) const
 {
   return m_HexList->getTuplePointer(i);
 }
@@ -123,7 +123,7 @@ size_t* GEOM_CLASS_NAME::getHexPointer(size_t i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t GEOM_CLASS_NAME::getNumberOfHexas()
+size_t GEOM_CLASS_NAME::getNumberOfHexas() const
 {
   return m_HexList->getNumberOfTuples();
 }

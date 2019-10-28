@@ -137,20 +137,20 @@ public:
    * @param path Uses the DataContainerName from the DataArrayPath to return a data container
    * @return
    */
-  virtual DataContainerShPtr getDataContainer(const DataArrayPath& path);
+  virtual DataContainerShPtr getDataContainer(const DataArrayPath& path) const;
 
   /**
    * @brief getDataContainer
    * @param name
    * @return
    */
-  virtual DataContainerShPtr getDataContainer(const QString& name);
+  virtual DataContainerShPtr getDataContainer(const QString& name) const;
 
   /**
    * @brief getDataContainers
    * @return
    */
-  Container getDataContainers();
+  Container getDataContainers() const;
 
   /**
    * @brief Returns if a DataContainer with the give name is in the array
@@ -171,14 +171,14 @@ public:
    * @param path
    * @return
    */
-  virtual bool doesAttributeMatrixExist(const DataArrayPath& path);
+  virtual bool doesAttributeMatrixExist(const DataArrayPath& path) const;
 
   /**
    * @brief doesAttributeArrayExist
    * @param path
    * @return
    */
-  virtual bool doesAttributeArrayExist(const DataArrayPath& path);
+  virtual bool doesAttributeArrayExist(const DataArrayPath& path) const;
 
   /**
    * @brief
@@ -210,13 +210,13 @@ public:
    * @brief getDataContainerNames
    * @return
    */
-  NameList getDataContainerNames();
+  NameList getDataContainerNames() const;
 
   /**
    * @brief Returns the number of DataContainers
    * @return
    */
-  virtual int getNumDataContainers();
+  virtual int getNumDataContainers() const;
 
   /**
    * @brief duplicateDataContainer
@@ -231,13 +231,13 @@ public:
    * @param path
    * @return
    */
-  virtual AttributeMatrix::Pointer getAttributeMatrix(const DataArrayPath& path);
+  virtual AttributeMatrix::Pointer getAttributeMatrix(const DataArrayPath& path) const;
 
   /**
    * @brief printDataContainerNames
    * @param out
    */
-  virtual void printDataContainerNames(QTextStream& out);
+  virtual void printDataContainerNames(QTextStream& out) const;
 
   /**
    * @brief Reads desired the DataContainers from HDF5 file
@@ -266,9 +266,9 @@ public:
    * @param name
    * @return
    */
-  IDataContainerBundle::Pointer getDataContainerBundle(const QString& name);
+  IDataContainerBundle::Pointer getDataContainerBundle(const QString& name) const;
 
-  template <typename BundleType> typename BundleType::Pointer getDataContainerBundleAs(const QString& name)
+  template <typename BundleType> typename BundleType::Pointer getDataContainerBundleAs(const QString& name) const
   {
     typename BundleType::Pointer dcb = std::dynamic_pointer_cast<BundleType>(getDataContainerBundle(name));
     return dcb;
@@ -465,7 +465,7 @@ public:
      * @return Valid or nullptr shared pointer based on availability of the array
      */
     template <class ArrayType, class Filter>
-    typename ArrayType::Pointer getPrereqArrayFromPath(Filter* filter, const DataArrayPath& path, std::vector<size_t> cDims)
+    typename ArrayType::Pointer getPrereqArrayFromPath(Filter* filter, const DataArrayPath& path, std::vector<size_t> cDims) const
     {
 
       QString ss;
@@ -529,7 +529,7 @@ public:
     * @return
     */
     template<class ArrayType, class Filter>
-    typename ArrayType::Pointer getPrereqIDataArrayFromPath(Filter* filter, const DataArrayPath& path)
+    typename ArrayType::Pointer getPrereqIDataArrayFromPath(Filter* filter, const DataArrayPath& path) const
     {
 
       QString ss;
@@ -691,7 +691,7 @@ public:
      * @return bool Validation check
      */
     template<typename Filter>
-    bool validateNumberOfTuples(Filter* filter, const QVector<DataArrayPath>& paths)
+    bool validateNumberOfTuples(Filter* filter, const QVector<DataArrayPath>& paths) const
     {
       if (paths.size() <= 1) { return false; }
       QVector<IDataArrayShPtrType> dataArrays;
@@ -758,7 +758,7 @@ public:
      * @return bool Validation check
      */
     template <typename Filter>
-    bool validateNumberOfTuples(Filter* filter, QVector<IDataArrayShPtrType> dataArrays)
+    bool validateNumberOfTuples(Filter* filter, QVector<IDataArrayShPtrType> dataArrays) const
     {
       if (dataArrays.size() <= 1) { return false; }
       bool valid = true;
@@ -791,7 +791,7 @@ public:
      * @param dca
      * @return
      */
-    DataContainerArray::Pointer deepCopy(bool forceNoAllocate = false);
+    DataContainerArray::Pointer deepCopy(bool forceNoAllocate = false) const;
 
   protected:
     DataContainerArray();
