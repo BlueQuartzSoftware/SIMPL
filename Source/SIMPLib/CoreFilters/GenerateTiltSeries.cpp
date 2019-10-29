@@ -121,11 +121,14 @@ public:
     FloatArrayType::Pointer inputVoxCoord = FloatArrayType::CreateArray(outputData->getNumberOfTuples(), {3}, "Input Voxel Coord", true);
     inputVoxCoord->initializeWithZeros();
     attrMat->insertOrAssign(inputVoxCoord);
+
 #endif
     // Generate the Rotation Matrix
     OrientationMatrixType om = ax2om<AxisAngleType, OrientationMatrixType>(m_RotationAxis);
 #if GTS_GENERATE_DEBUG_ARRAYS
     FloatArrayType::Pointer copyOfGrid = std::dynamic_pointer_cast<FloatArrayType>(m_Coords->deepCopy());
+    IDataArray::Pointer vertexOutputData = outputData->createNewArray(copyOfGrid->getNumberOfTuples(), {1}, outputData->getName(), true);
+    vertexOutputData->initializeWithZeros();
 #endif
     ImageGeom::ErrorType err;
     size_t numTuples = m_Coords->getNumberOfTuples();
@@ -161,6 +164,7 @@ public:
       outCoord[1] = outCoord[1] + center[1];
       outCoord[2] = outCoord[2] + center[2];
 
+// Set the transformed coordinate into the copy of the grid Vertex List
 #if GTS_GENERATE_DEBUG_ARRAYS
       copyOfGrid->setTuple(tupleIndex, outCoord.data());
 #endif
@@ -174,6 +178,9 @@ public:
       err = inputImageGeom->computeCellIndex(outCoord.data(), inputVoxelIndex);
 
 #if GTS_GENERATE_DEBUG_ARRAYS
+      // This line is OK to have before the error condition is checked because we are writing the value not
+      // using it to step into an array. This also allows us to debug the data coming out of this
+      // algorithm
       inputVoxIndex->setTuple(tupleIndex, &inputVoxelIndex);
 #endif
       if(err != ImageGeom::ErrorType::NoError)
@@ -181,6 +188,11 @@ public:
         continue;
       }
       outputData->copyFromArray(outputVoxelIndex, inputData, inputVoxelIndex, 1);
+#if GTS_GENERATE_DEBUG_ARRAYS
+      // Write the selected cell value array from the input data onto the Vertex Cell Array
+      // This allows us to visualize the data more easily in ParaView
+      vertexOutputData->copyFromArray(tupleIndex, inputData, inputVoxelIndex, 1);
+#endif
     }
 
 #if GTS_GENERATE_DEBUG_ARRAYS
@@ -190,6 +202,9 @@ public:
     gridVertGeom->setVertices(copyOfGrid);
     gridGeomDC->setGeometry(gridVertGeom);
     dca->insertOrAssign(gridGeomDC);
+    AttributeMatrix::Pointer cellAttrMat = AttributeMatrix::New({copyOfGrid->getNumberOfTuples()}, Detail::k_AttributeMatrixName, AttributeMatrix::Type::Vertex);
+    gridGeomDC->insertOrAssign(cellAttrMat);
+    cellAttrMat->insertOrAssign(vertexOutputData);
 #endif
   }
 
