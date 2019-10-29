@@ -284,7 +284,7 @@ public:
    * @brief getElementsContainingVert
    * @return
    */
-  virtual ElementDynamicList::Pointer getElementsContainingVert() = 0;
+  virtual ElementDynamicList::Pointer getElementsContainingVert() const = 0;
 
   /**
    * @brief deleteElementsContainingVert
@@ -301,7 +301,7 @@ public:
    * @brief getElementNeighbors
    * @return
    */
-  virtual ElementDynamicList::Pointer getElementNeighbors() = 0;
+  virtual ElementDynamicList::Pointer getElementNeighbors() const = 0;
 
   /**
    * @brief deleteElementNeighbors
@@ -316,7 +316,7 @@ public:
    * @brief getNumberOfElements
    * @return
    */
-  virtual size_t getNumberOfElements() = 0;
+  virtual size_t getNumberOfElements() const = 0;
 
   /**
    * @brief findElementSizes
@@ -328,7 +328,7 @@ public:
    * @brief getElementSizes
    * @return
    */
-  virtual FloatArrayType::Pointer getElementSizes() = 0;
+  virtual FloatArrayType::Pointer getElementSizes() const = 0;
 
   /**
    * @brief deleteElementSizes
@@ -345,7 +345,7 @@ public:
    * @brief getElementCentroids
    * @return
    */
-  virtual FloatArrayType::Pointer getElementCentroids() = 0;
+  virtual FloatArrayType::Pointer getElementCentroids() const = 0;
 
   /**
    * @brief deleteElementCentroids
@@ -356,14 +356,14 @@ public:
    * @brief getParametricCenter
    * @param pCoords
    */
-  virtual void getParametricCenter(double pCoords[3]) = 0;
+  virtual void getParametricCenter(double pCoords[3]) const = 0;
 
   /**
    * @brief getShapeFunctions
    * @param pCoords
    * @param derivs
    */
-  virtual void getShapeFunctions(double pCoords[3], double* shape) = 0;
+  virtual void getShapeFunctions(double pCoords[3], double* shape) const = 0;
 
   /**
    * @brief findDerivatives
@@ -386,38 +386,38 @@ public:
    * @brief getName
    * @return
    */
-  virtual QString getName() final;
+  virtual QString getName() const final;
 
   /**
    * @brief getGeometryType
    * @return
    */
-  virtual Type getGeometryType() final;
+  virtual Type getGeometryType() const final;
 
   /**
    * @brief getGeometryTypeAsString
    * @return
    */
-  virtual QString getGeometryTypeAsString() final;
+  virtual QString getGeometryTypeAsString() const final;
 
   /**
    * @brief getInfoString
    * @return Returns a formatted string that contains general infomation about
    * the instance of the object.
    */
-  virtual QString getInfoString(SIMPL::InfoStringFormat) = 0;
+  virtual QString getInfoString(SIMPL::InfoStringFormat) const = 0;
 
   /**
    * @brief getXdmfGridType
    * @return
    */
-  virtual unsigned int getXdmfGridType() final;
+  virtual unsigned int getXdmfGridType() const final;
 
   /**
    * @brief getUnitDimensionality
    * @return
    */
-  virtual unsigned int getUnitDimensionality() final;
+  virtual unsigned int getUnitDimensionality() const final;
 
   /**
    * @brief setSpatialDimensionality
@@ -429,7 +429,7 @@ public:
    * @brief getSpatialDimensionality
    * @return
    */
-  virtual unsigned int getSpatialDimensionality() final;
+  virtual unsigned int getSpatialDimensionality() const final;
 
   /**
    * @brief writeGeometryToHDF5
@@ -437,7 +437,7 @@ public:
    * @param writeXdmf
    * @return
    */
-  virtual int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) = 0;
+  virtual int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) const = 0;
 
   /**
    * @brief writeXdmf
@@ -446,7 +446,7 @@ public:
    * @param hdfFileName
    * @return
    */
-  virtual int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) = 0;
+  virtual int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const = 0;
 
   /**
    * @brief readGeometryFromHDF5
@@ -460,7 +460,7 @@ public:
    * @brief deepCopy
    * @return
    */
-  virtual Pointer deepCopy(bool forceNoAllocate = false) = 0;
+  virtual Pointer deepCopy(bool forceNoAllocate = false) const = 0;
 
   /**
    * @brief initializeWithZeros
@@ -477,7 +477,7 @@ public:
    * @param name
    * @return
    */
-  virtual AttributeMatrixShPtrType getAttributeMatrix(const QString& name) final;
+  virtual AttributeMatrixShPtrType getAttributeMatrix(const QString& name) const final;
 
   /**
    * @brief removeAttributeMatrix

@@ -1,3 +1,9 @@
+
+#if !defined(_MSC_VER)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wreturn-std-move"
+#endif
+
 // clang-format off
 #include <QtCore/QString>
 
@@ -631,3 +637,7 @@ public:
 } // namespace detail
 } // namespace pybind11
 // clang-format on
+
+#if !defined(_MSC_VER)
+#pragma clang diagnostic pop
+#endif

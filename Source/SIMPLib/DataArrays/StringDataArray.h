@@ -93,7 +93,7 @@ public:
    */
   static QString ClassName();
 
-  int getClassVersion() override;
+  int getClassVersion() const override;
 
   /**
    * @brief CreateArray
@@ -131,16 +131,6 @@ public:
    * @return
    */
   IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) const override;
-
-  /**
-   * @brief createNewArray
-   * @param numElements
-   * @param dims
-   * @param name
-   * @param allocate
-   * @return
-   */
-  IDataArrayShPtrType createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief ~StringDataArray

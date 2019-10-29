@@ -70,7 +70,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
   PYB11_METHOD(void setOrigin OVERLOAD float,x float,y float,z)
   PYB11_METHOD(FloatVec3Type getOrigin)
 
-  PYB11_METHOD(FloatVec6Type getBoundingBox OVERLOAD)
+  PYB11_METHOD(FloatVec6Type getBoundingBox OVERLOAD CONST_METHOD)
 #endif
   // clang-format on
 

@@ -95,7 +95,7 @@ public:
    * @brief Returns the version of this class.
    * @return
    */
-  int32_t getClassVersion() override
+  int32_t getClassVersion() const override
   {
     return 2;
   }

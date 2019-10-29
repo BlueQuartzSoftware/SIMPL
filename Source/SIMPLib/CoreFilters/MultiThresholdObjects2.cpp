@@ -410,7 +410,7 @@ void MultiThresholdObjects2::thresholdValue(ComparisonValue::Pointer comparisonV
 
   ThresholdFilterHelper filter(static_cast<SIMPL::Comparison::Enumeration>(compOperator), compValue, currentArrayPtr.get());
 
-  err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(comparisonValue->getAttributeArrayName()).get(), currentArrayPtr.get());
+  err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(comparisonValue->getAttributeArrayName()), currentArrayPtr.get());
   if (err < 0)
   {
     DataArrayPath tempPath(m_SelectedThresholds.getDataContainerName(), m_SelectedThresholds.getAttributeMatrixName(), comparisonValue->getAttributeArrayName());

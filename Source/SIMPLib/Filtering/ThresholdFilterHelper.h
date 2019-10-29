@@ -54,11 +54,14 @@ public:
   /**
    *
    */
-  template <typename T> void filterDataLessThan(IDataArray* m_Input)
+  template <typename T>
+  void filterDataLessThan(const IDataArray::Pointer& m_Input)
   {
     size_t m_NumValues = m_Input->getNumberOfTuples();
     T v = static_cast<T>(comparisonValue);
-    T* data = IDataArray::SafeReinterpretCast<IDataArray*, DataArray<T>*, T*>(m_Input);
+    using DataArrayType = DataArray<T>;
+    typename DataArrayType::Pointer dataPtr = std::dynamic_pointer_cast<DataArrayType>(m_Input);
+    T* data = dataPtr->getTuplePointer(0);
     for(size_t i = 0; i < m_NumValues; ++i)
     {
       bool b = (data[i] < v);
@@ -69,11 +72,14 @@ public:
   /**
    *
    */
-  template <typename T> void filterDataGreaterThan(IDataArray* m_Input)
+  template <typename T>
+  void filterDataGreaterThan(const IDataArray::Pointer& m_Input)
   {
     size_t m_NumValues = m_Input->getNumberOfTuples();
     T v = static_cast<T>(comparisonValue);
-    T* data = IDataArray::SafeReinterpretCast<IDataArray*, DataArray<T>*, T*>(m_Input);
+    using DataArrayType = DataArray<T>;
+    typename DataArrayType::Pointer dataPtr = std::dynamic_pointer_cast<DataArrayType>(m_Input);
+    T* data = dataPtr->getTuplePointer(0);
     for(size_t i = 0; i < m_NumValues; ++i)
     {
       bool b = (data[i] > v);
@@ -84,11 +90,14 @@ public:
   /**
    *
    */
-  template <typename T> void filterDataEqualTo(IDataArray* m_Input)
+  template <typename T>
+  void filterDataEqualTo(const IDataArray::Pointer& m_Input)
   {
     size_t m_NumValues = m_Input->getNumberOfTuples();
     T v = static_cast<T>(comparisonValue);
-    T* data = IDataArray::SafeReinterpretCast<IDataArray*, DataArray<T>*, T*>(m_Input);
+    using DataArrayType = DataArray<T>;
+    typename DataArrayType::Pointer dataPtr = std::dynamic_pointer_cast<DataArrayType>(m_Input);
+    T* data = dataPtr->getTuplePointer(0);
     for(size_t i = 0; i < m_NumValues; ++i)
     {
       bool b = (data[i] == v);
@@ -99,11 +108,14 @@ public:
   /**
   *
   */
-  template <typename T> void filterDataNotEqualTo(IDataArray* m_Input)
+  template <typename T>
+  void filterDataNotEqualTo(const IDataArray::Pointer& m_Input)
   {
     size_t m_NumValues = m_Input->getNumberOfTuples();
     T v = static_cast<T>(comparisonValue);
-    T* data = IDataArray::SafeReinterpretCast<IDataArray*, DataArray<T>*, T*>(m_Input);
+    using DataArrayType = DataArray<T>;
+    typename DataArrayType::Pointer dataPtr = std::dynamic_pointer_cast<DataArrayType>(m_Input);
+    T* data = dataPtr->getTuplePointer(0);
     for(size_t i = 0; i < m_NumValues; ++i)
     {
       bool b = (data[i] != v);
@@ -117,7 +129,7 @@ public:
   * @param output
   * @return
   */
-  int execute(IDataArray* input, IDataArray* output);
+  int execute(const IDataArray::Pointer& input, IDataArray* output);
 
 private:
   SIMPL::Comparison::Enumeration comparisonOperator;

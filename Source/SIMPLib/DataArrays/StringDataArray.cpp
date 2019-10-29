@@ -563,7 +563,7 @@ QString StringDataArray::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-int StringDataArray::getClassVersion()
+int StringDataArray::getClassVersion() const
 {
   return 2;
 }

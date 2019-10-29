@@ -86,7 +86,7 @@ public:
    */
   static QString ClassName();
 
-  int getClassVersion() override;
+  int getClassVersion() const override;
 
   ~StatsDataArray() override;
 

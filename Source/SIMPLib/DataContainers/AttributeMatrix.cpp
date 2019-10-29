@@ -978,12 +978,12 @@ bool AttributeMatrix::addOrReplaceAttributeArray(const IDataArrayShPtrType& data
   return insertOrAssign(data);
 }
 
-IDataArrayShPtrType AttributeMatrix::getAttributeArray(const QString& name)
+IDataArrayShPtrType AttributeMatrix::getAttributeArray(const QString& name) const
 {
   return getChildByName(name);
 }
 
-IDataArrayShPtrType AttributeMatrix::getAttributeArray(const DataArrayPath& path)
+IDataArrayShPtrType AttributeMatrix::getAttributeArray(const DataArrayPath& path) const
 {
   return getAttributeArray(path.getDataArrayName());
 }

@@ -879,7 +879,7 @@ QVector<StatsData::Pointer> StatsDataArray::getStatsDataArray() const
 }
 
 // -----------------------------------------------------------------------------
-int StatsDataArray::getClassVersion()
+int StatsDataArray::getClassVersion() const
 {
   return 2;
 }
