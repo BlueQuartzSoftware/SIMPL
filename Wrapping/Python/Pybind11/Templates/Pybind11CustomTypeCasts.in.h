@@ -6,10 +6,14 @@
 #include <pybind11/stl.h>
 #include <pybind11/stl_bind.h>
 
+namespace py = pybind11;
+
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
+#include "SIMPLib/Common/ShapeType.h"
+#include "SIMPLib/Common/PhaseType.h"
 
 using DataContainersMap = QMap<QString, DataContainerProxy>;
 using AttributeMatricesMap = QMap<QString, AttributeMatrixProxy>;
@@ -37,7 +41,7 @@ public:
    * @param src
    * @return boolean
    */
-  bool load(handle src, bool)
+  bool load(handle src, bool b)
   {
     if(!src)
     {
@@ -249,7 +253,7 @@ public:
    * @param src
    * @return boolean
    */
-  bool load(handle src, bool)
+  bool load(handle src, bool b)
   {
     if(!src)
     {
@@ -306,7 +310,7 @@ public:
    * @param src
    * @return boolean
    */
-  bool load(handle src, bool)
+  bool load(handle src, bool b)
   {
     if(!src)
     {
@@ -366,7 +370,7 @@ public:
    * @param src
    * @return boolean
    */
-  bool load(handle src, bool)
+  bool load(handle src, bool b)
   {
     if(!src)
     {
@@ -426,7 +430,7 @@ public:
    * @param src
    * @return boolean
    */
-  bool load(handle src, bool)
+  bool load(handle src, bool b)
   {
     if(!src)
     {
@@ -543,7 +547,7 @@ public:
    * @param src
    * @return boolean
    */
-  bool load(handle src, bool)
+  bool load(handle src, bool b)
   {
     if(!src)
     {

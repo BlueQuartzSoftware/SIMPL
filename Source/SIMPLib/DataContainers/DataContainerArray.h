@@ -70,8 +70,8 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
   PYB11_METHOD(bool addOrReplaceDataContainer ARGS DataContainer)
   PYB11_METHOD(bool insertOrAssign ARGS DataContainer)
 
-  PYB11_METHOD(DataContainer::Pointer getDataContainer OVERLOAD const.QString.&,Name)
-  PYB11_METHOD(DataContainer::Pointer getDataContainer OVERLOAD const.DataArrayPath.&,Path)
+  PYB11_METHOD(DataContainer::Pointer getDataContainer OVERLOAD const.QString.&,Name CONST_METHOD)
+  PYB11_METHOD(DataContainer::Pointer getDataContainer OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
 
   PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.QString.&,Name CONST_METHOD)
   PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
