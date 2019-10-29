@@ -49,8 +49,6 @@
 class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 {
   // clang-format off
-
-
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ImageGeom SUPERCLASS IGeometryGrid)
   PYB11_SHARED_POINTERS(ImageGeom)
@@ -74,7 +72,6 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 
   PYB11_METHOD(FloatVec6Type getBoundingBox OVERLOAD)
 #endif
-
   // clang-format on
 
 public:

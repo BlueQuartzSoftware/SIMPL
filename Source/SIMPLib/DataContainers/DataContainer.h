@@ -88,8 +88,8 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
   PYB11_METHOD(bool addOrReplaceAttributeMatrix ARGS AttributeMatrix)
   PYB11_METHOD(bool insertOrAssign ARGS AttributeMatrix)
 
-  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.QString.&,Name)
-  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.DataArrayPath.&,Path)
+  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.QString.&,Name CONST_METHOD)
+  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
 
   PYB11_METHOD(AttributeMatrix removeAttributeMatrix ARGS Name)
   PYB11_METHOD(bool renameAttributeMatrix ARGS OldName NewName OverWrite)
