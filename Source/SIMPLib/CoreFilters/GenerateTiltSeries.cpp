@@ -24,6 +24,7 @@
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/ITK/Dream3DTemplateAliasMacro.h"
@@ -61,7 +62,6 @@ namespace Detail
 {
 
 const QString k_AttributeMatrixName("Slice Data");
-const QString k_ImageGridNamePattern("Rotation_%1");
 
 class ResampleGrid
 {
@@ -285,6 +285,7 @@ GenerateTiltSeries::GenerateTiltSeries()
 , m_Increment(1.0)
 , m_Spacing(FloatVec3Type(1.0, 1.0, 1.0))
 , m_InputDataArrayPath(DataArrayPath("DataContainer", "AttributeMatrix", "FeatureIds"))
+, m_OutputPrefix("Rotation_")
 {
   initialize();
 }
@@ -333,6 +334,7 @@ void GenerateTiltSeries::setupFilterParameters()
   dasReq.dcGeometryTypes = {IGeometry::Type::Image};
   dasReq.amTypes = {AttributeMatrix::Type::Cell};
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Input Data Array Path", InputDataArrayPath, FilterParameter::Parameter, GenerateTiltSeries, dasReq));
+  parameters.push_back(SIMPL_NEW_STRING_FP("DataContainer Prefix", OutputPrefix, FilterParameter::Category::Parameter, GenerateTiltSeries));
   setFilterParameters(parameters);
 }
 
@@ -369,7 +371,7 @@ void GenerateTiltSeries::dataCheck()
 
   for(float currentDeg = 0.0f; currentDeg < 180.0f; currentDeg += increment)
   {
-    QString gridDCName = QString(Detail::k_ImageGridNamePattern).arg(gridIndex);
+    QString gridDCName = m_OutputPrefix + QString::number(gridIndex);
     DataContainer::Pointer gridDC = DataContainer::New(gridDCName);
     ImageGeom::Pointer gridImageGeom = std::dynamic_pointer_cast<ImageGeom>(gridGeometry->deepCopy());
     gridDC->setGeometry(gridImageGeom);
@@ -440,7 +442,7 @@ void GenerateTiltSeries::execute()
     QTextStream out(&msg);
     out << "Generating Tilt " << currentDeg << " (Deg)";
     notifyStatusMessage(msg);
-    QString gridDCName = QString(Detail::k_ImageGridNamePattern).arg(gridIndex);
+    QString gridDCName = m_OutputPrefix + QString::number(gridIndex);
     DataContainer::Pointer gridDC = dca->getDataContainer(gridDCName);
 
     std::array<float, 4> rotationAxis = {0.0f, 0.0f, 0.0f, 0.0f};

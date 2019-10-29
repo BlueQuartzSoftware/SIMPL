@@ -23,6 +23,7 @@ class SIMPLib_EXPORT GenerateTiltSeries : public AbstractFilter
     PYB11_PROPERTY(float Increment READ getIncrement WRITE setIncrement)
     PYB11_PROPERTY(float Spacing READ getSpacing WRITE setSpacing)
     PYB11_PROPERTY(DataArrayPath InputDataArrayPath READ getInputDataArrayPath WRITE setInputDataArrayPath)
+    PYB11_PROPERTY(QString OutputPrefix READ getOutputPrefix WRITE setOutputPrefix)
 
   // clang-format on
 
@@ -48,6 +49,9 @@ public:
 
   SIMPL_FILTER_PARAMETER(DataArrayPath, InputDataArrayPath)
   Q_PROPERTY(DataArrayPath InputDataArrayPath READ getInputDataArrayPath WRITE setInputDataArrayPath)
+
+  SIMPL_FILTER_PARAMETER(QString, OutputPrefix)
+  Q_PROPERTY(QString OutputPrefix READ getOutputPrefix WRITE setOutputPrefix)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
