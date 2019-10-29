@@ -76,6 +76,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 class IDataArray;

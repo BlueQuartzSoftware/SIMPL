@@ -2,6 +2,8 @@
  * Your License or Copyright Information can go here
  */
 
+#include <memory>
+
 #include "Filt0.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"

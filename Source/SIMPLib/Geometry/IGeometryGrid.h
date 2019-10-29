@@ -34,6 +34,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <tuple>
 
 #include "SIMPLib/SIMPLib.h"

@@ -33,6 +33,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/Geometry/ITransformContainer.h"
 #include "SIMPLib/SIMPLib.h"
 

@@ -1,3 +1,7 @@
+#include <memory>
+
+#include <memory>
+
 /* Template file used is called DerivedSharedPointerClassInit.in.h */
 // clang-format off
 /**

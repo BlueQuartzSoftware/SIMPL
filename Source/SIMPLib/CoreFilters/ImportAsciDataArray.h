@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QScopedPointer>
 
 #include "SIMPLib/SIMPLib.h"

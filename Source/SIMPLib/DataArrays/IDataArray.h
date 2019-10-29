@@ -11,6 +11,8 @@
 #pragma once
 
 //-- C++
+#include <memory>
+
 #include <vector>
 
 #include <hdf5.h>

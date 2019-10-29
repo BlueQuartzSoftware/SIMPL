@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QMutex>
 #include <QtCore/QMap>
 #include <QtCore/QString>

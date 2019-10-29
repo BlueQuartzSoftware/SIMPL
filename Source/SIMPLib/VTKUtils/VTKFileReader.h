@@ -36,6 +36,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <fstream>
 
 #include <QtCore/QDebug>

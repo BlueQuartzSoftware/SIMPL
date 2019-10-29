@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <itkImportImageFilter.h>
 #include <itkNumericTraits.h>
 #include <itkNumericTraitsRGBAPixel.h>

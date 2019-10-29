@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <functional>
 
 #include <QtCore/QJsonObject>

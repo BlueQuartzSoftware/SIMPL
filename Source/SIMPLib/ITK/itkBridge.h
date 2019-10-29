@@ -36,6 +36,8 @@
 #pragma once
 
 // ITK Includes first
+#include <memory>
+
 #include "itkExtractImageFilter.h"
 #include "itkRGBAPixel.h"
 #include "itkRGBPixel.h"

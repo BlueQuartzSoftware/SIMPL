@@ -36,6 +36,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <array>
 
 #include <hdf5.h>

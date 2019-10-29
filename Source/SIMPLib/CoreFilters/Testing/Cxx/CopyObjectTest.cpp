@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"

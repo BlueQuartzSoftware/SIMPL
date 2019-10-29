@@ -1,6 +1,8 @@
 #ifndef _hexahedralgeom_h_
 #define _hexahedralgeom_h_
 
+#include <memory>
+
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/Geometry/IGeometry3D.h"

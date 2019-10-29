@@ -37,6 +37,8 @@
 #pragma once
 
 
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataArrays/DynamicListArray.hpp"
 

@@ -36,6 +36,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtWidgets/QWizard>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"

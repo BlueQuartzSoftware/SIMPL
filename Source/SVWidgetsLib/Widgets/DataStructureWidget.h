@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtGui/QIcon>
 #include <QtWidgets/QWidget>
 

@@ -1,5 +1,7 @@
 #include "PythonBindingClass.h"
 
+#include <memory>
+
 #include <iostream>
 
 #include <QtCore/QCryptographicHash>

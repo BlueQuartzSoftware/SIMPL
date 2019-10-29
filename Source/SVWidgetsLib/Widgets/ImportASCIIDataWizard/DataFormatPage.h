@@ -36,6 +36,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QPointer>
 #include <QtCore/QObject>
 

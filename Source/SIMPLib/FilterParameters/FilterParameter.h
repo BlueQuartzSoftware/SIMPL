@@ -37,7 +37,7 @@
 #pragma once
 
 #include <functional>
-
+#include <memory>
 
 #include <QtCore/QVariant>
 #include <QtCore/QString>

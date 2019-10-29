@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 

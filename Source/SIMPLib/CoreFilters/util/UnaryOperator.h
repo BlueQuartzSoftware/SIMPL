@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "CalculatorOperator.h"
 
 #include "SIMPLib/DataArrays/DataArray.hpp"

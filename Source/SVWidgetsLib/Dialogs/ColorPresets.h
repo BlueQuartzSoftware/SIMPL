@@ -46,6 +46,8 @@
 // have multiple instances alive at the same time.
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QString>
 #include <QtCore/QJsonObject>
 

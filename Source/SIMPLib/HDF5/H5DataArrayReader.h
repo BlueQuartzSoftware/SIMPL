@@ -38,6 +38,8 @@
 
 #include <hdf5.h>
 
+#include <memory>
+
 #include <QtCore/QString>
 
 

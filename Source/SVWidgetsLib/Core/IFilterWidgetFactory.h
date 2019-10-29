@@ -37,6 +37,8 @@
 #pragma once
 
 
+#include <memory>
+
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"

@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 template<typename T>

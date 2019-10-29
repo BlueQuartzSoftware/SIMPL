@@ -43,6 +43,7 @@
 #include <list>
 #include <set>
 #include <utility>
+#include <memory>
 
 #include "SIMPLib/Common/SIMPLibDLLExport.h"
 #include "SIMPLib/SIMPLib.h"

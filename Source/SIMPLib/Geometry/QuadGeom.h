@@ -34,6 +34,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/SIMPLib.h"

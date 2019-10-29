@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/DataArrays/DataArray.hpp"

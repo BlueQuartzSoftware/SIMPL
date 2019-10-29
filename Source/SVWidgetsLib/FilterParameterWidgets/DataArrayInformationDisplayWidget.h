@@ -36,6 +36,8 @@
 #pragma once
 
 
+#include <memory>
+
 #include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"

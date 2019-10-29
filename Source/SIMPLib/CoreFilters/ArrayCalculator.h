@@ -36,6 +36,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QStack>
 
 #include "SIMPLib/SIMPLib.h"

@@ -33,6 +33,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QString>
 
 #include "SIMPLib/Messages/AbstractMessage.h"

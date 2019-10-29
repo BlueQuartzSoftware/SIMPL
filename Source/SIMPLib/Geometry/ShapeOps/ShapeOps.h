@@ -37,6 +37,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include <QtCore/QMap>
 #include <QtCore/QVector>

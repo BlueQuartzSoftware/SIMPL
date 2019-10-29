@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/Geometry/IGeometry3D.h"

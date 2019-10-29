@@ -32,6 +32,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class ImportHDF5Dataset;

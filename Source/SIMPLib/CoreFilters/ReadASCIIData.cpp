@@ -2,6 +2,8 @@
  * Your License or Copyright can go here
  */
 
+#include <memory>
+
 #include "ReadASCIIData.h"
 
 #include <QtCore/QFileInfo>

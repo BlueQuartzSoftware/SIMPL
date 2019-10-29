@@ -36,6 +36,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QDateTime>
 
 #include "SIMPLib/SIMPLib.h"
