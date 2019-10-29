@@ -17,7 +17,7 @@
 class SIMPLib_EXPORT GenerateTiltSeries : public AbstractFilter
 {
   Q_OBJECT
-    // clang-format off
+  // clang-format off
     PYB11_CREATE_BINDINGS(GenerateTiltSeries SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(int RotationAxis READ getRotationAxis WRITE setRotationAxis)
     PYB11_PROPERTY(float Increment READ getIncrement WRITE setIncrement)
