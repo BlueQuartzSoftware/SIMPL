@@ -47,11 +47,11 @@ namespace Rotations
 namespace Constants
 {
 #if DREAM3D_PASSIVE_ROTATION
-const float epsijk = 1.0f;
+constexpr float epsijk = 1.0f;
 // static const double epsijkd = 1.0;
 #elif DREAM3D_ACTIVE_ROTATION
-const float epsijk = -1.0f;
-const double epsijkd = -1.0;
+constexpr float epsijk = -1.0f;
+constexpr double epsijkd = -1.0;
 #endif
 } // namespace Constants
 } // namespace Rotations
