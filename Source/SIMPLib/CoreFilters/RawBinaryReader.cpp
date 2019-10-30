@@ -280,7 +280,7 @@ void RawBinaryReader::dataCheck()
   }
 
   std::vector<size_t> tDims = attrMat->getTupleDimensions();
-  size_t totalDim = std::accumulate(tDims.begin(), tDims.end(), 1, std::multiplies<size_t>());
+  size_t totalDim = std::accumulate(tDims.begin(), tDims.end(), static_cast<size_t>(1), std::multiplies<size_t>());
 
   size_t allocatedBytes = 0;
   std::vector<size_t> cDims(1, m_NumberOfComponents);
