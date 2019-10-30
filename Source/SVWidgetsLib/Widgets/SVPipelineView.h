@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <stack>
 #include <vector>
 
@@ -48,6 +50,8 @@
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
+class DataContainerArray;
+using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/PipelineView.h"
@@ -82,13 +86,45 @@ public:
 
   using IndexedFilterObject = std::pair<int, PipelineFilterObject*>;
 
-  SIMPL_INSTANCE_PROPERTY(SVPipelineView::PipelineViewState, PipelineState)
+  /**
+   * @brief Setter property for PipelineState
+   */
+  void setPipelineState(const SVPipelineView::PipelineViewState& value);
+  /**
+   * @brief Getter property for PipelineState
+   * @return Value of PipelineState
+   */
+  SVPipelineView::PipelineViewState getPipelineState() const;
 
-  SIMPL_GET_PROPERTY(QAction*, ActionEnableFilter)
-  SIMPL_GET_PROPERTY(QAction*, ActionCut)
-  SIMPL_GET_PROPERTY(QAction*, ActionCopy)
-  SIMPL_GET_PROPERTY(QAction*, ActionPaste)
-  SIMPL_GET_PROPERTY(QAction*, ActionClearPipeline)
+  /**
+   * @brief Getter property for ActionEnableFilter
+   * @return Value of ActionEnableFilter
+   */
+  QAction* getActionEnableFilter() const;
+
+  /**
+   * @brief Getter property for ActionCut
+   * @return Value of ActionCut
+   */
+  QAction* getActionCut() const;
+
+  /**
+   * @brief Getter property for ActionCopy
+   * @return Value of ActionCopy
+   */
+  QAction* getActionCopy() const;
+
+  /**
+   * @brief Getter property for ActionPaste
+   * @return Value of ActionPaste
+   */
+  QAction* getActionPaste() const;
+
+  /**
+   * @brief Getter property for ActionClearPipeline
+   * @return Value of ActionClearPipeline
+   */
+  QAction* getActionClearPipeline() const;
 
   SVPipelineView(QWidget* parent = nullptr);
   ~SVPipelineView() override;
@@ -413,9 +449,11 @@ private slots:
   void finishPipeline();
 
 private:
+  SVPipelineView::PipelineViewState m_PipelineState = {};
+
   QThread* m_WorkerThread = nullptr;
   FilterPipeline::Pointer m_PipelineInFlight;
-  QVector<DataContainerArray::Pointer> m_PreflightDataContainerArrays;
+  QVector<DataContainerArrayShPtrType> m_PreflightDataContainerArrays;
   QList<QObject*> m_PipelineMessageObservers;
 
   QUndoCommand* m_MoveCommand = nullptr;

@@ -174,3 +174,100 @@ void ComparisonSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* fi
     emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }
+
+// -----------------------------------------------------------------------------
+ComparisonSelectionFilterParameter::Pointer ComparisonSelectionFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ComparisonSelectionFilterParameter::Pointer ComparisonSelectionFilterParameter::New()
+{
+  Pointer sharedPtr(new(ComparisonSelectionFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString ComparisonSelectionFilterParameter::getNameOfClass() const
+{
+  return QString("ComparisonSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString ComparisonSelectionFilterParameter::ClassName()
+{
+  return QString("ComparisonSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionFilterParameter::setChoices(const QVector<QString>& value)
+{
+  m_Choices = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<QString> ComparisonSelectionFilterParameter::getChoices() const
+{
+  return m_Choices;
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionFilterParameter::setShowOperators(bool value)
+{
+  m_ShowOperators = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ComparisonSelectionFilterParameter::getShowOperators() const
+{
+  return m_ShowOperators;
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionFilterParameter::setDefaultGeometryTypes(const IGeometry::Types& value)
+{
+  m_DefaultGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Types ComparisonSelectionFilterParameter::getDefaultGeometryTypes() const
+{
+  return m_DefaultGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionFilterParameter::setDefaultAttributeMatrixTypes(const AttributeMatrix::Types& value)
+{
+  m_DefaultAttributeMatrixTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrix::Types ComparisonSelectionFilterParameter::getDefaultAttributeMatrixTypes() const
+{
+  return m_DefaultAttributeMatrixTypes;
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionFilterParameter::setSetterCallback(const ComparisonSelectionFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ComparisonSelectionFilterParameter::SetterCallbackType ComparisonSelectionFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionFilterParameter::setGetterCallback(const ComparisonSelectionFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ComparisonSelectionFilterParameter::GetterCallbackType ComparisonSelectionFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

@@ -169,3 +169,28 @@ float CubeOctohedronOps::inside(float axis1comp, float axis2comp, float axis3com
   }
   return inside;
 }
+
+// -----------------------------------------------------------------------------
+CubeOctohedronOps::Pointer CubeOctohedronOps::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString CubeOctohedronOps::getNameOfClass() const
+{
+  return QString("CubeOctohedronOps");
+}
+
+// -----------------------------------------------------------------------------
+QString CubeOctohedronOps::ClassName()
+{
+  return QString("CubeOctohedronOps");
+}
+
+// -----------------------------------------------------------------------------
+CubeOctohedronOps::Pointer CubeOctohedronOps::New()
+{
+  Pointer sharedPtr(new(CubeOctohedronOps));
+  return sharedPtr;
+}

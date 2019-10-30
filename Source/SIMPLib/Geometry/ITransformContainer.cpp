@@ -35,3 +35,21 @@
 ITransformContainer::ITransformContainer() = default;
 
 ITransformContainer::~ITransformContainer() = default;
+
+// -----------------------------------------------------------------------------
+ITransformContainer::Pointer ITransformContainer::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString ITransformContainer::getNameOfClass() const
+{
+  return QString("ITransformContainer");
+}
+
+// -----------------------------------------------------------------------------
+QString ITransformContainer::ClassName()
+{
+  return QString("ITransformContainer");
+}

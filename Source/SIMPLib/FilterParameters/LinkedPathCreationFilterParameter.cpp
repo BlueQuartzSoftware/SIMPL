@@ -319,3 +319,52 @@ DataArrayPath LinkedPathCreationFilterParameter::getLinkedDataArrayPath() const
   }
   return DataArrayPath("", "", "");
 }
+
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::Pointer LinkedPathCreationFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::Pointer LinkedPathCreationFilterParameter::New()
+{
+  Pointer sharedPtr(new(LinkedPathCreationFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString LinkedPathCreationFilterParameter::getNameOfClass() const
+{
+  return QString("LinkedPathCreationFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString LinkedPathCreationFilterParameter::ClassName()
+{
+  return QString("LinkedPathCreationFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void LinkedPathCreationFilterParameter::setSetterCallback(const LinkedPathCreationFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::SetterCallbackType LinkedPathCreationFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void LinkedPathCreationFilterParameter::setGetterCallback(const LinkedPathCreationFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::GetterCallbackType LinkedPathCreationFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

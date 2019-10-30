@@ -36,9 +36,10 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The RenameAttributeMatrix class. See [Filter documentation](@ref renameattributematrix) for details.
@@ -46,41 +47,80 @@
 class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(RenameAttributeMatrix SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(RenameAttributeMatrix)
+    PYB11_FILTER_NEW_MACRO(RenameAttributeMatrix)
+    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrixPath)
+    PYB11_FILTER_PARAMETER(QString, NewAttributeMatrix)
     PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrixPath READ getSelectedAttributeMatrixPath WRITE setSelectedAttributeMatrixPath)
     PYB11_PROPERTY(QString NewAttributeMatrix READ getNewAttributeMatrix WRITE setNewAttributeMatrix)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(RenameAttributeMatrix)
-    SIMPL_FILTER_NEW_MACRO(RenameAttributeMatrix)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RenameAttributeMatrix, AbstractFilter)
+    using Self = RenameAttributeMatrix;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<RenameAttributeMatrix> New();
+
+    /**
+     * @brief Returns the name of the class for RenameAttributeMatrix
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for RenameAttributeMatrix
+     */
+    static QString ClassName();
 
     ~RenameAttributeMatrix() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrixPath)
+    /**
+     * @brief Setter property for SelectedAttributeMatrixPath
+     */
+    void setSelectedAttributeMatrixPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedAttributeMatrixPath
+     * @return Value of SelectedAttributeMatrixPath
+     */
+    DataArrayPath getSelectedAttributeMatrixPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedAttributeMatrixPath READ getSelectedAttributeMatrixPath WRITE setSelectedAttributeMatrixPath)
 
-    SIMPL_FILTER_PARAMETER(QString, NewAttributeMatrix)
+    /**
+     * @brief Setter property for NewAttributeMatrix
+     */
+    void setNewAttributeMatrix(const QString& value);
+    /**
+     * @brief Getter property for NewAttributeMatrix
+     * @return Value of NewAttributeMatrix
+     */
+    QString getNewAttributeMatrix() const;
+
     Q_PROPERTY(QString NewAttributeMatrix READ getNewAttributeMatrix WRITE setNewAttributeMatrix)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -90,23 +130,23 @@ class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -170,6 +210,9 @@ class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
     void initialize();
 
   private:
+    DataArrayPath m_SelectedAttributeMatrixPath = {};
+    QString m_NewAttributeMatrix = {};
+
     QString m_LastMatrixName = "";
 
   public:

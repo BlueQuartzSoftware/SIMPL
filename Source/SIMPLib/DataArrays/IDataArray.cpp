@@ -40,3 +40,21 @@ DataArrayPath IDataArray::getDataArrayPath() const
   path.setDataArrayName(getName());
   return path;
 }
+
+// -----------------------------------------------------------------------------
+IDataArray::Pointer IDataArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString IDataArray::getNameOfClass() const
+{
+  return QString("IDataArray");
+}
+
+// -----------------------------------------------------------------------------
+QString IDataArray::ClassName()
+{
+  return QString("IDataArray");
+}

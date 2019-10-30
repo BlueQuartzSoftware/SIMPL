@@ -35,12 +35,7 @@
 
 #pragma once
 
-
-
-
 #include <QtWidgets/QWidget>
-
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/FilterParameters/CalculatorFilterParameter.h"
@@ -48,8 +43,7 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
-
-
+#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 #include "SVWidgetsLib/ui_CalculatorWidget.h"
 
 

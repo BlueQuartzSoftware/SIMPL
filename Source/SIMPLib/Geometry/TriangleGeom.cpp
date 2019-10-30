@@ -44,6 +44,8 @@
  *     TriangleGeom::findDerivatives
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Geometry/TriangleGeom.h"
 
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
@@ -758,3 +760,28 @@ IGeometry::Pointer TriangleGeom::deepCopy(bool forceNoAllocate) const
 #include "SIMPLib/Geometry/SharedEdgeOps.cpp"
 #include "SIMPLib/Geometry/SharedTriOps.cpp"
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
+
+// -----------------------------------------------------------------------------
+TriangleGeom::Pointer TriangleGeom::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+TriangleGeom::Pointer TriangleGeom::New()
+{
+  Pointer sharedPtr(new(TriangleGeom));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString TriangleGeom::getNameOfClass() const
+{
+  return QString("TriangleGeom");
+}
+
+// -----------------------------------------------------------------------------
+QString TriangleGeom::ClassName()
+{
+  return QString("TriangleGeom");
+}

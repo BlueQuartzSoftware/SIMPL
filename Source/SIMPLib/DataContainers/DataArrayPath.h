@@ -43,9 +43,10 @@
 #include <list>
 #include <set>
 #include <utility>
+#include <memory>
 
-#include "SIMPLib/Common/SIMPLibDLLExport.h"     // for SIMPLib_EXPORT
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"  // for SIMPL_PIMPL_PROPERTY_DECL
+#include "SIMPLib/Common/SIMPLibDLLExport.h"
+#include "SIMPLib/SIMPLib.h"
 
 class DataContainerArray;
 using DataContainerArrayShPtr = std::shared_ptr<DataContainerArray>;
@@ -80,7 +81,7 @@ private:
  */
 class SIMPLib_EXPORT DataArrayPath
 {
-
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(DataArrayPath)
   PYB11_CREATION(ARGS QString QString QString)
   PYB11_CREATION(ARGS QString)
@@ -91,6 +92,7 @@ class SIMPLib_EXPORT DataArrayPath
   PYB11_METHOD(bool isEmpty)
   PYB11_METHOD(bool isValid)
   PYB11_METHOD(void update ARGS dcName amName daName)
+#endif
 
   using HashType = size_t;
 

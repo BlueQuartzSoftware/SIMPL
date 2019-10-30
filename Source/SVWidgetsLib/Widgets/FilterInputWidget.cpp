@@ -42,7 +42,12 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 
+#include <QtCore/QTextStream>
+
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/DocRequestManager.h"
+
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputPathFilterParameter.h"
@@ -356,7 +361,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
     FilterParameterWidget* fpwPtr = qobject_cast<FilterParameterWidget*>(filterParameterWidget);
     if(nullptr != fpwPtr)
     {
-      if(fpwPtr->getWidgetIsExpanding())
+      if(fpwPtr->isWidgetExpanding())
       {
         addSpacer = false;
       }

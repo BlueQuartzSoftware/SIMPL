@@ -44,6 +44,8 @@
  *     EdgeGeom::findDerivatives
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Geometry/EdgeGeom.h"
 
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
@@ -658,3 +660,28 @@ IGeometry::Pointer EdgeGeom::deepCopy(bool forceNoAllocate) const
 #define GEOM_CLASS_NAME EdgeGeom
 #include "SIMPLib/Geometry/SharedEdgeOps.cpp"
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
+
+// -----------------------------------------------------------------------------
+EdgeGeom::Pointer EdgeGeom::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+EdgeGeom::Pointer EdgeGeom::New()
+{
+  Pointer sharedPtr(new(EdgeGeom));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString EdgeGeom::getNameOfClass() const
+{
+  return QString("EdgeGeom");
+}
+
+// -----------------------------------------------------------------------------
+QString EdgeGeom::ClassName()
+{
+  return QString("EdgeGeom");
+}

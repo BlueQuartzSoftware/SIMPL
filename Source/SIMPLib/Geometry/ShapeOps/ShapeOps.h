@@ -37,12 +37,12 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include <QtCore/QMap>
 #include <QtCore/QVector>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 /**
  * @brief The ShapeOps class
@@ -50,9 +50,23 @@
 class SIMPLib_EXPORT ShapeOps
 {
   public:
-    SIMPL_SHARED_POINTERS(ShapeOps)
-    SIMPL_TYPE_MACRO(ShapeOps)
-    SIMPL_STATIC_NEW_MACRO(ShapeOps)
+    using Self = ShapeOps;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    /**
+     * @brief Returns the name of the class for ShapeOps
+     */
+    virtual QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for ShapeOps
+     */
+    static QString ClassName();
+
+    static Pointer New();
 
     virtual ~ShapeOps();
 
@@ -94,6 +108,8 @@ class SIMPLib_EXPORT ShapeOps
     ShapeOps(ShapeOps&&) = delete;            // Move Constructor Not Implemented
     ShapeOps& operator=(const ShapeOps&) = delete; // Copy Assignment Not Implemented
     ShapeOps& operator=(ShapeOps&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 
 

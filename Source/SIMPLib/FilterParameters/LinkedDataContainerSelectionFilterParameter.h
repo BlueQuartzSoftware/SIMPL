@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -62,17 +64,31 @@ class AbstractFilter;
 class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(LinkedDataContainerSelectionFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(LinkedDataContainerSelectionFilterParameter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkedDataContainerSelectionFilterParameter, FilterParameter)
+    using Self = LinkedDataContainerSelectionFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
-     using SetterCallbackType = std::function<void(DataArrayPath)>;
-     using GetterCallbackType = std::function<DataArrayPath(void)>;
+    static Pointer New();
 
-     using RequirementType = struct
-     {
-       IGeometry::Types dcGeometryTypes;
-     };
+    /**
+     * @brief Returns the name of the class for LinkedDataContainerSelectionFilterParameter
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for LinkedDataContainerSelectionFilterParameter
+     */
+    static QString ClassName();
+
+    using SetterCallbackType = std::function<void(DataArrayPath)>;
+    using GetterCallbackType = std::function<DataArrayPath(void)>;
+
+    using RequirementType = struct
+    {
+      IGeometry::Types dcGeometryTypes;
+    };
 
     /**
      * @brief New This function instantiates an instance of the LinkedDataContainerSelectionFilterParameter. This function must be used to instantiate the class; the 
@@ -97,8 +113,25 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
 
      ~LinkedDataContainerSelectionFilterParameter() override;
 
-     SIMPL_INSTANCE_PROPERTY(QStringList, LinkedProperties)
-     SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
+     /**
+      * @brief Setter property for LinkedProperties
+      */
+     void setLinkedProperties(const QStringList& value);
+     /**
+      * @brief Getter property for LinkedProperties
+      * @return Value of LinkedProperties
+      */
+     QStringList getLinkedProperties() const;
+
+     /**
+      * @brief Setter property for DefaultGeometryTypes
+      */
+     void setDefaultGeometryTypes(const IGeometry::Types& value);
+     /**
+      * @brief Getter property for DefaultGeometryTypes
+      * @return Value of DefaultGeometryTypes
+      */
+     IGeometry::Types getDefaultGeometryTypes() const;
 
      /**
       * @brief getWidgetType Returns the type of widget that displays and controls
@@ -124,14 +157,30 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
       * that this FilterParameter subclass represents.
       * from the filter parameter.
       */
-     SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+     /**
+      * @brief Setter property for SetterCallback
+      */
+     void setSetterCallback(const LinkedDataContainerSelectionFilterParameter::SetterCallbackType& value);
+     /**
+      * @brief Getter property for SetterCallback
+      * @return Value of SetterCallback
+      */
+     LinkedDataContainerSelectionFilterParameter::SetterCallbackType getSetterCallback() const;
 
      /**
       * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
       * that this FilterParameter subclass represents.
       * @return The GetterCallback
       */
-     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+     /**
+      * @brief Setter property for GetterCallback
+      */
+     void setGetterCallback(const LinkedDataContainerSelectionFilterParameter::GetterCallbackType& value);
+     /**
+      * @brief Getter property for GetterCallback
+      * @return Value of GetterCallback
+      */
+     LinkedDataContainerSelectionFilterParameter::GetterCallbackType getGetterCallback() const;
 
      /**
       * @brief Handle DataArrayPath changes if necessary
@@ -150,5 +199,11 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
      LinkedDataContainerSelectionFilterParameter(LinkedDataContainerSelectionFilterParameter&&) = delete;                 // Move Constructor Not Implemented
      LinkedDataContainerSelectionFilterParameter& operator=(const LinkedDataContainerSelectionFilterParameter&) = delete; // Copy Assignment Not Implemented
      LinkedDataContainerSelectionFilterParameter& operator=(LinkedDataContainerSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+   private:
+     QStringList m_LinkedProperties = {};
+     IGeometry::Types m_DefaultGeometryTypes = {};
+     LinkedDataContainerSelectionFilterParameter::SetterCallbackType m_SetterCallback = {};
+     LinkedDataContainerSelectionFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

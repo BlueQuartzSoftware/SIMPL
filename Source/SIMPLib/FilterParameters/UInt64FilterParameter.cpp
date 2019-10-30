@@ -95,3 +95,52 @@ void UInt64FilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = strvalue; // Store the value as a string so we maintain all the fidelity of the value
   }
 }
+
+// -----------------------------------------------------------------------------
+UInt64FilterParameter::Pointer UInt64FilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+UInt64FilterParameter::Pointer UInt64FilterParameter::New()
+{
+  Pointer sharedPtr(new(UInt64FilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString UInt64FilterParameter::getNameOfClass() const
+{
+  return QString("UInt64FilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString UInt64FilterParameter::ClassName()
+{
+  return QString("UInt64FilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void UInt64FilterParameter::setSetterCallback(const UInt64FilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+UInt64FilterParameter::SetterCallbackType UInt64FilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void UInt64FilterParameter::setGetterCallback(const UInt64FilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+UInt64FilterParameter::GetterCallbackType UInt64FilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

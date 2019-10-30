@@ -36,13 +36,14 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QString>
 
 #include <hdf5.h>
 
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/StatsData/PrimaryStatsData.h"
 #include "SIMPLib/HDF5/H5StatsDataDelegate.h"
 
@@ -57,10 +58,24 @@
 class SIMPLib_EXPORT H5PrimaryStatsDataDelegate : public H5StatsDataDelegate
 {
   public:
+    using Self = H5PrimaryStatsDataDelegate;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
-    SIMPL_SHARED_POINTERS(H5PrimaryStatsDataDelegate)
-    SIMPL_STATIC_NEW_MACRO(H5PrimaryStatsDataDelegate)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(H5PrimaryStatsDataDelegate, H5StatsDataDelegate)
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for H5PrimaryStatsDataDelegate
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for H5PrimaryStatsDataDelegate
+     */
+    static QString ClassName();
+
     ~H5PrimaryStatsDataDelegate() override;
 
     int writePrimaryStatsData(PrimaryStatsData* data, hid_t groupId);
@@ -116,6 +131,8 @@ class SIMPLib_EXPORT H5PrimaryStatsDataDelegate : public H5StatsDataDelegate
     H5PrimaryStatsDataDelegate(H5PrimaryStatsDataDelegate&&) = delete;      // Move Constructor Not Implemented
     H5PrimaryStatsDataDelegate& operator=(const H5PrimaryStatsDataDelegate&) = delete; // Copy Assignment Not Implemented
     H5PrimaryStatsDataDelegate& operator=(H5PrimaryStatsDataDelegate&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 
 

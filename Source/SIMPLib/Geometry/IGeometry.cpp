@@ -38,17 +38,12 @@
 #include "H5Support/QH5Utilities.h"
 #include "SIMPLib/Geometry/CompositeTransformContainer.h"
 #include "SIMPLib/Geometry/TransformContainer.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::IGeometry()
-: m_TimeValue(0.0f)
-, m_EnableTimeSeries(false)
-, m_Units(LengthUnit::Unspecified)
-, m_ProgressCounter(0)
-{
-}
+IGeometry::IGeometry() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -589,4 +584,70 @@ int IGeometry::readGeometryFromHDF5(hid_t parentId, bool preflight)
   }
 
   return err;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Pointer IGeometry::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString IGeometry::getNameOfClass() const
+{
+  return QString("IGeometry");
+}
+
+// -----------------------------------------------------------------------------
+QString IGeometry::ClassName()
+{
+  return QString("IGeometry");
+}
+
+// -----------------------------------------------------------------------------
+void IGeometry::setTimeValue(float value)
+{
+  m_TimeValue = value;
+}
+
+// -----------------------------------------------------------------------------
+float IGeometry::getTimeValue() const
+{
+  return m_TimeValue;
+}
+
+// -----------------------------------------------------------------------------
+void IGeometry::setEnableTimeSeries(bool value)
+{
+  m_EnableTimeSeries = value;
+}
+
+// -----------------------------------------------------------------------------
+bool IGeometry::getEnableTimeSeries() const
+{
+  return m_EnableTimeSeries;
+}
+
+// -----------------------------------------------------------------------------
+void IGeometry::setTransformContainer(const ITransformContainer::Pointer& value)
+{
+  m_TransformContainer = value;
+}
+
+// -----------------------------------------------------------------------------
+ITransformContainer::Pointer IGeometry::getTransformContainer() const
+{
+  return m_TransformContainer;
+}
+
+// -----------------------------------------------------------------------------
+void IGeometry::setUnits(const IGeometry::LengthUnit& value)
+{
+  m_Units = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::LengthUnit IGeometry::getUnits() const
+{
+  return m_Units;
 }

@@ -36,13 +36,22 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QStack>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 #include "util/ICalculatorArray.h"
+
+class AttributeMatrix;
+using AttributeMatrixShPtrType = std::shared_ptr<AttributeMatrix>;
+class CalculatorItem;
+using CalculatorItemShPtrType = std::shared_ptr<CalculatorItem>;
 
 /**
  * @brief The ArrayCalculator class. See [Filter documentation](@ref createdatacontainer) for details.
@@ -50,12 +59,22 @@
 class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ArrayCalculator SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(ArrayCalculator)
+    PYB11_FILTER_NEW_MACRO(ArrayCalculator)
+    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrix)
+    PYB11_FILTER_PARAMETER(QString, InfixEquation)
+    PYB11_FILTER_PARAMETER(DataArrayPath, CalculatedArray)
+    PYB11_FILTER_PARAMETER(ArrayCalculator::AngleUnits, Units)
+    PYB11_FILTER_PARAMETER(SIMPL::ScalarTypes::Type, ScalarType)
     PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
     PYB11_PROPERTY(QString InfixEquation READ getInfixEquation WRITE setInfixEquation)
     PYB11_PROPERTY(DataArrayPath CalculatedArray READ getCalculatedArray WRITE setCalculatedArray)
     PYB11_PROPERTY(ArrayCalculator::AngleUnits Units READ getUnits WRITE setUnits)
     PYB11_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)
+#endif
 
   public:
     enum AngleUnits
@@ -66,23 +85,82 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
 
     Q_ENUMS(AngleUnits)
 
-    SIMPL_SHARED_POINTERS(ArrayCalculator)
-    SIMPL_FILTER_NEW_MACRO(ArrayCalculator)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ArrayCalculator, AbstractFilter)
+    using Self = ArrayCalculator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrix)
+    static std::shared_ptr<ArrayCalculator> New();
+
+    /**
+     * @brief Returns the name of the class for ArrayCalculator
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ArrayCalculator
+     */
+    static QString ClassName();
+
+    /**
+     * @brief Setter property for SelectedAttributeMatrix
+     */
+    void setSelectedAttributeMatrix(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedAttributeMatrix
+     * @return Value of SelectedAttributeMatrix
+     */
+    DataArrayPath getSelectedAttributeMatrix() const;
+
     Q_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
 
-    SIMPL_FILTER_PARAMETER(QString, InfixEquation)
+    /**
+     * @brief Setter property for InfixEquation
+     */
+    void setInfixEquation(const QString& value);
+    /**
+     * @brief Getter property for InfixEquation
+     * @return Value of InfixEquation
+     */
+    QString getInfixEquation() const;
+
     Q_PROPERTY(QString InfixEquation READ getInfixEquation WRITE setInfixEquation)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, CalculatedArray)
+    /**
+     * @brief Setter property for CalculatedArray
+     */
+    void setCalculatedArray(const DataArrayPath& value);
+    /**
+     * @brief Getter property for CalculatedArray
+     * @return Value of CalculatedArray
+     */
+    DataArrayPath getCalculatedArray() const;
+
     Q_PROPERTY(DataArrayPath CalculatedArray READ getCalculatedArray WRITE setCalculatedArray)
 
-    SIMPL_FILTER_PARAMETER(ArrayCalculator::AngleUnits, Units)
+    /**
+     * @brief Setter property for Units
+     */
+    void setUnits(const ArrayCalculator::AngleUnits& value);
+    /**
+     * @brief Getter property for Units
+     * @return Value of Units
+     */
+    ArrayCalculator::AngleUnits getUnits() const;
+
     Q_PROPERTY(AngleUnits Units READ getUnits WRITE setUnits)
 
-    SIMPL_FILTER_PARAMETER(SIMPL::ScalarTypes::Type, ScalarType)
+    /**
+     * @brief Setter property for ScalarType
+     */
+    void setScalarType(SIMPL::ScalarTypes::Type value);
+    /**
+     * @brief Getter property for ScalarType
+     * @return Value of ScalarType
+     */
+    SIMPL::ScalarTypes::Type getScalarType() const;
+
     Q_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
     ~ArrayCalculator() override;
@@ -90,21 +168,21 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -114,23 +192,23 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -205,17 +283,22 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
      * @param scalarType
      * @return
      */
-    IDataArray::Pointer convertArrayType(const IDataArray::Pointer &inputArray, SIMPL::ScalarTypes::Type scalarType);
-
+    IDataArrayShPtrType convertArrayType(const IDataArrayShPtrType& inputArray, SIMPL::ScalarTypes::Type scalarType);
 
   private:
-    QMap<QString, CalculatorItem::Pointer>                      m_SymbolMap;
+    DataArrayPath m_SelectedAttributeMatrix = {};
+    QString m_InfixEquation = {};
+    DataArrayPath m_CalculatedArray = {};
+    ArrayCalculator::AngleUnits m_Units = {};
+    SIMPL::ScalarTypes::Type m_ScalarType = {};
+
+    QMap<QString, CalculatorItemShPtrType> m_SymbolMap;
     QStack<ICalculatorArray::Pointer>                           m_ExecutionStack;
 
     void createSymbolMap();
 
-    QVector<CalculatorItem::Pointer> parseInfixEquation();
-    QVector<CalculatorItem::Pointer> toRPN(QVector<CalculatorItem::Pointer> infixEquation);
+    QVector<CalculatorItemShPtrType> parseInfixEquation();
+    QVector<CalculatorItemShPtrType> toRPN(QVector<CalculatorItemShPtrType> infixEquation);
 
     void checkForAmbiguousArrayName(QString itemStr, QString warningMsg);
 
@@ -230,7 +313,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
      * @param token
      * @param parsedInfix
      */
-    void parseNumericValue(QString token, QVector<CalculatorItem::Pointer>& parsedInfix, double number);
+    void parseNumericValue(QString token, QVector<CalculatorItemShPtrType>& parsedInfix, double number);
 
     /**
      * @brief parseMinusSign
@@ -238,7 +321,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
      * @param parsedInfix
      * @param loopIdx
      */
-    void parseMinusSign(QString strItem, QVector<CalculatorItem::Pointer>& parsedInfix, int loopIdx);
+    void parseMinusSign(QString strItem, QVector<CalculatorItemShPtrType>& parsedInfix, int loopIdx);
 
     /**
      * @brief parseIndexOperator
@@ -246,7 +329,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
      * @param parsedInfix
      * @param number
      */
-    bool parseIndexOperator(QString token, QVector<CalculatorItem::Pointer>& parsedInfix);
+    bool parseIndexOperator(QString token, QVector<CalculatorItemShPtrType>& parsedInfix);
 
     /**
      * @brief parseCommaOperator
@@ -254,7 +337,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
      * @param parsedInfix
      * @return
      */
-    bool parseCommaOperator(QString token, QVector<CalculatorItem::Pointer>& parsedInfix);
+    bool parseCommaOperator(QString token, QVector<CalculatorItemShPtrType>& parsedInfix);
 
     /**
      * @brief parseArray
@@ -263,7 +346,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
      * @param selectedAM
      * @return
      */
-    bool parseArray(QString token, QVector<CalculatorItem::Pointer>& parsedInfix, AttributeMatrix::Pointer selectedAM);
+    bool parseArray(QString token, QVector<CalculatorItemShPtrType>& parsedInfix, const AttributeMatrixShPtrType& selectedAM);
 
   public:
     ArrayCalculator(const ArrayCalculator&) = delete; // Copy Constructor Not Implemented

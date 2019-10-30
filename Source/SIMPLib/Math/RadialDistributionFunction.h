@@ -36,6 +36,7 @@
 #pragma once
 
 #include <vector>
+#include <array>
 
 #include "SIMPLib/SIMPLib.h"
 
@@ -59,7 +60,7 @@ class SIMPLib_EXPORT RadialDistributionFunction
      * @param boxres
      * @return An array of values that are the frequency values for the histogram
      */
-    static std::vector<float> GenerateRandomDistribution(float minDistance, float maxDistance, int numBins, std::vector<float> boxdims, std::vector<float> boxres);
+    static std::vector<float> GenerateRandomDistribution(float minDistance, float maxDistance, int numBins, std::array<float, 3>& boxdims, std::array<float, 3>& boxres);
 
   protected:
     RadialDistributionFunction();

@@ -33,6 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "DataContainerReader.h"
 
 #include <QtCore/QFileInfo>
@@ -40,7 +42,12 @@
 #include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Utilities.h"
 
+#include <QtCore/QTextStream>
+
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerBundle.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
@@ -51,6 +58,7 @@
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReader.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -247,7 +255,7 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
   clearWarningCode();
 
   SIMPLH5DataReader::Pointer simplReader = SIMPLH5DataReader::New();
-  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, const int& code) { setErrorCondition(code, msg); });
+  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, int code) { setErrorCondition(code, msg); });
 
   if (!simplReader->openFile(getInputFile()))
   {
@@ -405,7 +413,7 @@ bool DataContainerReader::syncProxies()
   SIMPLH5DataReaderRequirements req(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
 
   SIMPLH5DataReader::Pointer simplReader = SIMPLH5DataReader::New();
-  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, const int& code) { setErrorCondition(code, msg); });
+  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, int code) { setErrorCondition(code, msg); });
 
   if(!simplReader->openFile(getInputFile()))
   {
@@ -453,7 +461,7 @@ AbstractFilter::Pointer DataContainerReader::newFilterInstance(bool copyFilterPa
   {
     copyFilterParameterInstanceVariables(filter.get());
 
-    SIMPL_COPY_INSTANCEVAR(InputFile)
+    filter->setInputFile(getInputFile());
 
     filter->setInputFile(getInputFile());
 #if 0
@@ -467,7 +475,7 @@ AbstractFilter::Pointer DataContainerReader::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getCompiledLibraryName() const
+QString DataContainerReader::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -475,7 +483,7 @@ const QString DataContainerReader::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getBrandingString() const
+QString DataContainerReader::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -483,7 +491,7 @@ const QString DataContainerReader::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getFilterVersion() const
+QString DataContainerReader::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -494,7 +502,7 @@ const QString DataContainerReader::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getGroupName() const
+QString DataContainerReader::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -502,7 +510,7 @@ const QString DataContainerReader::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid DataContainerReader::getUuid()
+QUuid DataContainerReader::getUuid() const
 {
   return QUuid("{043cbde5-3878-5718-958f-ae75714df0df}");
 }
@@ -510,7 +518,7 @@ const QUuid DataContainerReader::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getSubGroupName() const
+QString DataContainerReader::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -518,7 +526,7 @@ const QString DataContainerReader::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getHumanLabel() const
+QString DataContainerReader::getHumanLabel() const
 {
   return "Read DREAM.3D Data File";
 }
@@ -529,4 +537,93 @@ const QString DataContainerReader::getHumanLabel() const
 void DataContainerReader::cleanupFilter()
 {
   m_PipelineFromFile->clear();
+}
+
+// -----------------------------------------------------------------------------
+DataContainerReader::Pointer DataContainerReader::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<DataContainerReader> DataContainerReader::New()
+{
+  struct make_shared_enabler : public DataContainerReader
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerReader::getNameOfClass() const
+{
+  return QString("DataContainerReader");
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerReader::ClassName()
+{
+  return QString("DataContainerReader");
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReader::setInputFile(const QString& value)
+{
+  m_InputFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerReader::getInputFile() const
+{
+  return m_InputFile;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReader::setOverwriteExistingDataContainers(bool value)
+{
+  m_OverwriteExistingDataContainers = value;
+}
+
+// -----------------------------------------------------------------------------
+bool DataContainerReader::getOverwriteExistingDataContainers() const
+{
+  return m_OverwriteExistingDataContainers;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReader::setLastFileRead(const QString& value)
+{
+  m_LastFileRead = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerReader::getLastFileRead() const
+{
+  return m_LastFileRead;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReader::setLastRead(const QDateTime& value)
+{
+  m_LastRead = value;
+}
+
+// -----------------------------------------------------------------------------
+QDateTime DataContainerReader::getLastRead() const
+{
+  return m_LastRead;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReader::setInputFileDataContainerArrayProxy(const DataContainerArrayProxy& value)
+{
+  m_InputFileDataContainerArrayProxy = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArrayProxy DataContainerReader::getInputFileDataContainerArrayProxy() const
+{
+  return m_InputFileDataContainerArrayProxy;
 }

@@ -76,7 +76,13 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/Filtering/AbstractFilter.h"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
+
 #include <QString>
 #include <itkImageIOBase.h>
 #include <itkRGBAPixel.h>
@@ -338,7 +344,7 @@
 // which is saved in the filter's data container array.
 #define Dream3DArraySwitchMacroLongOutputType(call, path, errorCondition, typeOUT, isTypeOUT, typeOUTTypename)                                                                                         \
   {                                                                                                                                                                                                    \
-    IDataArray::Pointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);                                                                            \
+    IDataArrayShPtrType ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);                                                                            \
     if(nullptr != ptr)                                                                                                                                                                                 \
     {                                                                                                                                                                                                  \
       ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, path.getDataContainerName());                                    \
@@ -435,7 +441,7 @@
 //
 #define Dream3DArrayOutputComponentFromDataMacro(call, input2_path, input1_path, errorCondition)                                                                                                       \
   {                                                                                                                                                                                                    \
-    IDataArray::Pointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, input2_path);                                                                     \
+    IDataArrayShPtrType ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, input2_path);                                                                     \
     if(ptr.get() != nullptr)                                                                                                                                                                           \
     {                                                                                                                                                                                                  \
       ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, input2_path.getDataContainerName());                             \

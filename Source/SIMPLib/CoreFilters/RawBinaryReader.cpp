@@ -34,11 +34,16 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "RawBinaryReader.h"
 
 #include <QtCore/QFileInfo>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/ScopedFileMonitor.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -52,6 +57,8 @@
 #include "SIMPLib/FilterParameters/NumericTypeFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/UInt64FilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #define RBR_FILE_NOT_OPEN -1000
 #define RBR_FILE_TOO_SMALL -1010
@@ -273,7 +280,7 @@ void RawBinaryReader::dataCheck()
   }
 
   std::vector<size_t> tDims = attrMat->getTupleDimensions();
-  size_t totalDim = std::accumulate(tDims.begin(), tDims.end(), 1, std::multiplies<size_t>());
+  size_t totalDim = std::accumulate(tDims.begin(), tDims.end(), static_cast<size_t>(1), std::multiplies<size_t>());
 
   size_t allocatedBytes = 0;
   std::vector<size_t> cDims(1, m_NumberOfComponents);
@@ -456,7 +463,7 @@ AbstractFilter::Pointer RawBinaryReader::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getCompiledLibraryName() const
+QString RawBinaryReader::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -464,7 +471,7 @@ const QString RawBinaryReader::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getBrandingString() const
+QString RawBinaryReader::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -472,7 +479,7 @@ const QString RawBinaryReader::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getFilterVersion() const
+QString RawBinaryReader::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -483,7 +490,7 @@ const QString RawBinaryReader::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getGroupName() const
+QString RawBinaryReader::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -491,7 +498,7 @@ const QString RawBinaryReader::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid RawBinaryReader::getUuid()
+QUuid RawBinaryReader::getUuid() const
 {
   return QUuid("{0791f556-3d73-5b1e-b275-db3f7bb6850d}");
 }
@@ -499,7 +506,7 @@ const QUuid RawBinaryReader::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getSubGroupName() const
+QString RawBinaryReader::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -507,7 +514,108 @@ const QString RawBinaryReader::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getHumanLabel() const
+QString RawBinaryReader::getHumanLabel() const
 {
   return "Raw Binary Importer";
+}
+
+// -----------------------------------------------------------------------------
+RawBinaryReader::Pointer RawBinaryReader::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<RawBinaryReader> RawBinaryReader::New()
+{
+  struct make_shared_enabler : public RawBinaryReader
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString RawBinaryReader::getNameOfClass() const
+{
+  return QString("RawBinaryReader");
+}
+
+// -----------------------------------------------------------------------------
+QString RawBinaryReader::ClassName()
+{
+  return QString("RawBinaryReader");
+}
+
+// -----------------------------------------------------------------------------
+void RawBinaryReader::setCreatedAttributeArrayPath(const DataArrayPath& value)
+{
+  m_CreatedAttributeArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RawBinaryReader::getCreatedAttributeArrayPath() const
+{
+  return m_CreatedAttributeArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void RawBinaryReader::setScalarType(SIMPL::NumericTypes::Type value)
+{
+  m_ScalarType = value;
+}
+
+// -----------------------------------------------------------------------------
+SIMPL::NumericTypes::Type RawBinaryReader::getScalarType() const
+{
+  return m_ScalarType;
+}
+
+// -----------------------------------------------------------------------------
+void RawBinaryReader::setEndian(int value)
+{
+  m_Endian = value;
+}
+
+// -----------------------------------------------------------------------------
+int RawBinaryReader::getEndian() const
+{
+  return m_Endian;
+}
+
+// -----------------------------------------------------------------------------
+void RawBinaryReader::setNumberOfComponents(int value)
+{
+  m_NumberOfComponents = value;
+}
+
+// -----------------------------------------------------------------------------
+int RawBinaryReader::getNumberOfComponents() const
+{
+  return m_NumberOfComponents;
+}
+
+// -----------------------------------------------------------------------------
+void RawBinaryReader::setSkipHeaderBytes(uint64_t value)
+{
+  m_SkipHeaderBytes = value;
+}
+
+// -----------------------------------------------------------------------------
+uint64_t RawBinaryReader::getSkipHeaderBytes() const
+{
+  return m_SkipHeaderBytes;
+}
+
+// -----------------------------------------------------------------------------
+void RawBinaryReader::setInputFile(const QString& value)
+{
+  m_InputFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString RawBinaryReader::getInputFile() const
+{
+  return m_InputFile;
 }

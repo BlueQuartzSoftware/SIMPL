@@ -35,9 +35,10 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/FilterParameters/AxisAngleInput.h"
 
@@ -65,9 +66,23 @@
 class SIMPLib_EXPORT AxisAngleFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(AxisAngleFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(AxisAngleFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AxisAngleFilterParameter, FilterParameter)
+    using Self = AxisAngleFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for AxisAngleFilterParameter
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for AxisAngleFilterParameter
+     */
+    static QString ClassName();
 
     using SetterCallbackType = std::function<void(AxisAngleInput_t)>;
     using GetterCallbackType = std::function<AxisAngleInput_t(void)>;
@@ -119,14 +134,30 @@ class SIMPLib_EXPORT AxisAngleFilterParameter : public FilterParameter
     * that this FilterParameter subclass represents.
     * from the filter parameter.
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const AxisAngleFilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    AxisAngleFilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const AxisAngleFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    AxisAngleFilterParameter::GetterCallbackType getGetterCallback() const;
 
   protected:
       /**
@@ -140,5 +171,9 @@ class SIMPLib_EXPORT AxisAngleFilterParameter : public FilterParameter
     AxisAngleFilterParameter(AxisAngleFilterParameter&&) = delete;      // Move Constructor Not Implemented
     AxisAngleFilterParameter& operator=(const AxisAngleFilterParameter&) = delete; // Copy Assignment Not Implemented
     AxisAngleFilterParameter& operator=(AxisAngleFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    AxisAngleFilterParameter::SetterCallbackType m_SetterCallback = {};
+    AxisAngleFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

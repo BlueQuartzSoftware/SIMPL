@@ -34,13 +34,16 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/DataArrays/IDataArray.h"
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/StatsData/StatsData.h"
 
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The StatsDataArray class
@@ -48,7 +51,11 @@
 class SIMPLib_EXPORT StatsDataArray : public IDataArray
 {
   // clang-format off
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(StatsDataArray SUPER IDataArray)
+  PYB11_SHARED_POINTERS(StatsDataArray)
+  PYB11_STATIC_NEW_MACRO(StatsDataArray)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t int size_t* QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t std::vector<size_t> QString bool)
@@ -58,13 +65,30 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
   PYB11_METHOD(StatsData::Pointer getStatsData ARGS int,index)
   PYB11_METHOD(void fillArrayWithNewStatsData OVERLOAD size_t,n PhaseType::Type*,phase_types)
   PYB11_METHOD(void fillArrayWithNewStatsData OVERLOAD size_t,n PhaseType::EnumType*,phase_types)
+#endif
+
   // clang-format on
 
 public:
-  SIMPL_SHARED_POINTERS(StatsDataArray)
-  SIMPL_STATIC_NEW_MACRO(StatsDataArray)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(StatsDataArray, IDataArray)
-  SIMPL_CLASS_VERSION(2)
+  using Self = StatsDataArray;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for StatsDataArray
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for StatsDataArray
+   */
+  static QString ClassName();
+
+  int getClassVersion() const override;
 
   ~StatsDataArray() override;
 
@@ -120,7 +144,15 @@ public:
    */
   QString getTypeAsString() const override;
 
-  SIMPL_INSTANCE_PROPERTY(QVector<StatsData::Pointer>, StatsDataArray)
+  /**
+   * @brief Setter property for StatsDataArray
+   */
+  void setStatsDataArray(const QVector<StatsData::Pointer>& value);
+  /**
+   * @brief Getter property for StatsDataArray
+   * @return Value of StatsDataArray
+   */
+  QVector<StatsData::Pointer> getStatsDataArray() const;
 
   IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) const override;
 
@@ -266,7 +298,7 @@ public:
    * @param sourceArray
    * @return
    */
-  bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
+  bool copyFromArray(size_t destTupleOffset, IDataArrayShPtrType sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
 
   /**
    * @brief Splats the same value c across all values in the Tuple
@@ -285,7 +317,7 @@ public:
    * @param forceNoAllocate
    * @return
    */
-  IDataArray::Pointer deepCopy(bool forceNoAllocate = false) const override;
+  IDataArrayShPtrType deepCopy(bool forceNoAllocate = false) const override;
 
   /**
    * @brief Reseizes the internal array
@@ -366,6 +398,8 @@ protected:
   StatsDataArray();
 
 private:
+  QVector<StatsData::Pointer> m_StatsDataArray = {};
+
   bool m_IsAllocated;
 
 public:

@@ -101,3 +101,52 @@ void AxisAngleFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = axisObj;
   }
 }
+
+// -----------------------------------------------------------------------------
+AxisAngleFilterParameter::Pointer AxisAngleFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+AxisAngleFilterParameter::Pointer AxisAngleFilterParameter::New()
+{
+  Pointer sharedPtr(new(AxisAngleFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString AxisAngleFilterParameter::getNameOfClass() const
+{
+  return QString("AxisAngleFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString AxisAngleFilterParameter::ClassName()
+{
+  return QString("AxisAngleFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void AxisAngleFilterParameter::setSetterCallback(const AxisAngleFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+AxisAngleFilterParameter::SetterCallbackType AxisAngleFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void AxisAngleFilterParameter::setGetterCallback(const AxisAngleFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+AxisAngleFilterParameter::GetterCallbackType AxisAngleFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

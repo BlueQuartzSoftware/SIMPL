@@ -44,6 +44,8 @@
  *     QuadGeom::findDerivatives
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Geometry/QuadGeom.h"
 
 #if defined SIMPL_USE_EIGEN
@@ -761,3 +763,28 @@ IGeometry::Pointer QuadGeom::deepCopy(bool forceNoAllocate) const
 #include "SIMPLib/Geometry/SharedEdgeOps.cpp"
 #include "SIMPLib/Geometry/SharedQuadOps.cpp"
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
+
+// -----------------------------------------------------------------------------
+QuadGeom::Pointer QuadGeom::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QuadGeom::Pointer QuadGeom::New()
+{
+  Pointer sharedPtr(new(QuadGeom));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString QuadGeom::getNameOfClass() const
+{
+  return QString("QuadGeom");
+}
+
+// -----------------------------------------------------------------------------
+QString QuadGeom::ClassName()
+{
+  return QString("QuadGeom");
+}

@@ -128,3 +128,52 @@ void DataContainerCreationFilterParameter::dataArrayPathRenamed(AbstractFilter* 
     emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }
+
+// -----------------------------------------------------------------------------
+DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParameter::New()
+{
+  Pointer sharedPtr(new(DataContainerCreationFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerCreationFilterParameter::getNameOfClass() const
+{
+  return QString("DataContainerCreationFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerCreationFilterParameter::ClassName()
+{
+  return QString("DataContainerCreationFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerCreationFilterParameter::setSetterCallback(const DataContainerCreationFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerCreationFilterParameter::SetterCallbackType DataContainerCreationFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerCreationFilterParameter::setGetterCallback(const DataContainerCreationFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerCreationFilterParameter::GetterCallbackType DataContainerCreationFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

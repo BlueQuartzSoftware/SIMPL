@@ -35,9 +35,13 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
 
 /**
  * @brief The CombineAttributeArrays class. See [Filter documentation](@ref combineattributearrays) for details.
@@ -45,146 +49,218 @@
 class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
 {
   Q_OBJECT
-    PYB11_CREATE_BINDINGS(CombineAttributeArrays SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
-    PYB11_PROPERTY(QString StackedDataArrayName READ getStackedDataArrayName WRITE setStackedDataArrayName)
-    PYB11_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
 
-  public:
-    SIMPL_SHARED_POINTERS(CombineAttributeArrays)
-    SIMPL_FILTER_NEW_MACRO(CombineAttributeArrays)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CombineAttributeArrays, AbstractFilter)
+#ifdef SIMPL_ENABLE_PYTHON
+  PYB11_CREATE_BINDINGS(CombineAttributeArrays SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(CombineAttributeArrays)
+  PYB11_FILTER_NEW_MACRO(CombineAttributeArrays)
+  PYB11_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedDataArrayPaths)
+  PYB11_FILTER_PARAMETER(QString, StackedDataArrayName)
+  PYB11_FILTER_PARAMETER(bool, NormalizeData)
+  PYB11_FILTER_PARAMETER(bool, MoveValues)
+  PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+  PYB11_PROPERTY(QString StackedDataArrayName READ getStackedDataArrayName WRITE setStackedDataArrayName)
+  PYB11_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
+#endif
 
-    ~CombineAttributeArrays() override;
+public:
+  using Self = CombineAttributeArrays;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
 
-    SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedDataArrayPaths)
-    Q_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
 
-    SIMPL_FILTER_PARAMETER(QString, StackedDataArrayName)
-    Q_PROPERTY(QString StackedDataArrayName READ getStackedDataArrayName WRITE setStackedDataArrayName)
+  /**
+   * @brief Returns the name of the class for CombineAttributeArrays
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for CombineAttributeArrays
+   */
+  static QString ClassName();
 
-    SIMPL_FILTER_PARAMETER(bool, NormalizeData)
-    Q_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
+  ~CombineAttributeArrays() override;
 
-    SIMPL_FILTER_PARAMETER(bool, MoveValues)
-    Q_PROPERTY(bool MoveValues READ getMoveValues WRITE setMoveValues)
+  /**
+   * @brief Setter property for SelectedDataArrayPaths
+   */
+  void setSelectedDataArrayPaths(const QVector<DataArrayPath>& value);
+  /**
+   * @brief Getter property for SelectedDataArrayPaths
+   * @return Value of SelectedDataArrayPaths
+   */
+  QVector<DataArrayPath> getSelectedDataArrayPaths() const;
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
-    const QString getCompiledLibraryName() const override;
+  Q_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    const QString getBrandingString() const override;
+  /**
+   * @brief Setter property for StackedDataArrayName
+   */
+  void setStackedDataArrayName(const QString& value);
+  /**
+   * @brief Getter property for StackedDataArrayName
+   * @return Value of StackedDataArrayName
+   */
+  QString getStackedDataArrayName() const;
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    const QString getFilterVersion() const override;
+  Q_PROPERTY(QString StackedDataArrayName READ getStackedDataArrayName WRITE setStackedDataArrayName)
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+  /**
+   * @brief Setter property for NormalizeData
+   */
+  void setNormalizeData(bool value);
+  /**
+   * @brief Getter property for NormalizeData
+   * @return Value of NormalizeData
+   */
+  bool getNormalizeData() const;
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getGroupName() const override;
+  Q_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getSubGroupName() const override;
+  /**
+   * @brief Setter property for MoveValues
+   */
+  void setMoveValues(bool value);
+  /**
+   * @brief Getter property for MoveValues
+   * @return Value of MoveValues
+   */
+  bool getMoveValues() const;
 
-    /**
-     * @brief getUuid Return the unique identifier for this filter.
-     * @return A QUuid object.
-     */
-    const QUuid getUuid() override;
+  Q_PROPERTY(bool MoveValues READ getMoveValues WRITE setMoveValues)
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    const QString getHumanLabel() const override;
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
+  QString getCompiledLibraryName() const override;
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void setupFilterParameters() override;
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+   */
+  QString getBrandingString() const override;
 
-    /**
-     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  QString getFilterVersion() const override;
 
-    /**
-     * @brief execute Reimplemented from @see AbstractFilter class
-     */
-    void execute() override;
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    void preflight() override;
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getGroupName() const override;
 
-    /**
-     * @brief Returns the list of deleted data paths.
-     * @return
-     */
-    std::list<DataArrayPath> getDeletedPaths() override;
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getSubGroupName() const override;
 
-  signals:
-    /**
-      * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-     * be pushed from a user-facing control (such as a widget)
-     * @param filter Filter instance pointer
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+  /**
+   * @brief getUuid Return the unique identifier for this filter.
+   * @return A QUuid object.
+   */
+  QUuid getUuid() const override;
 
-    /**
-     * @brief parametersChanged Emitted when any Filter parameter is changed internally
-     */
-    void parametersChanged();
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  QString getHumanLabel() const override;
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-     */
-    void preflightAboutToExecute();
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void setupFilterParameters() override;
 
-    /**
-     * @brief preflightExecuted Emitted just after calling dataCheck()
-     */
-    void preflightExecuted();
+  /**
+   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
-  protected:
-    CombineAttributeArrays();
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+  /**
+   * @brief execute Reimplemented from @see AbstractFilter class
+   */
+  void execute() override;
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+  /**
+   * @brief preflight Reimplemented from @see AbstractFilter class
+   */
+  void preflight() override;
 
+  /**
+   * @brief Returns the list of deleted data paths.
+   * @return
+   */
+  std::list<DataArrayPath> getDeletedPaths() override;
 
-  private:
-    DEFINE_IDATAARRAY_WEAKPTR(StackedData)
+signals:
+  /**
+   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+   * be pushed from a user-facing control (such as a widget)
+   * @param filter Filter instance pointer
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-    QVector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
+  /**
+   * @brief parametersChanged Emitted when any Filter parameter is changed internally
+   */
+  void parametersChanged();
 
-  public:
-    CombineAttributeArrays(const CombineAttributeArrays&) = delete; // Copy Constructor Not Implemented
-    CombineAttributeArrays(CombineAttributeArrays&&) = delete;      // Move Constructor Not Implemented
-    CombineAttributeArrays& operator=(const CombineAttributeArrays&) = delete; // Copy Assignment Not Implemented
-    CombineAttributeArrays& operator=(CombineAttributeArrays&&) = delete;      // Move Assignment Not Implemented
+  /**
+   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+   */
+  void preflightAboutToExecute();
+
+  /**
+   * @brief preflightExecuted Emitted just after calling dataCheck()
+   */
+  void preflightExecuted();
+
+protected:
+  CombineAttributeArrays();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
+
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
+
+private:
+  IDataArrayWkPtrType m_StackedDataPtr;
+
+  QVector<DataArrayPath> m_SelectedDataArrayPaths = {};
+  QString m_StackedDataArrayName = {};
+  bool m_NormalizeData = {};
+  bool m_MoveValues = {};
+
+  QVector<IDataArrayWkPtrType> m_SelectedWeakPtrVector;
+
+public:
+  CombineAttributeArrays(const CombineAttributeArrays&) = delete;            // Copy Constructor Not Implemented
+  CombineAttributeArrays(CombineAttributeArrays&&) = delete;                 // Move Constructor Not Implemented
+  CombineAttributeArrays& operator=(const CombineAttributeArrays&) = delete; // Copy Assignment Not Implemented
+  CombineAttributeArrays& operator=(CombineAttributeArrays&&) = delete;      // Move Assignment Not Implemented
 };
 

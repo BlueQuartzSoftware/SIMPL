@@ -33,7 +33,11 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "GenericExample.h"
+
+#include <QtCore/QDebug>
 
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 
@@ -440,7 +444,7 @@ AbstractFilter::Pointer GenericExample::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getCompiledLibraryName() const
+QString GenericExample::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -448,7 +452,7 @@ const QString GenericExample::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getGroupName() const
+QString GenericExample::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -456,7 +460,7 @@ const QString GenericExample::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid GenericExample::getUuid()
+QUuid GenericExample::getUuid() const
 {
   return QUuid("{b1b9da5c-4ad8-5b61-9615-2a3e17b38970}");
 }
@@ -464,7 +468,7 @@ const QUuid GenericExample::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getSubGroupName() const
+QString GenericExample::getSubGroupName() const
 {
   return "Test";
 }
@@ -472,7 +476,540 @@ const QString GenericExample::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getHumanLabel() const
+QString GenericExample::getHumanLabel() const
 {
   return "Generic Example";
+}
+
+// -----------------------------------------------------------------------------
+GenericExample::Pointer GenericExample::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<GenericExample> GenericExample::New()
+{
+  struct make_shared_enabler : public GenericExample
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString GenericExample::getNameOfClass() const
+{
+  return QString("GenericExample");
+}
+
+// -----------------------------------------------------------------------------
+QString GenericExample::ClassName()
+{
+  return QString("GenericExample");
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setStlFilePrefix(const QString& value)
+{
+  m_StlFilePrefix = value;
+}
+
+// -----------------------------------------------------------------------------
+QString GenericExample::getStlFilePrefix() const
+{
+  return m_StlFilePrefix;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setShowPrefix(bool value)
+{
+  m_ShowPrefix = value;
+}
+
+// -----------------------------------------------------------------------------
+bool GenericExample::getShowPrefix() const
+{
+  return m_ShowPrefix;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setMaxIterations(int value)
+{
+  m_MaxIterations = value;
+}
+
+// -----------------------------------------------------------------------------
+int GenericExample::getMaxIterations() const
+{
+  return m_MaxIterations;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setSecondOrderACoeff(const Float2ndOrderPoly_t& value)
+{
+  m_SecondOrderACoeff = value;
+}
+
+// -----------------------------------------------------------------------------
+Float2ndOrderPoly_t GenericExample::getSecondOrderACoeff() const
+{
+  return m_SecondOrderACoeff;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setThirdOrderACoeff(const Float3rdOrderPoly_t& value)
+{
+  m_ThirdOrderACoeff = value;
+}
+
+// -----------------------------------------------------------------------------
+Float3rdOrderPoly_t GenericExample::getThirdOrderACoeff() const
+{
+  return m_ThirdOrderACoeff;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setFourthOrderACoeff(const Float4thOrderPoly_t& value)
+{
+  m_FourthOrderACoeff = value;
+}
+
+// -----------------------------------------------------------------------------
+Float4thOrderPoly_t GenericExample::getFourthOrderACoeff() const
+{
+  return m_FourthOrderACoeff;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setMisorientationTolerance(double value)
+{
+  m_MisorientationTolerance = value;
+}
+
+// -----------------------------------------------------------------------------
+double GenericExample::getMisorientationTolerance() const
+{
+  return m_MisorientationTolerance;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setInputPhaseTypesArrayPath(const DataArrayPath& value)
+{
+  m_InputPhaseTypesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath GenericExample::getInputPhaseTypesArrayPath() const
+{
+  return m_InputPhaseTypesArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setShapeTypeData(const ShapeType::Types& value)
+{
+  m_ShapeTypeData = value;
+}
+
+// -----------------------------------------------------------------------------
+ShapeType::Types GenericExample::getShapeTypeData() const
+{
+  return m_ShapeTypeData;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setPhaseCount(int value)
+{
+  m_PhaseCount = value;
+}
+
+// -----------------------------------------------------------------------------
+int GenericExample::getPhaseCount() const
+{
+  return m_PhaseCount;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setInitRange(const FPRangePair& value)
+{
+  m_InitRange = value;
+}
+
+// -----------------------------------------------------------------------------
+FPRangePair GenericExample::getInitRange() const
+{
+  return m_InitRange;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setEstimatedPrimaryFeatures(const QString& value)
+{
+  m_EstimatedPrimaryFeatures = value;
+}
+
+// -----------------------------------------------------------------------------
+QString GenericExample::getEstimatedPrimaryFeatures() const
+{
+  return m_EstimatedPrimaryFeatures;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setInputFile(const QString& value)
+{
+  m_InputFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString GenericExample::getInputFile() const
+{
+  return m_InputFile;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setInputFileListInfo(const FileListInfo_t& value)
+{
+  m_InputFileListInfo = value;
+}
+
+// -----------------------------------------------------------------------------
+FileListInfo_t GenericExample::getInputFileListInfo() const
+{
+  return m_InputFileListInfo;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setSelectedXCoordArrayName(const QString& value)
+{
+  m_SelectedXCoordArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString GenericExample::getSelectedXCoordArrayName() const
+{
+  return m_SelectedXCoordArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setDataArrayList(const QStringList& value)
+{
+  m_DataArrayList = value;
+}
+
+// -----------------------------------------------------------------------------
+QStringList GenericExample::getDataArrayList() const
+{
+  return m_DataArrayList;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setCreatedDataContainer(const DataArrayPath& value)
+{
+  m_CreatedDataContainer = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath GenericExample::getCreatedDataContainer() const
+{
+  return m_CreatedDataContainer;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setDcaProxy(const DataContainerArrayProxy& value)
+{
+  m_DcaProxy = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArrayProxy GenericExample::getDcaProxy() const
+{
+  return m_DcaProxy;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setInputPath(const QString& value)
+{
+  m_InputPath = value;
+}
+
+// -----------------------------------------------------------------------------
+QString GenericExample::getInputPath() const
+{
+  return m_InputPath;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setOutputFile(const QString& value)
+{
+  m_OutputFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString GenericExample::getOutputFile() const
+{
+  return m_OutputFile;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setOutputPath(const QString& value)
+{
+  m_OutputPath = value;
+}
+
+// -----------------------------------------------------------------------------
+QString GenericExample::getOutputPath() const
+{
+  return m_OutputPath;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setSelectedMultiArrayPaths(const QVector<DataArrayPath>& value)
+{
+  m_SelectedMultiArrayPaths = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> GenericExample::getSelectedMultiArrayPaths() const
+{
+  return m_SelectedMultiArrayPaths;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setWriteAlignmentShifts(bool value)
+{
+  m_WriteAlignmentShifts = value;
+}
+
+// -----------------------------------------------------------------------------
+bool GenericExample::getWriteAlignmentShifts() const
+{
+  return m_WriteAlignmentShifts;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setConversionType(int value)
+{
+  m_ConversionType = value;
+}
+
+// -----------------------------------------------------------------------------
+int GenericExample::getConversionType() const
+{
+  return m_ConversionType;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setDimensions(const IntVec3Type& value)
+{
+  m_Dimensions = value;
+}
+
+// -----------------------------------------------------------------------------
+IntVec3Type GenericExample::getDimensions() const
+{
+  return m_Dimensions;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setRange(const IntVec2Type& value)
+{
+  m_Range = value;
+}
+
+// -----------------------------------------------------------------------------
+IntVec2Type GenericExample::getRange() const
+{
+  return m_Range;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setOrigin(const FloatVec3Type& value)
+{
+  m_Origin = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type GenericExample::getOrigin() const
+{
+  return m_Origin;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setCrystalSymmetryRotations(const AxisAngleInput_t& value)
+{
+  m_CrystalSymmetryRotations = value;
+}
+
+// -----------------------------------------------------------------------------
+AxisAngleInput_t GenericExample::getCrystalSymmetryRotations() const
+{
+  return m_CrystalSymmetryRotations;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setFeatureIdsArrayPath(const DataArrayPath& value)
+{
+  m_FeatureIdsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath GenericExample::getFeatureIdsArrayPath() const
+{
+  return m_FeatureIdsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setAttributeMatrixPath(const DataArrayPath& value)
+{
+  m_AttributeMatrixPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath GenericExample::getAttributeMatrixPath() const
+{
+  return m_AttributeMatrixPath;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setCreatedAttributeMatrix(const DataArrayPath& value)
+{
+  m_CreatedAttributeMatrix = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath GenericExample::getCreatedAttributeMatrix() const
+{
+  return m_CreatedAttributeMatrix;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setDataContainerName(const DataArrayPath& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath GenericExample::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setSizeDistributionFitType(int value)
+{
+  m_SizeDistributionFitType = value;
+}
+
+// -----------------------------------------------------------------------------
+int GenericExample::getSizeDistributionFitType() const
+{
+  return m_SizeDistributionFitType;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setSelectedThresholds(const ComparisonInputs& value)
+{
+  m_SelectedThresholds = value;
+}
+
+// -----------------------------------------------------------------------------
+ComparisonInputs GenericExample::getSelectedThresholds() const
+{
+  return m_SelectedThresholds;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setCalcExpression(const QString& value)
+{
+  m_CalcExpression = value;
+}
+
+// -----------------------------------------------------------------------------
+QString GenericExample::getCalcExpression() const
+{
+  return m_CalcExpression;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setCreatedDataArray(const DataArrayPath& value)
+{
+  m_CreatedDataArray = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath GenericExample::getCreatedDataArray() const
+{
+  return m_CreatedDataArray;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setBool1(bool value)
+{
+  m_Bool1 = value;
+}
+
+// -----------------------------------------------------------------------------
+bool GenericExample::getBool1() const
+{
+  return m_Bool1;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setDouble2(double value)
+{
+  m_Double2 = value;
+}
+
+// -----------------------------------------------------------------------------
+double GenericExample::getDouble2() const
+{
+  return m_Double2;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setBool2(bool value)
+{
+  m_Bool2 = value;
+}
+
+// -----------------------------------------------------------------------------
+bool GenericExample::getBool2() const
+{
+  return m_Bool2;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setAlgorithmSelection(int value)
+{
+  m_AlgorithmSelection = value;
+}
+
+// -----------------------------------------------------------------------------
+int GenericExample::getAlgorithmSelection() const
+{
+  return m_AlgorithmSelection;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setDistanceMetric(int value)
+{
+  m_DistanceMetric = value;
+}
+
+// -----------------------------------------------------------------------------
+int GenericExample::getDistanceMetric() const
+{
+  return m_DistanceMetric;
+}
+
+// -----------------------------------------------------------------------------
+void GenericExample::setMontageSelection(const MontageSelection& value)
+{
+  m_MontageSelection = value;
+}
+
+// -----------------------------------------------------------------------------
+MontageSelection GenericExample::getMontageSelection() const
+{
+  return m_MontageSelection;
 }

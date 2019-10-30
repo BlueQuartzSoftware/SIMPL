@@ -33,6 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "AbstractDecisionFilter.h"
 
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
@@ -133,7 +135,7 @@ AbstractFilter::Pointer AbstractDecisionFilter::newFilterInstance(bool copyFilte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractDecisionFilter::getCompiledLibraryName() const
+QString AbstractDecisionFilter::getCompiledLibraryName() const
 {
   return "";
 }
@@ -141,7 +143,7 @@ const QString AbstractDecisionFilter::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractDecisionFilter::getGroupName() const
+QString AbstractDecisionFilter::getGroupName() const
 {
   return "";
 }
@@ -149,7 +151,7 @@ const QString AbstractDecisionFilter::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid AbstractDecisionFilter::getUuid()
+QUuid AbstractDecisionFilter::getUuid() const
 {
   return QUuid("{e4fcd394-6ac6-5559-98a1-1945a0da3427}");
 }
@@ -157,7 +159,7 @@ const QUuid AbstractDecisionFilter::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractDecisionFilter::getSubGroupName() const
+QString AbstractDecisionFilter::getSubGroupName() const
 {
   return "";
 }
@@ -165,7 +167,36 @@ const QString AbstractDecisionFilter::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractDecisionFilter::getHumanLabel() const
+QString AbstractDecisionFilter::getHumanLabel() const
 {
   return "";
+}
+
+// -----------------------------------------------------------------------------
+AbstractDecisionFilter::Pointer AbstractDecisionFilter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<AbstractDecisionFilter> AbstractDecisionFilter::New()
+{
+  struct make_shared_enabler : public AbstractDecisionFilter
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractDecisionFilter::getNameOfClass() const
+{
+  return QString("AbstractDecisionFilter");
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractDecisionFilter::ClassName()
+{
+  return QString("AbstractDecisionFilter");
 }

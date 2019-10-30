@@ -106,3 +106,64 @@ void RangeFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = obj;
   }
 }
+
+// -----------------------------------------------------------------------------
+RangeFilterParameter::Pointer RangeFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+RangeFilterParameter::Pointer RangeFilterParameter::New()
+{
+  Pointer sharedPtr(new(RangeFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString RangeFilterParameter::getNameOfClass() const
+{
+  return QString("RangeFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString RangeFilterParameter::ClassName()
+{
+  return QString("RangeFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void RangeFilterParameter::setDefaultPair(const FPRangePair& value)
+{
+  m_DefaultPair = value;
+}
+
+// -----------------------------------------------------------------------------
+FPRangePair RangeFilterParameter::getDefaultPair() const
+{
+  return m_DefaultPair;
+}
+
+// -----------------------------------------------------------------------------
+void RangeFilterParameter::setSetterCallback(const RangeFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+RangeFilterParameter::SetterCallbackType RangeFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void RangeFilterParameter::setGetterCallback(const RangeFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+RangeFilterParameter::GetterCallbackType RangeFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

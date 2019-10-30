@@ -36,9 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
 
 /**
  * @brief The CreateFeatureArrayFromElementArray class. See [Filter documentation](@ref createfeaturearrayfromelementarray) for details.
@@ -46,49 +51,108 @@
 class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(CreateFeatureArrayFromElementArray SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(CreateFeatureArrayFromElementArray)
+    PYB11_FILTER_NEW_MACRO(CreateFeatureArrayFromElementArray)
+    PYB11_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
+    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedCellArrayPath)
+    PYB11_FILTER_PARAMETER(QString, CreatedArrayName)
+    PYB11_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     PYB11_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
     PYB11_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
     PYB11_PROPERTY(QString CreatedArrayName READ getCreatedArrayName WRITE setCreatedArrayName)
     PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(CreateFeatureArrayFromElementArray)
-    SIMPL_FILTER_NEW_MACRO(CreateFeatureArrayFromElementArray)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateFeatureArrayFromElementArray, AbstractFilter)
+    using Self = CreateFeatureArrayFromElementArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<CreateFeatureArrayFromElementArray> New();
+
+    /**
+     * @brief Returns the name of the class for CreateFeatureArrayFromElementArray
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for CreateFeatureArrayFromElementArray
+     */
+    static QString ClassName();
 
     ~CreateFeatureArrayFromElementArray() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
+    /**
+     * @brief Setter property for CellFeatureAttributeMatrixName
+     */
+    void setCellFeatureAttributeMatrixName(const DataArrayPath& value);
+    /**
+     * @brief Getter property for CellFeatureAttributeMatrixName
+     * @return Value of CellFeatureAttributeMatrixName
+     */
+    DataArrayPath getCellFeatureAttributeMatrixName() const;
+
     Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedCellArrayPath)
+    /**
+     * @brief Setter property for SelectedCellArrayPath
+     */
+    void setSelectedCellArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedCellArrayPath
+     * @return Value of SelectedCellArrayPath
+     */
+    DataArrayPath getSelectedCellArrayPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
 
-    SIMPL_FILTER_PARAMETER(QString, CreatedArrayName)
+    /**
+     * @brief Setter property for CreatedArrayName
+     */
+    void setCreatedArrayName(const QString& value);
+    /**
+     * @brief Getter property for CreatedArrayName
+     * @return Value of CreatedArrayName
+     */
+    QString getCreatedArrayName() const;
+
     Q_PROPERTY(QString CreatedArrayName READ getCreatedArrayName WRITE setCreatedArrayName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+    /**
+     * @brief Setter property for FeatureIdsArrayPath
+     */
+    void setFeatureIdsArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for FeatureIdsArrayPath
+     * @return Value of FeatureIdsArrayPath
+     */
+    DataArrayPath getFeatureIdsArrayPath() const;
+
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -98,23 +162,23 @@ class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -173,8 +237,15 @@ class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
 
 
   private:
-    DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-    DEFINE_IDATAARRAY_WEAKPTR(InArray)
+    std::weak_ptr<DataArray<int32_t>> m_FeatureIdsPtr;
+    int32_t* m_FeatureIds = nullptr;
+
+    IDataArrayWkPtrType m_InArrayPtr;
+
+    DataArrayPath m_CellFeatureAttributeMatrixName = {};
+    DataArrayPath m_SelectedCellArrayPath = {};
+    QString m_CreatedArrayName = {};
+    DataArrayPath m_FeatureIdsArrayPath = {};
 
   public:
     CreateFeatureArrayFromElementArray(const CreateFeatureArrayFromElementArray&) = delete; // Copy Constructor Not Implemented

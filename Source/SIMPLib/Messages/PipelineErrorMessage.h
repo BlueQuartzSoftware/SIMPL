@@ -36,6 +36,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/Messages/AbstractErrorMessage.h"
 
 /**
@@ -45,44 +47,67 @@
  */
 class SIMPLib_EXPORT PipelineErrorMessage : public AbstractErrorMessage
 {
-  public:
-    SIMPL_SHARED_POINTERS(PipelineErrorMessage)
-    SIMPL_STATIC_NEW_MACRO(PipelineErrorMessage)
-    SIMPL_TYPE_MACRO(PipelineErrorMessage)
 
-    virtual ~PipelineErrorMessage();
+public:
+  using Self = PipelineErrorMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    SIMPL_INSTANCE_STRING_PROPERTY(PipelineName)
+  static Pointer New();
 
-    /**
-     * @brief New
-     * @param humanLabel
-     * @param pipelineIndex
-     * @param msg
-     * @param code
-     * @return
-     */
-    static Pointer New(const QString &pipelineName, const QString& msgText, int code);
+  /**
+   * @brief Returns the name of the class for PipelineErrorMessage
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for PipelineErrorMessage
+   */
+  static QString ClassName();
 
-    /**
-     * @brief This method creates and returns a string for pipeline error messages
-     */
-    virtual QString generateMessageString() const override;
+  ~PipelineErrorMessage() override;
 
-    /**
-     * @brief Method that allows the visitation of a message by a message handler.  This
-     * is part of the double-dispatch API that allows observers to be able to perform
-     * subclass specific operations on messages that they receive.
-     * @param msgHandler The observer's message handler
-     */
-    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
+  /**
+   * @brief Setter property for PipelineName
+   */
+  void setPipelineName(const QString& value);
+  /**
+   * @brief Getter property for PipelineName
+   * @return Value of PipelineName
+   */
+  QString getPipelineName() const;
 
-  protected:
-    PipelineErrorMessage();
-    PipelineErrorMessage(const QString &pipelineName, const QString& msgText, int code);
+  /**
+   * @brief New
+   * @param humanLabel
+   * @param pipelineIndex
+   * @param msg
+   * @param code
+   * @return
+   */
+  static Pointer New(const QString& pipelineName, const QString& msgText, int code);
 
-  private:
+  /**
+   * @brief This method creates and returns a string for pipeline error messages
+   */
+  QString generateMessageString() const override;
 
+  /**
+   * @brief Method that allows the visitation of a message by a message handler.  This
+   * is part of the double-dispatch API that allows observers to be able to perform
+   * subclass specific operations on messages that they receive.
+   * @param msgHandler The observer's message handler
+   */
+  void visit(AbstractMessageHandler* msgHandler) const override final;
+
+protected:
+  PipelineErrorMessage();
+  PipelineErrorMessage(const QString& pipelineName, const QString& msgText, int code);
+
+private:
+  QString m_PipelineName = {};
 };
 Q_DECLARE_METATYPE(PipelineErrorMessage::Pointer)
 

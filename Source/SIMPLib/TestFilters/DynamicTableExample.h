@@ -35,10 +35,11 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <memory>
+
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
 * @class DynamicTableExample DynamicTableExample.h ExamplePlugin/Code/ExamplePluginFilters/DynamicTableExample.h
@@ -50,57 +51,136 @@
 class SIMPLib_EXPORT DynamicTableExample : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(DynamicTableExample SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(DynamicTableExample)
+  PYB11_FILTER_NEW_MACRO(DynamicTableExample)
+  PYB11_FILTER_PARAMETER(DynamicTableData, DynamicData1)
+  PYB11_FILTER_PARAMETER(DynamicTableData, DynamicData2)
+  PYB11_FILTER_PARAMETER(DynamicTableData, DynamicData3)
+  PYB11_FILTER_PARAMETER(DynamicTableData, DynamicData4)
+  PYB11_FILTER_PARAMETER(DynamicTableData, DynamicData5)
 
   PYB11_PROPERTY(DynamicTableData DynamicData1 READ getDynamicData1 WRITE setDynamicData1)
   PYB11_PROPERTY(DynamicTableData DynamicData2 READ getDynamicData2 WRITE setDynamicData2)
   PYB11_PROPERTY(DynamicTableData DynamicData3 READ getDynamicData3 WRITE setDynamicData3)
   PYB11_PROPERTY(DynamicTableData DynamicData4 READ getDynamicData4 WRITE setDynamicData4)
   PYB11_PROPERTY(DynamicTableData DynamicData5 READ getDynamicData5 WRITE setDynamicData5)
+#endif
+
 public:
-  SIMPL_SHARED_POINTERS(DynamicTableExample)
-  SIMPL_FILTER_NEW_MACRO(DynamicTableExample)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DynamicTableExample, AbstractFilter)
+  using Self = DynamicTableExample;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
+
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for DynamicTableExample
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for DynamicTableExample
+   */
+  static QString ClassName();
 
   ~DynamicTableExample() override;
 
   /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
-  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData1)
+  /**
+   * @brief Setter property for DynamicData1
+   */
+  void setDynamicData1(const DynamicTableData& value);
+  /**
+   * @brief Getter property for DynamicData1
+   * @return Value of DynamicData1
+   */
+  DynamicTableData getDynamicData1() const;
+
   Q_PROPERTY(DynamicTableData DynamicData1 READ getDynamicData1 WRITE setDynamicData1)
 
-  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData2)
+  /**
+   * @brief Setter property for DynamicData2
+   */
+  void setDynamicData2(const DynamicTableData& value);
+  /**
+   * @brief Getter property for DynamicData2
+   * @return Value of DynamicData2
+   */
+  DynamicTableData getDynamicData2() const;
+
   Q_PROPERTY(DynamicTableData DynamicData2 READ getDynamicData2 WRITE setDynamicData2)
 
-  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData3)
+  /**
+   * @brief Setter property for DynamicData3
+   */
+  void setDynamicData3(const DynamicTableData& value);
+  /**
+   * @brief Getter property for DynamicData3
+   * @return Value of DynamicData3
+   */
+  DynamicTableData getDynamicData3() const;
+
   Q_PROPERTY(DynamicTableData DynamicData3 READ getDynamicData3 WRITE setDynamicData3)
 
-  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData4)
+  /**
+   * @brief Setter property for DynamicData4
+   */
+  void setDynamicData4(const DynamicTableData& value);
+  /**
+   * @brief Getter property for DynamicData4
+   * @return Value of DynamicData4
+   */
+  DynamicTableData getDynamicData4() const;
+
   Q_PROPERTY(DynamicTableData DynamicData4 READ getDynamicData4 WRITE setDynamicData4)
 
-  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData5)
+  /**
+   * @brief Setter property for DynamicData5
+   */
+  void setDynamicData5(const DynamicTableData& value);
+  /**
+   * @brief Getter property for DynamicData5
+   * @return Value of DynamicData5
+   */
+  DynamicTableData getDynamicData5() const;
+
   Q_PROPERTY(DynamicTableData DynamicData5 READ getDynamicData5 WRITE setDynamicData5)
 
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
   AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
   * a subgroup. It should be readable and understandable by humans.
   */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
   * @brief This method will instantiate all the end user settable options/parameters
@@ -149,5 +229,12 @@ public:
   DynamicTableExample(DynamicTableExample&&) = delete;      // Move Constructor Not Implemented
   DynamicTableExample& operator=(const DynamicTableExample&) = delete; // Copy Assignment Not Implemented
   DynamicTableExample& operator=(DynamicTableExample&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  DynamicTableData m_DynamicData1 = {};
+  DynamicTableData m_DynamicData2 = {};
+  DynamicTableData m_DynamicData3 = {};
+  DynamicTableData m_DynamicData4 = {};
+  DynamicTableData m_DynamicData5 = {};
 };
 

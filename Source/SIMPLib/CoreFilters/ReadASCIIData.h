@@ -4,11 +4,15 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 /**
  * @brief The ReadASCIIData class. See [Filter documentation](@ref ReadASCIIData) for details.
@@ -16,17 +20,55 @@
 class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ReadASCIIData SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(ReadASCIIData)
+  PYB11_FILTER_NEW_MACRO(ReadASCIIData)
+  PYB11_FILTER_PARAMETER(ASCIIWizardData, WizardData)
   PYB11_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)
+#endif
 
-  public:
-    SIMPL_SHARED_POINTERS(ReadASCIIData)
-    SIMPL_FILTER_NEW_MACRO(ReadASCIIData)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReadASCIIData, AbstractFilter)
+public:
+  using Self = ReadASCIIData;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
 
-    ~ReadASCIIData() override;
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
 
-  SIMPL_FILTER_PARAMETER(ASCIIWizardData, WizardData)
+  /**
+   * @brief Returns the name of the class for ReadASCIIData
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ReadASCIIData
+   */
+  static QString ClassName();
+
+  ~ReadASCIIData() override;
+
+  /**
+   * @brief Setter property for WizardData
+   */
+  void setWizardData(const ASCIIWizardData& value);
+  /**
+   * @brief Getter property for WizardData
+   * @return Value of WizardData
+   */
+  ASCIIWizardData getWizardData() const;
+
   Q_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)
 
   enum ErrorCodes
@@ -43,57 +85,57 @@ class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    const QString getBrandingString() const override;
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+   */
+  QString getBrandingString() const override;
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    const QString getFilterVersion() const override;
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  QString getFilterVersion() const override;
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getGroupName() const override;
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getGroupName() const override;
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getSubGroupName() const override;
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getSubGroupName() const override;
 
-    /**
-     * @brief getUuid Return the unique identifier for this filter.
-     * @return A QUuid object.
-     */
-    const QUuid getUuid() override;
+  /**
+   * @brief getUuid Return the unique identifier for this filter.
+   * @return A QUuid object.
+   */
+  QUuid getUuid() const override;
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    const QString getHumanLabel() const override;
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  QString getHumanLabel() const override;
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void setupFilterParameters() override;
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void setupFilterParameters() override;
 
-    /**
-     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  /**
+   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
   * @brief readFilterParametersFromJson Reads the filter parameters from a file
@@ -161,7 +203,9 @@ class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
 
 
   private:
-    QMap<int, IDataArray::Pointer>        m_ASCIIArrayMap;
+    ASCIIWizardData m_WizardData = {};
+
+    QMap<int, IDataArrayShPtrType> m_ASCIIArrayMap;
 
   public:
     ReadASCIIData(const ReadASCIIData&) = delete;  // Copy Constructor Not Implemented

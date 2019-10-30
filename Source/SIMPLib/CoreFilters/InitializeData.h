@@ -35,12 +35,16 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QVector>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 /**
  * @brief The InitializeData class. See [Filter documentation](@ref initializedata) for details.
@@ -48,76 +52,215 @@
 class SIMPLib_EXPORT InitializeData : public AbstractFilter
 {
   Q_OBJECT
-    PYB11_CREATE_BINDINGS(InitializeData SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(QVector<DataArrayPath> CellAttributeMatrixPaths READ getCellAttributeMatrixPaths WRITE setCellAttributeMatrixPaths)
-    PYB11_PROPERTY(int XMin READ getXMin WRITE setXMin)
-    PYB11_PROPERTY(int YMin READ getYMin WRITE setYMin)
-    PYB11_PROPERTY(int ZMin READ getZMin WRITE setZMin)
-    PYB11_PROPERTY(int XMax READ getXMax WRITE setXMax)
-    PYB11_PROPERTY(int YMax READ getYMax WRITE setYMax)
-    PYB11_PROPERTY(int ZMax READ getZMax WRITE setZMax)
-    PYB11_PROPERTY(int InitType READ getInitType WRITE setInitType)
-    PYB11_PROPERTY(bool Random READ getRandom WRITE setRandom)
-    PYB11_PROPERTY(double InitValue READ getInitValue WRITE setInitValue)
-    PYB11_PROPERTY(FPRangePair InitRange READ getInitRange WRITE setInitRange)
+
+#ifdef SIMPL_ENABLE_PYTHON
+  PYB11_CREATE_BINDINGS(InitializeData SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(InitializeData)
+  PYB11_FILTER_NEW_MACRO(InitializeData)
+  PYB11_FILTER_PARAMETER(QVector<DataArrayPath>, CellAttributeMatrixPaths)
+  PYB11_FILTER_PARAMETER(int, XMin)
+  PYB11_FILTER_PARAMETER(int, YMin)
+  PYB11_FILTER_PARAMETER(int, ZMin)
+  PYB11_FILTER_PARAMETER(int, XMax)
+  PYB11_FILTER_PARAMETER(int, YMax)
+  PYB11_FILTER_PARAMETER(int, ZMax)
+  PYB11_FILTER_PARAMETER(int, InitType)
+  PYB11_FILTER_PARAMETER(bool, Random)
+  PYB11_FILTER_PARAMETER(double, InitValue)
+  PYB11_FILTER_PARAMETER(FPRangePair, InitRange)
+  PYB11_PROPERTY(QVector<DataArrayPath> CellAttributeMatrixPaths READ getCellAttributeMatrixPaths WRITE setCellAttributeMatrixPaths)
+  PYB11_PROPERTY(int XMin READ getXMin WRITE setXMin)
+  PYB11_PROPERTY(int YMin READ getYMin WRITE setYMin)
+  PYB11_PROPERTY(int ZMin READ getZMin WRITE setZMin)
+  PYB11_PROPERTY(int XMax READ getXMax WRITE setXMax)
+  PYB11_PROPERTY(int YMax READ getYMax WRITE setYMax)
+  PYB11_PROPERTY(int ZMax READ getZMax WRITE setZMax)
+  PYB11_PROPERTY(int InitType READ getInitType WRITE setInitType)
+  PYB11_PROPERTY(bool Random READ getRandom WRITE setRandom)
+  PYB11_PROPERTY(double InitValue READ getInitValue WRITE setInitValue)
+  PYB11_PROPERTY(FPRangePair InitRange READ getInitRange WRITE setInitRange)
+#endif
+
 public:
-  SIMPL_SHARED_POINTERS(InitializeData)
-  SIMPL_FILTER_NEW_MACRO(InitializeData)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(InitializeData, AbstractFilter)
+  using Self = InitializeData;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
+
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for InitializeData
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for InitializeData
+   */
+  static QString ClassName();
 
   ~InitializeData() override;
 
-  SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, CellAttributeMatrixPaths)
+  /**
+   * @brief Setter property for CellAttributeMatrixPaths
+   */
+  void setCellAttributeMatrixPaths(const QVector<DataArrayPath>& value);
+  /**
+   * @brief Getter property for CellAttributeMatrixPaths
+   * @return Value of CellAttributeMatrixPaths
+   */
+  QVector<DataArrayPath> getCellAttributeMatrixPaths() const;
+
   Q_PROPERTY(QVector<DataArrayPath> CellAttributeMatrixPaths READ getCellAttributeMatrixPaths WRITE setCellAttributeMatrixPaths)
 
-  SIMPL_FILTER_PARAMETER(int, XMin)
+  /**
+   * @brief Setter property for XMin
+   */
+  void setXMin(int value);
+  /**
+   * @brief Getter property for XMin
+   * @return Value of XMin
+   */
+  int getXMin() const;
+
   Q_PROPERTY(int XMin READ getXMin WRITE setXMin)
 
-  SIMPL_FILTER_PARAMETER(int, YMin)
+  /**
+   * @brief Setter property for YMin
+   */
+  void setYMin(int value);
+  /**
+   * @brief Getter property for YMin
+   * @return Value of YMin
+   */
+  int getYMin() const;
+
   Q_PROPERTY(int YMin READ getYMin WRITE setYMin)
 
-  SIMPL_FILTER_PARAMETER(int, ZMin)
+  /**
+   * @brief Setter property for ZMin
+   */
+  void setZMin(int value);
+  /**
+   * @brief Getter property for ZMin
+   * @return Value of ZMin
+   */
+  int getZMin() const;
+
   Q_PROPERTY(int ZMin READ getZMin WRITE setZMin)
 
-  SIMPL_FILTER_PARAMETER(int, XMax)
+  /**
+   * @brief Setter property for XMax
+   */
+  void setXMax(int value);
+  /**
+   * @brief Getter property for XMax
+   * @return Value of XMax
+   */
+  int getXMax() const;
+
   Q_PROPERTY(int XMax READ getXMax WRITE setXMax)
 
-  SIMPL_FILTER_PARAMETER(int, YMax)
+  /**
+   * @brief Setter property for YMax
+   */
+  void setYMax(int value);
+  /**
+   * @brief Getter property for YMax
+   * @return Value of YMax
+   */
+  int getYMax() const;
+
   Q_PROPERTY(int YMax READ getYMax WRITE setYMax)
 
-  SIMPL_FILTER_PARAMETER(int, ZMax)
+  /**
+   * @brief Setter property for ZMax
+   */
+  void setZMax(int value);
+  /**
+   * @brief Getter property for ZMax
+   * @return Value of ZMax
+   */
+  int getZMax() const;
+
   Q_PROPERTY(int ZMax READ getZMax WRITE setZMax)
 
-  SIMPL_FILTER_PARAMETER(int, InitType)
+  /**
+   * @brief Setter property for InitType
+   */
+  void setInitType(int value);
+  /**
+   * @brief Getter property for InitType
+   * @return Value of InitType
+   */
+  int getInitType() const;
+
   Q_PROPERTY(int InitType READ getInitType WRITE setInitType)
 
-  SIMPL_FILTER_PARAMETER(bool, Random)
+  /**
+   * @brief Setter property for Random
+   */
+  void setRandom(bool value);
+  /**
+   * @brief Getter property for Random
+   * @return Value of Random
+   */
+  bool getRandom() const;
+
   Q_PROPERTY(bool Random READ getRandom WRITE setRandom)
 
-  SIMPL_FILTER_PARAMETER(double, InitValue)
+  /**
+   * @brief Setter property for InitValue
+   */
+  void setInitValue(double value);
+  /**
+   * @brief Getter property for InitValue
+   * @return Value of InitValue
+   */
+  double getInitValue() const;
+
   Q_PROPERTY(double InitValue READ getInitValue WRITE setInitValue)
 
-  SIMPL_FILTER_PARAMETER(FPRangePair, InitRange)
+  /**
+   * @brief Setter property for InitRange
+   */
+  void setInitRange(const FPRangePair& value);
+  /**
+   * @brief Getter property for InitRange
+   * @return Value of InitRange
+   */
+  FPRangePair getInitRange() const;
+
   Q_PROPERTY(FPRangePair InitRange READ getInitRange WRITE setInitRange)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
 
   /**
    * @brief getBrandingString Returns the branding string for the filter, which is a tag
    * used to denote the filter's association with specific plugins
    * @return Branding string
   */
-  const QString getBrandingString() const override;
+  QString getBrandingString() const override;
 
   /**
    * @brief getFilterVersion Returns a version string for this filter. Default
    * value is an empty string.
    * @return
    */
-  const QString getFilterVersion() const override;
+  QString getFilterVersion() const override;
 
   /**
    * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -127,23 +270,23 @@ public:
   /**
    * @brief getGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
    * @brief getSubGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
    * @brief getHumanLabel Reimplemented from @see AbstractFilter class
    */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
 
   /**
    * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -201,6 +344,18 @@ protected:
   void initialize();
 
 private:
+  QVector<DataArrayPath> m_CellAttributeMatrixPaths = {};
+  int m_XMin = {};
+  int m_YMin = {};
+  int m_ZMin = {};
+  int m_XMax = {};
+  int m_YMax = {};
+  int m_ZMax = {};
+  int m_InitType = {};
+  bool m_Random = {};
+  double m_InitValue = {};
+  FPRangePair m_InitRange = {};
+
   enum InitChoices
   {
     Manual,
@@ -216,7 +371,8 @@ private:
   * @param p The array that will be initialized
   * @param dims The dimensions of the array p
   */
-  template <typename T> void initializeArrayWithInts(IDataArray::Pointer p, int64_t dims[3]);
+  template <typename T>
+  void initializeArrayWithInts(IDataArrayShPtrType p, int64_t dims[3]);
 
   /**
   * @brief initializeArrayWithReals Initializes the array p with real numbers, either from the
@@ -227,13 +383,15 @@ private:
   * @param p The array that will be initialized
   * @param dims The dimensions of the array p
   */
-  template <typename T> void initializeArrayWithReals(IDataArray::Pointer p, int64_t dims[3]);
+  template <typename T>
+  void initializeArrayWithReals(IDataArrayShPtrType p, int64_t dims[3]);
 
   /**
   * @brief checkInitialization Checks that the chosen initialization value/range is inside
   * the bounds of the array type
   */
-  template <typename T> void checkInitialization(IDataArray::Pointer p);
+  template <typename T>
+  void checkInitialization(IDataArrayShPtrType p);
 
 public:
   InitializeData(const InitializeData&) = delete; // Copy Constructor Not Implemented

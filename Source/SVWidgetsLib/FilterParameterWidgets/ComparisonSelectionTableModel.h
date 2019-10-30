@@ -64,8 +64,7 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
       ColumnCount
     };
 
-
-    ComparisonSelectionTableModel(bool showOperators, QObject* parent = 0);
+    ComparisonSelectionTableModel(bool showOperators, QObject* parent = nullptr);
 
     ~ComparisonSelectionTableModel() override;
 

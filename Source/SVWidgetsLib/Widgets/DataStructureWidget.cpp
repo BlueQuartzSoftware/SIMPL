@@ -40,6 +40,8 @@
 #include <QtGui/QStandardItemModel>
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"

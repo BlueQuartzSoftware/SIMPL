@@ -36,10 +36,11 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <memory>
+
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The RemoveArrays class. See [Filter documentation](@ref removearrays) for details.
@@ -47,37 +48,66 @@
 class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(RemoveArrays SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(RemoveArrays)
+    PYB11_FILTER_NEW_MACRO(RemoveArrays)
+    PYB11_FILTER_PARAMETER(DataContainerArrayProxy, DataArraysToRemove)
     PYB11_PROPERTY(DataContainerArrayProxy DataArraysToRemove READ getDataArraysToRemove WRITE setDataArraysToRemove)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(RemoveArrays)
-    SIMPL_FILTER_NEW_MACRO(RemoveArrays)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RemoveArrays, AbstractFilter)
+    using Self = RemoveArrays;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<RemoveArrays> New();
+
+    /**
+     * @brief Returns the name of the class for RemoveArrays
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for RemoveArrays
+     */
+    static QString ClassName();
 
     ~RemoveArrays() override;
 
-    SIMPL_FILTER_PARAMETER(DataContainerArrayProxy, DataArraysToRemove)
+    /**
+     * @brief Setter property for DataArraysToRemove
+     */
+    void setDataArraysToRemove(const DataContainerArrayProxy& value);
+    /**
+     * @brief Getter property for DataArraysToRemove
+     * @return Value of DataArraysToRemove
+     */
+    DataContainerArrayProxy getDataArraysToRemove() const;
+
     Q_PROPERTY(DataContainerArrayProxy DataArraysToRemove READ getDataArraysToRemove WRITE setDataArraysToRemove)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -87,23 +117,23 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -187,6 +217,8 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
     RemoveArrays& operator=(RemoveArrays&&) = delete;      // Move Assignment Not Implemented
 
   private:
+    DataContainerArrayProxy m_DataArraysToRemove = {};
+
     std::list<DataArrayPath> m_RemovedPaths;
 };
 

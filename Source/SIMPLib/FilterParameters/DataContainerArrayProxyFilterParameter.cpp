@@ -125,3 +125,76 @@ void DataContainerArrayProxyFilterParameter::dataArrayPathRenamed(AbstractFilter
   }
   emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }
+
+// -----------------------------------------------------------------------------
+DataContainerArrayProxyFilterParameter::Pointer DataContainerArrayProxyFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArrayProxyFilterParameter::Pointer DataContainerArrayProxyFilterParameter::New()
+{
+  Pointer sharedPtr(new(DataContainerArrayProxyFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerArrayProxyFilterParameter::getNameOfClass() const
+{
+  return QString("DataContainerArrayProxyFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerArrayProxyFilterParameter::ClassName()
+{
+  return QString("DataContainerArrayProxyFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyFilterParameter::setDataContainerArrayProxy(const DataContainerArrayProxy& value)
+{
+  m_DataContainerArrayProxy = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArrayProxy DataContainerArrayProxyFilterParameter::getDataContainerArrayProxy() const
+{
+  return m_DataContainerArrayProxy;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyFilterParameter::setDefaultFlagValue(const Qt::CheckState& value)
+{
+  m_DefaultFlagValue = value;
+}
+
+// -----------------------------------------------------------------------------
+Qt::CheckState DataContainerArrayProxyFilterParameter::getDefaultFlagValue() const
+{
+  return m_DefaultFlagValue;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyFilterParameter::setSetterCallback(const DataContainerArrayProxyFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArrayProxyFilterParameter::SetterCallbackType DataContainerArrayProxyFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyFilterParameter::setGetterCallback(const DataContainerArrayProxyFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArrayProxyFilterParameter::GetterCallbackType DataContainerArrayProxyFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

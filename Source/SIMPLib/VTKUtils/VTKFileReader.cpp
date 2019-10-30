@@ -32,6 +32,8 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "VTKFileReader.h"
 
 #include <cstring>
@@ -42,8 +44,13 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QFile>
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Geometry/ImageGeom.h"
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #define kBufferSize 1024
 
@@ -295,4 +302,93 @@ int VTKFileReader::readHeader()
   image->setSpacing(resolution);
 
   return err;
+}
+
+// -----------------------------------------------------------------------------
+VTKFileReader::Pointer VTKFileReader::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString VTKFileReader::getNameOfClass() const
+{
+  return QString("VTKFileReader");
+}
+
+// -----------------------------------------------------------------------------
+QString VTKFileReader::ClassName()
+{
+  return QString("VTKFileReader");
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<VTKFileReader> VTKFileReader::New()
+{
+  struct make_shared_enabler : public VTKFileReader
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+void VTKFileReader::setDataContainerName(const QString& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString VTKFileReader::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void VTKFileReader::setInputFile(const QString& value)
+{
+  m_InputFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString VTKFileReader::getInputFile() const
+{
+  return m_InputFile;
+}
+
+// -----------------------------------------------------------------------------
+void VTKFileReader::setComment(const QString& value)
+{
+  m_Comment = value;
+}
+
+// -----------------------------------------------------------------------------
+QString VTKFileReader::getComment() const
+{
+  return m_Comment;
+}
+
+// -----------------------------------------------------------------------------
+void VTKFileReader::setDatasetType(const QString& value)
+{
+  m_DatasetType = value;
+}
+
+// -----------------------------------------------------------------------------
+QString VTKFileReader::getDatasetType() const
+{
+  return m_DatasetType;
+}
+
+// -----------------------------------------------------------------------------
+void VTKFileReader::setFileIsBinary(bool value)
+{
+  m_FileIsBinary = value;
+}
+
+// -----------------------------------------------------------------------------
+bool VTKFileReader::getFileIsBinary() const
+{
+  return m_FileIsBinary;
 }

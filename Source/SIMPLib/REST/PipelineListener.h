@@ -6,7 +6,6 @@
 
 #include "SIMPLib/Common/IObserver.h"
 #include "SIMPLib/Messages/AbstractMessageHandler.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/SIMPLib.h"
 
 class PipelineListenerMessageHandler;
@@ -20,7 +19,14 @@ class SIMPLib_EXPORT PipelineListener : public QObject, public IObserver
 {
   Q_OBJECT
 public:
-  SIMPL_TYPE_MACRO_SUPER(PipelineListener, IObserver)
+  /**
+   * @brief Returns the name of the class for PipelineListener
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for PipelineListener
+   */
+  static QString ClassName();
 
   PipelineListener(QObject* parent);
   virtual ~PipelineListener();

@@ -159,3 +159,100 @@ void ComparisonSelectionAdvancedFilterParameter::dataArrayPathRenamed(AbstractFi
     emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }
+
+// -----------------------------------------------------------------------------
+ComparisonSelectionAdvancedFilterParameter::Pointer ComparisonSelectionAdvancedFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ComparisonSelectionAdvancedFilterParameter::Pointer ComparisonSelectionAdvancedFilterParameter::New()
+{
+  Pointer sharedPtr(new(ComparisonSelectionAdvancedFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString ComparisonSelectionAdvancedFilterParameter::getNameOfClass() const
+{
+  return QString("ComparisonSelectionAdvancedFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString ComparisonSelectionAdvancedFilterParameter::ClassName()
+{
+  return QString("ComparisonSelectionAdvancedFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedFilterParameter::setChoices(const QVector<QString>& value)
+{
+  m_Choices = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<QString> ComparisonSelectionAdvancedFilterParameter::getChoices() const
+{
+  return m_Choices;
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedFilterParameter::setShowOperators(bool value)
+{
+  m_ShowOperators = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ComparisonSelectionAdvancedFilterParameter::getShowOperators() const
+{
+  return m_ShowOperators;
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedFilterParameter::setDefaultGeometryTypes(const IGeometry::Types& value)
+{
+  m_DefaultGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Types ComparisonSelectionAdvancedFilterParameter::getDefaultGeometryTypes() const
+{
+  return m_DefaultGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedFilterParameter::setDefaultAttributeMatrixTypes(const AttributeMatrix::Types& value)
+{
+  m_DefaultAttributeMatrixTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrix::Types ComparisonSelectionAdvancedFilterParameter::getDefaultAttributeMatrixTypes() const
+{
+  return m_DefaultAttributeMatrixTypes;
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedFilterParameter::setSetterCallback(const ComparisonSelectionAdvancedFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ComparisonSelectionAdvancedFilterParameter::SetterCallbackType ComparisonSelectionAdvancedFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedFilterParameter::setGetterCallback(const ComparisonSelectionAdvancedFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ComparisonSelectionAdvancedFilterParameter::GetterCallbackType ComparisonSelectionAdvancedFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

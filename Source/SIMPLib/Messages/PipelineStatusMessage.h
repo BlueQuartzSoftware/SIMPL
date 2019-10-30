@@ -36,6 +36,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/Messages/AbstractStatusMessage.h"
 
 /**
@@ -45,43 +47,66 @@
  */
 class SIMPLib_EXPORT PipelineStatusMessage : public AbstractStatusMessage
 {
-  public:
-    SIMPL_SHARED_POINTERS(PipelineStatusMessage)
-    SIMPL_STATIC_NEW_MACRO(PipelineStatusMessage)
-    SIMPL_TYPE_MACRO(PipelineStatusMessage)
 
-    virtual ~PipelineStatusMessage();
+public:
+  using Self = PipelineStatusMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    SIMPL_INSTANCE_STRING_PROPERTY(PipelineName)
+  static Pointer New();
 
-    /**
-     * @brief New
-     * @param humanLabel
-     * @param pipelineIndex
-     * @param msg
-     * @return
-     */
-    static Pointer New(const QString &pipelineName, const QString& msgText);
+  /**
+   * @brief Returns the name of the class for PipelineStatusMessage
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for PipelineStatusMessage
+   */
+  static QString ClassName();
 
-    /**
-     * @brief This method creates and returns a string for pipeline status messages
-     */
-    virtual QString generateMessageString() const override;
+  ~PipelineStatusMessage() override;
 
-    /**
-     * @brief Method that allows the visitation of a message by a message handler.  This
-     * is part of the double-dispatch API that allows observers to be able to perform
-     * subclass specific operations on messages that they receive.
-     * @param msgHandler The observer's message handler
-     */
-    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
+  /**
+   * @brief Setter property for PipelineName
+   */
+  void setPipelineName(const QString& value);
+  /**
+   * @brief Getter property for PipelineName
+   * @return Value of PipelineName
+   */
+  QString getPipelineName() const;
 
-  protected:
-    PipelineStatusMessage();
-    PipelineStatusMessage(const QString &pipelineName, const QString& msgText);
+  /**
+   * @brief New
+   * @param humanLabel
+   * @param pipelineIndex
+   * @param msg
+   * @return
+   */
+  static Pointer New(const QString& pipelineName, const QString& msgText);
 
-  private:
+  /**
+   * @brief This method creates and returns a string for pipeline status messages
+   */
+  QString generateMessageString() const override;
 
+  /**
+   * @brief Method that allows the visitation of a message by a message handler.  This
+   * is part of the double-dispatch API that allows observers to be able to perform
+   * subclass specific operations on messages that they receive.
+   * @param msgHandler The observer's message handler
+   */
+  void visit(AbstractMessageHandler* msgHandler) const override final;
+
+protected:
+  PipelineStatusMessage();
+  PipelineStatusMessage(const QString& pipelineName, const QString& msgText);
+
+private:
+  QString m_PipelineName = {};
 };
 Q_DECLARE_METATYPE(PipelineStatusMessage::Pointer)
 

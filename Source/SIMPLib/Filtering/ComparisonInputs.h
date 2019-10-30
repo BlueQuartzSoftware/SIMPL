@@ -40,10 +40,10 @@
 #include <QtCore/QVector>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"  // for SIMPL_PIMPL_PROPERTY_DECL
 
 typedef struct
 {
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ComparisonInput_t)
 
   PYB11_PROPERTY(QString dataContainerName)
@@ -51,6 +51,7 @@ typedef struct
   PYB11_PROPERTY(QString attributeArrayName)
   PYB11_PROPERTY(int compOperator) 
   PYB11_PROPERTY(double compValue)
+#endif
 
   QString dataContainerName;
   QString attributeMatrixName;
@@ -84,8 +85,6 @@ typedef struct
 
 } ComparisonInput_t;
 
-
-
 /**
  * @class ComparisonInputs ComparisonInputs.h DREAM3DLib/Common/ComparisonInputs.h
  * @brief  This class
@@ -97,6 +96,8 @@ class SIMPLib_EXPORT ComparisonInputs : public QObject
 {
   Q_OBJECT
   // clang-format off
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ComparisonInputs)
   PYB11_CREATION()  
   PYB11_PROPERTY(QVector<ComparisonInput_t> Inputs READ getInputs)
@@ -105,6 +106,8 @@ class SIMPLib_EXPORT ComparisonInputs : public QObject
   //PYB11_METHOD(ComparisonInput_t& getInput ARGS index)
   //PYB11_METHOD(ComparisonInput_t& operator[] ARGS index)
   PYB11_METHOD(int size)
+#endif
+
   // clang-format on
 
 public:

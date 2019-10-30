@@ -36,6 +36,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/Messages/AbstractMessage.h"
 
 class AbstractMessageHandler;
@@ -47,12 +49,33 @@ class AbstractMessageHandler;
 class SIMPLib_EXPORT AbstractWarningMessage : public AbstractMessage
 {
 public:
-  SIMPL_SHARED_POINTERS(AbstractWarningMessage)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractWarningMessage, AbstractMessage)
+  using Self = AbstractWarningMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for AbstractWarningMessage
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for AbstractWarningMessage
+   */
+  static QString ClassName();
 
   ~AbstractWarningMessage() override;
 
-  SIMPL_INSTANCE_PROPERTY(int, Code)
+  /**
+   * @brief Setter property for Code
+   */
+  void setCode(int value);
+  /**
+   * @brief Getter property for Code
+   * @return Value of Code
+   */
+  int getCode() const;
 
 protected:
   AbstractWarningMessage();
@@ -60,5 +83,6 @@ protected:
   AbstractWarningMessage(const QString& msgText, int code);
 
 private:
+  int m_Code = {};
 };
 Q_DECLARE_METATYPE(AbstractWarningMessage::Pointer)

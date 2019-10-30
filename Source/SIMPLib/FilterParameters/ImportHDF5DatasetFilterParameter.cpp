@@ -117,3 +117,46 @@ void ImportHDF5DatasetFilterParameter::writeJson(QJsonObject& json)
   }
   json["Dataset Import Info Array"] = importInfoArray;
 }
+
+// -----------------------------------------------------------------------------
+ImportHDF5DatasetFilterParameter::Pointer ImportHDF5DatasetFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ImportHDF5DatasetFilterParameter::Pointer ImportHDF5DatasetFilterParameter::New()
+{
+  Pointer sharedPtr(new(ImportHDF5DatasetFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportHDF5DatasetFilterParameter::getNameOfClass() const
+{
+  return QString("ImportHDF5DatasetFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString ImportHDF5DatasetFilterParameter::ClassName()
+{
+  return QString("ImportHDF5DatasetFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void ImportHDF5DatasetFilterParameter::setFilter(ImportHDF5Dataset* value)
+{
+  m_Filter = value;
+}
+
+// -----------------------------------------------------------------------------
+ImportHDF5Dataset* ImportHDF5DatasetFilterParameter::getFilter() const
+{
+  return m_Filter;
+}
+
+// -----------------------------------------------------------------------------
+void ImportHDF5DatasetFilterParameter::setDataSetDefaultValue(const QVariant& value)
+{
+  m_DataSetDefaultValue = value;
+}

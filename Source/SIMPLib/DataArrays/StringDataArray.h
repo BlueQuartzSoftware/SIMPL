@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <string>
 #include <vector>
 
@@ -42,9 +44,11 @@
 
 #include "H5Support/H5Lite.h"
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/DataArrays/IDataArray.h"
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/SIMPLib.h"
+
+#include "SIMPLib/DataArrays/IDataArray.h"
 
 /**
  * @class StringDataArray StringDataArray.h DREAM3DLib/Common/StringDataArray.h
@@ -56,7 +60,11 @@
 class SIMPLib_EXPORT StringDataArray : public IDataArray
 {
   // clang-format off
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(StringDataArray SUPER IDataArray)
+  PYB11_SHARED_POINTERS(StringDataArray)
+  PYB11_STATIC_NEW_MACRO(StringDataArray)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t std::vector<size_t> QString bool)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
@@ -64,13 +72,30 @@ class SIMPLib_EXPORT StringDataArray : public IDataArray
   PYB11_METHOD(void setValue ARGS size_t,i const.QString.&,value)
   PYB11_METHOD(size_t getSize)
   PYB11_METHOD(size_t getNumberOfTuples)
+#endif
+
   // clang-format on
 
 public:
-  SIMPL_SHARED_POINTERS(StringDataArray)
-  SIMPL_STATIC_NEW_MACRO(StringDataArray)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(StringDataArray, IDataArray)
-  SIMPL_CLASS_VERSION(2)
+  using Self = StringDataArray;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for StringDataArray
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for StringDataArray
+   */
+  static QString ClassName();
+
+  int getClassVersion() const override;
 
   /**
    * @brief CreateArray
@@ -97,7 +122,7 @@ public:
    * @param name
    * @return
    */
-  IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) const override;
+  IDataArrayShPtrType createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) const override;
 
   /**
    * @brief createNewArray
@@ -108,16 +133,6 @@ public:
    * @return
    */
   IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) const override;
-
-  /**
-   * @brief createNewArray
-   * @param numElements
-   * @param dims
-   * @param name
-   * @param allocate
-   * @return
-   */
-  // IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief ~StringDataArray
@@ -248,7 +263,7 @@ public:
    * @param sourceArray
    * @return
    */
-  bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
+  bool copyFromArray(size_t destTupleOffset, IDataArrayShPtrType sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
 
   /**
    * @brief Does Nothing
@@ -279,7 +294,7 @@ public:
    * @param forceNoAllocate
    * @return
    */
-  IDataArray::Pointer deepCopy(bool forceNoAllocate = false) const override;
+  IDataArrayShPtrType deepCopy(bool forceNoAllocate = false) const override;
 
   /**
    * @brief Reseizes the internal array

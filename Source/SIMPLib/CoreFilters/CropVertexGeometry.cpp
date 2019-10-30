@@ -33,11 +33,16 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "CropVertexGeometry.h"
 
 #include <cassert>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
@@ -46,6 +51,8 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   DataContainerID = 1
@@ -335,7 +342,7 @@ AbstractFilter::Pointer CropVertexGeometry::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getCompiledLibraryName() const
+QString CropVertexGeometry::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -343,7 +350,7 @@ const QString CropVertexGeometry::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getBrandingString() const
+QString CropVertexGeometry::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -351,7 +358,7 @@ const QString CropVertexGeometry::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getFilterVersion() const
+QString CropVertexGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -362,7 +369,7 @@ const QString CropVertexGeometry::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getGroupName() const
+QString CropVertexGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -370,7 +377,7 @@ const QString CropVertexGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CropVertexGeometry::getUuid()
+QUuid CropVertexGeometry::getUuid() const
 {
   return QUuid("{f28cbf07-f15a-53ca-8c7f-b41a11dae6cc}");
 }
@@ -378,7 +385,7 @@ const QUuid CropVertexGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getSubGroupName() const
+QString CropVertexGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::CropCutFilters;
 }
@@ -386,7 +393,132 @@ const QString CropVertexGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CropVertexGeometry::getHumanLabel() const
+QString CropVertexGeometry::getHumanLabel() const
 {
   return "Crop Geometry (Vertex)";
+}
+
+// -----------------------------------------------------------------------------
+CropVertexGeometry::Pointer CropVertexGeometry::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CropVertexGeometry> CropVertexGeometry::New()
+{
+  struct make_shared_enabler : public CropVertexGeometry
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString CropVertexGeometry::getNameOfClass() const
+{
+  return QString("CropVertexGeometry");
+}
+
+// -----------------------------------------------------------------------------
+QString CropVertexGeometry::ClassName()
+{
+  return QString("CropVertexGeometry");
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setDataContainerName(const DataArrayPath& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CropVertexGeometry::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setCroppedDataContainerName(const DataArrayPath& value)
+{
+  m_CroppedDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CropVertexGeometry::getCroppedDataContainerName() const
+{
+  return m_CroppedDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setXMin(float value)
+{
+  m_XMin = value;
+}
+
+// -----------------------------------------------------------------------------
+float CropVertexGeometry::getXMin() const
+{
+  return m_XMin;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setYMin(float value)
+{
+  m_YMin = value;
+}
+
+// -----------------------------------------------------------------------------
+float CropVertexGeometry::getYMin() const
+{
+  return m_YMin;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setZMin(float value)
+{
+  m_ZMin = value;
+}
+
+// -----------------------------------------------------------------------------
+float CropVertexGeometry::getZMin() const
+{
+  return m_ZMin;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setXMax(float value)
+{
+  m_XMax = value;
+}
+
+// -----------------------------------------------------------------------------
+float CropVertexGeometry::getXMax() const
+{
+  return m_XMax;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setYMax(float value)
+{
+  m_YMax = value;
+}
+
+// -----------------------------------------------------------------------------
+float CropVertexGeometry::getYMax() const
+{
+  return m_YMax;
+}
+
+// -----------------------------------------------------------------------------
+void CropVertexGeometry::setZMax(float value)
+{
+  m_ZMax = value;
+}
+
+// -----------------------------------------------------------------------------
+float CropVertexGeometry::getZMax() const
+{
+  return m_ZMax;
 }

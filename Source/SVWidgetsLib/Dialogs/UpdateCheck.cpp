@@ -45,7 +45,10 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/AppVersion.h"
+
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
 

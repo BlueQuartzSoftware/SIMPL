@@ -44,7 +44,7 @@ class BookmarksItemDelegate : public QStyledItemDelegate
     Q_OBJECT
 
   public:
-    explicit BookmarksItemDelegate(QObject* parent = 0);
+    explicit BookmarksItemDelegate(QObject* parent = nullptr);
 
     ~BookmarksItemDelegate() override;
 

@@ -34,8 +34,13 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "DataContainerArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -486,4 +491,29 @@ void DataContainerArray::renameDataArrayPaths(DataArrayPath::RenameContainer ren
       }
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArray::Pointer DataContainerArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArray::Pointer DataContainerArray::New()
+{
+  Pointer sharedPtr(new(DataContainerArray));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerArray::getNameOfClass() const
+{
+  return QString("DataContainerArray");
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerArray::ClassName()
+{
+  return QString("DataContainerArray");
 }

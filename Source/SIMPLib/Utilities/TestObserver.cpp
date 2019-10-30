@@ -50,3 +50,15 @@ void TestObserver::processPipelineMessage(const AbstractMessage::Pointer& pm)
 {
   std::cout << pm->generateMessageString().toStdString() << std::endl;
 }
+
+// -----------------------------------------------------------------------------
+QString TestObserver::getNameOfClass() const
+{
+  return QString("TestObserver");
+}
+
+// -----------------------------------------------------------------------------
+QString TestObserver::ClassName()
+{
+  return QString("TestObserver");
+}

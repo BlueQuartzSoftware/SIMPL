@@ -4,9 +4,10 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
@@ -18,23 +19,80 @@ class SIMPLib_EXPORT Filt0 : public AbstractFilter
 {
   Q_OBJECT
 public:
-  SIMPL_SHARED_POINTERS(Filt0)
-  SIMPL_FILTER_NEW_MACRO(Filt0)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Filt0, AbstractFilter)
+  using Self = Filt0;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
+
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for Filt0
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for Filt0
+   */
+  static QString ClassName();
 
   ~Filt0() override;
-  SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
-  SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
+  /**
+   * @brief Setter property for DataContainerName
+   */
+  void setDataContainerName(const QString& value);
+  /**
+   * @brief Getter property for DataContainerName
+   * @return Value of DataContainerName
+   */
+  QString getDataContainerName() const;
 
-  SIMPL_INSTANCE_PROPERTY(float, Filt0_Float)
-  SIMPL_INSTANCE_PROPERTY(int32_t, Filt0_Integer)
+  /**
+   * @brief Setter property for CellAttributeMatrixName
+   */
+  void setCellAttributeMatrixName(const QString& value);
+  /**
+   * @brief Getter property for CellAttributeMatrixName
+   * @return Value of CellAttributeMatrixName
+   */
+  QString getCellAttributeMatrixName() const;
+
+  /**
+   * @brief Setter property for Filt0_Float
+   */
+  void setFilt0_Float(float value);
+  /**
+   * @brief Getter property for Filt0_Float
+   * @return Value of Filt0_Float
+   */
+  float getFilt0_Float() const;
+
+  /**
+   * @brief Setter property for Filt0_Integer
+   */
+  void setFilt0_Integer(int32_t value);
+  /**
+   * @brief Getter property for Filt0_Integer
+   * @return Value of Filt0_Integer
+   */
+  int32_t getFilt0_Integer() const;
 
   /**
   * @brief This returns the group that the filter belonds to. You can select
   * a different group if you want. The string returned here will be displayed
   * in the GUI for the filter
   */
-  const QString getGroupName() const override
+  QString getGroupName() const override
   {
     return SIMPL::FilterGroups::Generic;
   }
@@ -43,7 +101,7 @@ public:
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-  const QString getHumanLabel() const override
+  QString getHumanLabel() const override
   {
     return "Filt0";
   }
@@ -52,7 +110,7 @@ public:
   * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
   * a subgroup. It should be readable and understandable by humans.
   */
-  const QString getSubGroupName() const override
+  QString getSubGroupName() const override
   {
     return "Misc";
   }
@@ -100,6 +158,11 @@ protected:
   void initialize();
 
 private:
+  QString m_DataContainerName = {};
+  QString m_CellAttributeMatrixName = {};
+  float m_Filt0_Float = {};
+  int32_t m_Filt0_Integer = {};
+
   Filt0(const Filt0&) = delete;          // Copy Constructor Not Implemented
   void operator=(const Filt0&) = delete; // Move assignment Not Implemented
 };

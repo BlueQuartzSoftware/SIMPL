@@ -29,7 +29,11 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "FilterGroup10.h"
+
+#include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -132,7 +136,7 @@ AbstractFilter::Pointer FilterGroup10::newFilterInstance(bool copyFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup10::getCompiledLibraryName() const
+QString FilterGroup10::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -140,7 +144,7 @@ const QString FilterGroup10::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup10::getBrandingString() const
+QString FilterGroup10::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -148,7 +152,7 @@ const QString FilterGroup10::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup10::getFilterVersion() const
+QString FilterGroup10::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -159,7 +163,7 @@ const QString FilterGroup10::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup10::getGroupName() const
+QString FilterGroup10::getGroupName() const
 {
   return SIMPL::FilterGroups::Utilities;
 }
@@ -167,7 +171,7 @@ const QString FilterGroup10::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid FilterGroup10::getUuid()
+QUuid FilterGroup10::getUuid() const
 {
   return QUuid("{f259fade-f69b-5da7-916e-3826fcef15a6}");
 }
@@ -175,7 +179,7 @@ const QUuid FilterGroup10::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup10::getSubGroupName() const
+QString FilterGroup10::getSubGroupName() const
 {
   return "Test";
 }
@@ -183,7 +187,36 @@ const QString FilterGroup10::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup10::getHumanLabel() const
+QString FilterGroup10::getHumanLabel() const
 {
   return "Utilities Test Filter";
+}
+
+// -----------------------------------------------------------------------------
+FilterGroup10::Pointer FilterGroup10::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<FilterGroup10> FilterGroup10::New()
+{
+  struct make_shared_enabler : public FilterGroup10
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterGroup10::getNameOfClass() const
+{
+  return QString("FilterGroup10");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterGroup10::ClassName()
+{
+  return QString("FilterGroup10");
 }

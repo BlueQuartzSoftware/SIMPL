@@ -41,9 +41,6 @@
 
 #include <QtGui/QIcon>
 
-
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 

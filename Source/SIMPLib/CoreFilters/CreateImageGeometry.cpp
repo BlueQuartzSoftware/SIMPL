@@ -32,9 +32,14 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "CreateImageGeometry.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
@@ -43,6 +48,8 @@
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/PreflightUpdatedValueFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -207,7 +214,7 @@ AbstractFilter::Pointer CreateImageGeometry::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateImageGeometry::getCompiledLibraryName() const
+QString CreateImageGeometry::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -215,7 +222,7 @@ const QString CreateImageGeometry::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateImageGeometry::getBrandingString() const
+QString CreateImageGeometry::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -223,7 +230,7 @@ const QString CreateImageGeometry::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateImageGeometry::getFilterVersion() const
+QString CreateImageGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -234,7 +241,7 @@ const QString CreateImageGeometry::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateImageGeometry::getGroupName() const
+QString CreateImageGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -242,7 +249,7 @@ const QString CreateImageGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CreateImageGeometry::getUuid()
+QUuid CreateImageGeometry::getUuid() const
 {
   return QUuid("{f2132744-3abb-5d66-9cd9-c9a233b5c4aa}");
 }
@@ -250,7 +257,7 @@ const QUuid CreateImageGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateImageGeometry::getSubGroupName() const
+QString CreateImageGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -258,7 +265,84 @@ const QString CreateImageGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateImageGeometry::getHumanLabel() const
+QString CreateImageGeometry::getHumanLabel() const
 {
   return "Create Geometry (Image)";
+}
+
+// -----------------------------------------------------------------------------
+CreateImageGeometry::Pointer CreateImageGeometry::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CreateImageGeometry> CreateImageGeometry::New()
+{
+  struct make_shared_enabler : public CreateImageGeometry
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateImageGeometry::getNameOfClass() const
+{
+  return QString("CreateImageGeometry");
+}
+
+// -----------------------------------------------------------------------------
+QString CreateImageGeometry::ClassName()
+{
+  return QString("CreateImageGeometry");
+}
+
+// -----------------------------------------------------------------------------
+void CreateImageGeometry::setSelectedDataContainer(const DataArrayPath& value)
+{
+  m_SelectedDataContainer = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateImageGeometry::getSelectedDataContainer() const
+{
+  return m_SelectedDataContainer;
+}
+
+// -----------------------------------------------------------------------------
+void CreateImageGeometry::setDimensions(const IntVec3Type& value)
+{
+  m_Dimensions = value;
+}
+
+// -----------------------------------------------------------------------------
+IntVec3Type CreateImageGeometry::getDimensions() const
+{
+  return m_Dimensions;
+}
+
+// -----------------------------------------------------------------------------
+void CreateImageGeometry::setOrigin(const FloatVec3Type& value)
+{
+  m_Origin = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type CreateImageGeometry::getOrigin() const
+{
+  return m_Origin;
+}
+
+// -----------------------------------------------------------------------------
+void CreateImageGeometry::setSpacing(const FloatVec3Type& value)
+{
+  m_Spacing = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type CreateImageGeometry::getSpacing() const
+{
+  return m_Spacing;
 }

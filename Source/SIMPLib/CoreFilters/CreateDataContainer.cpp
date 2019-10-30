@@ -33,12 +33,19 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "CreateDataContainer.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   DataContainerID = 1
@@ -144,7 +151,7 @@ AbstractFilter::Pointer CreateDataContainer::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getCompiledLibraryName() const
+QString CreateDataContainer::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -152,7 +159,7 @@ const QString CreateDataContainer::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getBrandingString() const
+QString CreateDataContainer::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -160,7 +167,7 @@ const QString CreateDataContainer::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getFilterVersion() const
+QString CreateDataContainer::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -171,7 +178,7 @@ const QString CreateDataContainer::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getGroupName() const
+QString CreateDataContainer::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -179,7 +186,7 @@ const QString CreateDataContainer::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getHumanLabel() const
+QString CreateDataContainer::getHumanLabel() const
 {
   return "Create Data Container";
 }
@@ -187,7 +194,7 @@ const QString CreateDataContainer::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CreateDataContainer::getUuid()
+QUuid CreateDataContainer::getUuid() const
 {
   return QUuid("{816fbe6b-7c38-581b-b149-3f839fb65b93}");
 }
@@ -195,7 +202,48 @@ const QUuid CreateDataContainer::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getSubGroupName() const
+QString CreateDataContainer::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
+}
+
+// -----------------------------------------------------------------------------
+CreateDataContainer::Pointer CreateDataContainer::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CreateDataContainer> CreateDataContainer::New()
+{
+  struct make_shared_enabler : public CreateDataContainer
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateDataContainer::getNameOfClass() const
+{
+  return QString("CreateDataContainer");
+}
+
+// -----------------------------------------------------------------------------
+QString CreateDataContainer::ClassName()
+{
+  return QString("CreateDataContainer");
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataContainer::setDataContainerName(const DataArrayPath& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateDataContainer::getDataContainerName() const
+{
+  return m_DataContainerName;
 }

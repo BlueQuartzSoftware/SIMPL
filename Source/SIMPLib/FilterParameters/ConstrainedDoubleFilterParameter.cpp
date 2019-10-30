@@ -49,7 +49,7 @@ ConstrainedDoubleFilterParameter::~ConstrainedDoubleFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 ConstrainedDoubleFilterParameter::Pointer ConstrainedDoubleFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const double& defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+  double defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
   ConstrainedDoubleFilterParameter::Pointer ptr = ConstrainedDoubleFilterParameter::New();
@@ -95,3 +95,51 @@ void ConstrainedDoubleFilterParameter::writeJson(QJsonObject &json)
   }
 }
 
+// -----------------------------------------------------------------------------
+ConstrainedDoubleFilterParameter::Pointer ConstrainedDoubleFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ConstrainedDoubleFilterParameter::Pointer ConstrainedDoubleFilterParameter::New()
+{
+  Pointer sharedPtr(new(ConstrainedDoubleFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString ConstrainedDoubleFilterParameter::getNameOfClass() const
+{
+  return QString("ConstrainedDoubleFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString ConstrainedDoubleFilterParameter::ClassName()
+{
+  return QString("ConstrainedDoubleFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void ConstrainedDoubleFilterParameter::setSetterCallback(const ConstrainedDoubleFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ConstrainedDoubleFilterParameter::SetterCallbackType ConstrainedDoubleFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void ConstrainedDoubleFilterParameter::setGetterCallback(const ConstrainedDoubleFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ConstrainedDoubleFilterParameter::GetterCallbackType ConstrainedDoubleFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

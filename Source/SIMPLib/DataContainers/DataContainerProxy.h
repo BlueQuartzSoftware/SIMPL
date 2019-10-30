@@ -39,10 +39,10 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/AttributeMatrixProxy.h"
 #include "SIMPLib/Geometry/IGeometry.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The DataContainerProxy class
@@ -50,6 +50,7 @@
 class SIMPLib_EXPORT DataContainerProxy
 {
 
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(DataContainerProxy)
   PYB11_CREATION()
   PYB11_PROPERTY(StorageType AttributeMatricies READ getAttributeMatricies WRITE setAttributeMatricies CONST_GET_OVERLOAD)
@@ -57,6 +58,7 @@ class SIMPLib_EXPORT DataContainerProxy
   PYB11_PROPERTY(uint8_t Flag READ getFlag WRITE setFlag)
   PYB11_METHOD(AttributeMatrixProxy getAttributeMatrixProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
   PYB11_METHOD(void toggleFlag)
+#endif
 
 public:
   // This enumeration is not a class enumeration because it is not possible to

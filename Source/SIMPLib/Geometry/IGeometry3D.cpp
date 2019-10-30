@@ -44,3 +44,21 @@ IGeometry3D::IGeometry3D() = default;
 //
 // -----------------------------------------------------------------------------
 IGeometry3D::~IGeometry3D() = default;
+
+// -----------------------------------------------------------------------------
+IGeometry3D::Pointer IGeometry3D::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString IGeometry3D::getNameOfClass() const
+{
+  return QString("IGeometry3D");
+}
+
+// -----------------------------------------------------------------------------
+QString IGeometry3D::ClassName()
+{
+  return QString("IGeometry3D");
+}

@@ -40,6 +40,10 @@
 #include <QtGui/QPainter>
 #include <QtGui/QTextDocument>
 #include <QtWidgets/QApplication>
+#include <QtCore/QTextStream>
+
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetUtils.hpp"

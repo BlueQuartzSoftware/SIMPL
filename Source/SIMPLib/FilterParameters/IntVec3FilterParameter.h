@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <functional>
 
 #include <QtCore/QJsonObject>
@@ -66,33 +68,47 @@
 class SIMPLib_EXPORT IntVec3FilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(IntVec3FilterParameter)
-    SIMPL_STATIC_NEW_MACRO(IntVec3FilterParameter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IntVec3FilterParameter, FilterParameter)
+  using Self = IntVec3FilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    using SetterCallbackType = std::function<void(IntVec3Type)>;
-    using GetterCallbackType = std::function<IntVec3Type(void)>;
+  static Pointer New();
 
-    /**
-     * @brief New This function instantiates an instance of the IntVec3FilterParameter. Although this function is available to be used,
-     * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_INT_VEC3_FP(...) macro at the top of this file.
+  /**
+   * @brief Returns the name of the class for IntVec3FilterParameter
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for IntVec3FilterParameter
+   */
+  static QString ClassName();
 
-     * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
-     * @param propertyName The internal property name for this filter parameter.
-     * @param defaultValue The value that this filter parameter will be initialized to by default.
-     * @param category The category for the filter parameter in the DREAM.3D user interface.  There
-     * are three categories: Parameter, Required Arrays, and Created Arrays.
-     * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
-     * @return
-     */
-    static Pointer New(const QString& humanLabel, const QString& propertyName, const IntVec3Type& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                       const GetterCallbackType& getterCallback, int groupIndex = -1);
+  using SetterCallbackType = std::function<void(IntVec3Type)>;
+  using GetterCallbackType = std::function<IntVec3Type(void)>;
 
-    ~IntVec3FilterParameter() override;
+  /**
+   * @brief New This function instantiates an instance of the IntVec3FilterParameter. Although this function is available to be used,
+   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_INT_VEC3_FP(...) macro at the top of this file.
+
+   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+   * @param propertyName The internal property name for this filter parameter.
+   * @param defaultValue The value that this filter parameter will be initialized to by default.
+   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+   * are three categories: Parameter, Required Arrays, and Created Arrays.
+   * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+   * @return
+   */
+  static Pointer New(const QString& humanLabel, const QString& propertyName, const IntVec3Type& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                     const GetterCallbackType& getterCallback, int groupIndex = -1);
+
+  ~IntVec3FilterParameter() override;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -118,14 +134,30 @@ public:
     * that this FilterParameter subclass represents.
     * @return The SetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const IntVec3FilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    IntVec3FilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const IntVec3FilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    IntVec3FilterParameter::GetterCallbackType getGetterCallback() const;
 
   protected:
     /**
@@ -139,6 +171,10 @@ public:
   IntVec3FilterParameter(IntVec3FilterParameter&&) = delete;      // Move Constructor Not Implemented
   IntVec3FilterParameter& operator=(const IntVec3FilterParameter&) = delete; // Copy Assignment Not Implemented
   IntVec3FilterParameter& operator=(IntVec3FilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  IntVec3FilterParameter::SetterCallbackType m_SetterCallback = {};
+  IntVec3FilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 
 Q_DECLARE_METATYPE(IntVec3Type)

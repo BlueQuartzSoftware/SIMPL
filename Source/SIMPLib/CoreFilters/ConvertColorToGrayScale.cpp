@@ -36,11 +36,16 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ConvertColorToGrayScale.h"
 
 #include <algorithm>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -51,6 +56,8 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Utilities/ParallelDataAlgorithm.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 class LuminosityImpl
 {
@@ -430,7 +437,7 @@ AbstractFilter::Pointer ConvertColorToGrayScale::newFilterInstance(bool copyFilt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertColorToGrayScale::getCompiledLibraryName() const
+QString ConvertColorToGrayScale::getCompiledLibraryName() const
 {
   return  Core::CoreBaseName;
 }
@@ -438,7 +445,7 @@ const QString ConvertColorToGrayScale::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertColorToGrayScale::getBrandingString() const
+QString ConvertColorToGrayScale::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -446,7 +453,7 @@ const QString ConvertColorToGrayScale::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertColorToGrayScale::getFilterVersion() const
+QString ConvertColorToGrayScale::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -457,7 +464,7 @@ const QString ConvertColorToGrayScale::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertColorToGrayScale::getGroupName() const
+QString ConvertColorToGrayScale::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -465,7 +472,7 @@ const QString ConvertColorToGrayScale::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ConvertColorToGrayScale::getUuid()
+QUuid ConvertColorToGrayScale::getUuid() const
 {
   return QUuid("{eb5a89c4-4e71-59b1-9719-d10a652d961e}");
 }
@@ -473,7 +480,7 @@ const QUuid ConvertColorToGrayScale::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertColorToGrayScale::getSubGroupName() const
+QString ConvertColorToGrayScale::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::ImageFilters;
 }
@@ -481,7 +488,120 @@ const QString ConvertColorToGrayScale::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertColorToGrayScale::getHumanLabel() const
+QString ConvertColorToGrayScale::getHumanLabel() const
 {
   return "Color to GrayScale";
+}
+
+// -----------------------------------------------------------------------------
+ConvertColorToGrayScale::Pointer ConvertColorToGrayScale::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ConvertColorToGrayScale> ConvertColorToGrayScale::New()
+{
+  struct make_shared_enabler : public ConvertColorToGrayScale
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ConvertColorToGrayScale::getNameOfClass() const
+{
+  return QString("ConvertColorToGrayScale");
+}
+
+// -----------------------------------------------------------------------------
+QString ConvertColorToGrayScale::ClassName()
+{
+  return QString("ConvertColorToGrayScale");
+}
+
+// -----------------------------------------------------------------------------
+void ConvertColorToGrayScale::setConversionAlgorithm(int value)
+{
+  m_ConversionAlgorithm = value;
+}
+
+// -----------------------------------------------------------------------------
+int ConvertColorToGrayScale::getConversionAlgorithm() const
+{
+  return m_ConversionAlgorithm;
+}
+
+// -----------------------------------------------------------------------------
+void ConvertColorToGrayScale::setColorWeights(const FloatVec3Type& value)
+{
+  m_ColorWeights = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type ConvertColorToGrayScale::getColorWeights() const
+{
+  return m_ColorWeights;
+}
+
+// -----------------------------------------------------------------------------
+void ConvertColorToGrayScale::setColorChannel(int value)
+{
+  m_ColorChannel = value;
+}
+
+// -----------------------------------------------------------------------------
+int ConvertColorToGrayScale::getColorChannel() const
+{
+  return m_ColorChannel;
+}
+
+// -----------------------------------------------------------------------------
+void ConvertColorToGrayScale::setInputDataArrayVector(const QVector<DataArrayPath>& value)
+{
+  m_InputDataArrayVector = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> ConvertColorToGrayScale::getInputDataArrayVector() const
+{
+  return m_InputDataArrayVector;
+}
+
+// -----------------------------------------------------------------------------
+void ConvertColorToGrayScale::setCreateNewAttributeMatrix(bool value)
+{
+  m_CreateNewAttributeMatrix = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ConvertColorToGrayScale::getCreateNewAttributeMatrix() const
+{
+  return m_CreateNewAttributeMatrix;
+}
+
+// -----------------------------------------------------------------------------
+void ConvertColorToGrayScale::setOutputAttributeMatrixName(const QString& value)
+{
+  m_OutputAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ConvertColorToGrayScale::getOutputAttributeMatrixName() const
+{
+  return m_OutputAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void ConvertColorToGrayScale::setOutputArrayPrefix(const QString& value)
+{
+  m_OutputArrayPrefix = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ConvertColorToGrayScale::getOutputArrayPrefix() const
+{
+  return m_OutputArrayPrefix;
 }

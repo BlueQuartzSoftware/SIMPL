@@ -49,7 +49,7 @@ ConstrainedIntFilterParameter::~ConstrainedIntFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 ConstrainedIntFilterParameter::Pointer ConstrainedIntFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const int& defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+  int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
   int groupIndex)
 {
 
@@ -96,3 +96,51 @@ void ConstrainedIntFilterParameter::writeJson(QJsonObject &json)
   }
 }
 
+// -----------------------------------------------------------------------------
+ConstrainedIntFilterParameter::Pointer ConstrainedIntFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ConstrainedIntFilterParameter::Pointer ConstrainedIntFilterParameter::New()
+{
+  Pointer sharedPtr(new(ConstrainedIntFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString ConstrainedIntFilterParameter::getNameOfClass() const
+{
+  return QString("ConstrainedIntFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString ConstrainedIntFilterParameter::ClassName()
+{
+  return QString("ConstrainedIntFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void ConstrainedIntFilterParameter::setSetterCallback(const ConstrainedIntFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ConstrainedIntFilterParameter::SetterCallbackType ConstrainedIntFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void ConstrainedIntFilterParameter::setGetterCallback(const ConstrainedIntFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ConstrainedIntFilterParameter::GetterCallbackType ConstrainedIntFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

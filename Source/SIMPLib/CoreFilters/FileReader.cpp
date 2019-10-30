@@ -33,6 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "FileReader.h"
 
 #include "SIMPLib/Common/Constants.h"
@@ -96,4 +98,33 @@ void FileReader::execute()
   {
     return;
   }
+}
+
+// -----------------------------------------------------------------------------
+FileReader::Pointer FileReader::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<FileReader> FileReader::New()
+{
+  struct make_shared_enabler : public FileReader
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString FileReader::getNameOfClass() const
+{
+  return QString("FileReader");
+}
+
+// -----------------------------------------------------------------------------
+QString FileReader::ClassName()
+{
+  return QString("FileReader");
 }

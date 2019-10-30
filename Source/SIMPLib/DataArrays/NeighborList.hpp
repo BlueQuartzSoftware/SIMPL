@@ -48,7 +48,6 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 
@@ -64,11 +63,49 @@ template<typename T>
 class NeighborList : public IDataArray
 {
   public:
-    SIMPL_SHARED_POINTERS(NeighborList<T> )
-    SIMPL_TYPE_MACRO_SUPER(NeighborList<T>, IDataArray)
-    SIMPL_CLASS_VERSION(2)
+    using Self = NeighborList<T>;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer()
+    {
+      return Pointer(static_cast<Self*>(nullptr));
+    }
 
-    SIMPL_INSTANCE_STRING_PROPERTY(NumNeighborsArrayName)
+    /**
+     * @brief Returns the name of the class for AbstractMessage
+     */
+    QString getNameOfClass() const override
+    {
+      return QString("NeighborList<T>");
+    }
+    /**
+     * @brief Returns the name of the class for AbstractMessage
+     */
+    static QString ClassName()
+    {
+      return QString("NeighborList<T>");
+    }
+
+    /**
+     * @brief Returns the version of this class.
+     * @return
+     */
+    int32_t getClassVersion() const override
+    {
+      return 2;
+    }
+
+    void setNumNeighborsArrayName(const QString& name)
+    {
+      m_NumNeighborsArrayName = name;
+    }
+
+    QString getNumNeighborsArrayName()
+    {
+      return m_NumNeighborsArrayName;
+    }
 
     static Pointer New()
     {
@@ -1073,6 +1110,7 @@ class NeighborList : public IDataArray
     }
 
   private:
+    QString m_NumNeighborsArrayName;
     std::vector<SharedVectorType> m_Array;
     size_t m_NumTuples;
     bool m_IsAllocated;

@@ -10,70 +10,68 @@
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
 //-- C++
+#include <memory>
+
 #include <vector>
 
 #include <hdf5.h>
 
 //--Qt Includes
-#include <QtCore/QDebug>
 #include <QtCore/QString>
+#include <QtCore/QtDebug>
 
-//SIMPLib Includes
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+// SIMPLib Includes
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/DataContainers/IDataStructureNode.h"
 
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 /**
-* @class IDataArray IDataArray.h PathToHeader/IDataArray.h
-* @brief This class holds a raw pointer to some allocated data that can be stored
-* into or read from an HDF5 data file.
-* The class design was borrowed heavily from the vtkDataArray class from www.vtk.org.
-* The work was all performed by those individuals. I have merely changed a few
-* methods to meet my specific needs.
-* @author mjackson
-* @date Jan 3, 2008
-* @version $Revision: 1.2 $
-*/
+ * @class IDataArray IDataArray.h PathToHeader/IDataArray.h
+ * @brief This class holds a raw pointer to some allocated data that can be stored
+ * into or read from an HDF5 data file.
+ * The class design was borrowed heavily from the vtkDataArray class from www.vtk.org.
+ * The work was all performed by those individuals. I have merely changed a few
+ * methods to meet my specific needs.
+ * @author mjackson
+ * @date Jan 3, 2008
+ * @version $Revision: 1.2 $
+ */
 class SIMPLib_EXPORT IDataArray : public IDataStructureNode
 {
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(IDataArray)
+  PYB11_SHARED_POINTERS(IDataArray)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
 
   PYB11_METHOD(QString getTypeAsString)
   PYB11_METHOD(std::vector<size_t> getComponentDimensions)
   PYB11_METHOD(size_t getNumberOfTuples)
   PYB11_METHOD(int getNumberOfComponents)
+#endif
 
-  public:
-    SIMPL_SHARED_POINTERS(IDataArray)
-    SIMPL_TYPE_MACRO_SUPER(IDataArray, IDataStructureNode)
+public:
+  using Self = IDataArray;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    /**
-     * This templated method is used to get at the low level pointer that points
-     * to the actual data by testing the conversion with dynamic_cast<> first to
-     * see if it can be done, the finally returns the low level pointer.
-     * @code
-     *    typedef DataArray<int32_t>  Int32ArrayType;
-     *    int32_t* iPtr = IDataArray::SafeReinterpretCast<IDataArray*, Int32ArrayType*, int32_t*>(ptr.get());
-     *    Q_ASSERT(nullptr != iPtr);
-     * @endcode
-     * @param x The Pointer to IDataArray
-     * @return
-     */
-    template <class Source, class Target, typename Raw>
-    static Raw SafeReinterpretCast(Source x)
-    {
-      if( dynamic_cast<Target>(x) != x )
-      {
-        return 0;
-      }
-      return reinterpret_cast<Raw>(x->getVoidPointer(0));
-    }
-
+  /**
+   * @brief Returns the name of the class for IDataArray
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for IDataArray
+   */
+  static QString ClassName();
 
     IDataArray(const QString& name = "");
     ~IDataArray() override;
@@ -301,26 +299,17 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
 
 };
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
+template <typename T>
 class CheckDataArrayType
 {
-  public:
-    CheckDataArrayType() = default;
-    virtual ~CheckDataArrayType() = default;
-    bool operator()(IDataArray::Pointer p)
-    {
-      return (std::dynamic_pointer_cast<T>(p).get() != nullptr);
-    }
+public:
+  CheckDataArrayType() = default;
+  virtual ~CheckDataArrayType() = default;
+  bool operator()(IDataArrayShPtrType p)
+  {
+    return (std::dynamic_pointer_cast<T>(p).get() != nullptr);
+  }
 };
-
-
-
-
-
-
-

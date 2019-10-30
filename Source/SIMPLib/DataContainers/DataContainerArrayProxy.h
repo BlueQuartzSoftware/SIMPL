@@ -38,8 +38,8 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-#include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataContainers/DataContainerProxy.h"
 
 class DataContainerArray;
 
@@ -48,12 +48,15 @@ class DataContainerArray;
  */
 class SIMPLib_EXPORT DataContainerArrayProxy
 {
+
+#ifdef SIMPL_ENABLE_PYTHON
   // clang-format off
   PYB11_CREATE_BINDINGS(DataContainerArrayProxy)
   PYB11_CREATION()
   PYB11_PROPERTY(StorageType DataContainers READ getDataContainers WRITE setDataContainers CONST_GET_OVERLOAD)
   PYB11_METHOD(DataContainerProxy.& getDataContainerProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
   // clang-format on
+#endif
 
 public:
   using StorageType = QMap<QString, DataContainerProxy>;

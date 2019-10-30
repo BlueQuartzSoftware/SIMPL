@@ -101,3 +101,15 @@ void PluginDetails::loadPluginDetails()
   statusLabel->setHidden(true);
 #endif
 }
+
+// -----------------------------------------------------------------------------
+void PluginDetails::setPluginName(const QString& value)
+{
+  m_PluginName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PluginDetails::getPluginName() const
+{
+  return m_PluginName;
+}

@@ -36,21 +36,58 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
-//-- DREAM3D Includes
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <QtCore/QString>
+
 #include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The MeshFaceNeighbors class contains arrays of Faces for each Node in the mesh. This allows quick query to the node
  * to determine what Cells the node is a part of.
  */
-template <typename T, typename K> class DynamicListArray
+template <typename T, typename K>
+class DynamicListArray
 {
 public:
-  SIMPL_SHARED_POINTERS(DynamicListArray)
-  SIMPL_STATIC_NEW_MACRO(DynamicListArray)
-  SIMPL_TYPE_MACRO(DynamicListArray)
+  using Self = DynamicListArray<T, K>;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer()
+  {
+    return Pointer(static_cast<Self*>(nullptr));
+  }
+
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  QString getNameOfClass() const
+  {
+    return QString("DynamicListArray<T, K>");
+  }
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  static QString ClassName()
+  {
+    return QString("DynamicListArray<T, K>");
+  }
+
+  /**
+   * @brief Returns the version of this class.
+   * @return
+   */
+  int32_t getClassVersion()
+  {
+    return 1;
+  }
+
+  static Pointer New()
+  {
+    return std::shared_ptr<Self>(new DynamicListArray);
+  }
 
   class ElementList
   {
@@ -209,30 +246,6 @@ public:
   K* getElementListPointer(size_t ptId) const
   {
     return this->m_Array[ptId].cells;
-  }
-
-  /**
-   * @brief deserializeLinks
-   * @param buffer
-   * @param nElements
-   */
-  void deserializeLinks(QVector<uint8_t>& buffer, size_t nElements)
-  {
-    size_t offset = 0;
-    allocate(nElements); // Allocate all the links with 0 and nullptr;
-    uint8_t* bufPtr = buffer.data();
-
-    // Walk the array and allocate all the array links to Zero and nullptr
-    T* ncells = nullptr;
-    for(size_t i = 0; i < nElements; ++i)
-    {
-      ncells = reinterpret_cast<T*>(bufPtr + offset);
-      this->m_Array[i].ncells = *ncells; // Set the number of cells in this link
-      offset += 2;
-      this->m_Array[i].cells = new K[(*ncells)];                                // Allocate a new chunk of memory to store the list
-      ::memcpy(this->m_Array[i].cells, bufPtr + offset, (*ncells) * sizeof(K)); // Copy from the buffer into the new list memory
-      offset += (*ncells) * sizeof(K);                                          // Increment the offset
-    }
   }
 
   /**

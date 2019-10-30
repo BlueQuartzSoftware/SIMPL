@@ -83,3 +83,28 @@ float CylinderAOps::inside(float axis1comp, float axis2comp, float axis3comp)
   }
   return inside;
 }
+
+// -----------------------------------------------------------------------------
+CylinderAOps::Pointer CylinderAOps::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString CylinderAOps::getNameOfClass() const
+{
+  return QString("CylinderAOps");
+}
+
+// -----------------------------------------------------------------------------
+QString CylinderAOps::ClassName()
+{
+  return QString("CylinderAOps");
+}
+
+// -----------------------------------------------------------------------------
+CylinderAOps::Pointer CylinderAOps::New()
+{
+  Pointer sharedPtr(new(CylinderAOps));
+  return sharedPtr;
+}

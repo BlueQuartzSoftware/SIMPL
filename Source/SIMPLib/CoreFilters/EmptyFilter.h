@@ -36,9 +36,10 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The EmptyFilter class serves as an empty, non-functional filter
@@ -46,35 +47,62 @@
 class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(EmptyFilter SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(EmptyFilter)
+    PYB11_FILTER_NEW_MACRO(EmptyFilter)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(EmptyFilter)
-    SIMPL_FILTER_NEW_MACRO(EmptyFilter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(EmptyFilter, AbstractFilter)
+    using Self = EmptyFilter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<EmptyFilter> New();
+
+    /**
+     * @brief Returns the name of the class for EmptyFilter
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for EmptyFilter
+     */
+    static QString ClassName();
 
     ~EmptyFilter() override;
 
-    SIMPL_INSTANCE_STRING_PROPERTY(OriginalFilterName)
+    /**
+     * @brief Setter property for OriginalFilterName
+     */
+    void setOriginalFilterName(const QString& value);
+    /**
+     * @brief Getter property for OriginalFilterName
+     * @return Value of OriginalFilterName
+     */
+    QString getOriginalFilterName() const;
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -84,23 +112,23 @@ class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -166,6 +194,8 @@ class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
 
 
   private:
+    QString m_OriginalFilterName = {};
+
     QString m_HumanLabel;
 
   public:

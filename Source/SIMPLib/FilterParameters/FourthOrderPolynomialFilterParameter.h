@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -48,12 +50,12 @@ typedef struct
   float c21; float c12; float c20; float c02; 
   float c11; float c10; float c01; float c00;
   
-  void Float4thOrderPoly(const float& C40, const float& C04, 
-    const float& C31, const float& C13,
-    const float& C22,
-    const float& C30, const float& C03,
-    const float& C21, const float& C12, const float& C20, const float& C02,
-    const float& C11, const float& C10, const float& C01, const float& C00
+  void Float4thOrderPoly(float C40, float C04, 
+    float C31, float C13,
+    float C22,
+    float C30, float C03,
+    float C21, float C12, float C20, float C02,
+    float C11, float C10, float C01, float C00
   )
   {
   c40 = C40;
@@ -146,33 +148,47 @@ Q_DECLARE_METATYPE(Float4thOrderPoly_t)
 class SIMPLib_EXPORT FourthOrderPolynomialFilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(FourthOrderPolynomialFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(FourthOrderPolynomialFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FourthOrderPolynomialFilterParameter, FilterParameter)
+  using Self = FourthOrderPolynomialFilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    using SetterCallbackType = std::function<void(Float4thOrderPoly_t)>;
-    using GetterCallbackType = std::function<Float4thOrderPoly_t(void)>;
+  static Pointer New();
 
-    /**
-     * @brief New This function instantiates an instance of the FourthOrderPolynomialFilterParameter. Although this function is available to be used,
-     * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_FourthO_POLY_FP(...) macro at the top of this file.
+  using SetterCallbackType = std::function<void(Float4thOrderPoly_t)>;
+  using GetterCallbackType = std::function<Float4thOrderPoly_t(void)>;
 
-     * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
-     * @param propertyName The internal property name for this filter parameter.
-     * @param defaultValue The value that this filter parameter will be initialized to by default.
-     * @param category The category for the filter parameter in the DREAM.3D user interface.  There
-     * are three categories: Parameter, Required Arrays, and Created Arrays.
-     * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
-     * @return
-     */
-    static Pointer New(const QString& humanLabel, const QString& propertyName, const Float4thOrderPoly_t& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                       const GetterCallbackType& getterCallback, int groupIndex = -1);
+  /**
+   * @brief New This function instantiates an instance of the FourthOrderPolynomialFilterParameter. Although this function is available to be used,
+   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_FourthO_POLY_FP(...) macro at the top of this file.
 
-    ~FourthOrderPolynomialFilterParameter() override;
+   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+   * @param propertyName The internal property name for this filter parameter.
+   * @param defaultValue The value that this filter parameter will be initialized to by default.
+   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+   * are three categories: Parameter, Required Arrays, and Created Arrays.
+   * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+   * @return
+   */
+  static Pointer New(const QString& humanLabel, const QString& propertyName, const Float4thOrderPoly_t& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                     const GetterCallbackType& getterCallback, int groupIndex = -1);
+
+  /**
+   * @brief Returns the name of the class for FourthOrderPolynomialFilterParameter
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for FourthOrderPolynomialFilterParameter
+   */
+  static QString ClassName();
+
+  ~FourthOrderPolynomialFilterParameter() override;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -198,14 +214,30 @@ public:
     * that this FilterParameter subclass represents.
     * @return The SetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const FourthOrderPolynomialFilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    FourthOrderPolynomialFilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const FourthOrderPolynomialFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    FourthOrderPolynomialFilterParameter::GetterCallbackType getGetterCallback() const;
 
   protected:
     /**
@@ -219,5 +251,9 @@ public:
   FourthOrderPolynomialFilterParameter(FourthOrderPolynomialFilterParameter&&) = delete;      // Move Constructor Not Implemented
   FourthOrderPolynomialFilterParameter& operator=(const FourthOrderPolynomialFilterParameter&) = delete; // Copy Assignment Not Implemented
   FourthOrderPolynomialFilterParameter& operator=(FourthOrderPolynomialFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  FourthOrderPolynomialFilterParameter::SetterCallbackType m_SetterCallback = {};
+  FourthOrderPolynomialFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

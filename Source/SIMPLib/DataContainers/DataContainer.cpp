@@ -52,6 +52,7 @@
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Utilities.h"
@@ -892,4 +893,22 @@ AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilte
     filter->setErrorCondition(-10014, ss);
   }
   return attributeMatrix;
+}
+
+// -----------------------------------------------------------------------------
+DataContainer::Pointer DataContainer::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainer::getNameOfClass() const
+{
+  return QString("DataContainer");
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainer::ClassName()
+{
+  return QString("DataContainer");
 }

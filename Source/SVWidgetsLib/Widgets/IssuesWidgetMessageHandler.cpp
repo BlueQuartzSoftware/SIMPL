@@ -36,6 +36,7 @@
 #include "IssuesWidgetMessageHandler.h"
 
 #include <QtCore/QUrl>
+#include <QtCore/QTextStream>
 
 #include <QtWidgets/QTableWidgetItem>
 #include <QtWidgets/QLabel>

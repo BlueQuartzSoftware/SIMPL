@@ -35,11 +35,16 @@
 
 #pragma once
 
+#include <memory>
+
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 #include "SIMPLib/Geometry/GeometryHelpers.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The VertexGeom class represents a point cloud
@@ -48,7 +53,11 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
 {
   // clang-format off
 
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(VertexGeom SUPERCLASS IGeometry)
+  PYB11_SHARED_POINTERS(VertexGeom)
+  PYB11_STATIC_NEW_MACRO(VertexGeom)
   
   PYB11_CREATION(CreateGeometry ARGS size_t QString bool)
   PYB11_CREATION(CreateGeometry ARGS SharedVertexList::Pointer QString)
@@ -61,12 +70,28 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
 
   PYB11_METHOD(size_t getNumberOfVertices)
   PYB11_METHOD(size_t getNumberOfElements)
+#endif
+
   // clang-format on
 
 public:
-  SIMPL_SHARED_POINTERS(VertexGeom)
-  SIMPL_STATIC_NEW_MACRO(VertexGeom)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(VertexGeom, Observable)
+  using Self = VertexGeom;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for VertexGeom
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for VertexGeom
+   */
+  static QString ClassName();
 
   ~VertexGeom() override;
 

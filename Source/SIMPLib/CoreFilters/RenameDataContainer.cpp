@@ -33,13 +33,20 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "RenameDataContainer.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -165,7 +172,7 @@ AbstractFilter::Pointer RenameDataContainer::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameDataContainer::getCompiledLibraryName() const
+QString RenameDataContainer::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -173,7 +180,7 @@ const QString RenameDataContainer::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameDataContainer::getBrandingString() const
+QString RenameDataContainer::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -181,7 +188,7 @@ const QString RenameDataContainer::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameDataContainer::getFilterVersion() const
+QString RenameDataContainer::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -192,7 +199,7 @@ const QString RenameDataContainer::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameDataContainer::getGroupName() const
+QString RenameDataContainer::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -200,7 +207,7 @@ const QString RenameDataContainer::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid RenameDataContainer::getUuid()
+QUuid RenameDataContainer::getUuid() const
 {
   return QUuid("{d53c808f-004d-5fac-b125-0fffc8cc78d6}");
 }
@@ -208,7 +215,7 @@ const QUuid RenameDataContainer::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameDataContainer::getSubGroupName() const
+QString RenameDataContainer::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -216,7 +223,7 @@ const QString RenameDataContainer::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameDataContainer::getHumanLabel() const
+QString RenameDataContainer::getHumanLabel() const
 {
   return "Rename Data Container";
 }
@@ -233,4 +240,57 @@ DataArrayPath::RenameContainer RenameDataContainer::getRenamedPaths()
   container.push_back(std::make_pair(oldPath, newPath));
 
   return container;
+}
+
+// -----------------------------------------------------------------------------
+RenameDataContainer::Pointer RenameDataContainer::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<RenameDataContainer> RenameDataContainer::New()
+{
+  struct make_shared_enabler : public RenameDataContainer
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString RenameDataContainer::getNameOfClass() const
+{
+  return QString("RenameDataContainer");
+}
+
+// -----------------------------------------------------------------------------
+QString RenameDataContainer::ClassName()
+{
+  return QString("RenameDataContainer");
+}
+
+// -----------------------------------------------------------------------------
+void RenameDataContainer::setSelectedDataContainerName(const DataArrayPath& value)
+{
+  m_SelectedDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RenameDataContainer::getSelectedDataContainerName() const
+{
+  return m_SelectedDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void RenameDataContainer::setNewDataContainerName(const DataArrayPath& value)
+{
+  m_NewDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RenameDataContainer::getNewDataContainerName() const
+{
+  return m_NewDataContainerName;
 }

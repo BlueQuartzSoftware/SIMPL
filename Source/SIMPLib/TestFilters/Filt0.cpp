@@ -2,10 +2,14 @@
  * Your License or Copyright Information can go here
  */
 
+#include <memory>
+
 #include "Filt0.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -101,3 +105,79 @@ void Filt0::execute()
   /* Place all your code to execute your filter here. */
 }
 
+// -----------------------------------------------------------------------------
+Filt0::Pointer Filt0::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<Filt0> Filt0::New()
+{
+  struct make_shared_enabler : public Filt0
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString Filt0::getNameOfClass() const
+{
+  return QString("Filt0");
+}
+
+// -----------------------------------------------------------------------------
+QString Filt0::ClassName()
+{
+  return QString("Filt0");
+}
+
+// -----------------------------------------------------------------------------
+void Filt0::setDataContainerName(const QString& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString Filt0::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void Filt0::setCellAttributeMatrixName(const QString& value)
+{
+  m_CellAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString Filt0::getCellAttributeMatrixName() const
+{
+  return m_CellAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void Filt0::setFilt0_Float(float value)
+{
+  m_Filt0_Float = value;
+}
+
+// -----------------------------------------------------------------------------
+float Filt0::getFilt0_Float() const
+{
+  return m_Filt0_Float;
+}
+
+// -----------------------------------------------------------------------------
+void Filt0::setFilt0_Integer(int32_t value)
+{
+  m_Filt0_Integer = value;
+}
+
+// -----------------------------------------------------------------------------
+int32_t Filt0::getFilt0_Integer() const
+{
+  return m_Filt0_Integer;
+}

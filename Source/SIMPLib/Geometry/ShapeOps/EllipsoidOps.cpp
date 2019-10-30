@@ -78,3 +78,28 @@ float EllipsoidOps::inside(float axis1comp, float axis2comp, float axis3comp)
   inside = 1.0f - axis1comp - axis2comp - axis3comp;
   return inside;
 }
+
+// -----------------------------------------------------------------------------
+EllipsoidOps::Pointer EllipsoidOps::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString EllipsoidOps::getNameOfClass() const
+{
+  return QString("EllipsoidOps");
+}
+
+// -----------------------------------------------------------------------------
+QString EllipsoidOps::ClassName()
+{
+  return QString("EllipsoidOps");
+}
+
+// -----------------------------------------------------------------------------
+EllipsoidOps::Pointer EllipsoidOps::New()
+{
+  Pointer sharedPtr(new(EllipsoidOps));
+  return sharedPtr;
+}

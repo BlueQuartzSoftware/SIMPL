@@ -35,20 +35,28 @@
 
 #pragma once
 
+#include <memory>
+
 #include <cstddef>
 
 #include <QtCore/QMap>
 #include <QtCore/QString>
 #include <QtCore/QVector>
 
+#include <QtCore/QTextStream>
+
+#include "SIMPLib/SIMPLib.h"
+
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Geometry/IGeometry.h"
-#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 class QTextStream;
 class DataArrayPath;
@@ -68,7 +76,10 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
 
   // This line MUST be first when exposing a class and properties to Python
   // clang-format off
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(DataContainer)
+  PYB11_SHARED_POINTERS(DataContainer)
   PYB11_STATIC_CREATION(New OVERLOAD QString)
   PYB11_STATIC_CREATION(New OVERLOAD DataArrayPath)
 
@@ -87,10 +98,25 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
 
   PYB11_METHOD(bool doesAttributeMatrixExist ARGS Name)
   PYB11_METHOD(void setGeometry ARGS Geometry)
+#endif
+
   // clang-format on
 public:
-  SIMPL_SHARED_POINTERS(DataContainer)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainer, Observable)
+  using Self = DataContainer;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for DataContainer
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for DataContainer
+   */
+  static QString ClassName();
 
   ~DataContainer() override;
 
@@ -173,7 +199,7 @@ public:
   /**
    * @brief Adds the data for a named array. If an AttributeMatrix with the same
    * name already exists in the DataContainer then the add will fail.
-   * @param matrix The IDataArray::Pointer that will hold the data
+   * @param matrix The IDataArrayShPtrType that will hold the data
    * @return Bool TRUE if the addition was successful, FALSE Otherwise.
    */
   bool addOrReplaceAttributeMatrix(const AttributeMatrixShPtr& matrix)

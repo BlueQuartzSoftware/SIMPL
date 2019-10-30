@@ -35,14 +35,15 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QProcess>
 #include <QtCore/QWaitCondition>
 #include <QtCore/QMutex>
 #include <QtCore/QSharedPointer>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 class QProcess;
 
@@ -52,143 +53,182 @@ class QProcess;
 class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
 {
   Q_OBJECT
-    PYB11_CREATE_BINDINGS(ExecuteProcess SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(QString Arguments READ getArguments WRITE setArguments)
 
-  public:
-    SIMPL_SHARED_POINTERS(ExecuteProcess)
-    SIMPL_FILTER_NEW_MACRO(ExecuteProcess)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ExecuteProcess, AbstractFilter)
+#ifdef SIMPL_ENABLE_PYTHON
+  PYB11_CREATE_BINDINGS(ExecuteProcess SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(ExecuteProcess)
+  PYB11_FILTER_NEW_MACRO(ExecuteProcess)
+  PYB11_FILTER_PARAMETER(QString, Arguments)
+  PYB11_PROPERTY(QString Arguments READ getArguments WRITE setArguments)
+#endif
 
-    SIMPL_FILTER_PARAMETER(QString, Arguments)
-    Q_PROPERTY(QString Arguments READ getArguments WRITE setArguments)
+public:
+  using Self = ExecuteProcess;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
 
-    ~ExecuteProcess() override;
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
-    const QString getCompiledLibraryName() const override;
+  /**
+   * @brief Returns the name of the class for ExecuteProcess
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ExecuteProcess
+   */
+  static QString ClassName();
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    const QString getBrandingString() const override;
+  /**
+   * @brief Setter property for Arguments
+   */
+  void setArguments(const QString& value);
+  /**
+   * @brief Getter property for Arguments
+   * @return Value of Arguments
+   */
+  QString getArguments() const;
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    const QString getFilterVersion() const override;
+  Q_PROPERTY(QString Arguments READ getArguments WRITE setArguments)
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+  ~ExecuteProcess() override;
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getGroupName() const override;
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
+  QString getCompiledLibraryName() const override;
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getSubGroupName() const override;
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+   */
+  QString getBrandingString() const override;
 
-    /**
-     * @brief getUuid Return the unique identifier for this filter.
-     * @return A QUuid object.
-     */
-    const QUuid getUuid() override;
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  QString getFilterVersion() const override;
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    const QString getHumanLabel() const override;
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void setupFilterParameters() override;
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getGroupName() const override;
 
-    /**
-     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getSubGroupName() const override;
 
-    /**
-     * @brief execute Reimplemented from @see AbstractFilter class
-     */
-    void execute() override;
+  /**
+   * @brief getUuid Return the unique identifier for this filter.
+   * @return A QUuid object.
+   */
+  QUuid getUuid() const override;
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    void preflight() override;
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  QString getHumanLabel() const override;
 
-  signals:
-    /**
-     * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-     * be pushed from a user-facing control (such as a widget)
-     * @param filter Filter instance pointer 
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void setupFilterParameters() override;
 
-    /**
-     * @brief parametersChanged Emitted when any Filter parameter is changed internally
-     */
-    void parametersChanged();
+  /**
+   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-     */
-    void preflightAboutToExecute();
+  /**
+   * @brief execute Reimplemented from @see AbstractFilter class
+   */
+  void execute() override;
 
-    /**
-     * @brief preflightExecuted Emitted just after calling dataCheck()
-     */
-    void preflightExecuted();
+  /**
+   * @brief preflight Reimplemented from @see AbstractFilter class
+   */
+  void preflight() override;
 
-  protected:
-    ExecuteProcess();
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+signals:
+  /**
+   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+   * be pushed from a user-facing control (such as a widget)
+   * @param filter Filter instance pointer
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+  /**
+   * @brief parametersChanged Emitted when any Filter parameter is changed internally
+   */
+  void parametersChanged();
 
+  /**
+   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+   */
+  void preflightAboutToExecute();
 
-  protected slots:
-    void processHasFinished(int exitCode, QProcess::ExitStatus exitStatus);
-    void processHasErroredOut(QProcess::ProcessError error);
-    void sendErrorOutput();
-    void sendStandardOutput();
+  /**
+   * @brief preflightExecuted Emitted just after calling dataCheck()
+   */
+  void preflightExecuted();
 
-  private:
-    QWaitCondition                                      m_WaitCondition;
-    QMutex                                              m_Mutex;
-    bool m_Pause = false;
-    QSharedPointer<QProcess>                            m_ProcessPtr;
+protected:
+  ExecuteProcess();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
 
-    /**
-     * @brief splitArgumentsString
-     * @param arguments
-     * @return
-     */
-    QStringList splitArgumentsString(QString arguments);
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
-  public:
-    ExecuteProcess(const ExecuteProcess&) = delete; // Copy Constructor Not Implemented
-    ExecuteProcess(ExecuteProcess&&) = delete;      // Move Constructor Not Implemented
-    ExecuteProcess& operator=(const ExecuteProcess&) = delete; // Copy Assignment Not Implemented
-    ExecuteProcess& operator=(ExecuteProcess&&) = delete;      // Move Assignment Not Implemented
+protected slots:
+  void processHasFinished(int exitCode, QProcess::ExitStatus exitStatus);
+  void processHasErroredOut(QProcess::ProcessError error);
+  void sendErrorOutput();
+  void sendStandardOutput();
+
+private:
+  QString m_Arguments = {};
+
+  QWaitCondition m_WaitCondition;
+  QMutex m_Mutex;
+  bool m_Pause = false;
+  QSharedPointer<QProcess> m_ProcessPtr;
+
+  /**
+   * @brief splitArgumentsString
+   * @param arguments
+   * @return
+   */
+  QStringList splitArgumentsString(QString arguments);
+
+public:
+  ExecuteProcess(const ExecuteProcess&) = delete;            // Copy Constructor Not Implemented
+  ExecuteProcess(ExecuteProcess&&) = delete;                 // Move Constructor Not Implemented
+  ExecuteProcess& operator=(const ExecuteProcess&) = delete; // Copy Assignment Not Implemented
+  ExecuteProcess& operator=(ExecuteProcess&&) = delete;      // Move Assignment Not Implemented
 };
 

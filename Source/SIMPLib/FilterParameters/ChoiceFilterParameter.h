@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -63,9 +65,23 @@
 class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(ChoiceFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(ChoiceFilterParameter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ChoiceFilterParameter, FilterParameter)
+    using Self = ChoiceFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for ChoiceFilterParameter
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ChoiceFilterParameter
+     */
+    static QString ClassName();
 
     using SetterCallbackType = std::function<void(int)>;
     using GetterCallbackType = std::function<int(void)>;
@@ -89,15 +105,32 @@ class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
      * @return
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const int& defaultValue, Category category,
+                       int defaultValue, Category category,
                        const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                        QVector<QString> choices, bool editable,
                        int groupIndex = -1);
 
     ~ChoiceFilterParameter() override;
 
-    SIMPL_INSTANCE_PROPERTY(QVector<QString>, Choices)
-    SIMPL_INSTANCE_PROPERTY(bool, Editable)
+    /**
+     * @brief Setter property for Choices
+     */
+    void setChoices(const QVector<QString>& value);
+    /**
+     * @brief Getter property for Choices
+     * @return Value of Choices
+     */
+    QVector<QString> getChoices() const;
+
+    /**
+     * @brief Setter property for Editable
+     */
+    void setEditable(bool value);
+    /**
+     * @brief Getter property for Editable
+     * @return Value of Editable
+     */
+    bool getEditable() const;
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls
@@ -123,14 +156,30 @@ class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
     * that this FilterParameter subclass represents.
     * from the filter parameter.
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const ChoiceFilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    ChoiceFilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const ChoiceFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    ChoiceFilterParameter::GetterCallbackType getGetterCallback() const;
 
   protected:
       /**
@@ -144,5 +193,11 @@ class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
     ChoiceFilterParameter(ChoiceFilterParameter&&) = delete;      // Move Constructor Not Implemented
     ChoiceFilterParameter& operator=(const ChoiceFilterParameter&) = delete; // Copy Assignment Not Implemented
     ChoiceFilterParameter& operator=(ChoiceFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    QVector<QString> m_Choices = {};
+    bool m_Editable = {};
+    ChoiceFilterParameter::SetterCallbackType m_SetterCallback = {};
+    ChoiceFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

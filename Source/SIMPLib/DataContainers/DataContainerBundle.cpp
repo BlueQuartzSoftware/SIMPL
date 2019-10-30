@@ -38,8 +38,12 @@
 #include "H5Support/QH5Utilities.h"
 #include "H5Support/H5ScopedSentinel.h"
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/DataArrays/StringDataArray.h"
+
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -260,4 +264,46 @@ int DataContainerBundle::readH5Data(hid_t groupId)
   int err = -1;
 
   return err;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerBundle::Pointer DataContainerBundle::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerBundle::getNameOfClass() const
+{
+  return QString("DataContainerBundle");
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerBundle::ClassName()
+{
+  return QString("DataContainerBundle");
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerBundle::setName(const QString& value)
+{
+  m_Name = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerBundle::getName() const
+{
+  return m_Name;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerBundle::setMetaDataArrays(const QStringList& value)
+{
+  m_MetaDataArrays = value;
+}
+
+// -----------------------------------------------------------------------------
+QStringList DataContainerBundle::getMetaDataArrays() const
+{
+  return m_MetaDataArrays;
 }

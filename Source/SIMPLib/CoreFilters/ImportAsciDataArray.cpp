@@ -33,6 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ImportAsciDataArray.h"
 
 #include <locale>
@@ -41,7 +43,10 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QDateTime>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/ScopedFileMonitor.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -54,6 +59,8 @@
 #include "SIMPLib/FilterParameters/NumericTypeFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/PreflightUpdatedValueFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   AsciiArrayID = 1
@@ -257,12 +264,8 @@ ImportAsciDataArrayPrivate::ImportAsciDataArrayPrivate(ImportAsciDataArray* ptr)
 ImportAsciDataArray::ImportAsciDataArray()
 : m_CreatedAttributeArrayPath("")
 , m_ScalarType(SIMPL::NumericTypes::Type::Int8)
-, m_NumberOfComponents(0)
-, m_SkipHeaderLines(0)
 , m_InputFile("")
-, m_Delimiter(0)
 , d_ptr(new ImportAsciDataArrayPrivate(this))
-
 {
 }
 
@@ -274,10 +277,61 @@ ImportAsciDataArray::~ImportAsciDataArray() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPL_PIMPL_PROPERTY_DEF(ImportAsciDataArray, QString, FirstLine)
-SIMPL_PIMPL_PROPERTY_DEF(ImportAsciDataArray, QString, InputFile_Cache)
-SIMPL_PIMPL_PROPERTY_DEF(ImportAsciDataArray, QDateTime, LastRead)
-SIMPL_PIMPL_PROPERTY_DEF(ImportAsciDataArray, int, HeaderLines)
+// -----------------------------------------------------------------------------
+void ImportAsciDataArray::setFirstLine(const QString& value)
+{
+  Q_D(ImportAsciDataArray);
+  d->m_FirstLine = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportAsciDataArray::getFirstLine() const
+{
+  Q_D(const ImportAsciDataArray);
+  return d->m_FirstLine;
+}
+
+// -----------------------------------------------------------------------------
+void ImportAsciDataArray::setInputFile_Cache(const QString& value)
+{
+  Q_D(ImportAsciDataArray);
+  d->m_InputFile_Cache = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportAsciDataArray::getInputFile_Cache() const
+{
+  Q_D(const ImportAsciDataArray);
+  return d->m_InputFile_Cache;
+}
+
+// -----------------------------------------------------------------------------
+void ImportAsciDataArray::setLastRead(const QDateTime& value)
+{
+  Q_D(ImportAsciDataArray);
+  d->m_LastRead = value;
+}
+
+// -----------------------------------------------------------------------------
+QDateTime ImportAsciDataArray::getLastRead() const
+{
+  Q_D(const ImportAsciDataArray);
+  return d->m_LastRead;
+}
+
+// -----------------------------------------------------------------------------
+void ImportAsciDataArray::setHeaderLines(int value)
+{
+  Q_D(ImportAsciDataArray);
+  d->m_HeaderLines = value;
+}
+
+// -----------------------------------------------------------------------------
+int ImportAsciDataArray::getHeaderLines() const
+{
+  Q_D(const ImportAsciDataArray);
+  return d->m_HeaderLines;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -685,7 +739,7 @@ AbstractFilter::Pointer ImportAsciDataArray::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getCompiledLibraryName() const
+QString ImportAsciDataArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -693,7 +747,7 @@ const QString ImportAsciDataArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getBrandingString() const
+QString ImportAsciDataArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -701,7 +755,7 @@ const QString ImportAsciDataArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getFilterVersion() const
+QString ImportAsciDataArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -712,7 +766,7 @@ const QString ImportAsciDataArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getGroupName() const
+QString ImportAsciDataArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -720,7 +774,7 @@ const QString ImportAsciDataArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ImportAsciDataArray::getUuid()
+QUuid ImportAsciDataArray::getUuid() const
 {
   return QUuid("{a7007472-29e5-5d0a-89a6-1aed11b603f8}");
 }
@@ -728,7 +782,7 @@ const QUuid ImportAsciDataArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getSubGroupName() const
+QString ImportAsciDataArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -736,7 +790,108 @@ const QString ImportAsciDataArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getHumanLabel() const
+QString ImportAsciDataArray::getHumanLabel() const
 {
   return "Import ASCII Attribute Array";
+}
+
+// -----------------------------------------------------------------------------
+ImportAsciDataArray::Pointer ImportAsciDataArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ImportAsciDataArray> ImportAsciDataArray::New()
+{
+  struct make_shared_enabler : public ImportAsciDataArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportAsciDataArray::getNameOfClass() const
+{
+  return QString("ImportAsciDataArray");
+}
+
+// -----------------------------------------------------------------------------
+QString ImportAsciDataArray::ClassName()
+{
+  return QString("ImportAsciDataArray");
+}
+
+// -----------------------------------------------------------------------------
+void ImportAsciDataArray::setCreatedAttributeArrayPath(const DataArrayPath& value)
+{
+  m_CreatedAttributeArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ImportAsciDataArray::getCreatedAttributeArrayPath() const
+{
+  return m_CreatedAttributeArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void ImportAsciDataArray::setScalarType(SIMPL::NumericTypes::Type value)
+{
+  m_ScalarType = value;
+}
+
+// -----------------------------------------------------------------------------
+SIMPL::NumericTypes::Type ImportAsciDataArray::getScalarType() const
+{
+  return m_ScalarType;
+}
+
+// -----------------------------------------------------------------------------
+void ImportAsciDataArray::setNumberOfComponents(int value)
+{
+  m_NumberOfComponents = value;
+}
+
+// -----------------------------------------------------------------------------
+int ImportAsciDataArray::getNumberOfComponents() const
+{
+  return m_NumberOfComponents;
+}
+
+// -----------------------------------------------------------------------------
+void ImportAsciDataArray::setSkipHeaderLines(int value)
+{
+  m_SkipHeaderLines = value;
+}
+
+// -----------------------------------------------------------------------------
+int ImportAsciDataArray::getSkipHeaderLines() const
+{
+  return m_SkipHeaderLines;
+}
+
+// -----------------------------------------------------------------------------
+void ImportAsciDataArray::setInputFile(const QString& value)
+{
+  m_InputFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportAsciDataArray::getInputFile() const
+{
+  return m_InputFile;
+}
+
+// -----------------------------------------------------------------------------
+void ImportAsciDataArray::setDelimiter(int value)
+{
+  m_Delimiter = value;
+}
+
+// -----------------------------------------------------------------------------
+int ImportAsciDataArray::getDelimiter() const
+{
+  return m_Delimiter;
 }

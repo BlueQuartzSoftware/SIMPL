@@ -29,7 +29,11 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ErrorWarningFilter.h"
+
+#include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
@@ -161,7 +165,7 @@ AbstractFilter::Pointer ErrorWarningFilter::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getCompiledLibraryName() const
+QString ErrorWarningFilter::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -169,7 +173,7 @@ const QString ErrorWarningFilter::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getBrandingString() const
+QString ErrorWarningFilter::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -177,7 +181,7 @@ const QString ErrorWarningFilter::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getFilterVersion() const
+QString ErrorWarningFilter::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -188,7 +192,7 @@ const QString ErrorWarningFilter::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getGroupName() const
+QString ErrorWarningFilter::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -196,7 +200,7 @@ const QString ErrorWarningFilter::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ErrorWarningFilter::getUuid()
+QUuid ErrorWarningFilter::getUuid() const
 {
   return QUuid("{c367f998-3cc8-5a24-8616-70b659c5ce46}");
 }
@@ -204,7 +208,7 @@ const QUuid ErrorWarningFilter::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getSubGroupName() const
+QString ErrorWarningFilter::getSubGroupName() const
 {
   return "Test";
 }
@@ -212,7 +216,96 @@ const QString ErrorWarningFilter::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getHumanLabel() const
+QString ErrorWarningFilter::getHumanLabel() const
 {
   return "Error Warning and Test Filter";
+}
+
+// -----------------------------------------------------------------------------
+ErrorWarningFilter::Pointer ErrorWarningFilter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ErrorWarningFilter> ErrorWarningFilter::New()
+{
+  struct make_shared_enabler : public ErrorWarningFilter
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ErrorWarningFilter::getNameOfClass() const
+{
+  return QString("ErrorWarningFilter");
+}
+
+// -----------------------------------------------------------------------------
+QString ErrorWarningFilter::ClassName()
+{
+  return QString("ErrorWarningFilter");
+}
+
+// -----------------------------------------------------------------------------
+void ErrorWarningFilter::setPreflightWarning(bool value)
+{
+  m_PreflightWarning = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ErrorWarningFilter::getPreflightWarning() const
+{
+  return m_PreflightWarning;
+}
+
+// -----------------------------------------------------------------------------
+void ErrorWarningFilter::setPreflightError(bool value)
+{
+  m_PreflightError = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ErrorWarningFilter::getPreflightError() const
+{
+  return m_PreflightError;
+}
+
+// -----------------------------------------------------------------------------
+void ErrorWarningFilter::setExecuteWarning(bool value)
+{
+  m_ExecuteWarning = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ErrorWarningFilter::getExecuteWarning() const
+{
+  return m_ExecuteWarning;
+}
+
+// -----------------------------------------------------------------------------
+void ErrorWarningFilter::setExecuteError(bool value)
+{
+  m_ExecuteError = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ErrorWarningFilter::getExecuteError() const
+{
+  return m_ExecuteError;
+}
+
+// -----------------------------------------------------------------------------
+void ErrorWarningFilter::setPropertyError(bool value)
+{
+  m_PropertyError = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ErrorWarningFilter::getPropertyError() const
+{
+  return m_PropertyError;
 }

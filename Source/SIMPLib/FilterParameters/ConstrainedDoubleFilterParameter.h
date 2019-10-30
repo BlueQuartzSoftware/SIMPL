@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -64,9 +66,23 @@
 class SIMPLib_EXPORT ConstrainedDoubleFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(ConstrainedDoubleFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(ConstrainedDoubleFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ConstrainedDoubleFilterParameter, FilterParameter)
+    using Self = ConstrainedDoubleFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for ConstrainedDoubleFilterParameter
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ConstrainedDoubleFilterParameter
+     */
+    static QString ClassName();
 
     using SetterCallbackType = std::function<void(double)>;
     using GetterCallbackType = std::function<double(void)>;
@@ -88,7 +104,7 @@ class SIMPLib_EXPORT ConstrainedDoubleFilterParameter : public FilterParameter
      * @return
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const double& defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex = -1);
+                       double defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex = -1);
 
     ~ConstrainedDoubleFilterParameter() override;
 
@@ -116,27 +132,46 @@ class SIMPLib_EXPORT ConstrainedDoubleFilterParameter : public FilterParameter
     * that this FilterParameter subclass represents.
     * from the filter parameter.
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const ConstrainedDoubleFilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    ConstrainedDoubleFilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const ConstrainedDoubleFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    ConstrainedDoubleFilterParameter::GetterCallbackType getGetterCallback() const;
 
+  protected:
+    /**
+     * @brief ConstrainedDoubleFilterParameter The default constructor.  It is protected because this
+     * filter parameter should only be instantiated using its New(...) function or short-form macro.
+     */
+    ConstrainedDoubleFilterParameter();
 
-    protected:
-      /**
-       * @brief ConstrainedDoubleFilterParameter The default constructor.  It is protected because this
-       * filter parameter should only be instantiated using its New(...) function or short-form macro.
-       */
-      ConstrainedDoubleFilterParameter();
+  public:
+    ConstrainedDoubleFilterParameter(const ConstrainedDoubleFilterParameter&) = delete;            // Copy Constructor Not Implemented
+    ConstrainedDoubleFilterParameter(ConstrainedDoubleFilterParameter&&) = delete;                 // Move Constructor Not Implemented
+    ConstrainedDoubleFilterParameter& operator=(const ConstrainedDoubleFilterParameter&) = delete; // Copy Assignment Not Implemented
+    ConstrainedDoubleFilterParameter& operator=(ConstrainedDoubleFilterParameter&&) = delete;      // Move Assignment Not Implemented
 
-    public:
-      ConstrainedDoubleFilterParameter(const ConstrainedDoubleFilterParameter&) = delete;            // Copy Constructor Not Implemented
-      ConstrainedDoubleFilterParameter(ConstrainedDoubleFilterParameter&&) = delete;                 // Move Constructor Not Implemented
-      ConstrainedDoubleFilterParameter& operator=(const ConstrainedDoubleFilterParameter&) = delete; // Copy Assignment Not Implemented
-      ConstrainedDoubleFilterParameter& operator=(ConstrainedDoubleFilterParameter&&) = delete;      // Move Assignment Not Implemented
+  private:
+    ConstrainedDoubleFilterParameter::SetterCallbackType m_SetterCallback = {};
+    ConstrainedDoubleFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

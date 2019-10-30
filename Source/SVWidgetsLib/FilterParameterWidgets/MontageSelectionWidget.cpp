@@ -36,6 +36,7 @@
 #include "MontageSelectionWidget.h"
 
 #include "SIMPLib/FilterParameters/MontageSelectionFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "SVWidgetsLib/ui_MontageSelectionWidget.h"
 

@@ -36,32 +36,126 @@
 #pragma once
 
 #include <vector>
+#include <memory>
+
+#include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 class SIMPLib_EXPORT CreatedArrayHelpIndexEntry
 {
   public:
-    SIMPL_SHARED_POINTERS(CreatedArrayHelpIndexEntry)
-    SIMPL_STATIC_NEW_MACRO(CreatedArrayHelpIndexEntry)
-    SIMPL_TYPE_MACRO(CreatedArrayHelpIndexEntry)
+    using Self = CreatedArrayHelpIndexEntry;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for CreatedArrayHelpIndexEntry
+     */
+    QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for CreatedArrayHelpIndexEntry
+     */
+    static QString ClassName();
 
     typedef QVector<Pointer> VectorType;
 
     virtual ~CreatedArrayHelpIndexEntry();
 
-    SIMPL_INSTANCE_STRING_PROPERTY(FilterName)
-    SIMPL_INSTANCE_STRING_PROPERTY(FilterHumanLabel)
-    SIMPL_INSTANCE_STRING_PROPERTY(FilterGroup)
-    SIMPL_INSTANCE_STRING_PROPERTY(FilterSubGroup)
+    /**
+     * @brief Setter property for FilterName
+     */
+    void setFilterName(const QString& value);
+    /**
+     * @brief Getter property for FilterName
+     * @return Value of FilterName
+     */
+    QString getFilterName() const;
 
-    SIMPL_INSTANCE_STRING_PROPERTY(ArrayDefaultName)
-    SIMPL_INSTANCE_STRING_PROPERTY(ArrayGroup)
-    SIMPL_INSTANCE_STRING_PROPERTY(ArrayType)
-    SIMPL_INSTANCE_PROPERTY(int, ArrayNumComponents)
-    SIMPL_INSTANCE_STRING_PROPERTY(ArrayDescription)
+    /**
+     * @brief Setter property for FilterHumanLabel
+     */
+    void setFilterHumanLabel(const QString& value);
+    /**
+     * @brief Getter property for FilterHumanLabel
+     * @return Value of FilterHumanLabel
+     */
+    QString getFilterHumanLabel() const;
 
+    /**
+     * @brief Setter property for FilterGroup
+     */
+    void setFilterGroup(const QString& value);
+    /**
+     * @brief Getter property for FilterGroup
+     * @return Value of FilterGroup
+     */
+    QString getFilterGroup() const;
+
+    /**
+     * @brief Setter property for FilterSubGroup
+     */
+    void setFilterSubGroup(const QString& value);
+    /**
+     * @brief Getter property for FilterSubGroup
+     * @return Value of FilterSubGroup
+     */
+    QString getFilterSubGroup() const;
+
+    /**
+     * @brief Setter property for ArrayDefaultName
+     */
+    void setArrayDefaultName(const QString& value);
+    /**
+     * @brief Getter property for ArrayDefaultName
+     * @return Value of ArrayDefaultName
+     */
+    QString getArrayDefaultName() const;
+
+    /**
+     * @brief Setter property for ArrayGroup
+     */
+    void setArrayGroup(const QString& value);
+    /**
+     * @brief Getter property for ArrayGroup
+     * @return Value of ArrayGroup
+     */
+    QString getArrayGroup() const;
+
+    /**
+     * @brief Setter property for ArrayType
+     */
+    void setArrayType(const QString& value);
+    /**
+     * @brief Getter property for ArrayType
+     * @return Value of ArrayType
+     */
+    QString getArrayType() const;
+
+    /**
+     * @brief Setter property for ArrayNumComponents
+     */
+    void setArrayNumComponents(int value);
+    /**
+     * @brief Getter property for ArrayNumComponents
+     * @return Value of ArrayNumComponents
+     */
+    int getArrayNumComponents() const;
+
+    /**
+     * @brief Setter property for ArrayDescription
+     */
+    void setArrayDescription(const QString& value);
+    /**
+     * @brief Getter property for ArrayDescription
+     * @return Value of ArrayDescription
+     */
+    QString getArrayDescription() const;
 
   protected:
     CreatedArrayHelpIndexEntry();
@@ -71,6 +165,17 @@ class SIMPLib_EXPORT CreatedArrayHelpIndexEntry
     CreatedArrayHelpIndexEntry(CreatedArrayHelpIndexEntry&&) = delete;      // Move Constructor Not Implemented
     CreatedArrayHelpIndexEntry& operator=(const CreatedArrayHelpIndexEntry&) = delete; // Copy Assignment Not Implemented
     CreatedArrayHelpIndexEntry& operator=(CreatedArrayHelpIndexEntry&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    QString m_FilterName = {};
+    QString m_FilterHumanLabel = {};
+    QString m_FilterGroup = {};
+    QString m_FilterSubGroup = {};
+    QString m_ArrayDefaultName = {};
+    QString m_ArrayGroup = {};
+    QString m_ArrayType = {};
+    int m_ArrayNumComponents = {};
+    QString m_ArrayDescription = {};
 };
 
 

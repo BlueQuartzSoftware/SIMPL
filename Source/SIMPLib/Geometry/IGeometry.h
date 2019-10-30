@@ -35,19 +35,23 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QMutex>
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
+#include <QtCore/QTextStream>
+
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observable.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/DynamicListArray.hpp"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/ITransformContainer.h"
-#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
-class QTextStream;
+class AttributeMatrix;
+using AttributeMatrixShPtrType = std::shared_ptr<AttributeMatrix>;
 
 // -----------------------------------------------------------------------------
 // Typedefs
@@ -64,12 +68,20 @@ using SharedFaceList = MeshIndexArrayType;
 using ElementDynamicList = DynamicListArray<uint16_t, MeshIndexType>;
 
 /**
+ * @brief Macro to silence compiler warnings for unused parameters in methods.
+ */
+#define SIMPL_NOT_USED(x)
+
+/**
  * @brief The IGeometry class
  */
 class SIMPLib_EXPORT IGeometry : public Observable
 {
   // This line MUST be first when exposing a class and properties to Python
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(IGeometry)
+  PYB11_SHARED_POINTERS(IGeometry)
 
   PYB11_ENUMERATION(Type)
   PYB11_ENUMERATION(VtkCellType)
@@ -87,393 +99,448 @@ class SIMPLib_EXPORT IGeometry : public Observable
   PYB11_METHOD(void addOrReplaceAttributeMatrix ARGS Name AttributeMatrix)
   PYB11_METHOD(AttributeMatrix getAttributeMatrix ARGS Name)
   PYB11_METHOD(AttributeMatrix removeAttributeMatrix ARGS Name)
+#endif
 
-  public:
-    SIMPL_SHARED_POINTERS(IGeometry)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry, Observable)
+public:
+  using Self = IGeometry;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    IGeometry();
-    ~IGeometry() override;
+  /**
+   * @brief Returns the name of the class for IGeometry
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for IGeometry
+   */
+  static QString ClassName();
 
-    using EnumType = unsigned int;
+  IGeometry();
+  ~IGeometry() override;
 
-    /**
-     * @brief The VtkCellType enum
-     */
-    enum class VtkCellType : EnumType
-    {
-       Image = 11,
-       RectGrid = 11,
-       Vertex = 1,
-       Edge = 3,
-       Triangle = 5,
-       Quad = 9,
-       Tetrahedral = 10,
-       Hexahedral = 12,
-       Unknown = 999,
-       Any = 4294967295U
-    };
+  using EnumType = unsigned int;
 
-    /**
-     * @ brief The Type enum
-     */
-    enum class Type : EnumType
-    {
-      Image,
-      RectGrid,
-      Vertex,
-      Edge,
-      Triangle,
-      Quad,
-      Tetrahedral,
-      Hexahedral,
-      Unknown = 999,
-      Any = 4294967295U
-    };
+  /**
+   * @brief The VtkCellType enum
+   */
+  enum class VtkCellType : EnumType
+  {
+    Image = 11,
+    RectGrid = 11,
+    Vertex = 1,
+    Edge = 3,
+    Triangle = 5,
+    Quad = 9,
+    Tetrahedral = 10,
+    Hexahedral = 12,
+    Unknown = 999,
+    Any = 4294967295U
+  };
 
-    enum class LengthUnit : EnumType
-    {
-      Yoctometer,
-      Zeptometer,
-      Attometer,
-      Femtometer,
-      Picometer,
-      Nanometer,
-      Micrometer,
-      Millimeter,
-      Centimeter,
-      Decimeter,
-      Meter,
-      Decameter,
-      Hectometer,
-      Kilometer,
-      Megameter,
-      Gigameter,
-      Terameter,
-      Petameter,
-      Exameter,
-      Zettameter,
-      Yottameter,
-      Angstrom,
-      Mil,
-      Inch,
-      Foot,
-      Mile,
-      Fathom,
-      Unspecified = 100U,
-      Unknown = 101U
-    };
+  /**
+   * @ brief The Type enum
+   */
+  enum class Type : EnumType
+  {
+    Image,
+    RectGrid,
+    Vertex,
+    Edge,
+    Triangle,
+    Quad,
+    Tetrahedral,
+    Hexahedral,
+    Unknown = 999,
+    Any = 4294967295U
+  };
 
-    using VtkCellTypes = QVector <VtkCellType>;
-    using Types = QVector<Type>;
+  enum class LengthUnit : EnumType
+  {
+    Yoctometer,
+    Zeptometer,
+    Attometer,
+    Femtometer,
+    Picometer,
+    Nanometer,
+    Micrometer,
+    Millimeter,
+    Centimeter,
+    Decimeter,
+    Meter,
+    Decameter,
+    Hectometer,
+    Kilometer,
+    Megameter,
+    Gigameter,
+    Terameter,
+    Petameter,
+    Exameter,
+    Zettameter,
+    Yottameter,
+    Angstrom,
+    Mil,
+    Inch,
+    Foot,
+    Mile,
+    Fathom,
+    Unspecified = 100U,
+    Unknown = 101U
+  };
 
-    /**
-     * @brief AttributeMatrixMap_t
-     */
-    using AttributeMatrixMap_t = QMap<QString, AttributeMatrix::Pointer>;
+  using VtkCellTypes = QVector<VtkCellType>;
+  using Types = QVector<Type>;
 
-    /**
-     * @brief stringToType
-     * @param str
-     * @return
-     */
-    static IGeometry::Type StringToType(const QString& str);
+  /**
+   * @brief AttributeMatrixMap_t
+   */
+  using AttributeMatrixMap_t = QMap<QString, AttributeMatrixShPtrType>;
 
-    /**
-     * @brief typeToString
-     * @param t
-     * @return
-     */
-    static QString TypeToString(IGeometry::Type t);
+  /**
+   * @brief stringToType
+   * @param str
+   * @return
+   */
+  static IGeometry::Type StringToType(const QString& str);
 
-    /**
-     * @brief stringToLengthUnit
-     * @param str
-     * @return
-     */
-    static IGeometry::LengthUnit StringToLengthUnit(const QString& str);
+  /**
+   * @brief typeToString
+   * @param t
+   * @return
+   */
+  static QString TypeToString(IGeometry::Type t);
 
-    /**
-     * @brief lengthUnitToString
-     * @param t
-     * @return
-     */
-    static QString LengthUnitToString(IGeometry::LengthUnit t);
+  /**
+   * @brief stringToLengthUnit
+   * @param str
+   * @return
+   */
+  static IGeometry::LengthUnit StringToLengthUnit(const QString& str);
 
-    /**
-     * @brief GetAllLengthUnitStrings Returns all the Length Units as a vector of strings. This would be suitable to display as a list to a user.
-     * @return
-     */
-    static QVector<QString> GetAllLengthUnitStrings();
+  /**
+   * @brief lengthUnitToString
+   * @param t
+   * @return
+   */
+  static QString LengthUnitToString(IGeometry::LengthUnit t);
 
-    SIMPL_INSTANCE_PROPERTY(float, TimeValue)
-    SIMPL_INSTANCE_PROPERTY(bool, EnableTimeSeries)
-    SIMPL_INSTANCE_PROPERTY(ITransformContainer::Pointer, TransformContainer)
-    SIMPL_INSTANCE_PROPERTY(IGeometry::LengthUnit, Units)
+  /**
+   * @brief GetAllLengthUnitStrings Returns all the Length Units as a vector of strings. This would be suitable to display as a list to a user.
+   * @return
+   */
+  static QVector<QString> GetAllLengthUnitStrings();
 
-    // -----------------------------------------------------------------------------
-    // Connectivity
-    // -----------------------------------------------------------------------------
+  /**
+   * @brief Setter property for TimeValue
+   */
+  void setTimeValue(float value);
+  /**
+   * @brief Getter property for TimeValue
+   * @return Value of TimeValue
+   */
+  float getTimeValue() const;
 
-    /**
-     * @brief findElementsContainingVert
-     * @return
-     */
-    virtual int findElementsContainingVert() = 0;
+  /**
+   * @brief Setter property for EnableTimeSeries
+   */
+  void setEnableTimeSeries(bool value);
+  /**
+   * @brief Getter property for EnableTimeSeries
+   * @return Value of EnableTimeSeries
+   */
+  bool getEnableTimeSeries() const;
 
-    /**
-     * @brief getElementsContainingVert
-     * @return
-     */
-    virtual ElementDynamicList::Pointer getElementsContainingVert() const = 0;
+  /**
+   * @brief Setter property for TransformContainer
+   */
+  void setTransformContainer(const ITransformContainer::Pointer& value);
+  /**
+   * @brief Getter property for TransformContainer
+   * @return Value of TransformContainer
+   */
+  ITransformContainer::Pointer getTransformContainer() const;
 
-    /**
-     * @brief deleteElementsContainingVert
-     */
-    virtual void deleteElementsContainingVert() = 0;
+  /**
+   * @brief Setter property for Units
+   */
+  void setUnits(const IGeometry::LengthUnit& value);
+  /**
+   * @brief Getter property for Units
+   * @return Value of Units
+   */
+  IGeometry::LengthUnit getUnits() const;
 
-    /**
-     * @brief findElementNeighbors
-     * @return
-     */
-    virtual int findElementNeighbors() = 0;
+  // -----------------------------------------------------------------------------
+  // Connectivity
+  // -----------------------------------------------------------------------------
 
-    /**
-     * @brief getElementNeighbors
-     * @return
-     */
-    virtual ElementDynamicList::Pointer getElementNeighbors() const = 0;
+  /**
+   * @brief findElementsContainingVert
+   * @return
+   */
+  virtual int findElementsContainingVert() = 0;
 
-    /**
-     * @brief deleteElementNeighbors
-     */
-    virtual void deleteElementNeighbors() = 0;
+  /**
+   * @brief getElementsContainingVert
+   * @return
+   */
+  virtual ElementDynamicList::Pointer getElementsContainingVert() const = 0;
 
-// -----------------------------------------------------------------------------
-// Topology
-// -----------------------------------------------------------------------------
+  /**
+   * @brief deleteElementsContainingVert
+   */
+  virtual void deleteElementsContainingVert() = 0;
 
-    /**
-     * @brief getNumberOfElements
-     * @return
-     */
-    virtual size_t getNumberOfElements() const = 0;
+  /**
+   * @brief findElementNeighbors
+   * @return
+   */
+  virtual int findElementNeighbors() = 0;
 
-    /**
-     * @brief findElementSizes
-     * @return
-     */
-    virtual int findElementSizes() = 0;
+  /**
+   * @brief getElementNeighbors
+   * @return
+   */
+  virtual ElementDynamicList::Pointer getElementNeighbors() const = 0;
 
-    /**
-     * @brief getElementSizes
-     * @return
-     */
-    virtual FloatArrayType::Pointer getElementSizes() const = 0;
+  /**
+   * @brief deleteElementNeighbors
+   */
+  virtual void deleteElementNeighbors() = 0;
 
-    /**
-     * @brief deleteElementSizes
-     */
-    virtual void deleteElementSizes() = 0;
+  // -----------------------------------------------------------------------------
+  // Topology
+  // -----------------------------------------------------------------------------
 
-    /**
-     * @brief findElementCentroids
-     * @return
-     */
-    virtual int findElementCentroids() = 0;
+  /**
+   * @brief getNumberOfElements
+   * @return
+   */
+  virtual size_t getNumberOfElements() const = 0;
 
-    /**
-     * @brief getElementCentroids
-     * @return
-     */
-    virtual FloatArrayType::Pointer getElementCentroids() const = 0;
+  /**
+   * @brief findElementSizes
+   * @return
+   */
+  virtual int findElementSizes() = 0;
 
-    /**
-     * @brief deleteElementCentroids
-     */
-    virtual void deleteElementCentroids() = 0;
+  /**
+   * @brief getElementSizes
+   * @return
+   */
+  virtual FloatArrayType::Pointer getElementSizes() const = 0;
 
-    /**
-     * @brief getParametricCenter
-     * @param pCoords
-     */
-    virtual void getParametricCenter(double pCoords[3]) const = 0;
+  /**
+   * @brief deleteElementSizes
+   */
+  virtual void deleteElementSizes() = 0;
 
-    /**
-     * @brief getShapeFunctions
-     * @param pCoords
-     * @param derivs
-     */
-    virtual void getShapeFunctions(double pCoords[3], double* shape) const = 0;
+  /**
+   * @brief findElementCentroids
+   * @return
+   */
+  virtual int findElementCentroids() = 0;
 
-    /**
-     * @brief findDerivatives
-     * @param field
-     * @param derivatives
-     */
-    virtual void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable) = 0;
+  /**
+   * @brief getElementCentroids
+   * @return
+   */
+  virtual FloatArrayType::Pointer getElementCentroids() const = 0;
 
-// -----------------------------------------------------------------------------
-// Generic
-// -----------------------------------------------------------------------------
+  /**
+   * @brief deleteElementCentroids
+   */
+  virtual void deleteElementCentroids() = 0;
 
-    /**
-     * @brief setName
-     * @param name
-     */
-    virtual void setName(const QString& name) final;
+  /**
+   * @brief getParametricCenter
+   * @param pCoords
+   */
+  virtual void getParametricCenter(double pCoords[3]) const = 0;
 
-    /**
-     * @brief getName
-     * @return
-     */
-    virtual QString getName() const final;
+  /**
+   * @brief getShapeFunctions
+   * @param pCoords
+   * @param derivs
+   */
+  virtual void getShapeFunctions(double pCoords[3], double* shape) const = 0;
 
-    /**
-     * @brief getGeometryType
-     * @return
-     */
-    virtual Type getGeometryType() const final;
+  /**
+   * @brief findDerivatives
+   * @param field
+   * @param derivatives
+   */
+  virtual void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable) = 0;
 
-    /**
-     * @brief getGeometryTypeAsString
-     * @return
-     */
-    virtual QString getGeometryTypeAsString() const final;
+  // -----------------------------------------------------------------------------
+  // Generic
+  // -----------------------------------------------------------------------------
 
-    /**
-     * @brief getInfoString
-     * @return Returns a formatted string that contains general infomation about
-     * the instance of the object.
-     */
-    virtual QString getInfoString(SIMPL::InfoStringFormat) const = 0;
+  /**
+   * @brief setName
+   * @param name
+   */
+  virtual void setName(const QString& name) final;
 
-    /**
-     * @brief getXdmfGridType
-     * @return
-     */
-    virtual unsigned int getXdmfGridType() const final;
+  /**
+   * @brief getName
+   * @return
+   */
+  virtual QString getName() const final;
 
-    /**
-     * @brief getUnitDimensionality
-     * @return
-     */
-    virtual unsigned int getUnitDimensionality() const final;
+  /**
+   * @brief getGeometryType
+   * @return
+   */
+  virtual Type getGeometryType() const final;
 
-    /**
-     * @brief setSpatialDimensionality
-     * @param spatialDims
-     */
-    virtual void setSpatialDimensionality(unsigned int spatialDims) final;
+  /**
+   * @brief getGeometryTypeAsString
+   * @return
+   */
+  virtual QString getGeometryTypeAsString() const final;
 
-    /**
-     * @brief getSpatialDimensionality
-     * @return
-     */
-    virtual unsigned int getSpatialDimensionality() const final;
+  /**
+   * @brief getInfoString
+   * @return Returns a formatted string that contains general infomation about
+   * the instance of the object.
+   */
+  virtual QString getInfoString(SIMPL::InfoStringFormat) const = 0;
 
-    /**
-     * @brief writeGeometryToHDF5
-     * @param parentId
-     * @param writeXdmf
-     * @return
-     */
-    virtual int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) const = 0;
+  /**
+   * @brief getXdmfGridType
+   * @return
+   */
+  virtual unsigned int getXdmfGridType() const final;
 
-    /**
-     * @brief writeXdmf
-     * @param out
-     * @param dcName
-     * @param hdfFileName
-     * @return
-     */
-    virtual int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const = 0;
+  /**
+   * @brief getUnitDimensionality
+   * @return
+   */
+  virtual unsigned int getUnitDimensionality() const final;
 
-    /**
-     * @brief readGeometryFromHDF5
-     * @param parentId
-     * @param preflight
-     * @return
-     */
-    virtual int readGeometryFromHDF5(hid_t parentId, bool preflight) = 0;
+  /**
+   * @brief setSpatialDimensionality
+   * @param spatialDims
+   */
+  virtual void setSpatialDimensionality(unsigned int spatialDims) final;
 
-    /**
-     * @brief deepCopy
-     * @return
-     */
-    virtual Pointer deepCopy(bool forceNoAllocate = false) const = 0;
+  /**
+   * @brief getSpatialDimensionality
+   * @return
+   */
+  virtual unsigned int getSpatialDimensionality() const final;
 
-    /**
-     * @brief initializeWithZeros
-     */
-    virtual void initializeWithZeros() = 0;
+  /**
+   * @brief writeGeometryToHDF5
+   * @param parentId
+   * @param writeXdmf
+   * @return
+   */
+  virtual int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) const = 0;
 
-    /**
-     * @brief addOrReplaceAttributeMatrix
-     */
-    virtual void addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) = 0;
+  /**
+   * @brief writeXdmf
+   * @param out
+   * @param dcName
+   * @param hdfFileName
+   * @return
+   */
+  virtual int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const = 0;
 
-    /**
-     * @brief getAttributeMatrix
-     * @param name
-     * @return
-     */
-    virtual AttributeMatrix::Pointer getAttributeMatrix(const QString& name) const final;
+  /**
+   * @brief readGeometryFromHDF5
+   * @param parentId
+   * @param preflight
+   * @return
+   */
+  virtual int readGeometryFromHDF5(hid_t parentId, bool preflight) = 0;
 
-    /**
-     * @brief removeAttributeMatrix
-     * @param name
-     * @return
-     */
-    virtual AttributeMatrix::Pointer removeAttributeMatrix(const QString& name) final;
+  /**
+   * @brief deepCopy
+   * @return
+   */
+  virtual Pointer deepCopy(bool forceNoAllocate = false) const = 0;
 
-  protected:
-    QString m_Name;
-    QString m_GeometryTypeName;
-    Type m_GeometryType = Type::Unknown;
-    unsigned int m_XdmfGridType = SIMPL::XdmfGridType::UnknownGrid;
-    unsigned int m_UnitDimensionality = 0;
-    unsigned int m_SpatialDimensionality = 0;
+  /**
+   * @brief initializeWithZeros
+   */
+  virtual void initializeWithZeros() = 0;
 
-    AttributeMatrixMap_t m_AttributeMatrices;
+  /**
+   * @brief addOrReplaceAttributeMatrix
+   */
+  virtual void addOrReplaceAttributeMatrix(const QString& name, AttributeMatrixShPtrType data) = 0;
 
-    QMutex m_Mutex;
-    int64_t m_ProgressCounter;
+  /**
+   * @brief getAttributeMatrix
+   * @param name
+   * @return
+   */
+  virtual AttributeMatrixShPtrType getAttributeMatrix(const QString& name) const final;
 
-    /**
-     * @brief sendThreadSafeProgressMessage
-     * @param counter
-     * @param max
-     */
-    virtual void sendThreadSafeProgressMessage(int64_t counter, int64_t max) final;
+  /**
+   * @brief removeAttributeMatrix
+   * @param name
+   * @return
+   */
+  virtual AttributeMatrixShPtrType removeAttributeMatrix(const QString& name) final;
 
-    /**
-     * @brief setElementsContaingVert
-     * @param elementsContaingVert
-     */
-    virtual void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert) = 0;
+protected:
 
-    /**
-     * @brief setElementNeighbors
-     * @param elementNeighbors
-     */
-    virtual void setElementNeighbors(ElementDynamicList::Pointer elementsNeighbors) = 0;
+  /**
+   * @brief sendThreadSafeProgressMessage
+   * @param counter
+   * @param max
+   */
+  virtual void sendThreadSafeProgressMessage(int64_t counter, int64_t max) final;
 
-    /**
-     * @brief setElementCentroids
-     * @param elementCentroids
-     */
-    virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids) = 0;
+  /**
+   * @brief setElementsContaingVert
+   * @param elementsContaingVert
+   */
+  virtual void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert) = 0;
 
-    /**
-     * @brief setElementSizes
-     * @param elementSizes
-     */
-    virtual void setElementSizes(FloatArrayType::Pointer elementSizes) = 0;
+  /**
+   * @brief setElementNeighbors
+   * @param elementNeighbors
+   */
+  virtual void setElementNeighbors(ElementDynamicList::Pointer elementsNeighbors) = 0;
 
-  public:
-    IGeometry(const IGeometry&) = delete;      // Copy Constructor Not Implemented
-    IGeometry(IGeometry&&) = delete;           // Move Constructor Not Implemented
-    IGeometry& operator=(const IGeometry&) = delete; // Copy Assignment Not Implemented
-    IGeometry& operator=(IGeometry&&) = delete;      // Move Assignment Not Implemented
+  /**
+   * @brief setElementCentroids
+   * @param elementCentroids
+   */
+  virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids) = 0;
+
+  /**
+   * @brief setElementSizes
+   * @param elementSizes
+   */
+  virtual void setElementSizes(FloatArrayType::Pointer elementSizes) = 0;
+
+public:
+  IGeometry(const IGeometry&) = delete;            // Copy Constructor Not Implemented
+  IGeometry(IGeometry&&) = delete;                 // Move Constructor Not Implemented
+  IGeometry& operator=(const IGeometry&) = delete; // Copy Assignment Not Implemented
+  IGeometry& operator=(IGeometry&&) = delete;      // Move Assignment Not Implemented
+
+protected:
+  QString m_GeometryTypeName;
+  Type m_GeometryType = Type::Unknown;
+  unsigned int m_XdmfGridType = SIMPL::XdmfGridType::UnknownGrid;
+  unsigned int m_UnitDimensionality = 0;
+  unsigned int m_SpatialDimensionality = 0;
+  int64_t m_ProgressCounter = 0;
+  AttributeMatrixMap_t m_AttributeMatrices;
+
+private:
+  float m_TimeValue = 0.0f;
+  bool m_EnableTimeSeries = false;
+  ITransformContainer::Pointer m_TransformContainer = {};
+  IGeometry::LengthUnit m_Units = LengthUnit::Unspecified;
+  QString m_Name;
+  QMutex m_Mutex;
 };

@@ -35,11 +35,16 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
 
 /**
  * @brief The FindDerivatives class. See [Filter documentation](@ref findderivatives) for details.
@@ -47,90 +52,138 @@
 class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(FindDerivatives SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(FindDerivatives)
+  PYB11_FILTER_NEW_MACRO(FindDerivatives)
+  PYB11_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
+  PYB11_FILTER_PARAMETER(DataArrayPath, DerivativesArrayPath)
   PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
   PYB11_PROPERTY(DataArrayPath DerivativesArrayPath READ getDerivativesArrayPath WRITE setDerivativesArrayPath)
+#endif
 
-  public:
-    SIMPL_SHARED_POINTERS(FindDerivatives)
-    SIMPL_FILTER_NEW_MACRO(FindDerivatives)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FindDerivatives, AbstractFilter)
+public:
+  using Self = FindDerivatives;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
 
-    ~FindDerivatives() override;
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
+  /**
+   * @brief Returns the name of the class for FindDerivatives
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for FindDerivatives
+   */
+  static QString ClassName();
+
+  ~FindDerivatives() override;
+
+  /**
+   * @brief Setter property for SelectedArrayPath
+   */
+  void setSelectedArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SelectedArrayPath
+   * @return Value of SelectedArrayPath
+   */
+  DataArrayPath getSelectedArrayPath() const;
+
   Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, DerivativesArrayPath)
+  /**
+   * @brief Setter property for DerivativesArrayPath
+   */
+  void setDerivativesArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for DerivativesArrayPath
+   * @return Value of DerivativesArrayPath
+   */
+  DataArrayPath getDerivativesArrayPath() const;
+
   Q_PROPERTY(DataArrayPath DerivativesArrayPath READ getDerivativesArrayPath WRITE setDerivativesArrayPath)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    const QString getBrandingString() const override;
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+   */
+  QString getBrandingString() const override;
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    const QString getFilterVersion() const override;
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  QString getFilterVersion() const override;
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getGroupName() const override;
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getGroupName() const override;
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getSubGroupName() const override;
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getSubGroupName() const override;
 
-    /**
-     * @brief getUuid Return the unique identifier for this filter.
-     * @return A QUuid object.
-     */
-    const QUuid getUuid() override;
+  /**
+   * @brief getUuid Return the unique identifier for this filter.
+   * @return A QUuid object.
+   */
+  QUuid getUuid() const override;
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    const QString getHumanLabel() const override;
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  QString getHumanLabel() const override;
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void setupFilterParameters() override;
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void setupFilterParameters() override;
 
-    /**
-    * @brief This method will read the options from a file
-    * @param reader The reader that is used to read the options from a file
-    * @param index The index to read the information from
-    */
-    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  /**
+   * @brief This method will read the options from a file
+   * @param reader The reader that is used to read the options from a file
+   * @param index The index to read the information from
+   */
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
-    /**
-     * @brief Reimplemented from @see AbstractFilter class
-     */
-    void execute() override;
+  /**
+   * @brief Reimplemented from @see AbstractFilter class
+   */
+  void execute() override;
 
-    /**
-    * @brief This function runs some sanity checks on the DataContainer and inputs
-    * in an attempt to ensure the filter can process the inputs.
-    */
-    void preflight() override;
+  /**
+   * @brief This function runs some sanity checks on the DataContainer and inputs
+   * in an attempt to ensure the filter can process the inputs.
+   */
+  void preflight() override;
 
 signals:
   /**
@@ -176,8 +229,13 @@ protected slots:
   void processDerivativesMessage(const AbstractMessage::Pointer& msg);
 
 private:
-  DEFINE_IDATAARRAY_WEAKPTR(InArray)
-  DEFINE_DATAARRAY_VARIABLE(double, DerivativesArray)
+  std::weak_ptr<DataArray<double>> m_DerivativesArrayPtr;
+  double* m_DerivativesArray = nullptr;
+
+  IDataArrayWkPtrType m_InArrayPtr;
+
+  DataArrayPath m_SelectedArrayPath = {};
+  DataArrayPath m_DerivativesArrayPath = {};
 
   bool m_Interpolate;
 

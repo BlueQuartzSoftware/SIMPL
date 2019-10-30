@@ -36,9 +36,10 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SIMPLib/Common/Constants.h"
 
@@ -48,36 +49,113 @@
 class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(FeatureDataCSVWriter SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(FeatureDataCSVWriter)
+    PYB11_FILTER_NEW_MACRO(FeatureDataCSVWriter)
+    PYB11_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixPath)
+    PYB11_FILTER_PARAMETER(QString, FeatureDataFile)
+    PYB11_FILTER_PARAMETER(bool, WriteNeighborListData)
+    PYB11_FILTER_PARAMETER(int, DelimiterChoice)
+    PYB11_FILTER_PARAMETER(bool, WriteNumFeaturesLine)
     PYB11_PROPERTY(DataArrayPath CellFeatureAttributeMatrixPath READ getCellFeatureAttributeMatrixPath WRITE setCellFeatureAttributeMatrixPath)
     PYB11_PROPERTY(QString FeatureDataFile READ getFeatureDataFile WRITE setFeatureDataFile)
     PYB11_PROPERTY(bool WriteNeighborListData READ getWriteNeighborListData WRITE setWriteNeighborListData)
     PYB11_PROPERTY(int DelimiterChoice READ getDelimiterChoice WRITE setDelimiterChoice)
     PYB11_PROPERTY(bool WriteNumFeaturesLine READ getWriteNumFeaturesLine WRITE setWriteNumFeaturesLine)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(FeatureDataCSVWriter)
-    SIMPL_FILTER_NEW_MACRO(FeatureDataCSVWriter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FeatureDataCSVWriter, AbstractFilter)
+    using Self = FeatureDataCSVWriter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<FeatureDataCSVWriter> New();
+
+    /**
+     * @brief Returns the name of the class for FeatureDataCSVWriter
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for FeatureDataCSVWriter
+     */
+    static QString ClassName();
 
     ~FeatureDataCSVWriter() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixPath)
+    /**
+     * @brief Setter property for CellFeatureAttributeMatrixPath
+     */
+    void setCellFeatureAttributeMatrixPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for CellFeatureAttributeMatrixPath
+     * @return Value of CellFeatureAttributeMatrixPath
+     */
+    DataArrayPath getCellFeatureAttributeMatrixPath() const;
+
     Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixPath READ getCellFeatureAttributeMatrixPath WRITE setCellFeatureAttributeMatrixPath)
 
-    SIMPL_FILTER_PARAMETER(QString, FeatureDataFile)
+    /**
+     * @brief Setter property for FeatureDataFile
+     */
+    void setFeatureDataFile(const QString& value);
+    /**
+     * @brief Getter property for FeatureDataFile
+     * @return Value of FeatureDataFile
+     */
+    QString getFeatureDataFile() const;
+
     Q_PROPERTY(QString FeatureDataFile READ getFeatureDataFile WRITE setFeatureDataFile)
 
-    SIMPL_FILTER_PARAMETER(bool, WriteNeighborListData)
+    /**
+     * @brief Setter property for WriteNeighborListData
+     */
+    void setWriteNeighborListData(bool value);
+    /**
+     * @brief Getter property for WriteNeighborListData
+     * @return Value of WriteNeighborListData
+     */
+    bool getWriteNeighborListData() const;
+
     Q_PROPERTY(bool WriteNeighborListData READ getWriteNeighborListData WRITE setWriteNeighborListData)
 
-    SIMPL_FILTER_PARAMETER(int, DelimiterChoice)
+    /**
+     * @brief Setter property for DelimiterChoice
+     */
+    void setDelimiterChoice(int value);
+    /**
+     * @brief Getter property for DelimiterChoice
+     * @return Value of DelimiterChoice
+     */
+    int getDelimiterChoice() const;
+
     Q_PROPERTY(int DelimiterChoice READ getDelimiterChoice WRITE setDelimiterChoice)
 
-    SIMPL_FILTER_PARAMETER(bool, WriteNumFeaturesLine)
+    /**
+     * @brief Setter property for WriteNumFeaturesLine
+     */
+    void setWriteNumFeaturesLine(bool value);
+    /**
+     * @brief Getter property for WriteNumFeaturesLine
+     * @return Value of WriteNumFeaturesLine
+     */
+    bool getWriteNumFeaturesLine() const;
+
     Q_PROPERTY(bool WriteNumFeaturesLine READ getWriteNumFeaturesLine WRITE setWriteNumFeaturesLine)
 
-    SIMPL_INSTANCE_PROPERTY(char, Delimiter)
+    /**
+     * @brief Setter property for Delimiter
+     */
+    void setDelimiter(char value);
+    /**
+     * @brief Getter property for Delimiter
+     * @return Value of Delimiter
+     */
+    char getDelimiter() const;
 
     /**
      * @brief getDelimiterChoiceInt Returns the corresponding int from the enum SIMPL::DelimiterTypes::Type for DelimiterChoice
@@ -87,26 +165,26 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
     /**
      * @brief setDelimiterChoiceInt Sets DelimiterChoice to the enum type from SIMPL::DelimiterTypes::Type corresponding to the int parameter
      */
-    void setDelimiterChoiceInt(const int& value);
+    void setDelimiterChoiceInt(int value);
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
     */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -116,23 +194,23 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -194,4 +272,12 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
     FeatureDataCSVWriter(FeatureDataCSVWriter&&) = delete;      // Move Constructor Not Implemented
     FeatureDataCSVWriter& operator=(const FeatureDataCSVWriter&) = delete; // Copy Assignment Not Implemented
     FeatureDataCSVWriter& operator=(FeatureDataCSVWriter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    DataArrayPath m_CellFeatureAttributeMatrixPath = {};
+    QString m_FeatureDataFile = {};
+    bool m_WriteNeighborListData = {};
+    int m_DelimiterChoice = {};
+    bool m_WriteNumFeaturesLine = {};
+    char m_Delimiter = {};
 };

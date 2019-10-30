@@ -146,6 +146,18 @@ void IDataStructureNode::setParentNode(ParentType* const parent)
 }
 
 // -----------------------------------------------------------------------------
+QString IDataStructureNode::getNameOfClass() const
+{
+  return QString("IDataStructureNode");
+}
+
+// -----------------------------------------------------------------------------
+QString IDataStructureNode::ClassName()
+{
+  return QString("IDataStructureNode");
+}
+
+// -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 DataArrayPath IDataStructureNode::getParentPath() const
@@ -171,4 +183,10 @@ void AbstractDataStructureContainer::createParentConnection(IDataStructureNode* 
 void AbstractDataStructureContainer::destroyParentConnection(IDataStructureNode* child) const
 {
   child->clearParentNode();
+}
+
+// -----------------------------------------------------------------------------
+IDataStructureNode::Pointer IDataStructureNode::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
 }

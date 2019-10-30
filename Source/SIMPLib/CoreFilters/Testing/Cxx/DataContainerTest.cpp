@@ -52,7 +52,6 @@
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/CoreFilters/DataContainerWriter.h"
 #include "SIMPLib/DataArrays/StringDataArray.h"

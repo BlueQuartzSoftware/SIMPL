@@ -39,14 +39,12 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractMessage::AbstractMessage()
-{
-}
+AbstractMessage::AbstractMessage() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractMessage::AbstractMessage(const QString &msgText)
+AbstractMessage::AbstractMessage(const QString& msgText)
 : m_MessageText(msgText)
 {
 }
@@ -55,3 +53,33 @@ AbstractMessage::AbstractMessage(const QString &msgText)
 //
 // -----------------------------------------------------------------------------
 AbstractMessage::~AbstractMessage() = default;
+
+// -----------------------------------------------------------------------------
+AbstractMessage::Pointer AbstractMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractMessage::getNameOfClass() const
+{
+  return QString("AbstractMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractMessage::ClassName()
+{
+  return QString("AbstractMessage");
+}
+
+// -----------------------------------------------------------------------------
+void AbstractMessage::setMessageText(const QString& value)
+{
+  m_MessageText = value;
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractMessage::getMessageText() const
+{
+  return m_MessageText;
+}

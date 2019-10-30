@@ -36,6 +36,8 @@
 
 #include "PipelineListenerMessageHandler.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Messages/GenericErrorMessage.h"
 #include "SIMPLib/Messages/GenericWarningMessage.h"
 #include "SIMPLib/Messages/GenericStatusMessage.h"
@@ -157,7 +159,7 @@ void PipelineListenerMessageHandler::streamToLog(const QString &msgString, QFile
   {
     QTextStream stream(log);
     stream.readAll();
-    stream << msgString << endl;
+    stream << msgString << "\n";
     log->close();
   }
 }

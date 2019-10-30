@@ -33,11 +33,16 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ArrayCalculator.h"
 
 #include <QtCore/QRegularExpression>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
@@ -45,6 +50,7 @@
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/ScalarTypeFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "util/ABSOperator.h"
 #include "util/ACosOperator.h"
@@ -907,7 +913,7 @@ bool ArrayCalculator::parseCommaOperator(QString token, QVector<CalculatorItem::
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool ArrayCalculator::parseArray(QString token, QVector<CalculatorItem::Pointer>& parsedInfix, AttributeMatrix::Pointer selectedAM)
+bool ArrayCalculator::parseArray(QString token, QVector<CalculatorItem::Pointer>& parsedInfix, const AttributeMatrixShPtrType& selectedAM)
 {
   int firstArray_NumTuples = -1;
   QString firstArray_Name = "";
@@ -1072,7 +1078,7 @@ AbstractFilter::Pointer ArrayCalculator::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getCompiledLibraryName() const
+QString ArrayCalculator::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -1080,7 +1086,7 @@ const QString ArrayCalculator::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getBrandingString() const
+QString ArrayCalculator::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -1088,7 +1094,7 @@ const QString ArrayCalculator::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getFilterVersion() const
+QString ArrayCalculator::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -1099,7 +1105,7 @@ const QString ArrayCalculator::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getGroupName() const
+QString ArrayCalculator::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -1107,7 +1113,7 @@ const QString ArrayCalculator::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ArrayCalculator::getUuid()
+QUuid ArrayCalculator::getUuid() const
 {
   return QUuid("{7ff0ebb3-7b0d-5ff7-b9d8-5147031aca10}");
 }
@@ -1115,7 +1121,7 @@ const QUuid ArrayCalculator::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getSubGroupName() const
+QString ArrayCalculator::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -1123,7 +1129,96 @@ const QString ArrayCalculator::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getHumanLabel() const
+QString ArrayCalculator::getHumanLabel() const
 {
   return "Attribute Array Calculator";
+}
+
+// -----------------------------------------------------------------------------
+ArrayCalculator::Pointer ArrayCalculator::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ArrayCalculator> ArrayCalculator::New()
+{
+  struct make_shared_enabler : public ArrayCalculator
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ArrayCalculator::getNameOfClass() const
+{
+  return QString("ArrayCalculator");
+}
+
+// -----------------------------------------------------------------------------
+QString ArrayCalculator::ClassName()
+{
+  return QString("ArrayCalculator");
+}
+
+// -----------------------------------------------------------------------------
+void ArrayCalculator::setSelectedAttributeMatrix(const DataArrayPath& value)
+{
+  m_SelectedAttributeMatrix = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ArrayCalculator::getSelectedAttributeMatrix() const
+{
+  return m_SelectedAttributeMatrix;
+}
+
+// -----------------------------------------------------------------------------
+void ArrayCalculator::setInfixEquation(const QString& value)
+{
+  m_InfixEquation = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ArrayCalculator::getInfixEquation() const
+{
+  return m_InfixEquation;
+}
+
+// -----------------------------------------------------------------------------
+void ArrayCalculator::setCalculatedArray(const DataArrayPath& value)
+{
+  m_CalculatedArray = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ArrayCalculator::getCalculatedArray() const
+{
+  return m_CalculatedArray;
+}
+
+// -----------------------------------------------------------------------------
+void ArrayCalculator::setUnits(const ArrayCalculator::AngleUnits& value)
+{
+  m_Units = value;
+}
+
+// -----------------------------------------------------------------------------
+ArrayCalculator::AngleUnits ArrayCalculator::getUnits() const
+{
+  return m_Units;
+}
+
+// -----------------------------------------------------------------------------
+void ArrayCalculator::setScalarType(SIMPL::ScalarTypes::Type value)
+{
+  m_ScalarType = value;
+}
+
+// -----------------------------------------------------------------------------
+SIMPL::ScalarTypes::Type ArrayCalculator::getScalarType() const
+{
+  return m_ScalarType;
 }

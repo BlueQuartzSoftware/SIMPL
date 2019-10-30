@@ -35,7 +35,8 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <memory>
+
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
@@ -47,9 +48,32 @@ class AbstractDecisionFilter : public AbstractFilter
 {
   Q_OBJECT
 public:
-  SIMPL_SHARED_POINTERS(AbstractDecisionFilter)
-  SIMPL_FILTER_NEW_MACRO(AbstractDecisionFilter)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractDecisionFilter, AbstractFilter)
+  using Self = AbstractDecisionFilter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
+
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for AbstractDecisionFilter
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for AbstractDecisionFilter
+   */
+  static QString ClassName();
 
   ~AbstractDecisionFilter() override;
 
@@ -62,7 +86,7 @@ public:
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
 
   /**
    * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -72,23 +96,23 @@ public:
   /**
    * @brief getGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
    * @brief getSubGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
    * @brief getHumanLabel Reimplemented from @see AbstractFilter class
    */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
 
   /**
    * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -153,5 +177,7 @@ public:
   AbstractDecisionFilter(AbstractDecisionFilter&&) = delete;      // Move Constructor Not Implemented
   AbstractDecisionFilter& operator=(const AbstractDecisionFilter&) = delete; // Copy Assignment Not Implemented
   AbstractDecisionFilter& operator=(AbstractDecisionFilter&&) = delete;      // Move Assignment Not Implemented
+
+private:
 };
 

@@ -99,7 +99,7 @@ int TransformContainer::writeTransformContainerToHDF5(hid_t parentId, const std:
   return err;
 }
 
-int TransformContainer::readTransformContainerFromHDF5(hid_t parentId, bool SIMPL_NOT_USED(metaDataOnly), const std::string& transformName)
+int TransformContainer::readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformName)
 {
   herr_t err = 0;
   err = H5Utilities::createGroupsFromPath(transformName, parentId);
@@ -163,4 +163,88 @@ TransformContainer& TransformContainer::operator=(const TransformContainer& old)
     this->m_ReferenceName = old.m_ReferenceName;
   }
   return *this;
+}
+// -----------------------------------------------------------------------------
+TransformContainer::Pointer TransformContainer::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+TransformContainer::Pointer TransformContainer::New()
+{
+  Pointer sharedPtr(new(TransformContainer));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString TransformContainer::getNameOfClass() const
+{
+  return QString("TransformContainer");
+}
+
+// -----------------------------------------------------------------------------
+QString TransformContainer::ClassName()
+{
+  return QString("TransformContainer");
+}
+
+// -----------------------------------------------------------------------------
+void TransformContainer::setParameters(const TransformContainer::TransformParametersType& value)
+{
+  m_Parameters = value;
+}
+
+// -----------------------------------------------------------------------------
+TransformContainer::TransformParametersType TransformContainer::getParameters() const
+{
+  return m_Parameters;
+}
+
+// -----------------------------------------------------------------------------
+void TransformContainer::setFixedParameters(const TransformContainer::TransformFixedParametersType& value)
+{
+  m_FixedParameters = value;
+}
+
+// -----------------------------------------------------------------------------
+TransformContainer::TransformFixedParametersType TransformContainer::getFixedParameters() const
+{
+  return m_FixedParameters;
+}
+
+// -----------------------------------------------------------------------------
+void TransformContainer::setTransformTypeAsString(const std::string& value)
+{
+  m_TransformTypeAsString = value;
+}
+
+// -----------------------------------------------------------------------------
+std::string TransformContainer::getTransformTypeAsString() const
+{
+  return m_TransformTypeAsString;
+}
+
+// -----------------------------------------------------------------------------
+void TransformContainer::setMovingName(const std::string& value)
+{
+  m_MovingName = value;
+}
+
+// -----------------------------------------------------------------------------
+std::string TransformContainer::getMovingName() const
+{
+  return m_MovingName;
+}
+
+// -----------------------------------------------------------------------------
+void TransformContainer::setReferenceName(const std::string& value)
+{
+  m_ReferenceName = value;
+}
+
+// -----------------------------------------------------------------------------
+std::string TransformContainer::getReferenceName() const
+{
+  return m_ReferenceName;
 }

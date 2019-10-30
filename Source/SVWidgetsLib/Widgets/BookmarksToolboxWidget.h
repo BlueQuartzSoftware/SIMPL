@@ -41,7 +41,6 @@
 #include "SVWidgetsLib/QtSupport/QtSFileDragMessageBox.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/Constants.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"

@@ -35,14 +35,18 @@
 
 #include "AbstractFilter.h"
 
-#include "SIMPLib/Filtering/FilterManager.h"
-#include "SIMPLib/Filtering/FilterPipeline.h"
-#include "SIMPLib/Filtering/IFilterFactory.hpp"
+#include <QtCore/QTextStream>
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Messages/FilterErrorMessage.h"
 #include "SIMPLib/Messages/FilterProgressMessage.h"
 #include "SIMPLib/Messages/FilterStatusMessage.h"
 #include "SIMPLib/Messages/FilterWarningMessage.h"
 #include "SIMPLib/Plugin/PluginManager.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Filtering/FilterManager.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -441,7 +445,7 @@ void AbstractFilter::copyFilterParameterInstanceVariables(AbstractFilter* filter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getGroupName() const
+QString AbstractFilter::getGroupName() const
 {
   return "YOUR CLASS SHOULD IMPLEMENT THIS";
 }
@@ -449,7 +453,7 @@ const QString AbstractFilter::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getSubGroupName() const
+QString AbstractFilter::getSubGroupName() const
 {
   return "YOUR CLASS SHOULD IMPLEMENT THIS";
 }
@@ -457,7 +461,7 @@ const QString AbstractFilter::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getHumanLabel() const
+QString AbstractFilter::getHumanLabel() const
 {
   return "YOUR CLASS SHOULD IMPLEMENT THIS";
 }
@@ -465,7 +469,7 @@ const QString AbstractFilter::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getBrandingString() const
+QString AbstractFilter::getBrandingString() const
 {
   return "";
 }
@@ -473,7 +477,7 @@ const QString AbstractFilter::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getCompiledLibraryName() const
+QString AbstractFilter::getCompiledLibraryName() const
 {
   return "";
 }
@@ -481,7 +485,7 @@ const QString AbstractFilter::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getFilterVersion() const
+QString AbstractFilter::getFilterVersion() const
 {
   return QString("0.0.0");
 }
@@ -489,26 +493,27 @@ const QString AbstractFilter::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid AbstractFilter::getUuid()
+QUuid AbstractFilter::getUuid() const
 {
   if(m_Uuid.isNull())
   {
-    uint l = 100;
-    ushort w1 = 200;
-    ushort w2 = 300;
+    // We cannot actually set the internal m_Uuid because the method is marked const.
+    //    uint l = 100;
+    //    ushort w1 = 200;
+    //    ushort w2 = 300;
 
-    QString libName = getCompiledLibraryName();
-    uchar b[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-    int32_t i = 0;
-    while(i < 8 && i < libName.size())
-    {
-      b[i] = static_cast<uint8_t>(libName.at(i).toLatin1());
-      i++;
-    }
-    QUuid uuid = QUuid(l, w1, w2, b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7]);
-    QString nameSpace = QString("%1 %2").arg(getNameOfClass()).arg(getHumanLabel());
-    QUuid p1 = QUuid::createUuidV5(uuid, nameSpace);
-    m_Uuid = p1;
+    //    QString libName = getCompiledLibraryName();
+    //    uchar b[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    //    int32_t i = 0;
+    //    while(i < 8 && i < libName.size())
+    //    {
+    //      b[i] = static_cast<uint8_t>(libName.at(i).toLatin1());
+    //      i++;
+    //    }
+    //    QUuid uuid = QUuid(l, w1, w2, b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7]);
+    //    QString nameSpace = QString("%1 %2").arg(getNameOfClass()).arg(getHumanLabel());
+    //    QUuid p1 = QUuid::createUuidV5(uuid, nameSpace);
+    //    m_Uuid = p1;
   }
   return m_Uuid;
 }
@@ -516,7 +521,7 @@ const QUuid AbstractFilter::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::generateHtmlSummary() const
+QString AbstractFilter::generateHtmlSummary() const
 {
   QString html;
   QTextStream ss(&html);
@@ -658,4 +663,137 @@ void AbstractFilter::clearRenamedPaths()
 void AbstractFilter::addPathRename(const DataArrayPath& oldPath, const DataArrayPath& newPath)
 {
   m_RenamedPaths.push_back(std::make_pair(oldPath, newPath));
+}
+
+// -----------------------------------------------------------------------------
+AbstractFilter::Pointer AbstractFilter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractFilter::getNameOfClass() const
+{
+  return QString("AbstractFilter");
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractFilter::ClassName()
+{
+  return QString("AbstractFilter");
+}
+
+// -----------------------------------------------------------------------------
+AbstractFilter::Pointer AbstractFilter::New()
+{
+  Pointer sharedPtr(new(AbstractFilter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setDataContainerArray(const DataContainerArray::Pointer& value)
+{
+  m_DataContainerArray = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArray::Pointer AbstractFilter::getDataContainerArray() const
+{
+  return m_DataContainerArray;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setFilterParameters(const FilterParameterVectorType& value)
+{
+  m_FilterParameters = value;
+}
+
+// -----------------------------------------------------------------------------
+FilterParameterVectorType AbstractFilter::getFilterParameters() const
+{
+  return m_FilterParameters;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setInPreflight(bool value)
+{
+  m_InPreflight = value;
+}
+
+// -----------------------------------------------------------------------------
+bool AbstractFilter::getInPreflight() const
+{
+  return m_InPreflight;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setEnabled(bool value)
+{
+  m_Enabled = value;
+}
+
+// -----------------------------------------------------------------------------
+bool AbstractFilter::getEnabled() const
+{
+  return m_Enabled;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setRemoving(bool value)
+{
+  m_Removing = value;
+}
+
+// -----------------------------------------------------------------------------
+bool AbstractFilter::getRemoving() const
+{
+  return m_Removing;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setPipelineIndex(int value)
+{
+  m_PipelineIndex = value;
+}
+
+// -----------------------------------------------------------------------------
+int AbstractFilter::getPipelineIndex() const
+{
+  return m_PipelineIndex;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setPreviousFilter(const AbstractFilter::WeakPointer& value)
+{
+  m_PreviousFilter = value;
+}
+
+// -----------------------------------------------------------------------------
+AbstractFilter::WeakPointer AbstractFilter::getPreviousFilter() const
+{
+  return m_PreviousFilter;
+}
+
+// -----------------------------------------------------------------------------
+void AbstractFilter::setNextFilter(const AbstractFilter::WeakPointer& value)
+{
+  m_NextFilter = value;
+}
+
+// -----------------------------------------------------------------------------
+AbstractFilter::WeakPointer AbstractFilter::getNextFilter() const
+{
+  return m_NextFilter;
+}
+
+// -----------------------------------------------------------------------------
+int AbstractFilter::getErrorCode() const
+{
+  return m_ErrorCode;
+}
+
+// -----------------------------------------------------------------------------
+int AbstractFilter::getWarningCode() const
+{
+  return m_WarningCode;
 }

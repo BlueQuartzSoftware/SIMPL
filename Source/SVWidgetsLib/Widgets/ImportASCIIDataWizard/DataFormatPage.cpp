@@ -40,8 +40,13 @@
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QMenu>
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Utilities/StringOperations.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"

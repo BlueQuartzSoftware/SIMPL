@@ -34,7 +34,7 @@ public:
     @param refreshInterval Interval of checking for changed config settings in msec, or 0=disabled
     @param parent Parent object.
   */
-  DualFileLogger(QSettings* firstSettings, QSettings* secondSettings, const int refreshInterval = 10000, QObject* parent = 0);
+  DualFileLogger(QSettings* firstSettings, QSettings* secondSettings, const int refreshInterval = 10000, QObject* parent = nullptr);
 
   /**
     Decorate and log the message, if type>=minLevel.

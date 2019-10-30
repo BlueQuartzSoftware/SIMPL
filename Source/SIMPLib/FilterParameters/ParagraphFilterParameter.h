@@ -33,6 +33,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -59,9 +61,23 @@
 class SIMPLib_EXPORT ParagraphFilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(ParagraphFilterParameter)
-  SIMPL_STATIC_NEW_MACRO(ParagraphFilterParameter)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ParagraphFilterParameter, FilterParameter)
+  using Self = ParagraphFilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for ParagraphFilterParameter
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ParagraphFilterParameter
+   */
+  static QString ClassName();
 
   typedef std::function<void(QString)> SetterCallbackType;
   typedef std::function<QString(void)> GetterCallbackType;
@@ -111,16 +127,40 @@ public:
   * that this FilterParameter subclass represents.
   * from the filter parameter.
   */
-  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  /**
+   * @brief Setter property for SetterCallback
+   */
+  void setSetterCallback(const ParagraphFilterParameter::SetterCallbackType& value);
+  /**
+   * @brief Getter property for SetterCallback
+   * @return Value of SetterCallback
+   */
+  ParagraphFilterParameter::SetterCallbackType getSetterCallback() const;
 
   /**
   * @brief GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
   * that this FilterParameter subclass represents.
   * @return The GetterCallback
   */
-  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+  /**
+   * @brief Setter property for GetterCallback
+   */
+  void setGetterCallback(const ParagraphFilterParameter::GetterCallbackType& value);
+  /**
+   * @brief Getter property for GetterCallback
+   * @return Value of GetterCallback
+   */
+  ParagraphFilterParameter::GetterCallbackType getGetterCallback() const;
 
-  SIMPL_INSTANCE_PROPERTY(bool, AllowPreflight)
+  /**
+   * @brief Setter property for AllowPreflight
+   */
+  void setAllowPreflight(bool value);
+  /**
+   * @brief Getter property for AllowPreflight
+   * @return Value of AllowPreflight
+   */
+  bool getAllowPreflight() const;
 
 protected:
   /**
@@ -134,5 +174,10 @@ public:
   ParagraphFilterParameter(ParagraphFilterParameter&&) = delete;      // Move Constructor Not Implemented
   ParagraphFilterParameter& operator=(const ParagraphFilterParameter&) = delete; // Copy Assignment Not Implemented
   ParagraphFilterParameter& operator=(ParagraphFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  ParagraphFilterParameter::SetterCallbackType m_SetterCallback = {};
+  ParagraphFilterParameter::GetterCallbackType m_GetterCallback = {};
+  bool m_AllowPreflight = {};
 };
 

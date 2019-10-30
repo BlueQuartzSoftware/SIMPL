@@ -36,10 +36,11 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <memory>
+
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The SetOriginResolutionImageGeom class. See [Filter documentation](@ref adjustvolumeorigin) for details.
@@ -47,53 +48,122 @@
 class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(SetOriginResolutionImageGeom SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(SetOriginResolutionImageGeom)
+    PYB11_FILTER_NEW_MACRO(SetOriginResolutionImageGeom)
+    PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+    PYB11_FILTER_PARAMETER(bool, ChangeOrigin)
+    PYB11_FILTER_PARAMETER(FloatVec3Type, Origin)
+    PYB11_FILTER_PARAMETER(bool, ChangeResolution)
+    PYB11_FILTER_PARAMETER(FloatVec3Type, Spacing)
     PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
     PYB11_PROPERTY(bool ChangeOrigin READ getChangeOrigin WRITE setChangeOrigin)
     PYB11_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
     PYB11_PROPERTY(bool ChangeResolution READ getChangeResolution WRITE setChangeResolution)
     PYB11_PROPERTY(FloatVec3Type Spacing READ getSpacing WRITE setSpacing)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(SetOriginResolutionImageGeom)
-    SIMPL_FILTER_NEW_MACRO(SetOriginResolutionImageGeom)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(SetOriginResolutionImageGeom, AbstractFilter)
+    using Self = SetOriginResolutionImageGeom;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<SetOriginResolutionImageGeom> New();
+
+    /**
+     * @brief Returns the name of the class for SetOriginResolutionImageGeom
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for SetOriginResolutionImageGeom
+     */
+    static QString ClassName();
 
     ~SetOriginResolutionImageGeom() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+    /**
+     * @brief Setter property for DataContainerName
+     */
+    void setDataContainerName(const DataArrayPath& value);
+    /**
+     * @brief Getter property for DataContainerName
+     * @return Value of DataContainerName
+     */
+    DataArrayPath getDataContainerName() const;
+
     Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-    SIMPL_FILTER_PARAMETER(bool, ChangeOrigin)
+    /**
+     * @brief Setter property for ChangeOrigin
+     */
+    void setChangeOrigin(bool value);
+    /**
+     * @brief Getter property for ChangeOrigin
+     * @return Value of ChangeOrigin
+     */
+    bool getChangeOrigin() const;
+
     Q_PROPERTY(bool ChangeOrigin READ getChangeOrigin WRITE setChangeOrigin)
 
-    SIMPL_FILTER_PARAMETER(FloatVec3Type, Origin)
+    /**
+     * @brief Setter property for Origin
+     */
+    void setOrigin(const FloatVec3Type& value);
+    /**
+     * @brief Getter property for Origin
+     * @return Value of Origin
+     */
+    FloatVec3Type getOrigin() const;
+
     Q_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
 
-    SIMPL_FILTER_PARAMETER(bool, ChangeResolution)
+    /**
+     * @brief Setter property for ChangeResolution
+     */
+    void setChangeResolution(bool value);
+    /**
+     * @brief Getter property for ChangeResolution
+     * @return Value of ChangeResolution
+     */
+    bool getChangeResolution() const;
+
     Q_PROPERTY(bool ChangeResolution READ getChangeResolution WRITE setChangeResolution)
 
-    SIMPL_FILTER_PARAMETER(FloatVec3Type, Spacing)
+    /**
+     * @brief Setter property for Spacing
+     */
+    void setSpacing(const FloatVec3Type& value);
+    /**
+     * @brief Getter property for Spacing
+     * @return Value of Spacing
+     */
+    FloatVec3Type getSpacing() const;
+
     Q_PROPERTY(FloatVec3Type Spacing READ getSpacing WRITE setSpacing)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -103,23 +173,23 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -187,5 +257,12 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
     SetOriginResolutionImageGeom(SetOriginResolutionImageGeom&&) = delete;      // Move Constructor Not Implemented
     SetOriginResolutionImageGeom& operator=(const SetOriginResolutionImageGeom&) = delete; // Copy Assignment Not Implemented
     SetOriginResolutionImageGeom& operator=(SetOriginResolutionImageGeom&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    DataArrayPath m_DataContainerName = {};
+    bool m_ChangeOrigin = {};
+    FloatVec3Type m_Origin = {};
+    bool m_ChangeResolution = {};
+    FloatVec3Type m_Spacing = {};
 };
 

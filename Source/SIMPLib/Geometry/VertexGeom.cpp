@@ -42,6 +42,8 @@
  *   - re-implemented vtkVertex::Derivatives to VertexGeom::findDerivatives
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Geometry/VertexGeom.h"
 
 // -----------------------------------------------------------------------------
@@ -471,3 +473,28 @@ IGeometry::Pointer VertexGeom::deepCopy(bool forceNoAllocate) const
 
 #define GEOM_CLASS_NAME VertexGeom
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
+
+// -----------------------------------------------------------------------------
+VertexGeom::Pointer VertexGeom::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+VertexGeom::Pointer VertexGeom::New()
+{
+  Pointer sharedPtr(new(VertexGeom));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString VertexGeom::getNameOfClass() const
+{
+  return QString("VertexGeom");
+}
+
+// -----------------------------------------------------------------------------
+QString VertexGeom::ClassName()
+{
+  return QString("VertexGeom");
+}

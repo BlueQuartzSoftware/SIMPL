@@ -30,19 +30,25 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ImportHDF5Dataset.h"
 
 #include <QtCore/QFileInfo>
+#include <QtCore/QTextStream>
+#include <QtCore/QDebug>
+
+#include "H5Support/H5ScopedSentinel.h"
+#include "H5Support/H5Utilities.h"
+#include "H5Support/QH5Utilities.h"
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/ImportHDF5DatasetFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
-
-#include "H5Support/H5ScopedSentinel.h"
-#include "H5Support/H5Utilities.h"
-#include "H5Support/QH5Utilities.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 namespace Detail
 {
@@ -401,7 +407,7 @@ std::vector<size_t> ImportHDF5Dataset::createComponentDimensions(const QString& 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, std::vector<size_t> cDims, bool metaDataOnly)
+IDataArrayShPtrType ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, const std::vector<size_t>& cDims, bool metaDataOnly)
 {
   herr_t err = -1;
   // herr_t retErr = 1;
@@ -593,7 +599,7 @@ AbstractFilter::Pointer ImportHDF5Dataset::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportHDF5Dataset::getCompiledLibraryName() const
+QString ImportHDF5Dataset::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -601,7 +607,7 @@ const QString ImportHDF5Dataset::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportHDF5Dataset::getBrandingString() const
+QString ImportHDF5Dataset::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -609,7 +615,7 @@ const QString ImportHDF5Dataset::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportHDF5Dataset::getFilterVersion() const
+QString ImportHDF5Dataset::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -620,7 +626,7 @@ const QString ImportHDF5Dataset::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportHDF5Dataset::getGroupName() const
+QString ImportHDF5Dataset::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -628,7 +634,7 @@ const QString ImportHDF5Dataset::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ImportHDF5Dataset::getUuid()
+QUuid ImportHDF5Dataset::getUuid() const
 {
   return QUuid("{9e98c3b0-5707-5a3b-b8b5-23ef83b02896}");
 }
@@ -636,7 +642,7 @@ const QUuid ImportHDF5Dataset::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportHDF5Dataset::getSubGroupName() const
+QString ImportHDF5Dataset::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -644,7 +650,84 @@ const QString ImportHDF5Dataset::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportHDF5Dataset::getHumanLabel() const
+QString ImportHDF5Dataset::getHumanLabel() const
 {
   return "Import HDF5 Dataset";
+}
+
+// -----------------------------------------------------------------------------
+ImportHDF5Dataset::Pointer ImportHDF5Dataset::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ImportHDF5Dataset> ImportHDF5Dataset::New()
+{
+  struct make_shared_enabler : public ImportHDF5Dataset
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportHDF5Dataset::getNameOfClass() const
+{
+  return QString("ImportHDF5Dataset");
+}
+
+// -----------------------------------------------------------------------------
+QString ImportHDF5Dataset::ClassName()
+{
+  return QString("ImportHDF5Dataset");
+}
+
+// -----------------------------------------------------------------------------
+void ImportHDF5Dataset::setHDF5FilePath(const QString& value)
+{
+  m_HDF5FilePath = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ImportHDF5Dataset::getHDF5FilePath() const
+{
+  return m_HDF5FilePath;
+}
+
+// -----------------------------------------------------------------------------
+void ImportHDF5Dataset::setDatasetImportInfoList(const QList<ImportHDF5Dataset::DatasetImportInfo>& value)
+{
+  m_DatasetImportInfoList = value;
+}
+
+// -----------------------------------------------------------------------------
+QList<ImportHDF5Dataset::DatasetImportInfo> ImportHDF5Dataset::getDatasetImportInfoList() const
+{
+  return m_DatasetImportInfoList;
+}
+
+// -----------------------------------------------------------------------------
+void ImportHDF5Dataset::setSelectedAttributeMatrix(const DataArrayPath& value)
+{
+  m_SelectedAttributeMatrix = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ImportHDF5Dataset::getSelectedAttributeMatrix() const
+{
+  return m_SelectedAttributeMatrix;
+}
+
+// -----------------------------------------------------------------------------
+void ImportHDF5Dataset::setDatasetPathsWithErrors(const QStringList& value)
+{
+  m_DatasetPathsWithErrors = value;
+}
+
+// -----------------------------------------------------------------------------
+QStringList ImportHDF5Dataset::getDatasetPathsWithErrors() const
+{
+  return m_DatasetPathsWithErrors;
 }

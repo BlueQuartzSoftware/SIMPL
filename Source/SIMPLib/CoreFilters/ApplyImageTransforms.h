@@ -35,8 +35,9 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -47,33 +48,56 @@ class SIMPLib_EXPORT ApplyImageTransforms : public AbstractFilter
   Q_OBJECT
 
   public:
-    SIMPL_SHARED_POINTERS(ApplyImageTransforms)
-    SIMPL_FILTER_NEW_MACRO(ApplyImageTransforms)
-    SIMPL_TYPE_MACRO_SUPER(ApplyImageTransforms, AbstractFilter)
+    using Self = ApplyImageTransforms;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<ApplyImageTransforms> New();
+
+    /**
+     * @brief Returns the name of the class for ApplyImageTransforms
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ApplyImageTransforms
+     */
+    static QString ClassName();
 
     ~ApplyImageTransforms() override;
 
-    SIMPL_FILTER_PARAMETER(QStringList, ImageDataContainers)
+    /**
+     * @brief Setter property for ImageDataContainers
+     */
+    void setImageDataContainers(const QStringList& value);
+    /**
+     * @brief Getter property for ImageDataContainers
+     * @return Value of ImageDataContainers
+     */
+    QStringList getImageDataContainers() const;
+
     Q_PROPERTY(QStringList ImageDataContainers READ getImageDataContainers WRITE setImageDataContainers)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
     */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -83,23 +107,23 @@ class SIMPLib_EXPORT ApplyImageTransforms : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
-  
+    QUuid getUuid() const override;
+
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -152,8 +176,8 @@ class SIMPLib_EXPORT ApplyImageTransforms : public AbstractFilter
     */
     void initialize();
   private:
+    QStringList m_ImageDataContainers = {};
 
-  
   public:
     /* Rule of 5: All special member functions should be defined if any are defined.
     * https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c21-if-you-define-or-delete-any-default-operation-define-or-delete-them-all

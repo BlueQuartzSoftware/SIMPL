@@ -36,9 +36,12 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The ConditionalSetValue class. See [Filter documentation](@ref conditionalsetvalue) for details.
@@ -46,46 +49,94 @@
 class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ConditionalSetValue SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(ConditionalSetValue)
+    PYB11_FILTER_NEW_MACRO(ConditionalSetValue)
+    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
+    PYB11_FILTER_PARAMETER(DataArrayPath, ConditionalArrayPath)
+    PYB11_FILTER_PARAMETER(double, ReplaceValue)
     PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
     PYB11_PROPERTY(DataArrayPath ConditionalArrayPath READ getConditionalArrayPath WRITE setConditionalArrayPath)
     PYB11_PROPERTY(double ReplaceValue READ getReplaceValue WRITE setReplaceValue)
+#endif
 
   public:
+    using Self = ConditionalSetValue;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
-    SIMPL_SHARED_POINTERS(ConditionalSetValue)
-    SIMPL_FILTER_NEW_MACRO(ConditionalSetValue)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ConditionalSetValue, AbstractFilter)
+    static std::shared_ptr<ConditionalSetValue> New();
+
+    /**
+     * @brief Returns the name of the class for ConditionalSetValue
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ConditionalSetValue
+     */
+    static QString ClassName();
 
     ~ConditionalSetValue() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
+    /**
+     * @brief Setter property for SelectedArrayPath
+     */
+    void setSelectedArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedArrayPath
+     * @return Value of SelectedArrayPath
+     */
+    DataArrayPath getSelectedArrayPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, ConditionalArrayPath)
+    /**
+     * @brief Setter property for ConditionalArrayPath
+     */
+    void setConditionalArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for ConditionalArrayPath
+     * @return Value of ConditionalArrayPath
+     */
+    DataArrayPath getConditionalArrayPath() const;
+
     Q_PROPERTY(DataArrayPath ConditionalArrayPath READ getConditionalArrayPath WRITE setConditionalArrayPath)
 
-    SIMPL_FILTER_PARAMETER(double, ReplaceValue)
+    /**
+     * @brief Setter property for ReplaceValue
+     */
+    void setReplaceValue(double value);
+    /**
+     * @brief Getter property for ReplaceValue
+     * @return Value of ReplaceValue
+     */
+    double getReplaceValue() const;
+
     Q_PROPERTY(double ReplaceValue READ getReplaceValue WRITE setReplaceValue)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -95,23 +146,23 @@ class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -170,8 +221,14 @@ class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
 
 
   private:
+    std::weak_ptr<DataArray<bool>> m_ConditionalArrayPtr;
+    bool* m_ConditionalArray = nullptr;
+
+    DataArrayPath m_SelectedArrayPath = {};
+    DataArrayPath m_ConditionalArrayPath = {};
+    double m_ReplaceValue = {};
+
     IDataArray::WeakPointer m_ArrayPtr;
-    DEFINE_DATAARRAY_VARIABLE(bool, ConditionalArray)
 
   public:
     ConditionalSetValue(const ConditionalSetValue&) = delete; // Copy Constructor Not Implemented

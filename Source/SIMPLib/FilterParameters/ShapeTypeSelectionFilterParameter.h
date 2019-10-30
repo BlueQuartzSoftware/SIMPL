@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -63,9 +65,23 @@
 class SIMPLib_EXPORT ShapeTypeSelectionFilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(ShapeTypeSelectionFilterParameter)
-  SIMPL_STATIC_NEW_MACRO(ShapeTypeSelectionFilterParameter)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ShapeTypeSelectionFilterParameter, FilterParameter)
+  using Self = ShapeTypeSelectionFilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for ShapeTypeSelectionFilterParameter
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ShapeTypeSelectionFilterParameter
+   */
+  static QString ClassName();
 
   typedef std::function<void(ShapeType::Types)> SetterCallbackType;
   typedef std::function<ShapeType::Types(void)> GetterCallbackType;
@@ -93,8 +109,25 @@ public:
 
   ~ShapeTypeSelectionFilterParameter() override;
 
-  SIMPL_INSTANCE_PROPERTY(QString, PhaseTypeCountProperty)
-  SIMPL_INSTANCE_PROPERTY(QString, PhaseTypeArrayPathProperty)
+  /**
+   * @brief Setter property for PhaseTypeCountProperty
+   */
+  void setPhaseTypeCountProperty(const QString& value);
+  /**
+   * @brief Getter property for PhaseTypeCountProperty
+   * @return Value of PhaseTypeCountProperty
+   */
+  QString getPhaseTypeCountProperty() const;
+
+  /**
+   * @brief Setter property for PhaseTypeArrayPathProperty
+   */
+  void setPhaseTypeArrayPathProperty(const QString& value);
+  /**
+   * @brief Getter property for PhaseTypeArrayPathProperty
+   * @return Value of PhaseTypeArrayPathProperty
+   */
+  QString getPhaseTypeArrayPathProperty() const;
 
   /**
   * @brief getWidgetType Returns the type of widget that displays and controls
@@ -120,14 +153,30 @@ public:
   * that this FilterParameter subclass represents.
   * @return The SetterCallback
   */
-  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  /**
+   * @brief Setter property for SetterCallback
+   */
+  void setSetterCallback(const ShapeTypeSelectionFilterParameter::SetterCallbackType& value);
+  /**
+   * @brief Getter property for SetterCallback
+   * @return Value of SetterCallback
+   */
+  ShapeTypeSelectionFilterParameter::SetterCallbackType getSetterCallback() const;
 
   /**
   * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
   * that this FilterParameter subclass represents.
   * @return The GetterCallback
   */
-  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+  /**
+   * @brief Setter property for GetterCallback
+   */
+  void setGetterCallback(const ShapeTypeSelectionFilterParameter::GetterCallbackType& value);
+  /**
+   * @brief Getter property for GetterCallback
+   * @return Value of GetterCallback
+   */
+  ShapeTypeSelectionFilterParameter::GetterCallbackType getGetterCallback() const;
 
 protected:
   /**
@@ -141,5 +190,11 @@ public:
   ShapeTypeSelectionFilterParameter(ShapeTypeSelectionFilterParameter&&) = delete;      // Move Constructor Not Implemented
   ShapeTypeSelectionFilterParameter& operator=(const ShapeTypeSelectionFilterParameter&) = delete; // Copy Assignment Not Implemented
   ShapeTypeSelectionFilterParameter& operator=(ShapeTypeSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  QString m_PhaseTypeCountProperty = {};
+  QString m_PhaseTypeArrayPathProperty = {};
+  ShapeTypeSelectionFilterParameter::SetterCallbackType m_SetterCallback = {};
+  ShapeTypeSelectionFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

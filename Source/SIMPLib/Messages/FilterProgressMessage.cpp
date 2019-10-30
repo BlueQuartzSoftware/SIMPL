@@ -36,6 +36,8 @@
 
 #include "FilterProgressMessage.h"
 
+#include <QtCore/QObject>
+
 #include "AbstractMessageHandler.h"
 
 // -----------------------------------------------------------------------------
@@ -86,4 +88,65 @@ QString FilterProgressMessage::generateMessageString() const
 void FilterProgressMessage::visit(AbstractMessageHandler* msgHandler) const
 {
   msgHandler->processMessage(this);
+}
+
+// -----------------------------------------------------------------------------
+FilterProgressMessage::Pointer FilterProgressMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+FilterProgressMessage::Pointer FilterProgressMessage::New()
+{
+  Pointer sharedPtr(new(FilterProgressMessage));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterProgressMessage::getNameOfClass() const
+{
+  return QString("FilterProgressMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterProgressMessage::ClassName()
+{
+  return QString("FilterProgressMessage");
+}
+
+// -----------------------------------------------------------------------------
+void FilterProgressMessage::setClassName(const QString& value)
+{
+  m_ClassName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterProgressMessage::getClassName() const
+{
+  return m_ClassName;
+}
+
+// -----------------------------------------------------------------------------
+void FilterProgressMessage::setHumanLabel(const QString& value)
+{
+  m_HumanLabel = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterProgressMessage::getHumanLabel() const
+{
+  return m_HumanLabel;
+}
+
+// -----------------------------------------------------------------------------
+void FilterProgressMessage::setPipelineIndex(int value)
+{
+  m_PipelineIndex = value;
+}
+
+// -----------------------------------------------------------------------------
+int FilterProgressMessage::getPipelineIndex() const
+{
+  return m_PipelineIndex;
 }

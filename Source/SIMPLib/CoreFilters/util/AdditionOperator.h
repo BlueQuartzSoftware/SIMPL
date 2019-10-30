@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QStack>
 
 #include "SIMPLib/SIMPLib.h"
@@ -46,7 +48,12 @@ class CalculatorNumber;
 class SIMPLib_EXPORT AdditionOperator : public BinaryOperator
 {
   public:
-    SIMPL_SHARED_POINTERS(AdditionOperator)
+    using Self = AdditionOperator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     static Pointer New()
     {
@@ -65,5 +72,7 @@ class SIMPLib_EXPORT AdditionOperator : public BinaryOperator
     AdditionOperator(AdditionOperator&&) = delete;      // Move Constructor Not Implemented
     AdditionOperator& operator=(const AdditionOperator&) = delete; // Copy Assignment Not Implemented
     AdditionOperator& operator=(AdditionOperator&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

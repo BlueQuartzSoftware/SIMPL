@@ -30,6 +30,7 @@
 #pragma once
 
 #include <QtCore/QJsonObject>
+#include <QtCore/QMetaType>
 
 /**
 * @brief

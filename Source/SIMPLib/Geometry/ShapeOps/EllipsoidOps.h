@@ -36,8 +36,9 @@
 
 #pragma once
 
+#include <memory>
+
 #include "ShapeOps.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 /*
  *
@@ -45,9 +46,23 @@
 class SIMPLib_EXPORT EllipsoidOps : public ShapeOps
 {
   public:
-    SIMPL_SHARED_POINTERS(EllipsoidOps)
-    SIMPL_TYPE_MACRO(EllipsoidOps)
-    SIMPL_STATIC_NEW_MACRO(EllipsoidOps)
+    using Self = EllipsoidOps;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    /**
+     * @brief Returns the name of the class for EllipsoidOps
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for EllipsoidOps
+     */
+    static QString ClassName();
+
+    static Pointer New();
 
     ~EllipsoidOps() override;
 
@@ -62,6 +77,8 @@ class SIMPLib_EXPORT EllipsoidOps : public ShapeOps
     EllipsoidOps(EllipsoidOps&&) = delete;        // Move Constructor Not Implemented
     EllipsoidOps& operator=(const EllipsoidOps&) = delete; // Copy Assignment Not Implemented
     EllipsoidOps& operator=(EllipsoidOps&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 
 

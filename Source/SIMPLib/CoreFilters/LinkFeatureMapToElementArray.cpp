@@ -33,9 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "LinkFeatureMapToElementArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
@@ -43,6 +48,8 @@
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   AttributeMatrixID = 1,
@@ -223,7 +230,7 @@ AbstractFilter::Pointer LinkFeatureMapToElementArray::newFilterInstance(bool cop
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LinkFeatureMapToElementArray::getCompiledLibraryName() const
+QString LinkFeatureMapToElementArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -231,7 +238,7 @@ const QString LinkFeatureMapToElementArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LinkFeatureMapToElementArray::getBrandingString() const
+QString LinkFeatureMapToElementArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -239,7 +246,7 @@ const QString LinkFeatureMapToElementArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LinkFeatureMapToElementArray::getFilterVersion() const
+QString LinkFeatureMapToElementArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -250,7 +257,7 @@ const QString LinkFeatureMapToElementArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LinkFeatureMapToElementArray::getGroupName() const
+QString LinkFeatureMapToElementArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -258,7 +265,7 @@ const QString LinkFeatureMapToElementArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid LinkFeatureMapToElementArray::getUuid()
+QUuid LinkFeatureMapToElementArray::getUuid() const
 {
   return QUuid("{0e1c45f6-ed7a-5279-8a5c-a2d5cc6bfead}");
 }
@@ -266,7 +273,7 @@ const QUuid LinkFeatureMapToElementArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LinkFeatureMapToElementArray::getSubGroupName() const
+QString LinkFeatureMapToElementArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -274,7 +281,72 @@ const QString LinkFeatureMapToElementArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString LinkFeatureMapToElementArray::getHumanLabel() const
+QString LinkFeatureMapToElementArray::getHumanLabel() const
 {
   return "Link Feature Attribute Matrix to Element Attribute Array";
+}
+
+// -----------------------------------------------------------------------------
+LinkFeatureMapToElementArray::Pointer LinkFeatureMapToElementArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<LinkFeatureMapToElementArray> LinkFeatureMapToElementArray::New()
+{
+  struct make_shared_enabler : public LinkFeatureMapToElementArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString LinkFeatureMapToElementArray::getNameOfClass() const
+{
+  return QString("LinkFeatureMapToElementArray");
+}
+
+// -----------------------------------------------------------------------------
+QString LinkFeatureMapToElementArray::ClassName()
+{
+  return QString("LinkFeatureMapToElementArray");
+}
+
+// -----------------------------------------------------------------------------
+void LinkFeatureMapToElementArray::setCellFeatureAttributeMatrixName(const QString& value)
+{
+  m_CellFeatureAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString LinkFeatureMapToElementArray::getCellFeatureAttributeMatrixName() const
+{
+  return m_CellFeatureAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void LinkFeatureMapToElementArray::setSelectedCellArrayPath(const DataArrayPath& value)
+{
+  m_SelectedCellArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath LinkFeatureMapToElementArray::getSelectedCellArrayPath() const
+{
+  return m_SelectedCellArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void LinkFeatureMapToElementArray::setActiveArrayName(const QString& value)
+{
+  m_ActiveArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString LinkFeatureMapToElementArray::getActiveArrayName() const
+{
+  return m_ActiveArrayName;
 }

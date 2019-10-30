@@ -130,3 +130,76 @@ void LinkedDataContainerSelectionFilterParameter::dataArrayPathRenamed(AbstractF
     emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }
+
+// -----------------------------------------------------------------------------
+LinkedDataContainerSelectionFilterParameter::Pointer LinkedDataContainerSelectionFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+LinkedDataContainerSelectionFilterParameter::Pointer LinkedDataContainerSelectionFilterParameter::New()
+{
+  Pointer sharedPtr(new(LinkedDataContainerSelectionFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString LinkedDataContainerSelectionFilterParameter::getNameOfClass() const
+{
+  return QString("LinkedDataContainerSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString LinkedDataContainerSelectionFilterParameter::ClassName()
+{
+  return QString("LinkedDataContainerSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void LinkedDataContainerSelectionFilterParameter::setLinkedProperties(const QStringList& value)
+{
+  m_LinkedProperties = value;
+}
+
+// -----------------------------------------------------------------------------
+QStringList LinkedDataContainerSelectionFilterParameter::getLinkedProperties() const
+{
+  return m_LinkedProperties;
+}
+
+// -----------------------------------------------------------------------------
+void LinkedDataContainerSelectionFilterParameter::setDefaultGeometryTypes(const IGeometry::Types& value)
+{
+  m_DefaultGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Types LinkedDataContainerSelectionFilterParameter::getDefaultGeometryTypes() const
+{
+  return m_DefaultGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+void LinkedDataContainerSelectionFilterParameter::setSetterCallback(const LinkedDataContainerSelectionFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+LinkedDataContainerSelectionFilterParameter::SetterCallbackType LinkedDataContainerSelectionFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void LinkedDataContainerSelectionFilterParameter::setGetterCallback(const LinkedDataContainerSelectionFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+LinkedDataContainerSelectionFilterParameter::GetterCallbackType LinkedDataContainerSelectionFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

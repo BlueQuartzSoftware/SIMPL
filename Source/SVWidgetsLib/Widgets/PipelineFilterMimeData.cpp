@@ -38,3 +38,15 @@ PipelineFilterMimeData::PipelineFilterMimeData() = default;
 //
 // -----------------------------------------------------------------------------
 PipelineFilterMimeData::~PipelineFilterMimeData() = default;
+
+// -----------------------------------------------------------------------------
+void PipelineFilterMimeData::setFilterDragData(const PipelineFilterMimeData::FilterDragMetadataContainer& value)
+{
+  m_FilterDragData = value;
+}
+
+// -----------------------------------------------------------------------------
+PipelineFilterMimeData::FilterDragMetadataContainer PipelineFilterMimeData::getFilterDragData() const
+{
+  return m_FilterDragData;
+}

@@ -44,6 +44,8 @@
  *     TetrahedralGeom::findDerivatives
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
 
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
@@ -875,3 +877,28 @@ IGeometry::Pointer TetrahedralGeom::deepCopy(bool forceNoAllocate) const
 #include "SIMPLib/Geometry/SharedTetOps.cpp"
 #include "SIMPLib/Geometry/SharedTriOps.cpp"
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
+
+// -----------------------------------------------------------------------------
+TetrahedralGeom::Pointer TetrahedralGeom::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+TetrahedralGeom::Pointer TetrahedralGeom::New()
+{
+  Pointer sharedPtr(new(TetrahedralGeom));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString TetrahedralGeom::getNameOfClass() const
+{
+  return QString("TetrahedralGeom");
+}
+
+// -----------------------------------------------------------------------------
+QString TetrahedralGeom::ClassName()
+{
+  return QString("TetrahedralGeom");
+}

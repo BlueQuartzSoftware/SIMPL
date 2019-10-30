@@ -64,15 +64,59 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
       Unknown_Item_Type = 3
     };
 
-    SIMPL_GET_PROPERTY(QAction*, ActionRenameBookmark)
-    SIMPL_GET_PROPERTY(QAction*, ActionRemoveBookmark)
-    SIMPL_GET_PROPERTY(QAction*, ActionShowBookmarkInFileSystem)
-    SIMPL_GET_PROPERTY(QAction*, ActionClearBookmarks)
-    SIMPL_GET_PROPERTY(QAction*, ActionAddBookmark)
-    SIMPL_GET_PROPERTY(QAction*, ActionAddBookmarkFolder)
-    SIMPL_GET_PROPERTY(QAction*, ActionLocateFile)
-    SIMPL_GET_PROPERTY(QAction*, ActionOpenBookmark)
-    SIMPL_GET_PROPERTY(QAction*, ActionExecuteBookmark)
+    /**
+     * @brief Getter property for ActionRenameBookmark
+     * @return Value of ActionRenameBookmark
+     */
+    QAction* getActionRenameBookmark() const;
+
+    /**
+     * @brief Getter property for ActionRemoveBookmark
+     * @return Value of ActionRemoveBookmark
+     */
+    QAction* getActionRemoveBookmark() const;
+
+    /**
+     * @brief Getter property for ActionShowBookmarkInFileSystem
+     * @return Value of ActionShowBookmarkInFileSystem
+     */
+    QAction* getActionShowBookmarkInFileSystem() const;
+
+    /**
+     * @brief Getter property for ActionClearBookmarks
+     * @return Value of ActionClearBookmarks
+     */
+    QAction* getActionClearBookmarks() const;
+
+    /**
+     * @brief Getter property for ActionAddBookmark
+     * @return Value of ActionAddBookmark
+     */
+    QAction* getActionAddBookmark() const;
+
+    /**
+     * @brief Getter property for ActionAddBookmarkFolder
+     * @return Value of ActionAddBookmarkFolder
+     */
+    QAction* getActionAddBookmarkFolder() const;
+
+    /**
+     * @brief Getter property for ActionLocateFile
+     * @return Value of ActionLocateFile
+     */
+    QAction* getActionLocateFile() const;
+
+    /**
+     * @brief Getter property for ActionOpenBookmark
+     * @return Value of ActionOpenBookmark
+     */
+    QAction* getActionOpenBookmark() const;
+
+    /**
+     * @brief Getter property for ActionExecuteBookmark
+     * @return Value of ActionExecuteBookmark
+     */
+    QAction* getActionExecuteBookmark() const;
 
     /**
     * @brief BookmarksTreeView

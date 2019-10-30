@@ -59,7 +59,7 @@ public:
     @param refreshInterval Interval of checking for changed config settings in msec, or 0=disabled
     @param parent Parent object
   */
-  FileLogger(QSettings* settings, const int refreshInterval = 10000, QObject* parent = 0);
+  FileLogger(QSettings* settings, const int refreshInterval = 10000, QObject* parent = nullptr);
 
   /**
     Destructor. Closes the file.

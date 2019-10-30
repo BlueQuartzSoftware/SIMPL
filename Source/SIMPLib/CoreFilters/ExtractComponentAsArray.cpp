@@ -33,9 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ExtractComponentAsArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -44,6 +49,7 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   DataArrayID = 1
@@ -225,7 +231,7 @@ AbstractFilter::Pointer ExtractComponentAsArray::newFilterInstance(bool copyFilt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getCompiledLibraryName() const
+QString ExtractComponentAsArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -233,7 +239,7 @@ const QString ExtractComponentAsArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getBrandingString() const
+QString ExtractComponentAsArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -241,7 +247,7 @@ const QString ExtractComponentAsArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getFilterVersion() const
+QString ExtractComponentAsArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -252,7 +258,7 @@ const QString ExtractComponentAsArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getGroupName() const
+QString ExtractComponentAsArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -260,7 +266,7 @@ const QString ExtractComponentAsArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ExtractComponentAsArray::getUuid()
+QUuid ExtractComponentAsArray::getUuid() const
 {
   return QUuid("{79d59b85-01e8-5c4a-a6e1-3fd3e2ceffb4}");
 }
@@ -268,7 +274,7 @@ const QUuid ExtractComponentAsArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getSubGroupName() const
+QString ExtractComponentAsArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -276,7 +282,72 @@ const QString ExtractComponentAsArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getHumanLabel() const
+QString ExtractComponentAsArray::getHumanLabel() const
 {
   return "Extract Component as Attribute Array";
+}
+
+// -----------------------------------------------------------------------------
+ExtractComponentAsArray::Pointer ExtractComponentAsArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ExtractComponentAsArray> ExtractComponentAsArray::New()
+{
+  struct make_shared_enabler : public ExtractComponentAsArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractComponentAsArray::getNameOfClass() const
+{
+  return QString("ExtractComponentAsArray");
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractComponentAsArray::ClassName()
+{
+  return QString("ExtractComponentAsArray");
+}
+
+// -----------------------------------------------------------------------------
+void ExtractComponentAsArray::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ExtractComponentAsArray::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractComponentAsArray::setCompNumber(int value)
+{
+  m_CompNumber = value;
+}
+
+// -----------------------------------------------------------------------------
+int ExtractComponentAsArray::getCompNumber() const
+{
+  return m_CompNumber;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractComponentAsArray::setNewArrayArrayName(const QString& value)
+{
+  m_NewArrayArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractComponentAsArray::getNewArrayArrayName() const
+{
+  return m_NewArrayArrayName;
 }

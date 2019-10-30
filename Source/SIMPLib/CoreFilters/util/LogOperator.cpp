@@ -70,3 +70,9 @@ double LogOperator::log_arbitrary_base(double base, double value)
 {
   return log(value) / log(base);
 }
+
+// -----------------------------------------------------------------------------
+LogOperator::Pointer LogOperator::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}

@@ -36,7 +36,10 @@
 
 #include <QtWidgets/QMessageBox>
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
+
 #include "SIMPLib/FilterParameters/DynamicTableFilterParameter.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"

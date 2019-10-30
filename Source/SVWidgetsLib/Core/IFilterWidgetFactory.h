@@ -37,7 +37,8 @@
 #pragma once
 
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <memory>
+
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
@@ -53,9 +54,21 @@ class QWidget;
 class SVWidgetsLib_EXPORT IFilterWidgetFactory
 {
   public:
-    SIMPL_SHARED_POINTERS(IFilterWidgetFactory)
-    SIMPL_TYPE_MACRO(IFilterWidgetFactory)
+    using Self = IFilterWidgetFactory;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
+    /**
+     * @brief Returns the name of the class for IFilterWidgetFactory
+     */
+    virtual QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for IFilterWidgetFactory
+     */
+    static QString ClassName();
 
     virtual ~IFilterWidgetFactory();
 
@@ -79,6 +92,8 @@ class SVWidgetsLib_EXPORT IFilterWidgetFactory
     IFilterWidgetFactory(IFilterWidgetFactory&&) = delete;      // Move Constructor Not Implemented
     IFilterWidgetFactory& operator=(const IFilterWidgetFactory&) = delete; // Copy Assignment Not Implemented
     IFilterWidgetFactory& operator=(IFilterWidgetFactory&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 
 

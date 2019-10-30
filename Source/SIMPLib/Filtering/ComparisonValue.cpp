@@ -174,3 +174,28 @@ bool ComparisonValue::renameDataArrayPath(DataArrayPath::RenameType renamePath)
 
   return false;
 }
+
+// -----------------------------------------------------------------------------
+ComparisonValue::Pointer ComparisonValue::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ComparisonValue::Pointer ComparisonValue::New()
+{
+  Pointer sharedPtr(new(ComparisonValue));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString ComparisonValue::getNameOfClass() const
+{
+  return QString("ComparisonValue");
+}
+
+// -----------------------------------------------------------------------------
+QString ComparisonValue::ClassName()
+{
+  return QString("ComparisonValue");
+}

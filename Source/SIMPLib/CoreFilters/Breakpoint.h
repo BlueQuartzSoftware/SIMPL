@@ -35,11 +35,13 @@
 
 #pragma once
 
-#include <QtCore/QWaitCondition>
+#include <memory>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <QtCore/QWaitCondition>
+#include <QtCore/QMutex>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The Breakpoint class. See [Filter documentation](@ref breakpoint) for details.
@@ -47,145 +49,172 @@
 class SIMPLib_EXPORT Breakpoint : public AbstractFilter
 {
   Q_OBJECT
-    PYB11_CREATE_BINDINGS(Breakpoint SUPERCLASS AbstractFilter)
 
-  public:
-    SIMPL_SHARED_POINTERS(Breakpoint)
-    SIMPL_FILTER_NEW_MACRO(Breakpoint)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Breakpoint, AbstractFilter)
+#ifdef SIMPL_ENABLE_PYTHON
+  PYB11_CREATE_BINDINGS(Breakpoint SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(Breakpoint)
+  PYB11_FILTER_NEW_MACRO(Breakpoint)
+#endif
 
-    ~Breakpoint() override;
+public:
+  using Self = Breakpoint;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
-    const QString getCompiledLibraryName() const override;
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    const QString getBrandingString() const override;
+  /**
+   * @brief Returns the name of the class for Breakpoint
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for Breakpoint
+   */
+  static QString ClassName();
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    const QString getFilterVersion() const override;
+  ~Breakpoint() override;
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
+  QString getCompiledLibraryName() const override;
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getGroupName() const override;
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+   */
+  QString getBrandingString() const override;
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getSubGroupName() const override;
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  QString getFilterVersion() const override;
 
-    /**
-     * @brief getUuid Return the unique identifier for this filter.
-     * @return A QUuid object.
-     */
-    const QUuid getUuid() override;
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    const QString getHumanLabel() const override;
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getGroupName() const override;
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void setupFilterParameters() override;
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getSubGroupName() const override;
 
-    /**
-     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  /**
+   * @brief getUuid Return the unique identifier for this filter.
+   * @return A QUuid object.
+   */
+  QUuid getUuid() const override;
 
-    /**
-     * @brief execute Reimplemented from @see AbstractFilter class
-     */
-    void execute() override;
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  QString getHumanLabel() const override;
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    void preflight() override;
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void setupFilterParameters() override;
 
-  public slots:
-    /**
-    * @brief resumePipeline Resumes the pipeline
-    */
-    void resumePipeline();
+  /**
+   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
-  signals:
-    /**
-     * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-     * be pushed from a user-facing control (such as a widget)
-     * @param filter Filter instance pointer 
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+  /**
+   * @brief execute Reimplemented from @see AbstractFilter class
+   */
+  void execute() override;
 
-    /**
-     * @brief parametersChanged Emitted when any Filter parameter is changed internally
-     */
-    void parametersChanged();
+  /**
+   * @brief preflight Reimplemented from @see AbstractFilter class
+   */
+  void preflight() override;
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-     */
-    void preflightAboutToExecute();
+public slots:
+  /**
+   * @brief resumePipeline Resumes the pipeline
+   */
+  void resumePipeline();
 
-    /**
-     * @brief preflightExecuted Emitted just after calling dataCheck()
-     */
-    void preflightExecuted();
+signals:
+  /**
+   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+   * be pushed from a user-facing control (such as a widget)
+   * @param filter Filter instance pointer
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-    /**
-    * @brief pipelineHasPaused Emitted when the pipeline needs to be paused
-    */
-    void pipelineHasPaused();
+  /**
+   * @brief parametersChanged Emitted when any Filter parameter is changed internally
+   */
+  void parametersChanged();
 
-    /**
-    * @brief pipelineHasResumed Emitted when the pipeline needs to be resumed
-    */
-    void pipelineHasResumed();
+  /**
+   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+   */
+  void preflightAboutToExecute();
 
-  protected:
-    Breakpoint();
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+  /**
+   * @brief preflightExecuted Emitted just after calling dataCheck()
+   */
+  void preflightExecuted();
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+  /**
+   * @brief pipelineHasPaused Emitted when the pipeline needs to be paused
+   */
+  void pipelineHasPaused();
 
+  /**
+   * @brief pipelineHasResumed Emitted when the pipeline needs to be resumed
+   */
+  void pipelineHasResumed();
 
-    /**
-     * @brief pause Pauses the pipeline
-     */
-    void pause();
+protected:
+  Breakpoint();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
 
-  private:
-    QWaitCondition                          m_WaitCondition;
-    QMutex                                  m_Mutex;
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
-  public:
-    Breakpoint(const Breakpoint&) = delete;     // Copy Constructor Not Implemented
-    Breakpoint(Breakpoint&&) = delete;          // Move Constructor Not Implemented
-    Breakpoint& operator=(const Breakpoint&) = delete; // Copy Assignment Not Implemented
-    Breakpoint& operator=(Breakpoint&&) = delete;      // Move Assignment Not Implemented
+  /**
+   * @brief pause Pauses the pipeline
+   */
+  void pause();
+
+private:
+  QWaitCondition m_WaitCondition;
+  QMutex m_Mutex;
+
+public:
+  Breakpoint(const Breakpoint&) = delete;            // Copy Constructor Not Implemented
+  Breakpoint(Breakpoint&&) = delete;                 // Move Constructor Not Implemented
+  Breakpoint& operator=(const Breakpoint&) = delete; // Copy Assignment Not Implemented
+  Breakpoint& operator=(Breakpoint&&) = delete;      // Move Assignment Not Implemented
 };
 

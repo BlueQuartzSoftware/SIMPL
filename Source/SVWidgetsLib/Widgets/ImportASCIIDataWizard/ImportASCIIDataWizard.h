@@ -36,10 +36,15 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtWidgets/QWizard>
 
-#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 
+/**
+ * @brief The ImportASCIIDataBundle struct
+ */
 struct ImportASCIIDataBundle
 {
   QVector<QString>                            m_ColumnTypes;
@@ -54,6 +59,12 @@ Q_DECLARE_METATYPE(ImportASCIIDataBundle)
 class ASCIIDataModel;
 class ASCIIWizardData;
 
+class DataContainerArray;
+using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
+
+/**
+ * @brief The ImportASCIIDataWizard class
+ */
 class ImportASCIIDataWizard : public QWizard
 {
   Q_OBJECT
@@ -71,13 +82,13 @@ class ImportASCIIDataWizard : public QWizard
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    ImportASCIIDataWizard(const QString &inputFilePath, int numLines, DataContainerArray::Pointer dca, QWidget* parent = nullptr);
+    ImportASCIIDataWizard(const QString& inputFilePath, int numLines, DataContainerArrayShPtrType dca, QWidget* parent = nullptr);
 
     /**
      * @brief ImportASCIIDataWizard
      * @param wizardData
      */
-    ImportASCIIDataWizard(ASCIIWizardData* wizardData, DataContainerArray::Pointer dca, QWidget* parent = nullptr);
+    ImportASCIIDataWizard(ASCIIWizardData* wizardData, DataContainerArrayShPtrType dca, QWidget* parent = nullptr);
 
     ~ImportASCIIDataWizard() override;
 
@@ -153,7 +164,7 @@ class ImportASCIIDataWizard : public QWizard
     QString                                             m_InputFilePath;
     int                                                 m_NumLines = -1;
     bool                                                m_EditSettings = false;
-    DataContainerArray::Pointer                         m_Dca = DataContainerArray::NullPointer();
+    DataContainerArrayShPtrType m_Dca = nullptr;
 
     QPushButton*                                        m_RefreshBtn = nullptr;
     QSharedPointer<ASCIIDataModel> m_ASCIIDataModel;
