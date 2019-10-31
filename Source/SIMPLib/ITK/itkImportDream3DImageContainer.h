@@ -17,6 +17,8 @@
  *=========================================================================*/
 #pragma once
 
+#include "SIMPLib/ITK/itkSupportConstants.h"
+
 #include "itkImportImageContainer.h"
 
 namespace itk
