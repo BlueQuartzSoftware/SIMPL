@@ -5,6 +5,7 @@
 #include "GenerateTiltSeries.h"
 
 #include <thread>
+#include <cmath>
 
 #define GTS_GENERATE_DEBUG_ARRAYS 0
 // If we are writing out all the arrays for debugging then we MUST be single threaded.
@@ -25,16 +26,16 @@
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/ITK/Dream3DTemplateAliasMacro.h"
 #include "SIMPLib/ITK/SimpleITKEnums.h"
 #include "SIMPLib/ITK/itkInPlaceDream3DDataToImageFilter.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
-
 #include "SIMPLib/SIMPLibVersion.h"
 
-#include <cmath>
 
 #ifndef DREAM3D_PASSIVE_ROTATION
 #define DREAM3D_PASSIVE_ROTATION 1
@@ -281,11 +282,6 @@ private:
 //
 // -----------------------------------------------------------------------------
 GenerateTiltSeries::GenerateTiltSeries()
-: m_RotationAxis(0)
-, m_Increment(1.0)
-, m_Spacing(FloatVec3Type(1.0, 1.0, 1.0))
-, m_InputDataArrayPath(DataArrayPath("DataContainer", "AttributeMatrix", "FeatureIds"))
-, m_OutputPrefix("Rotation_")
 {
   initialize();
 }
@@ -358,7 +354,7 @@ void GenerateTiltSeries::dataCheck()
 
   // Generate Data Structure
   std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> gridPair = generateGrid();
-  if(nullptr == gridPair.first.get())
+  if(nullptr == gridPair.first)
   {
     return;
   }
@@ -627,7 +623,7 @@ AbstractFilter::Pointer GenerateTiltSeries::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenerateTiltSeries::getCompiledLibraryName() const
+QString GenerateTiltSeries::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -635,7 +631,7 @@ const QString GenerateTiltSeries::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenerateTiltSeries::getBrandingString() const
+QString GenerateTiltSeries::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -643,7 +639,7 @@ const QString GenerateTiltSeries::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenerateTiltSeries::getFilterVersion() const
+QString GenerateTiltSeries::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -654,7 +650,7 @@ const QString GenerateTiltSeries::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenerateTiltSeries::getGroupName() const
+QString GenerateTiltSeries::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -662,7 +658,7 @@ const QString GenerateTiltSeries::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenerateTiltSeries::getSubGroupName() const
+QString GenerateTiltSeries::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::CropCutFilters;
 }
@@ -670,7 +666,7 @@ const QString GenerateTiltSeries::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenerateTiltSeries::getHumanLabel() const
+QString GenerateTiltSeries::getHumanLabel() const
 {
   return "Generate Tilt Series";
 }
@@ -678,7 +674,98 @@ const QString GenerateTiltSeries::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid GenerateTiltSeries::getUuid()
+QUuid GenerateTiltSeries::getUuid() const
 {
   return QUuid("{829da805-6d7c-5106-8209-aae1c207de15}");
 }
+
+// -----------------------------------------------------------------------------
+GenerateTiltSeries::Pointer GenerateTiltSeries::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<GenerateTiltSeries> GenerateTiltSeries::New()
+{
+  struct make_shared_enabler : public GenerateTiltSeries  
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString GenerateTiltSeries::getNameOfClass() const
+{
+  return QString("GenerateTiltSeries");
+}
+
+// -----------------------------------------------------------------------------
+QString GenerateTiltSeries::ClassName()
+{
+  return QString("GenerateTiltSeries");
+}
+
+// -----------------------------------------------------------------------------
+void GenerateTiltSeries::setRotationAxis(const int& value)
+{
+  m_RotationAxis = value;
+}
+
+// -----------------------------------------------------------------------------
+int GenerateTiltSeries::getRotationAxis() const
+{
+  return m_RotationAxis;
+}
+
+// -----------------------------------------------------------------------------
+void GenerateTiltSeries::setIncrement(const float& value)
+{
+  m_Increment = value;
+}
+
+// -----------------------------------------------------------------------------
+float GenerateTiltSeries::getIncrement() const
+{
+  return m_Increment;
+}
+
+// -----------------------------------------------------------------------------
+void GenerateTiltSeries::setSpacing(const FloatVec3Type& value)
+{
+  m_Spacing = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type GenerateTiltSeries::getSpacing() const
+{
+  return m_Spacing;
+}
+
+// -----------------------------------------------------------------------------
+void GenerateTiltSeries::setInputDataArrayPath(const DataArrayPath& value)
+{
+  m_InputDataArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath GenerateTiltSeries::getInputDataArrayPath() const
+{
+  return m_InputDataArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void GenerateTiltSeries::setOutputPrefix(const QString& value)
+{
+  m_OutputPrefix = value;
+}
+
+// -----------------------------------------------------------------------------
+QString GenerateTiltSeries::getOutputPrefix() const
+{
+  return m_OutputPrefix;
+}
+
+
