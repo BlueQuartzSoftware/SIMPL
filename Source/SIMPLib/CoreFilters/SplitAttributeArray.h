@@ -35,9 +35,16 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
 
 /**
  * @brief The SplitAttributeArray class. See [Filter documentation](@ref splitattributearray) for details.
@@ -45,41 +52,89 @@
 class SIMPLib_EXPORT SplitAttributeArray : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(SplitAttributeArray SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(SplitAttributeArray)
+  PYB11_FILTER_NEW_MACRO(SplitAttributeArray)
+  PYB11_FILTER_PARAMETER(DataArrayPath, InputArrayPath)
+  PYB11_FILTER_PARAMETER(QString, SplitArraysSuffix)
   PYB11_PROPERTY(DataArrayPath InputArrayPath READ getInputArrayPath WRITE setInputArrayPath)
   PYB11_PROPERTY(QString SplitArraysSuffix READ getSplitArraysSuffix WRITE setSplitArraysSuffix)
+#endif
 
 public:
-  SIMPL_SHARED_POINTERS(SplitAttributeArray)
-  SIMPL_FILTER_NEW_MACRO(SplitAttributeArray)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(SplitAttributeArray, AbstractFilter)
+  using Self = SplitAttributeArray;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
+
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for SplitAttributeArray
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for SplitAttributeArray
+   */
+  static QString ClassName();
 
   ~SplitAttributeArray() override;
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, InputArrayPath)
+  /**
+   * @brief Setter property for InputArrayPath
+   */
+  void setInputArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for InputArrayPath
+   * @return Value of InputArrayPath
+   */
+  DataArrayPath getInputArrayPath() const;
+
   Q_PROPERTY(DataArrayPath InputArrayPath READ getInputArrayPath WRITE setInputArrayPath)
 
-  SIMPL_FILTER_PARAMETER(QString, SplitArraysSuffix)
+  /**
+   * @brief Setter property for SplitArraysSuffix
+   */
+  void setSplitArraysSuffix(const QString& value);
+  /**
+   * @brief Getter property for SplitArraysSuffix
+   * @return Value of SplitArraysSuffix
+   */
+  QString getSplitArraysSuffix() const;
+
   Q_PROPERTY(QString SplitArraysSuffix READ getSplitArraysSuffix WRITE setSplitArraysSuffix)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
 
   /**
    * @brief getBrandingString Returns the branding string for the filter, which is a tag
    * used to denote the filter's association with specific plugins
    * @return Branding string
    */
-  const QString getBrandingString() const override;
+  QString getBrandingString() const override;
 
   /**
    * @brief getFilterVersion Returns a version string for this filter. Default
    * value is an empty string.
    * @return
    */
-  const QString getFilterVersion() const override;
+  QString getFilterVersion() const override;
 
   /**
    * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -89,23 +144,23 @@ public:
   /**
    * @brief getGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
    * @brief getSubGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
    * @brief getHumanLabel Reimplemented from @see AbstractFilter class
    */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
 
   /**
    * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -164,9 +219,13 @@ protected:
   void initialize();
 
 private:
-  DEFINE_IDATAARRAY_VARIABLE(InputArray)
+  IDataArrayWkPtrType m_InputArrayPtr;
+  void* m_InputArray = nullptr;
 
-  std::vector<IDataArray::Pointer> m_SplitArraysPtrVector;
+  DataArrayPath m_InputArrayPath = {};
+  QString m_SplitArraysSuffix = {};
+
+  std::vector<IDataArrayShPtrType> m_SplitArraysPtrVector;
 
 public:
   SplitAttributeArray(const SplitAttributeArray&) = delete;            // Copy Constructor Not Implemented

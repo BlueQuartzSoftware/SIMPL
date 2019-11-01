@@ -48,7 +48,7 @@ class SVWidgetsLib_EXPORT ImportHDF5TreeModel : public QAbstractItemModel
   Q_OBJECT
 
 public:
-  ImportHDF5TreeModel(hid_t fileId, QObject* parent = 0);
+  ImportHDF5TreeModel(hid_t fileId, QObject* parent = nullptr);
   ~ImportHDF5TreeModel() override;
 
   enum Roles

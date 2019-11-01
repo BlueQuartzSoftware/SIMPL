@@ -33,6 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "CreateDataArray.h"
 
 
@@ -40,7 +42,10 @@
 #include <random>
 #include <chrono>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
@@ -544,7 +549,7 @@ AbstractFilter::Pointer CreateDataArray::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getCompiledLibraryName() const
+QString CreateDataArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -552,7 +557,7 @@ const QString CreateDataArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getBrandingString() const
+QString CreateDataArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -560,7 +565,7 @@ const QString CreateDataArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getFilterVersion() const
+QString CreateDataArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -571,7 +576,7 @@ const QString CreateDataArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getGroupName() const
+QString CreateDataArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -579,7 +584,7 @@ const QString CreateDataArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CreateDataArray::getUuid()
+QUuid CreateDataArray::getUuid() const
 {
   return QUuid("{77f392fb-c1eb-57da-a1b1-e7acf9239fb8}");
 }
@@ -587,7 +592,7 @@ const QUuid CreateDataArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getSubGroupName() const
+QString CreateDataArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -595,7 +600,108 @@ const QString CreateDataArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getHumanLabel() const
+QString CreateDataArray::getHumanLabel() const
 {
   return "Create Data Array";
+}
+
+// -----------------------------------------------------------------------------
+CreateDataArray::Pointer CreateDataArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CreateDataArray> CreateDataArray::New()
+{
+  struct make_shared_enabler : public CreateDataArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateDataArray::getNameOfClass() const
+{
+  return QString("CreateDataArray");
+}
+
+// -----------------------------------------------------------------------------
+QString CreateDataArray::ClassName()
+{
+  return QString("CreateDataArray");
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataArray::setScalarType(SIMPL::ScalarTypes::Type value)
+{
+  m_ScalarType = value;
+}
+
+// -----------------------------------------------------------------------------
+SIMPL::ScalarTypes::Type CreateDataArray::getScalarType() const
+{
+  return m_ScalarType;
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataArray::setNumberOfComponents(int value)
+{
+  m_NumberOfComponents = value;
+}
+
+// -----------------------------------------------------------------------------
+int CreateDataArray::getNumberOfComponents() const
+{
+  return m_NumberOfComponents;
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataArray::setNewArray(const DataArrayPath& value)
+{
+  m_NewArray = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateDataArray::getNewArray() const
+{
+  return m_NewArray;
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataArray::setInitializationType(int value)
+{
+  m_InitializationType = value;
+}
+
+// -----------------------------------------------------------------------------
+int CreateDataArray::getInitializationType() const
+{
+  return m_InitializationType;
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataArray::setInitializationValue(const QString& value)
+{
+  m_InitializationValue = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateDataArray::getInitializationValue() const
+{
+  return m_InitializationValue;
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataArray::setInitializationRange(const FPRangePair& value)
+{
+  m_InitializationRange = value;
+}
+
+// -----------------------------------------------------------------------------
+FPRangePair CreateDataArray::getInitializationRange() const
+{
+  return m_InitializationRange;
 }

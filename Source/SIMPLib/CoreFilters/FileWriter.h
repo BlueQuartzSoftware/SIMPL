@@ -35,9 +35,10 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The FileWriter class serves as a superclass for writer filters
@@ -45,17 +46,46 @@
 class SIMPLib_EXPORT FileWriter : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(FileWriter SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(FileWriter)
+    PYB11_FILTER_NEW_MACRO(FileWriter)
+    PYB11_FILTER_PARAMETER(QString, OutputFile)
     PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
-    
+#endif
+
   public:
-    SIMPL_SHARED_POINTERS(FileWriter)
-    SIMPL_FILTER_NEW_MACRO(FileWriter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FileWriter, AbstractFilter)
+    using Self = FileWriter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<FileWriter> New();
+
+    /**
+     * @brief Returns the name of the class for FileWriter
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for FileWriter
+     */
+    static QString ClassName();
 
     ~FileWriter() override;
 
-    SIMPL_FILTER_PARAMETER(QString, OutputFile)
+    /**
+     * @brief Setter property for OutputFile
+     */
+    void setOutputFile(const QString& value);
+    /**
+     * @brief Getter property for OutputFile
+     * @return Value of OutputFile
+     */
+    QString getOutputFile() const;
+
     Q_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
 
     void execute() override;
@@ -103,5 +133,8 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
     FileWriter(FileWriter&&) = delete;          // Move Constructor Not Implemented
     FileWriter& operator=(const FileWriter&) = delete; // Copy Assignment Not Implemented
     FileWriter& operator=(FileWriter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    QString m_OutputFile = {};
 };
 

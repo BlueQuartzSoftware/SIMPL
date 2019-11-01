@@ -53,13 +53,30 @@
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 #include "SIMPLib/CoreFilters/util/CalculatorOperator.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 class DummyObserver : public Observer
 {
 public:
   DummyObserver() = default;
   ~DummyObserver() override = default;
-  SIMPL_TYPE_MACRO(DummyObserver)
+
+  /**
+   * @brief Returns the name of the class for DummyObserver
+   */
+  QString getNameOfClass() const
+  {
+    return QString("DummyObserver");
+  }
+
+  /**
+   * @brief Returns the name of the class for DummyObserver
+   */
+  QString ClassName()
+  {
+    return QString("DummyObserver");
+  }
 
   void processPipelineMessage(const AbstractMessage::Pointer& pm) override
   {
@@ -78,7 +95,24 @@ class ArrayCalculatorTest
 public:
   ArrayCalculatorTest() = default;
   virtual ~ArrayCalculatorTest() = default;
-  SIMPL_TYPE_MACRO(ArrayCalculatorTest)
+  /**
+   * @brief Returns the name of the class for ArrayCalculatorTest
+   */
+  /**
+   * @brief Returns the name of the class for ArrayCalculatorTest
+   */
+  QString getNameOfClass() const
+  {
+    return QString("ArrayCalculatorTest");
+  }
+
+  /**
+   * @brief Returns the name of the class for ArrayCalculatorTest
+   */
+  QString ClassName()
+  {
+    return QString("ArrayCalculatorTest");
+  }
 
   // -----------------------------------------------------------------------------
   //

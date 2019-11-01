@@ -86,3 +86,64 @@ void FilterStatusMessage::visit(AbstractMessageHandler* msgHandler) const
 {
   msgHandler->processMessage(this);
 }
+
+// -----------------------------------------------------------------------------
+FilterStatusMessage::Pointer FilterStatusMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+FilterStatusMessage::Pointer FilterStatusMessage::New()
+{
+  Pointer sharedPtr(new(FilterStatusMessage));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterStatusMessage::getNameOfClass() const
+{
+  return QString("FilterStatusMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterStatusMessage::ClassName()
+{
+  return QString("FilterStatusMessage");
+}
+
+// -----------------------------------------------------------------------------
+void FilterStatusMessage::setClassName(const QString& value)
+{
+  m_ClassName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterStatusMessage::getClassName() const
+{
+  return m_ClassName;
+}
+
+// -----------------------------------------------------------------------------
+void FilterStatusMessage::setHumanLabel(const QString& value)
+{
+  m_HumanLabel = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterStatusMessage::getHumanLabel() const
+{
+  return m_HumanLabel;
+}
+
+// -----------------------------------------------------------------------------
+void FilterStatusMessage::setPipelineIndex(int value)
+{
+  m_PipelineIndex = value;
+}
+
+// -----------------------------------------------------------------------------
+int FilterStatusMessage::getPipelineIndex() const
+{
+  return m_PipelineIndex;
+}

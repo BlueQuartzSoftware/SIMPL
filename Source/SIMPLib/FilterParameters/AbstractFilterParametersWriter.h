@@ -40,7 +40,6 @@
 
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
@@ -72,10 +71,14 @@ class AbstractFilter;
 class SIMPLib_EXPORT AbstractFilterParametersWriter
 {
   public:
-//   SIMPL_SHARED_POINTERS(AbstractFilterParametersWriter)
-    //  SIMPL_STATIC_NEW_MACRO(AbstractFilterParametersWriter)
-    SIMPL_TYPE_MACRO(AbstractFilterParametersWriter)
-
+    /**
+     * @brief Returns the name of the class for AbstractFilterParametersWriter
+     */
+    virtual QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for AbstractFilterParametersWriter
+     */
+    static QString ClassName();
 
     virtual ~AbstractFilterParametersWriter();
 
@@ -146,6 +149,8 @@ class SIMPLib_EXPORT AbstractFilterParametersWriter
     AbstractFilterParametersWriter(AbstractFilterParametersWriter&&) = delete;      // Move Constructor Not Implemented
     AbstractFilterParametersWriter& operator=(const AbstractFilterParametersWriter&) = delete; // Copy Assignment Not Implemented
     AbstractFilterParametersWriter& operator=(AbstractFilterParametersWriter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 
 

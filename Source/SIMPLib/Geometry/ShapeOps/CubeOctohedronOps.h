@@ -36,8 +36,9 @@
 
 #pragma once
 
+#include <memory>
+
 #include "ShapeOps.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 
 
@@ -47,9 +48,23 @@
 class SIMPLib_EXPORT CubeOctohedronOps : public ShapeOps
 {
   public:
-    SIMPL_SHARED_POINTERS(CubeOctohedronOps)
-    SIMPL_TYPE_MACRO(CubeOctohedronOps)
-    SIMPL_STATIC_NEW_MACRO(CubeOctohedronOps)
+    using Self = CubeOctohedronOps;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    /**
+     * @brief Returns the name of the class for CubeOctohedronOps
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for CubeOctohedronOps
+     */
+    static QString ClassName();
+
+    static Pointer New();
 
     ~CubeOctohedronOps() override;
 

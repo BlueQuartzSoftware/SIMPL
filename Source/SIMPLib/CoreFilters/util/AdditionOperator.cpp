@@ -58,7 +58,11 @@ AdditionOperator::~AdditionOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AdditionOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void AdditionOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                                 QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, +)}
+
+// -----------------------------------------------------------------------------
+AdditionOperator::Pointer AdditionOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, +)
+  return Pointer(static_cast<Self*>(nullptr));
 }

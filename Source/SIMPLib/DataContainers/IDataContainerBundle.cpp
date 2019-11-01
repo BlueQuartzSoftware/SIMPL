@@ -43,3 +43,21 @@ IDataContainerBundle::IDataContainerBundle() = default;
 //
 // -----------------------------------------------------------------------------
 IDataContainerBundle::~IDataContainerBundle() = default;
+
+// -----------------------------------------------------------------------------
+IDataContainerBundle::Pointer IDataContainerBundle::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString IDataContainerBundle::getNameOfClass() const
+{
+  return QString("IDataContainerBundle");
+}
+
+// -----------------------------------------------------------------------------
+QString IDataContainerBundle::ClassName()
+{
+  return QString("IDataContainerBundle");
+}

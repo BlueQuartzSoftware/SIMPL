@@ -96,3 +96,52 @@ void MontageSelectionFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = values.toJson();
   }
 }
+
+// -----------------------------------------------------------------------------
+MontageSelectionFilterParameter::Pointer MontageSelectionFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+MontageSelectionFilterParameter::Pointer MontageSelectionFilterParameter::New()
+{
+  Pointer sharedPtr(new(MontageSelectionFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString MontageSelectionFilterParameter::getNameOfClass() const
+{
+  return QString("MontageSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString MontageSelectionFilterParameter::ClassName()
+{
+  return QString("MontageSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void MontageSelectionFilterParameter::setSetterCallback(const MontageSelectionFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+MontageSelectionFilterParameter::SetterCallbackType MontageSelectionFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void MontageSelectionFilterParameter::setGetterCallback(const MontageSelectionFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+MontageSelectionFilterParameter::GetterCallbackType MontageSelectionFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

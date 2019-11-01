@@ -31,7 +31,6 @@
 
 #include <QtCore/QMimeData>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
@@ -47,11 +46,22 @@ class SVWidgetsLib_EXPORT PipelineFilterMimeData : public QMimeData
     using FilterDragMetadata = std::pair<AbstractFilter::Pointer, int>;
     using FilterDragMetadataContainer = std::vector<PipelineFilterMimeData::FilterDragMetadata>;
 
-    SIMPL_INSTANCE_PROPERTY(PipelineFilterMimeData::FilterDragMetadataContainer, FilterDragData)
+    /**
+     * @brief Setter property for FilterDragData
+     */
+    void setFilterDragData(const PipelineFilterMimeData::FilterDragMetadataContainer& value);
+    /**
+     * @brief Getter property for FilterDragData
+     * @return Value of FilterDragData
+     */
+    PipelineFilterMimeData::FilterDragMetadataContainer getFilterDragData() const;
 
   public:
     PipelineFilterMimeData(const PipelineFilterMimeData&) = delete; // Copy Constructor Not Implemented
     PipelineFilterMimeData(PipelineFilterMimeData&&) = delete;      // Move Constructor Not Implemented
     PipelineFilterMimeData& operator=(const PipelineFilterMimeData&) = delete; // Copy Assignment Not Implemented
     PipelineFilterMimeData& operator=(PipelineFilterMimeData&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    PipelineFilterMimeData::FilterDragMetadataContainer m_FilterDragData = {};
 };

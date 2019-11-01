@@ -46,10 +46,11 @@
 // have multiple instances alive at the same time.
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QString>
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 class QPixmap;
 class vtkPVXMLElement;
@@ -57,8 +58,14 @@ class vtkPVXMLElement;
 class ColorPresets
 {
 public:
-  SIMPL_SHARED_POINTERS(ColorPresets)
-  SIMPL_STATIC_NEW_MACRO(ColorPresets)
+  using Self = ColorPresets;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
 
   ~ColorPresets();
 

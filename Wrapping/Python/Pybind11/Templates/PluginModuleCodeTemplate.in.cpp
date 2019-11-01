@@ -2,6 +2,8 @@
  * then edit the template file.
  */
 // clang-format off
+#include <memory>
+
 #include <pybind11/pybind11.h>
 
 #include <utility>
@@ -62,4 +64,3 @@ void Init_@LIB_NAME@(py::module& parentModule)
 }
 
 #undef @FULL_LIB_NAME@_PYBIND_11_HEADER
-// clang-format on

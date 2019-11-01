@@ -37,7 +37,6 @@
 
 #include <QtGui/QIcon>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
@@ -50,20 +49,131 @@ class SVWidgetsLib_EXPORT PipelineItem
     PipelineItem(const QVector<QVariant>& data, PipelineItem* parent = nullptr);
     virtual ~PipelineItem();
 
-    SIMPL_POINTER_PROPERTY(FilterInputWidget, FilterInputWidget)
-    SIMPL_INSTANCE_PROPERTY(bool, FilterEnabled)
-    SIMPL_BOOL_PROPERTY(ActivePipeline)
-    SIMPL_BOOL_PROPERTY(PipelineSaved)
-    SIMPL_INSTANCE_PROPERTY(QIcon, Icon)
-    SIMPL_INSTANCE_PROPERTY(bool, Expanded)
-    SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
-    SIMPL_INSTANCE_PROPERTY(QString, DropIndicatorText)
-    SIMPL_INSTANCE_PROPERTY(int, BorderSize)
-    SIMPL_INSTANCE_PROPERTY(QSize, Size)
-    SIMPL_INSTANCE_PROPERTY(int, Height)
-    SIMPL_INSTANCE_PROPERTY(int, Width)
-    SIMPL_INSTANCE_PROPERTY(int, XOffset)
-    SIMPL_INSTANCE_PROPERTY(int, YOffset)
+    /**
+     * @brief Setter property for FilterInputWidget
+     */
+    void setFilterInputWidget(FilterInputWidget* value);
+    /**
+     * @brief Getter property for FilterInputWidget
+     * @return Value of FilterInputWidget
+     */
+    FilterInputWidget* getFilterInputWidget() const;
+
+    /**
+     * @brief Setter property for FilterEnabled
+     */
+    void setFilterEnabled(bool value);
+    /**
+     * @brief Getter property for FilterEnabled
+     * @return Value of FilterEnabled
+     */
+    bool getFilterEnabled() const;
+
+    void setActivePipeline(bool value);
+    bool isActivePipeline() const;
+
+    void setPipelineSaved(bool value);
+    bool isPipelineSaved() const;
+
+    /**
+     * @brief Setter property for Icon
+     */
+    void setIcon(const QIcon& value);
+    /**
+     * @brief Getter property for Icon
+     * @return Value of Icon
+     */
+    QIcon getIcon() const;
+
+    /**
+     * @brief Setter property for Expanded
+     */
+    void setExpanded(bool value);
+    /**
+     * @brief Getter property for Expanded
+     * @return Value of Expanded
+     */
+    bool getExpanded() const;
+
+    /**
+     * @brief Setter property for ItemTooltip
+     */
+    void setItemTooltip(const QString& value);
+    /**
+     * @brief Getter property for ItemTooltip
+     * @return Value of ItemTooltip
+     */
+    QString getItemTooltip() const;
+
+    /**
+     * @brief Setter property for DropIndicatorText
+     */
+    void setDropIndicatorText(const QString& value);
+    /**
+     * @brief Getter property for DropIndicatorText
+     * @return Value of DropIndicatorText
+     */
+    QString getDropIndicatorText() const;
+
+    /**
+     * @brief Setter property for BorderSize
+     */
+    void setBorderSize(int value);
+    /**
+     * @brief Getter property for BorderSize
+     * @return Value of BorderSize
+     */
+    int getBorderSize() const;
+
+    /**
+     * @brief Setter property for Size
+     */
+    void setSize(const QSize& value);
+    /**
+     * @brief Getter property for Size
+     * @return Value of Size
+     */
+    QSize getSize() const;
+
+    /**
+     * @brief Setter property for Height
+     */
+    void setHeight(int value);
+    /**
+     * @brief Getter property for Height
+     * @return Value of Height
+     */
+    int getHeight() const;
+
+    /**
+     * @brief Setter property for Width
+     */
+    void setWidth(int value);
+    /**
+     * @brief Getter property for Width
+     * @return Value of Width
+     */
+    int getWidth() const;
+
+    /**
+     * @brief Setter property for XOffset
+     */
+    void setXOffset(int value);
+    /**
+     * @brief Getter property for XOffset
+     * @return Value of XOffset
+     */
+    int getXOffset() const;
+
+    /**
+     * @brief Setter property for YOffset
+     */
+    void setYOffset(int value);
+    /**
+     * @brief Getter property for YOffset
+     * @return Value of YOffset
+     */
+    int getYOffset() const;
 
     static const int MaxHeight = 28;
 
@@ -74,7 +184,15 @@ class SVWidgetsLib_EXPORT PipelineItem
       Remove
     };
 
-    SIMPL_INSTANCE_PROPERTY(PipelineItem::AnimationType, CurrentAnimationType)
+    /**
+     * @brief Setter property for CurrentAnimationType
+     */
+    void setCurrentAnimationType(const PipelineItem::AnimationType& value);
+    /**
+     * @brief Getter property for CurrentAnimationType
+     * @return Value of CurrentAnimationType
+     */
+    PipelineItem::AnimationType getCurrentAnimationType() const;
 
     enum PipelineItemData
     {
@@ -90,7 +208,15 @@ class SVWidgetsLib_EXPORT PipelineItem
       Completed = 2, //!<
       Disabled = 3
     };
-    SIMPL_INSTANCE_PROPERTY(PipelineItem::WidgetState, WidgetState)
+    /**
+     * @brief Setter property for WidgetState
+     */
+    void setWidgetState(const PipelineItem::WidgetState& value);
+    /**
+     * @brief Getter property for WidgetState
+     * @return Value of WidgetState
+     */
+    PipelineItem::WidgetState getWidgetState() const;
 
     enum class PipelineState : EnumType
     {
@@ -98,7 +224,15 @@ class SVWidgetsLib_EXPORT PipelineItem
       Stopped = 1,
       Paused = 4,
     };
-    SIMPL_INSTANCE_PROPERTY(PipelineItem::PipelineState, PipelineState)
+    /**
+     * @brief Setter property for PipelineState
+     */
+    void setPipelineState(const PipelineItem::PipelineState& value);
+    /**
+     * @brief Getter property for PipelineState
+     * @return Value of PipelineState
+     */
+    PipelineItem::PipelineState getPipelineState() const;
 
     enum class ErrorState : EnumType
     {
@@ -106,7 +240,15 @@ class SVWidgetsLib_EXPORT PipelineItem
       Error = 1,
       Warning = 2,
     };
-    SIMPL_INSTANCE_PROPERTY(PipelineItem::ErrorState, ErrorState)
+    /**
+     * @brief Setter property for ErrorState
+     */
+    void setErrorState(const PipelineItem::ErrorState& value);
+    /**
+     * @brief Getter property for ErrorState
+     * @return Value of ErrorState
+     */
+    PipelineItem::ErrorState getErrorState() const;
 
     enum class ItemType : EnumType
     {
@@ -115,7 +257,15 @@ class SVWidgetsLib_EXPORT PipelineItem
       DropIndicator,
       Unknown
     };
-    SIMPL_INSTANCE_PROPERTY(PipelineItem::ItemType, ItemType)
+    /**
+     * @brief Setter property for ItemType
+     */
+    void setItemType(const PipelineItem::ItemType& value);
+    /**
+     * @brief Getter property for ItemType
+     * @return Value of ItemType
+     */
+    PipelineItem::ItemType getItemType() const;
 
     PipelineItem* child(int number);
     PipelineItem* parent();
@@ -144,10 +294,32 @@ class SVWidgetsLib_EXPORT PipelineItem
     static QString TopLevelString();
 
   private:
+    FilterInputWidget* m_FilterInputWidget = nullptr;
+
+    bool m_FilterEnabled = true;
+    QIcon m_Icon;
+    bool m_Expanded = false;
+    QString m_ItemTooltip = "";
+    QString m_DropIndicatorText = "";
+    int m_BorderSize = 0;
+    QSize m_Size = QSize(0, MaxHeight);
+    int m_Height = 0;
+    int m_Width = 0;
+    int m_XOffset = 0;
+    int m_YOffset = 0;
+    PipelineItem::AnimationType m_CurrentAnimationType = {};
+    PipelineItem::WidgetState m_WidgetState = {};
+    PipelineItem::PipelineState m_PipelineState = {};
+    PipelineItem::ErrorState m_ErrorState = {};
+    PipelineItem::ItemType m_ItemType = {};
+
     QList<PipelineItem*>                    m_ChildItems;
     QVector<QVariant>                       m_ItemData;
     AbstractFilter::Pointer                 m_Filter = nullptr;
-    PipelineItem*                           m_ParentItem;
+    PipelineItem* m_ParentItem = nullptr;
+
+    bool m_ActivePipeline = false;
+    bool m_PipelineSaved = false;
 
     void setupFilterInputWidget();
 

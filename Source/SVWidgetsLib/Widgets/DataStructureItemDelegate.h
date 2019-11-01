@@ -50,7 +50,7 @@ class DataStructureItemDelegate : public QStyledItemDelegate
   Q_OBJECT
 
 public:
-  explicit DataStructureItemDelegate(QObject* parent = 0);
+  explicit DataStructureItemDelegate(QObject* parent = nullptr);
 
   ~DataStructureItemDelegate() override;
 

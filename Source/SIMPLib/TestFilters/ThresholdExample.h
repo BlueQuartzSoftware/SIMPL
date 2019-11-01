@@ -35,13 +35,14 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @class ThresholdExample ThresholdExample.h ExamplePlugin/Code/ExamplePluginFilters/ThresholdExample.h
@@ -53,23 +54,78 @@
 class SIMPLib_EXPORT ThresholdExample : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ThresholdExample SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(ThresholdExample)
+  PYB11_FILTER_NEW_MACRO(ThresholdExample)
+  PYB11_FILTER_PARAMETER(ComparisonInputs, CellComparisonInputs)
   PYB11_PROPERTY(ComparisonInputs CellComparisonInputs READ getCellComparisonInputs WRITE setCellComparisonInputs)
+#endif
 
 public:
-  SIMPL_SHARED_POINTERS(ThresholdExample)
-  SIMPL_FILTER_NEW_MACRO(ThresholdExample)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ThresholdExample, AbstractFilter)
+  using Self = ThresholdExample;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
+
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for ThresholdExample
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ThresholdExample
+   */
+  static QString ClassName();
 
   ~ThresholdExample() override;
-  SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
-  SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
+  /**
+   * @brief Setter property for DataContainerName
+   */
+  void setDataContainerName(const QString& value);
+  /**
+   * @brief Getter property for DataContainerName
+   * @return Value of DataContainerName
+   */
+  QString getDataContainerName() const;
+
+  /**
+   * @brief Setter property for CellAttributeMatrixName
+   */
+  void setCellAttributeMatrixName(const QString& value);
+  /**
+   * @brief Getter property for CellAttributeMatrixName
+   * @return Value of CellAttributeMatrixName
+   */
+  QString getCellAttributeMatrixName() const;
 
   /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
 
   // -----------------------------------------------------------------------------
   /* Each Filter can ONLY have ONE of each of these types of widgets */
-  SIMPL_FILTER_PARAMETER(ComparisonInputs, CellComparisonInputs)
+  /**
+   * @brief Setter property for CellComparisonInputs
+   */
+  void setCellComparisonInputs(const ComparisonInputs& value);
+  /**
+   * @brief Getter property for CellComparisonInputs
+   * @return Value of CellComparisonInputs
+   */
+  ComparisonInputs getCellComparisonInputs() const;
+
   Q_PROPERTY(ComparisonInputs CellComparisonInputs READ getCellComparisonInputs WRITE setCellComparisonInputs)
 
   /**
@@ -77,27 +133,27 @@ public:
   * a different group if you want. The string returned here will be displayed
   * in the GUI for the filter
   */
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
   AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
   * a subgroup. It should be readable and understandable by humans.
   */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
   * @brief This method will instantiate all the end user settable options/parameters
@@ -146,5 +202,10 @@ public:
   ThresholdExample(ThresholdExample&&) = delete;      // Move Constructor Not Implemented
   ThresholdExample& operator=(const ThresholdExample&) = delete; // Copy Assignment Not Implemented
   ThresholdExample& operator=(ThresholdExample&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  QString m_DataContainerName = {};
+  QString m_CellAttributeMatrixName = {};
+  ComparisonInputs m_CellComparisonInputs = {};
 };
 

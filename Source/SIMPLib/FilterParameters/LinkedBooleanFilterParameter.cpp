@@ -94,3 +94,64 @@ void LinkedBooleanFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = static_cast<int>(m_GetterCallback());
   }
 }
+
+// -----------------------------------------------------------------------------
+LinkedBooleanFilterParameter::Pointer LinkedBooleanFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+LinkedBooleanFilterParameter::Pointer LinkedBooleanFilterParameter::New()
+{
+  Pointer sharedPtr(new(LinkedBooleanFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString LinkedBooleanFilterParameter::getNameOfClass() const
+{
+  return QString("LinkedBooleanFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString LinkedBooleanFilterParameter::ClassName()
+{
+  return QString("LinkedBooleanFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void LinkedBooleanFilterParameter::setConditionalProperties(const QStringList& value)
+{
+  m_ConditionalProperties = value;
+}
+
+// -----------------------------------------------------------------------------
+QStringList LinkedBooleanFilterParameter::getConditionalProperties() const
+{
+  return m_ConditionalProperties;
+}
+
+// -----------------------------------------------------------------------------
+void LinkedBooleanFilterParameter::setSetterCallback(const LinkedBooleanFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+LinkedBooleanFilterParameter::SetterCallbackType LinkedBooleanFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void LinkedBooleanFilterParameter::setGetterCallback(const LinkedBooleanFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+LinkedBooleanFilterParameter::GetterCallbackType LinkedBooleanFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

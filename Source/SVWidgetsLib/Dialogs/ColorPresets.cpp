@@ -248,4 +248,15 @@ bool ColorPresets::GetPresetHasAnnotations(const QJsonObject& preset)
   return (!preset.isEmpty() && preset.keys().contains("Annotations"));
 }
 
+// -----------------------------------------------------------------------------
+ColorPresets::Pointer ColorPresets::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
 
+// -----------------------------------------------------------------------------
+ColorPresets::Pointer ColorPresets::New()
+{
+  Pointer sharedPtr(new(ColorPresets));
+  return sharedPtr;
+}

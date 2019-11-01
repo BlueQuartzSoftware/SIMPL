@@ -54,7 +54,7 @@ class SVWidgetsLib_EXPORT UpdateCheckData : public QObject
     Q_OBJECT
 
   public:
-    UpdateCheckData(QObject* parent = 0);
+    UpdateCheckData(QObject* parent = nullptr);
     UpdateCheckData(const UpdateCheckData&);
     void operator=(const UpdateCheckData&);
     bool operator==(const UpdateCheckData&);

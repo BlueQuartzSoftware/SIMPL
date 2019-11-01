@@ -35,9 +35,10 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The CopyObject class. See [Filter documentation](@ref copyobject) for details.
@@ -45,53 +46,131 @@
 class SIMPLib_EXPORT CopyObject : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(CopyObject SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(CopyObject)
+  PYB11_FILTER_NEW_MACRO(CopyObject)
+  PYB11_FILTER_PARAMETER(int, ObjectToCopy)
+  PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerToCopy)
+  PYB11_FILTER_PARAMETER(DataArrayPath, AttributeMatrixToCopy)
+  PYB11_FILTER_PARAMETER(DataArrayPath, AttributeArrayToCopy)
+  PYB11_FILTER_PARAMETER(QString, CopiedObjectName)
   PYB11_PROPERTY(int ObjectToCopy READ getObjectToCopy WRITE setObjectToCopy)
   PYB11_PROPERTY(DataArrayPath DataContainerToCopy READ getDataContainerToCopy WRITE setDataContainerToCopy)
   PYB11_PROPERTY(DataArrayPath AttributeMatrixToCopy READ getAttributeMatrixToCopy WRITE setAttributeMatrixToCopy)
   PYB11_PROPERTY(DataArrayPath AttributeArrayToCopy READ getAttributeArrayToCopy WRITE setAttributeArrayToCopy)
   PYB11_PROPERTY(QString CopiedObjectName READ getCopiedObjectName WRITE setCopiedObjectName)
+#endif
 
 public:
-  SIMPL_SHARED_POINTERS(CopyObject)
-  SIMPL_FILTER_NEW_MACRO(CopyObject)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CopyObject, AbstractFilter)
+  using Self = CopyObject;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
+
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for CopyObject
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for CopyObject
+   */
+  static QString ClassName();
 
   ~CopyObject() override;
 
-  SIMPL_FILTER_PARAMETER(int, ObjectToCopy)
+  /**
+   * @brief Setter property for ObjectToCopy
+   */
+  void setObjectToCopy(int value);
+  /**
+   * @brief Getter property for ObjectToCopy
+   * @return Value of ObjectToCopy
+   */
+  int getObjectToCopy() const;
+
   Q_PROPERTY(int ObjectToCopy READ getObjectToCopy WRITE setObjectToCopy)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerToCopy)
+  /**
+   * @brief Setter property for DataContainerToCopy
+   */
+  void setDataContainerToCopy(const DataArrayPath& value);
+  /**
+   * @brief Getter property for DataContainerToCopy
+   * @return Value of DataContainerToCopy
+   */
+  DataArrayPath getDataContainerToCopy() const;
+
   Q_PROPERTY(DataArrayPath DataContainerToCopy READ getDataContainerToCopy WRITE setDataContainerToCopy)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeMatrixToCopy)
+  /**
+   * @brief Setter property for AttributeMatrixToCopy
+   */
+  void setAttributeMatrixToCopy(const DataArrayPath& value);
+  /**
+   * @brief Getter property for AttributeMatrixToCopy
+   * @return Value of AttributeMatrixToCopy
+   */
+  DataArrayPath getAttributeMatrixToCopy() const;
+
   Q_PROPERTY(DataArrayPath AttributeMatrixToCopy READ getAttributeMatrixToCopy WRITE setAttributeMatrixToCopy)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeArrayToCopy)
+  /**
+   * @brief Setter property for AttributeArrayToCopy
+   */
+  void setAttributeArrayToCopy(const DataArrayPath& value);
+  /**
+   * @brief Getter property for AttributeArrayToCopy
+   * @return Value of AttributeArrayToCopy
+   */
+  DataArrayPath getAttributeArrayToCopy() const;
+
   Q_PROPERTY(DataArrayPath AttributeArrayToCopy READ getAttributeArrayToCopy WRITE setAttributeArrayToCopy)
 
-  SIMPL_FILTER_PARAMETER(QString, CopiedObjectName)
+  /**
+   * @brief Setter property for CopiedObjectName
+   */
+  void setCopiedObjectName(const QString& value);
+  /**
+   * @brief Getter property for CopiedObjectName
+   * @return Value of CopiedObjectName
+   */
+  QString getCopiedObjectName() const;
+
   Q_PROPERTY(QString CopiedObjectName READ getCopiedObjectName WRITE setCopiedObjectName)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
 
   /**
    * @brief getBrandingString Returns the branding string for the filter, which is a tag
    * used to denote the filter's association with specific plugins
    * @return Branding string
    */
-  const QString getBrandingString() const override;
+  QString getBrandingString() const override;
 
   /**
    * @brief getFilterVersion Returns a version string for this filter. Default
    * value is an empty string.
    * @return
    */
-  const QString getFilterVersion() const override;
+  QString getFilterVersion() const override;
 
   /**
    * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -101,23 +180,23 @@ public:
   /**
    * @brief getGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
    * @brief getSubGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
    * @brief getHumanLabel Reimplemented from @see AbstractFilter class
    */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
 
   /**
    * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -179,5 +258,12 @@ public:
   CopyObject(CopyObject&&) = delete;                 // Move Constructor Not Implemented
   CopyObject& operator=(const CopyObject&) = delete; // Copy Assignment Not Implemented
   CopyObject& operator=(CopyObject&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  int m_ObjectToCopy = {};
+  DataArrayPath m_DataContainerToCopy = {};
+  DataArrayPath m_AttributeMatrixToCopy = {};
+  DataArrayPath m_AttributeArrayToCopy = {};
+  QString m_CopiedObjectName = {};
 };
 

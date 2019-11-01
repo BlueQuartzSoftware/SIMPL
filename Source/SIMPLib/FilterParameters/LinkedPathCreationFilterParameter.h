@@ -33,6 +33,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -120,9 +122,23 @@
 class SIMPLib_EXPORT LinkedPathCreationFilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(LinkedPathCreationFilterParameter)
-  SIMPL_STATIC_NEW_MACRO(LinkedPathCreationFilterParameter)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkedPathCreationFilterParameter, FilterParameter)
+  using Self = LinkedPathCreationFilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for LinkedPathCreationFilterParameter
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for LinkedPathCreationFilterParameter
+   */
+  static QString ClassName();
 
   using SetterCallbackType = std::function<void(QString)>;
   using GetterCallbackType = std::function<QString(void)>;
@@ -323,14 +339,30 @@ public:
    * that this FilterParameter subclass represents.
    * from the filter parameter.
    */
-  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  /**
+   * @brief Setter property for SetterCallback
+   */
+  void setSetterCallback(const LinkedPathCreationFilterParameter::SetterCallbackType& value);
+  /**
+   * @brief Getter property for SetterCallback
+   * @return Value of SetterCallback
+   */
+  LinkedPathCreationFilterParameter::SetterCallbackType getSetterCallback() const;
 
   /**
    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
    * that this FilterParameter subclass represents.
    * @return The GetterCallback
    */
-  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+  /**
+   * @brief Setter property for GetterCallback
+   */
+  void setGetterCallback(const LinkedPathCreationFilterParameter::GetterCallbackType& value);
+  /**
+   * @brief Getter property for GetterCallback
+   * @return Value of GetterCallback
+   */
+  LinkedPathCreationFilterParameter::GetterCallbackType getGetterCallback() const;
 
   /**
    * @brief Set the ILinkedPath for determining what the parent container is
@@ -352,6 +384,9 @@ protected:
   LinkedPathCreationFilterParameter();
 
 private:
+  LinkedPathCreationFilterParameter::SetterCallbackType m_SetterCallback = {};
+  LinkedPathCreationFilterParameter::GetterCallbackType m_GetterCallback = {};
+
   ILinkedPath* m_LinkedPath = nullptr;
 
 public:

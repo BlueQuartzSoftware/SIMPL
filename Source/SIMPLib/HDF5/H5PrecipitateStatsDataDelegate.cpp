@@ -339,10 +339,10 @@ int H5PrecipitateStatsDataDelegate::writeVectorOfArrays(hid_t pid, VectorOfFloat
 int H5PrecipitateStatsDataDelegate::readVectorOfArrays(hid_t pid, VectorOfFloatArray colData)
 {
   int err = 0;
-
-  for(VectorOfFloatArray::iterator iter = colData.begin(); iter != colData.end(); ++iter)
+  for(auto& d : colData)
+  // for(VectorOfFloatArray::iterator iter = colData.begin(); iter != colData.end(); ++iter)
   {
-    FloatArrayType::Pointer d = *iter;
+    // FloatArrayType::Pointer d = *iter;
     err = d->readH5Data(pid);
     if(err < 0)
     {
@@ -564,17 +564,15 @@ int H5PrecipitateStatsDataDelegate::writeRDFDistributionData(hid_t pid, RdfData:
       }
       int32_t rank = 1;
       dims[0] = 3;
-      float boxRes[3] = {0.0f, 0.0f, 0.0f};
-      std::tie(boxRes[0], boxRes[1], boxRes[2]) = rdfData->getBoxResolution();
-      err = H5Lite::writePointerDataset(disId, SIMPL::StringConstants::RdfBoxRes.toStdString(), rank, dims.data(), boxRes);
+      std::array<float, 3> boxRes = rdfData->getBoxResolution();
+      err = H5Lite::writePointerDataset(disId, SIMPL::StringConstants::RdfBoxRes.toStdString(), rank, dims.data(), boxRes.data());
       if(err < 0)
       {
         return err;
       }
 
-      float boxDims[3] = {0.0f, 0.0f, 0.0f};
-      std::tie(boxDims[0], boxDims[1], boxDims[2]) = rdfData->getBoxSize();
-      err = H5Lite::writePointerDataset(disId, SIMPL::StringConstants::RdfBoxDims.toStdString(), rank, dims.data(), boxDims);
+      std::array<float, 3> boxDims = rdfData->getBoxSize();
+      err = H5Lite::writePointerDataset(disId, SIMPL::StringConstants::RdfBoxDims.toStdString(), rank, dims.data(), boxDims.data());
       if(err < 0)
       {
         return err;
@@ -679,21 +677,21 @@ int H5PrecipitateStatsDataDelegate::readRDFDistributionData(hid_t pid, const QSt
   }
   rdfData->setMinDistance(val);
 
-  float boxDims[3] = {0.0f, 0.0f, 0.0f};
-  err = QH5Lite::readPointerDataset(disId, SIMPL::StringConstants::RdfBoxDims, boxDims);
+  std::array<float, 3> boxDims = {0.0f, 0.0f, 0.0f};
+  err = QH5Lite::readPointerDataset(disId, SIMPL::StringConstants::RdfBoxDims, boxDims.data());
   if(err < 0)
   {
     return err;
   }
-  rdfData->setBoxSize(std::make_tuple(boxDims[0], boxDims[1], boxDims[2]));
+  rdfData->setBoxSize(boxDims);
 
-  float boxRes[3] = {0.0f, 0.0f, 0.0f};
-  err = QH5Lite::readPointerDataset(disId, SIMPL::StringConstants::RdfBoxRes, boxRes);
+  std::array<float, 3> boxRes = {0.0f, 0.0f, 0.0f};
+  err = QH5Lite::readPointerDataset(disId, SIMPL::StringConstants::RdfBoxRes, boxRes.data());
   if(err < 0)
   {
     return err;
   }
-  rdfData->setBoxResolution(std::make_tuple(boxRes[0], boxRes[1], boxRes[2]));
+  rdfData->setBoxResolution(boxRes);
 
   err = QH5Utilities::closeHDF5Object(disId);
   return err;
@@ -769,10 +767,9 @@ int H5PrecipitateStatsDataDelegate::writeFeatureDiameterInfo(PrecipitateStatsDat
   /*
    * Feature Diameter Info is encode as 3 floats: BinStepSize, MaxDiameter, MinDiameter
    */
-  float featureDiameterInfo[3];
-  std::tie(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[2]) = data->getFeatureDiameterInfo();
+  std::array<float, 3> featureDiameterInfo = data->getFeatureDiameterInfo();
 
-  return QH5Lite::writePointerDataset(pid, SIMPL::StringConstants::Feature_Diameter_Info, rank, dims, featureDiameterInfo);
+  return QH5Lite::writePointerDataset(pid, SIMPL::StringConstants::Feature_Diameter_Info, rank, dims, featureDiameterInfo.data());
 }
 
 // -----------------------------------------------------------------------------
@@ -787,7 +784,7 @@ int H5PrecipitateStatsDataDelegate::readFeatureDiameterInfo(PrecipitateStatsData
   float featureDiameterInfo[3] = {0.0f, 0.0f, 0.0f};
 
   err = QH5Lite::readPointerDataset(groupId, SIMPL::StringConstants::Feature_Diameter_Info, featureDiameterInfo);
-  data->setFeatureDiameterInfo(std::make_tuple(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[2]));
+  data->setFeatureDiameterInfo(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[2]);
   return err;
 }
 
@@ -815,4 +812,29 @@ int H5PrecipitateStatsDataDelegate::readBinNumbers(PrecipitateStatsData* data, h
   err = p->readH5Data(groupId);
   data->setBinNumbers(p);
   return err;
+}
+
+// -----------------------------------------------------------------------------
+H5PrecipitateStatsDataDelegate::Pointer H5PrecipitateStatsDataDelegate::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+H5PrecipitateStatsDataDelegate::Pointer H5PrecipitateStatsDataDelegate::New()
+{
+  Pointer sharedPtr(new(H5PrecipitateStatsDataDelegate));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString H5PrecipitateStatsDataDelegate::getNameOfClass() const
+{
+  return QString("H5PrecipitateStatsDataDelegate");
+}
+
+// -----------------------------------------------------------------------------
+QString H5PrecipitateStatsDataDelegate::ClassName()
+{
+  return QString("H5PrecipitateStatsDataDelegate");
 }

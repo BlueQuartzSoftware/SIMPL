@@ -39,7 +39,6 @@
 
 #include <QtGui/QIcon>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -56,11 +55,55 @@ class SVWidgetsLib_EXPORT FilterListItem
       Unknown
     };
 
-    SIMPL_INSTANCE_PROPERTY(QString, Name)
-    SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
-    SIMPL_INSTANCE_PROPERTY(QString, ClassName)
-    SIMPL_INSTANCE_PROPERTY(QIcon, Icon)
-    SIMPL_INSTANCE_PROPERTY(FilterListItem::ItemType, ItemType)
+    /**
+     * @brief Setter property for Name
+     */
+    void setName(const QString& value);
+    /**
+     * @brief Getter property for Name
+     * @return Value of Name
+     */
+    QString getName() const;
+
+    /**
+     * @brief Setter property for ItemTooltip
+     */
+    void setItemTooltip(const QString& value);
+    /**
+     * @brief Getter property for ItemTooltip
+     * @return Value of ItemTooltip
+     */
+    QString getItemTooltip() const;
+
+    /**
+     * @brief Setter property for ClassName
+     */
+    void setClassName(const QString& value);
+    /**
+     * @brief Getter property for ClassName
+     * @return Value of ClassName
+     */
+    QString getClassName() const;
+
+    /**
+     * @brief Setter property for Icon
+     */
+    void setIcon(const QIcon& value);
+    /**
+     * @brief Getter property for Icon
+     * @return Value of Icon
+     */
+    QIcon getIcon() const;
+
+    /**
+     * @brief Setter property for ItemType
+     */
+    void setItemType(const FilterListItem::ItemType& value);
+    /**
+     * @brief Getter property for ItemType
+     * @return Value of ItemType
+     */
+    FilterListItem::ItemType getItemType() const;
 
     FilterListItem* child(int number);
     FilterListItem* parent();
@@ -78,6 +121,12 @@ class SVWidgetsLib_EXPORT FilterListItem
     void setParent(FilterListItem* parent);
 
   private:
+    QString m_Name = {};
+    QString m_ItemTooltip = {};
+    QString m_ClassName = {};
+    QIcon m_Icon = {};
+    FilterListItem::ItemType m_ItemType = {};
+
     QList<FilterListItem*>               m_ChildItems;
     FilterListItem*                      m_ParentItem;
 

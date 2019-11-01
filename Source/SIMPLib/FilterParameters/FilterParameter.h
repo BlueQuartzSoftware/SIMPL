@@ -37,13 +37,12 @@
 #pragma once
 
 #include <functional>
-
+#include <memory>
 
 #include <QtCore/QVariant>
 #include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
 class AbstractFilter;
@@ -59,8 +58,21 @@ class AbstractFilter;
 class SIMPLib_EXPORT FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(FilterParameter)
-    SIMPL_TYPE_MACRO(FilterParameter)
+    using Self = FilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    /**
+     * @brief Returns the name of the class for FilterParameter
+     */
+    virtual QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for FilterParameter
+     */
+    static QString ClassName();
 
     enum Category
     {
@@ -72,8 +84,25 @@ class SIMPLib_EXPORT FilterParameter
 
     virtual ~FilterParameter();
 
-    SIMPL_INSTANCE_STRING_PROPERTY(HumanLabel)
-    SIMPL_INSTANCE_STRING_PROPERTY(PropertyName)
+    /**
+     * @brief Setter property for HumanLabel
+     */
+    void setHumanLabel(const QString& value);
+    /**
+     * @brief Getter property for HumanLabel
+     * @return Value of HumanLabel
+     */
+    QString getHumanLabel() const;
+
+    /**
+     * @brief Setter property for PropertyName
+     */
+    void setPropertyName(const QString& value);
+    /**
+     * @brief Getter property for PropertyName
+     * @return Value of PropertyName
+     */
+    QString getPropertyName() const;
 
     /**
      * @brief getWidgetType This is a pure virtual function. All subclasses need
@@ -82,10 +111,46 @@ class SIMPLib_EXPORT FilterParameter
      */
     virtual QString getWidgetType() const = 0;
 
-    SIMPL_VIRTUAL_INSTANCE_PROPERTY(QVariant, DefaultValue)
-    SIMPL_INSTANCE_PROPERTY(FilterParameter::Category, Category)
-    SIMPL_INSTANCE_PROPERTY(bool, ReadOnly)
-    SIMPL_INSTANCE_PROPERTY(int, GroupIndex)
+    /**
+     * @brief Setter property for DefaultValue
+     */
+    virtual void setDefaultValue(const QVariant& value);
+
+    /**
+     * @brief getDefaultValue
+     * @return
+     */
+    virtual QVariant getDefaultValue() const;
+
+    /**
+     * @brief Setter property for Category
+     */
+    void setCategory(const FilterParameter::Category& value);
+    /**
+     * @brief Getter property for Category
+     * @return Value of Category
+     */
+    FilterParameter::Category getCategory() const;
+
+    /**
+     * @brief Setter property for ReadOnly
+     */
+    void setReadOnly(bool value);
+    /**
+     * @brief Getter property for ReadOnly
+     * @return Value of ReadOnly
+     */
+    bool getReadOnly() const;
+
+    /**
+     * @brief Setter property for GroupIndex
+     */
+    void setGroupIndex(int value);
+    /**
+     * @brief Getter property for GroupIndex
+     * @return Value of GroupIndex
+     */
+    int getGroupIndex() const;
 
     /**
      * @brief readJson
@@ -114,6 +179,15 @@ class SIMPLib_EXPORT FilterParameter
     FilterParameter(FilterParameter&&) = delete;      // Move Constructor Not Implemented
     FilterParameter& operator=(const FilterParameter&) = delete; // Copy Assignment Not Implemented
     FilterParameter& operator=(FilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    QVariant m_DefaultValue = {};
+
+    QString m_HumanLabel = {};
+    QString m_PropertyName = {};
+    FilterParameter::Category m_Category = {};
+    bool m_ReadOnly = {};
+    int m_GroupIndex = {};
 };
 
 using FilterParameterVectorType = std::vector<FilterParameter::Pointer>;

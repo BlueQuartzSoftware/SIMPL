@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class ASCIIWizardData;
@@ -42,30 +44,46 @@ class ASCIIWizardData;
 class SIMPLib_EXPORT ReadASCIIDataFilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(ReadASCIIDataFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(ReadASCIIDataFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReadASCIIDataFilterParameter, FilterParameter)
+  using Self = ReadASCIIDataFilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    static Pointer New(const QString& humanLabel, const QString& propertyName, const QVariant& defaultValue, Category category, int groupIndex = -1);
+  static Pointer New();
 
-    ~ReadASCIIDataFilterParameter() override;
+  /**
+   * @brief Returns the name of the class for ReadASCIIDataFilterParameter
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ReadASCIIDataFilterParameter
+   */
+  static QString ClassName();
 
-    QString getWidgetType() const override;
+  static Pointer New(const QString& humanLabel, const QString& propertyName, const QVariant& defaultValue, Category category, int groupIndex = -1);
 
-    /**
-     * @brief Handle DataArrayPath changes if necessary
-     * @param filter
-     * @param renamePath
-     */
-    void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath) override;
+  ~ReadASCIIDataFilterParameter() override;
 
-  protected:
-    ReadASCIIDataFilterParameter();
+  QString getWidgetType() const override;
 
-  public:
-    ReadASCIIDataFilterParameter(const ReadASCIIDataFilterParameter&) = delete; // Copy Constructor Not Implemented
-    ReadASCIIDataFilterParameter(ReadASCIIDataFilterParameter&&) = delete;      // Move Constructor Not Implemented
-    ReadASCIIDataFilterParameter& operator=(const ReadASCIIDataFilterParameter&) = delete; // Copy Assignment Not Implemented
-    ReadASCIIDataFilterParameter& operator=(ReadASCIIDataFilterParameter&&) = delete;      // Move Assignment Not Implemented
+  /**
+   * @brief Handle DataArrayPath changes if necessary
+   * @param filter
+   * @param renamePath
+   */
+  void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath) override;
+
+protected:
+  ReadASCIIDataFilterParameter();
+
+public:
+  ReadASCIIDataFilterParameter(const ReadASCIIDataFilterParameter&) = delete;            // Copy Constructor Not Implemented
+  ReadASCIIDataFilterParameter(ReadASCIIDataFilterParameter&&) = delete;                 // Move Constructor Not Implemented
+  ReadASCIIDataFilterParameter& operator=(const ReadASCIIDataFilterParameter&) = delete; // Copy Assignment Not Implemented
+  ReadASCIIDataFilterParameter& operator=(ReadASCIIDataFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+private:
 };
 

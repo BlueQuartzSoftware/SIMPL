@@ -35,6 +35,10 @@
 
 #pragma once
 
+#include <memory>
+
+#include <QtCore/QVector>
+
 #include "SIMPLib/SIMPLib.h"
 
 #include "CalculatorItem.h"
@@ -42,7 +46,12 @@
 class SIMPLib_EXPORT LeftParenthesisItem : public CalculatorItem
 {
   public:
-    SIMPL_SHARED_POINTERS(LeftParenthesisItem)
+    using Self = LeftParenthesisItem;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     static Pointer New()
     {
@@ -51,6 +60,13 @@ class SIMPLib_EXPORT LeftParenthesisItem : public CalculatorItem
 
     ~LeftParenthesisItem() override;
 
+    /**
+     * @brief checkValidity
+     * @param infixVector
+     * @param currentIndex
+     * @param msg
+     * @return
+     */
     CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg) override;
 
   protected:
@@ -61,5 +77,7 @@ class SIMPLib_EXPORT LeftParenthesisItem : public CalculatorItem
     LeftParenthesisItem(LeftParenthesisItem&&) = delete;      // Move Constructor Not Implemented
     LeftParenthesisItem& operator=(const LeftParenthesisItem&) = delete; // Copy Assignment Not Implemented
     LeftParenthesisItem& operator=(LeftParenthesisItem&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

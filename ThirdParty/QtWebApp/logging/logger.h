@@ -66,7 +66,7 @@ public:
     @see LogMessage for a description of the message decoration.
   */
   Logger(const QString msgFormat = "{timestamp} {type} {msg}", const QString timestampFormat = "dd.MM.yyyy hh:mm:ss.zzz", const QtMsgType minLevel = QtDebugMsg, const int bufferSize = 0,
-         QObject* parent = 0);
+         QObject* parent = nullptr);
 
   /** Destructor */
   ~Logger() override;

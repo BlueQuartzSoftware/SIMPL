@@ -1,4 +1,10 @@
 #pragma once
+
+#if !defined(_MSC_VER)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wreturn-std-move"
+#endif
+
 // clang-format off
 /* =============================================================================
  * BEGIN Template file Pybind11TopMatter.in.h

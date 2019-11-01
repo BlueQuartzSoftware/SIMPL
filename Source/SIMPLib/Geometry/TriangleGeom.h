@@ -1,42 +1,48 @@
-/* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <memory>
+
+#include <QtCore/QTextStream>
+
+#include "SIMPLib/SIMPLib.h"
+
 #include "SIMPLib/Geometry/IGeometry2D.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The TriangleGeom class represents a collection of triangles
@@ -44,7 +50,11 @@
 class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
 {
   // clang-format off
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(TriangleGeom SUPERCLASS IGeometry2D)
+  PYB11_SHARED_POINTERS(TriangleGeom)
+  PYB11_STATIC_NEW_MACRO(TriangleGeom)
 	  
   PYB11_CREATION(CreateGeometry ARGS OVERLOAD size_t SharedVertexList::Pointer QString bool)
   PYB11_CREATION(CreateGeometry ARGS OVERLOAD SharedTriList::Pointer SharedVertexList::Pointer QString)
@@ -60,12 +70,28 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
 
   PYB11_METHOD(size_t getNumberOfVertices)
   PYB11_METHOD(size_t getNumberOfEdges)
+#endif
+
   // clang-format on
 
 public:
-  SIMPL_SHARED_POINTERS(TriangleGeom)
-  SIMPL_STATIC_NEW_MACRO(TriangleGeom)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TriangleGeom, Observable)
+  using Self = TriangleGeom;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for TriangleGeom
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for TriangleGeom
+   */
+  static QString ClassName();
 
   ~TriangleGeom() override;
 
@@ -136,7 +162,7 @@ public:
    * @brief getTriangles
    * @return
    */
-  SharedTriList::Pointer getTriangles();
+  SharedTriList::Pointer getTriangles() const;
 
   /**
    * @brief setVertsAtTri
@@ -150,7 +176,7 @@ public:
    * @param triId
    * @param verts
    */
-  void getVertsAtTri(size_t triId, size_t verts[3]);
+  void getVertsAtTri(size_t triId, size_t verts[3]) const;
 
   /**
    * @brief getVertCoordsAtTri
@@ -159,20 +185,20 @@ public:
    * @param vert2
    * @param vert3
    */
-  void getVertCoordsAtTri(size_t triId, float vert1[3], float vert2[3], float vert3[3]);
+  void getVertCoordsAtTri(size_t triId, float vert1[3], float vert2[3], float vert3[3]) const;
 
   /**
    * @brief getPointer
    * @param i
    * @return
    */
-  size_t* getTriPointer(size_t i);
+  size_t* getTriPointer(size_t i) const;
 
   /**
    * @brief getNumberOfTris
    * @return
    */
-  size_t getNumberOfTris();
+  size_t getNumberOfTris() const;
 
   // -----------------------------------------------------------------------------
   // Inherited from IGeometry
@@ -187,7 +213,7 @@ public:
    * @brief getNumberOfElements
    * @return
    */
-  size_t getNumberOfElements() override;
+  size_t getNumberOfElements() const override;
 
   /**
    * @brief findElementSizes
@@ -199,7 +225,7 @@ public:
    * @brief getElementSizes
    * @return
    */
-  FloatArrayType::Pointer getElementSizes() override;
+  FloatArrayType::Pointer getElementSizes() const override;
 
   /**
    * @brief deleteElementSizes
@@ -216,7 +242,7 @@ public:
    * @brief getElementsContainingVert
    * @return
    */
-  ElementDynamicList::Pointer getElementsContainingVert() override;
+  ElementDynamicList::Pointer getElementsContainingVert() const override;
 
   /**
    * @brief deleteElementsContainingVert
@@ -233,7 +259,7 @@ public:
    * @brief getElementNeighbors
    * @return
    */
-  ElementDynamicList::Pointer getElementNeighbors() override;
+  ElementDynamicList::Pointer getElementNeighbors() const override;
 
   /**
    * @brief deleteElementNeighbors
@@ -250,7 +276,7 @@ public:
    * @brief getElementCentroids
    * @return
    */
-  FloatArrayType::Pointer getElementCentroids() override;
+  FloatArrayType::Pointer getElementCentroids() const override;
 
   /**
    * @brief deleteElementCentroids
@@ -261,14 +287,14 @@ public:
    * @brief getParametricCenter
    * @param pCoords
    */
-  void getParametricCenter(double pCoords[3]) override;
+  void getParametricCenter(double pCoords[3]) const override;
 
   /**
    * @brief getShapeFunctions
    * @param pCoords
    * @param shape
    */
-  void getShapeFunctions(double pCoords[3], double* shape) override;
+  void getShapeFunctions(double pCoords[3], double* shape) const override;
 
   /**
    * @brief findDerivatives
@@ -282,7 +308,7 @@ public:
    * @return Returns a formatted string that contains general infomation about
    * the instance of the object.
    */
-  QString getInfoString(SIMPL::InfoStringFormat format) override;
+  QString getInfoString(SIMPL::InfoStringFormat format) const override;
 
   /**
    * @brief writeGeometryToHDF5
@@ -290,7 +316,7 @@ public:
    * @param writeXdmf
    * @return
    */
-  int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
+  int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) const override;
 
   /**
    * @brief writeXdmf
@@ -299,7 +325,7 @@ public:
    * @param hdfFileName
    * @return
    */
-  int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
+  int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const override;
 
   /**
    * @brief readGeometryFromHDF5
@@ -313,7 +339,7 @@ public:
    * @brief deepCopy
    * @return
    */
-  IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
+  IGeometry::Pointer deepCopy(bool forceNoAllocate = false) const override;
 
   /**
    * @brief addOrReplaceAttributeMatrix
@@ -340,7 +366,7 @@ public:
    * @brief getVertices
    * @return
    */
-  SharedVertexList::Pointer getVertices() override;
+  SharedVertexList::Pointer getVertices() const override;
 
   /**
    * @brief setCoords
@@ -354,20 +380,20 @@ public:
    * @param vertId
    * @param coords
    */
-  void getCoords(size_t vertId, float coords[3]) override;
+  void getCoords(size_t vertId, float coords[3]) const override;
 
   /**
    * @brief getVertexPointer
    * @param i
    * @return
    */
-  float* getVertexPointer(size_t i) override;
+  float* getVertexPointer(size_t i) const override;
 
   /**
    * @brief getNumberOfVertices
    * @return
    */
-  size_t getNumberOfVertices() override;
+  size_t getNumberOfVertices() const override;
 
   /**
    * @brief resizeEdgeList
@@ -379,7 +405,7 @@ public:
    * @brief getEdges
    * @return
    */
-  SharedEdgeList::Pointer getEdges() override;
+  SharedEdgeList::Pointer getEdges() const override;
 
   /**
    * @brief setVerts
@@ -393,7 +419,7 @@ public:
    * @param edgeId
    * @param verts
    */
-  void getVertsAtEdge(size_t edgeId, size_t verts[2]) override;
+  void getVertsAtEdge(size_t edgeId, size_t verts[2]) const override;
 
   /**
    * @brief getVertCoordsAtEdge
@@ -401,20 +427,20 @@ public:
    * @param vert1
    * @param vert2
    */
-  void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) override;
+  void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) const override;
 
   /**
    * @brief getEdgePointer
    * @param i
    * @return
    */
-  size_t* getEdgePointer(size_t i) override;
+  size_t* getEdgePointer(size_t i) const override;
 
   /**
    * @brief getNumberOfEdges
    * @return
    */
-  size_t getNumberOfEdges() override;
+  size_t getNumberOfEdges() const override;
 
   /**
    * @brief findElementEdges
@@ -436,7 +462,7 @@ public:
    * @brief getUnsharedEdges
    * @return
    */
-  SharedEdgeList::Pointer getUnsharedEdges() override;
+  SharedEdgeList::Pointer getUnsharedEdges() const override;
 
   /**
    * @brief deleteUnsharedEdges

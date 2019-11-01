@@ -29,6 +29,8 @@
 
 #include "PipelineListWidget.h"
 
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
@@ -36,7 +38,7 @@
 //
 // -----------------------------------------------------------------------------
 PipelineListWidget::PipelineListWidget(QWidget* parent)
-  : QFrame(parent)
+: QFrame(parent)
 {
   setupUi(this);
 

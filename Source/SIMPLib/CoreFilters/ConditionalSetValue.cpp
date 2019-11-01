@@ -33,14 +33,20 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ConditionalSetValue.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -290,7 +296,7 @@ AbstractFilter::Pointer ConditionalSetValue::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getCompiledLibraryName() const
+QString ConditionalSetValue::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -298,7 +304,7 @@ const QString ConditionalSetValue::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getBrandingString() const
+QString ConditionalSetValue::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -306,7 +312,7 @@ const QString ConditionalSetValue::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getFilterVersion() const
+QString ConditionalSetValue::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -317,7 +323,7 @@ const QString ConditionalSetValue::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getGroupName() const
+QString ConditionalSetValue::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -325,7 +331,7 @@ const QString ConditionalSetValue::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ConditionalSetValue::getUuid()
+QUuid ConditionalSetValue::getUuid() const
 {
   return QUuid("{47cafe63-83cc-5826-9521-4fb5bea684ef}");
 }
@@ -333,7 +339,7 @@ const QUuid ConditionalSetValue::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getSubGroupName() const
+QString ConditionalSetValue::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -341,7 +347,72 @@ const QString ConditionalSetValue::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getHumanLabel() const
+QString ConditionalSetValue::getHumanLabel() const
 {
   return "Replace Value in Array (Conditional)";
+}
+
+// -----------------------------------------------------------------------------
+ConditionalSetValue::Pointer ConditionalSetValue::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ConditionalSetValue> ConditionalSetValue::New()
+{
+  struct make_shared_enabler : public ConditionalSetValue
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ConditionalSetValue::getNameOfClass() const
+{
+  return QString("ConditionalSetValue");
+}
+
+// -----------------------------------------------------------------------------
+QString ConditionalSetValue::ClassName()
+{
+  return QString("ConditionalSetValue");
+}
+
+// -----------------------------------------------------------------------------
+void ConditionalSetValue::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ConditionalSetValue::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void ConditionalSetValue::setConditionalArrayPath(const DataArrayPath& value)
+{
+  m_ConditionalArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ConditionalSetValue::getConditionalArrayPath() const
+{
+  return m_ConditionalArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void ConditionalSetValue::setReplaceValue(double value)
+{
+  m_ReplaceValue = value;
+}
+
+// -----------------------------------------------------------------------------
+double ConditionalSetValue::getReplaceValue() const
+{
+  return m_ReplaceValue;
 }

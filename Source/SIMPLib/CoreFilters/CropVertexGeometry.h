@@ -35,9 +35,10 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The CropVertexGeometry class. See [Filter documentation](@ref cropvertexgeometry) for details.
@@ -45,7 +46,19 @@
 class SIMPLib_EXPORT CropVertexGeometry : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(CropVertexGeometry SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(CropVertexGeometry)
+  PYB11_FILTER_NEW_MACRO(CropVertexGeometry)
+  PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+  PYB11_FILTER_PARAMETER(DataArrayPath, CroppedDataContainerName)
+  PYB11_FILTER_PARAMETER(float, XMin)
+  PYB11_FILTER_PARAMETER(float, YMin)
+  PYB11_FILTER_PARAMETER(float, ZMin)
+  PYB11_FILTER_PARAMETER(float, XMax)
+  PYB11_FILTER_PARAMETER(float, YMax)
+  PYB11_FILTER_PARAMETER(float, ZMax)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(DataArrayPath CroppedDataContainerName READ getCroppedDataContainerName WRITE setCroppedDataContainerName)
   PYB11_PROPERTY(float XMin READ getXMin WRITE setXMin)
@@ -54,56 +67,152 @@ class SIMPLib_EXPORT CropVertexGeometry : public AbstractFilter
   PYB11_PROPERTY(float XMax READ getXMax WRITE setXMax)
   PYB11_PROPERTY(float YMax READ getYMax WRITE setYMax)
   PYB11_PROPERTY(float ZMax READ getZMax WRITE setZMax)
+#endif
 
 public:
-  SIMPL_SHARED_POINTERS(CropVertexGeometry)
-  SIMPL_FILTER_NEW_MACRO(CropVertexGeometry)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CropVertexGeometry, AbstractFilter)
+  using Self = CropVertexGeometry;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
+
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for CropVertexGeometry
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for CropVertexGeometry
+   */
+  static QString ClassName();
 
   ~CropVertexGeometry() override;
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+  /**
+   * @brief Setter property for DataContainerName
+   */
+  void setDataContainerName(const DataArrayPath& value);
+  /**
+   * @brief Getter property for DataContainerName
+   * @return Value of DataContainerName
+   */
+  DataArrayPath getDataContainerName() const;
+
   Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, CroppedDataContainerName)
+  /**
+   * @brief Setter property for CroppedDataContainerName
+   */
+  void setCroppedDataContainerName(const DataArrayPath& value);
+  /**
+   * @brief Getter property for CroppedDataContainerName
+   * @return Value of CroppedDataContainerName
+   */
+  DataArrayPath getCroppedDataContainerName() const;
+
   Q_PROPERTY(DataArrayPath CroppedDataContainerName READ getCroppedDataContainerName WRITE setCroppedDataContainerName)
 
-  SIMPL_FILTER_PARAMETER(float, XMin)
+  /**
+   * @brief Setter property for XMin
+   */
+  void setXMin(float value);
+  /**
+   * @brief Getter property for XMin
+   * @return Value of XMin
+   */
+  float getXMin() const;
+
   Q_PROPERTY(float XMin READ getXMin WRITE setXMin)
 
-  SIMPL_FILTER_PARAMETER(float, YMin)
+  /**
+   * @brief Setter property for YMin
+   */
+  void setYMin(float value);
+  /**
+   * @brief Getter property for YMin
+   * @return Value of YMin
+   */
+  float getYMin() const;
+
   Q_PROPERTY(float YMin READ getYMin WRITE setYMin)
 
-  SIMPL_FILTER_PARAMETER(float, ZMin)
+  /**
+   * @brief Setter property for ZMin
+   */
+  void setZMin(float value);
+  /**
+   * @brief Getter property for ZMin
+   * @return Value of ZMin
+   */
+  float getZMin() const;
+
   Q_PROPERTY(float ZMin READ getZMin WRITE setZMin)
 
-  SIMPL_FILTER_PARAMETER(float, XMax)
+  /**
+   * @brief Setter property for XMax
+   */
+  void setXMax(float value);
+  /**
+   * @brief Getter property for XMax
+   * @return Value of XMax
+   */
+  float getXMax() const;
+
   Q_PROPERTY(float XMax READ getXMax WRITE setXMax)
 
-  SIMPL_FILTER_PARAMETER(float, YMax)
+  /**
+   * @brief Setter property for YMax
+   */
+  void setYMax(float value);
+  /**
+   * @brief Getter property for YMax
+   * @return Value of YMax
+   */
+  float getYMax() const;
+
   Q_PROPERTY(float YMax READ getYMax WRITE setYMax)
 
-  SIMPL_FILTER_PARAMETER(float, ZMax)
+  /**
+   * @brief Setter property for ZMax
+   */
+  void setZMax(float value);
+  /**
+   * @brief Getter property for ZMax
+   * @return Value of ZMax
+   */
+  float getZMax() const;
+
   Q_PROPERTY(float ZMax READ getZMax WRITE setZMax)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
 
   /**
    * @brief getBrandingString Returns the branding string for the filter, which is a tag
    * used to denote the filter's association with specific plugins
    * @return Branding string
    */
-  const QString getBrandingString() const override;
+  QString getBrandingString() const override;
 
   /**
    * @brief getFilterVersion Returns a version string for this filter. Default
    * value is an empty string.
    * @return
    */
-  const QString getFilterVersion() const override;
+  QString getFilterVersion() const override;
 
   /**
    * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -113,23 +222,23 @@ public:
   /**
    * @brief getGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
    * @brief getSubGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
    * @brief getHumanLabel Reimplemented from @see AbstractFilter class
    */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
 
   /**
    * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -187,6 +296,15 @@ protected:
   void initialize();
 
 private:
+  DataArrayPath m_DataContainerName = {};
+  DataArrayPath m_CroppedDataContainerName = {};
+  float m_XMin = {};
+  float m_YMin = {};
+  float m_ZMin = {};
+  float m_XMax = {};
+  float m_YMax = {};
+  float m_ZMax = {};
+
   QList<QString> m_AttrMatList;
 
 public:

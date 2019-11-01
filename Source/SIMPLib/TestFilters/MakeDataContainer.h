@@ -34,11 +34,13 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
 * @class ReadOrientationData ReadOrientationData.h /FilterCategoryFilters/ReadOrientationData.h
@@ -50,54 +52,176 @@
 class SIMPLib_EXPORT MakeDataContainer : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(MakeDataContainer SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(MakeDataContainer)
+  PYB11_FILTER_NEW_MACRO(MakeDataContainer)
+  PYB11_FILTER_PARAMETER(QString, FeatureIdsArrayName)
+  PYB11_FILTER_PARAMETER(QString, CellEulerAnglesArrayName)
+  PYB11_FILTER_PARAMETER(QString, CellPhasesArrayName)
+  PYB11_FILTER_PARAMETER(QString, CrystalStructuresArrayName)
+  PYB11_FILTER_PARAMETER(QString, LatticeConstantsArrayName)
   PYB11_PROPERTY(QString FeatureIdsArrayName READ getFeatureIdsArrayName WRITE setFeatureIdsArrayName)
   PYB11_PROPERTY(QString CellEulerAnglesArrayName READ getCellEulerAnglesArrayName WRITE setCellEulerAnglesArrayName)
   PYB11_PROPERTY(QString CellPhasesArrayName READ getCellPhasesArrayName WRITE setCellPhasesArrayName)
   PYB11_PROPERTY(QString CrystalStructuresArrayName READ getCrystalStructuresArrayName WRITE setCrystalStructuresArrayName)
   PYB11_PROPERTY(QString LatticeConstantsArrayName READ getLatticeConstantsArrayName WRITE setLatticeConstantsArrayName)
+#endif
 
 public:
-  SIMPL_SHARED_POINTERS(MakeDataContainer)
-  SIMPL_FILTER_NEW_MACRO(MakeDataContainer)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MakeDataContainer, AbstractFilter)
+  using Self = MakeDataContainer;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
+
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for MakeDataContainer
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for MakeDataContainer
+   */
+  static QString ClassName();
 
   ~MakeDataContainer() override;
-  SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
-  SIMPL_INSTANCE_STRING_PROPERTY(CellEnsembleAttributeMatrixName)
-  SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
-  SIMPL_INSTANCE_STRING_PROPERTY(PhaseNameArrayName)
-  SIMPL_INSTANCE_STRING_PROPERTY(MaterialNameArrayName)
+  /**
+   * @brief Setter property for DataContainerName
+   */
+  void setDataContainerName(const QString& value);
+  /**
+   * @brief Getter property for DataContainerName
+   * @return Value of DataContainerName
+   */
+  QString getDataContainerName() const;
+
+  /**
+   * @brief Setter property for CellEnsembleAttributeMatrixName
+   */
+  void setCellEnsembleAttributeMatrixName(const QString& value);
+  /**
+   * @brief Getter property for CellEnsembleAttributeMatrixName
+   * @return Value of CellEnsembleAttributeMatrixName
+   */
+  QString getCellEnsembleAttributeMatrixName() const;
+
+  /**
+   * @brief Setter property for CellAttributeMatrixName
+   */
+  void setCellAttributeMatrixName(const QString& value);
+  /**
+   * @brief Getter property for CellAttributeMatrixName
+   * @return Value of CellAttributeMatrixName
+   */
+  QString getCellAttributeMatrixName() const;
+
+  /**
+   * @brief Setter property for PhaseNameArrayName
+   */
+  void setPhaseNameArrayName(const QString& value);
+  /**
+   * @brief Getter property for PhaseNameArrayName
+   * @return Value of PhaseNameArrayName
+   */
+  QString getPhaseNameArrayName() const;
+
+  /**
+   * @brief Setter property for MaterialNameArrayName
+   */
+  void setMaterialNameArrayName(const QString& value);
+  /**
+   * @brief Getter property for MaterialNameArrayName
+   * @return Value of MaterialNameArrayName
+   */
+  QString getMaterialNameArrayName() const;
 
   /**
   * @brief This returns the group that the filter belonds to. You can select
   * a different group if you want. The string returned here will be displayed
   * in the GUI for the filter
   */
-  SIMPL_FILTER_PARAMETER(QString, FeatureIdsArrayName)
+  /**
+   * @brief Setter property for FeatureIdsArrayName
+   */
+  void setFeatureIdsArrayName(const QString& value);
+  /**
+   * @brief Getter property for FeatureIdsArrayName
+   * @return Value of FeatureIdsArrayName
+   */
+  QString getFeatureIdsArrayName() const;
+
   Q_PROPERTY(QString FeatureIdsArrayName READ getFeatureIdsArrayName WRITE setFeatureIdsArrayName)
 
-  SIMPL_FILTER_PARAMETER(QString, CellEulerAnglesArrayName)
+  /**
+   * @brief Setter property for CellEulerAnglesArrayName
+   */
+  void setCellEulerAnglesArrayName(const QString& value);
+  /**
+   * @brief Getter property for CellEulerAnglesArrayName
+   * @return Value of CellEulerAnglesArrayName
+   */
+  QString getCellEulerAnglesArrayName() const;
+
   Q_PROPERTY(QString CellEulerAnglesArrayName READ getCellEulerAnglesArrayName WRITE setCellEulerAnglesArrayName)
 
-  SIMPL_FILTER_PARAMETER(QString, CellPhasesArrayName)
+  /**
+   * @brief Setter property for CellPhasesArrayName
+   */
+  void setCellPhasesArrayName(const QString& value);
+  /**
+   * @brief Getter property for CellPhasesArrayName
+   * @return Value of CellPhasesArrayName
+   */
+  QString getCellPhasesArrayName() const;
+
   Q_PROPERTY(QString CellPhasesArrayName READ getCellPhasesArrayName WRITE setCellPhasesArrayName)
 
-  SIMPL_FILTER_PARAMETER(QString, CrystalStructuresArrayName)
+  /**
+   * @brief Setter property for CrystalStructuresArrayName
+   */
+  void setCrystalStructuresArrayName(const QString& value);
+  /**
+   * @brief Getter property for CrystalStructuresArrayName
+   * @return Value of CrystalStructuresArrayName
+   */
+  QString getCrystalStructuresArrayName() const;
+
   Q_PROPERTY(QString CrystalStructuresArrayName READ getCrystalStructuresArrayName WRITE setCrystalStructuresArrayName)
 
-  SIMPL_FILTER_PARAMETER(QString, LatticeConstantsArrayName)
+  /**
+   * @brief Setter property for LatticeConstantsArrayName
+   */
+  void setLatticeConstantsArrayName(const QString& value);
+  /**
+   * @brief Getter property for LatticeConstantsArrayName
+   * @return Value of LatticeConstantsArrayName
+   */
+  QString getLatticeConstantsArrayName() const;
+
   Q_PROPERTY(QString LatticeConstantsArrayName READ getLatticeConstantsArrayName WRITE setLatticeConstantsArrayName)
 
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
   AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
 
   /**
   * @brief This method will instantiate all the end user settable options/parameters
@@ -107,13 +231,13 @@ public:
 *@brief This returns a string that is displayed in the GUI and helps to sort the filters into
 *a subgroup. It should be readable and understandable by humans.
 */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
   * @brief This method will read the options from a file
@@ -152,11 +276,27 @@ protected:
   void initialize();
 
 private:
-  DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-  DEFINE_DATAARRAY_VARIABLE(int32_t, CellPhases)
-  DEFINE_DATAARRAY_VARIABLE(float, CellEulerAngles)
-  DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
-  DEFINE_DATAARRAY_VARIABLE(float, LatticeConstants)
+  std::weak_ptr<DataArray<int32_t>> m_FeatureIdsPtr;
+  int32_t* m_FeatureIds = nullptr;
+  std::weak_ptr<DataArray<int32_t>> m_CellPhasesPtr;
+  int32_t* m_CellPhases = nullptr;
+  std::weak_ptr<DataArray<float>> m_CellEulerAnglesPtr;
+  float* m_CellEulerAngles = nullptr;
+  std::weak_ptr<DataArray<uint32_t>> m_CrystalStructuresPtr;
+  uint32_t* m_CrystalStructures = nullptr;
+  std::weak_ptr<DataArray<float>> m_LatticeConstantsPtr;
+  float* m_LatticeConstants = nullptr;
+
+  QString m_DataContainerName = {};
+  QString m_CellEnsembleAttributeMatrixName = {};
+  QString m_CellAttributeMatrixName = {};
+  QString m_PhaseNameArrayName = {};
+  QString m_MaterialNameArrayName = {};
+  QString m_FeatureIdsArrayName = {};
+  QString m_CellEulerAnglesArrayName = {};
+  QString m_CellPhasesArrayName = {};
+  QString m_CrystalStructuresArrayName = {};
+  QString m_LatticeConstantsArrayName = {};
 
 public:
   MakeDataContainer(const MakeDataContainer&) = delete; // Copy Constructor Not Implemented

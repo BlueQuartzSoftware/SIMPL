@@ -9,6 +9,8 @@
  *     HexahedralGeom::findDerivatives
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Geometry/HexahedralGeom.h"
 
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
@@ -194,7 +196,7 @@ void HexahedralGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeM
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t HexahedralGeom::getNumberOfElements()
+size_t HexahedralGeom::getNumberOfElements() const
 {
   return m_HexList->getNumberOfTuples();
 }
@@ -260,7 +262,7 @@ int HexahedralGeom::findElementsContainingVert()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer HexahedralGeom::getElementsContainingVert()
+ElementDynamicList::Pointer HexahedralGeom::getElementsContainingVert() const
 {
   return m_HexasContainingVert;
 }
@@ -307,7 +309,7 @@ int HexahedralGeom::findElementNeighbors()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer HexahedralGeom::getElementNeighbors()
+ElementDynamicList::Pointer HexahedralGeom::getElementNeighbors() const
 {
   return m_HexNeighbors;
 }
@@ -346,7 +348,7 @@ int HexahedralGeom::findElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer HexahedralGeom::getElementCentroids()
+FloatArrayType::Pointer HexahedralGeom::getElementCentroids() const
 {
   return m_HexCentroids;
 }
@@ -387,7 +389,7 @@ int HexahedralGeom::findElementSizes()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer HexahedralGeom::getElementSizes()
+FloatArrayType::Pointer HexahedralGeom::getElementSizes() const
 {
   return m_HexSizes;
 }
@@ -426,7 +428,7 @@ int HexahedralGeom::findUnsharedEdges()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedEdgeList::Pointer HexahedralGeom::getUnsharedEdges()
+SharedEdgeList::Pointer HexahedralGeom::getUnsharedEdges() const
 {
   return m_UnsharedEdgeList;
 }
@@ -465,7 +467,7 @@ int HexahedralGeom::findUnsharedFaces()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedQuadList::Pointer HexahedralGeom::getUnsharedFaces()
+SharedQuadList::Pointer HexahedralGeom::getUnsharedFaces() const
 {
   return m_UnsharedQuadList;
 }
@@ -489,7 +491,7 @@ void HexahedralGeom::deleteUnsharedFaces()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void HexahedralGeom::getParametricCenter(double pCoords[3])
+void HexahedralGeom::getParametricCenter(double pCoords[3]) const
 {
   pCoords[0] = 0.5;
   pCoords[1] = 0.5;
@@ -499,7 +501,7 @@ void HexahedralGeom::getParametricCenter(double pCoords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void HexahedralGeom::getShapeFunctions(double pCoords[3], double* shape)
+void HexahedralGeom::getShapeFunctions(double pCoords[3], double* shape) const
 {
   double rm = 0.0;
   double sm = 0.0;
@@ -561,7 +563,7 @@ void HexahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArray
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int HexahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf))
+int HexahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)) const
 {
   herr_t err = 0;
 
@@ -663,7 +665,7 @@ int HexahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writ
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int HexahedralGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
+int HexahedralGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const
 {
   herr_t err = 0;
 
@@ -716,7 +718,7 @@ int HexahedralGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileN
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString HexahedralGeom::getInfoString(SIMPL::InfoStringFormat format)
+QString HexahedralGeom::getInfoString(SIMPL::InfoStringFormat format) const
 {
   QString info;
   QTextStream ss(&info);
@@ -814,7 +816,7 @@ int HexahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Pointer HexahedralGeom::deepCopy(bool forceNoAllocate)
+IGeometry::Pointer HexahedralGeom::deepCopy(bool forceNoAllocate) const
 {
   SharedHexList::Pointer hexas = std::dynamic_pointer_cast<SharedHexList>((getHexahedra().get() == nullptr) ? nullptr : getHexahedra()->deepCopy(forceNoAllocate));
   SharedVertexList::Pointer verts = std::dynamic_pointer_cast<SharedVertexList>((getVertices().get() == nullptr) ? nullptr : getVertices()->deepCopy(forceNoAllocate));
@@ -856,3 +858,28 @@ IGeometry::Pointer HexahedralGeom::deepCopy(bool forceNoAllocate)
 #include "SIMPLib/Geometry/SharedHexOps.cpp"
 #include "SIMPLib/Geometry/SharedQuadOps.cpp"
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
+
+// -----------------------------------------------------------------------------
+HexahedralGeom::Pointer HexahedralGeom::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+HexahedralGeom::Pointer HexahedralGeom::New()
+{
+  Pointer sharedPtr(new(HexahedralGeom));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString HexahedralGeom::getNameOfClass() const
+{
+  return QString("HexahedralGeom");
+}
+
+// -----------------------------------------------------------------------------
+QString HexahedralGeom::ClassName()
+{
+  return QString("HexahedralGeom");
+}

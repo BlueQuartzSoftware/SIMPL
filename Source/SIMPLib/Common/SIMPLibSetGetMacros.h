@@ -221,7 +221,7 @@ public:                                                                         
   }
 
 #define SIMPL_CLASS_VERSION(vers)                                                                                                                                                                      \
-  int getClassVersion() override                                                                                                                                                                       \
+  int getClassVersion() const override                                                                                                                                                                       \
   {                                                                                                                                                                                                    \
     return vers;                                                                                                                                                                                       \
   }
@@ -531,107 +531,6 @@ public:                                                                         
   public:\
   virtual bool is##prpty() { return m_##prpty; }
 
-/**
- * @brief
- */
-#define SIMPL_FILTER_NEW_MACRO(Class)                                                                                                                                                                  \
-  static std::shared_ptr<Class> New()                                                                                                                                                                  \
-  {                                                                                                                                                                                                    \
-    struct make_shared_enabler : public Class                                                                                                                                                          \
-    {                                                                                                                                                                                                  \
-    };                                                                                                                                                                                                 \
-    std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();                                                                                                                \
-    val->setupFilterParameters();                                                                                                                                                                      \
-    return val;                                                                                                                                                                                        \
-  }
-
-/**
-* @brief
-*/
-#define SIMPL_FILTER_PARAMETER(type, prpty)\
-  private:\
-  type   m_##prpty;\
-  public:\
-  void set##prpty(const type& value) { this->m_##prpty = value; }\
-  type get##prpty() const { return m_##prpty; }
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-#define SIMPL_SET_2DVECTOR_PROPERTY(type, prpty, varname)\
-  void set##prpty(type value[2]) {\
-    (varname)[0] = value[0]; (varname)[1] = value[1]; }\
-  void set##prpty(const type& value_0, const type& value_1) {\
-    (varname)[0] = value_0; (varname)[1] = value_1; }\
-  void set##prpty(const std::tuple<type, type> &var) {\
-    (varname)[0] = std::get<0>(var); (varname)[1] = std::get<1>(var); }
-
-#define SIMPL_GET_2DVECTOR_PROPERTY(type, prpty, varname)\
-  void get##prpty(type value[2]) {\
-    value[0] = (varname)[0]; value[1] = (varname)[1]; }\
-  void get##prpty((type) &value_0, (type) &value_1) {\
-    value_0 = (varname)[0]; value_1 = (varname)[1]; }\
-  std::tuple<type, type> get##prpty() const {\
-    return std::make_tuple((varname)[0], (varname)[1]); }
-
-#define SIMPL_INSTANCE_VEC2_PROPERTY(type, prpty)\
-  private:\
-  type   m_##prpty[2];\
-  public:\
-  SIMPL_SET_2DVECTOR_PROPERTY(type, prpty, m_##prpty)\
-  SIMPL_GET_2DVECTOR_PROPERTY(type, prpty, m_##prpty)
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-#define SIMPL_SET_VEC3_PROPERTY(type, prpty, varname)\
-  void set##prpty(type value[3]) {\
-    (varname)[0] = value[0]; (varname)[1] = value[1]; (varname)[2] = value[2]; }\
-  void set##prpty(type value_0, type value_1, type value_2) {\
-    (varname)[0] = value_0; (varname)[1] = value_1; (varname)[2] = value_2; }\
-  void set##prpty(const std::tuple<type, type, type> &var) {\
-    (varname)[0] = std::get<0>(var); (varname)[1] = std::get<1>(var); (varname)[2] = std::get<2>(var); }
-
-#define SIMPL_GET_VEC3_PROPERTY(type, prpty, varname)\
-  void get##prpty(type value[3]) {\
-    value[0] = (varname)[0]; value[1] = (varname)[1]; value[2] = (varname)[2]; }\
-  void get##prpty(type &value_0, type &value_1, type &value_2) {\
-    value_0 = (varname)[0]; value_1 = (varname)[1]; value_2 = (varname)[2]; }\
-  std::tuple<type, type, type> get##prpty() const {\
-    return std::make_tuple((varname)[0], (varname)[1], (varname)[2]); }
-
-#define SIMPL_INSTANCE_VEC3_PROPERTY(type, prpty)\
-  private:\
-  type   m_##prpty[3];\
-  public:\
-  SIMPL_SET_VEC3_PROPERTY(type, prpty, m_##prpty)\
-  SIMPL_GET_VEC3_PROPERTY(type, prpty, m_##prpty)
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-#define SIMPL_SET_VEC3_PROPERTY_VO(type, prpty, varname)\
-   void set##prpty(type value[3]) override {\
-    (varname)[0] = value[0]; (varname)[1] = value[1]; (varname)[2] = value[2]; }\
-   void set##prpty(type value_0, type value_1, type value_2) override {\
-    (varname)[0] = value_0; (varname)[1] = value_1; (varname)[2] = value_2; }\
-   void set##prpty(const std::tuple<type, type, type> &var) override {\
-    (varname)[0] = std::get<0>(var); (varname)[1] = std::get<1>(var); (varname)[2] = std::get<2>(var);}
-
-#define SIMPL_GET_VEC3_PROPERTY_VO(type, prpty, varname)\
-  virtual std::tuple<type, type, type> get##prpty() const override\
-  {\
-    return std::make_tuple((varname)[0], (varname)[1], (varname)[2]);\
-  }
-
-#define SIMPL_INSTANCE_VEC3_PROPERTY_VO(type, prpty)\
-  private:\
-  type   m_##prpty[3];\
-  public:\
-  SIMPL_SET_VEC3_PROPERTY_VO(type, prpty, m_##prpty)\
-  SIMPL_GET_VEC3_PROPERTY_VO(type, prpty, m_##prpty)
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -744,15 +643,6 @@ private:    \
 
 #define SIMPL_COPY_INSTANCEVAR(name)\
   filter->set##name(get##name());
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-/**
-* @brief Macro to silence compiler warnings for unused parameters in methods.
-*/
-#define SIMPL_NOT_USED(x)
 
 // -----------------------------------------------------------------------------
 //

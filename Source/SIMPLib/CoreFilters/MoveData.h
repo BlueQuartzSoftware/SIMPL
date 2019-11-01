@@ -36,9 +36,10 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The MoveData class. See [Filter documentation](@ref movedata) for details.
@@ -46,53 +47,122 @@
 class SIMPLib_EXPORT MoveData : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(MoveData SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(MoveData)
+    PYB11_FILTER_NEW_MACRO(MoveData)
+    PYB11_FILTER_PARAMETER(int, WhatToMove)
+    PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerDestination)
+    PYB11_FILTER_PARAMETER(DataArrayPath, AttributeMatrixSource)
+    PYB11_FILTER_PARAMETER(DataArrayPath, AttributeMatrixDestination)
+    PYB11_FILTER_PARAMETER(DataArrayPath, DataArraySource)
     PYB11_PROPERTY(int WhatToMove READ getWhatToMove WRITE setWhatToMove)
     PYB11_PROPERTY(DataArrayPath DataContainerDestination READ getDataContainerDestination WRITE setDataContainerDestination)
     PYB11_PROPERTY(DataArrayPath AttributeMatrixSource READ getAttributeMatrixSource WRITE setAttributeMatrixSource)
     PYB11_PROPERTY(DataArrayPath AttributeMatrixDestination READ getAttributeMatrixDestination WRITE setAttributeMatrixDestination)
     PYB11_PROPERTY(DataArrayPath DataArraySource READ getDataArraySource WRITE setDataArraySource)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(MoveData)
-    SIMPL_FILTER_NEW_MACRO(MoveData)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MoveData, AbstractFilter)
+    using Self = MoveData;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<MoveData> New();
+
+    /**
+     * @brief Returns the name of the class for MoveData
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for MoveData
+     */
+    static QString ClassName();
 
     ~MoveData() override;
 
-    SIMPL_FILTER_PARAMETER(int, WhatToMove)
+    /**
+     * @brief Setter property for WhatToMove
+     */
+    void setWhatToMove(int value);
+    /**
+     * @brief Getter property for WhatToMove
+     * @return Value of WhatToMove
+     */
+    int getWhatToMove() const;
+
     Q_PROPERTY(int WhatToMove READ getWhatToMove WRITE setWhatToMove)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerDestination)
+    /**
+     * @brief Setter property for DataContainerDestination
+     */
+    void setDataContainerDestination(const DataArrayPath& value);
+    /**
+     * @brief Getter property for DataContainerDestination
+     * @return Value of DataContainerDestination
+     */
+    DataArrayPath getDataContainerDestination() const;
+
     Q_PROPERTY(DataArrayPath DataContainerDestination READ getDataContainerDestination WRITE setDataContainerDestination)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeMatrixSource)
+    /**
+     * @brief Setter property for AttributeMatrixSource
+     */
+    void setAttributeMatrixSource(const DataArrayPath& value);
+    /**
+     * @brief Getter property for AttributeMatrixSource
+     * @return Value of AttributeMatrixSource
+     */
+    DataArrayPath getAttributeMatrixSource() const;
+
     Q_PROPERTY(DataArrayPath AttributeMatrixSource READ getAttributeMatrixSource WRITE setAttributeMatrixSource)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeMatrixDestination)
+    /**
+     * @brief Setter property for AttributeMatrixDestination
+     */
+    void setAttributeMatrixDestination(const DataArrayPath& value);
+    /**
+     * @brief Getter property for AttributeMatrixDestination
+     * @return Value of AttributeMatrixDestination
+     */
+    DataArrayPath getAttributeMatrixDestination() const;
+
     Q_PROPERTY(DataArrayPath AttributeMatrixDestination READ getAttributeMatrixDestination WRITE setAttributeMatrixDestination)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DataArraySource)
+    /**
+     * @brief Setter property for DataArraySource
+     */
+    void setDataArraySource(const DataArrayPath& value);
+    /**
+     * @brief Getter property for DataArraySource
+     * @return Value of DataArraySource
+     */
+    DataArrayPath getDataArraySource() const;
+
     Q_PROPERTY(DataArrayPath DataArraySource READ getDataArraySource WRITE setDataArraySource)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -102,23 +172,23 @@ class SIMPLib_EXPORT MoveData : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -181,5 +251,12 @@ class SIMPLib_EXPORT MoveData : public AbstractFilter
     MoveData(MoveData&&) = delete;            // Move Constructor Not Implemented
     MoveData& operator=(const MoveData&) = delete; // Copy Assignment Not Implemented
     MoveData& operator=(MoveData&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    int m_WhatToMove = {};
+    DataArrayPath m_DataContainerDestination = {};
+    DataArrayPath m_AttributeMatrixSource = {};
+    DataArrayPath m_AttributeMatrixDestination = {};
+    DataArrayPath m_DataArraySource = {};
 };
 

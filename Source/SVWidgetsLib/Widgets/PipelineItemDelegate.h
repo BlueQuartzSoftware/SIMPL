@@ -35,8 +35,6 @@
 
 #include <QtWidgets/QStyledItemDelegate>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class SVPipelineView;

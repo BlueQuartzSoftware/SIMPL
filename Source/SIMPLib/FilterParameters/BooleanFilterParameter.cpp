@@ -94,3 +94,52 @@ void BooleanFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = static_cast<int>(m_GetterCallback());
   }
 }
+
+// -----------------------------------------------------------------------------
+BooleanFilterParameter::Pointer BooleanFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+BooleanFilterParameter::Pointer BooleanFilterParameter::New()
+{
+  Pointer sharedPtr(new(BooleanFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString BooleanFilterParameter::getNameOfClass() const
+{
+  return QString("BooleanFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString BooleanFilterParameter::ClassName()
+{
+  return QString("BooleanFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void BooleanFilterParameter::setSetterCallback(const BooleanFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+BooleanFilterParameter::SetterCallbackType BooleanFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void BooleanFilterParameter::setGetterCallback(const BooleanFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+BooleanFilterParameter::GetterCallbackType BooleanFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

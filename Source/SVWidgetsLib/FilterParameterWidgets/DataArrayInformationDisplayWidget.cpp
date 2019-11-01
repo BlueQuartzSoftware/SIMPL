@@ -108,3 +108,16 @@ void DataArrayInformationDisplayWidget::setPathText(QString path)
 {
   pathText->setText(path);
 }
+
+// -----------------------------------------------------------------------------
+DataArrayInformationDisplayWidget::Pointer DataArrayInformationDisplayWidget::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+DataArrayInformationDisplayWidget::Pointer DataArrayInformationDisplayWidget::New()
+{
+  Pointer sharedPtr(new(DataArrayInformationDisplayWidget));
+  return sharedPtr;
+}

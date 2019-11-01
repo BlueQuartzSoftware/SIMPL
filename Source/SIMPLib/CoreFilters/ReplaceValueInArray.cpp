@@ -33,14 +33,21 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ReplaceValueInArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -282,7 +289,7 @@ AbstractFilter::Pointer ReplaceValueInArray::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReplaceValueInArray::getCompiledLibraryName() const
+QString ReplaceValueInArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -290,7 +297,7 @@ const QString ReplaceValueInArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReplaceValueInArray::getBrandingString() const
+QString ReplaceValueInArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -298,7 +305,7 @@ const QString ReplaceValueInArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReplaceValueInArray::getFilterVersion() const
+QString ReplaceValueInArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -309,7 +316,7 @@ const QString ReplaceValueInArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReplaceValueInArray::getGroupName() const
+QString ReplaceValueInArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -317,7 +324,7 @@ const QString ReplaceValueInArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ReplaceValueInArray::getUuid()
+QUuid ReplaceValueInArray::getUuid() const
 {
   return QUuid("{a37f2e24-7400-5005-b9a7-b2224570cbe9}");
 }
@@ -325,7 +332,7 @@ const QUuid ReplaceValueInArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReplaceValueInArray::getSubGroupName() const
+QString ReplaceValueInArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -333,7 +340,72 @@ const QString ReplaceValueInArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReplaceValueInArray::getHumanLabel() const
+QString ReplaceValueInArray::getHumanLabel() const
 {
   return "Replace Value in Array";
+}
+
+// -----------------------------------------------------------------------------
+ReplaceValueInArray::Pointer ReplaceValueInArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ReplaceValueInArray> ReplaceValueInArray::New()
+{
+  struct make_shared_enabler : public ReplaceValueInArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ReplaceValueInArray::getNameOfClass() const
+{
+  return QString("ReplaceValueInArray");
+}
+
+// -----------------------------------------------------------------------------
+QString ReplaceValueInArray::ClassName()
+{
+  return QString("ReplaceValueInArray");
+}
+
+// -----------------------------------------------------------------------------
+void ReplaceValueInArray::setSelectedArray(const DataArrayPath& value)
+{
+  m_SelectedArray = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ReplaceValueInArray::getSelectedArray() const
+{
+  return m_SelectedArray;
+}
+
+// -----------------------------------------------------------------------------
+void ReplaceValueInArray::setRemoveValue(double value)
+{
+  m_RemoveValue = value;
+}
+
+// -----------------------------------------------------------------------------
+double ReplaceValueInArray::getRemoveValue() const
+{
+  return m_RemoveValue;
+}
+
+// -----------------------------------------------------------------------------
+void ReplaceValueInArray::setReplaceValue(double value)
+{
+  m_ReplaceValue = value;
+}
+
+// -----------------------------------------------------------------------------
+double ReplaceValueInArray::getReplaceValue() const
+{
+  return m_ReplaceValue;
 }

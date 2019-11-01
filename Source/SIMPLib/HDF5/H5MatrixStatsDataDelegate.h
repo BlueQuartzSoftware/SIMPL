@@ -37,11 +37,12 @@
 #pragma once
 
 
+#include <memory>
+
 #include <hdf5.h>
 
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/StatsData/MatrixStatsData.h"
 #include "SIMPLib/HDF5/H5StatsDataDelegate.h"
 
@@ -56,10 +57,24 @@
 class SIMPLib_EXPORT H5MatrixStatsDataDelegate : public H5StatsDataDelegate
 {
   public:
+    using Self = H5MatrixStatsDataDelegate;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
-    SIMPL_SHARED_POINTERS(H5MatrixStatsDataDelegate)
-    SIMPL_STATIC_NEW_MACRO(H5MatrixStatsDataDelegate)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(H5MatrixStatsDataDelegate, H5StatsDataDelegate)
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for H5MatrixStatsDataDelegate
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for H5MatrixStatsDataDelegate
+     */
+    static QString ClassName();
+
     ~H5MatrixStatsDataDelegate() override;
 
     int writeMatrixStatsData(MatrixStatsData* data, hid_t groupId);
@@ -76,6 +91,8 @@ class SIMPLib_EXPORT H5MatrixStatsDataDelegate : public H5StatsDataDelegate
     H5MatrixStatsDataDelegate(H5MatrixStatsDataDelegate&&) = delete;      // Move Constructor Not Implemented
     H5MatrixStatsDataDelegate& operator=(const H5MatrixStatsDataDelegate&) = delete; // Copy Assignment Not Implemented
     H5MatrixStatsDataDelegate& operator=(H5MatrixStatsDataDelegate&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 
 

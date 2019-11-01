@@ -36,11 +36,13 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SIMPLib/Filtering/AbstractDecisionFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The RequiredZThickness class. See [Filter documentation](@ref requiredzthickness) for details.
@@ -48,31 +50,80 @@
 class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(RequiredZThickness SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(RequiredZThickness)
+    PYB11_STATIC_NEW_MACRO(RequiredZThickness)
+    PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerSelection)
+    PYB11_FILTER_PARAMETER(int, NumZVoxels)
+    PYB11_FILTER_PARAMETER(bool, PreflightCheck)
     PYB11_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
     PYB11_PROPERTY(int NumZVoxels READ getNumZVoxels WRITE setNumZVoxels)
     PYB11_PROPERTY(bool PreflightCheck READ getPreflightCheck WRITE setPreflightCheck)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(RequiredZThickness)
-    SIMPL_STATIC_NEW_MACRO(RequiredZThickness)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RequiredZThickness, AbstractDecisionFilter)
+    using Self = RequiredZThickness;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for RequiredZThickness
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for RequiredZThickness
+     */
+    static QString ClassName();
 
     ~RequiredZThickness() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerSelection)
+    /**
+     * @brief Setter property for DataContainerSelection
+     */
+    void setDataContainerSelection(const DataArrayPath& value);
+    /**
+     * @brief Getter property for DataContainerSelection
+     * @return Value of DataContainerSelection
+     */
+    DataArrayPath getDataContainerSelection() const;
+
     Q_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
 
-    SIMPL_FILTER_PARAMETER(int, NumZVoxels)
+    /**
+     * @brief Setter property for NumZVoxels
+     */
+    void setNumZVoxels(int value);
+    /**
+     * @brief Getter property for NumZVoxels
+     * @return Value of NumZVoxels
+     */
+    int getNumZVoxels() const;
+
     Q_PROPERTY(int NumZVoxels READ getNumZVoxels WRITE setNumZVoxels)
 
-    SIMPL_FILTER_PARAMETER(bool, PreflightCheck)
+    /**
+     * @brief Setter property for PreflightCheck
+     */
+    void setPreflightCheck(bool value);
+    /**
+     * @brief Getter property for PreflightCheck
+     * @return Value of PreflightCheck
+     */
+    bool getPreflightCheck() const;
+
     Q_PROPERTY(bool PreflightCheck READ getPreflightCheck WRITE setPreflightCheck)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -82,23 +133,23 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -137,7 +188,11 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
 
 
   private:
-    DEFINE_DATAARRAY_WEAKPTR(int32_t, FeatureIds)
+    std::weak_ptr<DataArray<int32_t>> m_FeatureIdsPtr;
+
+    DataArrayPath m_DataContainerSelection = {};
+    int m_NumZVoxels = {};
+    bool m_PreflightCheck = {};
 
   public:
     RequiredZThickness(const RequiredZThickness&) = delete; // Copy Constructor Not Implemented

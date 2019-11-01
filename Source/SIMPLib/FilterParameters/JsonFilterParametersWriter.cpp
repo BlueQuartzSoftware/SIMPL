@@ -39,7 +39,10 @@
 #include <QtCore/QJsonObject>
 
 #include "JsonFilterParametersWriter.h"
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/Messages/PipelineErrorMessage.h"
 
@@ -47,11 +50,9 @@
 //
 // -----------------------------------------------------------------------------
 JsonFilterParametersWriter::JsonFilterParametersWriter()
-:
- m_ExpandReaderFilters(true)
+: m_ExpandReaderFilters(true)
 , m_MaxFilterIndex(-1)
 , m_CurrentIndex(0)
-
 {
 }
 
@@ -59,7 +60,8 @@ JsonFilterParametersWriter::JsonFilterParametersWriter()
 //
 // -----------------------------------------------------------------------------
 JsonFilterParametersWriter::JsonFilterParametersWriter(QString& fileName, QString& pipelineName, int& numFilters)
-: m_MaxFilterIndex(-1)
+: m_ExpandReaderFilters(true)
+, m_MaxFilterIndex(-1)
 , m_CurrentIndex(0)
 {
   m_FileName = fileName;
@@ -310,4 +312,77 @@ QString JsonFilterParametersWriter::generateIndexString(int currentIndex)
     ss << m_CurrentIndex;
   }
   return numStr;
+}
+
+// -----------------------------------------------------------------------------
+JsonFilterParametersWriter::Pointer JsonFilterParametersWriter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+JsonFilterParametersWriter::Pointer JsonFilterParametersWriter::New()
+{
+  Pointer sharedPtr(new(JsonFilterParametersWriter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString JsonFilterParametersWriter::getNameOfClass() const
+{
+  return QString("JsonFilterParametersWriter");
+}
+
+// -----------------------------------------------------------------------------
+QString JsonFilterParametersWriter::ClassName()
+{
+  return QString("JsonFilterParametersWriter");
+}
+
+// -----------------------------------------------------------------------------
+void JsonFilterParametersWriter::setFileName(const QString& value)
+{
+  m_FileName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString JsonFilterParametersWriter::getFileName() const
+{
+  return m_FileName;
+}
+
+// -----------------------------------------------------------------------------
+void JsonFilterParametersWriter::setPipelineName(const QString& value)
+{
+  m_PipelineName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString JsonFilterParametersWriter::getPipelineName() const
+{
+  return m_PipelineName;
+}
+
+// -----------------------------------------------------------------------------
+void JsonFilterParametersWriter::setExpandReaderFilters(bool value)
+{
+  m_ExpandReaderFilters = value;
+}
+
+// -----------------------------------------------------------------------------
+bool JsonFilterParametersWriter::getExpandReaderFilters() const
+{
+  return m_ExpandReaderFilters;
+}
+
+// -----------------------------------------------------------------------------
+void JsonFilterParametersWriter::setMaxFilterIndex(int value)
+{
+  m_MaxFilterIndex = value;
+}
+
+// -----------------------------------------------------------------------------
+int JsonFilterParametersWriter::getMaxFilterIndex() const
+{
+  return m_MaxFilterIndex;
 }

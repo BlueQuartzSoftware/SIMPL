@@ -58,7 +58,7 @@ class SVWidgetsLib_EXPORT ComparisonSelectionItemDelegate : public QStyledItemDe
     Q_OBJECT
 
   public:
-    explicit ComparisonSelectionItemDelegate(QStringList possibleFeatures, int numPhases, QObject* parent = 0);
+    explicit ComparisonSelectionItemDelegate(QStringList possibleFeatures, int numPhases, QObject* parent = nullptr);
 
     ~ComparisonSelectionItemDelegate() override;
 

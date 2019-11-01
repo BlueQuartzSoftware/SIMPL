@@ -36,6 +36,8 @@
 #pragma once
 
 
+#include <memory>
+
 #include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
@@ -59,8 +61,14 @@ class SVWidgetsLib_EXPORT DataArrayInformationDisplayWidget : public FilterParam
     Q_OBJECT
 
   public:
-    SIMPL_SHARED_POINTERS(DataArrayInformationDisplayWidget)
-    SIMPL_STATIC_NEW_MACRO(DataArrayInformationDisplayWidget)
+    using Self = DataArrayInformationDisplayWidget;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
 
     /**
     * @brief Constructor
@@ -90,6 +98,8 @@ class SVWidgetsLib_EXPORT DataArrayInformationDisplayWidget : public FilterParam
     DataArrayInformationDisplayWidget(DataArrayInformationDisplayWidget&&) = delete;      // Move Constructor Not Implemented
     DataArrayInformationDisplayWidget& operator=(const DataArrayInformationDisplayWidget&) = delete; // Copy Assignment Not Implemented
     DataArrayInformationDisplayWidget& operator=(DataArrayInformationDisplayWidget&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 
 

@@ -44,6 +44,9 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/FilterParameters/ShapeTypeSelectionFilterParameter.h"
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
+
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 #include "FilterParameterWidgetsDialogs.h"

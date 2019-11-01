@@ -52,7 +52,7 @@ public:
     Constructor.
     @param parent Parent object
   */
-  SIMPLRequestMapper(QObject* parent = 0);
+  SIMPLRequestMapper(QObject* parent = nullptr);
 
   /**
     Destructor.

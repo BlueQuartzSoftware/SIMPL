@@ -34,6 +34,7 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
+#include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Filtering/CoreConstants.h"

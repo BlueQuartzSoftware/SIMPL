@@ -36,9 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
+
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
 
 /**
  * @brief The CopyFeatureArrayToElementArray class. See [Filter documentation](@ref copyfeaturearraytoelementArray) for details.
@@ -46,45 +51,94 @@
 class SIMPLib_EXPORT CopyFeatureArrayToElementArray : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(CopyFeatureArrayToElementArray SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(CopyFeatureArrayToElementArray)
+    PYB11_FILTER_NEW_MACRO(CopyFeatureArrayToElementArray)
+    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedFeatureArrayPath)
+    PYB11_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+    PYB11_FILTER_PARAMETER(QString, CreatedArrayName)
     PYB11_PROPERTY(DataArrayPath SelectedFeatureArrayPath READ getSelectedFeatureArrayPath WRITE setSelectedFeatureArrayPath)
     PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
     PYB11_PROPERTY(QString CreatedArrayName READ getCreatedArrayName WRITE setCreatedArrayName)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(CopyFeatureArrayToElementArray)
-    SIMPL_FILTER_NEW_MACRO(CopyFeatureArrayToElementArray)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CopyFeatureArrayToElementArray, AbstractFilter)
+    using Self = CopyFeatureArrayToElementArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<CopyFeatureArrayToElementArray> New();
+
+    /**
+     * @brief Returns the name of the class for CopyFeatureArrayToElementArray
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for CopyFeatureArrayToElementArray
+     */
+    static QString ClassName();
 
     ~CopyFeatureArrayToElementArray() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedFeatureArrayPath)
+    /**
+     * @brief Setter property for SelectedFeatureArrayPath
+     */
+    void setSelectedFeatureArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedFeatureArrayPath
+     * @return Value of SelectedFeatureArrayPath
+     */
+    DataArrayPath getSelectedFeatureArrayPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedFeatureArrayPath READ getSelectedFeatureArrayPath WRITE setSelectedFeatureArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+    /**
+     * @brief Setter property for FeatureIdsArrayPath
+     */
+    void setFeatureIdsArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for FeatureIdsArrayPath
+     * @return Value of FeatureIdsArrayPath
+     */
+    DataArrayPath getFeatureIdsArrayPath() const;
+
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
 
-    SIMPL_FILTER_PARAMETER(QString, CreatedArrayName)
+    /**
+     * @brief Setter property for CreatedArrayName
+     */
+    void setCreatedArrayName(const QString& value);
+    /**
+     * @brief Getter property for CreatedArrayName
+     * @return Value of CreatedArrayName
+     */
+    QString getCreatedArrayName() const;
+
     Q_PROPERTY(QString CreatedArrayName READ getCreatedArrayName WRITE setCreatedArrayName)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -94,23 +148,23 @@ class SIMPLib_EXPORT CopyFeatureArrayToElementArray : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -169,8 +223,14 @@ class SIMPLib_EXPORT CopyFeatureArrayToElementArray : public AbstractFilter
 
 
   private:
-    DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-    DEFINE_IDATAARRAY_WEAKPTR(InArray)
+    std::weak_ptr<DataArray<int32_t>> m_FeatureIdsPtr;
+    int32_t* m_FeatureIds = nullptr;
+
+    IDataArrayWkPtrType m_InArrayPtr;
+
+    DataArrayPath m_SelectedFeatureArrayPath = {};
+    DataArrayPath m_FeatureIdsArrayPath = {};
+    QString m_CreatedArrayName = {};
 
   public:
     CopyFeatureArrayToElementArray(const CopyFeatureArrayToElementArray&) = delete; // Copy Constructor Not Implemented

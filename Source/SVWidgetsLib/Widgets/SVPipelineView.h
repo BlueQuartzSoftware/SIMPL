@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <stack>
 #include <vector>
 
@@ -53,6 +55,9 @@
 #include "SVWidgetsLib/Widgets/PipelineView.h"
 
 #include "SVWidgetsLib/QtSupport/QtSFileDragMessageBox.h"
+
+class DataContainerArray;
+using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
 
 class QScrollArea;
 class QContextMenuEvent;
@@ -82,13 +87,45 @@ public:
 
   using IndexedFilterObject = std::pair<int, PipelineFilterObject*>;
 
-  SIMPL_INSTANCE_PROPERTY(SVPipelineView::PipelineViewState, PipelineState)
+  /**
+   * @brief Setter property for PipelineState
+   */
+  void setPipelineState(const SVPipelineView::PipelineViewState& value);
+  /**
+   * @brief Getter property for PipelineState
+   * @return Value of PipelineState
+   */
+  SVPipelineView::PipelineViewState getPipelineState() const;
 
-  SIMPL_GET_PROPERTY(QAction*, ActionEnableFilter)
-  SIMPL_GET_PROPERTY(QAction*, ActionCut)
-  SIMPL_GET_PROPERTY(QAction*, ActionCopy)
-  SIMPL_GET_PROPERTY(QAction*, ActionPaste)
-  SIMPL_GET_PROPERTY(QAction*, ActionClearPipeline)
+  /**
+   * @brief Getter property for ActionEnableFilter
+   * @return Value of ActionEnableFilter
+   */
+  QAction* getActionEnableFilter() const;
+
+  /**
+   * @brief Getter property for ActionCut
+   * @return Value of ActionCut
+   */
+  QAction* getActionCut() const;
+
+  /**
+   * @brief Getter property for ActionCopy
+   * @return Value of ActionCopy
+   */
+  QAction* getActionCopy() const;
+
+  /**
+   * @brief Getter property for ActionPaste
+   * @return Value of ActionPaste
+   */
+  QAction* getActionPaste() const;
+
+  /**
+   * @brief Getter property for ActionClearPipeline
+   * @return Value of ActionClearPipeline
+   */
+  QAction* getActionClearPipeline() const;
 
   SVPipelineView(QWidget* parent = nullptr);
   ~SVPipelineView() override;
@@ -380,7 +417,7 @@ signals:
   void statusMessage(const QString& message);
   void stdOutMessage(const QString& message);
 
-  void pipelineOutput(FilterPipeline::Pointer pipeline, DataContainerArray::Pointer dca);
+  void pipelineOutput(FilterPipeline::Pointer pipeline, DataContainerArrayShPtr dca);
 
 protected:
   void setupGui();
@@ -449,10 +486,12 @@ private slots:
   void endPipelineThread();
 
 private:
+  SVPipelineView::PipelineViewState m_PipelineState = {};
+
   QThread* m_WorkerThread = nullptr;
   QMetaObject::Connection m_PipelineConnection;
   FilterPipeline::Pointer m_PipelineInFlight;
-  QVector<DataContainerArray::Pointer> m_PreflightDataContainerArrays;
+  QVector<DataContainerArrayShPtrType> m_PreflightDataContainerArrays;
   QList<QObject*> m_PipelineMessageObservers;
 
   QString m_CurrentPath;

@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QString>
 
 #include "SIMPLib/Filtering/AbstractComparison.h"
@@ -46,17 +48,35 @@
 */
 class SIMPLib_EXPORT ComparisonValue : public AbstractComparison
 {
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ComparisonValue SUPERCLASS AbstractComparison)
+  PYB11_SHARED_POINTERS(ComparisonValue)
+  PYB11_STATIC_NEW_MACRO(ComparisonValue)
   PYB11_CREATION()
   PYB11_PROPERTY(QString AttributeArrayName READ getAttributeArrayName WRITE setAttributeArrayName)
   PYB11_PROPERTY(int CompOperator READ getCompOperator WRITE setCompOperator)
   PYB11_PROPERTY(double CompValue READ getCompValue WRITE setCompValue)
   PYB11_PROPERTY(ComparisonSet::Pointer ParentSet READ getParentSet WRITE setParentSet)
   PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
+#endif
 public:
-  SIMPL_SHARED_POINTERS(ComparisonValue)
-  SIMPL_STATIC_NEW_MACRO(ComparisonValue)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ComparisonValue, AbstractComparison)
+  using Self = ComparisonValue;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for ComparisonValue
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ComparisonValue
+   */
+  static QString ClassName();
 
   ~ComparisonValue() override;
 
@@ -134,5 +154,6 @@ protected:
   ComparisonSet::Pointer m_parentSet;
 
   ComparisonValue();
-};
 
+private:
+};

@@ -35,13 +35,14 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @class ArraySelectionExample ArraySelectionExample.h ExamplePlugin/Code/ExamplePluginFilters/ArraySelectionExample.h
@@ -53,14 +54,43 @@
 class SIMPLib_EXPORT ArraySelectionExample : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ArraySelectionExample SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(ArraySelectionExample)
+  PYB11_FILTER_NEW_MACRO(ArraySelectionExample)
+  PYB11_FILTER_PARAMETER(DataContainerArrayProxy, DataContainerArrayProxy)
 
   PYB11_PROPERTY(DataContainerArrayProxy DataContainerArrayProxy READ getDataContainerArrayProxy WRITE setDataContainerArrayProxy)
+#endif
 
 public:
-  SIMPL_SHARED_POINTERS(ArraySelectionExample)
-  SIMPL_FILTER_NEW_MACRO(ArraySelectionExample)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ArraySelectionExample, AbstractFilter)
+  using Self = ArraySelectionExample;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
+
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for ArraySelectionExample
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ArraySelectionExample
+   */
+  static QString ClassName();
 
   ~ArraySelectionExample() override;
 
@@ -69,7 +99,16 @@ public:
    * as input parameters
    */
 
-  SIMPL_FILTER_PARAMETER(DataContainerArrayProxy, DataContainerArrayProxy)
+  /**
+   * @brief Setter property for DataContainerArrayProxy
+   */
+  void setDataContainerArrayProxy(const DataContainerArrayProxy& value);
+  /**
+   * @brief Getter property for DataContainerArrayProxy
+   * @return Value of DataContainerArrayProxy
+   */
+  DataContainerArrayProxy getDataContainerArrayProxy() const;
+
   Q_PROPERTY(DataContainerArrayProxy DataContainerArrayProxy READ getDataContainerArrayProxy WRITE setDataContainerArrayProxy)
 
   /**
@@ -77,27 +116,27 @@ public:
   * a different group if you want. The string returned here will be displayed
   * in the GUI for the filter
   */
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
   AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
   * a subgroup. It should be readable and understandable by humans.
   */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
   * @brief This method will instantiate all the end user settable options/parameters
@@ -146,5 +185,8 @@ public:
   ArraySelectionExample(ArraySelectionExample&&) = delete;      // Move Constructor Not Implemented
   ArraySelectionExample& operator=(const ArraySelectionExample&) = delete; // Copy Assignment Not Implemented
   ArraySelectionExample& operator=(ArraySelectionExample&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  DataContainerArrayProxy m_DataContainerArrayProxy = {};
 };
 

@@ -79,3 +79,9 @@ CalculatorItem::ErrorCode LeftParenthesisItem::checkValidity(QVector<CalculatorI
 
   return LeftParenthesisItem::ErrorCode::MISMATCHED_PARENTHESES;
 }
+
+// -----------------------------------------------------------------------------
+LeftParenthesisItem::Pointer LeftParenthesisItem::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}

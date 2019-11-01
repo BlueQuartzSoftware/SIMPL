@@ -37,9 +37,8 @@
 #pragma once
 
 #include <QtCore/QString>
+#include <QtCore/QObject>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Messages/AbstractMessage.h"
 
 
@@ -54,6 +53,8 @@
 class SIMPLib_EXPORT Observable : public QObject
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(Observable)
     PYB11_METHOD(void setErrorCondition ARGS code messageText)
     PYB11_METHOD(void setErrorConditionWithPrefix ARGS code prefix messageText)
@@ -63,9 +64,17 @@ class SIMPLib_EXPORT Observable : public QObject
     PYB11_METHOD(void notifyStatusMessageWithPrefix ARGS prefix messageText)
     PYB11_METHOD(void notifyProgressMessage ARGS progress messageText)
     PYB11_METHOD(void notifyProgressMessageWithPrefix ARGS progress prefix messageText)
+#endif
 
   public:
-    SIMPL_TYPE_MACRO(Observable)
+    /**
+     * @brief Returns the name of the class for Observable
+     */
+    virtual QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for Observable
+     */
+    static QString ClassName();
 
     Observable();
 
@@ -101,6 +110,8 @@ class SIMPLib_EXPORT Observable : public QObject
      * @param msg
      */
     void messageGenerated(const AbstractMessage::Pointer& msg);
+
+  private:
 };
 
 

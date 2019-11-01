@@ -30,6 +30,8 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "PostSlackMessage.h"
 
 #include <QtCore/QEventLoop>
@@ -40,7 +42,10 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -192,7 +197,7 @@ AbstractFilter::Pointer PostSlackMessage::newFilterInstance(bool copyFilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PostSlackMessage::getCompiledLibraryName() const
+QString PostSlackMessage::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -200,7 +205,7 @@ const QString PostSlackMessage::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PostSlackMessage::getBrandingString() const
+QString PostSlackMessage::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -208,7 +213,7 @@ const QString PostSlackMessage::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PostSlackMessage::getFilterVersion() const
+QString PostSlackMessage::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -219,7 +224,7 @@ const QString PostSlackMessage::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PostSlackMessage::getGroupName() const
+QString PostSlackMessage::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -227,7 +232,7 @@ const QString PostSlackMessage::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid PostSlackMessage::getUuid()
+QUuid PostSlackMessage::getUuid() const
 {
   return QUuid("{0ca83462-8564-54ea-9f4e-e5141974f30b}");
 }
@@ -235,7 +240,7 @@ const QUuid PostSlackMessage::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PostSlackMessage::getSubGroupName() const
+QString PostSlackMessage::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -243,7 +248,84 @@ const QString PostSlackMessage::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PostSlackMessage::getHumanLabel() const
+QString PostSlackMessage::getHumanLabel() const
 {
   return "Post Slack Message";
+}
+
+// -----------------------------------------------------------------------------
+PostSlackMessage::Pointer PostSlackMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<PostSlackMessage> PostSlackMessage::New()
+{
+  struct make_shared_enabler : public PostSlackMessage
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString PostSlackMessage::getNameOfClass() const
+{
+  return QString("PostSlackMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString PostSlackMessage::ClassName()
+{
+  return QString("PostSlackMessage");
+}
+
+// -----------------------------------------------------------------------------
+void PostSlackMessage::setSlackUser(const QString& value)
+{
+  m_SlackUser = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PostSlackMessage::getSlackUser() const
+{
+  return m_SlackUser;
+}
+
+// -----------------------------------------------------------------------------
+void PostSlackMessage::setSlackUrl(const QString& value)
+{
+  m_SlackUrl = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PostSlackMessage::getSlackUrl() const
+{
+  return m_SlackUrl;
+}
+
+// -----------------------------------------------------------------------------
+void PostSlackMessage::setSlackMessage(const QString& value)
+{
+  m_SlackMessage = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PostSlackMessage::getSlackMessage() const
+{
+  return m_SlackMessage;
+}
+
+// -----------------------------------------------------------------------------
+void PostSlackMessage::setWarningsAsError(bool value)
+{
+  m_WarningsAsError = value;
+}
+
+// -----------------------------------------------------------------------------
+bool PostSlackMessage::getWarningsAsError() const
+{
+  return m_WarningsAsError;
 }

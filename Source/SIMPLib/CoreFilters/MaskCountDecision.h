@@ -36,11 +36,13 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SIMPLib/Filtering/AbstractDecisionFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The MaskCountDecision class. See [Filter documentation](@ref MaskCountDecision) for details.
@@ -48,21 +50,60 @@
 class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(MaskCountDecision SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(MaskCountDecision)
+    PYB11_STATIC_NEW_MACRO(MaskCountDecision)
+    PYB11_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
+    PYB11_FILTER_PARAMETER(int, NumberOfTrues)
     PYB11_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
     PYB11_PROPERTY(int NumberOfTrues READ getNumberOfTrues WRITE setNumberOfTrues)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(MaskCountDecision)
-    SIMPL_STATIC_NEW_MACRO(MaskCountDecision)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MaskCountDecision, AbstractDecisionFilter)
+    using Self = MaskCountDecision;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for MaskCountDecision
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for MaskCountDecision
+     */
+    static QString ClassName();
 
     ~MaskCountDecision() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
+    /**
+     * @brief Setter property for MaskArrayPath
+     */
+    void setMaskArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for MaskArrayPath
+     * @return Value of MaskArrayPath
+     */
+    DataArrayPath getMaskArrayPath() const;
+
     Q_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
 
-    SIMPL_FILTER_PARAMETER(int, NumberOfTrues)
+    /**
+     * @brief Setter property for NumberOfTrues
+     */
+    void setNumberOfTrues(int value);
+    /**
+     * @brief Getter property for NumberOfTrues
+     * @return Value of NumberOfTrues
+     */
+    int getNumberOfTrues() const;
+
     Q_PROPERTY(int NumberOfTrues READ getNumberOfTrues WRITE setNumberOfTrues)
 
     /**
@@ -74,7 +115,7 @@ class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -84,23 +125,23 @@ class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -136,7 +177,11 @@ class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
 
 
   private:
-    DEFINE_DATAARRAY_VARIABLE(bool, Mask)
+    std::weak_ptr<DataArray<bool>> m_MaskPtr;
+    bool* m_Mask = nullptr;
+
+    DataArrayPath m_MaskArrayPath = {};
+    int m_NumberOfTrues = {};
 
   public:
     MaskCountDecision(const MaskCountDecision&) = delete; // Copy Constructor Not Implemented

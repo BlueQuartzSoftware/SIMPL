@@ -42,19 +42,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RdfData::RdfData()
-: m_MinDistance(0.0f)
-, m_MaxDistance(0.0f)
-, m_NumberOfBins(50)
-, m_DistributionType(SIMPL::StringConstants::UnknownDistribution)
-{
-  m_BoxResolution[0] = 0.1f;
-  m_BoxResolution[1] = 0.1f;
-  m_BoxResolution[2] = 0.1f;
-  m_BoxSize[0] = 100;
-  m_BoxSize[1] = 100;
-  m_BoxSize[2] = 100;
-}
+RdfData::RdfData() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -79,10 +67,10 @@ RdfData::Pointer RdfData::deepCopy()
   ptr->setMinDistance(getMinDistance());
   ptr->setMaxDistance(getMaxDistance());
   ptr->setDistributionType(getDistributionType());
-  float temp[3] = {0.0f, 0.0f, 0.0f};
-  getBoxSize(temp);
+  std::array<float, 3> temp = {0.0f, 0.0f, 0.0f};
+  temp = getBoxSize();
   ptr->setBoxSize(temp);
-  getBoxResolution(temp);
+  temp = getBoxResolution();
   ptr->setBoxResolution(temp);
   return ptr;
 }
@@ -93,7 +81,7 @@ RdfData::Pointer RdfData::deepCopy()
 int RdfData::readJson(const QJsonObject& json)
 {
   int err = 0;
-  float boxDims[3] = {0.0f, 0.0f, 0.0f};
+  std::array<float, 3> boxDims = {0.0f, 0.0f, 0.0f};
 
   QJsonObject rdfJson = json[SIMPL::StringConstants::RadialDistFunc].toObject();
 
@@ -114,7 +102,7 @@ int RdfData::readJson(const QJsonObject& json)
   }
   setBoxSize(boxDims);
 
-  float boxRes[3] = {0.0f, 0.0f, 0.0f};
+  std::array<float, 3> boxRes = {0.0f, 0.0f, 0.0f};
 
   if(StatsData::ParseFloat3Vec(rdfJson, SIMPL::StringConstants::RdfBoxRes, boxRes, 0.0) == 0)
   {
@@ -130,8 +118,8 @@ int RdfData::readJson(const QJsonObject& json)
   }
   setNumberOfBins(numBins);
 
-  std::vector<float> bd = {boxDims[0], boxDims[1], boxDims[2]};
-  std::vector<float> br = {boxRes[0], boxRes[1], boxRes[2]};
+  std::array<float, 3> bd = {boxDims[0], boxDims[1], boxDims[2]};
+  std::array<float, 3> br = {boxRes[0], boxRes[1], boxRes[2]};
   std::vector<float> freqs = RadialDistributionFunction::GenerateRandomDistribution(m_MinDistance, m_MaxDistance, numBins, bd, br);
   setFrequencies(freqs);
 
@@ -149,15 +137,14 @@ int RdfData::writeJson(QJsonObject& json)
   rdfJson.insert(SIMPL::StringConstants::RdfMinDistance, getMinDistance());
   rdfJson.insert(SIMPL::StringConstants::RdfMaxDistance, getMaxDistance());
   QJsonArray boxArray;
-  float boxDims[3];
-  getBoxSize(boxDims);
+  std::array<float, 3> boxDims = getBoxSize();
   for(int i = 0; i < 3; i++)
   {
     boxArray.insert(i, boxDims[i]);
   }
   rdfJson.insert(SIMPL::StringConstants::RdfBoxDims, boxArray);
 
-  getBoxResolution(boxDims);
+  boxDims = getBoxResolution();
   for(int i = 0; i < 3; i++)
   {
     boxArray.replace(i, boxDims[i]);
@@ -166,4 +153,129 @@ int RdfData::writeJson(QJsonObject& json)
 
   json.insert(SIMPL::StringConstants::RadialDistFunc, rdfJson);
   return err;
+}
+
+// -----------------------------------------------------------------------------
+RdfData::Pointer RdfData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+RdfData::Pointer RdfData::New()
+{
+  Pointer sharedPtr(new(RdfData));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString RdfData::getNameOfClass() const
+{
+  return QString("RdfData");
+}
+
+// -----------------------------------------------------------------------------
+QString RdfData::ClassName()
+{
+  return QString("RdfData");
+}
+
+// -----------------------------------------------------------------------------
+void RdfData::setFrequencies(const std::vector<float>& value)
+{
+  m_Frequencies = value;
+}
+
+// -----------------------------------------------------------------------------
+std::vector<float> RdfData::getFrequencies() const
+{
+  return m_Frequencies;
+}
+
+// -----------------------------------------------------------------------------
+void RdfData::setMinDistance(float value)
+{
+  m_MinDistance = value;
+}
+
+// -----------------------------------------------------------------------------
+float RdfData::getMinDistance() const
+{
+  return m_MinDistance;
+}
+
+// -----------------------------------------------------------------------------
+void RdfData::setMaxDistance(float value)
+{
+  m_MaxDistance = value;
+}
+
+// -----------------------------------------------------------------------------
+float RdfData::getMaxDistance() const
+{
+  return m_MaxDistance;
+}
+
+// -----------------------------------------------------------------------------
+void RdfData::setNumberOfBins(int value)
+{
+  m_NumberOfBins = value;
+}
+
+// -----------------------------------------------------------------------------
+int RdfData::getNumberOfBins() const
+{
+  return m_NumberOfBins;
+}
+
+// -----------------------------------------------------------------------------
+void RdfData::setDistributionType(const QString& value)
+{
+  m_DistributionType = value;
+}
+
+// -----------------------------------------------------------------------------
+QString RdfData::getDistributionType() const
+{
+  return m_DistributionType;
+}
+
+// -----------------------------------------------------------------------------
+void RdfData::setBoxSize(const std::array<float, 3>& value)
+{
+  m_BoxSize = value;
+}
+
+// -----------------------------------------------------------------------------
+void RdfData::setBoxSize(float v0, float v1, float v2)
+{
+  m_BoxSize[0] = v0;
+  m_BoxSize[1] = v1;
+  m_BoxSize[2] = v2;
+}
+
+// -----------------------------------------------------------------------------
+std::array<float, 3> RdfData::getBoxSize() const
+{
+  return m_BoxSize;
+}
+
+// -----------------------------------------------------------------------------
+void RdfData::setBoxResolution(const std::array<float, 3>& value)
+{
+  m_BoxResolution = value;
+}
+
+// -----------------------------------------------------------------------------
+void RdfData::setBoxResolution(float v0, float v1, float v2)
+{
+  m_BoxResolution[0] = v0;
+  m_BoxResolution[1] = v1;
+  m_BoxResolution[2] = v2;
+}
+
+// -----------------------------------------------------------------------------
+std::array<float, 3> RdfData::getBoxResolution() const
+{
+  return m_BoxResolution;
 }

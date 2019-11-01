@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -64,9 +66,23 @@
 class SIMPLib_EXPORT FloatFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(FloatFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(FloatFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FloatFilterParameter, FilterParameter)
+    using Self = FloatFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for FloatFilterParameter
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for FloatFilterParameter
+     */
+    static QString ClassName();
 
     using SetterCallbackType = std::function<void(float)>;
     using GetterCallbackType = std::function<float(void)>;
@@ -88,7 +104,7 @@ class SIMPLib_EXPORT FloatFilterParameter : public FilterParameter
      * @return
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const float& defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex = -1);
+                       float defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex = -1);
 
     ~FloatFilterParameter() override;
 
@@ -116,27 +132,46 @@ class SIMPLib_EXPORT FloatFilterParameter : public FilterParameter
     * that this FilterParameter subclass represents.
     * from the filter parameter.
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const FloatFilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    FloatFilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const FloatFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    FloatFilterParameter::GetterCallbackType getGetterCallback() const;
 
+  protected:
+    /**
+     * @brief FloatFilterParameter The default constructor.  It is protected because this
+     * filter parameter should only be instantiated using its New(...) function or short-form macro.
+     */
+    FloatFilterParameter();
 
-    protected:
-      /**
-       * @brief FloatFilterParameter The default constructor.  It is protected because this
-       * filter parameter should only be instantiated using its New(...) function or short-form macro.
-       */
-      FloatFilterParameter();
+  public:
+    FloatFilterParameter(const FloatFilterParameter&) = delete;            // Copy Constructor Not Implemented
+    FloatFilterParameter(FloatFilterParameter&&) = delete;                 // Move Constructor Not Implemented
+    FloatFilterParameter& operator=(const FloatFilterParameter&) = delete; // Copy Assignment Not Implemented
+    FloatFilterParameter& operator=(FloatFilterParameter&&) = delete;      // Move Assignment Not Implemented
 
-    public:
-      FloatFilterParameter(const FloatFilterParameter&) = delete;            // Copy Constructor Not Implemented
-      FloatFilterParameter(FloatFilterParameter&&) = delete;                 // Move Constructor Not Implemented
-      FloatFilterParameter& operator=(const FloatFilterParameter&) = delete; // Copy Assignment Not Implemented
-      FloatFilterParameter& operator=(FloatFilterParameter&&) = delete;      // Move Assignment Not Implemented
+  private:
+    FloatFilterParameter::SetterCallbackType m_SetterCallback = {};
+    FloatFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

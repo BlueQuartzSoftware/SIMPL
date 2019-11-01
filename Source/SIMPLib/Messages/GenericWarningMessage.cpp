@@ -36,6 +36,8 @@
 
 #include "GenericWarningMessage.h"
 
+#include <QtCore/QObject>
+
 #include "AbstractMessageHandler.h"
 
 // -----------------------------------------------------------------------------
@@ -83,4 +85,29 @@ QString GenericWarningMessage::generateMessageString() const
 void GenericWarningMessage::visit(AbstractMessageHandler* msgHandler) const
 {
   msgHandler->processMessage(this);
+}
+
+// -----------------------------------------------------------------------------
+GenericWarningMessage::Pointer GenericWarningMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+GenericWarningMessage::Pointer GenericWarningMessage::New()
+{
+  Pointer sharedPtr(new(GenericWarningMessage));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString GenericWarningMessage::getNameOfClass() const
+{
+  return QString("GenericWarningMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString GenericWarningMessage::ClassName()
+{
+  return QString("GenericWarningMessage");
 }

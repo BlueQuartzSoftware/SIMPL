@@ -36,6 +36,7 @@
 #include <QtCore/QVector>
 
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "SVWidgetsLib/Widgets/DataStructureModel.h"
 #include "SVWidgetsLib/Widgets/DataStructureTreeView.h"
@@ -507,4 +508,14 @@ QModelIndex DataStructureModel::sibling(int row, int column, const QModelIndex& 
 
 #endif
 
+// -----------------------------------------------------------------------------
+QString DataStructureModel::getNameOfClass() const
+{
+  return QString("DataStructureModel");
+}
 
+// -----------------------------------------------------------------------------
+QString DataStructureModel::ClassName()
+{
+  return QString("DataStructureModel");
+}

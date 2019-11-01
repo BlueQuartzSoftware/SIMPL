@@ -53,6 +53,7 @@
 
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 class FilterPipelineTest
 {

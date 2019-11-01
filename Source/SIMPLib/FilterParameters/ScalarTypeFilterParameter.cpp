@@ -96,3 +96,52 @@ void ScalarTypeFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = static_cast<int>(m_GetterCallback());
   }
 }
+
+// -----------------------------------------------------------------------------
+ScalarTypeFilterParameter::Pointer ScalarTypeFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ScalarTypeFilterParameter::Pointer ScalarTypeFilterParameter::New()
+{
+  Pointer sharedPtr(new(ScalarTypeFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString ScalarTypeFilterParameter::getNameOfClass() const
+{
+  return QString("ScalarTypeFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString ScalarTypeFilterParameter::ClassName()
+{
+  return QString("ScalarTypeFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void ScalarTypeFilterParameter::setSetterCallback(const ScalarTypeFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ScalarTypeFilterParameter::SetterCallbackType ScalarTypeFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void ScalarTypeFilterParameter::setGetterCallback(const ScalarTypeFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ScalarTypeFilterParameter::GetterCallbackType ScalarTypeFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

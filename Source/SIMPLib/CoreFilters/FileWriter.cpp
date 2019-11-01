@@ -33,6 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "FileWriter.h"
 
 #include <QtCore/QDir>
@@ -105,4 +107,45 @@ void FileWriter::execute()
     setErrorCondition(err, ss);
     return;
   }
+}
+
+// -----------------------------------------------------------------------------
+FileWriter::Pointer FileWriter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<FileWriter> FileWriter::New()
+{
+  struct make_shared_enabler : public FileWriter
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString FileWriter::getNameOfClass() const
+{
+  return QString("FileWriter");
+}
+
+// -----------------------------------------------------------------------------
+QString FileWriter::ClassName()
+{
+  return QString("FileWriter");
+}
+
+// -----------------------------------------------------------------------------
+void FileWriter::setOutputFile(const QString& value)
+{
+  m_OutputFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FileWriter::getOutputFile() const
+{
+  return m_OutputFile;
 }

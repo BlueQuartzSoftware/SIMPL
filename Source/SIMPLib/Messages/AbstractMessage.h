@@ -36,10 +36,11 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 class AbstractMessageHandler;
 
@@ -49,19 +50,34 @@ class AbstractMessageHandler;
  */
 class SIMPLib_EXPORT AbstractMessage
 {
-  // clang-format off
-  PYB11_CREATE_BINDINGS(AbstractMessage)
-  PYB11_PROPERTY(QString MessageText READ getMessageText WRITE setMessageText)
-  PYB11_METHOD(QString generateMessageString)
-  // clang-format on
 
 public:
-  SIMPL_SHARED_POINTERS(AbstractMessage)
-  SIMPL_TYPE_MACRO(AbstractMessage)
+  using Self = AbstractMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  virtual QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  static QString ClassName();
 
   virtual ~AbstractMessage();
-
-  SIMPL_INSTANCE_STRING_PROPERTY(MessageText)
+  /**
+   * @brief Setter property for MessageText
+   */
+  void setMessageText(const QString& value);
+  /**
+   * @brief Getter property for MessageText
+   * @return Value of MessageText
+   */
+  QString getMessageText() const;
 
   /**
    * @brief This method creates and returns a message string
@@ -81,8 +97,6 @@ protected:
   AbstractMessage(const QString& msgText);
 
 private:
-
+  QString m_MessageText = {};
 };
 Q_DECLARE_METATYPE(AbstractMessage::Pointer)
-
-

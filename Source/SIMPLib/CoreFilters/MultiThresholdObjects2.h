@@ -36,12 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <memory>
+
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/ComparisonInputsAdvanced.h"
 #include "SIMPLib/Filtering/ComparisonSet.h"
 #include "SIMPLib/Filtering/ComparisonValue.h"
-#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The MultiThresholdObjects2 class. See [Filter documentation](@ref multithresholdobjects2) for details.
@@ -49,41 +51,80 @@
 class  SIMPLib_EXPORT MultiThresholdObjects2 : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(MultiThresholdObjects2 SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(MultiThresholdObjects2)
+    PYB11_FILTER_NEW_MACRO(MultiThresholdObjects2)
+    PYB11_FILTER_PARAMETER(QString, DestinationArrayName)
+    PYB11_FILTER_PARAMETER(ComparisonInputsAdvanced, SelectedThresholds)
     PYB11_PROPERTY(QString DestinationArrayName READ getDestinationArrayName WRITE setDestinationArrayName)
     PYB11_PROPERTY(ComparisonInputsAdvanced SelectedThresholds READ getSelectedThresholds WRITE setSelectedThresholds)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(MultiThresholdObjects2)
-    SIMPL_FILTER_NEW_MACRO(MultiThresholdObjects2)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MultiThresholdObjects2, AbstractFilter)
+    using Self = MultiThresholdObjects2;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<MultiThresholdObjects2> New();
+
+    /**
+     * @brief Returns the name of the class for MultiThresholdObjects2
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for MultiThresholdObjects2
+     */
+    static QString ClassName();
 
     ~MultiThresholdObjects2() override;
 
-    SIMPL_FILTER_PARAMETER(QString, DestinationArrayName)
+    /**
+     * @brief Setter property for DestinationArrayName
+     */
+    void setDestinationArrayName(const QString& value);
+    /**
+     * @brief Getter property for DestinationArrayName
+     * @return Value of DestinationArrayName
+     */
+    QString getDestinationArrayName() const;
+
     Q_PROPERTY(QString DestinationArrayName READ getDestinationArrayName WRITE setDestinationArrayName)
 
-    SIMPL_FILTER_PARAMETER(ComparisonInputsAdvanced, SelectedThresholds)
+    /**
+     * @brief Setter property for SelectedThresholds
+     */
+    void setSelectedThresholds(const ComparisonInputsAdvanced& value);
+    /**
+     * @brief Getter property for SelectedThresholds
+     * @return Value of SelectedThresholds
+     */
+    ComparisonInputsAdvanced getSelectedThresholds() const;
+
     Q_PROPERTY(ComparisonInputsAdvanced SelectedThresholds READ getSelectedThresholds WRITE setSelectedThresholds)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
     */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -93,23 +134,23 @@ class  SIMPLib_EXPORT MultiThresholdObjects2 : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -210,7 +251,11 @@ class  SIMPLib_EXPORT MultiThresholdObjects2 : public AbstractFilter
 
 
   private:
-    DEFINE_DATAARRAY_VARIABLE(bool, Destination)
+    std::weak_ptr<DataArray<bool>> m_DestinationPtr;
+    bool* m_Destination = nullptr;
+
+    QString m_DestinationArrayName = {};
+    ComparisonInputsAdvanced m_SelectedThresholds = {};
 
   public:
     MultiThresholdObjects2(const MultiThresholdObjects2&) = delete; // Copy Constructor Not Implemented

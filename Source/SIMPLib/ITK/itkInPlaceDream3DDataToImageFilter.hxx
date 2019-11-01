@@ -4,6 +4,7 @@
 
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 namespace itk
 {

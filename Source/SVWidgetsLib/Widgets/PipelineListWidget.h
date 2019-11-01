@@ -79,8 +79,8 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
     void setupGui();
 
   signals:
-    void pipelineCanceled(const QModelIndex &pipelineIndex);
-    void pipelineOutput(FilterPipeline::Pointer pipeline, DataContainerArray::Pointer dca);
+    void pipelineCanceled(const QModelIndex& pipelineIndex);
+    void pipelineOutput(FilterPipeline::Pointer pipeline, DataContainerArrayShPtr dca);
 
   private:
 

@@ -36,6 +36,8 @@
 
 #include "GenericErrorMessage.h"
 
+#include <QtCore/QObject>
+
 #include "AbstractMessageHandler.h"
 
 // -----------------------------------------------------------------------------
@@ -83,4 +85,29 @@ QString GenericErrorMessage::generateMessageString() const
 void GenericErrorMessage::visit(AbstractMessageHandler* msgHandler) const
 {
   msgHandler->processMessage(this);
+}
+
+// -----------------------------------------------------------------------------
+GenericErrorMessage::Pointer GenericErrorMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+GenericErrorMessage::Pointer GenericErrorMessage::New()
+{
+  Pointer sharedPtr(new(GenericErrorMessage));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString GenericErrorMessage::getNameOfClass() const
+{
+  return QString("GenericErrorMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString GenericErrorMessage::ClassName()
+{
+  return QString("GenericErrorMessage");
 }

@@ -36,9 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
+#include <hdf5.h>
+
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The DataContainerWriter class. See [Filter documentation](@ref datacontainerwriter) for details.
@@ -48,49 +53,114 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     Q_OBJECT
     
     // This line MUST be first when exposing a class and properties to Python
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(DataContainerWriter SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(DataContainerWriter)
+    PYB11_FILTER_NEW_MACRO(DataContainerWriter)
+    PYB11_FILTER_PARAMETER(QString, OutputFile)
+    PYB11_FILTER_PARAMETER(bool, WriteXdmfFile)
+    PYB11_FILTER_PARAMETER(bool, WriteTimeSeries)
     PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
     PYB11_PROPERTY(bool WriteXdmfFile READ getWriteXdmfFile WRITE setWriteXdmfFile)
     PYB11_PROPERTY(bool WriteTimeSeries READ getWriteTimeSeries WRITE setWriteTimeSeries)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(DataContainerWriter)
-    SIMPL_FILTER_NEW_MACRO(DataContainerWriter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerWriter, AbstractFilter)
+    using Self = DataContainerWriter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<DataContainerWriter> New();
+
+    /**
+     * @brief Returns the name of the class for DataContainerWriter
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for DataContainerWriter
+     */
+    static QString ClassName();
 
     ~DataContainerWriter() override;
 
-    SIMPL_FILTER_PARAMETER(QString, OutputFile)
+    /**
+     * @brief Setter property for OutputFile
+     */
+    void setOutputFile(const QString& value);
+    /**
+     * @brief Getter property for OutputFile
+     * @return Value of OutputFile
+     */
+    QString getOutputFile() const;
+
     Q_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
 
-    SIMPL_INSTANCE_PROPERTY(bool, WritePipeline)
+    /**
+     * @brief Setter property for WritePipeline
+     */
+    void setWritePipeline(bool value);
+    /**
+     * @brief Getter property for WritePipeline
+     * @return Value of WritePipeline
+     */
+    bool getWritePipeline() const;
 
-    SIMPL_FILTER_PARAMETER(bool, WriteXdmfFile)
+    /**
+     * @brief Setter property for WriteXdmfFile
+     */
+    void setWriteXdmfFile(bool value);
+    /**
+     * @brief Getter property for WriteXdmfFile
+     * @return Value of WriteXdmfFile
+     */
+    bool getWriteXdmfFile() const;
+
     Q_PROPERTY(bool WriteXdmfFile READ getWriteXdmfFile WRITE setWriteXdmfFile)
 
-    SIMPL_FILTER_PARAMETER(bool, WriteTimeSeries)
+    /**
+     * @brief Setter property for WriteTimeSeries
+     */
+    void setWriteTimeSeries(bool value);
+    /**
+     * @brief Getter property for WriteTimeSeries
+     * @return Value of WriteTimeSeries
+     */
+    bool getWriteTimeSeries() const;
+
     Q_PROPERTY(bool WriteTimeSeries READ getWriteTimeSeries WRITE setWriteTimeSeries)
 
-    SIMPL_INSTANCE_PROPERTY(bool, AppendToExisting)
+    /**
+     * @brief Setter property for AppendToExisting
+     */
+    void setAppendToExisting(bool value);
+    /**
+     * @brief Getter property for AppendToExisting
+     * @return Value of AppendToExisting
+     */
+    bool getAppendToExisting() const;
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -100,23 +170,23 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -213,6 +283,12 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     void writeXdmfFooter(QTextStream& out);
 
   private:
+    QString m_OutputFile = {};
+    bool m_WritePipeline = {};
+    bool m_WriteXdmfFile = {};
+    bool m_WriteTimeSeries = {};
+    bool m_AppendToExisting = {};
+
     hid_t m_FileId;
 
   public:

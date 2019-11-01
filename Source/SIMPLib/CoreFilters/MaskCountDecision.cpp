@@ -37,10 +37,14 @@
 
 #include <QtCore/QJsonDocument>
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -215,7 +219,7 @@ AbstractFilter::Pointer MaskCountDecision::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MaskCountDecision::getCompiledLibraryName() const
+QString MaskCountDecision::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -223,7 +227,7 @@ const QString MaskCountDecision::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MaskCountDecision::getGroupName() const
+QString MaskCountDecision::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -231,7 +235,7 @@ const QString MaskCountDecision::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid MaskCountDecision::getUuid()
+QUuid MaskCountDecision::getUuid() const
 {
   return QUuid("{34a19028-c50b-5dea-af0e-e06c798d3686}");
 }
@@ -239,7 +243,7 @@ const QUuid MaskCountDecision::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MaskCountDecision::getSubGroupName() const
+QString MaskCountDecision::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -247,7 +251,56 @@ const QString MaskCountDecision::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MaskCountDecision::getHumanLabel() const
+QString MaskCountDecision::getHumanLabel() const
 {
   return "Mask Count Decision";
+}
+
+// -----------------------------------------------------------------------------
+MaskCountDecision::Pointer MaskCountDecision::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+MaskCountDecision::Pointer MaskCountDecision::New()
+{
+  Pointer sharedPtr(new(MaskCountDecision));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString MaskCountDecision::getNameOfClass() const
+{
+  return QString("MaskCountDecision");
+}
+
+// -----------------------------------------------------------------------------
+QString MaskCountDecision::ClassName()
+{
+  return QString("MaskCountDecision");
+}
+
+// -----------------------------------------------------------------------------
+void MaskCountDecision::setMaskArrayPath(const DataArrayPath& value)
+{
+  m_MaskArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath MaskCountDecision::getMaskArrayPath() const
+{
+  return m_MaskArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void MaskCountDecision::setNumberOfTrues(int value)
+{
+  m_NumberOfTrues = value;
+}
+
+// -----------------------------------------------------------------------------
+int MaskCountDecision::getNumberOfTrues() const
+{
+  return m_NumberOfTrues;
 }

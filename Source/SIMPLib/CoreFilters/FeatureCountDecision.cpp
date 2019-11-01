@@ -37,12 +37,16 @@
 
 #include <QtCore/QJsonDocument>
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -201,7 +205,7 @@ AbstractFilter::Pointer FeatureCountDecision::newFilterInstance(bool copyFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureCountDecision::getCompiledLibraryName() const
+QString FeatureCountDecision::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -209,7 +213,7 @@ const QString FeatureCountDecision::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureCountDecision::getGroupName() const
+QString FeatureCountDecision::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -217,7 +221,7 @@ const QString FeatureCountDecision::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid FeatureCountDecision::getUuid()
+QUuid FeatureCountDecision::getUuid() const
 {
   return QUuid("{64d1df13-17a2-56a2-90a5-4dfda442b144}");
 }
@@ -225,7 +229,7 @@ const QUuid FeatureCountDecision::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureCountDecision::getSubGroupName() const
+QString FeatureCountDecision::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -233,7 +237,56 @@ const QString FeatureCountDecision::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureCountDecision::getHumanLabel() const
+QString FeatureCountDecision::getHumanLabel() const
 {
   return "Feature Count Decision";
+}
+
+// -----------------------------------------------------------------------------
+FeatureCountDecision::Pointer FeatureCountDecision::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+FeatureCountDecision::Pointer FeatureCountDecision::New()
+{
+  Pointer sharedPtr(new(FeatureCountDecision));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString FeatureCountDecision::getNameOfClass() const
+{
+  return QString("FeatureCountDecision");
+}
+
+// -----------------------------------------------------------------------------
+QString FeatureCountDecision::ClassName()
+{
+  return QString("FeatureCountDecision");
+}
+
+// -----------------------------------------------------------------------------
+void FeatureCountDecision::setFeatureIdsArrayPath(const DataArrayPath& value)
+{
+  m_FeatureIdsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FeatureCountDecision::getFeatureIdsArrayPath() const
+{
+  return m_FeatureIdsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void FeatureCountDecision::setMaxGrains(int value)
+{
+  m_MaxGrains = value;
+}
+
+// -----------------------------------------------------------------------------
+int FeatureCountDecision::getMaxGrains() const
+{
+  return m_MaxGrains;
 }

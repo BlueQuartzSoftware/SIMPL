@@ -33,13 +33,20 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "RenameAttributeMatrix.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -182,7 +189,7 @@ AbstractFilter::Pointer RenameAttributeMatrix::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeMatrix::getCompiledLibraryName() const
+QString RenameAttributeMatrix::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -190,7 +197,7 @@ const QString RenameAttributeMatrix::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeMatrix::getBrandingString() const
+QString RenameAttributeMatrix::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -198,7 +205,7 @@ const QString RenameAttributeMatrix::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeMatrix::getFilterVersion() const
+QString RenameAttributeMatrix::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -209,7 +216,7 @@ const QString RenameAttributeMatrix::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeMatrix::getGroupName() const
+QString RenameAttributeMatrix::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -217,7 +224,7 @@ const QString RenameAttributeMatrix::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid RenameAttributeMatrix::getUuid()
+QUuid RenameAttributeMatrix::getUuid() const
 {
   return QUuid("{ee29e6d6-1f59-551b-9350-a696523261d5}");
 }
@@ -225,7 +232,7 @@ const QUuid RenameAttributeMatrix::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeMatrix::getSubGroupName() const
+QString RenameAttributeMatrix::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -233,7 +240,7 @@ const QString RenameAttributeMatrix::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeMatrix::getHumanLabel() const
+QString RenameAttributeMatrix::getHumanLabel() const
 {
   return "Rename Attribute Matrix";
 }
@@ -251,4 +258,57 @@ DataArrayPath::RenameContainer RenameAttributeMatrix::getRenamedPaths()
   container.push_back(std::make_pair(oldPath, newPath));
 
   return container;
+}
+
+// -----------------------------------------------------------------------------
+RenameAttributeMatrix::Pointer RenameAttributeMatrix::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<RenameAttributeMatrix> RenameAttributeMatrix::New()
+{
+  struct make_shared_enabler : public RenameAttributeMatrix
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString RenameAttributeMatrix::getNameOfClass() const
+{
+  return QString("RenameAttributeMatrix");
+}
+
+// -----------------------------------------------------------------------------
+QString RenameAttributeMatrix::ClassName()
+{
+  return QString("RenameAttributeMatrix");
+}
+
+// -----------------------------------------------------------------------------
+void RenameAttributeMatrix::setSelectedAttributeMatrixPath(const DataArrayPath& value)
+{
+  m_SelectedAttributeMatrixPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RenameAttributeMatrix::getSelectedAttributeMatrixPath() const
+{
+  return m_SelectedAttributeMatrixPath;
+}
+
+// -----------------------------------------------------------------------------
+void RenameAttributeMatrix::setNewAttributeMatrix(const QString& value)
+{
+  m_NewAttributeMatrix = value;
+}
+
+// -----------------------------------------------------------------------------
+QString RenameAttributeMatrix::getNewAttributeMatrix() const
+{
+  return m_NewAttributeMatrix;
 }

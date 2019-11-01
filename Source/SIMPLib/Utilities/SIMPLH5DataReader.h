@@ -31,9 +31,10 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
+#include <memory>
+
 #include <hdf5.h>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 
@@ -50,15 +51,26 @@ using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
 class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(SIMPLH5DataReader)
+    PYB11_SHARED_POINTERS(SIMPLH5DataReader)
+    PYB11_STATIC_NEW_MACRO(SIMPLH5DataReader)
 
     PYB11_METHOD(bool openFile ARGS filePath)
     PYB11_METHOD(bool closeFile)
     PYB11_METHOD(DataContainerArrayProxy readDataContainerArrayStructure ARGS SIMPLH5DataReaderRequirements err)
-    
+#endif
+
   public:
-    SIMPL_SHARED_POINTERS(SIMPLH5DataReader)
-    SIMPL_STATIC_NEW_MACRO(SIMPLH5DataReader)
+    using Self = SIMPLH5DataReader;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
 
     SIMPLH5DataReader();
     ~SIMPLH5DataReader() override;

@@ -37,11 +37,12 @@
 #pragma once
 
 
+#include <memory>
+
 #include <hdf5.h>
 
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/StatsData/StatsData.h"
 
 /**
@@ -55,10 +56,24 @@
 class SIMPLib_EXPORT H5StatsDataDelegate
 {
   public:
+    using Self = H5StatsDataDelegate;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
-    SIMPL_SHARED_POINTERS(H5StatsDataDelegate)
-    SIMPL_STATIC_NEW_MACRO(H5StatsDataDelegate)
-    SIMPL_TYPE_MACRO(H5StatsDataDelegate)
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for H5StatsDataDelegate
+     */
+    virtual QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for H5StatsDataDelegate
+     */
+    static QString ClassName();
+
     virtual ~H5StatsDataDelegate();
 
     int writeStatsData(StatsData* data, hid_t groupId);
@@ -74,6 +89,8 @@ class SIMPLib_EXPORT H5StatsDataDelegate
     H5StatsDataDelegate(H5StatsDataDelegate&&) = delete;      // Move Constructor Not Implemented
     H5StatsDataDelegate& operator=(const H5StatsDataDelegate&) = delete; // Copy Assignment Not Implemented
     H5StatsDataDelegate& operator=(H5StatsDataDelegate&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 
 

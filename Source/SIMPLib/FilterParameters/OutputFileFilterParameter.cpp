@@ -96,3 +96,76 @@ void OutputFileFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = m_GetterCallback();
   }
 }
+
+// -----------------------------------------------------------------------------
+OutputFileFilterParameter::Pointer OutputFileFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+OutputFileFilterParameter::Pointer OutputFileFilterParameter::New()
+{
+  Pointer sharedPtr(new(OutputFileFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString OutputFileFilterParameter::getNameOfClass() const
+{
+  return QString("OutputFileFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString OutputFileFilterParameter::ClassName()
+{
+  return QString("OutputFileFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void OutputFileFilterParameter::setFileExtension(const QString& value)
+{
+  m_FileExtension = value;
+}
+
+// -----------------------------------------------------------------------------
+QString OutputFileFilterParameter::getFileExtension() const
+{
+  return m_FileExtension;
+}
+
+// -----------------------------------------------------------------------------
+void OutputFileFilterParameter::setFileType(const QString& value)
+{
+  m_FileType = value;
+}
+
+// -----------------------------------------------------------------------------
+QString OutputFileFilterParameter::getFileType() const
+{
+  return m_FileType;
+}
+
+// -----------------------------------------------------------------------------
+void OutputFileFilterParameter::setSetterCallback(const OutputFileFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+OutputFileFilterParameter::SetterCallbackType OutputFileFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void OutputFileFilterParameter::setGetterCallback(const OutputFileFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+OutputFileFilterParameter::GetterCallbackType OutputFileFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

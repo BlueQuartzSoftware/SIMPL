@@ -33,15 +33,22 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ApplyImageTransforms.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/MultiDataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/TransformContainer.h"
 
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -189,7 +196,7 @@ AbstractFilter::Pointer ApplyImageTransforms::newFilterInstance(bool copyFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyImageTransforms::getCompiledLibraryName() const
+QString ApplyImageTransforms::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -197,7 +204,7 @@ const QString ApplyImageTransforms::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyImageTransforms::getBrandingString() const
+QString ApplyImageTransforms::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -205,7 +212,7 @@ const QString ApplyImageTransforms::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyImageTransforms::getFilterVersion() const
+QString ApplyImageTransforms::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -216,7 +223,7 @@ const QString ApplyImageTransforms::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyImageTransforms::getGroupName() const
+QString ApplyImageTransforms::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -224,7 +231,7 @@ const QString ApplyImageTransforms::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyImageTransforms::getSubGroupName() const
+QString ApplyImageTransforms::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::ImageFilters;
 }
@@ -232,7 +239,7 @@ const QString ApplyImageTransforms::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ApplyImageTransforms::getHumanLabel() const
+QString ApplyImageTransforms::getHumanLabel() const
 {
   return "Apply Image Transforms";
 }
@@ -240,7 +247,48 @@ const QString ApplyImageTransforms::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ApplyImageTransforms::getUuid()
+QUuid ApplyImageTransforms::getUuid() const
 {
   return QUuid("{a4bd18bc-3306-5e41-bc41-4cb4248226bd}");
+}
+
+// -----------------------------------------------------------------------------
+ApplyImageTransforms::Pointer ApplyImageTransforms::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ApplyImageTransforms> ApplyImageTransforms::New()
+{
+  struct make_shared_enabler : public ApplyImageTransforms
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ApplyImageTransforms::getNameOfClass() const
+{
+  return QString("_SUPERApplyImageTransforms");
+}
+
+// -----------------------------------------------------------------------------
+QString ApplyImageTransforms::ClassName()
+{
+  return QString("_SUPERApplyImageTransforms");
+}
+
+// -----------------------------------------------------------------------------
+void ApplyImageTransforms::setImageDataContainers(const QStringList& value)
+{
+  m_ImageDataContainers = value;
+}
+
+// -----------------------------------------------------------------------------
+QStringList ApplyImageTransforms::getImageDataContainers() const
+{
+  return m_ImageDataContainers;
 }

@@ -35,16 +35,19 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtGui/QIcon>
 #include <QtWidgets/QWidget>
 
 #include "SIMPLib/Common/IObserver.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/SIMPLib.h"
+class DataContainerArray;
+using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
@@ -99,7 +102,7 @@ public slots:
    * @brief Updates the internal DataContainerArray copy from the input DataContainerArray
    * @param dca
    */
-  void updateDataContainerArray(DataContainerArray::Pointer dca);
+  void updateDataContainerArray(DataContainerArrayShPtrType dca);
 
   /**
    * @brief Updates the DataStructureWidget with the latest DataContainerArray from
@@ -179,7 +182,7 @@ protected:
   QStandardItem* findItemByPath(DataArrayPath path);
 
 private:
-  DataContainerArray::Pointer  m_Dca = nullptr;
+  DataContainerArrayShPtrType m_Dca = nullptr;
   QSharedPointer<Ui::DataStructureWidget>       m_Ui;
   QIcon m_ImageGeomIcon = QIcon(SIMPLView::GeometryIcons::Image);
   QIcon m_VertexGeomIcon = QIcon(SIMPLView::GeometryIcons::Vertex);

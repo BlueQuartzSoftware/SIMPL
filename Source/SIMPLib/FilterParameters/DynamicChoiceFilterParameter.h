@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -63,9 +65,23 @@
 class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(DynamicChoiceFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(DynamicChoiceFilterParameter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DynamicChoiceFilterParameter, FilterParameter)
+    using Self = DynamicChoiceFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for DynamicChoiceFilterParameter
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for DynamicChoiceFilterParameter
+     */
+    static QString ClassName();
 
     using SetterCallbackType = std::function<void(QString)>;
     using GetterCallbackType = std::function<QString(void)>;
@@ -94,9 +110,25 @@ class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
 
     ~DynamicChoiceFilterParameter() override;
 
+    /**
+     * @brief Setter property for ListProperty
+     */
+    void setListProperty(const QString& value);
+    /**
+     * @brief Getter property for ListProperty
+     * @return Value of ListProperty
+     */
+    QString getListProperty() const;
 
-    SIMPL_INSTANCE_STRING_PROPERTY(ListProperty)
-    SIMPL_INSTANCE_STRING_PROPERTY(Units)
+    /**
+     * @brief Setter property for Units
+     */
+    void setUnits(const QString& value);
+    /**
+     * @brief Getter property for Units
+     * @return Value of Units
+     */
+    QString getUnits() const;
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls
@@ -122,15 +154,30 @@ class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
     * that this FilterParameter subclass represents.
     * from the filter parameter.
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const DynamicChoiceFilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    DynamicChoiceFilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
-
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const DynamicChoiceFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    DynamicChoiceFilterParameter::GetterCallbackType getGetterCallback() const;
 
   protected:
       /**
@@ -144,5 +191,11 @@ class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
     DynamicChoiceFilterParameter(DynamicChoiceFilterParameter&&) = delete;      // Move Constructor Not Implemented
     DynamicChoiceFilterParameter& operator=(const DynamicChoiceFilterParameter&) = delete; // Copy Assignment Not Implemented
     DynamicChoiceFilterParameter& operator=(DynamicChoiceFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    QString m_ListProperty = {};
+    QString m_Units = {};
+    DynamicChoiceFilterParameter::SetterCallbackType m_SetterCallback = {};
+    DynamicChoiceFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

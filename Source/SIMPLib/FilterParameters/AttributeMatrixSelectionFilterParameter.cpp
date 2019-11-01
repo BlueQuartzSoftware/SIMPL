@@ -191,3 +191,76 @@ void AttributeMatrixSelectionFilterParameter::dataArrayPathRenamed(AbstractFilte
     }
   }
 }
+
+// -----------------------------------------------------------------------------
+AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterParameter::New()
+{
+  Pointer sharedPtr(new(AttributeMatrixSelectionFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString AttributeMatrixSelectionFilterParameter::getNameOfClass() const
+{
+  return QString("AttributeMatrixSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString AttributeMatrixSelectionFilterParameter::ClassName()
+{
+  return QString("AttributeMatrixSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void AttributeMatrixSelectionFilterParameter::setDefaultGeometryTypes(const IGeometry::Types& value)
+{
+  m_DefaultGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Types AttributeMatrixSelectionFilterParameter::getDefaultGeometryTypes() const
+{
+  return m_DefaultGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+void AttributeMatrixSelectionFilterParameter::setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value)
+{
+  m_DefaultAttributeMatrixTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<AttributeMatrix::Type> AttributeMatrixSelectionFilterParameter::getDefaultAttributeMatrixTypes() const
+{
+  return m_DefaultAttributeMatrixTypes;
+}
+
+// -----------------------------------------------------------------------------
+void AttributeMatrixSelectionFilterParameter::setSetterCallback(const AttributeMatrixSelectionFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrixSelectionFilterParameter::SetterCallbackType AttributeMatrixSelectionFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void AttributeMatrixSelectionFilterParameter::setGetterCallback(const AttributeMatrixSelectionFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrixSelectionFilterParameter::GetterCallbackType AttributeMatrixSelectionFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

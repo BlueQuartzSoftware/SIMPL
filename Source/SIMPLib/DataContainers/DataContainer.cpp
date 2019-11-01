@@ -52,6 +52,7 @@
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Utilities.h"
@@ -173,7 +174,7 @@ void DataContainer::setGeometry(const IGeometry::Pointer& geometry)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Pointer DataContainer::getGeometry()
+IGeometry::Pointer DataContainer::getGeometry() const
 {
   return m_Geometry;
 }
@@ -224,7 +225,7 @@ void DataContainer::clearAttributeMatrices()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainer::NameList DataContainer::getAttributeMatrixNames()
+DataContainer::NameList DataContainer::getAttributeMatrixNames() const
 {
   return getNamesOfChildren();
 }
@@ -232,7 +233,7 @@ DataContainer::NameList DataContainer::getAttributeMatrixNames()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataContainer::writeAttributeMatricesToHDF5(hid_t parentId)
+int DataContainer::writeAttributeMatricesToHDF5(hid_t parentId) const
 {
   int err;
   hid_t attributeMatrixId;
@@ -332,7 +333,7 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, Da
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainer::Pointer DataContainer::deepCopy(bool forceNoAllocate)
+DataContainer::Pointer DataContainer::deepCopy(bool forceNoAllocate) const
 {
   DataContainer::Pointer dcCopy = DataContainer::New(getName());
   dcCopy->setName(getName());
@@ -356,7 +357,7 @@ DataContainer::Pointer DataContainer::deepCopy(bool forceNoAllocate)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
+int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf) const
 {
   int err;
   hid_t geometryId;
@@ -430,7 +431,7 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataContainer::writeXdmf(QTextStream& out, const QString& hdfFileName)
+int DataContainer::writeXdmf(QTextStream& out, const QString& hdfFileName) const
 {
   if(nullptr == m_Geometry.get())
   {
@@ -615,7 +616,7 @@ int DataContainer::writeXdmf(QTextStream& out, const QString& hdfFileName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainer::writeXdmfFooter(QTextStream& xdmf)
+void DataContainer::writeXdmfFooter(QTextStream& xdmf) const
 {
   xdmf << "  </Grid>"
        << "\n";
@@ -725,7 +726,7 @@ int DataContainer::readMeshDataFromHDF5(hid_t dcGid, bool preflight)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<DataArrayPath> DataContainer::getAllDataArrayPaths()
+QVector<DataArrayPath> DataContainer::getAllDataArrayPaths() const
 {
   QVector<DataArrayPath> paths;
   const auto attributeMatrices = getChildren();
@@ -747,7 +748,7 @@ QVector<DataArrayPath> DataContainer::getAllDataArrayPaths()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataContainer::getInfoString(SIMPL::InfoStringFormat format)
+QString DataContainer::getInfoString(SIMPL::InfoStringFormat format) const
 {
   QString info;
   QTextStream ss(&info);
@@ -780,7 +781,7 @@ QString DataContainer::getInfoString(SIMPL::InfoStringFormat format)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixShPtr DataContainer::getPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, int err)
+AttributeMatrixShPtr DataContainer::getPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, int err) const
 {
   QString ss;
   AttributeMatrixShPtr attributeMatrix(nullptr);
@@ -892,4 +893,22 @@ AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilte
     filter->setErrorCondition(-10014, ss);
   }
   return attributeMatrix;
+}
+
+// -----------------------------------------------------------------------------
+DataContainer::Pointer DataContainer::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainer::getNameOfClass() const
+{
+  return QString("DataContainer");
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainer::ClassName()
+{
+  return QString("DataContainer");
 }

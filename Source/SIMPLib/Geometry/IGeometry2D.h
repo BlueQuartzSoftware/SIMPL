@@ -35,8 +35,9 @@
 
 #pragma once
 
+#include <memory>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
 /**
@@ -44,169 +45,182 @@
  */
 class SIMPLib_EXPORT IGeometry2D : public IGeometry
 {
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(IGeometry2D SUPERCLASS IGeometry)
+  PYB11_SHARED_POINTERS(IGeometry2D)
+#endif
 
-  public:
-    SIMPL_SHARED_POINTERS(IGeometry2D)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry2D, Observable)
+public:
+  using Self = IGeometry2D;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    IGeometry2D();
-    ~IGeometry2D() override;
+  /**
+   * @brief Returns the name of the class for IGeometry2D
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for IGeometry2D
+   */
+  static QString ClassName();
 
-// -----------------------------------------------------------------------------
-// Inherited from SharedVertexOps
-// -----------------------------------------------------------------------------
+  IGeometry2D();
+  ~IGeometry2D() override;
 
-    /**
-     * @brief resizeVertexList
-     * @param newNumVertices
-     */
-    virtual void resizeVertexList(size_t newNumVertices) = 0;
+  // -----------------------------------------------------------------------------
+  // Inherited from SharedVertexOps
+  // -----------------------------------------------------------------------------
 
-    /**
-     * @brief setVertices
-     * @param vertices
-     */
-    virtual void setVertices(SharedVertexList::Pointer vertices) = 0;
+  /**
+   * @brief resizeVertexList
+   * @param newNumVertices
+   */
+  virtual void resizeVertexList(size_t newNumVertices) = 0;
 
-    /**
-     * @brief getVertices
-     * @return
-     */
-    virtual SharedVertexList::Pointer getVertices() = 0;
+  /**
+   * @brief setVertices
+   * @param vertices
+   */
+  virtual void setVertices(SharedVertexList::Pointer vertices) = 0;
 
-    /**
-     * @brief setCoords
-     * @param vertId
-     * @param coords
-     */
-    virtual void setCoords(size_t vertId, float coords[3]) = 0;
+  /**
+   * @brief getVertices
+   * @return
+   */
+  virtual SharedVertexList::Pointer getVertices() const = 0;
 
-    /**
-     * @brief getCoords
-     * @param vertId
-     * @param coords
-     */
-    virtual void getCoords(size_t vertId, float coords[3]) = 0;
+  /**
+   * @brief setCoords
+   * @param vertId
+   * @param coords
+   */
+  virtual void setCoords(size_t vertId, float coords[3]) = 0;
 
-    /**
-     * @brief getVertexPointer
-     * @param i
-     * @return
-     */
-    virtual float* getVertexPointer(size_t i) = 0;
+  /**
+   * @brief getCoords
+   * @param vertId
+   * @param coords
+   */
+  virtual void getCoords(size_t vertId, float coords[3]) const = 0;
 
-    /**
-     * @brief getNumberOfVertices
-     * @return
-     */
-    virtual size_t getNumberOfVertices() = 0;
+  /**
+   * @brief getVertexPointer
+   * @param i
+   * @return
+   */
+  virtual float* getVertexPointer(size_t i) const = 0;
 
-    // -----------------------------------------------------------------------------
-    // Inherited from SharedEdgeOps
-    // -----------------------------------------------------------------------------
+  /**
+   * @brief getNumberOfVertices
+   * @return
+   */
+  virtual size_t getNumberOfVertices() const = 0;
 
-    /**
-     * @brief resizeEdgeList
-     * @param newNumEdges
-     */
-    virtual void resizeEdgeList(size_t newNumEdges) = 0;
+  // -----------------------------------------------------------------------------
+  // Inherited from SharedEdgeOps
+  // -----------------------------------------------------------------------------
 
-    /**
-     * @brief getEdges
-     * @return
-     */
-    virtual SharedEdgeList::Pointer getEdges() = 0;
+  /**
+   * @brief resizeEdgeList
+   * @param newNumEdges
+   */
+  virtual void resizeEdgeList(size_t newNumEdges) = 0;
 
-    /**
-     * @brief setVerts
-     * @param edgeId
-     * @param verts
-     */
-    virtual void setVertsAtEdge(size_t edgeId, size_t verts[2]) = 0;
+  /**
+   * @brief getEdges
+   * @return
+   */
+  virtual SharedEdgeList::Pointer getEdges() const = 0;
 
-    /**
-     * @brief getVerts
-     * @param edgeId
-     * @param verts
-     */
-    virtual void getVertsAtEdge(size_t edgeId, size_t verts[2]) = 0;
+  /**
+   * @brief setVerts
+   * @param edgeId
+   * @param verts
+   */
+  virtual void setVertsAtEdge(size_t edgeId, size_t verts[2]) = 0;
 
-    /**
-     * @brief getVertCoordsAtEdge
-     * @param edgeId
-     * @param vert1
-     * @param vert2
-     */
-    virtual void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) = 0;
+  /**
+   * @brief getVerts
+   * @param edgeId
+   * @param verts
+   */
+  virtual void getVertsAtEdge(size_t edgeId, size_t verts[2]) const = 0;
 
-    /**
-     * @brief getEdgePointer
-     * @param i
-     * @return
-     */
-    virtual size_t* getEdgePointer(size_t i) = 0;
+  /**
+   * @brief getVertCoordsAtEdge
+   * @param edgeId
+   * @param vert1
+   * @param vert2
+   */
+  virtual void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) const = 0;
 
-    /**
-     * @brief getNumberOfEdges
-     * @return
-     */
-    virtual size_t getNumberOfEdges() = 0;
+  /**
+   * @brief getEdgePointer
+   * @param i
+   * @return
+   */
+  virtual size_t* getEdgePointer(size_t i) const = 0;
 
-    // -----------------------------------------------------------------------------
-    // Connectivity
-    // -----------------------------------------------------------------------------
+  /**
+   * @brief getNumberOfEdges
+   * @return
+   */
+  virtual size_t getNumberOfEdges() const = 0;
 
-    /**
-     * @brief findElementEdges
-     * @return
-     */
-    virtual int findEdges() = 0;
+  // -----------------------------------------------------------------------------
+  // Connectivity
+  // -----------------------------------------------------------------------------
 
-    /**
-     * @brief deleteElementEdges
-     */
-    virtual void deleteEdges() = 0;
+  /**
+   * @brief findElementEdges
+   * @return
+   */
+  virtual int findEdges() = 0;
 
-// -----------------------------------------------------------------------------
-// Topology
-// -----------------------------------------------------------------------------
+  /**
+   * @brief deleteElementEdges
+   */
+  virtual void deleteEdges() = 0;
 
-    /**
-     * @brief findUnsharedEdges
-     */
-    virtual int findUnsharedEdges() = 0;
+  // -----------------------------------------------------------------------------
+  // Topology
+  // -----------------------------------------------------------------------------
 
-    /**
-     * @brief getUnsharedEdges
-     * @return
-     */
-    virtual SharedEdgeList::Pointer getUnsharedEdges() = 0;
+  /**
+   * @brief findUnsharedEdges
+   */
+  virtual int findUnsharedEdges() = 0;
 
-    /**
-     * @brief deleteUnsharedEdges
-     */
-    virtual void deleteUnsharedEdges() = 0;
+  /**
+   * @brief getUnsharedEdges
+   * @return
+   */
+  virtual SharedEdgeList::Pointer getUnsharedEdges() const = 0;
 
-  protected:
+  /**
+   * @brief deleteUnsharedEdges
+   */
+  virtual void deleteUnsharedEdges() = 0;
 
-    /**
-     * @brief setEdges
-     * @param edges
-     */
-    virtual void setEdges(SharedEdgeList::Pointer edges) = 0;
+protected:
+  /**
+   * @brief setEdges
+   * @param edges
+   */
+  virtual void setEdges(SharedEdgeList::Pointer edges) = 0;
 
-    /**
-     * @brief setUnsharedEdges
-     * @param bEdgeList
-     */
-    virtual void setUnsharedEdges(SharedEdgeList::Pointer bEdgeList) = 0;
+  /**
+   * @brief setUnsharedEdges
+   * @param bEdgeList
+   */
+  virtual void setUnsharedEdges(SharedEdgeList::Pointer bEdgeList) = 0;
 
-  public:
-    IGeometry2D(const IGeometry2D&) = delete;    // Copy Constructor Not Implemented
-    IGeometry2D(IGeometry2D&&) = delete;         // Move Constructor Not Implemented
-    IGeometry2D& operator=(const IGeometry2D&) = delete; // Copy Assignment Not Implemented
-    IGeometry2D& operator=(IGeometry2D&&) = delete;      // Move Assignment Not Implemented
+public:
+  IGeometry2D(const IGeometry2D&) = delete;            // Copy Constructor Not Implemented
+  IGeometry2D(IGeometry2D&&) = delete;                 // Move Constructor Not Implemented
+  IGeometry2D& operator=(const IGeometry2D&) = delete; // Copy Assignment Not Implemented
+  IGeometry2D& operator=(IGeometry2D&&) = delete;      // Move Assignment Not Implemented
 };
-
-

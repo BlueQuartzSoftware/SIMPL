@@ -36,11 +36,12 @@
 
 #pragma once
 
+#include <memory>
+
 #include <hdf5.h>
 
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/StatsData/StatsData.h"
 #include "SIMPLib/Common/PhaseType.h"
@@ -83,9 +84,23 @@ typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
 class SIMPLib_EXPORT BoundaryStatsData : public StatsData
 {
   public:
-    SIMPL_SHARED_POINTERS(BoundaryStatsData)
-    SIMPL_STATIC_NEW_MACRO(BoundaryStatsData)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(BoundaryStatsData, StatsData)
+    using Self = BoundaryStatsData;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for BoundaryStatsData
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for BoundaryStatsData
+     */
+    static QString ClassName();
 
     ~BoundaryStatsData() override;
 
@@ -112,9 +127,25 @@ class SIMPLib_EXPORT BoundaryStatsData : public StatsData
     static VectorOfFloatArray CreateCorrelatedDistributionArrays(uint32_t distributionType, size_t numBins);
     static FloatArrayType::Pointer CreateDistributionArrays(uint32_t distributionType);
 
+    /**
+     * @brief Setter property for BoundaryArea
+     */
+    void setBoundaryArea(float value);
+    /**
+     * @brief Getter property for BoundaryArea
+     * @return Value of BoundaryArea
+     */
+    float getBoundaryArea() const;
 
-    SIMPL_INSTANCE_PROPERTY(float, BoundaryArea)
-    SIMPL_INSTANCE_PROPERTY(float, ParentPhase)
+    /**
+     * @brief Setter property for ParentPhase
+     */
+    void setParentPhase(float value);
+    /**
+     * @brief Getter property for ParentPhase
+     * @return Value of ParentPhase
+     */
+    float getParentPhase() const;
 
     /**
      * @brief getStatsType
@@ -173,6 +204,10 @@ class SIMPLib_EXPORT BoundaryStatsData : public StatsData
     BoundaryStatsData(BoundaryStatsData&&) = delete;      // Move Constructor Not Implemented
     BoundaryStatsData& operator=(const BoundaryStatsData&) = delete; // Copy Assignment Not Implemented
     BoundaryStatsData& operator=(BoundaryStatsData&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    float m_BoundaryArea = {};
+    float m_ParentPhase = {};
 };
 
 

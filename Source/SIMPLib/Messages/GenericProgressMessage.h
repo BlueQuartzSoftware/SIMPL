@@ -36,6 +36,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/Messages/AbstractProgressMessage.h"
 
 /**
@@ -45,40 +47,54 @@
  */
 class SIMPLib_EXPORT GenericProgressMessage : public AbstractProgressMessage
 {
-  public:
-    SIMPL_SHARED_POINTERS(GenericProgressMessage)
-    SIMPL_STATIC_NEW_MACRO(GenericProgressMessage)
-    SIMPL_TYPE_MACRO(GenericProgressMessage)
 
-    virtual ~GenericProgressMessage();
+public:
+  using Self = GenericProgressMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    /**
-     * @brief New
-     * @param msgText
-     * @param progress
-     * @return
-     */
-    static Pointer New(const QString& msgText, int progress);
+  static Pointer New();
 
-    /**
-     * @brief This method creates and returns a string for generic progress messages
-     */
-    virtual QString generateMessageString() const override;
+  /**
+   * @brief Returns the name of the class for GenericProgressMessage
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for GenericProgressMessage
+   */
+  static QString ClassName();
 
-    /**
-     * @brief Method that allows the visitation of a message by a message handler.  This
-     * is part of the double-dispatch API that allows observers to be able to perform
-     * subclass specific operations on messages that they receive.
-     * @param msgHandler The observer's message handler
-     */
-    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
+  ~GenericProgressMessage() override;
 
-  protected:
-    GenericProgressMessage();
-    GenericProgressMessage(const QString& msgText, int progress);
+  /**
+   * @brief New
+   * @param msgText
+   * @param progress
+   * @return
+   */
+  static Pointer New(const QString& msgText, int progress);
 
-  private:
+  /**
+   * @brief This method creates and returns a string for generic progress messages
+   */
+  QString generateMessageString() const override;
 
+  /**
+   * @brief Method that allows the visitation of a message by a message handler.  This
+   * is part of the double-dispatch API that allows observers to be able to perform
+   * subclass specific operations on messages that they receive.
+   * @param msgHandler The observer's message handler
+   */
+  void visit(AbstractMessageHandler* msgHandler) const override final;
+
+protected:
+  GenericProgressMessage();
+  GenericProgressMessage(const QString& msgText, int progress);
+
+private:
 };
 Q_DECLARE_METATYPE(GenericProgressMessage::Pointer)
 

@@ -1,43 +1,49 @@
-/* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
+#include <memory>
+
+#include <QtCore/QTextStream>
+
+#include "SIMPLib/SIMPLib.h"
+
 #include "SIMPLib/Common/SIMPLArray.hpp"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometryGrid.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The ImageGeom class represents a structured rectlinear grid
@@ -45,8 +51,10 @@
 class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 {
   // clang-format off
-
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ImageGeom SUPERCLASS IGeometryGrid)
+  PYB11_SHARED_POINTERS(ImageGeom)
+  PYB11_STATIC_NEW_MACRO(ImageGeom)
   PYB11_STATIC_CREATION(CreateGeometry ARGS QString)
 
   PYB11_ENUMERATION(ErrorType)
@@ -64,13 +72,28 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
   PYB11_METHOD(void setOrigin OVERLOAD float,x float,y float,z)
   PYB11_METHOD(FloatVec3Type getOrigin)
 
-  PYB11_METHOD(FloatVec6Type getBoundingBox OVERLOAD)
+  PYB11_METHOD(FloatVec6Type getBoundingBox OVERLOAD CONST_METHOD)
+#endif
   // clang-format on
 
 public:
-  SIMPL_SHARED_POINTERS(ImageGeom)
-  SIMPL_STATIC_NEW_MACRO(ImageGeom)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImageGeom, Observable)
+  using Self = ImageGeom;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for ImageGeom
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ImageGeom
+   */
+  static QString ClassName();
 
   ~ImageGeom() override;
 
@@ -121,7 +144,7 @@ public:
    * @param boundingBox The bounding box will be stored in the input argument in the following order:
    * xMin, xMax, yMin, yMax, zMin, zMax
    */
-  FloatVec6Type getBoundingBox();
+  FloatVec6Type getBoundingBox() const;
 
   // -----------------------------------------------------------------------------
   // Inherited from IGeometry
@@ -136,7 +159,7 @@ public:
    * @brief getNumberOfElements
    * @return
    */
-  size_t getNumberOfElements() override;
+  size_t getNumberOfElements() const override;
 
   /**
    * @brief findElementSizes
@@ -148,7 +171,7 @@ public:
    * @brief getElementSizes
    * @return
    */
-  FloatArrayType::Pointer getElementSizes() override;
+  FloatArrayType::Pointer getElementSizes() const override;
 
   /**
    * @brief deleteElementSizes
@@ -165,7 +188,7 @@ public:
    * @brief getElementsContainingVert
    * @return
    */
-  ElementDynamicList::Pointer getElementsContainingVert() override;
+  ElementDynamicList::Pointer getElementsContainingVert() const override;
 
   /**
    * @brief deleteElementsContainingVert
@@ -182,7 +205,7 @@ public:
    * @brief getElementNeighbors
    * @return
    */
-  ElementDynamicList::Pointer getElementNeighbors() override;
+  ElementDynamicList::Pointer getElementNeighbors() const override;
 
   /**
    * @brief deleteElementNeighbors
@@ -199,7 +222,7 @@ public:
    * @brief getElementCentroids
    * @return
    */
-  FloatArrayType::Pointer getElementCentroids() override;
+  FloatArrayType::Pointer getElementCentroids() const override;
 
   /**
    * @brief deleteElementCentroids
@@ -210,14 +233,14 @@ public:
    * @brief getParametricCenter
    * @param pCoords
    */
-  void getParametricCenter(double pCoords[3]) override;
+  void getParametricCenter(double pCoords[3]) const override;
 
   /**
    * @brief getShapeFunctions
    * @param pCoords
    * @param shape
    */
-  void getShapeFunctions(double pCoords[3], double* shape) override;
+  void getShapeFunctions(double pCoords[3], double* shape) const override;
 
   /**
    * @brief findDerivatives
@@ -231,7 +254,7 @@ public:
    * @return Returns a formatted string that contains general infomation about
    * the instance of the object.
    */
-  QString getInfoString(SIMPL::InfoStringFormat format) override;
+  QString getInfoString(SIMPL::InfoStringFormat format) const override;
 
   /**
    * @brief writeGeometryToHDF5
@@ -239,7 +262,7 @@ public:
    * @param writeXdmf
    * @return
    */
-  int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
+  int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) const override;
 
   /**
    * @brief writeXdmf
@@ -248,7 +271,7 @@ public:
    * @param hdfFileName
    * @return
    */
-  int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
+  int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const override;
 
   /**
    * @brief readGeometryFromHDF5
@@ -262,7 +285,7 @@ public:
    * @brief deepCopy
    * @return
    */
-  IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
+  IGeometry::Pointer deepCopy(bool forceNoAllocate = false) const override;
 
   /**
    * @brief addOrReplaceAttributeMatrix
@@ -277,25 +300,25 @@ public:
   void setDimensions(const SizeVec3Type& dims) override;
   void setDimensions(size_t x, size_t y, size_t z);
 
-  size_t getXPoints() override;
-  size_t getYPoints() override;
-  size_t getZPoints() override;
+  size_t getXPoints() const override;
+  size_t getYPoints() const override;
+  size_t getZPoints() const override;
 
-  void getPlaneCoords(size_t idx[3], float coords[3]) override;
-  void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) override;
-  void getPlaneCoords(size_t idx, float coords[3]) override;
+  void getPlaneCoords(size_t idx[3], float coords[3]) const override;
+  void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) const override;
+  void getPlaneCoords(size_t idx, float coords[3]) const override;
 
-  void getPlaneCoords(size_t idx[3], double coords[3]) override;
-  void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) override;
-  void getPlaneCoords(size_t idx, double coords[3]) override;
+  void getPlaneCoords(size_t idx[3], double coords[3]) const override;
+  void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) const override;
+  void getPlaneCoords(size_t idx, double coords[3]) const override;
 
-  void getCoords(size_t idx[3], float coords[3]) override;
-  void getCoords(size_t x, size_t y, size_t z, float coords[3]) override;
-  void getCoords(size_t idx, float coords[3]) override;
+  void getCoords(size_t idx[3], float coords[3]) const override;
+  void getCoords(size_t x, size_t y, size_t z, float coords[3]) const override;
+  void getCoords(size_t idx, float coords[3]) const override;
 
-  void getCoords(size_t idx[3], double coords[3]) override;
-  void getCoords(size_t x, size_t y, size_t z, double coords[3]) override;
-  void getCoords(size_t idx, double coords[3]) override;
+  void getCoords(size_t idx[3], double coords[3]) const override;
+  void getCoords(size_t x, size_t y, size_t z, double coords[3]) const override;
+  void getCoords(size_t idx, double coords[3]) const override;
 
   // -----------------------------------------------------------------------------
   // Misc. ImageGeometry Methods

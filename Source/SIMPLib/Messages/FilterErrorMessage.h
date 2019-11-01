@@ -36,6 +36,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/Messages/AbstractErrorMessage.h"
 
 /**
@@ -45,49 +47,90 @@
  */
 class SIMPLib_EXPORT FilterErrorMessage : public AbstractErrorMessage
 {
-  public:
-    SIMPL_SHARED_POINTERS(FilterErrorMessage)
-    SIMPL_STATIC_NEW_MACRO(FilterErrorMessage)
-    SIMPL_TYPE_MACRO(FilterErrorMessage)
 
-    SIMPL_INSTANCE_STRING_PROPERTY(ClassName)
+public:
+  using Self = FilterErrorMessage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    SIMPL_INSTANCE_STRING_PROPERTY(HumanLabel)
+  static Pointer New();
 
-    SIMPL_INSTANCE_PROPERTY(int, PipelineIndex)
+  /**
+   * @brief Returns the name of the class for FilterErrorMessage
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for FilterErrorMessage
+   */
+  static QString ClassName();
 
-    virtual ~FilterErrorMessage();
+  /**
+   * @brief Setter property for ClassName
+   */
+  void setClassName(const QString& value);
+  /**
+   * @brief Getter property for ClassName
+   * @return Value of ClassName
+   */
+  QString getClassName() const;
 
-    /**
-     * @brief New
-     * @param className
-     * @param humanLabel
-     * @param pipelineIndex
-     * @param msg
-     * @param code
-     * @return
-     */
-    static Pointer New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code);
+  /**
+   * @brief Setter property for HumanLabel
+   */
+  void setHumanLabel(const QString& value);
+  /**
+   * @brief Getter property for HumanLabel
+   * @return Value of HumanLabel
+   */
+  QString getHumanLabel() const;
 
-    /**
-     * @brief This method creates and returns a string for filter error messages
-     */
-    virtual QString generateMessageString() const override;
+  /**
+   * @brief Setter property for PipelineIndex
+   */
+  void setPipelineIndex(int value);
+  /**
+   * @brief Getter property for PipelineIndex
+   * @return Value of PipelineIndex
+   */
+  int getPipelineIndex() const;
 
-    /**
-     * @brief Method that allows the visitation of a message by a message handler.  This
-     * is part of the double-dispatch API that allows observers to be able to perform
-     * subclass specific operations on messages that they receive.
-     * @param msgHandler The observer's message handler
-     */
-    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
+  ~FilterErrorMessage() override;
 
-  protected:
-    FilterErrorMessage();
-    FilterErrorMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code);
+  /**
+   * @brief New
+   * @param className
+   * @param humanLabel
+   * @param pipelineIndex
+   * @param msg
+   * @param code
+   * @return
+   */
+  static Pointer New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code);
 
-  private:
+  /**
+   * @brief This method creates and returns a string for filter error messages
+   */
+  virtual QString generateMessageString() const override;
 
+  /**
+   * @brief Method that allows the visitation of a message by a message handler.  This
+   * is part of the double-dispatch API that allows observers to be able to perform
+   * subclass specific operations on messages that they receive.
+   * @param msgHandler The observer's message handler
+   */
+  virtual void visit(AbstractMessageHandler* msgHandler) const override final;
+
+protected:
+  FilterErrorMessage();
+  FilterErrorMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code);
+
+private:
+  QString m_ClassName = {};
+  QString m_HumanLabel = {};
+  int m_PipelineIndex = {};
 };
 Q_DECLARE_METATYPE(FilterErrorMessage::Pointer)
 

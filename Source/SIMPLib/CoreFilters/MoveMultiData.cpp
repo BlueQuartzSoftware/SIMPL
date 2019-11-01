@@ -33,9 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "MoveMultiData.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
@@ -45,6 +50,8 @@
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiAttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 namespace
 {
@@ -268,7 +275,7 @@ AbstractFilter::Pointer MoveMultiData::newFilterInstance(bool copyFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveMultiData::getCompiledLibraryName() const
+QString MoveMultiData::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -276,7 +283,7 @@ const QString MoveMultiData::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveMultiData::getBrandingString() const
+QString MoveMultiData::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -284,7 +291,7 @@ const QString MoveMultiData::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveMultiData::getFilterVersion() const
+QString MoveMultiData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -295,7 +302,7 @@ const QString MoveMultiData::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveMultiData::getGroupName() const
+QString MoveMultiData::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -303,7 +310,7 @@ const QString MoveMultiData::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid MoveMultiData::getUuid()
+QUuid MoveMultiData::getUuid() const
 {
   return QUuid("{e3702900-a6c1-59e1-9180-b57557a7b193}");
 }
@@ -311,7 +318,7 @@ const QUuid MoveMultiData::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveMultiData::getSubGroupName() const
+QString MoveMultiData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -319,7 +326,96 @@ const QString MoveMultiData::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveMultiData::getHumanLabel() const
+QString MoveMultiData::getHumanLabel() const
 {
   return "Move Multi Data";
+}
+
+// -----------------------------------------------------------------------------
+MoveMultiData::Pointer MoveMultiData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<MoveMultiData> MoveMultiData::New()
+{
+  struct make_shared_enabler : public MoveMultiData
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString MoveMultiData::getNameOfClass() const
+{
+  return QString("MoveMultiData");
+}
+
+// -----------------------------------------------------------------------------
+QString MoveMultiData::ClassName()
+{
+  return QString("MoveMultiData");
+}
+
+// -----------------------------------------------------------------------------
+void MoveMultiData::setWhatToMove(int value)
+{
+  m_WhatToMove = value;
+}
+
+// -----------------------------------------------------------------------------
+int MoveMultiData::getWhatToMove() const
+{
+  return m_WhatToMove;
+}
+
+// -----------------------------------------------------------------------------
+void MoveMultiData::setDataContainerDestination(const DataArrayPath& value)
+{
+  m_DataContainerDestination = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath MoveMultiData::getDataContainerDestination() const
+{
+  return m_DataContainerDestination;
+}
+
+// -----------------------------------------------------------------------------
+void MoveMultiData::setAttributeMatrixSources(const QVector<DataArrayPath>& value)
+{
+  m_AttributeMatrixSources = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> MoveMultiData::getAttributeMatrixSources() const
+{
+  return m_AttributeMatrixSources;
+}
+
+// -----------------------------------------------------------------------------
+void MoveMultiData::setAttributeMatrixDestination(const DataArrayPath& value)
+{
+  m_AttributeMatrixDestination = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath MoveMultiData::getAttributeMatrixDestination() const
+{
+  return m_AttributeMatrixDestination;
+}
+
+// -----------------------------------------------------------------------------
+void MoveMultiData::setDataArraySources(const QVector<DataArrayPath>& value)
+{
+  m_DataArraySources = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> MoveMultiData::getDataArraySources() const
+{
+  return m_DataArraySources;
 }

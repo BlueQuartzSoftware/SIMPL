@@ -33,15 +33,22 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "CombineAttributeArrays.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   CombinedArrayID = 1
@@ -368,7 +375,7 @@ AbstractFilter::Pointer CombineAttributeArrays::newFilterInstance(bool copyFilte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getCompiledLibraryName() const
+QString CombineAttributeArrays::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -376,7 +383,7 @@ const QString CombineAttributeArrays::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getBrandingString() const
+QString CombineAttributeArrays::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -384,7 +391,7 @@ const QString CombineAttributeArrays::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getFilterVersion() const
+QString CombineAttributeArrays::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -395,7 +402,7 @@ const QString CombineAttributeArrays::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getGroupName() const
+QString CombineAttributeArrays::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -403,7 +410,7 @@ const QString CombineAttributeArrays::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CombineAttributeArrays::getUuid()
+QUuid CombineAttributeArrays::getUuid() const
 {
   return QUuid("{a6b50fb0-eb7c-5d9b-9691-825d6a4fe772}");
 }
@@ -411,7 +418,7 @@ const QUuid CombineAttributeArrays::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getSubGroupName() const
+QString CombineAttributeArrays::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -419,7 +426,84 @@ const QString CombineAttributeArrays::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getHumanLabel() const
+QString CombineAttributeArrays::getHumanLabel() const
 {
   return "Combine Attribute Arrays";
+}
+
+// -----------------------------------------------------------------------------
+CombineAttributeArrays::Pointer CombineAttributeArrays::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CombineAttributeArrays> CombineAttributeArrays::New()
+{
+  struct make_shared_enabler : public CombineAttributeArrays
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString CombineAttributeArrays::getNameOfClass() const
+{
+  return QString("CombineAttributeArrays");
+}
+
+// -----------------------------------------------------------------------------
+QString CombineAttributeArrays::ClassName()
+{
+  return QString("CombineAttributeArrays");
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeArrays::setSelectedDataArrayPaths(const QVector<DataArrayPath>& value)
+{
+  m_SelectedDataArrayPaths = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> CombineAttributeArrays::getSelectedDataArrayPaths() const
+{
+  return m_SelectedDataArrayPaths;
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeArrays::setStackedDataArrayName(const QString& value)
+{
+  m_StackedDataArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CombineAttributeArrays::getStackedDataArrayName() const
+{
+  return m_StackedDataArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeArrays::setNormalizeData(bool value)
+{
+  m_NormalizeData = value;
+}
+
+// -----------------------------------------------------------------------------
+bool CombineAttributeArrays::getNormalizeData() const
+{
+  return m_NormalizeData;
+}
+
+// -----------------------------------------------------------------------------
+void CombineAttributeArrays::setMoveValues(bool value)
+{
+  m_MoveValues = value;
+}
+
+// -----------------------------------------------------------------------------
+bool CombineAttributeArrays::getMoveValues() const
+{
+  return m_MoveValues;
 }

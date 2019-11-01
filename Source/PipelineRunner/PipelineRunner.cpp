@@ -51,7 +51,10 @@
 #include <QtCore/QString>
 
 // DREAM3DLib includes
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"

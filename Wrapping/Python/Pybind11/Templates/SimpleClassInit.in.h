@@ -1,3 +1,7 @@
+#include <memory>
+
+#include <memory>
+
 // clang-format off
 /* =============================================================================
  * BEGIN Template file SimpleClassInit.in.h

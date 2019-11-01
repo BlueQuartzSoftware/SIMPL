@@ -35,14 +35,24 @@
 
 #pragma once
 
+#include <memory>
+
+#include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
+/**
+ * @brief The CalculatorItem class
+ */
 class SIMPLib_EXPORT CalculatorItem
 {
   public:
-    SIMPL_SHARED_POINTERS(CalculatorItem)
+    using Self = CalculatorItem;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     virtual ~CalculatorItem();
 

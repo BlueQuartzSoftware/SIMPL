@@ -35,6 +35,8 @@
 
 #include "IObserver.h"
 
+#include <QtCore/QTextStream>
+
 #include <iostream>
 
 // -----------------------------------------------------------------------------
@@ -56,4 +58,16 @@ void IObserver::processPipelineMessage(const AbstractMessage::Pointer& pm)
   QTextStream ss(&str);
   ss << pm->generateMessageString();
   std::cout << str.toStdString() << std::endl;
+}
+
+// -----------------------------------------------------------------------------
+QString IObserver::getNameOfClass() const
+{
+  return QString("IObserver");
+}
+
+// -----------------------------------------------------------------------------
+QString IObserver::ClassName()
+{
+  return QString("IObserver");
 }

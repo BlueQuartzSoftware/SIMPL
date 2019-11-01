@@ -181,3 +181,9 @@ void UnaryOperator::setNumberOfArguments(int numOfArguments)
 {
   m_NumOfArguments = numOfArguments;
 }
+
+// -----------------------------------------------------------------------------
+UnaryOperator::Pointer UnaryOperator::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}

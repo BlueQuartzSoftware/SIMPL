@@ -33,9 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "RemoveComponentFromArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -45,6 +50,7 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   NewDataArrayID = 1,
@@ -304,7 +310,7 @@ AbstractFilter::Pointer RemoveComponentFromArray::newFilterInstance(bool copyFil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveComponentFromArray::getCompiledLibraryName() const
+QString RemoveComponentFromArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -312,7 +318,7 @@ const QString RemoveComponentFromArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveComponentFromArray::getBrandingString() const
+QString RemoveComponentFromArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -320,7 +326,7 @@ const QString RemoveComponentFromArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveComponentFromArray::getFilterVersion() const
+QString RemoveComponentFromArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -331,7 +337,7 @@ const QString RemoveComponentFromArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveComponentFromArray::getGroupName() const
+QString RemoveComponentFromArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -339,7 +345,7 @@ const QString RemoveComponentFromArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid RemoveComponentFromArray::getUuid()
+QUuid RemoveComponentFromArray::getUuid() const
 {
   return QUuid("{1b4b9941-62e4-52f2-9918-15d48147ab88}");
 }
@@ -347,7 +353,7 @@ const QUuid RemoveComponentFromArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveComponentFromArray::getSubGroupName() const
+QString RemoveComponentFromArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -355,7 +361,96 @@ const QString RemoveComponentFromArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveComponentFromArray::getHumanLabel() const
+QString RemoveComponentFromArray::getHumanLabel() const
 {
   return "Remove Component From Array";
+}
+
+// -----------------------------------------------------------------------------
+RemoveComponentFromArray::Pointer RemoveComponentFromArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<RemoveComponentFromArray> RemoveComponentFromArray::New()
+{
+  struct make_shared_enabler : public RemoveComponentFromArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString RemoveComponentFromArray::getNameOfClass() const
+{
+  return QString("RemoveComponentFromArray");
+}
+
+// -----------------------------------------------------------------------------
+QString RemoveComponentFromArray::ClassName()
+{
+  return QString("RemoveComponentFromArray");
+}
+
+// -----------------------------------------------------------------------------
+void RemoveComponentFromArray::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RemoveComponentFromArray::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void RemoveComponentFromArray::setCompNumber(int value)
+{
+  m_CompNumber = value;
+}
+
+// -----------------------------------------------------------------------------
+int RemoveComponentFromArray::getCompNumber() const
+{
+  return m_CompNumber;
+}
+
+// -----------------------------------------------------------------------------
+void RemoveComponentFromArray::setSaveRemovedComponent(bool value)
+{
+  m_SaveRemovedComponent = value;
+}
+
+// -----------------------------------------------------------------------------
+bool RemoveComponentFromArray::getSaveRemovedComponent() const
+{
+  return m_SaveRemovedComponent;
+}
+
+// -----------------------------------------------------------------------------
+void RemoveComponentFromArray::setNewArrayArrayName(const QString& value)
+{
+  m_NewArrayArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString RemoveComponentFromArray::getNewArrayArrayName() const
+{
+  return m_NewArrayArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void RemoveComponentFromArray::setReducedArrayArrayName(const QString& value)
+{
+  m_ReducedArrayArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString RemoveComponentFromArray::getReducedArrayArrayName() const
+{
+  return m_ReducedArrayArrayName;
 }

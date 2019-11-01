@@ -102,3 +102,52 @@ void ThirdOrderPolynomialFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = obj;
   }
 }
+
+// -----------------------------------------------------------------------------
+ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter::New()
+{
+  Pointer sharedPtr(new(ThirdOrderPolynomialFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString ThirdOrderPolynomialFilterParameter::getNameOfClass() const
+{
+  return QString("ThirdOrderPolynomialFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString ThirdOrderPolynomialFilterParameter::ClassName()
+{
+  return QString("ThirdOrderPolynomialFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void ThirdOrderPolynomialFilterParameter::setSetterCallback(const ThirdOrderPolynomialFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ThirdOrderPolynomialFilterParameter::SetterCallbackType ThirdOrderPolynomialFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void ThirdOrderPolynomialFilterParameter::setGetterCallback(const ThirdOrderPolynomialFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ThirdOrderPolynomialFilterParameter::GetterCallbackType ThirdOrderPolynomialFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

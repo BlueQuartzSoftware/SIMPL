@@ -42,6 +42,8 @@
  *   - re-implemented vtkVertex::Derivatives to VertexGeom::findDerivatives
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Geometry/VertexGeom.h"
 
 // -----------------------------------------------------------------------------
@@ -133,7 +135,7 @@ void VertexGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatri
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t VertexGeom::getNumberOfElements()
+size_t VertexGeom::getNumberOfElements() const
 {
   return m_VertexList->getNumberOfTuples();
 }
@@ -149,7 +151,7 @@ int VertexGeom::findElementsContainingVert()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer VertexGeom::getElementsContainingVert()
+ElementDynamicList::Pointer VertexGeom::getElementsContainingVert() const
 {
   return ElementDynamicList::NullPointer();
 }
@@ -180,7 +182,7 @@ int VertexGeom::findElementNeighbors()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer VertexGeom::getElementNeighbors()
+ElementDynamicList::Pointer VertexGeom::getElementNeighbors() const
 {
   return ElementDynamicList::NullPointer();
 }
@@ -211,7 +213,7 @@ int VertexGeom::findElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer VertexGeom::getElementCentroids()
+FloatArrayType::Pointer VertexGeom::getElementCentroids() const
 {
   return FloatArrayType::NullPointer();
 }
@@ -246,7 +248,7 @@ int VertexGeom::findElementSizes()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer VertexGeom::getElementSizes()
+FloatArrayType::Pointer VertexGeom::getElementSizes() const
 {
   return m_VertexSizes;
 }
@@ -270,7 +272,7 @@ void VertexGeom::deleteElementSizes()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void VertexGeom::getParametricCenter(double pCoords[3])
+void VertexGeom::getParametricCenter(double pCoords[3]) const
 {
   pCoords[0] = 0.0;
   pCoords[1] = 0.0;
@@ -280,7 +282,7 @@ void VertexGeom::getParametricCenter(double pCoords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void VertexGeom::getShapeFunctions(double pCoords[3], double* shape)
+void VertexGeom::getShapeFunctions(double pCoords[3], double* shape) const
 {
   (void)pCoords;
 
@@ -302,7 +304,7 @@ void VertexGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int VertexGeom::writeGeometryToHDF5(hid_t parentId, bool writeXdmf)
+int VertexGeom::writeGeometryToHDF5(hid_t parentId, bool writeXdmf) const
 {
   herr_t err = 0;
   std::vector<size_t> tDims(1, 0);
@@ -342,7 +344,7 @@ int VertexGeom::writeGeometryToHDF5(hid_t parentId, bool writeXdmf)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int VertexGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
+int VertexGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const
 {
   herr_t err = 0;
 
@@ -403,7 +405,7 @@ int VertexGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString VertexGeom::getInfoString(SIMPL::InfoStringFormat format)
+QString VertexGeom::getInfoString(SIMPL::InfoStringFormat format) const
 {
   QString info;
   QTextStream ss(&info);
@@ -448,7 +450,7 @@ int VertexGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Pointer VertexGeom::deepCopy(bool forceNoAllocate)
+IGeometry::Pointer VertexGeom::deepCopy(bool forceNoAllocate) const
 {
   SharedVertexList::Pointer verts = std::dynamic_pointer_cast<SharedVertexList>((getVertices().get() == nullptr) ? nullptr : getVertices()->deepCopy(forceNoAllocate));
   FloatArrayType::Pointer elementSizes = std::dynamic_pointer_cast<FloatArrayType>((getElementSizes().get() == nullptr) ? nullptr : getElementSizes()->deepCopy(forceNoAllocate));
@@ -471,3 +473,28 @@ IGeometry::Pointer VertexGeom::deepCopy(bool forceNoAllocate)
 
 #define GEOM_CLASS_NAME VertexGeom
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
+
+// -----------------------------------------------------------------------------
+VertexGeom::Pointer VertexGeom::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+VertexGeom::Pointer VertexGeom::New()
+{
+  Pointer sharedPtr(new(VertexGeom));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString VertexGeom::getNameOfClass() const
+{
+  return QString("VertexGeom");
+}
+
+// -----------------------------------------------------------------------------
+QString VertexGeom::ClassName()
+{
+  return QString("VertexGeom");
+}

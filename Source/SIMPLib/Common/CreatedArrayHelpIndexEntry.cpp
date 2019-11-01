@@ -47,3 +47,136 @@ CreatedArrayHelpIndexEntry::CreatedArrayHelpIndexEntry()
 //
 // -----------------------------------------------------------------------------
 CreatedArrayHelpIndexEntry::~CreatedArrayHelpIndexEntry() = default;
+
+// -----------------------------------------------------------------------------
+CreatedArrayHelpIndexEntry::Pointer CreatedArrayHelpIndexEntry::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+CreatedArrayHelpIndexEntry::Pointer CreatedArrayHelpIndexEntry::New()
+{
+  Pointer sharedPtr(new(CreatedArrayHelpIndexEntry));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString CreatedArrayHelpIndexEntry::getNameOfClass() const
+{
+  return QString("CreatedArrayHelpIndexEntry");
+}
+
+// -----------------------------------------------------------------------------
+QString CreatedArrayHelpIndexEntry::ClassName()
+{
+  return QString("CreatedArrayHelpIndexEntry");
+}
+
+// -----------------------------------------------------------------------------
+void CreatedArrayHelpIndexEntry::setFilterName(const QString& value)
+{
+  m_FilterName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreatedArrayHelpIndexEntry::getFilterName() const
+{
+  return m_FilterName;
+}
+
+// -----------------------------------------------------------------------------
+void CreatedArrayHelpIndexEntry::setFilterHumanLabel(const QString& value)
+{
+  m_FilterHumanLabel = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreatedArrayHelpIndexEntry::getFilterHumanLabel() const
+{
+  return m_FilterHumanLabel;
+}
+
+// -----------------------------------------------------------------------------
+void CreatedArrayHelpIndexEntry::setFilterGroup(const QString& value)
+{
+  m_FilterGroup = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreatedArrayHelpIndexEntry::getFilterGroup() const
+{
+  return m_FilterGroup;
+}
+
+// -----------------------------------------------------------------------------
+void CreatedArrayHelpIndexEntry::setFilterSubGroup(const QString& value)
+{
+  m_FilterSubGroup = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreatedArrayHelpIndexEntry::getFilterSubGroup() const
+{
+  return m_FilterSubGroup;
+}
+
+// -----------------------------------------------------------------------------
+void CreatedArrayHelpIndexEntry::setArrayDefaultName(const QString& value)
+{
+  m_ArrayDefaultName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreatedArrayHelpIndexEntry::getArrayDefaultName() const
+{
+  return m_ArrayDefaultName;
+}
+
+// -----------------------------------------------------------------------------
+void CreatedArrayHelpIndexEntry::setArrayGroup(const QString& value)
+{
+  m_ArrayGroup = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreatedArrayHelpIndexEntry::getArrayGroup() const
+{
+  return m_ArrayGroup;
+}
+
+// -----------------------------------------------------------------------------
+void CreatedArrayHelpIndexEntry::setArrayType(const QString& value)
+{
+  m_ArrayType = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreatedArrayHelpIndexEntry::getArrayType() const
+{
+  return m_ArrayType;
+}
+
+// -----------------------------------------------------------------------------
+void CreatedArrayHelpIndexEntry::setArrayNumComponents(int value)
+{
+  m_ArrayNumComponents = value;
+}
+
+// -----------------------------------------------------------------------------
+int CreatedArrayHelpIndexEntry::getArrayNumComponents() const
+{
+  return m_ArrayNumComponents;
+}
+
+// -----------------------------------------------------------------------------
+void CreatedArrayHelpIndexEntry::setArrayDescription(const QString& value)
+{
+  m_ArrayDescription = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreatedArrayHelpIndexEntry::getArrayDescription() const
+{
+  return m_ArrayDescription;
+}

@@ -70,7 +70,7 @@ void GEOM_CLASS_NAME::setEdges(SharedEdgeList::Pointer edges)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedEdgeList::Pointer GEOM_CLASS_NAME::getEdges()
+SharedEdgeList::Pointer GEOM_CLASS_NAME::getEdges() const
 {
   return m_EdgeList;
 }
@@ -88,7 +88,7 @@ void GEOM_CLASS_NAME::setVertsAtEdge(size_t edgeId, size_t verts[2])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertsAtEdge(size_t edgeId, size_t verts[2])
+void GEOM_CLASS_NAME::getVertsAtEdge(size_t edgeId, size_t verts[2]) const
 {
   size_t* Edge = m_EdgeList->getTuplePointer(edgeId);
   verts[0] = Edge[0];
@@ -98,7 +98,7 @@ void GEOM_CLASS_NAME::getVertsAtEdge(size_t edgeId, size_t verts[2])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3])
+void GEOM_CLASS_NAME::getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) const
 {
   size_t* Edge = m_EdgeList->getTuplePointer(edgeId);
   float* tmp1 = m_VertexList->getTuplePointer(Edge[0]);
@@ -114,7 +114,7 @@ void GEOM_CLASS_NAME::getVertCoordsAtEdge(size_t edgeId, float vert1[3], float v
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t* GEOM_CLASS_NAME::getEdgePointer(size_t i)
+size_t* GEOM_CLASS_NAME::getEdgePointer(size_t i) const
 {
   return m_EdgeList->getTuplePointer(i);
 }
@@ -122,7 +122,7 @@ size_t* GEOM_CLASS_NAME::getEdgePointer(size_t i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t GEOM_CLASS_NAME::getNumberOfEdges()
+size_t GEOM_CLASS_NAME::getNumberOfEdges() const
 {
   return m_EdgeList->getNumberOfTuples();
 }

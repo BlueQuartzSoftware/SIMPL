@@ -46,7 +46,7 @@ class TupleTableItemDelegate : public QStyledItemDelegate
     Q_OBJECT
 
   public:
-    explicit TupleTableItemDelegate(QObject* parent = 0);
+    explicit TupleTableItemDelegate(QObject* parent = nullptr);
 
     ~TupleTableItemDelegate() override;
 

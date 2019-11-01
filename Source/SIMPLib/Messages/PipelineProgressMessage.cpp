@@ -36,6 +36,8 @@
 
 #include "PipelineProgressMessage.h"
 
+#include <QtCore/QObject>
+
 #include "AbstractMessageHandler.h"
 
 // -----------------------------------------------------------------------------
@@ -84,4 +86,41 @@ QString PipelineProgressMessage::generateMessageString() const
 void PipelineProgressMessage::visit(AbstractMessageHandler* msgHandler) const
 {
   msgHandler->processMessage(this);
+}
+
+// -----------------------------------------------------------------------------
+PipelineProgressMessage::Pointer PipelineProgressMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+PipelineProgressMessage::Pointer PipelineProgressMessage::New()
+{
+  Pointer sharedPtr(new(PipelineProgressMessage));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString PipelineProgressMessage::getNameOfClass() const
+{
+  return QString("PipelineProgressMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString PipelineProgressMessage::ClassName()
+{
+  return QString("PipelineProgressMessage");
+}
+
+// -----------------------------------------------------------------------------
+void PipelineProgressMessage::setPipelineName(const QString& value)
+{
+  m_PipelineName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PipelineProgressMessage::getPipelineName() const
+{
+  return m_PipelineName;
 }

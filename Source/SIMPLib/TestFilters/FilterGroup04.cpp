@@ -29,7 +29,11 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "FilterGroup04.h"
+
+#include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -132,7 +136,7 @@ AbstractFilter::Pointer FilterGroup04::newFilterInstance(bool copyFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup04::getCompiledLibraryName() const
+QString FilterGroup04::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -140,7 +144,7 @@ const QString FilterGroup04::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup04::getBrandingString() const
+QString FilterGroup04::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -148,7 +152,7 @@ const QString FilterGroup04::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup04::getFilterVersion() const
+QString FilterGroup04::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -159,7 +163,7 @@ const QString FilterGroup04::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup04::getGroupName() const
+QString FilterGroup04::getGroupName() const
 {
   return SIMPL::FilterGroups::ProcessingFilters;
 }
@@ -167,7 +171,7 @@ const QString FilterGroup04::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid FilterGroup04::getUuid()
+QUuid FilterGroup04::getUuid() const
 {
   return QUuid("{15277d03-a2fa-544d-be95-213fa8942c3e}");
 }
@@ -175,7 +179,7 @@ const QUuid FilterGroup04::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup04::getSubGroupName() const
+QString FilterGroup04::getSubGroupName() const
 {
   return "Test";
 }
@@ -183,7 +187,36 @@ const QString FilterGroup04::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup04::getHumanLabel() const
+QString FilterGroup04::getHumanLabel() const
 {
   return "ProcessingFilters Test Filter";
+}
+
+// -----------------------------------------------------------------------------
+FilterGroup04::Pointer FilterGroup04::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<FilterGroup04> FilterGroup04::New()
+{
+  struct make_shared_enabler : public FilterGroup04
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterGroup04::getNameOfClass() const
+{
+  return QString("FilterGroup04");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterGroup04::ClassName()
+{
+  return QString("FilterGroup04");
 }

@@ -39,6 +39,8 @@
 
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 

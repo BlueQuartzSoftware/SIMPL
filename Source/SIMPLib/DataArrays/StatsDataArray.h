@@ -34,13 +34,16 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/DataArrays/IDataArray.h"
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/StatsData/StatsData.h"
 
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The StatsDataArray class
@@ -48,7 +51,11 @@
 class SIMPLib_EXPORT StatsDataArray : public IDataArray
 {
   // clang-format off
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(StatsDataArray SUPER IDataArray)
+  PYB11_SHARED_POINTERS(StatsDataArray)
+  PYB11_STATIC_NEW_MACRO(StatsDataArray)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t int size_t* QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t std::vector<size_t> QString bool)
@@ -58,13 +65,30 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
   PYB11_METHOD(StatsData::Pointer getStatsData ARGS int,index)
   PYB11_METHOD(void fillArrayWithNewStatsData OVERLOAD size_t,n PhaseType::Type*,phase_types)
   PYB11_METHOD(void fillArrayWithNewStatsData OVERLOAD size_t,n PhaseType::EnumType*,phase_types)
+#endif
+
   // clang-format on
 
 public:
-  SIMPL_SHARED_POINTERS(StatsDataArray)
-  SIMPL_STATIC_NEW_MACRO(StatsDataArray)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(StatsDataArray, IDataArray)
-  SIMPL_CLASS_VERSION(2)
+  using Self = StatsDataArray;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for StatsDataArray
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for StatsDataArray
+   */
+  static QString ClassName();
+
+  int getClassVersion() const override;
 
   ~StatsDataArray() override;
 
@@ -112,24 +136,32 @@ public:
    * can be a primitive like char, float, int or the name of a class.
    * @return
    */
-  void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) override;
+  void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const override;
 
   /**
    * @brief getTypeAsString
    * @return
    */
-  QString getTypeAsString() override;
+  QString getTypeAsString() const override;
 
-  SIMPL_INSTANCE_PROPERTY(QVector<StatsData::Pointer>, StatsDataArray)
+  /**
+   * @brief Setter property for StatsDataArray
+   */
+  void setStatsDataArray(const QVector<StatsData::Pointer>& value);
+  /**
+   * @brief Getter property for StatsDataArray
+   * @return Value of StatsDataArray
+   */
+  QVector<StatsData::Pointer> getStatsDataArray() const;
 
-  IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) override;
+  IDataArray::Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) const override;
 
-  IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) override;
+  IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) const override;
 
   /**
    * @brief
    */
-  bool isAllocated() override;
+  bool isAllocated() const override;
 
   /**
    *
@@ -154,7 +186,7 @@ public:
   /**
    *
    */
-  StatsData::Pointer getStatsData(int idx);
+  StatsData::Pointer getStatsData(int idx) const;
 
   /**
    * @brief operator []
@@ -170,7 +202,7 @@ public:
    * @brief getFullNameOfClass
    * @return
    */
-  QString getFullNameOfClass();
+  QString getFullNameOfClass() const;
 
   /**
    * @brief Makes this class responsible for freeing the memory.
@@ -196,25 +228,25 @@ public:
   /**
    * @brief Returns the number of Tuples in the array.
    */
-  size_t getNumberOfTuples() override;
+  size_t getNumberOfTuples() const override;
 
   /**
    * @brief Return the number of elements in the array
    * @return
    */
-  size_t getSize() override;
+  size_t getSize() const override;
 
   /**
    * @brief getNumberOfComponents
    * @return
    */
-  int getNumberOfComponents() override;
+  int getNumberOfComponents() const override;
 
   /**
    * @brief getComponentDimensions
    * @return
    */
-  std::vector<size_t> getComponentDimensions() override;
+  std::vector<size_t> getComponentDimensions() const override;
 
   /**
    * @brief Returns the number of bytes that make up the data type.
@@ -223,7 +255,7 @@ public:
    * 4 = 32 bit integer/Float
    * 8 = 64 bit integer/Double
    */
-  size_t getTypeSize() override;
+  size_t getTypeSize() const override;
 
   /**
    * @brief Removes Tuples from the Array. If the size of the vector is Zero nothing is done. If the size of the
@@ -266,7 +298,7 @@ public:
    * @param sourceArray
    * @return
    */
-  bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
+  bool copyFromArray(size_t destTupleOffset, IDataArrayShPtrType sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
 
   /**
    * @brief Splats the same value c across all values in the Tuple
@@ -285,7 +317,7 @@ public:
    * @param forceNoAllocate
    * @return
    */
-  IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override;
+  IDataArrayShPtrType deepCopy(bool forceNoAllocate = false) const override;
 
   /**
    * @brief Reseizes the internal array
@@ -306,7 +338,7 @@ public:
    * @param i
    * @param delimiter
    */
-  void printTuple(QTextStream& out, size_t i, char delimiter = ',') override;
+  void printTuple(QTextStream& out, size_t i, char delimiter = ',') const override;
 
   /**
    * @brief printComponent
@@ -314,14 +346,14 @@ public:
    * @param i
    * @param j
    */
-  void printComponent(QTextStream& out, size_t i, int j) override;
+  void printComponent(QTextStream& out, size_t i, int j) const override;
 
   /**
    *
    * @param parentId
    * @return
    */
-  int writeH5Data(hid_t parentId, std::vector<size_t> tDims) override;
+  int writeH5Data(hid_t parentId, std::vector<size_t> tDims) const override;
 
   /**
    * @brief readH5Data
@@ -338,14 +370,14 @@ public:
    * @param groupPath
    * @return
    */
-  int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) override;
+  int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) const override;
 
   /**
    * @brief getInfoString
    * @param format
    * @return
    */
-  QString getInfoString(SIMPL::InfoStringFormat format) override;
+  QString getInfoString(SIMPL::InfoStringFormat format) const override;
 
   /**
    * @brief StatsDataArray::readFromJson
@@ -360,12 +392,14 @@ public:
    * @param crystalStructures
    * @return
    */
-  int writeToJson(QJsonObject& jsonRoot, UInt32ArrayType::Pointer crystalStructures);
+  int writeToJson(QJsonObject& jsonRoot, UInt32ArrayType::Pointer crystalStructures) const;
 
 protected:
   StatsDataArray();
 
 private:
+  QVector<StatsData::Pointer> m_StatsDataArray = {};
+
   bool m_IsAllocated;
 
 public:

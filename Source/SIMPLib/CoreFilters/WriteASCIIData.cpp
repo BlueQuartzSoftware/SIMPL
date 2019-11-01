@@ -33,11 +33,16 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "WriteASCIIData.h"
 
 #include <QtCore/QDir>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
 #include "SIMPLib/DataArrays/StringDataArray.h"
@@ -50,7 +55,8 @@
 #include "SIMPLib/FilterParameters/OutputPathFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
-
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
 
 /**
  * @brief The ExportDataPrivate class is a templated class that implements a method to generically
@@ -606,7 +612,7 @@ AbstractFilter::Pointer WriteASCIIData::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getCompiledLibraryName() const
+QString WriteASCIIData::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -614,7 +620,7 @@ const QString WriteASCIIData::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getBrandingString() const
+QString WriteASCIIData::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -622,7 +628,7 @@ const QString WriteASCIIData::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getFilterVersion() const
+QString WriteASCIIData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -633,7 +639,7 @@ const QString WriteASCIIData::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getGroupName() const
+QString WriteASCIIData::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -641,7 +647,7 @@ const QString WriteASCIIData::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid WriteASCIIData::getUuid()
+QUuid WriteASCIIData::getUuid() const
 {
   return QUuid("{5fbf9204-2c6c-597b-856a-f4612adbac38}");
 }
@@ -649,7 +655,7 @@ const QUuid WriteASCIIData::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getSubGroupName() const
+QString WriteASCIIData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::OutputFilters;
 }
@@ -657,7 +663,120 @@ const QString WriteASCIIData::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getHumanLabel() const
+QString WriteASCIIData::getHumanLabel() const
 {
   return "Export ASCII Data";
+}
+
+// -----------------------------------------------------------------------------
+WriteASCIIData::Pointer WriteASCIIData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<WriteASCIIData> WriteASCIIData::New()
+{
+  struct make_shared_enabler : public WriteASCIIData
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString WriteASCIIData::getNameOfClass() const
+{
+  return QString("WriteASCIIData");
+}
+
+// -----------------------------------------------------------------------------
+QString WriteASCIIData::ClassName()
+{
+  return QString("WriteASCIIData");
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setSelectedDataArrayPaths(const QVector<DataArrayPath>& value)
+{
+  m_SelectedDataArrayPaths = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> WriteASCIIData::getSelectedDataArrayPaths() const
+{
+  return m_SelectedDataArrayPaths;
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setOutputPath(const QString& value)
+{
+  m_OutputPath = value;
+}
+
+// -----------------------------------------------------------------------------
+QString WriteASCIIData::getOutputPath() const
+{
+  return m_OutputPath;
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setOutputFilePath(const QString& value)
+{
+  m_OutputFilePath = value;
+}
+
+// -----------------------------------------------------------------------------
+QString WriteASCIIData::getOutputFilePath() const
+{
+  return m_OutputFilePath;
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setDelimiter(int value)
+{
+  m_Delimiter = value;
+}
+
+// -----------------------------------------------------------------------------
+int WriteASCIIData::getDelimiter() const
+{
+  return m_Delimiter;
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setFileExtension(const QString& value)
+{
+  m_FileExtension = value;
+}
+
+// -----------------------------------------------------------------------------
+QString WriteASCIIData::getFileExtension() const
+{
+  return m_FileExtension;
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setMaxValPerLine(int value)
+{
+  m_MaxValPerLine = value;
+}
+
+// -----------------------------------------------------------------------------
+int WriteASCIIData::getMaxValPerLine() const
+{
+  return m_MaxValPerLine;
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::setOutputStyle(int value)
+{
+  m_OutputStyle = value;
+}
+
+// -----------------------------------------------------------------------------
+int WriteASCIIData::getOutputStyle() const
+{
+  return m_OutputStyle;
 }

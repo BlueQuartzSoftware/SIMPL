@@ -34,6 +34,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -61,9 +63,23 @@
 class SIMPLib_EXPORT MontageSelectionFilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(MontageSelectionFilterParameter)
-  SIMPL_STATIC_NEW_MACRO(MontageSelectionFilterParameter)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MontageSelectionFilterParameter, FilterParameter)
+  using Self = MontageSelectionFilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for MontageSelectionFilterParameter
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for MontageSelectionFilterParameter
+   */
+  static QString ClassName();
 
   using SetterCallbackType = std::function<void(MontageSelection)>;
   using GetterCallbackType = std::function<MontageSelection(void)>;
@@ -113,14 +129,30 @@ public:
    * that this FilterParameter subclass represents.
    * from the filter parameter.
    */
-  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  /**
+   * @brief Setter property for SetterCallback
+   */
+  void setSetterCallback(const MontageSelectionFilterParameter::SetterCallbackType& value);
+  /**
+   * @brief Getter property for SetterCallback
+   * @return Value of SetterCallback
+   */
+  MontageSelectionFilterParameter::SetterCallbackType getSetterCallback() const;
 
   /**
    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
    * that this FilterParameter subclass represents.
    * @return The GetterCallback
    */
-  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+  /**
+   * @brief Setter property for GetterCallback
+   */
+  void setGetterCallback(const MontageSelectionFilterParameter::GetterCallbackType& value);
+  /**
+   * @brief Getter property for GetterCallback
+   * @return Value of GetterCallback
+   */
+  MontageSelectionFilterParameter::GetterCallbackType getGetterCallback() const;
 
 protected:
   /**
@@ -134,4 +166,8 @@ public:
   MontageSelectionFilterParameter(MontageSelectionFilterParameter&&) = delete;                 // Move Constructor Not Implemented
   MontageSelectionFilterParameter& operator=(const MontageSelectionFilterParameter&) = delete; // Copy Assignment Not Implemented
   MontageSelectionFilterParameter& operator=(MontageSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  MontageSelectionFilterParameter::SetterCallbackType m_SetterCallback = {};
+  MontageSelectionFilterParameter::GetterCallbackType m_GetterCallback = {};
 };

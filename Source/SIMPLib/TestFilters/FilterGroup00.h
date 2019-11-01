@@ -31,42 +31,66 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <memory>
+
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
 /**
- * @brief The TESTCLASSNAME class. See [Filter documentation](@ref TESTCLASSNAME) for details.
+ * @brief The FilterGroup00 class. See [Filter documentation](@ref FilterGroup00) for details.
  */
-class TESTCLASSNAME : public AbstractFilter
+class FilterGroup00 : public AbstractFilter
 {
   Q_OBJECT
 
 public:
-  SIMPL_SHARED_POINTERS(TESTCLASSNAME)
-  SIMPL_FILTER_NEW_MACRO(TESTCLASSNAME)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TESTCLASSNAME, AbstractFilter)
+  using Self = FilterGroup00;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
 
-  ~TESTCLASSNAME() override;
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for FilterGroup00
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for FilterGroup00
+   */
+  static QString ClassName();
+
+  ~FilterGroup00() override;
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
 
   /**
    * @brief getBrandingString Returns the branding string for the filter, which is a tag
    * used to denote the filter's association with specific plugins
    * @return Branding string
   */
-  const QString getBrandingString() const override;
+  QString getBrandingString() const override;
 
   /**
    * @brief getFilterVersion Returns a version string for this filter. Default
    * value is an empty string.
    * @return
    */
-  const QString getFilterVersion() const override;
+  QString getFilterVersion() const override;
 
   /**
    * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -76,23 +100,23 @@ public:
   /**
    * @brief getGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
    * @brief getSubGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
    * @brief getHumanLabel Reimplemented from @see AbstractFilter class
    */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
 
   /**
    * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -133,7 +157,7 @@ signals:
   void preflightExecuted();
 
 protected:
-  TESTCLASSNAME();
+  FilterGroup00();
 
   /**
   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
@@ -146,7 +170,7 @@ protected:
   void initialize();
 
 private:
-  TESTCLASSNAME(const TESTCLASSNAME&) = delete;  // Copy Constructor Not Implemented
-  void operator=(const TESTCLASSNAME&) = delete; // Move assignment Not Implemented
+  FilterGroup00(const FilterGroup00&) = delete;  // Copy Constructor Not Implemented
+  void operator=(const FilterGroup00&) = delete; // Move assignment Not Implemented
 };
 

@@ -37,8 +37,10 @@
 
 #include <QtCore/QFile>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/DataArrays/DataArray.hpp"
+
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
@@ -54,6 +56,8 @@
 #include "SIMPLib/Geometry/TriangleGeom.h"
 
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 class WriteTriangleGeometryTest
 {

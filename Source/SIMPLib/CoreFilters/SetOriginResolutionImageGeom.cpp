@@ -33,9 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "SetOriginResolutionImageGeom.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/Utilities/ParallelDataAlgorithm.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -44,6 +49,7 @@
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 /**
  * @brief The SetOriginResolutionImageUpdateVerticesImpl class implements a threaded algorithm that adjusts the
@@ -214,7 +220,7 @@ AbstractFilter::Pointer SetOriginResolutionImageGeom::newFilterInstance(bool cop
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SetOriginResolutionImageGeom::getCompiledLibraryName() const
+QString SetOriginResolutionImageGeom::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -222,7 +228,7 @@ const QString SetOriginResolutionImageGeom::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SetOriginResolutionImageGeom::getBrandingString() const
+QString SetOriginResolutionImageGeom::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -230,7 +236,7 @@ const QString SetOriginResolutionImageGeom::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SetOriginResolutionImageGeom::getFilterVersion() const
+QString SetOriginResolutionImageGeom::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -241,7 +247,7 @@ const QString SetOriginResolutionImageGeom::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SetOriginResolutionImageGeom::getGroupName() const
+QString SetOriginResolutionImageGeom::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -249,7 +255,7 @@ const QString SetOriginResolutionImageGeom::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid SetOriginResolutionImageGeom::getUuid()
+QUuid SetOriginResolutionImageGeom::getUuid() const
 {
   return QUuid("{6d3a3852-6251-5d2e-b749-6257fd0d8951}");
 }
@@ -257,7 +263,7 @@ const QUuid SetOriginResolutionImageGeom::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SetOriginResolutionImageGeom::getSubGroupName() const
+QString SetOriginResolutionImageGeom::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::SpatialFilters;
 }
@@ -265,7 +271,96 @@ const QString SetOriginResolutionImageGeom::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SetOriginResolutionImageGeom::getHumanLabel() const
+QString SetOriginResolutionImageGeom::getHumanLabel() const
 {
   return "Set Origin & Spacing (Image)";
+}
+
+// -----------------------------------------------------------------------------
+SetOriginResolutionImageGeom::Pointer SetOriginResolutionImageGeom::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<SetOriginResolutionImageGeom> SetOriginResolutionImageGeom::New()
+{
+  struct make_shared_enabler : public SetOriginResolutionImageGeom
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString SetOriginResolutionImageGeom::getNameOfClass() const
+{
+  return QString("SetOriginResolutionImageGeom");
+}
+
+// -----------------------------------------------------------------------------
+QString SetOriginResolutionImageGeom::ClassName()
+{
+  return QString("SetOriginResolutionImageGeom");
+}
+
+// -----------------------------------------------------------------------------
+void SetOriginResolutionImageGeom::setDataContainerName(const DataArrayPath& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath SetOriginResolutionImageGeom::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void SetOriginResolutionImageGeom::setChangeOrigin(bool value)
+{
+  m_ChangeOrigin = value;
+}
+
+// -----------------------------------------------------------------------------
+bool SetOriginResolutionImageGeom::getChangeOrigin() const
+{
+  return m_ChangeOrigin;
+}
+
+// -----------------------------------------------------------------------------
+void SetOriginResolutionImageGeom::setOrigin(const FloatVec3Type& value)
+{
+  m_Origin = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type SetOriginResolutionImageGeom::getOrigin() const
+{
+  return m_Origin;
+}
+
+// -----------------------------------------------------------------------------
+void SetOriginResolutionImageGeom::setChangeResolution(bool value)
+{
+  m_ChangeResolution = value;
+}
+
+// -----------------------------------------------------------------------------
+bool SetOriginResolutionImageGeom::getChangeResolution() const
+{
+  return m_ChangeResolution;
+}
+
+// -----------------------------------------------------------------------------
+void SetOriginResolutionImageGeom::setSpacing(const FloatVec3Type& value)
+{
+  m_Spacing = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type SetOriginResolutionImageGeom::getSpacing() const
+{
+  return m_Spacing;
 }
