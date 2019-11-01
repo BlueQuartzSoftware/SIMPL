@@ -128,7 +128,7 @@ public:
     OrientationMatrixType om = ax2om<AxisAngleType, OrientationMatrixType>(m_RotationAxis);
 #if GTS_GENERATE_DEBUG_ARRAYS
     FloatArrayType::Pointer copyOfGrid = std::dynamic_pointer_cast<FloatArrayType>(m_Coords->deepCopy());
-    IDataArray::Pointer vertexOutputData = outputData->createNewArray(copyOfGrid->getNumberOfTuples(), {1}, outputData->getName(), true);
+    IDataArray::Pointer vertexOutputData = outputData->createNewArray(copyOfGrid->getNumberOfTuples(), outputData->getComponentDimensions(), outputData->getName(), true);
     vertexOutputData->initializeWithZeros();
 #endif
     ImageGeom::ErrorType err;
@@ -375,7 +375,8 @@ void GenerateTiltSeries::dataCheck()
     AttributeMatrix::Pointer cellAttr = AttributeMatrix::New({gridDims[0], gridDims[1], gridDims[2]}, Detail::k_AttributeMatrixName, AttributeMatrix::Type::Cell);
     gridDC->insertOrAssign(cellAttr);
 
-    IDataArray::Pointer outputData = inputData->createNewArray(gridDims[0] * gridDims[1] * gridDims[2], {1}, getInputDataArrayPath().getDataArrayName());
+    IDataArray::Pointer outputData =
+        inputData->createNewArray(gridDims[0] * gridDims[1] * gridDims[2], inputData->getComponentDimensions(), getInputDataArrayPath().getDataArrayName(), !getInPreflight());
     cellAttr->insertOrAssign(outputData);
     getDataContainerArray()->insertOrAssign(gridDC);
 
@@ -588,20 +589,24 @@ std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> GenerateTiltSeries::gener
   newGridGeom->setSpacing(newGridGeomSpacing);
   newGridGeom->setOrigin(newGridGeomOrigin);
 
-  FloatArrayType::Pointer gridCoords = FloatArrayType::CreateArray(totalElements, {3}, "Grid Coords", true);
-  size_t tupleIndex = 0;
-  for(float i = iStart; i < iEnd; i += iIncr)
+  FloatArrayType::Pointer gridCoords = FloatArrayType::CreateArray(totalElements, {3}, "Grid Coords", !getInPreflight());
+  if(!getInPreflight())
   {
-    for(float j = jStart; j < jEnd; j += jIncr)
+    size_t tupleIndex = 0;
+    for(float i = iStart; i < iEnd; i += iIncr)
     {
-      std::array<float, 3> coords;
+      for(float j = jStart; j < jEnd; j += jIncr)
+      {
+        std::array<float, 3> coords;
 
-      coords[xAxis] = j + halfSpacing[0];
-      coords[zAxis] = i + halfSpacing[1];
-      coords[yAxis] = origin[yAxis] + axisLength[yAxis] / 2.0f + spacing[yAxis] / 2.0f;
+        coords[xAxis] = j + halfSpacing[0];
+        coords[zAxis] = i + halfSpacing[1];
+        coords[yAxis] = origin[yAxis] + axisLength[yAxis] / 2.0f + spacing[yAxis] / 2.0f;
 
-      gridCoords->setTuple(tupleIndex, coords.data());
-      tupleIndex++;
+        gridCoords->setTuple(tupleIndex, coords.data());
+
+        tupleIndex++;
+      }
     }
   }
   return {gridCoords, newGridGeom};
