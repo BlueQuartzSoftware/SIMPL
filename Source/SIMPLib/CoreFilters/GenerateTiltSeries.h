@@ -241,7 +241,9 @@ protected:
    */
   void initialize();
 
-  std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> generateGrid();
+  std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> generateXAxisGrid();
+  std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> generateYAxisGrid();
+  std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> generateZAxisGrid();
 
 private:
   int m_RotationAxis = 0;

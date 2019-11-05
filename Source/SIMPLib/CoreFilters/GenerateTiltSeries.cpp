@@ -353,7 +353,19 @@ void GenerateTiltSeries::dataCheck()
   }
 
   // Generate Data Structure
-  std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> gridPair = generateGrid();
+  std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> gridPair;
+  if(getRotationAxis() == k_XAxis)
+  {
+    gridPair = generateXAxisGrid();
+  }
+  else if(getRotationAxis() == k_YAxis)
+  {
+    gridPair = generateYAxisGrid();
+  }
+  else if(getRotationAxis() == k_ZAxis)
+  {
+    gridPair = generateZAxisGrid();
+  }
   if(nullptr == gridPair.first)
   {
     return;
@@ -416,7 +428,19 @@ void GenerateTiltSeries::execute()
   }
 
   // Compute a grid that forms a plane parallel to the rotation axis and centered halfway back in the volume
-  std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> gridPair = generateGrid();
+  std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> gridPair;
+  if(getRotationAxis() == k_XAxis)
+  {
+    gridPair = generateXAxisGrid();
+  }
+  else if(getRotationAxis() == k_YAxis)
+  {
+    gridPair = generateYAxisGrid();
+  }
+  else if(getRotationAxis() == k_ZAxis)
+  {
+    gridPair = generateZAxisGrid();
+  }
   FloatArrayType::Pointer gridCoords = gridPair.first;
   ImageGeom::Pointer gridGeometry = gridPair.second;
   DataContainerArray::Pointer dca = getDataContainerArray();
@@ -497,7 +521,7 @@ void GenerateTiltSeries::execute()
 }
 
 // -----------------------------------------------------------------------------
-std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> GenerateTiltSeries::generateGrid()
+std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> GenerateTiltSeries::generateZAxisGrid()
 {
   DataContainer::Pointer inputDC = getDataContainerArray()->getDataContainer(getInputDataArrayPath().getDataContainerName());
   if(nullptr == inputDC.get())
@@ -505,7 +529,6 @@ std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> GenerateTiltSeries::gener
     return {FloatArrayType::NullPointer(), ImageGeom::NullPointer()};
   }
   ImageGeom::Pointer inputImageGeom = inputDC->getGeometryAs<ImageGeom>();
-  //  SizeVec3Type dims = imageGeom->getDimensions();
   FloatVec3Type origin = inputImageGeom->getOrigin();
   FloatVec3Type spacing = inputImageGeom->getSpacing();
   FloatVec6Type bounds = inputImageGeom->getBoundingBox();
@@ -514,41 +537,13 @@ std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> GenerateTiltSeries::gener
   size_t xAxis = 0;
   size_t yAxis = 1;
   size_t zAxis = 2;
-  int32_t rotAxisSelection = getRotationAxis();
-
-  if(k_XAxis == rotAxisSelection)
-  {
-    xAxis = 2;
-    yAxis = 1;
-    zAxis = 0;
-  }
-  else if(k_YAxis == rotAxisSelection)
-  {
-    xAxis = 0;
-    yAxis = 2;
-    zAxis = 1;
-  }
-  else if(k_ZAxis == rotAxisSelection)
-  {
-    xAxis = 0;
-    yAxis = 1;
-    zAxis = 2;
-  }
-
   float diagonalDistance = 0.0;
-
-  std::array<float, 3> axisLength = {bounds[2 * xAxis + 1] - bounds[2 * xAxis], bounds[2 * yAxis + 1] - bounds[2 * yAxis], bounds[2 * zAxis + 1] - bounds[2 * zAxis]};
-
-  diagonalDistance = std::sqrtf(axisLength[xAxis] * axisLength[xAxis] + axisLength[yAxis] * axisLength[yAxis]);
-
-  std::array<float, 3> newOrigin;
-
-  newOrigin[xAxis] = center[xAxis] - diagonalDistance / 2.0f;
-  newOrigin[yAxis] = center[yAxis] - diagonalDistance / 2.0f;
-  newOrigin[zAxis] = bounds[zAxis * 2]; // Use the original origin for the 3rd Axis
 
   // Compute the total number of points along each axis
   FloatVec3Type resampleSpacing = getSpacing();
+
+  std::array<float, 3> axisLength = {0.0f, 0.0f, 0.0f};
+  std::array<float, 3> newOrigin = {0.0f, 0.0f, 0.0f};
 
   float iStart = bounds[zAxis * 2];
   float iEnd = bounds[zAxis * 2 + 1];
@@ -557,6 +552,21 @@ std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> GenerateTiltSeries::gener
   float jStart = newOrigin[xAxis];
   float jEnd = newOrigin[xAxis] + diagonalDistance;
   float jIncr = resampleSpacing[xAxis];
+
+  axisLength = {bounds[2 * xAxis + 1] - bounds[2 * xAxis], bounds[2 * yAxis + 1] - bounds[2 * yAxis], bounds[2 * zAxis + 1] - bounds[2 * zAxis]};
+  diagonalDistance = std::sqrtf(axisLength[0] * axisLength[0] + axisLength[1] * axisLength[1]);
+
+  newOrigin[xAxis] = center[xAxis] - diagonalDistance / 2.0f;
+  newOrigin[yAxis] = center[yAxis];
+  newOrigin[zAxis] = bounds[zAxis * 2]; // Use the original origin for the 3rd Axis
+
+  iStart = bounds[zAxis * 2];
+  iEnd = bounds[zAxis * 2 + 1];
+  iIncr = resampleSpacing[zAxis];
+
+  jStart = newOrigin[xAxis];
+  jEnd = newOrigin[xAxis] + diagonalDistance;
+  jIncr = resampleSpacing[xAxis];
 
   size_t gridPrimAxisDim = static_cast<size_t>(std::ceil((iEnd - iStart) / iIncr));
   size_t gridSecondAxisDim = static_cast<size_t>(std::ceil((jEnd - jStart) / jIncr));
@@ -602,6 +612,196 @@ std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> GenerateTiltSeries::gener
         coords[xAxis] = j + halfSpacing[0];
         coords[zAxis] = i + halfSpacing[1];
         coords[yAxis] = origin[yAxis] + axisLength[yAxis] / 2.0f + spacing[yAxis] / 2.0f;
+
+        gridCoords->setTuple(tupleIndex, coords.data());
+
+        tupleIndex++;
+      }
+    }
+  }
+  return {gridCoords, newGridGeom};
+}
+
+// -----------------------------------------------------------------------------
+std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> GenerateTiltSeries::generateYAxisGrid()
+{
+  DataContainer::Pointer inputDC = getDataContainerArray()->getDataContainer(getInputDataArrayPath().getDataContainerName());
+  if(nullptr == inputDC.get())
+  {
+    return {FloatArrayType::NullPointer(), ImageGeom::NullPointer()};
+  }
+  ImageGeom::Pointer inputImageGeom = inputDC->getGeometryAs<ImageGeom>();
+  FloatVec3Type origin = inputImageGeom->getOrigin();
+  FloatVec3Type spacing = inputImageGeom->getSpacing();
+  FloatVec6Type bounds = inputImageGeom->getBoundingBox();
+  FloatVec3Type center((bounds[1] - bounds[0]) / 2.0f + bounds[0], (bounds[3] - bounds[2]) / 2.0f + bounds[2], (bounds[5] - bounds[4]) / 2.0f + bounds[4]);
+
+  size_t xAxis = 0;
+  size_t yAxis = 1;
+  size_t zAxis = 2;
+  float diagonalDistance = 0.0;
+
+  // Compute the total number of points along each axis
+  FloatVec3Type resampleSpacing = getSpacing();
+
+  std::array<float, 3> axisLength = {0.0f, 0.0f, 0.0f};
+  std::array<float, 3> newOrigin = {0.0f, 0.0f, 0.0f};
+
+  axisLength = {bounds[2 * yAxis + 1] - bounds[2 * yAxis], bounds[2 * zAxis + 1] - bounds[2 * zAxis], bounds[2 * xAxis + 1] - bounds[2 * xAxis]};
+  diagonalDistance = std::sqrtf(axisLength[0] * axisLength[0] + axisLength[1] * axisLength[1]);
+
+  newOrigin[xAxis] = center[xAxis];
+  newOrigin[yAxis] = bounds[yAxis * 2];
+  newOrigin[zAxis] = center[zAxis] - diagonalDistance / 2.0f;
+
+  float iStart = newOrigin[yAxis];
+  float iEnd = bounds[yAxis * 2 + 1];
+  float iIncr = resampleSpacing[yAxis];
+
+  float jStart = newOrigin[zAxis];
+  float jEnd = newOrigin[zAxis] + diagonalDistance;
+  float jIncr = resampleSpacing[zAxis];
+
+  size_t gridPrimAxisDim = static_cast<size_t>(std::ceil((iEnd - iStart) / iIncr));
+  size_t gridSecondAxisDim = static_cast<size_t>(std::ceil((jEnd - jStart) / jIncr));
+  size_t totalElements = gridPrimAxisDim * gridSecondAxisDim;
+  if(totalElements == 0)
+  {
+    return {FloatArrayType::NullPointer(), ImageGeom::NullPointer()};
+  }
+
+  std::array<float, 2> halfSpacing = {resampleSpacing[yAxis] / 2.0f, resampleSpacing[zAxis] / 2.0f};
+
+  ImageGeom::Pointer newGridGeom = ImageGeom::CreateGeometry("Grid Geometry");
+
+  SizeVec3Type newGridGeomDims;
+  newGridGeomDims[xAxis] = 1;
+  ;
+  newGridGeomDims[yAxis] = gridPrimAxisDim;
+  newGridGeomDims[zAxis] = gridSecondAxisDim;
+
+  FloatVec3Type newGridGeomSpacing;
+  newGridGeomSpacing[xAxis] = spacing[xAxis];
+  newGridGeomSpacing[yAxis] = iIncr;
+  newGridGeomSpacing[zAxis] = jIncr;
+
+  FloatVec3Type newGridGeomOrigin;
+  newGridGeomOrigin[xAxis] = newOrigin[xAxis];
+  newGridGeomOrigin[yAxis] = newOrigin[yAxis];
+  newGridGeomOrigin[zAxis] = newOrigin[zAxis];
+
+  newGridGeom->setDimensions(newGridGeomDims);
+  newGridGeom->setSpacing(newGridGeomSpacing);
+  newGridGeom->setOrigin(newGridGeomOrigin);
+
+  FloatArrayType::Pointer gridCoords = FloatArrayType::CreateArray(totalElements, {3}, "Grid Coords", !getInPreflight());
+  if(!getInPreflight())
+  {
+    size_t tupleIndex = 0;
+    for(float i = iStart; i < iEnd; i += iIncr)
+    {
+      for(float j = jStart; j < jEnd; j += jIncr)
+      {
+        std::array<float, 3> coords;
+
+        coords[xAxis] = origin[xAxis] + axisLength[2] / 2.0f + spacing[xAxis] / 2.0f;
+        coords[yAxis] = i + halfSpacing[0];
+        coords[zAxis] = j + halfSpacing[1];
+
+        gridCoords->setTuple(tupleIndex, coords.data());
+
+        tupleIndex++;
+      }
+    }
+  }
+  return {gridCoords, newGridGeom};
+}
+
+// -----------------------------------------------------------------------------
+std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> GenerateTiltSeries::generateXAxisGrid()
+{
+  DataContainer::Pointer inputDC = getDataContainerArray()->getDataContainer(getInputDataArrayPath().getDataContainerName());
+  if(nullptr == inputDC.get())
+  {
+    return {FloatArrayType::NullPointer(), ImageGeom::NullPointer()};
+  }
+  ImageGeom::Pointer inputImageGeom = inputDC->getGeometryAs<ImageGeom>();
+  FloatVec3Type origin = inputImageGeom->getOrigin();
+  FloatVec3Type spacing = inputImageGeom->getSpacing();
+  FloatVec6Type bounds = inputImageGeom->getBoundingBox();
+  FloatVec3Type center((bounds[1] - bounds[0]) / 2.0f + bounds[0], (bounds[3] - bounds[2]) / 2.0f + bounds[2], (bounds[5] - bounds[4]) / 2.0f + bounds[4]);
+
+  size_t xAxis = 0;
+  size_t yAxis = 1;
+  size_t zAxis = 2;
+  float diagonalDistance = 0.0;
+
+  // Compute the total number of points along each axis
+  FloatVec3Type resampleSpacing = getSpacing();
+
+  std::array<float, 3> axisLength = {0.0f, 0.0f, 0.0f};
+  std::array<float, 3> newOrigin = {0.0f, 0.0f, 0.0f};
+
+  axisLength = {bounds[2 * xAxis + 1] - bounds[2 * xAxis], bounds[2 * yAxis + 1] - bounds[2 * yAxis], bounds[2 * zAxis + 1] - bounds[2 * zAxis]};
+  diagonalDistance = std::sqrtf(axisLength[xAxis] * axisLength[xAxis] + axisLength[yAxis] * axisLength[yAxis]);
+
+  newOrigin[xAxis] = bounds[xAxis]; // xMin
+  newOrigin[yAxis] = center[yAxis] - diagonalDistance / 2.0f;
+  newOrigin[zAxis] = center[zAxis];
+
+  float iStart = newOrigin[xAxis];
+  float iEnd = bounds[xAxis * 2 + 1];
+  float iIncr = resampleSpacing[xAxis];
+
+  float jStart = newOrigin[yAxis];
+  float jEnd = newOrigin[yAxis] + diagonalDistance;
+  float jIncr = resampleSpacing[yAxis];
+
+  size_t gridPrimAxisDim = static_cast<size_t>(std::ceil((iEnd - iStart) / iIncr));
+  size_t gridSecondAxisDim = static_cast<size_t>(std::ceil((jEnd - jStart) / jIncr));
+  size_t totalElements = gridPrimAxisDim * gridSecondAxisDim;
+  if(totalElements == 0)
+  {
+    return {FloatArrayType::NullPointer(), ImageGeom::NullPointer()};
+  }
+
+  std::array<float, 2> halfSpacing = {resampleSpacing[xAxis] / 2.0f, resampleSpacing[yAxis] / 2.0f};
+
+  ImageGeom::Pointer newGridGeom = ImageGeom::CreateGeometry("Grid Geometry");
+
+  SizeVec3Type newGridGeomDims;
+  newGridGeomDims[xAxis] = gridPrimAxisDim;
+  ;
+  newGridGeomDims[yAxis] = gridSecondAxisDim;
+  newGridGeomDims[zAxis] = 1;
+
+  FloatVec3Type newGridGeomSpacing;
+  newGridGeomSpacing[xAxis] = iIncr;
+  newGridGeomSpacing[yAxis] = jIncr;
+  newGridGeomSpacing[zAxis] = spacing[zAxis];
+
+  FloatVec3Type newGridGeomOrigin;
+  newGridGeomOrigin[xAxis] = newOrigin[xAxis];
+  newGridGeomOrigin[yAxis] = newOrigin[yAxis];
+  newGridGeomOrigin[zAxis] = newOrigin[zAxis];
+
+  newGridGeom->setDimensions(newGridGeomDims);
+  newGridGeom->setSpacing(newGridGeomSpacing);
+  newGridGeom->setOrigin(newGridGeomOrigin);
+
+  FloatArrayType::Pointer gridCoords = FloatArrayType::CreateArray(totalElements, {3}, "Grid Coords", !getInPreflight());
+  if(!getInPreflight())
+  {
+    size_t tupleIndex = 0;
+    for(float i = iStart; i < iEnd; i += iIncr)
+    {
+      for(float j = jStart; j < jEnd; j += jIncr)
+      {
+        std::array<float, 3> coords;
+
+        coords[xAxis] = i + halfSpacing[0];
+        coords[yAxis] = j + halfSpacing[1];
+        coords[zAxis] = origin[zAxis] + axisLength[zAxis] / 2.0f + spacing[zAxis] / 2.0f;
 
         gridCoords->setTuple(tupleIndex, coords.data());
 
