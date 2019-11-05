@@ -41,7 +41,6 @@
 #include <QtCore/QDir>
 #include <QtCore/QFileSystemWatcher>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/FilterLibraryTreeWidget.h"
@@ -61,7 +60,14 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
     Q_OBJECT
 
   public:
-    SIMPL_TYPE_MACRO(BookmarksModel)
+    /**
+     * @brief Returns the name of the class for BookmarksModel
+     */
+    QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for BookmarksModel
+     */
+    static QString ClassName();
 
     enum ErrorCodes
     {

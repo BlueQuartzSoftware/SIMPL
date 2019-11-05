@@ -36,7 +36,8 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <memory>
+
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
@@ -49,9 +50,23 @@ class SIMPLib_EXPORT FileReader : public AbstractFilter
     Q_OBJECT
     
   public:
-    SIMPL_SHARED_POINTERS(FileReader)
-    SIMPL_FILTER_NEW_MACRO(FileReader)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FileReader, AbstractFilter)
+    using Self = FileReader;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<FileReader> New();
+
+    /**
+     * @brief Returns the name of the class for FileReader
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for FileReader
+     */
+    static QString ClassName();
 
     ~FileReader() override;
 
@@ -114,5 +129,7 @@ class SIMPLib_EXPORT FileReader : public AbstractFilter
     FileReader(FileReader&&) = delete;          // Move Constructor Not Implemented
     FileReader& operator=(const FileReader&) = delete; // Copy Assignment Not Implemented
     FileReader& operator=(FileReader&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

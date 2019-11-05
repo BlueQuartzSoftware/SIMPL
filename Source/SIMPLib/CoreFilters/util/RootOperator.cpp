@@ -58,7 +58,11 @@ RootOperator::~RootOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RootOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void RootOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                             QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, root)}
+
+// -----------------------------------------------------------------------------
+RootOperator::Pointer RootOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, root)
+  return Pointer(static_cast<Self*>(nullptr));
 }

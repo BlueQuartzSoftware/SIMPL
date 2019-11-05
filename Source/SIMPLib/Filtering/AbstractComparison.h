@@ -35,9 +35,10 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/DataContainers/DataArrayPath.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 
 #include <QtCore/QJsonObject>
 
@@ -47,11 +48,29 @@
 */
 class SIMPLib_EXPORT AbstractComparison
 {
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(AbstractComparison)
+  PYB11_SHARED_POINTERS(AbstractComparison)
   PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
+#endif
+
 public:
-  SIMPL_SHARED_POINTERS(AbstractComparison)
-  SIMPL_TYPE_MACRO(AbstractComparison)
+  using Self = AbstractComparison;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for AbstractComparison
+   */
+  virtual QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for AbstractComparison
+   */
+  static QString ClassName();
 
   virtual ~AbstractComparison();
 
@@ -94,5 +113,7 @@ protected:
   int m_unionOperator;
 
   AbstractComparison();
+
+private:
 };
 

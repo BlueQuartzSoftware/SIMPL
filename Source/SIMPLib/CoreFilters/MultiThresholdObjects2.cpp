@@ -33,9 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "MultiThresholdObjects2.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ComparisonSelectionAdvancedFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
@@ -43,6 +48,8 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Filtering/ThresholdFilterHelper.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   ThresholdArrayID = 1
@@ -405,7 +412,7 @@ void MultiThresholdObjects2::thresholdValue(ComparisonValue::Pointer comparisonV
 
   ThresholdFilterHelper filter(static_cast<SIMPL::Comparison::Enumeration>(compOperator), compValue, currentArrayPtr.get());
 
-  err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(comparisonValue->getAttributeArrayName()).get(), currentArrayPtr.get());
+  err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(comparisonValue->getAttributeArrayName()), currentArrayPtr.get());
   if (err < 0)
   {
     DataArrayPath tempPath(m_SelectedThresholds.getDataContainerName(), m_SelectedThresholds.getAttributeMatrixName(), comparisonValue->getAttributeArrayName());
@@ -445,7 +452,7 @@ AbstractFilter::Pointer MultiThresholdObjects2::newFilterInstance(bool copyFilte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getCompiledLibraryName() const
+QString MultiThresholdObjects2::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -453,7 +460,7 @@ const QString MultiThresholdObjects2::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getBrandingString() const
+QString MultiThresholdObjects2::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -461,7 +468,7 @@ const QString MultiThresholdObjects2::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getFilterVersion() const
+QString MultiThresholdObjects2::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -471,7 +478,7 @@ const QString MultiThresholdObjects2::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getGroupName() const
+QString MultiThresholdObjects2::getGroupName() const
 {
   return SIMPL::FilterGroups::ProcessingFilters;
 }
@@ -479,7 +486,7 @@ const QString MultiThresholdObjects2::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid MultiThresholdObjects2::getUuid()
+QUuid MultiThresholdObjects2::getUuid() const
 {
   return QUuid("{686d5393-2b02-5c86-b887-dd81a8ae80f2}");
 }
@@ -487,7 +494,7 @@ const QUuid MultiThresholdObjects2::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getSubGroupName() const
+QString MultiThresholdObjects2::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::ThresholdFilters;
 }
@@ -495,7 +502,60 @@ const QString MultiThresholdObjects2::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getHumanLabel() const
+QString MultiThresholdObjects2::getHumanLabel() const
 {
   return "Threshold Objects (Advanced)";
+}
+
+// -----------------------------------------------------------------------------
+MultiThresholdObjects2::Pointer MultiThresholdObjects2::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<MultiThresholdObjects2> MultiThresholdObjects2::New()
+{
+  struct make_shared_enabler : public MultiThresholdObjects2
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString MultiThresholdObjects2::getNameOfClass() const
+{
+  return QString("MultiThresholdObjects2");
+}
+
+// -----------------------------------------------------------------------------
+QString MultiThresholdObjects2::ClassName()
+{
+  return QString("MultiThresholdObjects2");
+}
+
+// -----------------------------------------------------------------------------
+void MultiThresholdObjects2::setDestinationArrayName(const QString& value)
+{
+  m_DestinationArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString MultiThresholdObjects2::getDestinationArrayName() const
+{
+  return m_DestinationArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void MultiThresholdObjects2::setSelectedThresholds(const ComparisonInputsAdvanced& value)
+{
+  m_SelectedThresholds = value;
+}
+
+// -----------------------------------------------------------------------------
+ComparisonInputsAdvanced MultiThresholdObjects2::getSelectedThresholds() const
+{
+  return m_SelectedThresholds;
 }

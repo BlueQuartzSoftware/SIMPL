@@ -66,8 +66,7 @@ class SVWidgetsLib_EXPORT UpdateCheck : public QObject
       QString appName;
     } SIMPLVersionData_t;
 
-
-    UpdateCheck(SIMPLVersionData_t versionData, QObject* parent = 0);
+    UpdateCheck(SIMPLVersionData_t versionData, QObject* parent = nullptr);
     ~UpdateCheck() override;
 
 

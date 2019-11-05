@@ -88,3 +88,9 @@ CalculatorItem::ErrorCode BinaryOperator::checkValidity(QVector<CalculatorItem::
 
   return CalculatorItem::ErrorCode::SUCCESS;
 }
+
+// -----------------------------------------------------------------------------
+BinaryOperator::Pointer BinaryOperator::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}

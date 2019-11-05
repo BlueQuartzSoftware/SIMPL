@@ -33,14 +33,21 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "SplitAttributeArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   SplitArrayID = 1
@@ -220,7 +227,7 @@ AbstractFilter::Pointer SplitAttributeArray::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getCompiledLibraryName() const
+QString SplitAttributeArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -228,7 +235,7 @@ const QString SplitAttributeArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getBrandingString() const
+QString SplitAttributeArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -236,7 +243,7 @@ const QString SplitAttributeArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getFilterVersion() const
+QString SplitAttributeArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -247,7 +254,7 @@ const QString SplitAttributeArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getGroupName() const
+QString SplitAttributeArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -255,7 +262,7 @@ const QString SplitAttributeArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid SplitAttributeArray::getUuid()
+QUuid SplitAttributeArray::getUuid() const
 {
   return QUuid("{5ecf77f4-a38a-52ab-b4f6-0fb8a9c5cb9c}");
 }
@@ -263,7 +270,7 @@ const QUuid SplitAttributeArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getSubGroupName() const
+QString SplitAttributeArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -271,7 +278,60 @@ const QString SplitAttributeArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString SplitAttributeArray::getHumanLabel() const
+QString SplitAttributeArray::getHumanLabel() const
 {
   return "Split Multicomponent Attribute Array";
+}
+
+// -----------------------------------------------------------------------------
+SplitAttributeArray::Pointer SplitAttributeArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<SplitAttributeArray> SplitAttributeArray::New()
+{
+  struct make_shared_enabler : public SplitAttributeArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString SplitAttributeArray::getNameOfClass() const
+{
+  return QString("SplitAttributeArray");
+}
+
+// -----------------------------------------------------------------------------
+QString SplitAttributeArray::ClassName()
+{
+  return QString("SplitAttributeArray");
+}
+
+// -----------------------------------------------------------------------------
+void SplitAttributeArray::setInputArrayPath(const DataArrayPath& value)
+{
+  m_InputArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath SplitAttributeArray::getInputArrayPath() const
+{
+  return m_InputArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void SplitAttributeArray::setSplitArraysSuffix(const QString& value)
+{
+  m_SplitArraysSuffix = value;
+}
+
+// -----------------------------------------------------------------------------
+QString SplitAttributeArray::getSplitArraysSuffix() const
+{
+  return m_SplitArraysSuffix;
 }

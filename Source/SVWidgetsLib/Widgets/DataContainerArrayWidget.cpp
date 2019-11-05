@@ -34,6 +34,12 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "DataContainerArrayWidget.h"
 
+#include <QtCore/QTextStream>
+#include <QtCore/QDebug>
+
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
+
 #include <QtGui/QStandardItem>
 #include <QtGui/QStandardItemModel>
 

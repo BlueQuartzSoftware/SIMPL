@@ -38,6 +38,7 @@
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 #include <QtCore/QSize>
+#include <QtCore/QTextStream>
 
 // -----------------------------------------------------------------------------
 //
@@ -490,7 +491,7 @@ std::vector<std::vector<double>> DynamicTableData::readData(QJsonObject object)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<std::vector<double>> DynamicTableData::getTableData()
+std::vector<std::vector<double>> DynamicTableData::getTableData() const
 {
   return m_TableData;
 }
@@ -610,4 +611,100 @@ bool DynamicTableData::operator!=(const DynamicTableData& rhs) const
   }
 
   return false;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableData::setColHeaders(const QStringList& value)
+{
+  m_ColHeaders = value;
+}
+
+// -----------------------------------------------------------------------------
+QStringList DynamicTableData::getColHeaders() const
+{
+  return m_ColHeaders;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableData::setRowHeaders(const QStringList& value)
+{
+  m_RowHeaders = value;
+}
+
+// -----------------------------------------------------------------------------
+QStringList DynamicTableData::getRowHeaders() const
+{
+  return m_RowHeaders;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableData::setDynamicRows(bool value)
+{
+  m_DynamicRows = value;
+}
+
+// -----------------------------------------------------------------------------
+bool DynamicTableData::getDynamicRows() const
+{
+  return m_DynamicRows;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableData::setDynamicCols(bool value)
+{
+  m_DynamicCols = value;
+}
+
+// -----------------------------------------------------------------------------
+bool DynamicTableData::getDynamicCols() const
+{
+  return m_DynamicCols;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableData::setMinRows(int value)
+{
+  m_MinRows = value;
+}
+
+// -----------------------------------------------------------------------------
+int DynamicTableData::getMinRows() const
+{
+  return m_MinRows;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableData::setMinCols(int value)
+{
+  m_MinCols = value;
+}
+
+// -----------------------------------------------------------------------------
+int DynamicTableData::getMinCols() const
+{
+  return m_MinCols;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableData::setDefaultRowCount(int value)
+{
+  m_DefaultRowCount = value;
+}
+
+// -----------------------------------------------------------------------------
+int DynamicTableData::getDefaultRowCount() const
+{
+  return m_DefaultRowCount;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableData::setDefaultColCount(int value)
+{
+  m_DefaultColCount = value;
+}
+
+// -----------------------------------------------------------------------------
+int DynamicTableData::getDefaultColCount() const
+{
+  return m_DefaultColCount;
 }

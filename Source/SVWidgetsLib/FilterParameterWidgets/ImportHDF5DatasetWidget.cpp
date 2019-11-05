@@ -50,9 +50,13 @@
 #include "H5Support/H5Utilities.h"
 #include "H5Support/QH5Utilities.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
+
 #include "SIMPLib/FilterParameters/ImportHDF5DatasetFilterParameter.h"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"

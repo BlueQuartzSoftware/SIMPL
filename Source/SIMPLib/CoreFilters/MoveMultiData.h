@@ -36,9 +36,10 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The MoveMultiData class. See [Filter documentation](@ref MoveMultiData) for details.
@@ -46,53 +47,122 @@
 class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(MoveMultiData SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(MoveMultiData)
+    PYB11_FILTER_NEW_MACRO(MoveMultiData)
+    PYB11_FILTER_PARAMETER(int, WhatToMove)
+    PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerDestination)
+    PYB11_FILTER_PARAMETER(QVector<DataArrayPath>, AttributeMatrixSources)
+    PYB11_FILTER_PARAMETER(DataArrayPath, AttributeMatrixDestination)
+    PYB11_FILTER_PARAMETER(QVector<DataArrayPath>, DataArraySources)
     PYB11_PROPERTY(int WhatToMove READ getWhatToMove WRITE setWhatToMove)
     PYB11_PROPERTY(DataArrayPath DataContainerDestination READ getDataContainerDestination WRITE setDataContainerDestination)
     PYB11_PROPERTY(QVector<DataArrayPath> AttributeMatrixSources READ getAttributeMatrixSources WRITE setAttributeMatrixSources)
     PYB11_PROPERTY(DataArrayPath AttributeMatrixDestination READ getAttributeMatrixDestination WRITE setAttributeMatrixDestination)
     PYB11_PROPERTY(QVector<DataArrayPath> DataArraySources READ getDataArraySources WRITE setDataArraySources)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(MoveMultiData)
-    SIMPL_FILTER_NEW_MACRO(MoveMultiData)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MoveMultiData, AbstractFilter)
+    using Self = MoveMultiData;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<MoveMultiData> New();
+
+    /**
+     * @brief Returns the name of the class for MoveMultiData
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for MoveMultiData
+     */
+    static QString ClassName();
 
     ~MoveMultiData() override;
 
-    SIMPL_FILTER_PARAMETER(int, WhatToMove)
+    /**
+     * @brief Setter property for WhatToMove
+     */
+    void setWhatToMove(int value);
+    /**
+     * @brief Getter property for WhatToMove
+     * @return Value of WhatToMove
+     */
+    int getWhatToMove() const;
+
     Q_PROPERTY(int WhatToMove READ getWhatToMove WRITE setWhatToMove)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerDestination)
+    /**
+     * @brief Setter property for DataContainerDestination
+     */
+    void setDataContainerDestination(const DataArrayPath& value);
+    /**
+     * @brief Getter property for DataContainerDestination
+     * @return Value of DataContainerDestination
+     */
+    DataArrayPath getDataContainerDestination() const;
+
     Q_PROPERTY(DataArrayPath DataContainerDestination READ getDataContainerDestination WRITE setDataContainerDestination)
 
-    SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, AttributeMatrixSources)
+    /**
+     * @brief Setter property for AttributeMatrixSources
+     */
+    void setAttributeMatrixSources(const QVector<DataArrayPath>& value);
+    /**
+     * @brief Getter property for AttributeMatrixSources
+     * @return Value of AttributeMatrixSources
+     */
+    QVector<DataArrayPath> getAttributeMatrixSources() const;
+
     Q_PROPERTY(QVector<DataArrayPath> AttributeMatrixSources READ getAttributeMatrixSources WRITE setAttributeMatrixSources)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeMatrixDestination)
+    /**
+     * @brief Setter property for AttributeMatrixDestination
+     */
+    void setAttributeMatrixDestination(const DataArrayPath& value);
+    /**
+     * @brief Getter property for AttributeMatrixDestination
+     * @return Value of AttributeMatrixDestination
+     */
+    DataArrayPath getAttributeMatrixDestination() const;
+
     Q_PROPERTY(DataArrayPath AttributeMatrixDestination READ getAttributeMatrixDestination WRITE setAttributeMatrixDestination)
 
-    SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, DataArraySources)
+    /**
+     * @brief Setter property for DataArraySources
+     */
+    void setDataArraySources(const QVector<DataArrayPath>& value);
+    /**
+     * @brief Getter property for DataArraySources
+     * @return Value of DataArraySources
+     */
+    QVector<DataArrayPath> getDataArraySources() const;
+
     Q_PROPERTY(QVector<DataArrayPath> DataArraySources READ getDataArraySources WRITE setDataArraySources)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -102,23 +172,23 @@ class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -181,5 +251,12 @@ class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
     MoveMultiData(MoveMultiData&&) = delete;       // Move Constructor Not Implemented
     MoveMultiData& operator=(const MoveMultiData&) = delete; // Copy Assignment Not Implemented
     MoveMultiData& operator=(MoveMultiData&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    int m_WhatToMove = {};
+    DataArrayPath m_DataContainerDestination = {};
+    QVector<DataArrayPath> m_AttributeMatrixSources = {};
+    DataArrayPath m_AttributeMatrixDestination = {};
+    QVector<DataArrayPath> m_DataArraySources = {};
 };
 

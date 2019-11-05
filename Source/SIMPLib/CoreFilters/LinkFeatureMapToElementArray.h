@@ -36,9 +36,11 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The LinkFeatureMapToElementArray class. See [Filter documentation](@ref linkfeaturemaptoelementarray) for details.
@@ -46,45 +48,94 @@
 class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(LinkFeatureMapToElementArray SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(LinkFeatureMapToElementArray)
+    PYB11_FILTER_NEW_MACRO(LinkFeatureMapToElementArray)
+    PYB11_FILTER_PARAMETER(QString, CellFeatureAttributeMatrixName)
+    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedCellArrayPath)
+    PYB11_FILTER_PARAMETER(QString, ActiveArrayName)
     PYB11_PROPERTY(QString CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
     PYB11_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
     PYB11_PROPERTY(QString ActiveArrayName READ getActiveArrayName WRITE setActiveArrayName)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(LinkFeatureMapToElementArray)
-    SIMPL_FILTER_NEW_MACRO(LinkFeatureMapToElementArray)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkFeatureMapToElementArray, AbstractFilter)
+    using Self = LinkFeatureMapToElementArray;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<LinkFeatureMapToElementArray> New();
+
+    /**
+     * @brief Returns the name of the class for LinkFeatureMapToElementArray
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for LinkFeatureMapToElementArray
+     */
+    static QString ClassName();
 
     ~LinkFeatureMapToElementArray() override;
 
-    SIMPL_FILTER_PARAMETER(QString, CellFeatureAttributeMatrixName)
+    /**
+     * @brief Setter property for CellFeatureAttributeMatrixName
+     */
+    void setCellFeatureAttributeMatrixName(const QString& value);
+    /**
+     * @brief Getter property for CellFeatureAttributeMatrixName
+     * @return Value of CellFeatureAttributeMatrixName
+     */
+    QString getCellFeatureAttributeMatrixName() const;
+
     Q_PROPERTY(QString CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedCellArrayPath)
+    /**
+     * @brief Setter property for SelectedCellArrayPath
+     */
+    void setSelectedCellArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedCellArrayPath
+     * @return Value of SelectedCellArrayPath
+     */
+    DataArrayPath getSelectedCellArrayPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
 
-    SIMPL_FILTER_PARAMETER(QString, ActiveArrayName)
+    /**
+     * @brief Setter property for ActiveArrayName
+     */
+    void setActiveArrayName(const QString& value);
+    /**
+     * @brief Getter property for ActiveArrayName
+     * @return Value of ActiveArrayName
+     */
+    QString getActiveArrayName() const;
+
     Q_PROPERTY(QString ActiveArrayName READ getActiveArrayName WRITE setActiveArrayName)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -94,23 +145,23 @@ class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -174,8 +225,14 @@ class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
     void updateFeatureInstancePointers();
 
   private:
-    DEFINE_DATAARRAY_VARIABLE(int32_t, SelectedCellData)
-    DEFINE_DATAARRAY_VARIABLE(bool, Active)
+    std::weak_ptr<DataArray<int32_t>> m_SelectedCellDataPtr;
+    int32_t* m_SelectedCellData = nullptr;
+    std::weak_ptr<DataArray<bool>> m_ActivePtr;
+    bool* m_Active = nullptr;
+
+    QString m_CellFeatureAttributeMatrixName = {};
+    DataArrayPath m_SelectedCellArrayPath = {};
+    QString m_ActiveArrayName = {};
 
   public:
     LinkFeatureMapToElementArray(const LinkFeatureMapToElementArray&) = delete; // Copy Constructor Not Implemented

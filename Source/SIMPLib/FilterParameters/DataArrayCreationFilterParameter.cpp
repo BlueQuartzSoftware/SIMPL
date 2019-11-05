@@ -177,3 +177,76 @@ void DataArrayCreationFilterParameter::dataArrayPathRenamed(AbstractFilter* filt
     }
   }
 }
+
+// -----------------------------------------------------------------------------
+DataArrayCreationFilterParameter::Pointer DataArrayCreationFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+DataArrayCreationFilterParameter::Pointer DataArrayCreationFilterParameter::New()
+{
+  Pointer sharedPtr(new(DataArrayCreationFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString DataArrayCreationFilterParameter::getNameOfClass() const
+{
+  return QString("DataArrayCreationFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString DataArrayCreationFilterParameter::ClassName()
+{
+  return QString("DataArrayCreationFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void DataArrayCreationFilterParameter::setDefaultGeometryTypes(const IGeometry::Types& value)
+{
+  m_DefaultGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Types DataArrayCreationFilterParameter::getDefaultGeometryTypes() const
+{
+  return m_DefaultGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+void DataArrayCreationFilterParameter::setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value)
+{
+  m_DefaultAttributeMatrixTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<AttributeMatrix::Type> DataArrayCreationFilterParameter::getDefaultAttributeMatrixTypes() const
+{
+  return m_DefaultAttributeMatrixTypes;
+}
+
+// -----------------------------------------------------------------------------
+void DataArrayCreationFilterParameter::setSetterCallback(const DataArrayCreationFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayCreationFilterParameter::SetterCallbackType DataArrayCreationFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void DataArrayCreationFilterParameter::setGetterCallback(const DataArrayCreationFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayCreationFilterParameter::GetterCallbackType DataArrayCreationFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

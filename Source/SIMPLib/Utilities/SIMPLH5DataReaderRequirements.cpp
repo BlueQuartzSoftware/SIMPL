@@ -69,3 +69,51 @@ SIMPLH5DataReaderRequirements::SIMPLH5DataReaderRequirements(const QString &prim
 //
 // -----------------------------------------------------------------------------
 SIMPLH5DataReaderRequirements::~SIMPLH5DataReaderRequirements() = default;
+
+// -----------------------------------------------------------------------------
+void SIMPLH5DataReaderRequirements::setDCGeometryTypes(const IGeometry::Types& value)
+{
+  m_DCGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Types SIMPLH5DataReaderRequirements::getDCGeometryTypes() const
+{
+  return m_DCGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+void SIMPLH5DataReaderRequirements::setAMTypes(const AttributeMatrix::Types& value)
+{
+  m_AMTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrix::Types SIMPLH5DataReaderRequirements::getAMTypes() const
+{
+  return m_AMTypes;
+}
+
+// -----------------------------------------------------------------------------
+void SIMPLH5DataReaderRequirements::setDATypes(const QVector<QString>& value)
+{
+  m_DATypes = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<QString> SIMPLH5DataReaderRequirements::getDATypes() const
+{
+  return m_DATypes;
+}
+
+// -----------------------------------------------------------------------------
+void SIMPLH5DataReaderRequirements::setComponentDimensions(const SIMPLH5DataReaderRequirements::QVectorSizeT& value)
+{
+  m_ComponentDimensions = value;
+}
+
+// -----------------------------------------------------------------------------
+SIMPLH5DataReaderRequirements::QVectorSizeT SIMPLH5DataReaderRequirements::getComponentDimensions() const
+{
+  return m_ComponentDimensions;
+}

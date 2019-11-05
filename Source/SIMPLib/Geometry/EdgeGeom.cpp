@@ -44,6 +44,8 @@
  *     EdgeGeom::findDerivatives
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Geometry/EdgeGeom.h"
 
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
@@ -216,7 +218,7 @@ void EdgeGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix:
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t EdgeGeom::getNumberOfElements()
+size_t EdgeGeom::getNumberOfElements() const
 {
   return m_EdgeList->getNumberOfTuples();
 }
@@ -238,7 +240,7 @@ int EdgeGeom::findElementsContainingVert()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer EdgeGeom::getElementsContainingVert()
+ElementDynamicList::Pointer EdgeGeom::getElementsContainingVert() const
 {
   return m_EdgesContainingVert;
 }
@@ -285,7 +287,7 @@ int EdgeGeom::findElementNeighbors()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer EdgeGeom::getElementNeighbors()
+ElementDynamicList::Pointer EdgeGeom::getElementNeighbors() const
 {
   return m_EdgeNeighbors;
 }
@@ -324,7 +326,7 @@ int EdgeGeom::findElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer EdgeGeom::getElementCentroids()
+FloatArrayType::Pointer EdgeGeom::getElementCentroids() const
 {
   return m_EdgeCentroids;
 }
@@ -373,7 +375,7 @@ int EdgeGeom::findElementSizes()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer EdgeGeom::getElementSizes()
+FloatArrayType::Pointer EdgeGeom::getElementSizes() const
 {
   return m_EdgeSizes;
 }
@@ -397,7 +399,7 @@ void EdgeGeom::deleteElementSizes()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void EdgeGeom::getParametricCenter(double pCoords[3])
+void EdgeGeom::getParametricCenter(double pCoords[3]) const
 {
   pCoords[0] = 0.5;
   pCoords[1] = 0.0;
@@ -407,7 +409,7 @@ void EdgeGeom::getParametricCenter(double pCoords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void EdgeGeom::getShapeFunctions(double pCoords[3], double* shape)
+void EdgeGeom::getShapeFunctions(double pCoords[3], double* shape) const
 {
   (void)pCoords;
 
@@ -436,7 +438,7 @@ void EdgeGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int EdgeGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf))
+int EdgeGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)) const
 {
   herr_t err = 0;
 
@@ -502,7 +504,7 @@ int EdgeGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int EdgeGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
+int EdgeGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const
 {
   herr_t err = 0;
 
@@ -555,7 +557,7 @@ int EdgeGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString EdgeGeom::getInfoString(SIMPL::InfoStringFormat format)
+QString EdgeGeom::getInfoString(SIMPL::InfoStringFormat format) const
 {
   if(format == SIMPL::HtmlFormat)
   {
@@ -568,7 +570,7 @@ QString EdgeGeom::getInfoString(SIMPL::InfoStringFormat format)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ToolTipGenerator EdgeGeom::getToolTipGenerator()
+ToolTipGenerator EdgeGeom::getToolTipGenerator() const
 {
   ToolTipGenerator toolTipGen;
 
@@ -632,7 +634,7 @@ int EdgeGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Pointer EdgeGeom::deepCopy(bool forceNoAllocate)
+IGeometry::Pointer EdgeGeom::deepCopy(bool forceNoAllocate) const
 {
   SharedVertexList::Pointer verts = std::dynamic_pointer_cast<SharedVertexList>((getVertices().get() == nullptr) ? nullptr : getVertices()->deepCopy(forceNoAllocate));
   SharedEdgeList::Pointer edges = std::dynamic_pointer_cast<SharedEdgeList>((getEdges().get() == nullptr) ? nullptr : getEdges()->deepCopy(forceNoAllocate));
@@ -664,3 +666,28 @@ IGeometry::Pointer EdgeGeom::deepCopy(bool forceNoAllocate)
 #define GEOM_CLASS_NAME EdgeGeom
 #include "SIMPLib/Geometry/SharedEdgeOps.cpp"
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
+
+// -----------------------------------------------------------------------------
+EdgeGeom::Pointer EdgeGeom::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+EdgeGeom::Pointer EdgeGeom::New()
+{
+  Pointer sharedPtr(new(EdgeGeom));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString EdgeGeom::getNameOfClass() const
+{
+  return QString("EdgeGeom");
+}
+
+// -----------------------------------------------------------------------------
+QString EdgeGeom::ClassName()
+{
+  return QString("EdgeGeom");
+}

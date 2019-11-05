@@ -70,7 +70,7 @@ void GEOM_CLASS_NAME::setTetrahedra(SharedTetList::Pointer tets)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedTetList::Pointer GEOM_CLASS_NAME::getTetrahedra()
+SharedTetList::Pointer GEOM_CLASS_NAME::getTetrahedra() const
 {
   return m_TetList;
 }
@@ -90,7 +90,7 @@ void GEOM_CLASS_NAME::setVertsAtTet(size_t tetId, size_t verts[4])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertsAtTet(size_t tetId, size_t verts[4])
+void GEOM_CLASS_NAME::getVertsAtTet(size_t tetId, size_t verts[4]) const
 {
   size_t* tet = m_TetList->getTuplePointer(tetId);
   verts[0] = tet[0];
@@ -102,7 +102,7 @@ void GEOM_CLASS_NAME::getVertsAtTet(size_t tetId, size_t verts[4])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertCoordsAtTet(size_t tetId, float vert1[3], float vert2[3], float vert3[3], float vert4[3])
+void GEOM_CLASS_NAME::getVertCoordsAtTet(size_t tetId, float vert1[3], float vert2[3], float vert3[3], float vert4[3]) const
 {
   size_t* tet = m_TetList->getTuplePointer(tetId);
   float* tmp1 = m_VertexList->getTuplePointer(tet[0]);
@@ -126,7 +126,7 @@ void GEOM_CLASS_NAME::getVertCoordsAtTet(size_t tetId, float vert1[3], float ver
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t* GEOM_CLASS_NAME::getTetPointer(size_t i)
+size_t* GEOM_CLASS_NAME::getTetPointer(size_t i) const
 {
   return m_TetList->getTuplePointer(i);
 }
@@ -134,7 +134,7 @@ size_t* GEOM_CLASS_NAME::getTetPointer(size_t i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t GEOM_CLASS_NAME::getNumberOfTets()
+size_t GEOM_CLASS_NAME::getNumberOfTets() const
 {
   return m_TetList->getNumberOfTuples();
 }

@@ -46,12 +46,12 @@ function(CreatePybind11Module)
       COMMAND GeneratePythonBindings "${ARGS_SOURCE_DIR}"
       "${ARGS_PATH_TO_STRIP}"
       "${pybind_module_name_CamelCase}"
-      "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore" 
+      "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore"
       "${ARGS_MODULE_TEMPLATE_FILE}"
       "${ARGS_SIMPLIB}"
       "${CMAKE_CFG_INTDIR}"
       DEPENDS GeneratePythonBindings ${COPY_LIBRARY_TARGETS}
-      COMMENT "GeneratePythonBindings: Creating Python Bindings for ${ARGS_MODULE_NAME} using pybind11"
+      COMMENT " ${ARGS_MODULE_NAME}: Creating Python Bindings using pybind11"
     )
 
   # --------------------------------------------------------------------------

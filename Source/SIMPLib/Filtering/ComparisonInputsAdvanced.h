@@ -41,8 +41,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 
-#include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/Constants.h"
 
 #include "SIMPLib/Filtering/AbstractComparison.h"
 
@@ -58,6 +58,8 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
   Q_OBJECT
   // clang-format off
 
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ComparisonInputsAdvanced)
 
   PYB11_CREATION()
@@ -70,6 +72,8 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
   PYB11_METHOD(void addInput OVERLOAD int,unionOperator bool,invertComparison QVector<AbstractComparison::Pointer>,comparisons)
   PYB11_METHOD(void addInput OVERLOAD AbstractComparison::Pointer,input)
   PYB11_METHOD(int size)
+#endif
+
   // clang-format on
 
 public:

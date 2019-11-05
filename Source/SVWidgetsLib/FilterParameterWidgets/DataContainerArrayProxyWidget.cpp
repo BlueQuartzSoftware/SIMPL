@@ -37,10 +37,12 @@
 
 #include <cassert>
 
-
 #include <QtGui/QBrush>
 #include <QtGui/QColor>
 #include <QtGui/QFont>
+#include <QtCore/QDebug>
+
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 

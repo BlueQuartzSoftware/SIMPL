@@ -36,6 +36,8 @@
 #pragma once
 
 
+#include <memory>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 /**
@@ -45,25 +47,38 @@
 class SIMPLib_EXPORT UnknownFilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(UnknownFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(UnknownFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(UnknownFilterParameter, FilterParameter)
+  using Self = UnknownFilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
 
-    /**
-     * @brief New This function instantiates an instance of the UnknownFilterParameter.
+  static Pointer New();
 
-     * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
-     * @param propertyName The internal property name for this filter parameter.
-     * @param defaultValue The value that this filter parameter will be initialized to by default.
-     * @param category The category for the filter parameter in the DREAM.3D user interface.  There
-     * are three categories: Parameter, Required Arrays, and Created Arrays.
-     * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
-     * @return
-     */
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QString& defaultValue, Category category, int groupIndex = -1);
+  /**
+   * @brief Returns the name of the class for UnknownFilterParameter
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for UnknownFilterParameter
+   */
+  static QString ClassName();
 
-    ~UnknownFilterParameter() override;
+  /**
+   * @brief New This function instantiates an instance of the UnknownFilterParameter.
+
+   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+   * @param propertyName The internal property name for this filter parameter.
+   * @param defaultValue The value that this filter parameter will be initialized to by default.
+   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+   * are three categories: Parameter, Required Arrays, and Created Arrays.
+   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+   * @return
+   */
+  static Pointer New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, int groupIndex = -1);
+
+  ~UnknownFilterParameter() override;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -84,5 +99,7 @@ public:
     UnknownFilterParameter(UnknownFilterParameter&&) = delete;      // Move Constructor Not Implemented
     UnknownFilterParameter& operator=(const UnknownFilterParameter&) = delete; // Copy Assignment Not Implemented
     UnknownFilterParameter& operator=(UnknownFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

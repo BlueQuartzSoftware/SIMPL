@@ -36,9 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Common/Constants.h"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 /**
  * @brief The RawBinaryReader class. See [Filter documentation](@ref rawbinaryreader) for details.
@@ -46,58 +51,137 @@
 class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(RawBinaryReader SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(RawBinaryReader)
+    PYB11_FILTER_NEW_MACRO(RawBinaryReader)
+    PYB11_FILTER_PARAMETER(DataArrayPath, CreatedAttributeArrayPath)
+    PYB11_FILTER_PARAMETER(SIMPL::NumericTypes::Type, ScalarType)
+    PYB11_FILTER_PARAMETER(int, Endian)
+    PYB11_FILTER_PARAMETER(int, NumberOfComponents)
+    PYB11_FILTER_PARAMETER(uint64_t, SkipHeaderBytes)
+    PYB11_FILTER_PARAMETER(QString, InputFile)
     PYB11_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)
     PYB11_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
     PYB11_PROPERTY(int Endian READ getEndian WRITE setEndian)
     PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
     PYB11_PROPERTY(uint64_t SkipHeaderBytes READ getSkipHeaderBytes WRITE setSkipHeaderBytes)
     PYB11_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(RawBinaryReader)
-    SIMPL_FILTER_NEW_MACRO(RawBinaryReader)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RawBinaryReader, AbstractFilter)
+    using Self = RawBinaryReader;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<RawBinaryReader> New();
+
+    /**
+     * @brief Returns the name of the class for RawBinaryReader
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for RawBinaryReader
+     */
+    static QString ClassName();
 
     ~RawBinaryReader() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedAttributeArrayPath)
+    /**
+     * @brief Setter property for CreatedAttributeArrayPath
+     */
+    void setCreatedAttributeArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for CreatedAttributeArrayPath
+     * @return Value of CreatedAttributeArrayPath
+     */
+    DataArrayPath getCreatedAttributeArrayPath() const;
+
     Q_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)
 
-    SIMPL_FILTER_PARAMETER(SIMPL::NumericTypes::Type, ScalarType)
+    /**
+     * @brief Setter property for ScalarType
+     */
+    void setScalarType(SIMPL::NumericTypes::Type value);
+    /**
+     * @brief Getter property for ScalarType
+     * @return Value of ScalarType
+     */
+    SIMPL::NumericTypes::Type getScalarType() const;
+
     Q_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
-    SIMPL_FILTER_PARAMETER(int, Endian)
+    /**
+     * @brief Setter property for Endian
+     */
+    void setEndian(int value);
+    /**
+     * @brief Getter property for Endian
+     * @return Value of Endian
+     */
+    int getEndian() const;
+
     Q_PROPERTY(int Endian READ getEndian WRITE setEndian)
 
-    SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
+    /**
+     * @brief Setter property for NumberOfComponents
+     */
+    void setNumberOfComponents(int value);
+    /**
+     * @brief Getter property for NumberOfComponents
+     * @return Value of NumberOfComponents
+     */
+    int getNumberOfComponents() const;
+
     Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
 
-    SIMPL_FILTER_PARAMETER(uint64_t, SkipHeaderBytes)
+    /**
+     * @brief Setter property for SkipHeaderBytes
+     */
+    void setSkipHeaderBytes(uint64_t value);
+    /**
+     * @brief Getter property for SkipHeaderBytes
+     * @return Value of SkipHeaderBytes
+     */
+    uint64_t getSkipHeaderBytes() const;
+
     Q_PROPERTY(uint64_t SkipHeaderBytes READ getSkipHeaderBytes WRITE setSkipHeaderBytes)
 
-    SIMPL_FILTER_PARAMETER(QString, InputFile)
+    /**
+     * @brief Setter property for InputFile
+     */
+    void setInputFile(const QString& value);
+    /**
+     * @brief Getter property for InputFile
+     * @return Value of InputFile
+     */
+    QString getInputFile() const;
+
     Q_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
 
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -107,23 +191,23 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -183,7 +267,14 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
 
 
   private:
-    IDataArray::Pointer m_Array;
+    DataArrayPath m_CreatedAttributeArrayPath = {};
+    SIMPL::NumericTypes::Type m_ScalarType = {};
+    int m_Endian = {};
+    int m_NumberOfComponents = {};
+    uint64_t m_SkipHeaderBytes = {};
+    QString m_InputFile = {};
+
+    IDataArrayShPtrType m_Array;
 
   public:
     RawBinaryReader(const RawBinaryReader&) = delete; // Copy Constructor Not Implemented

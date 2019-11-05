@@ -33,6 +33,7 @@
 #include "CreateGridMontage.h"
 
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerGridSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
@@ -143,7 +144,7 @@ AbstractFilter::Pointer CreateGridMontage::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGridMontage::getCompiledLibraryName() const
+QString CreateGridMontage::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -151,7 +152,7 @@ const QString CreateGridMontage::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGridMontage::getBrandingString() const
+QString CreateGridMontage::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -159,7 +160,7 @@ const QString CreateGridMontage::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGridMontage::getFilterVersion() const
+QString CreateGridMontage::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -170,7 +171,7 @@ const QString CreateGridMontage::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGridMontage::getGroupName() const
+QString CreateGridMontage::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -178,7 +179,7 @@ const QString CreateGridMontage::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGridMontage::getHumanLabel() const
+QString CreateGridMontage::getHumanLabel() const
 {
   return "Create Grid Montage";
 }
@@ -186,7 +187,7 @@ const QString CreateGridMontage::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CreateGridMontage::getUuid()
+QUuid CreateGridMontage::getUuid() const
 {
   return QUuid("{c5bb92df-c1bb-5e57-a2bf-280303a81935}");
 }
@@ -194,7 +195,102 @@ const QUuid CreateGridMontage::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGridMontage::getSubGroupName() const
+QString CreateGridMontage::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString CreateGridMontage::getMontageName() const
+{
+  return m_MontageName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void CreateGridMontage::setMontageName(const QString& value)
+{
+  m_MontageName = value;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerGrid CreateGridMontage::getGridSelection() const
+{
+  return m_GridSelection;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void CreateGridMontage::setGridSelection(const DataContainerGrid& value)
+{
+  m_GridSelection = value;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList CreateGridMontage::getDataContainerNameList() const
+{
+  return m_DataContainerNameList;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void CreateGridMontage::setDataContainerNameList(const QStringList& value)
+{
+  m_DataContainerNameList = value;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString CreateGridMontage::getNameOfClass() const
+{
+  return QString("CreateGridMontage");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString CreateGridMontage::ClassName()
+{
+  return QString("CreateGridMontage");
+}
+
+#if 0
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int CreateGridMontage::IsTypeOf(const char* type)
+{
+  if(!strcmp("CreateGridMontage", type))
+  {
+    return 1;
+  }
+  return AbstractFilter::IsTypeOf(type);
+}
+#endif
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+CreateGridMontage::Pointer CreateGridMontage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+CreateGridMontage::Pointer CreateGridMontage::New()
+{
+  Pointer sharedPtr(new(CreateGridMontage));
+  return sharedPtr;
 }

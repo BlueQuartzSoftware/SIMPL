@@ -70,7 +70,7 @@ ThresholdFilterHelper::~ThresholdFilterHelper() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int ThresholdFilterHelper::execute(IDataArray* input, IDataArray* output)
+int ThresholdFilterHelper::execute(const IDataArray::Pointer& input, IDataArray* output)
 {
   if(nullptr == input)
   {

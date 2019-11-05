@@ -36,11 +36,13 @@
 
 #pragma once
 
+#include <memory>
+
+#include <array>
+
 #include <hdf5.h>
 
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/StatsData/StatsData.h"
@@ -85,7 +87,11 @@ typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
  */
 class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
 {
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(PrecipitateStatsData SUPERCLASS StatsData)
+  PYB11_SHARED_POINTERS(PrecipitateStatsData)
+  PYB11_STATIC_NEW_MACRO(PrecipitateStatsData)
   PYB11_STATIC_CREATION(initialize)
 
   PYB11_PROPERTY(float BinStepSize READ getBinStepSize WRITE setBinStepSize)
@@ -99,11 +105,26 @@ class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
   PYB11_PROPERTY(float BoundaryArea READ getBoundaryArea WRITE setBoundaryArea)
   PYB11_PROPERTY(float PrecipBoundaryFraction READ getPrecipBoundaryFraction WRITE setPrecipBoundaryFraction)
   PYB11_METHOD(QString getStatsType)
+#endif
 
 public:
-  SIMPL_SHARED_POINTERS(PrecipitateStatsData)
-  SIMPL_STATIC_NEW_MACRO(PrecipitateStatsData)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PrecipitateStatsData, StatsData)
+  using Self = PrecipitateStatsData;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for PrecipitateStatsData
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for PrecipitateStatsData
+   */
+  static QString ClassName();
 
   ~PrecipitateStatsData() override;
 
@@ -118,21 +139,55 @@ public:
     precision = 0;
   }
 
-    SIMPL_INSTANCE_PROPERTY(float, BoundaryArea)
-    SIMPL_INSTANCE_PROPERTY(float, PrecipBoundaryFraction)
+  /**
+   * @brief Setter property for BoundaryArea
+   */
+  void setBoundaryArea(float value);
+  /**
+   * @brief Getter property for BoundaryArea
+   * @return Value of BoundaryArea
+   */
+  float getBoundaryArea() const;
 
-    QString getStatsType() override;
-    PhaseType::Type getPhaseType() override;
+  /**
+   * @brief Setter property for PrecipBoundaryFraction
+   */
+  void setPrecipBoundaryFraction(float value);
+  /**
+   * @brief Getter property for PrecipBoundaryFraction
+   * @return Value of PrecipBoundaryFraction
+   */
+  float getPrecipBoundaryFraction() const;
 
-    /**
-      * @breif this will generate the Bin Numbers values;
-      */
-    FloatArrayType::Pointer generateBinNumbers();
-    /**
-     * @brief The values are encoded into 3 floats: Average, Max, Min
-     */
-    SIMPL_INSTANCE_VEC3_PROPERTY(float, FeatureDiameterInfo)
-    void setBinStepSize(float v) { m_FeatureDiameterInfo[0] = v;}
+  QString getStatsType() override;
+  PhaseType::Type getPhaseType() override;
+
+  /**
+   * @breif this will generate the Bin Numbers values;
+   */
+  FloatArrayType::Pointer generateBinNumbers();
+  /**
+   * @brief The values are encoded into 3 floats: Average, Max, Min
+   */
+  /**
+   * @brief Setter property for FeatureDiameterInfo
+   */
+  void setFeatureDiameterInfo(const std::array<float, 3>& value);
+  /**
+   * @brief Setter property for FeatureDiameterInfo
+   */
+  void setFeatureDiameterInfo(float v0, float v1, float v2);
+  /**
+   * @brief Getter property for FeatureDiameterInfo
+   * @return Value of FeatureDiameterInfo
+   */
+  std::array<float, 3> getFeatureDiameterInfo() const;
+  void getFeatureDiameterInfo(float* data) const;
+
+  void setBinStepSize(float v)
+  {
+    m_FeatureDiameterInfo[0] = v;
+  }
     float getBinStepSize() { return m_FeatureDiameterInfo[0]; }
 
     void setMaxFeatureDiameter(float v) { m_FeatureDiameterInfo[1] = v;}
@@ -144,41 +199,193 @@ public:
     /**
       * @brief The values are encoded into float arrays
       */
-    SIMPL_INSTANCE_PROPERTY(VectorOfFloatArray, FeatureSizeDistribution)
-    SIMPL_INSTANCE_PROPERTY(uint32_t, FeatureSize_DistType)
-    SIMPL_INSTANCE_PROPERTY(RdfData::Pointer, RadialDistFunction)
+    /**
+     * @brief Setter property for FeatureSizeDistribution
+     */
+    void setFeatureSizeDistribution(const VectorOfFloatArray& value);
+    /**
+     * @brief Getter property for FeatureSizeDistribution
+     * @return Value of FeatureSizeDistribution
+     */
+    VectorOfFloatArray getFeatureSizeDistribution() const;
 
-    SIMPL_INSTANCE_PROPERTY(FloatArrayType::Pointer, BinNumbers)
+    /**
+     * @brief Setter property for FeatureSize_DistType
+     */
+    void setFeatureSize_DistType(uint32_t value);
+    /**
+     * @brief Getter property for FeatureSize_DistType
+     * @return Value of FeatureSize_DistType
+     */
+    uint32_t getFeatureSize_DistType() const;
+
+    /**
+     * @brief Setter property for RadialDistFunction
+     */
+    void setRadialDistFunction(const RdfData::Pointer& value);
+    /**
+     * @brief Getter property for RadialDistFunction
+     * @return Value of RadialDistFunction
+     */
+    RdfData::Pointer getRadialDistFunction() const;
+
+    /**
+     * @brief Setter property for BinNumbers
+     */
+    void setBinNumbers(const FloatArrayType::Pointer& value);
+    /**
+     * @brief Getter property for BinNumbers
+     * @return Value of BinNumbers
+     */
+    FloatArrayType::Pointer getBinNumbers() const;
 
     size_t getNumberOfBins()
     {
       return (m_BinNumbers.get() == nullptr) ? 0 : m_BinNumbers->getSize();
     }
 
+    /**
+     * @brief Setter property for FeatureSize_BOverA
+     */
+    void setFeatureSize_BOverA(const VectorOfFloatArray& value);
+    /**
+     * @brief Getter property for FeatureSize_BOverA
+     * @return Value of FeatureSize_BOverA
+     */
+    VectorOfFloatArray getFeatureSize_BOverA() const;
 
-    SIMPL_INSTANCE_PROPERTY(VectorOfFloatArray, FeatureSize_BOverA)
-    SIMPL_INSTANCE_PROPERTY(uint32_t, BOverA_DistType)
+    /**
+     * @brief Setter property for BOverA_DistType
+     */
+    void setBOverA_DistType(uint32_t value);
+    /**
+     * @brief Getter property for BOverA_DistType
+     * @return Value of BOverA_DistType
+     */
+    uint32_t getBOverA_DistType() const;
 
-    SIMPL_INSTANCE_PROPERTY(VectorOfFloatArray, FeatureSize_COverA)
-    SIMPL_INSTANCE_PROPERTY(uint32_t, COverA_DistType)
+    /**
+     * @brief Setter property for FeatureSize_COverA
+     */
+    void setFeatureSize_COverA(const VectorOfFloatArray& value);
+    /**
+     * @brief Getter property for FeatureSize_COverA
+     * @return Value of FeatureSize_COverA
+     */
+    VectorOfFloatArray getFeatureSize_COverA() const;
 
-    SIMPL_INSTANCE_PROPERTY(VectorOfFloatArray, FeatureSize_Clustering)
-    SIMPL_INSTANCE_PROPERTY(uint32_t, Clustering_DistType)
+    /**
+     * @brief Setter property for COverA_DistType
+     */
+    void setCOverA_DistType(uint32_t value);
+    /**
+     * @brief Getter property for COverA_DistType
+     * @return Value of COverA_DistType
+     */
+    uint32_t getCOverA_DistType() const;
 
-    SIMPL_INSTANCE_PROPERTY(VectorOfFloatArray, FeatureSize_Omegas)
-    SIMPL_INSTANCE_PROPERTY(uint32_t, Omegas_DistType)
+    /**
+     * @brief Setter property for FeatureSize_Clustering
+     */
+    void setFeatureSize_Clustering(const VectorOfFloatArray& value);
+    /**
+     * @brief Getter property for FeatureSize_Clustering
+     * @return Value of FeatureSize_Clustering
+     */
+    VectorOfFloatArray getFeatureSize_Clustering() const;
 
-    SIMPL_INSTANCE_PROPERTY(FloatArrayType::Pointer, MisorientationBins)
+    /**
+     * @brief Setter property for Clustering_DistType
+     */
+    void setClustering_DistType(uint32_t value);
+    /**
+     * @brief Getter property for Clustering_DistType
+     * @return Value of Clustering_DistType
+     */
+    uint32_t getClustering_DistType() const;
+
+    /**
+     * @brief Setter property for FeatureSize_Omegas
+     */
+    void setFeatureSize_Omegas(const VectorOfFloatArray& value);
+    /**
+     * @brief Getter property for FeatureSize_Omegas
+     * @return Value of FeatureSize_Omegas
+     */
+    VectorOfFloatArray getFeatureSize_Omegas() const;
+
+    /**
+     * @brief Setter property for Omegas_DistType
+     */
+    void setOmegas_DistType(uint32_t value);
+    /**
+     * @brief Getter property for Omegas_DistType
+     * @return Value of Omegas_DistType
+     */
+    uint32_t getOmegas_DistType() const;
+
+    /**
+     * @brief Setter property for MisorientationBins
+     */
+    void setMisorientationBins(const FloatArrayType::Pointer& value);
+    /**
+     * @brief Getter property for MisorientationBins
+     * @return Value of MisorientationBins
+     */
+    FloatArrayType::Pointer getMisorientationBins() const;
+
     /* 3 Vectors: Angles, Axis, Weights */
-    SIMPL_INSTANCE_PROPERTY(VectorOfFloatArray, MDF_Weights)
+    /**
+     * @brief Setter property for MDF_Weights
+     */
+    void setMDF_Weights(const VectorOfFloatArray& value);
+    /**
+     * @brief Getter property for MDF_Weights
+     * @return Value of MDF_Weights
+     */
+    VectorOfFloatArray getMDF_Weights() const;
 
-    SIMPL_INSTANCE_PROPERTY(FloatArrayType::Pointer, ODF)
-    /* 5 Vectors: Euler 1, Euler 2, Euler 3, Sigma, Weights */
-    SIMPL_INSTANCE_PROPERTY(VectorOfFloatArray, ODF_Weights)
+    /**
+     * @brief Setter property for ODF
+     */
+    void setODF(const FloatArrayType::Pointer& value);
+    /**
+     * @brief Getter property for ODF
+     * @return Value of ODF
+     */
+    FloatArrayType::Pointer getODF() const;
 
-    SIMPL_INSTANCE_PROPERTY(FloatArrayType::Pointer, AxisOrientation)
     /* 5 Vectors: Euler 1, Euler 2, Euler 3, Sigma, Weights */
-    SIMPL_INSTANCE_PROPERTY(VectorOfFloatArray, AxisODF_Weights)
+    /**
+     * @brief Setter property for ODF_Weights
+     */
+    void setODF_Weights(const VectorOfFloatArray& value);
+    /**
+     * @brief Getter property for ODF_Weights
+     * @return Value of ODF_Weights
+     */
+    VectorOfFloatArray getODF_Weights() const;
+
+    /**
+     * @brief Setter property for AxisOrientation
+     */
+    void setAxisOrientation(const FloatArrayType::Pointer& value);
+    /**
+     * @brief Getter property for AxisOrientation
+     * @return Value of AxisOrientation
+     */
+    FloatArrayType::Pointer getAxisOrientation() const;
+
+    /* 5 Vectors: Euler 1, Euler 2, Euler 3, Sigma, Weights */
+    /**
+     * @brief Setter property for AxisODF_Weights
+     */
+    void setAxisODF_Weights(const VectorOfFloatArray& value);
+    /**
+     * @brief Getter property for AxisODF_Weights
+     * @return Value of AxisODF_Weights
+     */
+    VectorOfFloatArray getAxisODF_Weights() const;
 
     /**
      * @brief deepCopy
@@ -225,6 +432,30 @@ public:
     PrecipitateStatsData(PrecipitateStatsData&&) = delete;      // Move Constructor Not Implemented
     PrecipitateStatsData& operator=(const PrecipitateStatsData&) = delete; // Copy Assignment Not Implemented
     PrecipitateStatsData& operator=(PrecipitateStatsData&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    std::array<float, 3> m_FeatureDiameterInfo;
+
+    float m_BoundaryArea = {};
+    float m_PrecipBoundaryFraction = {};
+    VectorOfFloatArray m_FeatureSizeDistribution = {};
+    uint32_t m_FeatureSize_DistType = {};
+    RdfData::Pointer m_RadialDistFunction = {};
+    FloatArrayType::Pointer m_BinNumbers = {};
+    VectorOfFloatArray m_FeatureSize_BOverA = {};
+    uint32_t m_BOverA_DistType = {};
+    VectorOfFloatArray m_FeatureSize_COverA = {};
+    uint32_t m_COverA_DistType = {};
+    VectorOfFloatArray m_FeatureSize_Clustering = {};
+    uint32_t m_Clustering_DistType = {};
+    VectorOfFloatArray m_FeatureSize_Omegas = {};
+    uint32_t m_Omegas_DistType = {};
+    FloatArrayType::Pointer m_MisorientationBins = {};
+    VectorOfFloatArray m_MDF_Weights = {};
+    FloatArrayType::Pointer m_ODF = {};
+    VectorOfFloatArray m_ODF_Weights = {};
+    FloatArrayType::Pointer m_AxisOrientation = {};
+    VectorOfFloatArray m_AxisODF_Weights = {};
 };
 
 

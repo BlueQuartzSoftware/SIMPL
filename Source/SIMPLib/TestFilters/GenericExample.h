@@ -35,9 +35,11 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
@@ -52,7 +54,6 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/ComparisonInputs.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @class GenericExample GenericExample.h ExamplePlugin/Code/ExamplePluginFilters/GenericExample.h
@@ -64,7 +65,53 @@
 class SIMPLib_EXPORT GenericExample : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(GenericExample SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(GenericExample)
+  PYB11_FILTER_NEW_MACRO(GenericExample)
+  PYB11_FILTER_PARAMETER(QString, StlFilePrefix)
+  PYB11_FILTER_PARAMETER(bool, ShowPrefix)
+  PYB11_FILTER_PARAMETER(int, MaxIterations)
+  PYB11_FILTER_PARAMETER(Float2ndOrderPoly_t, SecondOrderACoeff)
+  PYB11_FILTER_PARAMETER(Float3rdOrderPoly_t, ThirdOrderACoeff)
+  PYB11_FILTER_PARAMETER(Float4thOrderPoly_t, FourthOrderACoeff)
+  PYB11_FILTER_PARAMETER(double, MisorientationTolerance)
+  PYB11_FILTER_PARAMETER(DataArrayPath, InputPhaseTypesArrayPath)
+  PYB11_FILTER_PARAMETER(ShapeType::Types, ShapeTypeData)
+  PYB11_FILTER_PARAMETER(int, PhaseCount)
+  PYB11_FILTER_PARAMETER(FPRangePair, InitRange)
+  PYB11_FILTER_PARAMETER(QString, EstimatedPrimaryFeatures)
+  PYB11_FILTER_PARAMETER(QString, InputFile)
+  PYB11_FILTER_PARAMETER(FileListInfo_t, InputFileListInfo)
+  PYB11_FILTER_PARAMETER(QString, SelectedXCoordArrayName)
+  PYB11_FILTER_PARAMETER(QStringList, DataArrayList)
+  PYB11_FILTER_PARAMETER(DataArrayPath, CreatedDataContainer)
+  PYB11_FILTER_PARAMETER(DataContainerArrayProxy, DcaProxy)
+  PYB11_FILTER_PARAMETER(QString, InputPath)
+  PYB11_FILTER_PARAMETER(QString, OutputFile)
+  PYB11_FILTER_PARAMETER(QString, OutputPath)
+  PYB11_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedMultiArrayPaths)
+  PYB11_FILTER_PARAMETER(bool, WriteAlignmentShifts)
+  PYB11_FILTER_PARAMETER(int, ConversionType)
+  PYB11_FILTER_PARAMETER(IntVec3Type, Dimensions)
+  PYB11_FILTER_PARAMETER(IntVec2Type, Range)
+  PYB11_FILTER_PARAMETER(FloatVec3Type, Origin)
+  PYB11_FILTER_PARAMETER(AxisAngleInput_t, CrystalSymmetryRotations)
+  PYB11_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+  PYB11_FILTER_PARAMETER(DataArrayPath, AttributeMatrixPath)
+  PYB11_FILTER_PARAMETER(DataArrayPath, CreatedAttributeMatrix)
+  PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+  PYB11_FILTER_PARAMETER(int, SizeDistributionFitType)
+  PYB11_FILTER_PARAMETER(ComparisonInputs, SelectedThresholds)
+  PYB11_FILTER_PARAMETER(QString, CalcExpression)
+  PYB11_FILTER_PARAMETER(DataArrayPath, CreatedDataArray)
+  PYB11_FILTER_PARAMETER(bool, Bool1)
+  PYB11_FILTER_PARAMETER(double, Double2)
+  PYB11_FILTER_PARAMETER(bool, Bool2)
+  PYB11_FILTER_PARAMETER(int, AlgorithmSelection)
+  PYB11_FILTER_PARAMETER(int, DistanceMetric)
+  PYB11_FILTER_PARAMETER(MontageSelection, MontageSelection)
 
   PYB11_PROPERTY(QString StlFilePrefix READ getStlFilePrefix WRITE setStlFilePrefix)
   PYB11_PROPERTY(bool ShowPrefix READ getShowPrefix WRITE setShowPrefix)
@@ -108,163 +155,565 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(int AlgorithmSelection READ getAlgorithmSelection WRITE setAlgorithmSelection)
   PYB11_PROPERTY(int DistanceMetric READ getDistanceMetric WRITE setDistanceMetric)
   PYB11_PROPERTY(MontageSelection MontageSelection READ getMontageSelection WRITE setMontageSelection)
+#endif
 
 public:
-  SIMPL_SHARED_POINTERS(GenericExample)
-  SIMPL_FILTER_NEW_MACRO(GenericExample)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(GenericExample, AbstractFilter)
+  using Self = GenericExample;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
+
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
+
+  /**
+   * @brief Returns the name of the class for GenericExample
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for GenericExample
+   */
+  static QString ClassName();
 
   ~GenericExample() override;
 
   /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
-  SIMPL_FILTER_PARAMETER(QString, StlFilePrefix)
+  /**
+   * @brief Setter property for StlFilePrefix
+   */
+  void setStlFilePrefix(const QString& value);
+  /**
+   * @brief Getter property for StlFilePrefix
+   * @return Value of StlFilePrefix
+   */
+  QString getStlFilePrefix() const;
+
   Q_PROPERTY(QString StlFilePrefix READ getStlFilePrefix WRITE setStlFilePrefix)
 
-  SIMPL_FILTER_PARAMETER(bool, ShowPrefix)
+  /**
+   * @brief Setter property for ShowPrefix
+   */
+  void setShowPrefix(bool value);
+  /**
+   * @brief Getter property for ShowPrefix
+   * @return Value of ShowPrefix
+   */
+  bool getShowPrefix() const;
+
   Q_PROPERTY(bool ShowPrefix READ getShowPrefix WRITE setShowPrefix)
 
-  SIMPL_FILTER_PARAMETER(int, MaxIterations)
+  /**
+   * @brief Setter property for MaxIterations
+   */
+  void setMaxIterations(int value);
+  /**
+   * @brief Getter property for MaxIterations
+   * @return Value of MaxIterations
+   */
+  int getMaxIterations() const;
+
   Q_PROPERTY(int MaxIterations READ getMaxIterations WRITE setMaxIterations)
 
-  SIMPL_FILTER_PARAMETER(Float2ndOrderPoly_t, SecondOrderACoeff)
+  /**
+   * @brief Setter property for SecondOrderACoeff
+   */
+  void setSecondOrderACoeff(const Float2ndOrderPoly_t& value);
+  /**
+   * @brief Getter property for SecondOrderACoeff
+   * @return Value of SecondOrderACoeff
+   */
+  Float2ndOrderPoly_t getSecondOrderACoeff() const;
+
   Q_PROPERTY(Float2ndOrderPoly_t SecondOrderACoeff READ getSecondOrderACoeff WRITE setSecondOrderACoeff)
 
-  SIMPL_FILTER_PARAMETER(Float3rdOrderPoly_t, ThirdOrderACoeff)
+  /**
+   * @brief Setter property for ThirdOrderACoeff
+   */
+  void setThirdOrderACoeff(const Float3rdOrderPoly_t& value);
+  /**
+   * @brief Getter property for ThirdOrderACoeff
+   * @return Value of ThirdOrderACoeff
+   */
+  Float3rdOrderPoly_t getThirdOrderACoeff() const;
+
   Q_PROPERTY(Float3rdOrderPoly_t ThirdOrderACoeff READ getThirdOrderACoeff WRITE setThirdOrderACoeff)
 
-  SIMPL_FILTER_PARAMETER(Float4thOrderPoly_t, FourthOrderACoeff)
+  /**
+   * @brief Setter property for FourthOrderACoeff
+   */
+  void setFourthOrderACoeff(const Float4thOrderPoly_t& value);
+  /**
+   * @brief Getter property for FourthOrderACoeff
+   * @return Value of FourthOrderACoeff
+   */
+  Float4thOrderPoly_t getFourthOrderACoeff() const;
+
   Q_PROPERTY(Float4thOrderPoly_t FourthOrderACoeff READ getFourthOrderACoeff WRITE setFourthOrderACoeff)
 
-  SIMPL_FILTER_PARAMETER(double, MisorientationTolerance)
+  /**
+   * @brief Setter property for MisorientationTolerance
+   */
+  void setMisorientationTolerance(double value);
+  /**
+   * @brief Getter property for MisorientationTolerance
+   * @return Value of MisorientationTolerance
+   */
+  double getMisorientationTolerance() const;
+
   Q_PROPERTY(double MisorientationTolerance READ getMisorientationTolerance WRITE setMisorientationTolerance)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, InputPhaseTypesArrayPath)
+  /**
+   * @brief Setter property for InputPhaseTypesArrayPath
+   */
+  void setInputPhaseTypesArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for InputPhaseTypesArrayPath
+   * @return Value of InputPhaseTypesArrayPath
+   */
+  DataArrayPath getInputPhaseTypesArrayPath() const;
+
   Q_PROPERTY(DataArrayPath InputPhaseTypesArrayPath READ getInputPhaseTypesArrayPath WRITE setInputPhaseTypesArrayPath)
 
-  SIMPL_FILTER_PARAMETER(ShapeType::Types, ShapeTypeData)
+  /**
+   * @brief Setter property for ShapeTypeData
+   */
+  void setShapeTypeData(const ShapeType::Types& value);
+  /**
+   * @brief Getter property for ShapeTypeData
+   * @return Value of ShapeTypeData
+   */
+  ShapeType::Types getShapeTypeData() const;
+
   Q_PROPERTY(ShapeType::Types ShapeTypeData READ getShapeTypeData WRITE setShapeTypeData)
 
-  SIMPL_FILTER_PARAMETER(int, PhaseCount)
+  /**
+   * @brief Setter property for PhaseCount
+   */
+  void setPhaseCount(int value);
+  /**
+   * @brief Getter property for PhaseCount
+   * @return Value of PhaseCount
+   */
+  int getPhaseCount() const;
+
   Q_PROPERTY(int PhaseCount READ getPhaseCount WRITE setPhaseCount)
 
   typedef QPair<double, double> FPRangePair;
-  SIMPL_FILTER_PARAMETER(FPRangePair, InitRange)
+  /**
+   * @brief Setter property for InitRange
+   */
+  void setInitRange(const FPRangePair& value);
+  /**
+   * @brief Getter property for InitRange
+   * @return Value of InitRange
+   */
+  FPRangePair getInitRange() const;
+
   Q_PROPERTY(FPRangePair InitRange READ getInitRange WRITE setInitRange)
 
-  SIMPL_FILTER_PARAMETER(QString, EstimatedPrimaryFeatures)
+  /**
+   * @brief Setter property for EstimatedPrimaryFeatures
+   */
+  void setEstimatedPrimaryFeatures(const QString& value);
+  /**
+   * @brief Getter property for EstimatedPrimaryFeatures
+   * @return Value of EstimatedPrimaryFeatures
+   */
+  QString getEstimatedPrimaryFeatures() const;
+
   Q_PROPERTY(QString EstimatedPrimaryFeatures READ getEstimatedPrimaryFeatures WRITE setEstimatedPrimaryFeatures)
 
-  SIMPL_FILTER_PARAMETER(QString, InputFile)
+  /**
+   * @brief Setter property for InputFile
+   */
+  void setInputFile(const QString& value);
+  /**
+   * @brief Getter property for InputFile
+   * @return Value of InputFile
+   */
+  QString getInputFile() const;
+
   Q_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
 
-  SIMPL_FILTER_PARAMETER(FileListInfo_t, InputFileListInfo)
+  /**
+   * @brief Setter property for InputFileListInfo
+   */
+  void setInputFileListInfo(const FileListInfo_t& value);
+  /**
+   * @brief Getter property for InputFileListInfo
+   * @return Value of InputFileListInfo
+   */
+  FileListInfo_t getInputFileListInfo() const;
+
   Q_PROPERTY(FileListInfo_t InputFileListInfo READ getInputFileListInfo WRITE setInputFileListInfo)
 
-  SIMPL_FILTER_PARAMETER(QString, SelectedXCoordArrayName)
+  /**
+   * @brief Setter property for SelectedXCoordArrayName
+   */
+  void setSelectedXCoordArrayName(const QString& value);
+  /**
+   * @brief Getter property for SelectedXCoordArrayName
+   * @return Value of SelectedXCoordArrayName
+   */
+  QString getSelectedXCoordArrayName() const;
+
   Q_PROPERTY(QString SelectedXCoordArrayName READ getSelectedXCoordArrayName WRITE setSelectedXCoordArrayName)
 
-  SIMPL_FILTER_PARAMETER(QStringList, DataArrayList)
+  /**
+   * @brief Setter property for DataArrayList
+   */
+  void setDataArrayList(const QStringList& value);
+  /**
+   * @brief Getter property for DataArrayList
+   * @return Value of DataArrayList
+   */
+  QStringList getDataArrayList() const;
+
   Q_PROPERTY(QStringList DataArrayList READ getDataArrayList WRITE setDataArrayList)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedDataContainer)
+  /**
+   * @brief Setter property for CreatedDataContainer
+   */
+  void setCreatedDataContainer(const DataArrayPath& value);
+  /**
+   * @brief Getter property for CreatedDataContainer
+   * @return Value of CreatedDataContainer
+   */
+  DataArrayPath getCreatedDataContainer() const;
+
   Q_PROPERTY(DataArrayPath CreatedDataContainer READ getCreatedDataContainer WRITE setCreatedDataContainer)
 
-  SIMPL_FILTER_PARAMETER(DataContainerArrayProxy, DcaProxy)
+  /**
+   * @brief Setter property for DcaProxy
+   */
+  void setDcaProxy(const DataContainerArrayProxy& value);
+  /**
+   * @brief Getter property for DcaProxy
+   * @return Value of DcaProxy
+   */
+  DataContainerArrayProxy getDcaProxy() const;
+
   Q_PROPERTY(DataContainerArrayProxy DcaProxy READ getDcaProxy WRITE setDcaProxy)
 
-  SIMPL_FILTER_PARAMETER(QString, InputPath)
+  /**
+   * @brief Setter property for InputPath
+   */
+  void setInputPath(const QString& value);
+  /**
+   * @brief Getter property for InputPath
+   * @return Value of InputPath
+   */
+  QString getInputPath() const;
+
   Q_PROPERTY(QString InputPath READ getInputPath WRITE setInputPath)
 
-  SIMPL_FILTER_PARAMETER(QString, OutputFile)
+  /**
+   * @brief Setter property for OutputFile
+   */
+  void setOutputFile(const QString& value);
+  /**
+   * @brief Getter property for OutputFile
+   * @return Value of OutputFile
+   */
+  QString getOutputFile() const;
+
   Q_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
 
-  SIMPL_FILTER_PARAMETER(QString, OutputPath)
+  /**
+   * @brief Setter property for OutputPath
+   */
+  void setOutputPath(const QString& value);
+  /**
+   * @brief Getter property for OutputPath
+   * @return Value of OutputPath
+   */
+  QString getOutputPath() const;
+
   Q_PROPERTY(QString OutputPath READ getOutputPath WRITE setOutputPath)
 
-  SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedMultiArrayPaths)
+  /**
+   * @brief Setter property for SelectedMultiArrayPaths
+   */
+  void setSelectedMultiArrayPaths(const QVector<DataArrayPath>& value);
+  /**
+   * @brief Getter property for SelectedMultiArrayPaths
+   * @return Value of SelectedMultiArrayPaths
+   */
+  QVector<DataArrayPath> getSelectedMultiArrayPaths() const;
+
   Q_PROPERTY(QVector<DataArrayPath> SelectedMultiArrayPaths READ getSelectedMultiArrayPaths WRITE setSelectedMultiArrayPaths)
 
-  SIMPL_FILTER_PARAMETER(bool, WriteAlignmentShifts)
+  /**
+   * @brief Setter property for WriteAlignmentShifts
+   */
+  void setWriteAlignmentShifts(bool value);
+  /**
+   * @brief Getter property for WriteAlignmentShifts
+   * @return Value of WriteAlignmentShifts
+   */
+  bool getWriteAlignmentShifts() const;
+
   Q_PROPERTY(bool WriteAlignmentShifts READ getWriteAlignmentShifts WRITE setWriteAlignmentShifts)
 
-  SIMPL_FILTER_PARAMETER(int, ConversionType)
+  /**
+   * @brief Setter property for ConversionType
+   */
+  void setConversionType(int value);
+  /**
+   * @brief Getter property for ConversionType
+   * @return Value of ConversionType
+   */
+  int getConversionType() const;
+
   Q_PROPERTY(int ConversionType READ getConversionType WRITE setConversionType)
 
-  SIMPL_FILTER_PARAMETER(IntVec3Type, Dimensions)
+  /**
+   * @brief Setter property for Dimensions
+   */
+  void setDimensions(const IntVec3Type& value);
+  /**
+   * @brief Getter property for Dimensions
+   * @return Value of Dimensions
+   */
+  IntVec3Type getDimensions() const;
+
   Q_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
 
-  SIMPL_FILTER_PARAMETER(IntVec2Type, Range)
+  /**
+   * @brief Setter property for Range
+   */
+  void setRange(const IntVec2Type& value);
+  /**
+   * @brief Getter property for Range
+   * @return Value of Range
+   */
+  IntVec2Type getRange() const;
+
   Q_PROPERTY(IntVec2Type Range READ getRange WRITE setRange)
 
-  SIMPL_FILTER_PARAMETER(FloatVec3Type, Origin)
+  /**
+   * @brief Setter property for Origin
+   */
+  void setOrigin(const FloatVec3Type& value);
+  /**
+   * @brief Getter property for Origin
+   * @return Value of Origin
+   */
+  FloatVec3Type getOrigin() const;
+
   Q_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
 
-  SIMPL_FILTER_PARAMETER(AxisAngleInput_t, CrystalSymmetryRotations)
+  /**
+   * @brief Setter property for CrystalSymmetryRotations
+   */
+  void setCrystalSymmetryRotations(const AxisAngleInput_t& value);
+  /**
+   * @brief Getter property for CrystalSymmetryRotations
+   * @return Value of CrystalSymmetryRotations
+   */
+  AxisAngleInput_t getCrystalSymmetryRotations() const;
+
   Q_PROPERTY(AxisAngleInput_t CrystalSymmetryRotations READ getCrystalSymmetryRotations WRITE setCrystalSymmetryRotations)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+  /**
+   * @brief Setter property for FeatureIdsArrayPath
+   */
+  void setFeatureIdsArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for FeatureIdsArrayPath
+   * @return Value of FeatureIdsArrayPath
+   */
+  DataArrayPath getFeatureIdsArrayPath() const;
+
   Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeMatrixPath)
+  /**
+   * @brief Setter property for AttributeMatrixPath
+   */
+  void setAttributeMatrixPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for AttributeMatrixPath
+   * @return Value of AttributeMatrixPath
+   */
+  DataArrayPath getAttributeMatrixPath() const;
+
   Q_PROPERTY(DataArrayPath AttributeMatrixPath READ getAttributeMatrixPath WRITE setAttributeMatrixPath)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedAttributeMatrix)
+  /**
+   * @brief Setter property for CreatedAttributeMatrix
+   */
+  void setCreatedAttributeMatrix(const DataArrayPath& value);
+  /**
+   * @brief Getter property for CreatedAttributeMatrix
+   * @return Value of CreatedAttributeMatrix
+   */
+  DataArrayPath getCreatedAttributeMatrix() const;
+
   Q_PROPERTY(DataArrayPath CreatedAttributeMatrix READ getCreatedAttributeMatrix WRITE setCreatedAttributeMatrix)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+  /**
+   * @brief Setter property for DataContainerName
+   */
+  void setDataContainerName(const DataArrayPath& value);
+  /**
+   * @brief Getter property for DataContainerName
+   * @return Value of DataContainerName
+   */
+  DataArrayPath getDataContainerName() const;
+
   Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-  SIMPL_FILTER_PARAMETER(int, SizeDistributionFitType)
+  /**
+   * @brief Setter property for SizeDistributionFitType
+   */
+  void setSizeDistributionFitType(int value);
+  /**
+   * @brief Getter property for SizeDistributionFitType
+   * @return Value of SizeDistributionFitType
+   */
+  int getSizeDistributionFitType() const;
+
   Q_PROPERTY(int SizeDistributionFitType READ getSizeDistributionFitType WRITE setSizeDistributionFitType)
 
-  SIMPL_FILTER_PARAMETER(ComparisonInputs, SelectedThresholds)
+  /**
+   * @brief Setter property for SelectedThresholds
+   */
+  void setSelectedThresholds(const ComparisonInputs& value);
+  /**
+   * @brief Getter property for SelectedThresholds
+   * @return Value of SelectedThresholds
+   */
+  ComparisonInputs getSelectedThresholds() const;
+
   Q_PROPERTY(ComparisonInputs SelectedThresholds READ getSelectedThresholds WRITE setSelectedThresholds)
 
-  SIMPL_FILTER_PARAMETER(QString, CalcExpression)
+  /**
+   * @brief Setter property for CalcExpression
+   */
+  void setCalcExpression(const QString& value);
+  /**
+   * @brief Getter property for CalcExpression
+   * @return Value of CalcExpression
+   */
+  QString getCalcExpression() const;
+
   Q_PROPERTY(QString CalcExpression READ getCalcExpression WRITE setCalcExpression)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedDataArray)
+  /**
+   * @brief Setter property for CreatedDataArray
+   */
+  void setCreatedDataArray(const DataArrayPath& value);
+  /**
+   * @brief Getter property for CreatedDataArray
+   * @return Value of CreatedDataArray
+   */
+  DataArrayPath getCreatedDataArray() const;
+
   Q_PROPERTY(DataArrayPath CreatedDataArray READ getCreatedDataArray WRITE setCreatedDataArray)
 
-  SIMPL_FILTER_PARAMETER(bool, Bool1)
+  /**
+   * @brief Setter property for Bool1
+   */
+  void setBool1(bool value);
+  /**
+   * @brief Getter property for Bool1
+   * @return Value of Bool1
+   */
+  bool getBool1() const;
+
   Q_PROPERTY(bool Bool1 READ getBool1 WRITE setBool1)
 
-  SIMPL_FILTER_PARAMETER(double, Double2)
+  /**
+   * @brief Setter property for Double2
+   */
+  void setDouble2(double value);
+  /**
+   * @brief Getter property for Double2
+   * @return Value of Double2
+   */
+  double getDouble2() const;
+
   Q_PROPERTY(double Double2 READ getDouble2 WRITE setDouble2)
 
-  SIMPL_FILTER_PARAMETER(bool, Bool2)
+  /**
+   * @brief Setter property for Bool2
+   */
+  void setBool2(bool value);
+  /**
+   * @brief Getter property for Bool2
+   * @return Value of Bool2
+   */
+  bool getBool2() const;
+
   Q_PROPERTY(bool Bool2 READ getBool2 WRITE setBool2)
 
-  SIMPL_FILTER_PARAMETER(int, AlgorithmSelection)
+  /**
+   * @brief Setter property for AlgorithmSelection
+   */
+  void setAlgorithmSelection(int value);
+  /**
+   * @brief Getter property for AlgorithmSelection
+   * @return Value of AlgorithmSelection
+   */
+  int getAlgorithmSelection() const;
+
   Q_PROPERTY(int AlgorithmSelection READ getAlgorithmSelection WRITE setAlgorithmSelection)
 
-  SIMPL_FILTER_PARAMETER(int, DistanceMetric)
+  /**
+   * @brief Setter property for DistanceMetric
+   */
+  void setDistanceMetric(int value);
+  /**
+   * @brief Getter property for DistanceMetric
+   * @return Value of DistanceMetric
+   */
+  int getDistanceMetric() const;
+
   Q_PROPERTY(int DistanceMetric READ getDistanceMetric WRITE setDistanceMetric)
-    
-  SIMPL_FILTER_PARAMETER(MontageSelection, MontageSelection)
+
+  /**
+   * @brief Setter property for MontageSelection
+   */
+  void setMontageSelection(const MontageSelection& value);
+  /**
+   * @brief Getter property for MontageSelection
+   * @return Value of MontageSelection
+   */
+  MontageSelection getMontageSelection() const;
+
   Q_PROPERTY(MontageSelection MontageSelection READ getMontageSelection WRITE setMontageSelection)
 
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
   AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
   * a subgroup. It should be readable and understandable by humans.
   */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
   * @brief This method will instantiate all the end user settable options/parameters
@@ -325,5 +774,49 @@ public:
   GenericExample(GenericExample&&) = delete;      // Move Constructor Not Implemented
   GenericExample& operator=(const GenericExample&) = delete; // Copy Assignment Not Implemented
   GenericExample& operator=(GenericExample&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  QString m_StlFilePrefix = {};
+  bool m_ShowPrefix = {};
+  int m_MaxIterations = {};
+  Float2ndOrderPoly_t m_SecondOrderACoeff = {};
+  Float3rdOrderPoly_t m_ThirdOrderACoeff = {};
+  Float4thOrderPoly_t m_FourthOrderACoeff = {};
+  double m_MisorientationTolerance = {};
+  DataArrayPath m_InputPhaseTypesArrayPath = {};
+  ShapeType::Types m_ShapeTypeData = {};
+  int m_PhaseCount = {};
+  FPRangePair m_InitRange = {};
+  QString m_EstimatedPrimaryFeatures = {};
+  QString m_InputFile = {};
+  FileListInfo_t m_InputFileListInfo = {};
+  QString m_SelectedXCoordArrayName = {};
+  QStringList m_DataArrayList = {};
+  DataArrayPath m_CreatedDataContainer = {};
+  DataContainerArrayProxy m_DcaProxy = {};
+  QString m_InputPath = {};
+  QString m_OutputFile = {};
+  QString m_OutputPath = {};
+  QVector<DataArrayPath> m_SelectedMultiArrayPaths = {};
+  bool m_WriteAlignmentShifts = {};
+  int m_ConversionType = {};
+  IntVec3Type m_Dimensions = {};
+  IntVec2Type m_Range = {};
+  FloatVec3Type m_Origin = {};
+  AxisAngleInput_t m_CrystalSymmetryRotations = {};
+  DataArrayPath m_FeatureIdsArrayPath = {};
+  DataArrayPath m_AttributeMatrixPath = {};
+  DataArrayPath m_CreatedAttributeMatrix = {};
+  DataArrayPath m_DataContainerName = {};
+  int m_SizeDistributionFitType = {};
+  ComparisonInputs m_SelectedThresholds = {};
+  QString m_CalcExpression = {};
+  DataArrayPath m_CreatedDataArray = {};
+  bool m_Bool1 = {};
+  double m_Double2 = {};
+  bool m_Bool2 = {};
+  int m_AlgorithmSelection = {};
+  int m_DistanceMetric = {};
+  MontageSelection m_MontageSelection = {};
 };
 

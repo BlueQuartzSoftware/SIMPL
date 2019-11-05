@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <itkImportImageFilter.h>
 #include <itkNumericTraits.h>
 #include <itkNumericTraitsRGBAPixel.h>
@@ -7,10 +9,10 @@
 #include <itkNumericTraitsVectorPixel.h>
 
 #include "SIMPLib/ITK/itkImportDream3DImageContainer.h"
-#include "SIMPLib/ITK/itkSupportConstants.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 class DataContainer;
-using DataContainerShPtr = std::shared_ptr<DataContainer>;
+using DataContainerShPtrType = std::shared_ptr<DataContainer>;
 
 namespace itk
 {
@@ -35,7 +37,7 @@ public:
   itkNewMacro(Self);
   itkTypeMacro(InPlaceDream3DDataToImageFilter, ImportImageFilter);
 
-  virtual void SetInput(DataContainer::Pointer& dc);
+  virtual void SetInput(DataContainerShPtrType& dc);
 
   itkSetMacro(DataArrayName, std::string);
   itkGetMacro(DataArrayName, std::string);
@@ -58,7 +60,7 @@ protected:
 
   void GenerateOutputInformation() override;
   void GenerateData() override;
-  DataContainerShPtr m_DataContainer;
+  DataContainerShPtrType m_DataContainer;
 
 private:
   using Superclass::SetInput;

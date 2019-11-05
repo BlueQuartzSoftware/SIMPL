@@ -35,8 +35,6 @@
 
 #include <QtCore/QObject>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
@@ -97,7 +95,6 @@ class ExecuteProcessObserver : public QObject, public IObserver
 
 public:
   ExecuteProcessObserver() = default;
-  SIMPL_TYPE_MACRO_SUPER(ExecuteProcessObserver, IObserver)
 
   ~ExecuteProcessObserver() override = default;
 
@@ -121,8 +118,11 @@ public slots:
 private:
   QString m_StdOutput;
 
-  ExecuteProcessObserver(const ExecuteProcessObserver&); // Copy Constructor Not Implemented
-  void operator=(const ExecuteProcessObserver&);         // Move assignment Not Implemented
+public:
+  ExecuteProcessObserver(const ExecuteProcessObserver&) = delete;            // Copy Constructor Not Implemented
+  ExecuteProcessObserver(ExecuteProcessObserver&&) = delete;                 // Move Constructor Not Implemented
+  ExecuteProcessObserver& operator=(const ExecuteProcessObserver&) = delete; // Copy Assignment Not Implemented
+  ExecuteProcessObserver& operator=(ExecuteProcessObserver&&) = delete;      // Move Assignment Not Implemented
 };
 
 #include "ExecuteProcessTest.moc"
@@ -229,7 +229,9 @@ public:
     DREAM3D_REGISTER_TEST(TestExecuteProcess())
   }
 
-private:
-  ExecuteProcessTest(const ExecuteProcessTest&); // Copy Constructor Not Implemented
-  void operator=(const ExecuteProcessTest&);     // Move assignment Not Implemented
+public:
+  ExecuteProcessTest(const ExecuteProcessTest&) = delete;            // Copy Constructor Not Implemented
+  ExecuteProcessTest(ExecuteProcessTest&&) = delete;                 // Move Constructor Not Implemented
+  ExecuteProcessTest& operator=(const ExecuteProcessTest&) = delete; // Copy Assignment Not Implemented
+  ExecuteProcessTest& operator=(ExecuteProcessTest&&) = delete;      // Move Assignment Not Implemented
 };

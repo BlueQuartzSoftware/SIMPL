@@ -44,7 +44,12 @@
 #include <QtCore/QString>
 #include <QtCore/QVector>
 
+#include <QtCore/QTextStream>
+
+#include <QtCore/QDebug>
+
 #include "SIMPLib/DataArrays/DataArray.hpp"
+
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
 #include "SIMPLib/DataArrays/StringDataArray.h"

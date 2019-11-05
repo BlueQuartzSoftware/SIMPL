@@ -135,3 +135,136 @@ void PhaseTypeSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* fil
     }
   }
 }
+
+// -----------------------------------------------------------------------------
+PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::New()
+{
+  Pointer sharedPtr(new(PhaseTypeSelectionFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString PhaseTypeSelectionFilterParameter::getNameOfClass() const
+{
+  return QString("PhaseTypeSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString PhaseTypeSelectionFilterParameter::ClassName()
+{
+  return QString("PhaseTypeSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void PhaseTypeSelectionFilterParameter::setPhaseTypeCountProperty(const QString& value)
+{
+  m_PhaseTypeCountProperty = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PhaseTypeSelectionFilterParameter::getPhaseTypeCountProperty() const
+{
+  return m_PhaseTypeCountProperty;
+}
+
+// -----------------------------------------------------------------------------
+void PhaseTypeSelectionFilterParameter::setPhaseTypeDataProperty(const QString& value)
+{
+  m_PhaseTypeDataProperty = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PhaseTypeSelectionFilterParameter::getPhaseTypeDataProperty() const
+{
+  return m_PhaseTypeDataProperty;
+}
+
+// -----------------------------------------------------------------------------
+void PhaseTypeSelectionFilterParameter::setAttributeMatrixPathProperty(const QString& value)
+{
+  m_AttributeMatrixPathProperty = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PhaseTypeSelectionFilterParameter::getAttributeMatrixPathProperty() const
+{
+  return m_AttributeMatrixPathProperty;
+}
+
+// -----------------------------------------------------------------------------
+void PhaseTypeSelectionFilterParameter::setAttributeMatrixPathDefault(const DataArrayPath& value)
+{
+  m_AttributeMatrixPathDefault = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath PhaseTypeSelectionFilterParameter::getAttributeMatrixPathDefault() const
+{
+  return m_AttributeMatrixPathDefault;
+}
+
+// -----------------------------------------------------------------------------
+void PhaseTypeSelectionFilterParameter::setPhaseListChoices(const QStringList& value)
+{
+  m_PhaseListChoices = value;
+}
+
+// -----------------------------------------------------------------------------
+QStringList PhaseTypeSelectionFilterParameter::getPhaseListChoices() const
+{
+  return m_PhaseListChoices;
+}
+
+// -----------------------------------------------------------------------------
+void PhaseTypeSelectionFilterParameter::setDefaultGeometryTypes(const IGeometry::Types& value)
+{
+  m_DefaultGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Types PhaseTypeSelectionFilterParameter::getDefaultGeometryTypes() const
+{
+  return m_DefaultGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+void PhaseTypeSelectionFilterParameter::setDefaultAttributeMatrixTypes(const AttributeMatrix::Types& value)
+{
+  m_DefaultAttributeMatrixTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrix::Types PhaseTypeSelectionFilterParameter::getDefaultAttributeMatrixTypes() const
+{
+  return m_DefaultAttributeMatrixTypes;
+}
+
+// -----------------------------------------------------------------------------
+void PhaseTypeSelectionFilterParameter::setSetterCallback(const PhaseTypeSelectionFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+PhaseTypeSelectionFilterParameter::SetterCallbackType PhaseTypeSelectionFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void PhaseTypeSelectionFilterParameter::setGetterCallback(const PhaseTypeSelectionFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+PhaseTypeSelectionFilterParameter::GetterCallbackType PhaseTypeSelectionFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

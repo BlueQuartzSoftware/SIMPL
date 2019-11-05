@@ -57,14 +57,17 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMessageBox>
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/DocRequestManager.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+
 #include "SIMPLib/CoreFilters/Breakpoint.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "SVWidgetsLib/QtSupport/QtSDroppableScrollArea.h"
 
@@ -714,6 +717,7 @@ void SVPipelineView::copySelectedFilters()
   }
 
   JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+  jsonWriter->setExpandReaderFilters(false);
   QString jsonString = jsonWriter->writePipelineToString(pipeline, "Pipeline");
 
   QClipboard* clipboard = QApplication::clipboard();
@@ -2229,4 +2233,46 @@ QPixmap SVPipelineView::setPixmapColor(const QPixmap& pixmap, const QColor& pixm
   }
 
   return QPixmap::fromImage(image);
+}
+
+// -----------------------------------------------------------------------------
+void SVPipelineView::setPipelineState(const SVPipelineView::PipelineViewState& value)
+{
+  m_PipelineState = value;
+}
+
+// -----------------------------------------------------------------------------
+SVPipelineView::PipelineViewState SVPipelineView::getPipelineState() const
+{
+  return m_PipelineState;
+}
+
+// -----------------------------------------------------------------------------
+QAction* SVPipelineView::getActionEnableFilter() const
+{
+  return m_ActionEnableFilter;
+}
+
+// -----------------------------------------------------------------------------
+QAction* SVPipelineView::getActionCut() const
+{
+  return m_ActionCut;
+}
+
+// -----------------------------------------------------------------------------
+QAction* SVPipelineView::getActionCopy() const
+{
+  return m_ActionCopy;
+}
+
+// -----------------------------------------------------------------------------
+QAction* SVPipelineView::getActionPaste() const
+{
+  return m_ActionPaste;
+}
+
+// -----------------------------------------------------------------------------
+QAction* SVPipelineView::getActionClearPipeline() const
+{
+  return m_ActionClearPipeline;
 }

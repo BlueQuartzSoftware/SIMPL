@@ -102,3 +102,52 @@ void FourthOrderPolynomialFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = obj;
   }
 }
+
+// -----------------------------------------------------------------------------
+FourthOrderPolynomialFilterParameter::Pointer FourthOrderPolynomialFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+FourthOrderPolynomialFilterParameter::Pointer FourthOrderPolynomialFilterParameter::New()
+{
+  Pointer sharedPtr(new(FourthOrderPolynomialFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString FourthOrderPolynomialFilterParameter::getNameOfClass() const
+{
+  return QString("FourthOrderPolynomialFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString FourthOrderPolynomialFilterParameter::ClassName()
+{
+  return QString("FourthOrderPolynomialFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void FourthOrderPolynomialFilterParameter::setSetterCallback(const FourthOrderPolynomialFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+FourthOrderPolynomialFilterParameter::SetterCallbackType FourthOrderPolynomialFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void FourthOrderPolynomialFilterParameter::setGetterCallback(const FourthOrderPolynomialFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+FourthOrderPolynomialFilterParameter::GetterCallbackType FourthOrderPolynomialFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

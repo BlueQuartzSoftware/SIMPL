@@ -32,7 +32,9 @@
 
 #include <memory>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <QtCore/QObject>
+#include <QtCore/QString>
+
 #include "SIMPLib/SIMPLib.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
@@ -48,7 +50,14 @@ class SVWidgetsLib_EXPORT QtSDocServer : public QObject
 
 public:
   // SIMPL_SHARED_POINTERS(QtSDocServer)
-  SIMPL_TYPE_MACRO(QtSDocServer)
+  /**
+   * @brief Returns the name of the class for QtSDocServer
+   */
+  virtual QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for QtSDocServer
+   */
+  static QString ClassName();
 
   ~QtSDocServer() override;
 

@@ -83,3 +83,28 @@ void GenericStatusMessage::visit(AbstractMessageHandler* msgHandler) const
 {
   msgHandler->processMessage(this);
 }
+
+// -----------------------------------------------------------------------------
+GenericStatusMessage::Pointer GenericStatusMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+GenericStatusMessage::Pointer GenericStatusMessage::New()
+{
+  Pointer sharedPtr(new(GenericStatusMessage));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString GenericStatusMessage::getNameOfClass() const
+{
+  return QString("GenericStatusMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString GenericStatusMessage::ClassName()
+{
+  return QString("GenericStatusMessage");
+}

@@ -114,3 +114,67 @@ void MontageStructureSelectionFilterParameter::dataArrayPathRenamed(AbstractFilt
   }
 }
 #endif
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+MontageStructureSelectionFilterParameter::Pointer MontageStructureSelectionFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+MontageStructureSelectionFilterParameter::Pointer MontageStructureSelectionFilterParameter::New()
+{
+  return Pointer(new MontageStructureSelectionFilterParameter());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+MontageStructureSelectionFilterParameter::SetterCallbackType MontageStructureSelectionFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MontageStructureSelectionFilterParameter::setSetterCallback(const SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+MontageStructureSelectionFilterParameter::GetterCallbackType MontageStructureSelectionFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MontageStructureSelectionFilterParameter::setGetterCallback(const GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString MontageStructureSelectionFilterParameter::getNameOfClass() const
+{
+  return "MontageStructureSelectionFilterParameter";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString MontageStructureSelectionFilterParameter::ClassName()
+{
+  return "MontageStructureSelectionFilterParameter";
+}

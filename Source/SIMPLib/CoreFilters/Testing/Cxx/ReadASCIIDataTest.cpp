@@ -37,8 +37,6 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
@@ -53,6 +51,8 @@
 
 #include "SIMPLib/CoreFilters/ReadASCIIData.h"
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 const QString DataContainerName = "DataContainer";
 const QString AttributeMatrixName = "AttributeMatrix";
@@ -73,7 +73,24 @@ class ReadASCIIDataTest
 public:
   ReadASCIIDataTest() = default;
   virtual ~ReadASCIIDataTest() = default;
-  SIMPL_TYPE_MACRO(ReadASCIIDataTest)
+  /**
+   * @brief Returns the name of the class for ReadASCIIDataTest
+   */
+  /**
+   * @brief Returns the name of the class for ReadASCIIDataTest
+   */
+  QString getNameOfClass() const
+  {
+    return QString("ReadASCIIDataTest");
+  }
+
+  /**
+   * @brief Returns the name of the class for ReadASCIIDataTest
+   */
+  QString ClassName()
+  {
+    return QString("ReadASCIIDataTest");
+  }
 
   // -----------------------------------------------------------------------------
   //

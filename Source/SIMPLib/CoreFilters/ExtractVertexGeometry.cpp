@@ -33,17 +33,24 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ExtractVertexGeometry.h"
 
 #include <numeric>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   DataContainerID = 1,
@@ -309,7 +316,7 @@ AbstractFilter::Pointer ExtractVertexGeometry::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractVertexGeometry::getCompiledLibraryName() const
+QString ExtractVertexGeometry::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -317,7 +324,7 @@ const QString ExtractVertexGeometry::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractVertexGeometry::getBrandingString() const
+QString ExtractVertexGeometry::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -325,7 +332,7 @@ const QString ExtractVertexGeometry::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractVertexGeometry::getFilterVersion() const
+QString ExtractVertexGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -336,7 +343,7 @@ const QString ExtractVertexGeometry::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractVertexGeometry::getGroupName() const
+QString ExtractVertexGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -344,7 +351,7 @@ const QString ExtractVertexGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractVertexGeometry::getSubGroupName() const
+QString ExtractVertexGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::ConversionFilters;
 }
@@ -352,7 +359,7 @@ const QString ExtractVertexGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractVertexGeometry::getHumanLabel() const
+QString ExtractVertexGeometry::getHumanLabel() const
 {
   return "Extract Vertex Geometry";
 }
@@ -360,7 +367,84 @@ const QString ExtractVertexGeometry::getHumanLabel() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ExtractVertexGeometry::getUuid()
+QUuid ExtractVertexGeometry::getUuid() const
 {
   return QUuid("{bc8a91ca-0cee-59c6-b5cb-acc1aab8617f}");
+}
+
+// -----------------------------------------------------------------------------
+ExtractVertexGeometry::Pointer ExtractVertexGeometry::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ExtractVertexGeometry> ExtractVertexGeometry::New()
+{
+  struct make_shared_enabler : public ExtractVertexGeometry
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractVertexGeometry::getNameOfClass() const
+{
+  return QString("_SUPERExtractVertexGeometry");
+}
+
+// -----------------------------------------------------------------------------
+QString ExtractVertexGeometry::ClassName()
+{
+  return QString("_SUPERExtractVertexGeometry");
+}
+
+// -----------------------------------------------------------------------------
+void ExtractVertexGeometry::setArrayHandling(int value)
+{
+  m_ArrayHandling = value;
+}
+
+// -----------------------------------------------------------------------------
+int ExtractVertexGeometry::getArrayHandling() const
+{
+  return m_ArrayHandling;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractVertexGeometry::setSelectedDataContainerName(const DataArrayPath& value)
+{
+  m_SelectedDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ExtractVertexGeometry::getSelectedDataContainerName() const
+{
+  return m_SelectedDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractVertexGeometry::setIncludedDataArrayPaths(const QVector<DataArrayPath>& value)
+{
+  m_IncludedDataArrayPaths = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> ExtractVertexGeometry::getIncludedDataArrayPaths() const
+{
+  return m_IncludedDataArrayPaths;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractVertexGeometry::setVertexDataContainerName(const DataArrayPath& value)
+{
+  m_VertexDataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ExtractVertexGeometry::getVertexDataContainerName() const
+{
+  return m_VertexDataContainerName;
 }

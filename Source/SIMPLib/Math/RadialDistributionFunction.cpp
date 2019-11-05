@@ -52,7 +52,7 @@ RadialDistributionFunction::~RadialDistributionFunction() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<float> RadialDistributionFunction::GenerateRandomDistribution(float minDistance, float maxDistance, int numBins, std::vector<float> boxdims, std::vector<float> boxres)
+std::vector<float> RadialDistributionFunction::GenerateRandomDistribution(float minDistance, float maxDistance, int numBins, std::array<float, 3>& boxdims, std::array<float, 3>& boxres)
 {
   std::vector<float> freq(numBins, 0);
   std::vector<float> randomCentroids;

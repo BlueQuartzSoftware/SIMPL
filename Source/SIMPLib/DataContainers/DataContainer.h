@@ -35,21 +35,30 @@
 
 #pragma once
 
+#include <memory>
+
 #include <cstddef>
 
 #include <QtCore/QMap>
 #include <QtCore/QString>
 #include <QtCore/QVector>
 
+#include <QtCore/QTextStream>
+
+#include "SIMPLib/SIMPLib.h"
+
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Utilities/ToolTipGenerator.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 class QTextStream;
 class DataArrayPath;
@@ -69,7 +78,10 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
 
   // This line MUST be first when exposing a class and properties to Python
   // clang-format off
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(DataContainer)
+  PYB11_SHARED_POINTERS(DataContainer)
   PYB11_STATIC_CREATION(New OVERLOAD QString)
   PYB11_STATIC_CREATION(New OVERLOAD DataArrayPath)
 
@@ -80,18 +92,33 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
   PYB11_METHOD(bool addOrReplaceAttributeMatrix ARGS AttributeMatrix)
   PYB11_METHOD(bool insertOrAssign ARGS AttributeMatrix)
 
-  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.QString.&,Name)
-  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.DataArrayPath.&,Path)
+  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.QString.&,Name CONST_METHOD)
+  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
 
   PYB11_METHOD(AttributeMatrix removeAttributeMatrix ARGS Name)
   PYB11_METHOD(bool renameAttributeMatrix ARGS OldName NewName OverWrite)
 
   PYB11_METHOD(bool doesAttributeMatrixExist ARGS Name)
   PYB11_METHOD(void setGeometry ARGS Geometry)
+#endif
+
   // clang-format on
 public:
-  SIMPL_SHARED_POINTERS(DataContainer)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainer, Observable)
+  using Self = DataContainer;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for DataContainer
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for DataContainer
+   */
+  static QString ClassName();
 
   ~DataContainer() override;
 
@@ -164,24 +191,24 @@ public:
    * @brief Returns the geometry of the data container
    * @return
    */
-  virtual IGeometry::Pointer getGeometry();
+  virtual IGeometry::Pointer getGeometry() const;
 
   /**
    * @param format The format of the string to be returned.
    */
-  virtual QString getInfoString(SIMPL::InfoStringFormat format);
+  virtual QString getInfoString(SIMPL::InfoStringFormat format) const;
 
   /**
    * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
    * with values populated to match the current DataContainer.
    * @return
    */
-  virtual ToolTipGenerator getToolTipGenerator();
+  virtual ToolTipGenerator getToolTipGenerator() const;
 
   /**
    * @brief Adds the data for a named array. If an AttributeMatrix with the same
    * name already exists in the DataContainer then the add will fail.
-   * @param matrix The IDataArray::Pointer that will hold the data
+   * @param matrix The IDataArrayShPtrType that will hold the data
    * @return Bool TRUE if the addition was successful, FALSE Otherwise.
    */
   bool addOrReplaceAttributeMatrix(const AttributeMatrixShPtr& matrix)
@@ -194,7 +221,7 @@ public:
    * null pointer if the name does not exist.
    * @param name The name of the data array
    */
-  AttributeMatrixShPtr getAttributeMatrix(const QString& name)
+  AttributeMatrixShPtr getAttributeMatrix(const QString& name) const
   {
     return getChildByName(name);
   }
@@ -204,7 +231,7 @@ public:
    * null pointer if the name does not exist.
    * @param name The Name of the AttributeMatrix will be extracted from the DataArratPath object
    */
-  AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path)
+  AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path) const
   {
     // Could this be sped-up if we hashed DataArrayPath as well?
     if(path.getDataContainerName() != getName())
@@ -218,7 +245,7 @@ public:
    * @brief Returns bool of whether a named array exists
    * @param name The name of the data array
    */
-  bool doesAttributeMatrixExist(const QString& name)
+  bool doesAttributeMatrixExist(const QString& name) const
   {
     return contains(name);
   }
@@ -242,7 +269,7 @@ public:
    */
   virtual void clearAttributeMatrices();
 
-  Container_t getAttributeMatrices()
+  Container_t getAttributeMatrices() const
   {
     return getChildren();
   }
@@ -252,7 +279,7 @@ public:
    * Cell (Formerly Cell) group
    * @return
    */
-  virtual NameList getAttributeMatrixNames();
+  virtual NameList getAttributeMatrixNames() const;
 
   /**
    * @brief Returns the total number of arrays that are stored in the Cell group
@@ -267,7 +294,7 @@ public:
    * @brief getAllDataArrayPaths
    * @return
    */
-  virtual QVector<DataArrayPath> getAllDataArrayPaths();
+  virtual QVector<DataArrayPath> getAllDataArrayPaths() const;
 
   /**
    * @brief This method will check for the existance of a named AttributeMatrix. If that AttributeMatrix with the
@@ -278,7 +305,7 @@ public:
    * @param err The unique error value to generate derived error values from. This helps debugging.
    * @return Shared Pointer to an AttributeMatrix object.
    */
-  AttributeMatrixShPtr getPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, int err);
+  AttributeMatrixShPtr getPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, int err) const;
 
   /**
    * @brief createNonPrereqAttributeMatrix This method will create a new AttributeMatrix with the given tuple dimensions
@@ -322,7 +349,7 @@ public:
    * @brief Returns the geometry as the templated type
    * @return
    */
-  template <typename GeometryType> typename GeometryType::Pointer getGeometryAs()
+  template <typename GeometryType> typename GeometryType::Pointer getGeometryAs() const
   {
     typename GeometryType::Pointer geom = std::dynamic_pointer_cast<GeometryType>(getGeometry());
     return geom;
@@ -333,7 +360,7 @@ public:
    * @param filter
    * @return
    */
-  template <typename GeometryType, typename Filter> typename GeometryType::Pointer getPrereqGeometry(Filter* filter)
+  template <typename GeometryType, typename Filter> typename GeometryType::Pointer getPrereqGeometry(Filter* filter) const
   {
     typename GeometryType::Pointer geom = GeometryType::NullPointer();
     IGeometry::Pointer igeom = getGeometry();
@@ -374,7 +401,7 @@ public:
    * @brief Writes all the Attribute Matrices to HDF5 file
    * @return
    */
-  virtual int writeAttributeMatricesToHDF5(hid_t parentId);
+  virtual int writeAttributeMatricesToHDF5(hid_t parentId) const;
 
   /**
    * @brief Reads desired Attribute Matrices from HDF5 file
@@ -386,14 +413,14 @@ public:
    * @brief creates copy of dataContainer
    * @return
    */
-  virtual DataContainer::Pointer deepCopy(bool forceNoAllocate = false);
+  virtual DataContainer::Pointer deepCopy(bool forceNoAllocate = false) const;
 
   /**
    * @brief writeMeshToHDF5
    * @param dcGid
    * @return
    */
-  virtual int writeMeshToHDF5(hid_t dcGid, bool writeXdmf);
+  virtual int writeMeshToHDF5(hid_t dcGid, bool writeXdmf) const;
 
   /**
    * @brief writeXdmf
@@ -401,7 +428,7 @@ public:
    * @param hdfFileName
    * @return
    */
-  virtual int writeXdmf(QTextStream& out, const QString &hdfFileName);
+  virtual int writeXdmf(QTextStream& out, const QString &hdfFileName) const;
 
   /**
    * @brief readMeshDataFromHDF5
@@ -412,7 +439,7 @@ public:
   virtual int readMeshDataFromHDF5(hid_t dcGid, bool preflight);
 
 protected:
-  virtual void writeXdmfFooter(QTextStream& xdmf);
+  virtual void writeXdmfFooter(QTextStream& xdmf) const;
 
   DataContainer();
   explicit DataContainer(const QString& name);

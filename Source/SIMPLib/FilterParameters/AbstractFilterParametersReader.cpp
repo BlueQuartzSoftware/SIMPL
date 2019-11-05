@@ -35,6 +35,8 @@
 
 #include "AbstractFilterParametersReader.h"
 
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -48,7 +50,7 @@ AbstractFilterParametersReader::~AbstractFilterParametersReader() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AbstractFilterParametersReader::readString(const QString name, QString value)
+QString AbstractFilterParametersReader::readString(const QString& name, QString value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -60,7 +62,7 @@ QString AbstractFilterParametersReader::readString(const QString name, QString v
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<QString> AbstractFilterParametersReader::readStrings(const QString name, QVector<QString> value)
+QVector<QString> AbstractFilterParametersReader::readStrings(const QString& name, QVector<QString> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -72,7 +74,7 @@ QVector<QString> AbstractFilterParametersReader::readStrings(const QString name,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStringList AbstractFilterParametersReader::readStringList(const QString name, QStringList value)
+QStringList AbstractFilterParametersReader::readStringList(const QString& name, QStringList value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -84,7 +86,7 @@ QStringList AbstractFilterParametersReader::readStringList(const QString name, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int8_t AbstractFilterParametersReader::readValue(const QString name, int8_t value)
+int8_t AbstractFilterParametersReader::readValue(const QString& name, int8_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -96,7 +98,7 @@ int8_t AbstractFilterParametersReader::readValue(const QString name, int8_t valu
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int16_t AbstractFilterParametersReader::readValue(const QString name, int16_t value)
+int16_t AbstractFilterParametersReader::readValue(const QString& name, int16_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -108,7 +110,7 @@ int16_t AbstractFilterParametersReader::readValue(const QString name, int16_t va
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int32_t AbstractFilterParametersReader::readValue(const QString name, int32_t value)
+int32_t AbstractFilterParametersReader::readValue(const QString& name, int32_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -120,7 +122,7 @@ int32_t AbstractFilterParametersReader::readValue(const QString name, int32_t va
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int64_t AbstractFilterParametersReader::readValue(const QString name, int64_t value)
+int64_t AbstractFilterParametersReader::readValue(const QString& name, int64_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -132,7 +134,7 @@ int64_t AbstractFilterParametersReader::readValue(const QString name, int64_t va
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-uint8_t AbstractFilterParametersReader::readValue(const QString name, uint8_t value)
+uint8_t AbstractFilterParametersReader::readValue(const QString& name, uint8_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -144,7 +146,7 @@ uint8_t AbstractFilterParametersReader::readValue(const QString name, uint8_t va
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-uint16_t AbstractFilterParametersReader::readValue(const QString name, uint16_t value)
+uint16_t AbstractFilterParametersReader::readValue(const QString& name, uint16_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -156,7 +158,7 @@ uint16_t AbstractFilterParametersReader::readValue(const QString name, uint16_t 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-uint32_t AbstractFilterParametersReader::readValue(const QString name, uint32_t value)
+uint32_t AbstractFilterParametersReader::readValue(const QString& name, uint32_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -168,7 +170,7 @@ uint32_t AbstractFilterParametersReader::readValue(const QString name, uint32_t 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-uint64_t AbstractFilterParametersReader::readValue(const QString name, uint64_t value)
+uint64_t AbstractFilterParametersReader::readValue(const QString& name, uint64_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -180,7 +182,7 @@ uint64_t AbstractFilterParametersReader::readValue(const QString name, uint64_t 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-float AbstractFilterParametersReader::readValue(const QString name, float value)
+float AbstractFilterParametersReader::readValue(const QString& name, float value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -192,7 +194,7 @@ float AbstractFilterParametersReader::readValue(const QString name, float value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double AbstractFilterParametersReader::readValue(const QString name, double value)
+double AbstractFilterParametersReader::readValue(const QString& name, double value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -204,7 +206,7 @@ double AbstractFilterParametersReader::readValue(const QString name, double valu
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool AbstractFilterParametersReader::readValue(const QString name, bool value)
+bool AbstractFilterParametersReader::readValue(const QString& name, bool value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -216,7 +218,7 @@ bool AbstractFilterParametersReader::readValue(const QString name, bool value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::Type AbstractFilterParametersReader::readValue(const QString name, AttributeMatrix::Type value)
+AttributeMatrix::Type AbstractFilterParametersReader::readValue(const QString& name, AttributeMatrix::Type value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -228,7 +230,7 @@ AttributeMatrix::Type AbstractFilterParametersReader::readValue(const QString na
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<int8_t> AbstractFilterParametersReader::readArray(const QString name, QVector<int8_t> value)
+QVector<int8_t> AbstractFilterParametersReader::readArray(const QString& name, QVector<int8_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -240,7 +242,7 @@ QVector<int8_t> AbstractFilterParametersReader::readArray(const QString name, QV
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<int16_t> AbstractFilterParametersReader::readArray(const QString name, QVector<int16_t> value)
+QVector<int16_t> AbstractFilterParametersReader::readArray(const QString& name, QVector<int16_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -252,7 +254,7 @@ QVector<int16_t> AbstractFilterParametersReader::readArray(const QString name, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<int32_t> AbstractFilterParametersReader::readArray(const QString name, QVector<int32_t> value)
+QVector<int32_t> AbstractFilterParametersReader::readArray(const QString& name, QVector<int32_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -264,7 +266,7 @@ QVector<int32_t> AbstractFilterParametersReader::readArray(const QString name, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<int64_t> AbstractFilterParametersReader::readArray(const QString name, QVector<int64_t> value)
+QVector<int64_t> AbstractFilterParametersReader::readArray(const QString& name, QVector<int64_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -276,7 +278,7 @@ QVector<int64_t> AbstractFilterParametersReader::readArray(const QString name, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<uint8_t> AbstractFilterParametersReader::readArray(const QString name, QVector<uint8_t> value)
+QVector<uint8_t> AbstractFilterParametersReader::readArray(const QString& name, QVector<uint8_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -288,7 +290,7 @@ QVector<uint8_t> AbstractFilterParametersReader::readArray(const QString name, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<uint16_t> AbstractFilterParametersReader::readArray(const QString name, QVector<uint16_t> value)
+QVector<uint16_t> AbstractFilterParametersReader::readArray(const QString& name, QVector<uint16_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -300,7 +302,7 @@ QVector<uint16_t> AbstractFilterParametersReader::readArray(const QString name, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<uint32_t> AbstractFilterParametersReader::readArray(const QString name, QVector<uint32_t> value)
+QVector<uint32_t> AbstractFilterParametersReader::readArray(const QString& name, QVector<uint32_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -312,7 +314,7 @@ QVector<uint32_t> AbstractFilterParametersReader::readArray(const QString name, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<uint64_t> AbstractFilterParametersReader::readArray(const QString name, QVector<uint64_t> value)
+QVector<uint64_t> AbstractFilterParametersReader::readArray(const QString& name, QVector<uint64_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -324,7 +326,7 @@ QVector<uint64_t> AbstractFilterParametersReader::readArray(const QString name, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<float> AbstractFilterParametersReader::readArray(const QString name, QVector<float> value)
+QVector<float> AbstractFilterParametersReader::readArray(const QString& name, QVector<float> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -336,7 +338,7 @@ QVector<float> AbstractFilterParametersReader::readArray(const QString name, QVe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<double> AbstractFilterParametersReader::readArray(const QString name, QVector<double> value)
+QVector<double> AbstractFilterParametersReader::readArray(const QString& name, QVector<double> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -348,7 +350,7 @@ QVector<double> AbstractFilterParametersReader::readArray(const QString name, QV
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntVec3Type AbstractFilterParametersReader::readIntVec3(const QString name, IntVec3Type defaultValue)
+IntVec3Type AbstractFilterParametersReader::readIntVec3(const QString& name, IntVec3Type defaultValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defaultValue)
@@ -360,7 +362,7 @@ IntVec3Type AbstractFilterParametersReader::readIntVec3(const QString name, IntV
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatVec3Type AbstractFilterParametersReader::readFloatVec3(const QString name, FloatVec3Type defaultValue)
+FloatVec3Type AbstractFilterParametersReader::readFloatVec3(const QString& name, FloatVec3Type defaultValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defaultValue)
@@ -372,7 +374,7 @@ FloatVec3Type AbstractFilterParametersReader::readFloatVec3(const QString name, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Float2ndOrderPoly_t AbstractFilterParametersReader::readFloat2ndOrderPoly(const QString name, Float2ndOrderPoly_t defaultValue)
+Float2ndOrderPoly_t AbstractFilterParametersReader::readFloat2ndOrderPoly(const QString& name, Float2ndOrderPoly_t defaultValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defaultValue)
@@ -384,7 +386,7 @@ Float2ndOrderPoly_t AbstractFilterParametersReader::readFloat2ndOrderPoly(const 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Float3rdOrderPoly_t AbstractFilterParametersReader::readFloat3rdOrderPoly(const QString name, Float3rdOrderPoly_t defaultValue)
+Float3rdOrderPoly_t AbstractFilterParametersReader::readFloat3rdOrderPoly(const QString& name, Float3rdOrderPoly_t defaultValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defaultValue)
@@ -396,7 +398,7 @@ Float3rdOrderPoly_t AbstractFilterParametersReader::readFloat3rdOrderPoly(const 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Float4thOrderPoly_t AbstractFilterParametersReader::readFloat4thOrderPoly(const QString name, Float4thOrderPoly_t defaultValue)
+Float4thOrderPoly_t AbstractFilterParametersReader::readFloat4thOrderPoly(const QString& name, Float4thOrderPoly_t defaultValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defaultValue)
@@ -408,7 +410,7 @@ Float4thOrderPoly_t AbstractFilterParametersReader::readFloat4thOrderPoly(const 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FileListInfo_t AbstractFilterParametersReader::readFileListInfo(const QString name, FileListInfo_t defaultValue)
+FileListInfo_t AbstractFilterParametersReader::readFileListInfo(const QString& name, FileListInfo_t defaultValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defaultValue)
@@ -420,7 +422,7 @@ FileListInfo_t AbstractFilterParametersReader::readFileListInfo(const QString na
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonInput_t AbstractFilterParametersReader::readComparisonInput(const QString name, ComparisonInput_t defaultValue, int vectorPos)
+ComparisonInput_t AbstractFilterParametersReader::readComparisonInput(const QString& name, ComparisonInput_t defaultValue, int vectorPos)
 {
   Q_UNUSED(name)
   Q_UNUSED(defaultValue)
@@ -433,7 +435,7 @@ ComparisonInput_t AbstractFilterParametersReader::readComparisonInput(const QStr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonInputs AbstractFilterParametersReader::readComparisonInputs(const QString name, ComparisonInputs defValue)
+ComparisonInputs AbstractFilterParametersReader::readComparisonInputs(const QString& name, ComparisonInputs defValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defValue)
@@ -445,7 +447,7 @@ ComparisonInputs AbstractFilterParametersReader::readComparisonInputs(const QStr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonInputsAdvanced AbstractFilterParametersReader::readComparisonInputsAdvanced(const QString name, ComparisonInputsAdvanced defValue)
+ComparisonInputsAdvanced AbstractFilterParametersReader::readComparisonInputsAdvanced(const QString& name, ComparisonInputsAdvanced defValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defValue)
@@ -457,7 +459,7 @@ ComparisonInputsAdvanced AbstractFilterParametersReader::readComparisonInputsAdv
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AxisAngleInput_t AbstractFilterParametersReader::readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos)
+AxisAngleInput_t AbstractFilterParametersReader::readAxisAngle(const QString& name, AxisAngleInput_t v, int vectorPos)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -470,7 +472,7 @@ AxisAngleInput_t AbstractFilterParametersReader::readAxisAngle(const QString nam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<AxisAngleInput_t> AbstractFilterParametersReader::readAxisAngles(const QString name, QVector<AxisAngleInput_t> v)
+QVector<AxisAngleInput_t> AbstractFilterParametersReader::readAxisAngles(const QString& name, QVector<AxisAngleInput_t> v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -482,7 +484,7 @@ QVector<AxisAngleInput_t> AbstractFilterParametersReader::readAxisAngles(const Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSet<QString> AbstractFilterParametersReader::readArraySelections(const QString name, QSet<QString> v)
+QSet<QString> AbstractFilterParametersReader::readArraySelections(const QString& name, QSet<QString> v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -549,4 +551,16 @@ QPair<double, double> AbstractFilterParametersReader::readPairOfDoubles(const QS
 
   // This should never be executed
   return QPair<double, double>();
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractFilterParametersReader::getNameOfClass() const
+{
+  return QString("AbstractFilterParametersReader");
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractFilterParametersReader::ClassName()
+{
+  return QString("AbstractFilterParametersReader");
 }

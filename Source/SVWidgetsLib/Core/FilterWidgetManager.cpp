@@ -37,6 +37,8 @@
 
 #include "PipelineFilterWidgetFactory.hpp"
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/FilterParameters/UnknownFilterParameter.h"
 
 #include "SVWidgetsLib/FilterWidgetHeaders.h"
@@ -127,4 +129,16 @@ QWidget* FilterWidgetManager::createWidget(FilterParameter* parameter, AbstractF
   }
   UnknownWidget* unknownWidget = new UnknownWidget(parameter, filter, parent);
   return unknownWidget;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterWidgetManager::getNameOfClass() const
+{
+  return QString("FilterWidgetManager");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterWidgetManager::ClassName()
+{
+  return QString("FilterWidgetManager");
 }

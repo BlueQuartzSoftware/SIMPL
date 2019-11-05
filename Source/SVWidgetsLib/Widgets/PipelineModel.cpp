@@ -816,3 +816,27 @@ QColor PipelineModel::getForegroundColor(const QModelIndex &index) const
 
   return fgColor;
 }
+
+// -----------------------------------------------------------------------------
+QString PipelineModel::getNameOfClass() const
+{
+  return QString("PipelineModel");
+}
+
+// -----------------------------------------------------------------------------
+QString PipelineModel::ClassName()
+{
+  return QString("PipelineModel");
+}
+
+// -----------------------------------------------------------------------------
+void PipelineModel::setMaxNumberOfPipelines(int value)
+{
+  m_MaxNumberOfPipelines = value;
+}
+
+// -----------------------------------------------------------------------------
+int PipelineModel::getMaxNumberOfPipelines() const
+{
+  return m_MaxNumberOfPipelines;
+}

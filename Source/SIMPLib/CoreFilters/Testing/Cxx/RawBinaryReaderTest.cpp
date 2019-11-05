@@ -41,12 +41,17 @@
 #include <QtCore/QString>
 #include <QtCore/QVector>
 
+#include <QtCore/QDebug>
+
 #include "SIMPLib/Common/ScopedFileMonitor.hpp"
+
 #include "SIMPLib/CoreFilters/RawBinaryReader.h"
 #include "SIMPLib/SIMPLib.h"
 
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 /* Testing Notes:
  *

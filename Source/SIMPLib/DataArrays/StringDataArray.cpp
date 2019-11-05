@@ -34,7 +34,10 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "StringDataArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/HDF5/H5DataArrayReader.h"
+
 #include "SIMPLib/HDF5/H5DataArrayWriter.hpp"
 
 
@@ -88,7 +91,7 @@ StringDataArray::Pointer StringDataArray::CreateArray(size_t numTuples, const st
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate)
+IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate) const
 {
   IDataArray::Pointer p = StringDataArray::CreateArray(numElements, name, allocate);
   return p;
@@ -97,7 +100,7 @@ IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, int rank
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate)
+IDataArray::Pointer StringDataArray::createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate) const
 {
   IDataArray::Pointer p = StringDataArray::CreateArray(numElements, name, allocate);
   return p;
@@ -118,7 +121,7 @@ StringDataArray::~StringDataArray() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool StringDataArray::isAllocated()
+bool StringDataArray::isAllocated() const
 {
   return true;
 }
@@ -142,7 +145,7 @@ void StringDataArray::setInitValue(const QString& initValue)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StringDataArray::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision)
+void StringDataArray::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const
 {
   xdmfTypeName = getNameOfClass();
   precision = 0;
@@ -151,7 +154,7 @@ void StringDataArray::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString StringDataArray::getTypeAsString()
+QString StringDataArray::getTypeAsString() const
 {
   return "StringDataArray";
 }
@@ -183,7 +186,7 @@ void* StringDataArray::getVoidPointer(size_t i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t StringDataArray::getNumberOfTuples()
+size_t StringDataArray::getNumberOfTuples() const
 {
   return m_Array.size();
 }
@@ -191,7 +194,7 @@ size_t StringDataArray::getNumberOfTuples()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t StringDataArray::getSize()
+size_t StringDataArray::getSize() const
 {
   return m_Array.size();
 }
@@ -199,7 +202,7 @@ size_t StringDataArray::getSize()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StringDataArray::getNumberOfComponents()
+int StringDataArray::getNumberOfComponents() const
 {
   return 1;
 }
@@ -207,7 +210,7 @@ int StringDataArray::getNumberOfComponents()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<size_t> StringDataArray::getComponentDimensions()
+std::vector<size_t> StringDataArray::getComponentDimensions() const
 {
   std::vector<size_t> dims = {1};
   return dims;
@@ -223,7 +226,7 @@ void StringDataArray::SetRank(int rnk)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StringDataArray::getRank()
+int StringDataArray::getRank() const
 {
   return 1;
 }
@@ -231,7 +234,7 @@ int StringDataArray::getRank()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t StringDataArray::getTypeSize()
+size_t StringDataArray::getTypeSize() const
 {
   return sizeof(QString);
 }
@@ -375,7 +378,7 @@ void StringDataArray::initializeWithValue(const std::string& value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer StringDataArray::deepCopy(bool forceNoAllocate)
+IDataArray::Pointer StringDataArray::deepCopy(bool forceNoAllocate) const
 {
   StringDataArray::Pointer daCopy = StringDataArray::CreateArray(getNumberOfTuples(), getName(), true);
   if(!forceNoAllocate)
@@ -420,7 +423,7 @@ void StringDataArray::initialize()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StringDataArray::printTuple(QTextStream& out, size_t i, char delimiter)
+void StringDataArray::printTuple(QTextStream& out, size_t i, char delimiter) const
 {
   out << m_Array[i];
 }
@@ -428,7 +431,7 @@ void StringDataArray::printTuple(QTextStream& out, size_t i, char delimiter)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StringDataArray::printComponent(QTextStream& out, size_t i, int j)
+void StringDataArray::printComponent(QTextStream& out, size_t i, int j) const
 {
   out << m_Array[i];
 }
@@ -436,7 +439,7 @@ void StringDataArray::printComponent(QTextStream& out, size_t i, int j)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString StringDataArray::getFullNameOfClass()
+QString StringDataArray::getFullNameOfClass() const
 {
   return "StringDataArray";
 }
@@ -444,7 +447,7 @@ QString StringDataArray::getFullNameOfClass()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StringDataArray::writeH5Data(hid_t parentId, std::vector<size_t> tDims)
+int StringDataArray::writeH5Data(hid_t parentId, std::vector<size_t> tDims) const
 {
   return H5DataArrayWriter::writeStringDataArray<StringDataArray>(parentId, this);
 }
@@ -452,7 +455,7 @@ int StringDataArray::writeH5Data(hid_t parentId, std::vector<size_t> tDims)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StringDataArray::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb)
+int StringDataArray::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) const
 {
   out << "<!-- Xdmf is not supported for " << getNameOfClass() << " with type " << getTypeAsString() << " --> ";
   return -1;
@@ -461,7 +464,7 @@ int StringDataArray::writeXdmfAttribute(QTextStream& out, int64_t* volDims, cons
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString StringDataArray::getInfoString(SIMPL::InfoStringFormat format)
+QString StringDataArray::getInfoString(SIMPL::InfoStringFormat format) const
 {
   if(format == SIMPL::HtmlFormat)
   {
@@ -476,7 +479,7 @@ QString StringDataArray::getInfoString(SIMPL::InfoStringFormat format)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ToolTipGenerator StringDataArray::getToolTipGenerator()
+ToolTipGenerator StringDataArray::getToolTipGenerator() const
 {
   ToolTipGenerator toolTipGen;
   QLocale usa(QLocale::English, QLocale::UnitedStates);
@@ -531,7 +534,38 @@ void StringDataArray::setValue(size_t i, const QString& value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString StringDataArray::getValue(size_t i)
+QString StringDataArray::getValue(size_t i) const
 {
   return m_Array.at(i);
+}
+
+// -----------------------------------------------------------------------------
+StringDataArray::Pointer StringDataArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+StringDataArray::Pointer StringDataArray::New()
+{
+  Pointer sharedPtr(new(StringDataArray));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString StringDataArray::getNameOfClass() const
+{
+  return QString("StringDataArray");
+}
+
+// -----------------------------------------------------------------------------
+QString StringDataArray::ClassName()
+{
+  return QString("StringDataArray");
+}
+
+// -----------------------------------------------------------------------------
+int StringDataArray::getClassVersion() const
+{
+  return 2;
 }

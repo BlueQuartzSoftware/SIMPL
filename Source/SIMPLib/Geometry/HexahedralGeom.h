@@ -1,8 +1,14 @@
 #ifndef _hexahedralgeom_h_
 #define _hexahedralgeom_h_
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <memory>
+
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Geometry/IGeometry3D.h"
+
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The HexahedralGeom class represents a collection of hexahedra
@@ -10,10 +16,23 @@
 class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
 {
   public:
+    using Self = HexahedralGeom;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
-    SIMPL_SHARED_POINTERS(HexahedralGeom)
-    SIMPL_STATIC_NEW_MACRO(HexahedralGeom)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(HexahedralGeom, Observable)
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for HexahedralGeom
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for HexahedralGeom
+     */
+    static QString ClassName();
 
     ~HexahedralGeom() override;
 
@@ -84,7 +103,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @brief getQuads
      * @return
      */
-    SharedQuadList::Pointer getQuads();
+    SharedQuadList::Pointer getQuads() const;
 
     /**
      * @brief setVertsAtQuad
@@ -98,7 +117,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param quadId
      * @param verts
      */
-    void getVertsAtQuad(size_t quadId, size_t verts[4]);
+    void getVertsAtQuad(size_t quadId, size_t verts[4]) const;
 
     /**
      * @brief getVertCoordsAtQuad
@@ -108,20 +127,20 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param vert3
      * @param vert4
      */
-    void getVertCoordsAtQuad(size_t quadId, float vert1[3], float vert2[3], float vert3[3], float vert4[3]);
+    void getVertCoordsAtQuad(size_t quadId, float vert1[3], float vert2[3], float vert3[3], float vert4[3]) const;
 
     /**
      * @brief getPointer
      * @param i
      * @return
      */
-    size_t* getQuadPointer(size_t i);
+    size_t* getQuadPointer(size_t i) const;
 
     /**
      * @brief getNumberOfQuads
      * @return
      */
-    size_t getNumberOfQuads();
+    size_t getNumberOfQuads() const;
 
     // -----------------------------------------------------------------------------
     // Inherited from SharedHexOps
@@ -150,7 +169,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
     * @brief getHexahedra
     * @return
     */
-    SharedHexList::Pointer getHexahedra();
+    SharedHexList::Pointer getHexahedra() const;
 
     /**
      * @brief setVertsAtHex
@@ -164,7 +183,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param hexId
      * @param verts
      */
-    void getVertsAtHex(size_t hexId, size_t verts[7]);
+    void getVertsAtHex(size_t hexId, size_t verts[7]) const;
 
     /**
      * @brief getVertCoordsAtHex
@@ -176,20 +195,20 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param vert5
      * @param vert6
      */
-    void getVertCoordsAtHex(size_t hexId, float vert1[3], float vert2[3], float vert3[3], float vert4[3], float vert5[3], float vert6[3], float vert7[3], float vert8[3]);
+    void getVertCoordsAtHex(size_t hexId, float vert1[3], float vert2[3], float vert3[3], float vert4[3], float vert5[3], float vert6[3], float vert7[3], float vert8[3]) const;
 
     /**
      * @brief getHexPointer
      * @param i
      * @return
      */
-    size_t* getHexPointer(size_t i);
+    size_t* getHexPointer(size_t i) const;
 
     /**
      * @brief getNumberOfHexas
      * @return
      */
-    size_t getNumberOfHexas();
+    size_t getNumberOfHexas() const;
 
     // -----------------------------------------------------------------------------
     // Inherited from IGeometry
@@ -204,7 +223,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @brief getNumberOfElements
      * @return
      */
-    size_t getNumberOfElements() override;
+    size_t getNumberOfElements() const override;
 
     /**
      * @brief findElementSizes
@@ -216,7 +235,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @brief getElementSizes
      * @return
      */
-    FloatArrayType::Pointer getElementSizes() override;
+    FloatArrayType::Pointer getElementSizes() const override;
 
     /**
      * @brief deleteElementSizes
@@ -233,7 +252,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @brief getElementsContainingVert
      * @return
      */
-    ElementDynamicList::Pointer getElementsContainingVert() override;
+    ElementDynamicList::Pointer getElementsContainingVert() const override;
 
     /**
      * @brief deleteElementsContainingVert
@@ -250,7 +269,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @brief getElementNeighbors
      * @return
      */
-    ElementDynamicList::Pointer getElementNeighbors() override;
+    ElementDynamicList::Pointer getElementNeighbors() const override;
 
     /**
      * @brief deleteElementNeighbors
@@ -267,7 +286,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @brief getElementCentroids
      * @return
      */
-    FloatArrayType::Pointer getElementCentroids() override;
+    FloatArrayType::Pointer getElementCentroids() const override;
 
     /**
      * @brief deleteElementCentroids
@@ -278,14 +297,14 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @brief getParametricCenter
      * @param pCoords
      */
-    void getParametricCenter(double pCoords[3]) override;
+    void getParametricCenter(double pCoords[3]) const override;
 
     /**
      * @brief getShapeFunctions
      * @param pCoords
      * @param shape
      */
-    void getShapeFunctions(double pCoords[3], double* shape) override;
+    void getShapeFunctions(double pCoords[3], double* shape) const override;
 
     /**
      * @brief findDerivatives
@@ -299,14 +318,14 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    QString getInfoString(SIMPL::InfoStringFormat format) override;
+    QString getInfoString(SIMPL::InfoStringFormat format) const override;
 
     /**
      * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
      * with values populated to match the geometry.
      * @return
      */
-    ToolTipGenerator getToolTipGenerator() override;
+    ToolTipGenerator getToolTipGenerator() const override;
 
     /**
      * @brief writeGeometryToHDF5
@@ -314,7 +333,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param writeXdmf
      * @return
      */
-    int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
+    int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) const override;
 
     /**
      * @brief writeXdmf
@@ -323,7 +342,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param hdfFileName
      * @return
      */
-    int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
+    int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) const override;
 
     /**
      * @brief readGeometryFromHDF5
@@ -337,7 +356,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @brief deepCopy
      * @return
      */
-    IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
+    IGeometry::Pointer deepCopy(bool forceNoAllocate = false) const override;
 
     /**
      * @brief addOrReplaceAttributeMatrix
@@ -364,7 +383,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @brief getVertices
      * @return
      */
-    SharedVertexList::Pointer getVertices() override;
+    SharedVertexList::Pointer getVertices() const override;
 
     /**
      * @brief setCoords
@@ -378,20 +397,20 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param vertId
      * @param coords
      */
-    void getCoords(size_t vertId, float coords[3]) override;
+    void getCoords(size_t vertId, float coords[3]) const override;
 
     /**
      * @brief getVertexPointer
      * @param i
      * @return
      */
-    float* getVertexPointer(size_t i) override;
+    float* getVertexPointer(size_t i) const override;
 
     /**
      * @brief getNumberOfVertices
      * @return
      */
-    size_t getNumberOfVertices() override;
+    size_t getNumberOfVertices() const override;
 
     /**
      * @brief resizeEdgeList
@@ -403,7 +422,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @brief getEdges
      * @return
      */
-    SharedEdgeList::Pointer getEdges() override;
+    SharedEdgeList::Pointer getEdges() const override;
 
     /**
      * @brief setVerts
@@ -417,7 +436,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param edgeId
      * @param verts
      */
-    void getVertsAtEdge(size_t edgeId, size_t verts[2]) override;
+    void getVertsAtEdge(size_t edgeId, size_t verts[2]) const override;
 
     /**
      * @brief getVertCoordsAtEdge
@@ -425,20 +444,20 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param vert1
      * @param vert2
      */
-    void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) override;
+    void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) const override;
 
     /**
      * @brief getEdgePointer
      * @param i
      * @return
      */
-    size_t* getEdgePointer(size_t i) override;
+    size_t* getEdgePointer(size_t i) const override;
 
     /**
      * @brief getNumberOfEdges
      * @return
      */
-    size_t getNumberOfEdges() override;
+    size_t getNumberOfEdges() const override;
 
     /**
      * @brief findElementEdges
@@ -471,7 +490,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @brief getUnsharedEdges
      * @return
      */
-    SharedEdgeList::Pointer getUnsharedEdges() override;
+    SharedEdgeList::Pointer getUnsharedEdges() const override;
 
     /**
      * @brief deleteUnsharedEdges
@@ -487,7 +506,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @brief getUnsharedFaces
      * @return
      */
-    SharedEdgeList::Pointer getUnsharedFaces() override;
+    SharedEdgeList::Pointer getUnsharedFaces() const override;
 
     /**
      * @brief deleteUnsharedFaces

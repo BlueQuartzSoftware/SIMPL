@@ -105,3 +105,88 @@ void DataContainerReaderFilterParameter::writeJson(QJsonObject& json)
   json[getPropertyName()] = obj;
   json["InputFile"] = m_Filter->getInputFile();
 }
+
+// -----------------------------------------------------------------------------
+DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::New()
+{
+  Pointer sharedPtr(new(DataContainerReaderFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerReaderFilterParameter::getNameOfClass() const
+{
+  return QString("DataContainerReaderFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerReaderFilterParameter::ClassName()
+{
+  return QString("DataContainerReaderFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReaderFilterParameter::setDefaultFlagValue(const Qt::CheckState& value)
+{
+  m_DefaultFlagValue = value;
+}
+
+// -----------------------------------------------------------------------------
+Qt::CheckState DataContainerReaderFilterParameter::getDefaultFlagValue() const
+{
+  return m_DefaultFlagValue;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReaderFilterParameter::setInputFileProperty(const QString& value)
+{
+  m_InputFileProperty = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerReaderFilterParameter::getInputFileProperty() const
+{
+  return m_InputFileProperty;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReaderFilterParameter::setFileExtension(const QString& value)
+{
+  m_FileExtension = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerReaderFilterParameter::getFileExtension() const
+{
+  return m_FileExtension;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReaderFilterParameter::setFileType(const QString& value)
+{
+  m_FileType = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerReaderFilterParameter::getFileType() const
+{
+  return m_FileType;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerReaderFilterParameter::setFilter(DataContainerReader* value)
+{
+  m_Filter = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerReader* DataContainerReaderFilterParameter::getFilter() const
+{
+  return m_Filter;
+}

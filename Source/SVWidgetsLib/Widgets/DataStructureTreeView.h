@@ -36,17 +36,19 @@
 
 #pragma once
 
-
+#include <memory>
 
 #include <QtCore/QModelIndex>
 #include <QtGui/QDragEnterEvent>
 #include <QtGui/QDragMoveEvent>
 #include <QtGui/QDropEvent>
 #include <QtGui/QMouseEvent>
+#include <QtGui/QStandardItemModel>
 #include <QtWidgets/QTreeView>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Montages/AbstractMontage.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
@@ -55,7 +57,12 @@
 class QAbstractItemModel;
 class QStandardItemModel;
 class QStandardItem;
+class DataContainerArray;
 class DataStructureProxyModel;
+
+using AttributeMatrixShPtr = std::shared_ptr<AttributeMatrix>;
+using DataContainerShPtr = std::shared_ptr<DataContainer>;
+using DataContainerArrayShPtr = std::shared_ptr<DataContainerArray>;
 
 class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
 {
@@ -155,8 +162,8 @@ public:
   void search(const QString& name);
 
 public slots:
-  void displayDataContainers(const DataContainerArray::Pointer& dca);
-  void displayMontages(const DataContainerArray::Pointer& dca);
+  void displayDataContainers(const DataContainerArrayShPtr& dca);
+  void displayMontages(const DataContainerArrayShPtr& dca);
 
   void setImageGeomIcon(const QIcon& path);
   void setVertexGeomIcon(const QIcon& path);
@@ -272,7 +279,7 @@ protected:
    * @param rootItem
    * @param dc
    */
-  QStandardItem* generateDataContainerItem(QStandardItem* rootItem, const DataContainer::Pointer& dc);
+  QStandardItem* generateDataContainerItem(QStandardItem* rootItem, const DataContainerShPtr& dc);
 
   /**
    * @brief generateAttrMatrixItem
@@ -280,7 +287,7 @@ protected:
    * @param am
    * @return
    */
-  QStandardItem* generateAttrMatrixItem(QStandardItem* dcItem, const AttributeMatrix::Pointer& am);
+  QStandardItem* generateAttrMatrixItem(QStandardItem* dcItem, const AttributeMatrixShPtr& am);
 
   /**
    * @brief generateDataArrayItem
@@ -289,7 +296,7 @@ protected:
    * @param name
    * @return
    */
-  QStandardItem* generateDataArrayItem(QStandardItem* amItem, const AttributeMatrix::Pointer& am, const QString& name);
+  QStandardItem* generateDataArrayItem(QStandardItem* amItem, const AttributeMatrixShPtr& am, const QString& name);
 
   /**
    * @brief removeNonexistingEntries

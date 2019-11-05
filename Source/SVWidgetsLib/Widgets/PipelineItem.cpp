@@ -38,19 +38,7 @@
 //
 // -----------------------------------------------------------------------------
 PipelineItem::PipelineItem(const QVector<QVariant>& data, PipelineItem* parent)
-: m_FilterEnabled(true)
-, m_ActivePipeline(false)
-, m_PipelineSaved(true)
-, m_Icon(QIcon())
-, m_Expanded(false)
-, m_ItemTooltip("")
-, m_BorderSize(0)
-, m_Size(QSize(0, MaxHeight))
-, m_Height(0)
-, m_Width(0)
-, m_XOffset(0)
-, m_YOffset(0)
-, m_WidgetState(PipelineItem::WidgetState::Ready)
+: m_WidgetState(PipelineItem::WidgetState::Ready)
 , m_PipelineState(PipelineItem::PipelineState::Stopped)
 , m_ErrorState(PipelineItem::ErrorState::Ok)
 , m_ItemType(PipelineItem::ItemType::Unknown)
@@ -284,4 +272,230 @@ void PipelineItem::setupFilterInputWidget()
   m_FilterInputWidget = new FilterInputWidget(m_Filter, nullptr);
 
   m_FilterInputWidget->displayFilterParameters(m_Filter);
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setFilterEnabled(bool value)
+{
+  m_FilterEnabled = value;
+}
+
+// -----------------------------------------------------------------------------
+bool PipelineItem::getFilterEnabled() const
+{
+  return m_FilterEnabled;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setIcon(const QIcon& value)
+{
+  m_Icon = value;
+}
+
+// -----------------------------------------------------------------------------
+QIcon PipelineItem::getIcon() const
+{
+  return m_Icon;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setExpanded(bool value)
+{
+  m_Expanded = value;
+}
+
+// -----------------------------------------------------------------------------
+bool PipelineItem::getExpanded() const
+{
+  return m_Expanded;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setItemTooltip(const QString& value)
+{
+  m_ItemTooltip = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PipelineItem::getItemTooltip() const
+{
+  return m_ItemTooltip;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setDropIndicatorText(const QString& value)
+{
+  m_DropIndicatorText = value;
+}
+
+// -----------------------------------------------------------------------------
+QString PipelineItem::getDropIndicatorText() const
+{
+  return m_DropIndicatorText;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setBorderSize(int value)
+{
+  m_BorderSize = value;
+}
+
+// -----------------------------------------------------------------------------
+int PipelineItem::getBorderSize() const
+{
+  return m_BorderSize;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setSize(const QSize& value)
+{
+  m_Size = value;
+}
+
+// -----------------------------------------------------------------------------
+QSize PipelineItem::getSize() const
+{
+  return m_Size;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setHeight(int value)
+{
+  m_Height = value;
+}
+
+// -----------------------------------------------------------------------------
+int PipelineItem::getHeight() const
+{
+  return m_Height;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setWidth(int value)
+{
+  m_Width = value;
+}
+
+// -----------------------------------------------------------------------------
+int PipelineItem::getWidth() const
+{
+  return m_Width;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setXOffset(int value)
+{
+  m_XOffset = value;
+}
+
+// -----------------------------------------------------------------------------
+int PipelineItem::getXOffset() const
+{
+  return m_XOffset;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setYOffset(int value)
+{
+  m_YOffset = value;
+}
+
+// -----------------------------------------------------------------------------
+int PipelineItem::getYOffset() const
+{
+  return m_YOffset;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setCurrentAnimationType(const PipelineItem::AnimationType& value)
+{
+  m_CurrentAnimationType = value;
+}
+
+// -----------------------------------------------------------------------------
+PipelineItem::AnimationType PipelineItem::getCurrentAnimationType() const
+{
+  return m_CurrentAnimationType;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setWidgetState(const PipelineItem::WidgetState& value)
+{
+  m_WidgetState = value;
+}
+
+// -----------------------------------------------------------------------------
+PipelineItem::WidgetState PipelineItem::getWidgetState() const
+{
+  return m_WidgetState;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setPipelineState(const PipelineItem::PipelineState& value)
+{
+  m_PipelineState = value;
+}
+
+// -----------------------------------------------------------------------------
+PipelineItem::PipelineState PipelineItem::getPipelineState() const
+{
+  return m_PipelineState;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setErrorState(const PipelineItem::ErrorState& value)
+{
+  m_ErrorState = value;
+}
+
+// -----------------------------------------------------------------------------
+PipelineItem::ErrorState PipelineItem::getErrorState() const
+{
+  return m_ErrorState;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setItemType(const PipelineItem::ItemType& value)
+{
+  m_ItemType = value;
+}
+
+// -----------------------------------------------------------------------------
+PipelineItem::ItemType PipelineItem::getItemType() const
+{
+  return m_ItemType;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setFilterInputWidget(FilterInputWidget* value)
+{
+  m_FilterInputWidget = value;
+}
+
+// -----------------------------------------------------------------------------
+FilterInputWidget* PipelineItem::getFilterInputWidget() const
+{
+  return m_FilterInputWidget;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setActivePipeline(bool value)
+{
+  m_ActivePipeline = value;
+}
+// -----------------------------------------------------------------------------
+bool PipelineItem::isActivePipeline() const
+{
+  return m_ActivePipeline;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineItem::setPipelineSaved(bool value)
+{
+  m_PipelineSaved = value;
+}
+// -----------------------------------------------------------------------------
+bool PipelineItem::isPipelineSaved() const
+{
+  return m_PipelineSaved;
 }

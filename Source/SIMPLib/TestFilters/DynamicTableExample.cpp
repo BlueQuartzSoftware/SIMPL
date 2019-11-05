@@ -32,6 +32,8 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include <memory>
+
 #include "DynamicTableExample.h"
 
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
@@ -200,7 +202,7 @@ AbstractFilter::Pointer DynamicTableExample::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DynamicTableExample::getCompiledLibraryName() const
+QString DynamicTableExample::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -208,7 +210,7 @@ const QString DynamicTableExample::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DynamicTableExample::getGroupName() const
+QString DynamicTableExample::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -216,7 +218,7 @@ const QString DynamicTableExample::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid DynamicTableExample::getUuid()
+QUuid DynamicTableExample::getUuid() const
 {
   return QUuid("{7baae579-69bf-5559-a876-d0ef1cab77eb}");
 }
@@ -224,7 +226,7 @@ const QUuid DynamicTableExample::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DynamicTableExample::getSubGroupName() const
+QString DynamicTableExample::getSubGroupName() const
 {
   return "Test";
 }
@@ -232,7 +234,96 @@ const QString DynamicTableExample::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DynamicTableExample::getHumanLabel() const
+QString DynamicTableExample::getHumanLabel() const
 {
   return "Dynamic Table Example";
+}
+
+// -----------------------------------------------------------------------------
+DynamicTableExample::Pointer DynamicTableExample::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<DynamicTableExample> DynamicTableExample::New()
+{
+  struct make_shared_enabler : public DynamicTableExample
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString DynamicTableExample::getNameOfClass() const
+{
+  return QString("DynamicTableExample");
+}
+
+// -----------------------------------------------------------------------------
+QString DynamicTableExample::ClassName()
+{
+  return QString("DynamicTableExample");
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableExample::setDynamicData1(const DynamicTableData& value)
+{
+  m_DynamicData1 = value;
+}
+
+// -----------------------------------------------------------------------------
+DynamicTableData DynamicTableExample::getDynamicData1() const
+{
+  return m_DynamicData1;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableExample::setDynamicData2(const DynamicTableData& value)
+{
+  m_DynamicData2 = value;
+}
+
+// -----------------------------------------------------------------------------
+DynamicTableData DynamicTableExample::getDynamicData2() const
+{
+  return m_DynamicData2;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableExample::setDynamicData3(const DynamicTableData& value)
+{
+  m_DynamicData3 = value;
+}
+
+// -----------------------------------------------------------------------------
+DynamicTableData DynamicTableExample::getDynamicData3() const
+{
+  return m_DynamicData3;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableExample::setDynamicData4(const DynamicTableData& value)
+{
+  m_DynamicData4 = value;
+}
+
+// -----------------------------------------------------------------------------
+DynamicTableData DynamicTableExample::getDynamicData4() const
+{
+  return m_DynamicData4;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicTableExample::setDynamicData5(const DynamicTableData& value)
+{
+  m_DynamicData5 = value;
+}
+
+// -----------------------------------------------------------------------------
+DynamicTableData DynamicTableExample::getDynamicData5() const
+{
+  return m_DynamicData5;
 }

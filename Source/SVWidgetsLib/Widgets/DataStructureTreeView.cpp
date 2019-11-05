@@ -44,6 +44,8 @@
 #include <QtGui/QStandardItemModel>
 #include <QtWidgets/QApplication>
 
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Montages/AbstractTileIndex.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"

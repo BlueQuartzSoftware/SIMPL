@@ -58,7 +58,11 @@ SinOperator::~SinOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SinOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void SinOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                            QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_TRIG(filter, calculatedArrayPath, executionStack, sin)}
+
+// -----------------------------------------------------------------------------
+SinOperator::Pointer SinOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_TRIG(filter, calculatedArrayPath, executionStack, sin)
+  return Pointer(static_cast<Self*>(nullptr));
 }

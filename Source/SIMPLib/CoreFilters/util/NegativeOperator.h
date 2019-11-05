@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QStack>
 
 #include "SIMPLib/SIMPLib.h"
@@ -44,7 +46,12 @@
 class SIMPLib_EXPORT NegativeOperator : public CalculatorOperator
 {
   public:
-    SIMPL_SHARED_POINTERS(NegativeOperator)
+    using Self = NegativeOperator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     static Pointer New()
     {
@@ -65,5 +72,7 @@ class SIMPLib_EXPORT NegativeOperator : public CalculatorOperator
     NegativeOperator(NegativeOperator&&) = delete;      // Move Constructor Not Implemented
     NegativeOperator& operator=(const NegativeOperator&) = delete; // Copy Assignment Not Implemented
     NegativeOperator& operator=(NegativeOperator&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

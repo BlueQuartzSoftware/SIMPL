@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QStack>
 
 #include "SIMPLib/SIMPLib.h"
@@ -43,6 +45,7 @@
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 {
@@ -53,7 +56,12 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
       Binary
     };
 
-    SIMPL_SHARED_POINTERS(CalculatorOperator)
+    using Self = CalculatorOperator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     static double toDegrees(double radians);
     static double toRadians(double degrees);

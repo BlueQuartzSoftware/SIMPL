@@ -51,15 +51,15 @@
 #include <QtCore/QVector>
 
 //-- DREAM3D Includes
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/Observable.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Utilities/ToolTipGenerator.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
 
 class AttributeMatrixProxy;
 class DataContainerProxy;
@@ -86,7 +86,9 @@ enum RenameErrorCodes
 class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureContainerNode<IDataArray>
 {
   // clang-format off
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(AttributeMatrix)
+  PYB11_SHARED_POINTERS(AttributeMatrix)
   PYB11_STATIC_CREATION(New ARGS std::vector<size_t> QString AttributeMatrix::Type)
   
   PYB11_ENUMERATION(Type)
@@ -96,18 +98,32 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureC
   PYB11_PROPERTY(std::vector<size_t> TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
 
   PYB11_METHOD(bool doesAttributeArrayExist ARGS Name)
-  PYB11_METHOD(bool addOrReplaceAttributeArray OVERLOAD const.IDataArray::Pointer.&,Data)
-  PYB11_METHOD(bool insertOrAssign ARGS IDataArray::Pointer)
+  PYB11_METHOD(bool addOrReplaceAttributeArray OVERLOAD const.IDataArrayShPtrType.&,Data)
+  PYB11_METHOD(bool insertOrAssign ARGS IDataArrayShPtrType)
 
   PYB11_METHOD(IDataArray removeAttributeArray ARGS Name)
   PYB11_METHOD(int renameAttributeArray ARGS OldName NewName OverWrite)
-  PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.QString.&,Name)
-  PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.DataArrayPath.&,Path)
+  PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.QString.&,Name CONST_METHOD)
+  PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
   // clang-format on
+#endif
 
 public:
-  SIMPL_SHARED_POINTERS(AttributeMatrix)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AttributeMatrix, Observable)
+  using Self = AttributeMatrix;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for AttributeMatrix
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for AttributeMatrix
+   */
+  static QString ClassName();
 
   ~AttributeMatrix() override;
 
@@ -201,51 +217,39 @@ public:
    */
   DataArrayPath getDataArrayPath() const override;
 
-  /**
-   * @brief Type
-   */
-  SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Type, Type)
+    /**
+    * @brief Type
+    */
+    /**
+     * @brief Setter property for Type
+     */
+    void setType(const AttributeMatrix::Type& value);
+    /**
+     * @brief Getter property for Type
+     * @return Value of Type
+     */
+    AttributeMatrix::Type getType() const;
 
-  /**
-   * @brief Adds the IDataArray to the AttributeMatrix.
-   * @param data The IDataArray::Pointer that will hold the data
-   * @return Bool: True if the addition happened, FALSE if an IDataArray with the same name already exists.
-   */
-  bool addOrReplaceAttributeArray(const IDataArray::Pointer& data)
-  {
-    // Can not insert a null IDataArray object
-    if(data.get() == nullptr)
-    {
-      return false;
-    }
-    if(getNumberOfTuples() != data->getNumberOfTuples())
-    {
-      qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
-      qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
-    }
-    Q_ASSERT(getNumberOfTuples() == data->getNumberOfTuples());
-    return insertOrAssign(data);
-  }
+    /**
+     * @brief Adds the IDataArray to the AttributeMatrix.
+     * @param data The IDataArrayShPtrType that will hold the data
+     * @return Bool: True if the addition happened, FALSE if an IDataArray with the same name already exists.
+     */
+    bool addOrReplaceAttributeArray(const IDataArrayShPtrType& data);
 
-  /**
-   * @brief Returns the array for a given named array or the equivelant to a
-   * null pointer if the name does not exist.
-   * @param name The name of the data array
-   */
-  IDataArray::Pointer getAttributeArray(const QString& name)
-  {
-    return getChildByName(name);
-  }
+    /**
+     * @brief Returns the array for a given named array or the equivelant to a
+     * null pointer if the name does not exist.
+     * @param name The name of the data array
+     */
+    IDataArrayShPtrType getAttributeArray(const QString& name) const;
 
     /**
      * @brief getAttributeArray
      * @param path
      * @return
      */
-    IDataArray::Pointer getAttributeArray(const DataArrayPath& path)
-    {
-      return getAttributeArray(path.getDataArrayName());
-    }
+    IDataArrayShPtrType getAttributeArray(const DataArrayPath& path) const;
 
     /**
     * @brief returns a IDataArray based object that is stored in the attribute matrix by a
@@ -253,9 +257,9 @@ public:
     * @param name The name of the array
     */
     template<class ArrayType>
-    typename ArrayType::Pointer getAttributeArrayAs(const QString& name)
+    typename ArrayType::Pointer getAttributeArrayAs(const QString& name) const
     {
-      IDataArray::Pointer iDataArray = getAttributeArray(name);
+      IDataArrayShPtrType iDataArray = getAttributeArray(name);
       return std::dynamic_pointer_cast< ArrayType >(iDataArray);
     }
 
@@ -264,19 +268,15 @@ public:
      * @brief Returns bool of whether a named array exists
      * @param name The name of the data array
      */
-    bool doesAttributeArrayExist(const QString& name) const
-    {
-      return contains(name);
-    }
-
+    bool doesAttributeArrayExist(const QString& name) const;
 
     /**
-    * @brief Removes the named data array from the Data Container and returns it to the calling
-    * method.
-    * @param name The name of the array
-    * @return
-    */
-    virtual IDataArray::Pointer removeAttributeArray(const QString& name);
+     * @brief Removes the named data array from the Data Container and returns it to the calling
+     * method.
+     * @param name The name of the array
+     * @return
+     */
+    virtual IDataArrayShPtrType removeAttributeArray(const QString& name);
 
     /**
     * @brief Renames a cell data array from the Data Container
@@ -294,27 +294,20 @@ public:
      * @brief Returns the collection of contained DataArrays
      * @return
      */
-    Container_t getAttributeArrays() const
-    {
-      return getChildren();
-    }
+    Container_t getAttributeArrays() const;
 
     /**
     * @brief Returns a list that contains the names of all the arrays currently stored in the
     * Cell (Formerly Cell) group
     * @return
     */
-    virtual NameList getAttributeArrayNames();
+    virtual NameList getAttributeArrayNames() const;
 
     /**
     * @brief Returns the total number of arrays that are stored in the Cell group
     * @return
     */
-    int getNumAttributeArrays() const
-    {
-      return static_cast<int>(size());
-    }
-
+    int getNumAttributeArrays() const;
 
     /**
     * @brief Resizes an array from the Attribute Matrix
@@ -326,7 +319,7 @@ public:
      * @brief Returns bool of whether a named array exists
      * @param name The name of the data array
      */
-    virtual bool validateAttributeArraySizes();
+    virtual bool validateAttributeArraySizes() const;
 
     /**
      * @brief getPrereqArray
@@ -338,7 +331,7 @@ public:
      * @return A valid IDataArray Subclass if the array exists otherwise a null shared pointer.
      */
     template <class ArrayType, class Filter>
-    typename ArrayType::Pointer getPrereqArray(Filter* filter, QString attributeArrayName, int err, std::vector<size_t> cDims)
+    typename ArrayType::Pointer getPrereqArray(Filter* filter, QString attributeArrayName, int err, std::vector<size_t> cDims) const
     {
       QString ss;
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
@@ -373,7 +366,7 @@ public:
       {
         return attributeArray;
       }
-      IDataArray::Pointer iDataArray = getAttributeArray(attributeArrayName);
+      IDataArrayShPtrType iDataArray = getAttributeArray(attributeArrayName);
       attributeArray = std::dynamic_pointer_cast< ArrayType >(iDataArray);
       if(nullptr == attributeArray.get() && filter)
       {
@@ -390,7 +383,7 @@ public:
      * @param err
      * @return
      */
-    template <class ArrayType, class Filter> typename ArrayType::Pointer getPrereqIDataArray(Filter* filter, const QString& attributeArrayName, int err)
+    template <class ArrayType, class Filter> typename ArrayType::Pointer getPrereqIDataArray(Filter* filter, const QString& attributeArrayName, int err) const
     {
       QString ss;
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
@@ -416,7 +409,7 @@ public:
         return attributeArray;
       }
 
-      IDataArray::Pointer ptr = getAttributeArray(attributeArrayName);
+      IDataArrayShPtrType ptr = getAttributeArray(attributeArrayName);
       if(std::dynamic_pointer_cast<ArrayType>(ptr) != nullptr)
       {
         return std::dynamic_pointer_cast<ArrayType>(ptr);
@@ -454,7 +447,7 @@ public:
         }
         return attributeArray;
       }
-      IDataArray::Pointer iDataArray = getAttributeArray(attributeArrayName);
+      IDataArrayShPtrType iDataArray = getAttributeArray(attributeArrayName);
       if (nullptr == iDataArray.get())
       {
         createAndAddAttributeArray<ArrayType, Filter, T>(filter, attributeArrayName, initValue, compDims);
@@ -522,17 +515,17 @@ public:
      * @return
      */
     template<class ArrayType, class AbstractFilter>
-    bool dataArrayCompatibility(const QString& arrayName, int numComp, AbstractFilter* filter)
+    bool dataArrayCompatibility(const QString& arrayName, int numComp, AbstractFilter* filter) const
     {
       // Make sure the types are the same
-      IDataArray::Pointer ida = getAttributeArray(arrayName);     
+      IDataArrayShPtrType ida = getAttributeArray(arrayName);
       typename ArrayType::Pointer targetDestArray = std::dynamic_pointer_cast< ArrayType >(ida);
       if(targetDestArray.get() == nullptr)
       {
         if (nullptr != filter)
         {
           typename ArrayType::Pointer validTargetArray = ArrayType::CreateArray(1, "JUNK_INTERNAL_ARRAY", false);
-          IDataArray::Pointer srcArray = getAttributeArray(arrayName);
+          IDataArrayShPtrType srcArray = getAttributeArray(arrayName);
           QString srcDesc = srcArray->getTypeAsString();
           QString desc = validTargetArray->getTypeAsString();
           QString ss = QObject::tr("The Filter '%1' requires an array of type '%2' but the data array '%3' has a type of '%4'").arg(filter->getHumanLabel()).arg(desc).arg(srcArray->getName()).arg(srcDesc);
@@ -596,27 +589,27 @@ public:
      * @brief Returns the Tuple Dimensions of the AttributeMatrix
      * @return
      */
-    std::vector<size_t> getTupleDimensions();
+    std::vector<size_t> getTupleDimensions() const;
 
     /**
     * @brief Returns the number of Tuples that the feature data has. For example if there are 32 features
     * in during a set of filtering operations then the a value of '32' would be returned.
     * @return
     */
-    size_t getNumberOfTuples();
+    size_t getNumberOfTuples() const;
 
     /**
     * @brief creates and returns a copy of the attribute matrix
     * @return On error, will return a null pointer.  It is the responsibility of the calling function to check for errors and return an error message using the PipelineMessage
     */
-    virtual AttributeMatrix::Pointer deepCopy(bool forceNoAllocate = false);
+    virtual AttributeMatrix::Pointer deepCopy(bool forceNoAllocate = false) const;
 
     /**
      * @brief writeAttributeArraysToHDF5
      * @param parentId
      * @return
      */
-    virtual int writeAttributeArraysToHDF5(hid_t parentId);
+    virtual int writeAttributeArraysToHDF5(hid_t parentId) const;
 
     /**
      * @brief addAttributeArrayFromHDF5Path
@@ -644,7 +637,7 @@ public:
      * @param gridType
      * @return
      */
-    virtual QString generateXdmfText(const QString& centering, const QString& dataContainerName, const QString& hdfFileName, uint8_t gridType = 0);
+    virtual QString generateXdmfText(const QString& centering, const QString& dataContainerName, const QString& hdfFileName, uint8_t gridType = 0) const;
 
     /**
      * @brief getInfoString Returns a text string in the given format that has information
@@ -652,14 +645,14 @@ public:
      * @param format A value from the SIMPL::InfoStringFormat enumeration
      * @return
      */
-    virtual QString getInfoString(SIMPL::InfoStringFormat format);
+    virtual QString getInfoString(SIMPL::InfoStringFormat format) const;
 
     /**
      * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
      * with values populated to match the current AttributeMatrix.
      * @return
      */
-    virtual ToolTipGenerator getToolTipGenerator();
+    virtual ToolTipGenerator getToolTipGenerator() const;
 
   protected:
     AttributeMatrix(const std::vector<size_t>& tDims, const QString& name, AttributeMatrix::Type attrType);
@@ -673,7 +666,7 @@ public:
      * @param gridType
      * @return
      */
-    virtual QString writeXdmfAttributeData(const IDataArray::Pointer& array, const QString& centering, const QString& dataContainerName, const QString& hdfFileName, const uint8_t gridType = 0);
+    virtual QString writeXdmfAttributeData(const IDataArrayShPtrType& array, const QString& centering, const QString& dataContainerName, const QString& hdfFileName, uint8_t gridType = 0) const;
 
     /**
      * @brief writeXdmfAttributeDataHelper
@@ -688,11 +681,13 @@ public:
      * @param gridType
      * @return
      */
-    virtual QString writeXdmfAttributeDataHelper(int numComp, const QString& attrType, const QString& dataContainerName, const IDataArray::Pointer& array, const QString& centering, int precision,
-                                                 const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType = 0);
+    virtual QString writeXdmfAttributeDataHelper(int numComp, const QString& attrType, const QString& dataContainerName, const IDataArrayShPtrType& array, const QString& centering, int precision,
+                                                 const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType = 0) const;
 
   private:
+
     std::vector<size_t> m_TupleDims;
+    AttributeMatrix::Type m_Type = {};
 
     AttributeMatrix(const AttributeMatrix&);
     void operator =(const AttributeMatrix&);

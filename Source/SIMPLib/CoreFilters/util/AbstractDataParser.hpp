@@ -31,7 +31,6 @@
 
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/SIMPLib.h"
@@ -41,14 +40,50 @@
 class AbstractDataParser
 {
 public:
-  SIMPL_SHARED_POINTERS(AbstractDataParser)
-  SIMPL_TYPE_MACRO(AbstractDataParser)
+  using Self = AbstractDataParser;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer()
+  {
+    return Pointer(static_cast<Self*>(nullptr));
+  }
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  virtual QString getNameOfClass() const
+  {
+    return QString("AbstractDataParser");
+  }
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  static QString ClassName()
+  {
+    return QString("AbstractDataParser");
+  }
 
   virtual ~AbstractDataParser() = default;
 
-  SIMPL_INSTANCE_STRING_PROPERTY(ColumnName)
-  SIMPL_INSTANCE_PROPERTY(int, ColumnIndex)
-  
+  void setColumnName(const QString& value)
+  {
+    m_ColumnName = value;
+  }
+  QString getColumnName()
+  {
+    return m_ColumnName;
+  }
+
+  void setColumnIndex(int32_t value)
+  {
+    m_ColumnIndex = value;
+  }
+  int32_t getColumnIndex()
+  {
+    return m_ColumnIndex;
+  }
+
   virtual void setDataArray(IDataArray::Pointer value)
   {
     m_DataArray = value;
@@ -67,14 +102,13 @@ public:
   virtual ParserFunctor::ErrorObject parse(const QString& token, size_t index) = 0;
 
 protected:
-  AbstractDataParser() :
-  m_ColumnIndex(0)
-  {
-  }
+  AbstractDataParser() = default;
 
 private:
   IDataArray::Pointer m_DataArray;
-  
+  int32_t m_ColumnIndex = 0;
+  QString m_ColumnName = QString("");
+
   AbstractDataParser(const AbstractDataParser&); // Copy Constructor Not Implemented
   void operator=(const AbstractDataParser&);     // Move assignment Not Implemented
 };
@@ -82,13 +116,35 @@ private:
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename ArrayType, class F> class Parser : public AbstractDataParser
+template <typename ArrayType, class F>
+class Parser : public AbstractDataParser
 {
 public:
-  typedef Parser<ArrayType, F> SelfType;
+  using SelfType = Parser<ArrayType, F>;
 
-  SIMPL_SHARED_POINTERS(SelfType)
-  SIMPL_TYPE_MACRO(SelfType)
+  using Self = SelfType;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer()
+  {
+    return Pointer(static_cast<Self*>(nullptr));
+  }
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  virtual QString getNameOfClass() const
+  {
+    return QString("Parser<ArrayType, F>");
+  }
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  static QString ClassName()
+  {
+    return QString("Parser<ArrayType, F>");
+  }
 
   static Pointer New(typename ArrayType::Pointer ptr, const QString& name, int colIndex)
   {
@@ -142,20 +198,19 @@ private:
   
 };
 
-typedef Parser<Int8ArrayType, Int8Functor> Int8ParserType;
-typedef Parser<UInt8ArrayType, UInt8Functor> UInt8ParserType;
+using Int8ParserType = Parser<Int8ArrayType, Int8Functor>;
+using UInt8ParserType = Parser<UInt8ArrayType, UInt8Functor>;
 
-typedef Parser<Int16ArrayType, Int16Functor> Int16ParserType;
-typedef Parser<UInt16ArrayType, UInt16Functor> UInt16ParserType;
+using Int16ParserType = Parser<Int16ArrayType, Int16Functor>;
+using UInt16ParserType = Parser<UInt16ArrayType, UInt16Functor>;
 
-typedef Parser<Int32ArrayType, Int32Functor> Int32ParserType;
-typedef Parser<UInt32ArrayType, UInt32Functor> UInt32ParserType;
+using Int32ParserType = Parser<Int32ArrayType, Int32Functor>;
+using UInt32ParserType = Parser<UInt32ArrayType, UInt32Functor>;
 
-typedef Parser<Int64ArrayType, Int64Functor> Int64ParserType;
-typedef Parser<UInt64ArrayType, UInt64Functor> UInt64ParserType;
+using Int64ParserType = Parser<Int64ArrayType, Int64Functor>;
+using UInt64ParserType = Parser<UInt64ArrayType, UInt64Functor>;
 
-typedef Parser<FloatArrayType, FloatFunctor> FloatParserType;
-typedef Parser<DoubleArrayType, DoubleFunctor> DoubleParserType;
+using FloatParserType = Parser<FloatArrayType, FloatFunctor>;
+using DoubleParserType = Parser<DoubleArrayType, DoubleFunctor>;
 
-typedef Parser<StringDataArray, StringFunctor> StringParserType;
-
+using StringParserType = Parser<StringDataArray, StringFunctor>;

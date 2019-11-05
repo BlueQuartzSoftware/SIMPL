@@ -40,4 +40,33 @@ AbstractProgressMessage::  AbstractProgressMessage(const QString& msgText, int p
 {
 }
 
-  AbstractProgressMessage::~AbstractProgressMessage() = default;
+AbstractProgressMessage::~AbstractProgressMessage() = default;
+// -----------------------------------------------------------------------------
+AbstractProgressMessage::Pointer AbstractProgressMessage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractProgressMessage::getNameOfClass() const
+{
+  return QString("AbstractProgressMessage");
+}
+
+// -----------------------------------------------------------------------------
+QString AbstractProgressMessage::ClassName()
+{
+  return QString("AbstractProgressMessage");
+}
+
+// -----------------------------------------------------------------------------
+void AbstractProgressMessage::setProgressValue(int value)
+{
+  m_ProgressValue = value;
+}
+
+// -----------------------------------------------------------------------------
+int AbstractProgressMessage::getProgressValue() const
+{
+  return m_ProgressValue;
+}

@@ -36,11 +36,13 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SIMPLib/Filtering/AbstractDecisionFilter.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief The FeatureCountDecision class. See [Filter documentation](@ref featurecountdecision) for details.
@@ -48,21 +50,60 @@
 class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(FeatureCountDecision SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(FeatureCountDecision)
+    PYB11_STATIC_NEW_MACRO(FeatureCountDecision)
+    PYB11_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+    PYB11_FILTER_PARAMETER(int, MaxGrains)
     PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
     PYB11_PROPERTY(int MaxGrains READ getMaxGrains WRITE setMaxGrains)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(FeatureCountDecision)
-    SIMPL_STATIC_NEW_MACRO(FeatureCountDecision)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FeatureCountDecision, AbstractDecisionFilter)
+    using Self = FeatureCountDecision;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for FeatureCountDecision
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for FeatureCountDecision
+     */
+    static QString ClassName();
 
     ~FeatureCountDecision() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
+    /**
+     * @brief Setter property for FeatureIdsArrayPath
+     */
+    void setFeatureIdsArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for FeatureIdsArrayPath
+     * @return Value of FeatureIdsArrayPath
+     */
+    DataArrayPath getFeatureIdsArrayPath() const;
+
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
 
-    SIMPL_FILTER_PARAMETER(int, MaxGrains)
+    /**
+     * @brief Setter property for MaxGrains
+     */
+    void setMaxGrains(int value);
+    /**
+     * @brief Getter property for MaxGrains
+     * @return Value of MaxGrains
+     */
+    int getMaxGrains() const;
+
     Q_PROPERTY(int MaxGrains READ getMaxGrains WRITE setMaxGrains)
 
     /**
@@ -74,7 +115,7 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -84,23 +125,23 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -136,7 +177,11 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
 
 
   private:
-    DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
+    std::weak_ptr<DataArray<int32_t>> m_FeatureIdsPtr;
+    int32_t* m_FeatureIds = nullptr;
+
+    DataArrayPath m_FeatureIdsArrayPath = {};
+    int m_MaxGrains = {};
 
   public:
     FeatureCountDecision(const FeatureCountDecision&) = delete; // Copy Constructor Not Implemented

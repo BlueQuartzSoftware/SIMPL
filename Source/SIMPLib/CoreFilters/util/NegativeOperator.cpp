@@ -108,3 +108,9 @@ CalculatorItem::ErrorCode NegativeOperator::checkValidity(QVector<CalculatorItem
 
   return NegativeOperator::ErrorCode::SUCCESS;
 }
+
+// -----------------------------------------------------------------------------
+NegativeOperator::Pointer NegativeOperator::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}

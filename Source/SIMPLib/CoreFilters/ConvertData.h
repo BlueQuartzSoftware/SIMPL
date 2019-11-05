@@ -36,9 +36,11 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Common/Constants.h"
 
 /**
  * @brief The ConvertData class. See [Filter documentation](@ref convertdata) for details.
@@ -46,45 +48,94 @@
 class SIMPLib_EXPORT ConvertData : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ConvertData SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(ConvertData)
+    PYB11_FILTER_NEW_MACRO(ConvertData)
+    PYB11_FILTER_PARAMETER(SIMPL::NumericTypes::Type, ScalarType)
+    PYB11_FILTER_PARAMETER(QString, OutputArrayName)
+    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedCellArrayPath)
     PYB11_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
     PYB11_PROPERTY(QString OutputArrayName READ getOutputArrayName WRITE setOutputArrayName)
     PYB11_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(ConvertData)
-    SIMPL_FILTER_NEW_MACRO(ConvertData)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ConvertData, AbstractFilter)
+    using Self = ConvertData;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<ConvertData> New();
+
+    /**
+     * @brief Returns the name of the class for ConvertData
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ConvertData
+     */
+    static QString ClassName();
 
     ~ConvertData() override;
 
-    SIMPL_FILTER_PARAMETER(SIMPL::NumericTypes::Type, ScalarType)
+    /**
+     * @brief Setter property for ScalarType
+     */
+    void setScalarType(SIMPL::NumericTypes::Type value);
+    /**
+     * @brief Getter property for ScalarType
+     * @return Value of ScalarType
+     */
+    SIMPL::NumericTypes::Type getScalarType() const;
+
     Q_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
-    SIMPL_FILTER_PARAMETER(QString, OutputArrayName)
+    /**
+     * @brief Setter property for OutputArrayName
+     */
+    void setOutputArrayName(const QString& value);
+    /**
+     * @brief Getter property for OutputArrayName
+     * @return Value of OutputArrayName
+     */
+    QString getOutputArrayName() const;
+
     Q_PROPERTY(QString OutputArrayName READ getOutputArrayName WRITE setOutputArrayName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedCellArrayPath)
+    /**
+     * @brief Setter property for SelectedCellArrayPath
+     */
+    void setSelectedCellArrayPath(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SelectedCellArrayPath
+     * @return Value of SelectedCellArrayPath
+     */
+    DataArrayPath getSelectedCellArrayPath() const;
+
     Q_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -94,23 +145,23 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -173,5 +224,10 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
     ConvertData(ConvertData&&) = delete;         // Move Constructor Not Implemented
     ConvertData& operator=(const ConvertData&) = delete; // Copy Assignment Not Implemented
     ConvertData& operator=(ConvertData&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    SIMPL::NumericTypes::Type m_ScalarType = {};
+    QString m_OutputArrayName = {};
+    DataArrayPath m_SelectedCellArrayPath = {};
 };
 

@@ -33,9 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "MoveData.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
@@ -43,6 +48,8 @@
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 namespace
 {
@@ -250,7 +257,7 @@ AbstractFilter::Pointer MoveData::newFilterInstance(bool copyFilterParameters) c
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveData::getCompiledLibraryName() const
+QString MoveData::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -258,7 +265,7 @@ const QString MoveData::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveData::getBrandingString() const
+QString MoveData::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -266,7 +273,7 @@ const QString MoveData::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveData::getFilterVersion() const
+QString MoveData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -277,7 +284,7 @@ const QString MoveData::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveData::getGroupName() const
+QString MoveData::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -285,7 +292,7 @@ const QString MoveData::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid MoveData::getUuid()
+QUuid MoveData::getUuid() const
 {
   return QUuid("{fe2cbe09-8ae1-5bea-9397-fd5741091fdb}");
 }
@@ -293,7 +300,7 @@ const QUuid MoveData::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveData::getSubGroupName() const
+QString MoveData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -301,7 +308,96 @@ const QString MoveData::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveData::getHumanLabel() const
+QString MoveData::getHumanLabel() const
 {
   return "Move Data";
+}
+
+// -----------------------------------------------------------------------------
+MoveData::Pointer MoveData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<MoveData> MoveData::New()
+{
+  struct make_shared_enabler : public MoveData
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString MoveData::getNameOfClass() const
+{
+  return QString("MoveData");
+}
+
+// -----------------------------------------------------------------------------
+QString MoveData::ClassName()
+{
+  return QString("MoveData");
+}
+
+// -----------------------------------------------------------------------------
+void MoveData::setWhatToMove(int value)
+{
+  m_WhatToMove = value;
+}
+
+// -----------------------------------------------------------------------------
+int MoveData::getWhatToMove() const
+{
+  return m_WhatToMove;
+}
+
+// -----------------------------------------------------------------------------
+void MoveData::setDataContainerDestination(const DataArrayPath& value)
+{
+  m_DataContainerDestination = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath MoveData::getDataContainerDestination() const
+{
+  return m_DataContainerDestination;
+}
+
+// -----------------------------------------------------------------------------
+void MoveData::setAttributeMatrixSource(const DataArrayPath& value)
+{
+  m_AttributeMatrixSource = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath MoveData::getAttributeMatrixSource() const
+{
+  return m_AttributeMatrixSource;
+}
+
+// -----------------------------------------------------------------------------
+void MoveData::setAttributeMatrixDestination(const DataArrayPath& value)
+{
+  m_AttributeMatrixDestination = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath MoveData::getAttributeMatrixDestination() const
+{
+  return m_AttributeMatrixDestination;
+}
+
+// -----------------------------------------------------------------------------
+void MoveData::setDataArraySource(const DataArrayPath& value)
+{
+  m_DataArraySource = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath MoveData::getDataArraySource() const
+{
+  return m_DataArraySource;
 }

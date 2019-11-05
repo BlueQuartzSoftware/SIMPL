@@ -48,7 +48,7 @@ LinkedChoicesFilterParameter::~LinkedChoicesFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::New(const QString& humanLabel, const QString& propertyName, const int& defaultValue, Category category,
+LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::New(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category,
                                                                         const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, QVector<QString> choices, QStringList linkedProperties,
                                                                         int groupIndex)
 {
@@ -96,4 +96,65 @@ void LinkedChoicesFilterParameter::writeJson(QJsonObject& json)
   {
     json[getPropertyName()] = m_GetterCallback();
   }
+}
+
+// -----------------------------------------------------------------------------
+LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::New()
+{
+  Pointer sharedPtr(new(LinkedChoicesFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString LinkedChoicesFilterParameter::getNameOfClass() const
+{
+  return QString("LinkedChoicesFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString LinkedChoicesFilterParameter::ClassName()
+{
+  return QString("LinkedChoicesFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void LinkedChoicesFilterParameter::setLinkedProperties(const QStringList& value)
+{
+  m_LinkedProperties = value;
+}
+
+// -----------------------------------------------------------------------------
+QStringList LinkedChoicesFilterParameter::getLinkedProperties() const
+{
+  return m_LinkedProperties;
+}
+
+// -----------------------------------------------------------------------------
+void LinkedChoicesFilterParameter::setSetterCallback(const LinkedChoicesFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+LinkedChoicesFilterParameter::SetterCallbackType LinkedChoicesFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void LinkedChoicesFilterParameter::setGetterCallback(const LinkedChoicesFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+LinkedChoicesFilterParameter::GetterCallbackType LinkedChoicesFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
 }

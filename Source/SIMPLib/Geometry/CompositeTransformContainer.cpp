@@ -155,3 +155,39 @@ void CompositeTransformContainer::addTransformContainer(ITransformContainer::Poi
 {
   this->m_TransformContainers.push_back(transformContainer);
 }
+// -----------------------------------------------------------------------------
+CompositeTransformContainer::Pointer CompositeTransformContainer::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+CompositeTransformContainer::Pointer CompositeTransformContainer::New()
+{
+  Pointer sharedPtr(new(CompositeTransformContainer));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString CompositeTransformContainer::getNameOfClass() const
+{
+  return QString("CompositeTransformContainer");
+}
+
+// -----------------------------------------------------------------------------
+QString CompositeTransformContainer::ClassName()
+{
+  return QString("CompositeTransformContainer");
+}
+
+// -----------------------------------------------------------------------------
+void CompositeTransformContainer::setTransformContainers(const std::vector<ITransformContainer::Pointer>& value)
+{
+  m_TransformContainers = value;
+}
+
+// -----------------------------------------------------------------------------
+std::vector<ITransformContainer::Pointer> CompositeTransformContainer::getTransformContainers() const
+{
+  return m_TransformContainers;
+}

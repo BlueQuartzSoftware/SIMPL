@@ -43,7 +43,6 @@
 
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
@@ -88,9 +87,31 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
       FS_WARNING_STYLE = 3
     };
 
-    SIMPL_POINTER_PROPERTY(AbstractFilter, Filter)
-    SIMPL_POINTER_PROPERTY(FilterParameter, FilterParameter)
-    SIMPL_VIRTUAL_INSTANCE_PROPERTY(bool, WidgetIsExpanding)
+    /**
+     * @brief Setter property for Filter
+     */
+    void setFilter(AbstractFilter* value);
+    /**
+     * @brief Getter property for Filter
+     * @return Value of Filter
+     */
+    AbstractFilter* getFilter() const;
+
+    /**
+     * @brief Setter property for FilterParameter
+     */
+    void setFilterParameter(FilterParameter* value);
+    /**
+     * @brief Getter property for FilterParameter
+     * @return Value of FilterParameter
+     */
+    FilterParameter* getFilterParameter() const;
+
+    /**
+     * @brief Setter property for WidgetIsExpanding
+     */
+    virtual void setWidgetIsExpanding(bool value);
+    virtual bool isWidgetExpanding() const;
 
     void setValidFilePath(const QString& filePath);
 
@@ -154,6 +175,11 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     void hideBorder();
 
   private:
+    bool m_WidgetIsExpanding = {};
+
+    AbstractFilter* m_Filter = nullptr;
+    FilterParameter* m_FilterParameter = nullptr;
+
     QPointer<QtSFaderWidget>         m_FaderWidget;
 
     float startValue;

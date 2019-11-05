@@ -37,7 +37,6 @@
 
 #include <QtCore/QAbstractItemModel>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -51,7 +50,14 @@ class SVWidgetsLib_EXPORT FilterListModel : public QAbstractItemModel
     Q_OBJECT
 
   public:
-    SIMPL_TYPE_MACRO(FilterListModel)
+    /**
+     * @brief Returns the name of the class for FilterListModel
+     */
+    virtual QString getNameOfClass() const;
+    /**
+     * @brief Returns the name of the class for FilterListModel
+     */
+    static QString ClassName();
 
     enum Column
     {

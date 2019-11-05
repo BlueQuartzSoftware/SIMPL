@@ -45,7 +45,11 @@
 template <class DerivedChild_t> class IDataStructureContainerNode : public AbstractDataStructureContainer
 {
 public:
-  SIMPL_SHARED_POINTERS(IDataStructureContainerNode<DerivedChild_t>)
+  using Self = IDataStructureContainerNode<DerivedChild_t>;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
 
   using ChildShPtr = std::shared_ptr<DerivedChild_t>;
   using ChildCollection = std::vector<ChildShPtr>;
@@ -58,20 +62,6 @@ private:
 
 protected:
   
-
-  // void setParent(const ParentType& parent) override
-  //{
-  //  // Remove from parent's children
-  //  Pointer tempPtr;
-  //  Pointer parentPtr = m_Parent.lock();
-  //  if(nullptr != parentPtr)
-  //  {
-  //    tempPtr = parentPtr->removeChild(this);
-  //  }
-
-  //  m_Parent = parent;
-  //}
-
 public:
   IDataStructureContainerNode(const QString& name = "")
   : AbstractDataStructureContainer(name)

@@ -118,3 +118,9 @@ double CalculatorOperator::root(double base, double root)
 
   return pow(base, 1 / root);
 }
+
+// -----------------------------------------------------------------------------
+CalculatorOperator::Pointer CalculatorOperator::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}

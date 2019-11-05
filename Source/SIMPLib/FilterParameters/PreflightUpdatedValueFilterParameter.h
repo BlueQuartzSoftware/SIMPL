@@ -36,6 +36,8 @@
 #pragma once
 
 
+#include <memory>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 /**
@@ -62,9 +64,23 @@
 class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(PreflightUpdatedValueFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(PreflightUpdatedValueFilterParameter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PreflightUpdatedValueFilterParameter, FilterParameter)
+    using Self = PreflightUpdatedValueFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for PreflightUpdatedValueFilterParameter
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for PreflightUpdatedValueFilterParameter
+     */
+    static QString ClassName();
 
     using SetterCallbackType = std::function<void(QString)>;
     using GetterCallbackType = std::function<QString(void)>;
@@ -102,8 +118,15 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
-
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const PreflightUpdatedValueFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    PreflightUpdatedValueFilterParameter::GetterCallbackType getGetterCallback() const;
 
   protected:
       /**
@@ -117,5 +140,8 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
     PreflightUpdatedValueFilterParameter(PreflightUpdatedValueFilterParameter&&) = delete;      // Move Constructor Not Implemented
     PreflightUpdatedValueFilterParameter& operator=(const PreflightUpdatedValueFilterParameter&) = delete; // Copy Assignment Not Implemented
     PreflightUpdatedValueFilterParameter& operator=(PreflightUpdatedValueFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    PreflightUpdatedValueFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

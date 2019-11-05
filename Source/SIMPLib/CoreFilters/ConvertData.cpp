@@ -33,17 +33,24 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ConvertData.h"
 
 #include <iostream>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/NumericTypeFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #define CHECK_AND_CONVERT(Type, DataContainer, ScalarType, Array, AttributeMatrixName, OutputName)                                                                                                     \
   if(false == completed)                                                                                                                                                                               \
@@ -385,7 +392,7 @@ AbstractFilter::Pointer ConvertData::newFilterInstance(bool copyFilterParameters
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertData::getCompiledLibraryName() const
+QString ConvertData::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -393,7 +400,7 @@ const QString ConvertData::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertData::getBrandingString() const
+QString ConvertData::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -401,7 +408,7 @@ const QString ConvertData::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertData::getFilterVersion() const
+QString ConvertData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -412,7 +419,7 @@ const QString ConvertData::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertData::getGroupName() const
+QString ConvertData::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -420,7 +427,7 @@ const QString ConvertData::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ConvertData::getUuid()
+QUuid ConvertData::getUuid() const
 {
   return QUuid("{f4ba5fa4-bb5c-5dd1-9429-0dd86d0ecb37}");
 }
@@ -428,7 +435,7 @@ const QUuid ConvertData::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertData::getSubGroupName() const
+QString ConvertData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::ConversionFilters;
 }
@@ -436,7 +443,72 @@ const QString ConvertData::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertData::getHumanLabel() const
+QString ConvertData::getHumanLabel() const
 {
   return "Convert AttributeArray Data Type";
+}
+
+// -----------------------------------------------------------------------------
+ConvertData::Pointer ConvertData::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ConvertData> ConvertData::New()
+{
+  struct make_shared_enabler : public ConvertData
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ConvertData::getNameOfClass() const
+{
+  return QString("ConvertData");
+}
+
+// -----------------------------------------------------------------------------
+QString ConvertData::ClassName()
+{
+  return QString("ConvertData");
+}
+
+// -----------------------------------------------------------------------------
+void ConvertData::setScalarType(SIMPL::NumericTypes::Type value)
+{
+  m_ScalarType = value;
+}
+
+// -----------------------------------------------------------------------------
+SIMPL::NumericTypes::Type ConvertData::getScalarType() const
+{
+  return m_ScalarType;
+}
+
+// -----------------------------------------------------------------------------
+void ConvertData::setOutputArrayName(const QString& value)
+{
+  m_OutputArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ConvertData::getOutputArrayName() const
+{
+  return m_OutputArrayName;
+}
+
+// -----------------------------------------------------------------------------
+void ConvertData::setSelectedCellArrayPath(const DataArrayPath& value)
+{
+  m_SelectedCellArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ConvertData::getSelectedCellArrayPath() const
+{
+  return m_SelectedCellArrayPath;
 }

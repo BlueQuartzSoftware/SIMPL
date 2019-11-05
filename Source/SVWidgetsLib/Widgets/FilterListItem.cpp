@@ -153,3 +153,63 @@ void FilterListItem::setParent(FilterListItem* parent)
 {
   m_ParentItem = parent;
 }
+
+// -----------------------------------------------------------------------------
+void FilterListItem::setName(const QString& value)
+{
+  m_Name = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterListItem::getName() const
+{
+  return m_Name;
+}
+
+// -----------------------------------------------------------------------------
+void FilterListItem::setItemTooltip(const QString& value)
+{
+  m_ItemTooltip = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterListItem::getItemTooltip() const
+{
+  return m_ItemTooltip;
+}
+
+// -----------------------------------------------------------------------------
+void FilterListItem::setClassName(const QString& value)
+{
+  m_ClassName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterListItem::getClassName() const
+{
+  return m_ClassName;
+}
+
+// -----------------------------------------------------------------------------
+void FilterListItem::setIcon(const QIcon& value)
+{
+  m_Icon = value;
+}
+
+// -----------------------------------------------------------------------------
+QIcon FilterListItem::getIcon() const
+{
+  return m_Icon;
+}
+
+// -----------------------------------------------------------------------------
+void FilterListItem::setItemType(const FilterListItem::ItemType& value)
+{
+  m_ItemType = value;
+}
+
+// -----------------------------------------------------------------------------
+FilterListItem::ItemType FilterListItem::getItemType() const
+{
+  return m_ItemType;
+}

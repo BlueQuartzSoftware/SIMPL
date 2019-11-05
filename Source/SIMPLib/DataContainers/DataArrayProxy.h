@@ -43,6 +43,7 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QString>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
@@ -53,6 +54,7 @@ class SIMPLH5DataReaderRequirements;
  */
 class SIMPLib_EXPORT DataArrayProxy
 {
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(DataArrayProxy)
   PYB11_CREATION()
   PYB11_PROPERTY(std::vector<size_t> TupleDims READ getTupleDims WRITE setTupleDims)
@@ -60,6 +62,7 @@ class SIMPLib_EXPORT DataArrayProxy
   PYB11_PROPERTY(QString Path READ getPath WRITE setPath)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(uint8_t Flag READ getFlag WRITE setFlag)
+#endif
 public:
   using CompDimsVector = std::vector<std::vector<size_t>>;
 

@@ -1176,3 +1176,21 @@ LOOP:
 
     return 'o';
 }
+
+// -----------------------------------------------------------------------------
+GeometryMath::Pointer GeometryMath::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString GeometryMath::getNameOfClass() const
+{
+  return QString("GeometryMath");
+}
+
+// -----------------------------------------------------------------------------
+QString GeometryMath::ClassName()
+{
+  return QString("GeometryMath");
+}

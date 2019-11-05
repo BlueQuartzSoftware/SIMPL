@@ -58,7 +58,11 @@ CosOperator::~CosOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CosOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void CosOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                            QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_TRIG(filter, calculatedArrayPath, executionStack, cos)}
+
+// -----------------------------------------------------------------------------
+CosOperator::Pointer CosOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_TRIG(filter, calculatedArrayPath, executionStack, cos)
+  return Pointer(static_cast<Self*>(nullptr));
 }

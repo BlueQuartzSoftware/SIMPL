@@ -70,7 +70,7 @@ void GEOM_CLASS_NAME::setTriangles(SharedTriList::Pointer triangles)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedTriList::Pointer GEOM_CLASS_NAME::getTriangles()
+SharedTriList::Pointer GEOM_CLASS_NAME::getTriangles() const
 {
   return m_TriList;
 }
@@ -89,7 +89,7 @@ void GEOM_CLASS_NAME::setVertsAtTri(size_t triId, size_t verts[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertsAtTri(size_t triId, size_t verts[3])
+void GEOM_CLASS_NAME::getVertsAtTri(size_t triId, size_t verts[3]) const
 {
   size_t* Tri = m_TriList->getTuplePointer(triId);
   verts[0] = Tri[0];
@@ -100,7 +100,7 @@ void GEOM_CLASS_NAME::getVertsAtTri(size_t triId, size_t verts[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertCoordsAtTri(size_t triId, float vert1[3], float vert2[3], float vert3[3])
+void GEOM_CLASS_NAME::getVertCoordsAtTri(size_t triId, float vert1[3], float vert2[3], float vert3[3]) const
 {
   size_t* Tri = m_TriList->getTuplePointer(triId);
   float* tmp1 = m_VertexList->getTuplePointer(Tri[0]);
@@ -120,7 +120,7 @@ void GEOM_CLASS_NAME::getVertCoordsAtTri(size_t triId, float vert1[3], float ver
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t* GEOM_CLASS_NAME::getTriPointer(size_t i)
+size_t* GEOM_CLASS_NAME::getTriPointer(size_t i) const
 {
   return m_TriList->getTuplePointer(i);
 }
@@ -128,7 +128,7 @@ size_t* GEOM_CLASS_NAME::getTriPointer(size_t i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t GEOM_CLASS_NAME::getNumberOfTris()
+size_t GEOM_CLASS_NAME::getNumberOfTris() const
 {
   return m_TriList->getNumberOfTuples();
 }

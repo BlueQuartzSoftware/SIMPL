@@ -58,7 +58,11 @@ TanOperator::~TanOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TanOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void TanOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                            QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_TRIG(filter, calculatedArrayPath, executionStack, tan)}
+
+// -----------------------------------------------------------------------------
+TanOperator::Pointer TanOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_TRIG(filter, calculatedArrayPath, executionStack, tan)
+  return Pointer(static_cast<Self*>(nullptr));
 }

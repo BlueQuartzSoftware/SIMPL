@@ -43,7 +43,12 @@
 #include <QtWidgets/QGraphicsOpacityEffect>
 #include <QtWidgets/QMenu>
 
+#include <QtCore/QTextStream>
+
+#include <QtCore/QDebug>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
+
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -61,7 +66,6 @@ static const int Duration = 400;
 // -----------------------------------------------------------------------------
 FilterParameterWidget::FilterParameterWidget(QWidget* parent)
 : QFrame(parent)
-, m_WidgetIsExpanding(false)
 , animation(nullptr)
 , effect(nullptr)
 {
@@ -75,7 +79,6 @@ FilterParameterWidget::FilterParameterWidget(FilterParameter* parameter, Abstrac
 : QFrame(parent)
 , m_Filter(filter)
 , m_FilterParameter(parameter)
-, m_WidgetIsExpanding(false)
 , animation(nullptr)
 , effect(nullptr)
 {
@@ -452,4 +455,39 @@ void FilterParameterWidget::showFileInFileSystem()
 // -----------------------------------------------------------------------------
 void FilterParameterWidget::loadData()
 {
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameterWidget::setFilter(AbstractFilter* value)
+{
+  m_Filter = value;
+}
+
+// -----------------------------------------------------------------------------
+AbstractFilter* FilterParameterWidget::getFilter() const
+{
+  return m_Filter;
+}
+// -----------------------------------------------------------------------------
+void FilterParameterWidget::setFilterParameter(FilterParameter* value)
+{
+  m_FilterParameter = value;
+}
+
+// -----------------------------------------------------------------------------
+FilterParameter* FilterParameterWidget::getFilterParameter() const
+{
+  return m_FilterParameter;
+}
+
+// -----------------------------------------------------------------------------
+void FilterParameterWidget::setWidgetIsExpanding(bool value)
+{
+  m_WidgetIsExpanding = value;
+}
+
+// -----------------------------------------------------------------------------
+bool FilterParameterWidget::isWidgetExpanding() const
+{
+  return m_WidgetIsExpanding;
 }

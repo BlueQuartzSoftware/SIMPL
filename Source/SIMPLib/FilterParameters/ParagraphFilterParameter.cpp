@@ -93,3 +93,64 @@ void ParagraphFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = m_GetterCallback();
   }
 }
+
+// -----------------------------------------------------------------------------
+ParagraphFilterParameter::Pointer ParagraphFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ParagraphFilterParameter::Pointer ParagraphFilterParameter::New()
+{
+  Pointer sharedPtr(new(ParagraphFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString ParagraphFilterParameter::getNameOfClass() const
+{
+  return QString("ParagraphFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString ParagraphFilterParameter::ClassName()
+{
+  return QString("ParagraphFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void ParagraphFilterParameter::setSetterCallback(const ParagraphFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ParagraphFilterParameter::SetterCallbackType ParagraphFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void ParagraphFilterParameter::setGetterCallback(const ParagraphFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ParagraphFilterParameter::GetterCallbackType ParagraphFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void ParagraphFilterParameter::setAllowPreflight(bool value)
+{
+  m_AllowPreflight = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ParagraphFilterParameter::getAllowPreflight() const
+{
+  return m_AllowPreflight;
+}

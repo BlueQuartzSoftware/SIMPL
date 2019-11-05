@@ -35,7 +35,10 @@
 
 #include "RequiredZThickness.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -43,6 +46,8 @@
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -211,7 +216,7 @@ AbstractFilter::Pointer RequiredZThickness::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getCompiledLibraryName() const
+QString RequiredZThickness::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -219,7 +224,7 @@ const QString RequiredZThickness::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getGroupName() const
+QString RequiredZThickness::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -227,7 +232,7 @@ const QString RequiredZThickness::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid RequiredZThickness::getUuid()
+QUuid RequiredZThickness::getUuid() const
 {
   return QUuid("{1fe19578-6856-55f2-adc8-2236fac22c25}");
 }
@@ -235,7 +240,7 @@ const QUuid RequiredZThickness::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getSubGroupName() const
+QString RequiredZThickness::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -243,7 +248,68 @@ const QString RequiredZThickness::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getHumanLabel() const
+QString RequiredZThickness::getHumanLabel() const
 {
   return "Required Z Dimension (Image Geometry)";
+}
+
+// -----------------------------------------------------------------------------
+RequiredZThickness::Pointer RequiredZThickness::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+RequiredZThickness::Pointer RequiredZThickness::New()
+{
+  Pointer sharedPtr(new(RequiredZThickness));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString RequiredZThickness::getNameOfClass() const
+{
+  return QString("RequiredZThickness");
+}
+
+// -----------------------------------------------------------------------------
+QString RequiredZThickness::ClassName()
+{
+  return QString("RequiredZThickness");
+}
+
+// -----------------------------------------------------------------------------
+void RequiredZThickness::setDataContainerSelection(const DataArrayPath& value)
+{
+  m_DataContainerSelection = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RequiredZThickness::getDataContainerSelection() const
+{
+  return m_DataContainerSelection;
+}
+
+// -----------------------------------------------------------------------------
+void RequiredZThickness::setNumZVoxels(int value)
+{
+  m_NumZVoxels = value;
+}
+
+// -----------------------------------------------------------------------------
+int RequiredZThickness::getNumZVoxels() const
+{
+  return m_NumZVoxels;
+}
+
+// -----------------------------------------------------------------------------
+void RequiredZThickness::setPreflightCheck(bool value)
+{
+  m_PreflightCheck = value;
+}
+
+// -----------------------------------------------------------------------------
+bool RequiredZThickness::getPreflightCheck() const
+{
+  return m_PreflightCheck;
 }

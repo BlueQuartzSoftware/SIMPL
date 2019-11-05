@@ -58,7 +58,11 @@ ATanOperator::~ATanOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ATanOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void ATanOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                             QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_ARCTRIG(filter, calculatedArrayPath, executionStack, atan)}
+
+// -----------------------------------------------------------------------------
+ATanOperator::Pointer ATanOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_ARCTRIG(filter, calculatedArrayPath, executionStack, atan)
+  return Pointer(static_cast<Self*>(nullptr));
 }

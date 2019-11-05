@@ -93,3 +93,76 @@ void DynamicChoiceFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = m_GetterCallback();
   }
 }
+
+// -----------------------------------------------------------------------------
+DynamicChoiceFilterParameter::Pointer DynamicChoiceFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+DynamicChoiceFilterParameter::Pointer DynamicChoiceFilterParameter::New()
+{
+  Pointer sharedPtr(new(DynamicChoiceFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString DynamicChoiceFilterParameter::getNameOfClass() const
+{
+  return QString("DynamicChoiceFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString DynamicChoiceFilterParameter::ClassName()
+{
+  return QString("DynamicChoiceFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void DynamicChoiceFilterParameter::setListProperty(const QString& value)
+{
+  m_ListProperty = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DynamicChoiceFilterParameter::getListProperty() const
+{
+  return m_ListProperty;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicChoiceFilterParameter::setUnits(const QString& value)
+{
+  m_Units = value;
+}
+
+// -----------------------------------------------------------------------------
+QString DynamicChoiceFilterParameter::getUnits() const
+{
+  return m_Units;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicChoiceFilterParameter::setSetterCallback(const DynamicChoiceFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DynamicChoiceFilterParameter::SetterCallbackType DynamicChoiceFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void DynamicChoiceFilterParameter::setGetterCallback(const DynamicChoiceFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+DynamicChoiceFilterParameter::GetterCallbackType DynamicChoiceFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

@@ -33,6 +33,10 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtCore/QTextStream>
+
+#include <QtCore/QDebug>
+
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 // C Includes
@@ -61,8 +65,8 @@
 // -----------------------------------------------------------------------------
 AttributeMatrix::AttributeMatrix(const std::vector<size_t>& tDims, const QString& name, AttributeMatrix::Type attrType)
 : IDataStructureContainerNode(name)
-, m_Type(attrType)
 , m_TupleDims(tDims)
+, m_Type(attrType)
 {
 }
 
@@ -293,7 +297,7 @@ DataArrayPath AttributeMatrix::getDataArrayPath() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool AttributeMatrix::validateAttributeArraySizes()
+bool AttributeMatrix::validateAttributeArraySizes() const
 {
   int64_t arraySize = 0;
   int64_t matrixSize = getNumberOfTuples();
@@ -368,7 +372,7 @@ RenameErrorCodes AttributeMatrix::renameAttributeArray(const QString& oldname, c
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<size_t> AttributeMatrix::getTupleDimensions()
+std::vector<size_t> AttributeMatrix::getTupleDimensions() const
 {
   return m_TupleDims;
 }
@@ -384,7 +388,7 @@ void AttributeMatrix::setTupleDimensions(const std::vector<size_t>& tupleDims)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t AttributeMatrix::getNumberOfTuples()
+size_t AttributeMatrix::getNumberOfTuples() const
 {
   if(m_TupleDims.empty())
   {
@@ -498,18 +502,28 @@ void AttributeMatrix::clearAttributeArrays()
   clear();
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AttributeMatrix::NameList AttributeMatrix::getAttributeArrayNames()
+AttributeMatrix::Container_t AttributeMatrix::getAttributeArrays() const
 {
-  return getNamesOfChildren();
+  return getChildren();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::Pointer AttributeMatrix::deepCopy(bool forceNoAllocate)
+AttributeMatrix::NameList AttributeMatrix::getAttributeArrayNames() const
+{
+  return getNamesOfChildren();
+}
+
+int AttributeMatrix::getNumAttributeArrays() const
+{
+  return static_cast<int>(size());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrix::Pointer AttributeMatrix::deepCopy(bool forceNoAllocate) const
 {
   AttributeMatrix::Pointer newAttrMat = AttributeMatrix::New(getTupleDimensions(), getName(), getType());
 
@@ -529,7 +543,7 @@ AttributeMatrix::Pointer AttributeMatrix::deepCopy(bool forceNoAllocate)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AttributeMatrix::writeAttributeArraysToHDF5(hid_t parentId)
+int AttributeMatrix::writeAttributeArraysToHDF5(hid_t parentId) const
 {
   int err = 0;
 
@@ -656,7 +670,7 @@ int AttributeMatrix::readAttributeArraysFromHDF5(hid_t amGid, bool preflight, At
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AttributeMatrix::generateXdmfText(const QString& centering, const QString& dataContainerName, const QString& hdfFileName, const uint8_t gridType)
+QString AttributeMatrix::generateXdmfText(const QString& centering, const QString& dataContainerName, const QString& hdfFileName, const uint8_t gridType) const
 {
   QString xdmfText;
   QString block;
@@ -674,7 +688,7 @@ QString AttributeMatrix::generateXdmfText(const QString& centering, const QStrin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
+QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format) const
 {
   QString info;
   QTextStream ss(&info);
@@ -690,7 +704,7 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ToolTipGenerator AttributeMatrix::getToolTipGenerator()
+ToolTipGenerator AttributeMatrix::getToolTipGenerator() const
 {
   ToolTipGenerator toolTipGen;
 
@@ -769,7 +783,7 @@ ToolTipGenerator AttributeMatrix::getToolTipGenerator()
 //
 // -----------------------------------------------------------------------------
 QString AttributeMatrix::writeXdmfAttributeDataHelper(int numComp, const QString& attrType, const QString& dataContainerName, const IDataArray::Pointer& array, const QString& centering, int precision,
-                                                      const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType)
+                                                      const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType) const
 {
   QString buf;
   QTextStream out(&buf);
@@ -876,7 +890,7 @@ QString AttributeMatrix::writeXdmfAttributeDataHelper(int numComp, const QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AttributeMatrix::writeXdmfAttributeData(const IDataArray::Pointer& array, const QString& centering, const QString& dataContainerName, const QString& hdfFileName, const uint8_t gridType)
+QString AttributeMatrix::writeXdmfAttributeData(const IDataArray::Pointer& array, const QString& centering, const QString& dataContainerName, const QString& hdfFileName, const uint8_t gridType) const
 {
   QString xdmfText;
   QTextStream out(&xdmfText);
@@ -920,4 +934,64 @@ QString AttributeMatrix::writeXdmfAttributeData(const IDataArray::Pointer& array
   out << block;
 
   return xdmfText;
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrix::Pointer AttributeMatrix::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+QString AttributeMatrix::getNameOfClass() const
+{
+  return QString("AttributeMatrix");
+}
+
+// -----------------------------------------------------------------------------
+QString AttributeMatrix::ClassName()
+{
+  return QString("AttributeMatrix");
+}
+
+// -----------------------------------------------------------------------------
+void AttributeMatrix::setType(const AttributeMatrix::Type& value)
+{
+  m_Type = value;
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrix::Type AttributeMatrix::getType() const
+{
+  return m_Type;
+}
+bool AttributeMatrix::addOrReplaceAttributeArray(const IDataArrayShPtrType& data)
+{
+  // Can not insert a null IDataArray object
+  if(data.get() == nullptr)
+  {
+    return false;
+  }
+  if(getNumberOfTuples() != data->getNumberOfTuples())
+  {
+    qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
+    qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
+  }
+  Q_ASSERT(getNumberOfTuples() == data->getNumberOfTuples());
+  return insertOrAssign(data);
+}
+
+IDataArrayShPtrType AttributeMatrix::getAttributeArray(const QString& name) const
+{
+  return getChildByName(name);
+}
+
+IDataArrayShPtrType AttributeMatrix::getAttributeArray(const DataArrayPath& path) const
+{
+  return getAttributeArray(path.getDataArrayName());
+}
+
+bool AttributeMatrix::doesAttributeArrayExist(const QString& name) const
+{
+  return contains(name);
 }

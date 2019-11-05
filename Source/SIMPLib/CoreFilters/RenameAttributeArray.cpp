@@ -33,13 +33,19 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "RenameAttributeArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -198,7 +204,7 @@ AbstractFilter::Pointer RenameAttributeArray::newFilterInstance(bool copyFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getCompiledLibraryName() const
+QString RenameAttributeArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -206,7 +212,7 @@ const QString RenameAttributeArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getBrandingString() const
+QString RenameAttributeArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -214,7 +220,7 @@ const QString RenameAttributeArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getFilterVersion() const
+QString RenameAttributeArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -225,7 +231,7 @@ const QString RenameAttributeArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getGroupName() const
+QString RenameAttributeArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -233,7 +239,7 @@ const QString RenameAttributeArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid RenameAttributeArray::getUuid()
+QUuid RenameAttributeArray::getUuid() const
 {
   return QUuid("{53a5f731-2858-5e3e-bd43-8f2cf45d90ec}");
 }
@@ -241,7 +247,7 @@ const QUuid RenameAttributeArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getSubGroupName() const
+QString RenameAttributeArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -249,7 +255,7 @@ const QString RenameAttributeArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getHumanLabel() const
+QString RenameAttributeArray::getHumanLabel() const
 {
   return "Rename Attribute Array";
 }
@@ -268,4 +274,57 @@ DataArrayPath::RenameContainer RenameAttributeArray::getRenamedPaths()
   container.push_back(rename);
 
   return container;
+}
+
+// -----------------------------------------------------------------------------
+RenameAttributeArray::Pointer RenameAttributeArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<RenameAttributeArray> RenameAttributeArray::New()
+{
+  struct make_shared_enabler : public RenameAttributeArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString RenameAttributeArray::getNameOfClass() const
+{
+  return QString("RenameAttributeArray");
+}
+
+// -----------------------------------------------------------------------------
+QString RenameAttributeArray::ClassName()
+{
+  return QString("RenameAttributeArray");
+}
+
+// -----------------------------------------------------------------------------
+void RenameAttributeArray::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath RenameAttributeArray::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void RenameAttributeArray::setNewArrayName(const QString& value)
+{
+  m_NewArrayName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString RenameAttributeArray::getNewArrayName() const
+{
+  return m_NewArrayName;
 }

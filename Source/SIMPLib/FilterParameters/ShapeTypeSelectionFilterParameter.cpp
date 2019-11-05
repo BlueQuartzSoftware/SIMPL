@@ -114,3 +114,76 @@ void ShapeTypeSelectionFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = jsonArray;
   }
 }
+
+// -----------------------------------------------------------------------------
+ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::New()
+{
+  Pointer sharedPtr(new(ShapeTypeSelectionFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString ShapeTypeSelectionFilterParameter::getNameOfClass() const
+{
+  return QString("ShapeTypeSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString ShapeTypeSelectionFilterParameter::ClassName()
+{
+  return QString("ShapeTypeSelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void ShapeTypeSelectionFilterParameter::setPhaseTypeCountProperty(const QString& value)
+{
+  m_PhaseTypeCountProperty = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ShapeTypeSelectionFilterParameter::getPhaseTypeCountProperty() const
+{
+  return m_PhaseTypeCountProperty;
+}
+
+// -----------------------------------------------------------------------------
+void ShapeTypeSelectionFilterParameter::setPhaseTypeArrayPathProperty(const QString& value)
+{
+  m_PhaseTypeArrayPathProperty = value;
+}
+
+// -----------------------------------------------------------------------------
+QString ShapeTypeSelectionFilterParameter::getPhaseTypeArrayPathProperty() const
+{
+  return m_PhaseTypeArrayPathProperty;
+}
+
+// -----------------------------------------------------------------------------
+void ShapeTypeSelectionFilterParameter::setSetterCallback(const ShapeTypeSelectionFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ShapeTypeSelectionFilterParameter::SetterCallbackType ShapeTypeSelectionFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void ShapeTypeSelectionFilterParameter::setGetterCallback(const ShapeTypeSelectionFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+ShapeTypeSelectionFilterParameter::GetterCallbackType ShapeTypeSelectionFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

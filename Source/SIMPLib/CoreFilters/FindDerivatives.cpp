@@ -33,9 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "FindDerivatives.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/TemplateHelpers.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -53,6 +58,8 @@
 #include "SIMPLib/Messages/GenericErrorMessage.h"
 #include "SIMPLib/Messages/GenericWarningMessage.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 /**
  * @brief This message handler is used by the FindDerivatives filter to re-emit incoming generic
@@ -444,7 +451,7 @@ AbstractFilter::Pointer FindDerivatives::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getCompiledLibraryName() const
+QString FindDerivatives::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -452,7 +459,7 @@ const QString FindDerivatives::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getBrandingString() const
+QString FindDerivatives::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -460,7 +467,7 @@ const QString FindDerivatives::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getFilterVersion() const
+QString FindDerivatives::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -471,7 +478,7 @@ const QString FindDerivatives::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getGroupName() const
+QString FindDerivatives::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -479,7 +486,7 @@ const QString FindDerivatives::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid FindDerivatives::getUuid()
+QUuid FindDerivatives::getUuid() const
 {
   return QUuid("{8ec1fc8e-6484-5412-a898-8079986c0a26}");
 }
@@ -487,7 +494,7 @@ const QUuid FindDerivatives::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getSubGroupName() const
+QString FindDerivatives::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GeometryFilters;
 }
@@ -495,7 +502,60 @@ const QString FindDerivatives::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getHumanLabel() const
+QString FindDerivatives::getHumanLabel() const
 {
   return "Find Derivatives";
+}
+
+// -----------------------------------------------------------------------------
+FindDerivatives::Pointer FindDerivatives::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<FindDerivatives> FindDerivatives::New()
+{
+  struct make_shared_enabler : public FindDerivatives
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString FindDerivatives::getNameOfClass() const
+{
+  return QString("FindDerivatives");
+}
+
+// -----------------------------------------------------------------------------
+QString FindDerivatives::ClassName()
+{
+  return QString("FindDerivatives");
+}
+
+// -----------------------------------------------------------------------------
+void FindDerivatives::setSelectedArrayPath(const DataArrayPath& value)
+{
+  m_SelectedArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FindDerivatives::getSelectedArrayPath() const
+{
+  return m_SelectedArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void FindDerivatives::setDerivativesArrayPath(const DataArrayPath& value)
+{
+  m_DerivativesArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath FindDerivatives::getDerivativesArrayPath() const
+{
+  return m_DerivativesArrayPath;
 }

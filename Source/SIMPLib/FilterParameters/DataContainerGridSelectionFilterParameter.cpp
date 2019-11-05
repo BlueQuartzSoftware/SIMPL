@@ -129,3 +129,83 @@ void DataContainerGridSelectionFilterParameter::dataArrayPathRenamed(AbstractFil
   }
   */
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerGridSelectionFilterParameter::Pointer DataContainerGridSelectionFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerGridSelectionFilterParameter::Pointer DataContainerGridSelectionFilterParameter::New()
+{
+  return Pointer(new DataContainerGridSelectionFilterParameter());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DataContainerGridSelectionFilterParameter::getNameOfClass() const
+{
+  return "DataContainerGridSelectionFilterParameter";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DataContainerGridSelectionFilterParameter::ClassName()
+{
+  return "DataContainerGridSelectionFilterParameter";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+IGeometry::Types DataContainerGridSelectionFilterParameter::getDefaultGeometryTypes() const
+{
+  return m_DefaultGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerGridSelectionFilterParameter::setDefaultGeometryTypes(IGeometry::Types value)
+{
+  m_DefaultGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerGridSelectionFilterParameter::SetterCallbackType DataContainerGridSelectionFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerGridSelectionFilterParameter::setSetterCallback(const SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerGridSelectionFilterParameter::GetterCallbackType DataContainerGridSelectionFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerGridSelectionFilterParameter::setGetterCallback(const GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}

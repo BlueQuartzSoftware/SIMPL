@@ -33,10 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "CreateStringArray.h"
 
+#include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
@@ -46,6 +50,7 @@
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
   StringArrayID = 1
@@ -207,7 +212,7 @@ AbstractFilter::Pointer CreateStringArray::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getCompiledLibraryName() const
+QString CreateStringArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -215,7 +220,7 @@ const QString CreateStringArray::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getBrandingString() const
+QString CreateStringArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -223,7 +228,7 @@ const QString CreateStringArray::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getFilterVersion() const
+QString CreateStringArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -234,7 +239,7 @@ const QString CreateStringArray::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getGroupName() const
+QString CreateStringArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -242,7 +247,7 @@ const QString CreateStringArray::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CreateStringArray::getUuid()
+QUuid CreateStringArray::getUuid() const
 {
   return QUuid("{e6b9a566-c5eb-5e3a-87de-7fe65d1d12b6}");
 }
@@ -250,7 +255,7 @@ const QUuid CreateStringArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getSubGroupName() const
+QString CreateStringArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -258,7 +263,72 @@ const QString CreateStringArray::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getHumanLabel() const
+QString CreateStringArray::getHumanLabel() const
 {
   return "Create String Array";
+}
+
+// -----------------------------------------------------------------------------
+CreateStringArray::Pointer CreateStringArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CreateStringArray> CreateStringArray::New()
+{
+  struct make_shared_enabler : public CreateStringArray
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateStringArray::getNameOfClass() const
+{
+  return QString("CreateStringArray");
+}
+
+// -----------------------------------------------------------------------------
+QString CreateStringArray::ClassName()
+{
+  return QString("CreateStringArray");
+}
+
+// -----------------------------------------------------------------------------
+void CreateStringArray::setNumberOfComponents(int value)
+{
+  m_NumberOfComponents = value;
+}
+
+// -----------------------------------------------------------------------------
+int CreateStringArray::getNumberOfComponents() const
+{
+  return m_NumberOfComponents;
+}
+
+// -----------------------------------------------------------------------------
+void CreateStringArray::setNewArray(const DataArrayPath& value)
+{
+  m_NewArray = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateStringArray::getNewArray() const
+{
+  return m_NewArray;
+}
+
+// -----------------------------------------------------------------------------
+void CreateStringArray::setInitializationValue(const QString& value)
+{
+  m_InitializationValue = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateStringArray::getInitializationValue() const
+{
+  return m_InitializationValue;
 }

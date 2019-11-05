@@ -44,11 +44,13 @@
 #include <string>
 #include <vector>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <QtCore/QTextStream>
+
+#include "SIMPLib/SIMPLib.h"
+
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/HDF5/H5DataArrayReader.h"
 #include "SIMPLib/HDF5/H5DataArrayWriter.hpp"
-#include "SIMPLib/SIMPLib.h"
 
 #define mxa_bswap(s, d, t)                                                                                                                                                                             \
   t[0] = ptr[s];                                                                                                                                                                                       \
@@ -59,13 +61,44 @@
  * @class DataArray
  * @brief Template class for wrapping raw arrays of data and is the basis for storing data within the SIMPL data structure.
  */
-template <typename T> class DataArray : public IDataArray
+template <typename T>
+class DataArray : public IDataArray
 {
 
 public:
-  SIMPL_SHARED_POINTERS(DataArray<T>)
-  SIMPL_TYPE_MACRO_SUPER(DataArray<T>, IDataArray)
-  SIMPL_CLASS_VERSION(2)
+  using Self = DataArray<T>;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer()
+  {
+    return Pointer(static_cast<Self*>(nullptr));
+  }
+
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  QString getNameOfClass() const override
+  {
+    return QString("DataArray<T>");
+  }
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  static QString ClassName()
+  {
+    return QString("DataArray<T>");
+  }
+
+  /**
+   * @brief Returns the version of this class.
+   * @return
+   */
+  int32_t getClassVersion() const override
+  {
+    return 2;
+  }
 
   DataArray(const DataArray&) = default;           // Copy Constructor default Implemented
   DataArray(DataArray&&) = delete;                 // Move Constructor Not Implemented
@@ -114,7 +147,7 @@ public:
   , m_NumTuples(numTuples)
   , m_CompDims(std::move(compDims))
   {
-    m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), 1, std::multiplies<>());
+    m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), static_cast<size_t>(1), std::multiplies<>());
     m_InitValue = initValue;
     m_Array = resizeAndExtend(m_NumTuples * m_NumComponents);
   }
@@ -132,7 +165,7 @@ public:
   , m_NumTuples(numTuples)
   , m_CompDims(std::move(compDims))
   {
-    m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), 1, std::multiplies<>());
+    m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), static_cast<size_t>(1), std::multiplies<>());
     m_InitValue = static_cast<T>(0);
     if(allocate)
     {
@@ -260,7 +293,7 @@ public:
       return NullPointer();
     }
 
-    size_t numTuples = std::accumulate(tupleDims.begin(), tupleDims.end(), 1, std::multiplies<>());
+    size_t numTuples = std::accumulate(tupleDims.begin(), tupleDims.end(), static_cast<size_t>(1), std::multiplies<>());
 
     auto d = new DataArray<T>(numTuples, name, compDims, static_cast<T>(0), allocate);
     if(allocate)
@@ -286,7 +319,7 @@ public:
    * @param allocate Will all the memory be allocated at time of construction
    * @return
    */
-  IDataArray::Pointer createNewArray(size_t numTuples, int rank, const size_t* compDims, const QString& name, bool allocate) override
+  IDataArray::Pointer createNewArray(size_t numTuples, int rank, const size_t* compDims, const QString& name, bool allocate) const override
   {
     IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, rank, compDims, name, allocate);
     return p;
@@ -300,7 +333,7 @@ public:
    * @param allocate Will all the memory be allocated at time of construction
    * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
    */
-  IDataArray::Pointer createNewArray(size_t numTuples, const comp_dims_type& compDims, const QString& name, bool allocate) override
+  IDataArray::Pointer createNewArray(size_t numTuples, const comp_dims_type& compDims, const QString& name, bool allocate) const override
   {
     IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, compDims, name, allocate);
     return p;
@@ -394,7 +427,7 @@ public:
    * @param forceNoAllocate
    * @return
    */
-  IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override
+  IDataArray::Pointer deepCopy(bool forceNoAllocate = false) const override
   {
     bool allocate = m_IsAllocated;
     if(forceNoAllocate)
@@ -418,7 +451,7 @@ public:
    * @return
    */
 
-  SIMPL::NumericTypes::Type getType()
+  SIMPL::NumericTypes::Type getType() const
   {
     T value = static_cast<T>(0x00);
     if(typeid(value) == typeid(int8_t))
@@ -479,7 +512,7 @@ public:
    * can be a primitive like char, float, int or the name of a class.
    * @return
    */
-  void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) override
+  void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const override
   {
     T value = static_cast<T>(0x00);
     xdmfTypeName = "UNKNOWN";
@@ -617,7 +650,7 @@ public:
    * @brief copyIntoArray
    * @param dest
    */
-  bool copyIntoArray(Pointer dest)
+  bool copyIntoArray(Pointer dest) const
   {
     if(m_IsAllocated && dest->isAllocated() && m_Array && dest->getPointer(0))
     {
@@ -632,7 +665,7 @@ public:
    * @brief isAllocated
    * @return
    */
-  bool isAllocated() override
+  bool isAllocated() const override
   {
     return m_IsAllocated;
   }
@@ -870,7 +903,7 @@ public:
    * 4 = 32 bit integer/Float
    * 8 = 64 bit integer/Double
    */
-  size_t getTypeSize() override
+  size_t getTypeSize() const override
   {
     return sizeof(T);
   }
@@ -878,7 +911,7 @@ public:
   /**
    * @brief Returns the number of elements in the internal array.
    */
-  size_t getNumberOfTuples() override
+  size_t getNumberOfTuples() const override
   {
     return m_NumTuples;
   }
@@ -886,7 +919,7 @@ public:
   /**
    * @brief Returns the total number of elements that make up this array. Equal to NumTuples * NumComponents
    */
-  size_t getSize() override
+  size_t getSize() const override
   {
     return m_Size;
   }
@@ -896,7 +929,7 @@ public:
    * at each tuple then this will return a single element QVector. If you have a 1x3 array (like EUler Angles) then
    * this will return a 3 Element QVector.
    */
-  comp_dims_type getComponentDimensions() override
+  comp_dims_type getComponentDimensions() const override
   {
     return m_CompDims;
   }
@@ -906,7 +939,7 @@ public:
    * 3 element component (vector) then this will be 3. If you are storing a small image of size 80x60
    * at each Tuple (like EBSD Kikuchi patterns) then the result would be 4800.
    */
-  int getNumberOfComponents() override
+  int getNumberOfComponents() const override
   {
     return m_NumComponents;
   }
@@ -932,7 +965,7 @@ public:
    * @brief Returns a list of the contents of DataArray (For Python Binding)
    * @return std::list. Possibly empty
    */
-  std::list<T> getArray()
+  std::list<T> getArray() const
   {
     return std::list<T>(m_Array, m_Array + (m_Size * sizeof(T)) / sizeof(T));
   }
@@ -961,7 +994,7 @@ public:
    * @param i The index to return the pointer to.
    * @return The pointer to the index
    */
-  virtual T* getPointer(size_t i)
+  virtual T* getPointer(size_t i) const
   {
 #ifndef NDEBUG
     if(m_Size > 0)
@@ -977,7 +1010,7 @@ public:
    * @param i The index to return the value at
    * @return The value at index i
    */
-  virtual T getValue(size_t i)
+  virtual T getValue(size_t i) const
   {
 #ifndef NDEBUG
     if(m_Size > 0)
@@ -1006,7 +1039,7 @@ public:
 
   //----------------------------------------------------------------------------
   // These can be overridden for more efficiency
-  T getComponent(size_t i, int j)
+  T getComponent(size_t i, int j) const
   {
 #ifndef NDEBUG
     if(m_Size > 0)
@@ -1098,7 +1131,7 @@ public:
    * @brief getTuplePointer Returns the pointer to a specific tuple
    * @param tupleIndex The index of tuple
    */
-  T* getTuplePointer(size_t tupleIndex)
+  T* getTuplePointer(size_t tupleIndex) const
   {
 #ifndef NDEBUG
     if(m_Size > 0)
@@ -1129,7 +1162,7 @@ public:
    * @param i
    * @param delimiter
    */
-  void printTuple(QTextStream& out, size_t i, char delimiter = ',') override
+  void printTuple(QTextStream& out, size_t i, char delimiter = ',') const override
   {
     int precision = out.realNumberPrecision();
     T value = static_cast<T>(0x00);
@@ -1159,7 +1192,7 @@ public:
    * @param i
    * @param j
    */
-  void printComponent(QTextStream& out, size_t i, int j) override
+  void printComponent(QTextStream& out, size_t i, int j) const override
   {
     out << m_Array[i * m_NumComponents + j];
   }
@@ -1170,7 +1203,7 @@ public:
    * from
    * @return The HDF5 native type for the value
    */
-  QString getFullNameOfClass()
+  QString getFullNameOfClass() const
   {
     QString theType = getTypeAsString();
     theType = "DataArray<" + theType + ">";
@@ -1181,7 +1214,7 @@ public:
    * @brief getTypeAsString
    * @return
    */
-  QString getTypeAsString() override
+  QString getTypeAsString() const override
   {
     T value = static_cast<T>(0);
     if(typeid(value) == typeid(float))
@@ -1336,7 +1369,7 @@ public:
    * @param parentId
    * @return
    */
-  int writeH5Data(hid_t parentId, comp_dims_type tDims) override
+  int writeH5Data(hid_t parentId, comp_dims_type tDims) const override
   {
     if(m_Array == nullptr)
     {
@@ -1351,7 +1384,7 @@ public:
    * @param volDims
    * @return
    */
-  int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& label) override
+  int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& label) const override
   {
     if(m_Array == nullptr)
     {
@@ -1410,7 +1443,7 @@ public:
    * with values populated to match the current DataArray.
    * @return
    */
-  ToolTipGenerator getToolTipGenerator() override
+  ToolTipGenerator getToolTipGenerator() const override
   {
     ToolTipGenerator toolTipGen;
     QLocale usa(QLocale::English, QLocale::UnitedStates);
@@ -1442,7 +1475,7 @@ public:
    * @return Returns a formatted string that contains general infomation about
    * the instance of the object.
    */
-  QString getInfoString(SIMPL::InfoStringFormat format) override
+  QString getInfoString(SIMPL::InfoStringFormat format) const override
   {
     if(format == SIMPL::HtmlFormat)
     {

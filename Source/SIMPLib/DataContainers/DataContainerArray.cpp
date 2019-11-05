@@ -35,8 +35,12 @@
 
 #include "DataContainerArray.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Montages/AbstractMontage.h"
 #include "SIMPLib/Montages/GridMontage.h"
@@ -62,7 +66,7 @@ DataArrayPath DataContainerArray::getDataArrayPath() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataContainerArray::getNumDataContainers()
+int DataContainerArray::getNumDataContainers() const
 {
   return static_cast<int>(size());
 }
@@ -158,7 +162,7 @@ bool DataContainerArray::renameDataContainer(const DataArrayPath& oldName, const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainer::Pointer DataContainerArray::getDataContainer(const QString& name)
+DataContainer::Pointer DataContainerArray::getDataContainer(const QString& name) const
 {
   return getChildByName(name);
 }
@@ -166,7 +170,7 @@ DataContainer::Pointer DataContainerArray::getDataContainer(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainer::Pointer DataContainerArray::getDataContainer(const DataArrayPath& path)
+DataContainer::Pointer DataContainerArray::getDataContainer(const DataArrayPath& path) const
 {
   QString dcName = path.getDataContainerName();
   return getDataContainer(dcName);
@@ -175,7 +179,7 @@ DataContainer::Pointer DataContainerArray::getDataContainer(const DataArrayPath&
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::Pointer DataContainerArray::getAttributeMatrix(const DataArrayPath& path)
+AttributeMatrix::Pointer DataContainerArray::getAttributeMatrix(const DataArrayPath& path) const
 {
   DataContainer::Pointer dc = getDataContainer(path);
   if(nullptr == dc.get())
@@ -205,7 +209,7 @@ void DataContainerArray::duplicateDataContainer(const QString& name, const QStri
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArray::NameList DataContainerArray::getDataContainerNames()
+DataContainerArray::NameList DataContainerArray::getDataContainerNames() const
 {
   return getNamesOfChildren();
 }
@@ -213,7 +217,7 @@ DataContainerArray::NameList DataContainerArray::getDataContainerNames()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArray::Container DataContainerArray::getDataContainers()
+DataContainerArray::Container DataContainerArray::getDataContainers() const
 {
   return getChildren();
 }
@@ -221,7 +225,7 @@ DataContainerArray::Container DataContainerArray::getDataContainers()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArray::printDataContainerNames(QTextStream& out)
+void DataContainerArray::printDataContainerNames(QTextStream& out) const
 {
   out << "---------------------------------------------------------------------";
   Container dcArray = getDataContainers();
@@ -316,7 +320,7 @@ bool DataContainerArray::doesDataContainerExist(const QString& name) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataContainerArray::doesAttributeMatrixExist(const DataArrayPath& path)
+bool DataContainerArray::doesAttributeMatrixExist(const DataArrayPath& path) const
 {
   if(!doesDataContainerExist(path.getDataContainerName()))
   {
@@ -330,7 +334,7 @@ bool DataContainerArray::doesAttributeMatrixExist(const DataArrayPath& path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataContainerArray::doesAttributeArrayExist(const DataArrayPath& path)
+bool DataContainerArray::doesAttributeArrayExist(const DataArrayPath& path) const
 {
   if(!doesDataContainerExist(path.getDataContainerName()))
   {
@@ -364,16 +368,15 @@ QMap<QString, IDataContainerBundle::Pointer>& DataContainerArray::getDataContain
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataContainerBundle::Pointer DataContainerArray::getDataContainerBundle(const QString& name)
+IDataContainerBundle::Pointer DataContainerArray::getDataContainerBundle(const QString& name) const
 {
   IDataContainerBundle::Pointer f = IDataContainerBundle::NullPointer();
-  for(QMap<QString, IDataContainerBundle::Pointer>::iterator it = m_DataContainerBundles.begin(); it != m_DataContainerBundles.end(); ++it)
+
+  auto match = std::find_if(m_DataContainerBundles.cbegin(), m_DataContainerBundles.cend(), [&name](auto bundle) { return bundle->getName() == name; });
+
+  if(match != m_DataContainerBundles.cend())
   {
-    if((*it)->getName() == name)
-    {
-      f = *it;
-      break;
-    }
+    f = *match;
   }
 
   return f;
@@ -590,7 +593,7 @@ void DataContainerArray::setMontageTileFromDataContainerName(AbstractFilter* fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArray::Pointer DataContainerArray::deepCopy(bool forceNoAllocate)
+DataContainerArray::Pointer DataContainerArray::deepCopy(bool forceNoAllocate) const
 {
   DataContainerArray::Pointer dcaCopy = DataContainerArray::New();
   const Container dcs = getDataContainers();
@@ -645,4 +648,29 @@ void DataContainerArray::renameDataArrayPaths(DataArrayPath::RenameContainer ren
       }
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArray::Pointer DataContainerArray::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArray::Pointer DataContainerArray::New()
+{
+  Pointer sharedPtr(new(DataContainerArray));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerArray::getNameOfClass() const
+{
+  return QString("DataContainerArray");
+}
+
+// -----------------------------------------------------------------------------
+QString DataContainerArray::ClassName()
+{
+  return QString("DataContainerArray");
 }

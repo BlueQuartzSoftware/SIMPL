@@ -33,9 +33,14 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "CreateGeometry.h"
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/Common/Constants.h"
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
@@ -54,6 +59,8 @@
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/Geometry/HexahedralGeom.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -920,7 +927,7 @@ AbstractFilter::Pointer CreateGeometry::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getCompiledLibraryName() const
+QString CreateGeometry::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -928,7 +935,7 @@ const QString CreateGeometry::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getBrandingString() const
+QString CreateGeometry::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -936,7 +943,7 @@ const QString CreateGeometry::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getFilterVersion() const
+QString CreateGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -947,7 +954,7 @@ const QString CreateGeometry::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getGroupName() const
+QString CreateGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -955,7 +962,7 @@ const QString CreateGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid CreateGeometry::getUuid()
+QUuid CreateGeometry::getUuid() const
 {
   return QUuid("{9ac220b9-14f9-581a-9bac-5714467589cc}");
 }
@@ -963,7 +970,7 @@ const QUuid CreateGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getSubGroupName() const
+QString CreateGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GeometryFilters;
 }
@@ -971,7 +978,444 @@ const QString CreateGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateGeometry::getHumanLabel() const
+QString CreateGeometry::getHumanLabel() const
 {
   return "Create Geometry";
+}
+
+// -----------------------------------------------------------------------------
+CreateGeometry::Pointer CreateGeometry::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<CreateGeometry> CreateGeometry::New()
+{
+  struct make_shared_enabler : public CreateGeometry
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getNameOfClass() const
+{
+  return QString("CreateGeometry");
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::ClassName()
+{
+  return QString("CreateGeometry");
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setGeometryType(int value)
+{
+  m_GeometryType = value;
+}
+
+// -----------------------------------------------------------------------------
+int CreateGeometry::getGeometryType() const
+{
+  return m_GeometryType;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setDataContainerName(const DataArrayPath& value)
+{
+  m_DataContainerName = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getDataContainerName() const
+{
+  return m_DataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setSharedVertexListArrayPath0(const DataArrayPath& value)
+{
+  m_SharedVertexListArrayPath0 = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getSharedVertexListArrayPath0() const
+{
+  return m_SharedVertexListArrayPath0;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setSharedVertexListArrayPath1(const DataArrayPath& value)
+{
+  m_SharedVertexListArrayPath1 = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getSharedVertexListArrayPath1() const
+{
+  return m_SharedVertexListArrayPath1;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setSharedVertexListArrayPath2(const DataArrayPath& value)
+{
+  m_SharedVertexListArrayPath2 = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getSharedVertexListArrayPath2() const
+{
+  return m_SharedVertexListArrayPath2;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setSharedVertexListArrayPath3(const DataArrayPath& value)
+{
+  m_SharedVertexListArrayPath3 = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getSharedVertexListArrayPath3() const
+{
+  return m_SharedVertexListArrayPath3;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setSharedVertexListArrayPath4(const DataArrayPath& value)
+{
+  m_SharedVertexListArrayPath4 = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getSharedVertexListArrayPath4() const
+{
+  return m_SharedVertexListArrayPath4;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setSharedVertexListArrayPath5(const DataArrayPath& value)
+{
+  m_SharedVertexListArrayPath5 = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getSharedVertexListArrayPath5() const
+{
+  return m_SharedVertexListArrayPath5;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setSharedEdgeListArrayPath(const DataArrayPath& value)
+{
+  m_SharedEdgeListArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getSharedEdgeListArrayPath() const
+{
+  return m_SharedEdgeListArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setSharedTriListArrayPath(const DataArrayPath& value)
+{
+  m_SharedTriListArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getSharedTriListArrayPath() const
+{
+  return m_SharedTriListArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setSharedQuadListArrayPath(const DataArrayPath& value)
+{
+  m_SharedQuadListArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getSharedQuadListArrayPath() const
+{
+  return m_SharedQuadListArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setSharedTetListArrayPath(const DataArrayPath& value)
+{
+  m_SharedTetListArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getSharedTetListArrayPath() const
+{
+  return m_SharedTetListArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setSharedHexListArrayPath(const DataArrayPath& value)
+{
+  m_SharedHexListArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getSharedHexListArrayPath() const
+{
+  return m_SharedHexListArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setXBoundsArrayPath(const DataArrayPath& value)
+{
+  m_XBoundsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getXBoundsArrayPath() const
+{
+  return m_XBoundsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setYBoundsArrayPath(const DataArrayPath& value)
+{
+  m_YBoundsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getYBoundsArrayPath() const
+{
+  return m_YBoundsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setZBoundsArrayPath(const DataArrayPath& value)
+{
+  m_ZBoundsArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath CreateGeometry::getZBoundsArrayPath() const
+{
+  return m_ZBoundsArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setDimensions(const IntVec3Type& value)
+{
+  m_Dimensions = value;
+}
+
+// -----------------------------------------------------------------------------
+IntVec3Type CreateGeometry::getDimensions() const
+{
+  return m_Dimensions;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setOrigin(const FloatVec3Type& value)
+{
+  m_Origin = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type CreateGeometry::getOrigin() const
+{
+  return m_Origin;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setSpacing(const FloatVec3Type& value)
+{
+  m_Spacing = value;
+}
+
+// -----------------------------------------------------------------------------
+FloatVec3Type CreateGeometry::getSpacing() const
+{
+  return m_Spacing;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setImageCellAttributeMatrixName(const QString& value)
+{
+  m_ImageCellAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getImageCellAttributeMatrixName() const
+{
+  return m_ImageCellAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setRectGridCellAttributeMatrixName(const QString& value)
+{
+  m_RectGridCellAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getRectGridCellAttributeMatrixName() const
+{
+  return m_RectGridCellAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setVertexAttributeMatrixName0(const QString& value)
+{
+  m_VertexAttributeMatrixName0 = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getVertexAttributeMatrixName0() const
+{
+  return m_VertexAttributeMatrixName0;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setVertexAttributeMatrixName1(const QString& value)
+{
+  m_VertexAttributeMatrixName1 = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getVertexAttributeMatrixName1() const
+{
+  return m_VertexAttributeMatrixName1;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setVertexAttributeMatrixName2(const QString& value)
+{
+  m_VertexAttributeMatrixName2 = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getVertexAttributeMatrixName2() const
+{
+  return m_VertexAttributeMatrixName2;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setVertexAttributeMatrixName3(const QString& value)
+{
+  m_VertexAttributeMatrixName3 = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getVertexAttributeMatrixName3() const
+{
+  return m_VertexAttributeMatrixName3;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setVertexAttributeMatrixName4(const QString& value)
+{
+  m_VertexAttributeMatrixName4 = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getVertexAttributeMatrixName4() const
+{
+  return m_VertexAttributeMatrixName4;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setVertexAttributeMatrixName5(const QString& value)
+{
+  m_VertexAttributeMatrixName5 = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getVertexAttributeMatrixName5() const
+{
+  return m_VertexAttributeMatrixName5;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setEdgeAttributeMatrixName(const QString& value)
+{
+  m_EdgeAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getEdgeAttributeMatrixName() const
+{
+  return m_EdgeAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setFaceAttributeMatrixName0(const QString& value)
+{
+  m_FaceAttributeMatrixName0 = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getFaceAttributeMatrixName0() const
+{
+  return m_FaceAttributeMatrixName0;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setFaceAttributeMatrixName1(const QString& value)
+{
+  m_FaceAttributeMatrixName1 = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getFaceAttributeMatrixName1() const
+{
+  return m_FaceAttributeMatrixName1;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setTetCellAttributeMatrixName(const QString& value)
+{
+  m_TetCellAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getTetCellAttributeMatrixName() const
+{
+  return m_TetCellAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setHexCellAttributeMatrixName(const QString& value)
+{
+  m_HexCellAttributeMatrixName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString CreateGeometry::getHexCellAttributeMatrixName() const
+{
+  return m_HexCellAttributeMatrixName;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setTreatWarningsAsErrors(bool value)
+{
+  m_TreatWarningsAsErrors = value;
+}
+
+// -----------------------------------------------------------------------------
+bool CreateGeometry::getTreatWarningsAsErrors() const
+{
+  return m_TreatWarningsAsErrors;
+}
+
+// -----------------------------------------------------------------------------
+void CreateGeometry::setArrayHandling(bool value)
+{
+  m_ArrayHandling = value;
+}
+
+// -----------------------------------------------------------------------------
+bool CreateGeometry::getArrayHandling() const
+{
+  return m_ArrayHandling;
 }

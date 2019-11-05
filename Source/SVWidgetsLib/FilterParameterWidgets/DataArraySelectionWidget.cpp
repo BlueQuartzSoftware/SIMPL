@@ -35,8 +35,10 @@
 
 #include "DataArraySelectionWidget.h"
 
+#include <QtCore/QDebug>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 

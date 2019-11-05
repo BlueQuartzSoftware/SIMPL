@@ -313,3 +313,15 @@ bool FilterListModel::isEmpty()
 {
   return rowCount(QModelIndex()) <= 0;
 }
+
+// -----------------------------------------------------------------------------
+QString FilterListModel::getNameOfClass() const
+{
+  return QString("FilterListModel");
+}
+
+// -----------------------------------------------------------------------------
+QString FilterListModel::ClassName()
+{
+  return QString("FilterListModel");
+}

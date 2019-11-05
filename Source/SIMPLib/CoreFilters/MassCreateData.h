@@ -36,9 +36,10 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The MassCreateData class. See [Filter documentation](@ref MassCreateData) for details.
@@ -46,123 +47,164 @@
 class SIMPLib_EXPORT MassCreateData : public AbstractFilter
 {
   Q_OBJECT
-    PYB11_CREATE_BINDINGS(MassCreateData SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-  public:
-    SIMPL_SHARED_POINTERS(MassCreateData)
-    SIMPL_FILTER_NEW_MACRO(MassCreateData)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MassCreateData, AbstractFilter)
+#ifdef SIMPL_ENABLE_PYTHON
+  PYB11_CREATE_BINDINGS(MassCreateData SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(MassCreateData)
+  PYB11_FILTER_NEW_MACRO(MassCreateData)
+  PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+  PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
+#endif
 
-    ~MassCreateData() override;
+public:
+  using Self = MassCreateData;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
-    Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
-    const QString getCompiledLibraryName() const override;
+  /**
+   * @brief Returns the name of the class for MassCreateData
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for MassCreateData
+   */
+  static QString ClassName();
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-     */
-    const QString getBrandingString() const override;
+  ~MassCreateData() override;
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    const QString getFilterVersion() const override;
+  /**
+   * @brief Setter property for DataContainerName
+   */
+  void setDataContainerName(const DataArrayPath& value);
+  /**
+   * @brief Getter property for DataContainerName
+   * @return Value of DataContainerName
+   */
+  DataArrayPath getDataContainerName() const;
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+  Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getGroupName() const override;
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
+  QString getCompiledLibraryName() const override;
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getSubGroupName() const override;
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+   */
+  QString getBrandingString() const override;
 
-    /**
-     * @brief getUuid Return the unique identifier for this filter.
-     * @return A QUuid object.
-     */
-    const QUuid getUuid() override;
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  QString getFilterVersion() const override;
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    const QString getHumanLabel() const override;
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void setupFilterParameters() override;
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getGroupName() const override;
 
-    /**
-     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getSubGroupName() const override;
 
-    /**
-     * @brief execute Reimplemented from @see AbstractFilter class
-     */
-    void execute() override;
+  /**
+   * @brief getUuid Return the unique identifier for this filter.
+   * @return A QUuid object.
+   */
+  QUuid getUuid() const override;
 
-    /**
-     * @brief preflight Reimplemented from @see AbstractFilter class
-     */
-    void preflight() override;
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  QString getHumanLabel() const override;
 
-  signals:
-    /**
-     * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-     * be pushed from a user-facing control (such as a widget)
-     * @param filter Filter instance pointer
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void setupFilterParameters() override;
 
-    /**
-     * @brief parametersChanged Emitted when any Filter parameter is changed internally
-     */
-    void parametersChanged();
+  /**
+   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-     */
-    void preflightAboutToExecute();
+  /**
+   * @brief execute Reimplemented from @see AbstractFilter class
+   */
+  void execute() override;
 
-    /**
-     * @brief preflightExecuted Emitted just after calling dataCheck()
-     */
-    void preflightExecuted();
+  /**
+   * @brief preflight Reimplemented from @see AbstractFilter class
+   */
+  void preflight() override;
 
-  protected:
-    MassCreateData();
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+signals:
+  /**
+   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+   * be pushed from a user-facing control (such as a widget)
+   * @param filter Filter instance pointer
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+  /**
+   * @brief parametersChanged Emitted when any Filter parameter is changed internally
+   */
+  void parametersChanged();
 
-  public:
-    MassCreateData(const MassCreateData&) = delete;            // Copy Constructor Not Implemented
-    MassCreateData(MassCreateData&&) = delete;                 // Move Constructor Not Implemented
-    MassCreateData& operator=(const MassCreateData&) = delete; // Copy Assignment Not Implemented
-    MassCreateData& operator=(MassCreateData&&) = delete;      // Move Assignment Not Implemented
+  /**
+   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+   */
+  void preflightAboutToExecute();
+
+  /**
+   * @brief preflightExecuted Emitted just after calling dataCheck()
+   */
+  void preflightExecuted();
+
+protected:
+  MassCreateData();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
+
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
+
+public:
+  MassCreateData(const MassCreateData&) = delete;            // Copy Constructor Not Implemented
+  MassCreateData(MassCreateData&&) = delete;                 // Move Constructor Not Implemented
+  MassCreateData& operator=(const MassCreateData&) = delete; // Copy Assignment Not Implemented
+  MassCreateData& operator=(MassCreateData&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  DataArrayPath m_DataContainerName = {};
 };
 

@@ -124,7 +124,7 @@ MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionF
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
-    req.componentDimensions = QVector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
+    req.componentDimensions = std::vector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
   }
   //  if(IGeometry::Type::Unknown != geometryType)
   //  {
@@ -147,7 +147,7 @@ MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionF
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
-    req.componentDimensions = QVector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
+    req.componentDimensions = std::vector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
   }
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {
@@ -229,4 +229,113 @@ void MultiDataArraySelectionFilterParameter::dataArrayPathRenamed(AbstractFilter
 
   m_SetterCallback(paths);
   emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+}
+
+// -----------------------------------------------------------------------------
+MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterParameter::New()
+{
+  Pointer sharedPtr(new(MultiDataArraySelectionFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString MultiDataArraySelectionFilterParameter::getNameOfClass() const
+{
+  return QString("MultiDataArraySelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString MultiDataArraySelectionFilterParameter::ClassName()
+{
+  return QString("MultiDataArraySelectionFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionFilterParameter::setDefaultPaths(const QVector<DataArrayPath>& value)
+{
+  m_DefaultPaths = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<DataArrayPath> MultiDataArraySelectionFilterParameter::getDefaultPaths() const
+{
+  return m_DefaultPaths;
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionFilterParameter::setDefaultGeometryTypes(const IGeometry::Types& value)
+{
+  m_DefaultGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Types MultiDataArraySelectionFilterParameter::getDefaultGeometryTypes() const
+{
+  return m_DefaultGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionFilterParameter::setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value)
+{
+  m_DefaultAttributeMatrixTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<AttributeMatrix::Type> MultiDataArraySelectionFilterParameter::getDefaultAttributeMatrixTypes() const
+{
+  return m_DefaultAttributeMatrixTypes;
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionFilterParameter::setDefaultAttributeArrayTypes(const QVector<QString>& value)
+{
+  m_DefaultAttributeArrayTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+QVector<QString> MultiDataArraySelectionFilterParameter::getDefaultAttributeArrayTypes() const
+{
+  return m_DefaultAttributeArrayTypes;
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionFilterParameter::setDefaultComponentDimensions(const std::vector<std::vector<size_t>>& value)
+{
+  m_DefaultComponentDimensions = value;
+}
+
+// -----------------------------------------------------------------------------
+std::vector<std::vector<size_t>> MultiDataArraySelectionFilterParameter::getDefaultComponentDimensions() const
+{
+  return m_DefaultComponentDimensions;
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionFilterParameter::setSetterCallback(const MultiDataArraySelectionFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+MultiDataArraySelectionFilterParameter::SetterCallbackType MultiDataArraySelectionFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionFilterParameter::setGetterCallback(const MultiDataArraySelectionFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+MultiDataArraySelectionFilterParameter::GetterCallbackType MultiDataArraySelectionFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
 }

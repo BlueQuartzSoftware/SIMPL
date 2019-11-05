@@ -40,6 +40,7 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"

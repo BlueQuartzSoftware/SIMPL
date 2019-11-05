@@ -35,20 +35,23 @@
 
 #pragma once
 
+#include <memory>
+
 #include <map>
 
 #include <QtCore/QString>
 #include <QtCore/QUuid>
+#include <QtCore/QJsonObject>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observable.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-#include "SIMPLib/SIMPLib.h"
 
 class AbstractFilterParametersReader;
 class ISIMPLibPlugin;
+class DataContainerArray;
+using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
 
 /**
  * @class AbstractFilter AbstractFilter.h DREAM3DLib/Common/AbstractFilter.h
@@ -76,7 +79,11 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   Q_PROPERTY(bool Removing READ getRemoving WRITE setRemoving)
   
   // This line MUST be first when exposing a class and properties to Python
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(AbstractFilter)
+  PYB11_SHARED_POINTERS(AbstractFilter)
+  PYB11_STATIC_NEW_MACRO(AbstractFilter)
   PYB11_PROPERTY(QString NameOfClass READ getNameOfClass)  
   PYB11_PROPERTY(QString GroupName READ getGroupName)
   PYB11_PROPERTY(QString SubGroupName READ getSubGroupName)
@@ -100,15 +107,30 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_METHOD(void notifyProgressMessage ARGS progress messageText)
   PYB11_METHOD(void clearErrorCode)
   PYB11_METHOD(void clearWarningCode)
-  
+#endif
+
   // Friend declarations for RenameDataPath so that it can set and check the instance's created data by ID.
   friend void RenameDataPath::AlertFilterCreatedPath(AbstractFilter*, RenameDataPath::DataID_t, const DataArrayPath&);
 
 public:
-  SIMPL_SHARED_POINTERS(AbstractFilter)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractFilter, Observable)
-  SIMPL_STATIC_NEW_MACRO(AbstractFilter)
-    
+  using Self = AbstractFilter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for AbstractFilter
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for AbstractFilter
+   */
+  static QString ClassName();
+
+  static Pointer New();
+
   ~AbstractFilter() override;
 
   /**
@@ -123,34 +145,34 @@ public:
    * top level sorting in the GUI
    * @return Group name
    */
-  virtual const QString getGroupName() const;
+  virtual QString getGroupName() const;
 
   /**
    * @brief getSubGroupName Returns the subgroup name for the filter, which determines its
    * second level sorting in the GUI
    * @return Subgroup name
    */
-  virtual const QString getSubGroupName() const;
+  virtual QString getSubGroupName() const;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  virtual const QUuid getUuid();
-  
+  virtual QUuid getUuid() const;
+
   /**
    * @brief getHumanLabel Returns the human label for the filter, which determines its
    * primary labeling inthe GUI
    * @return Human lable
    */
-  virtual const QString getHumanLabel() const;
+  virtual QString getHumanLabel() const;
 
   /**
    * @brief getBrandingString Returns the branding string for the filter, which is a tag
    * used to denote the filter's association with a specific plugin
    * @return Branding string
    */
-  virtual const QString getBrandingString() const;
+  virtual QString getBrandingString() const;
 
   /**
    * @brief getCompiledLibraryName Returns the library name for the filter, which is the
@@ -158,13 +180,13 @@ public:
    * plugin
    * @return Compiled library name
    */
-  virtual const QString getCompiledLibraryName() const;
+  virtual QString getCompiledLibraryName() const;
 
   /**
    * @brief generateHtmlSummary Generates a brief HTML summary of the filter
    * @return HTML summary
    */
-  virtual const QString generateHtmlSummary() const;
+  virtual QString generateHtmlSummary() const;
 
   /**
    * @brief setupFilterParameters Instantiates the filter parameters that are allowed
@@ -242,21 +264,69 @@ public:
    * value is an empty string.
    * @return
    */
-  virtual const QString getFilterVersion() const;
+  virtual QString getFilterVersion() const;
 
-  SIMPL_INSTANCE_PROPERTY(DataContainerArray::Pointer, DataContainerArray)
+  /**
+   * @brief Setter property for DataContainerArray
+   */
+  void setDataContainerArray(const DataContainerArrayShPtrType& value);
+  /**
+   * @brief Getter property for DataContainerArray
+   * @return Value of DataContainerArray
+   */
+  DataContainerArrayShPtrType getDataContainerArray() const;
 
-  SIMPL_INSTANCE_PROPERTY(FilterParameterVectorType, FilterParameters)
+  /**
+   * @brief Setter property for FilterParameters
+   */
+  void setFilterParameters(const FilterParameterVectorType& value);
+  /**
+   * @brief Getter property for FilterParameters
+   * @return Value of FilterParameters
+   */
+  FilterParameterVectorType getFilterParameters() const;
 
-  SIMPL_GET_PROPERTY(int, ErrorCode)
+  /**
+   * @brief Getter property for ErrorCode
+   * @return Value of ErrorCode
+   */
+  int getErrorCode() const;
 
-  SIMPL_GET_PROPERTY(int, WarningCode)
+  /**
+   * @brief Getter property for WarningCode
+   * @return Value of WarningCode
+   */
+  int getWarningCode() const;
 
-  SIMPL_INSTANCE_PROPERTY(bool, InPreflight)
+  /**
+   * @brief Setter property for InPreflight
+   */
+  void setInPreflight(bool value);
+  /**
+   * @brief Getter property for InPreflight
+   * @return Value of InPreflight
+   */
+  bool getInPreflight() const;
 
-  SIMPL_INSTANCE_PROPERTY(bool, Enabled)
+  /**
+   * @brief Setter property for Enabled
+   */
+  void setEnabled(bool value);
+  /**
+   * @brief Getter property for Enabled
+   * @return Value of Enabled
+   */
+  bool getEnabled() const;
 
-  SIMPL_INSTANCE_PROPERTY(bool, Removing)
+  /**
+   * @brief Setter property for Removing
+   */
+  void setRemoving(bool value);
+  /**
+   * @brief Getter property for Removing
+   * @return Value of Removing
+   */
+  bool getRemoving() const;
 
   // ------------------------------
   // These functions allow interogating the position the filter is in the pipeline and the previous and next filters
@@ -265,16 +335,41 @@ public:
   /**
   * @brief This property tells which index the filter is in a pipeline
   */
-  SIMPL_INSTANCE_PROPERTY(int, PipelineIndex)
+  /**
+   * @brief Setter property for PipelineIndex
+   */
+  void setPipelineIndex(int value);
+  /**
+   * @brief Getter property for PipelineIndex
+   * @return Value of PipelineIndex
+   */
+  int getPipelineIndex() const;
 
   /**
   * @brief Returns the previous filter
   */
-  SIMPL_INSTANCE_PROPERTY(AbstractFilter::WeakPointer, PreviousFilter)
+  /**
+   * @brief Setter property for PreviousFilter
+   */
+  void setPreviousFilter(const AbstractFilter::WeakPointer& value);
+  /**
+   * @brief Getter property for PreviousFilter
+   * @return Value of PreviousFilter
+   */
+  AbstractFilter::WeakPointer getPreviousFilter() const;
+
   /**
   * @brief Returns the next filter in the pipeline
   */
-  SIMPL_INSTANCE_PROPERTY(AbstractFilter::WeakPointer, NextFilter)
+  /**
+   * @brief Setter property for NextFilter
+   */
+  void setNextFilter(const AbstractFilter::WeakPointer& value);
+  /**
+   * @brief Getter property for NextFilter
+   * @return Value of NextFilter
+   */
+  AbstractFilter::WeakPointer getNextFilter() const;
 
   /**
    * @brief clearErrorCondition
@@ -443,7 +538,7 @@ protected:
    * the ID is used and the paths match, return false.  If the ID has not been used, add the path
    * to the createdPaths map.
    */
-  bool checkIfPathRenamed(const RenameDataPath::DataID_t id, const DataArrayPath& path);
+  bool checkIfPathRenamed(RenameDataPath::DataID_t id, const DataArrayPath& path);
 
   /**
    * @brief Adds the specified change to the list of renamed DataArrayPaths.
@@ -460,6 +555,15 @@ protected slots:
   virtual void cleanupFilter();
 
 private:
+  DataContainerArrayShPtrType m_DataContainerArray = {};
+  FilterParameterVectorType m_FilterParameters = {};
+  bool m_InPreflight = {};
+  bool m_Enabled = {};
+  bool m_Removing = {};
+  int m_PipelineIndex = {};
+  AbstractFilter::WeakPointer m_PreviousFilter = {};
+  AbstractFilter::WeakPointer m_NextFilter = {};
+
   bool m_Cancel;
   QUuid m_Uuid;
   int m_ErrorCode = 0;

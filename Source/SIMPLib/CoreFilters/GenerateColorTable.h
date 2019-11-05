@@ -4,11 +4,12 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonArray>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The GenerateColorTable class. See [Filter documentation](@ref generatecolortable) for details.
@@ -16,131 +17,201 @@
 class SIMPLib_EXPORT GenerateColorTable : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(GenerateColorTable SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(GenerateColorTable)
+  PYB11_FILTER_NEW_MACRO(GenerateColorTable)
   PYB11_PROPERTY(QString SelectedPresetName READ getSelectedPresetName WRITE setSelectedPresetName)
   PYB11_PROPERTY(QJsonArray SelectedPresetControlPoints READ getSelectedPresetControlPoints WRITE setSelectedPresetControlPoints)
   PYB11_PROPERTY(DataArrayPath SelectedDataArrayPath READ getSelectedDataArrayPath WRITE setSelectedDataArrayPath)
   PYB11_PROPERTY(QString RgbArrayName READ getRgbArrayName WRITE setRgbArrayName)
+#endif
 
-  public:
-    SIMPL_SHARED_POINTERS(GenerateColorTable)
-    SIMPL_FILTER_NEW_MACRO(GenerateColorTable)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(GenerateColorTable, AbstractFilter)
+public:
+  using Self = GenerateColorTable;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  
+  /**
+   * @brief Returns a NullPointer wrapped by a shared_ptr<>
+   * @return
+   */
+  static Pointer NullPointer();
 
-    ~GenerateColorTable() override;
+  /**
+   * @brief Creates a new object wrapped in a shared_ptr<>
+   * @return
+   */
+  static Pointer New();
 
-    SIMPL_INSTANCE_PROPERTY(QString, SelectedPresetName)
-    Q_PROPERTY(QString SelectedPresetName READ getSelectedPresetName WRITE setSelectedPresetName)
+  /**
+   * @brief Returns the name of the class for GenerateColorTable
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for GenerateColorTable
+   */
+  static QString ClassName();
 
-    SIMPL_INSTANCE_PROPERTY(QJsonArray, SelectedPresetControlPoints)
-    Q_PROPERTY(QJsonArray SelectedPresetControlPoints READ getSelectedPresetControlPoints WRITE setSelectedPresetControlPoints)
+  ~GenerateColorTable() override;
 
-    SIMPL_INSTANCE_PROPERTY(DataArrayPath, SelectedDataArrayPath)
-    Q_PROPERTY(DataArrayPath SelectedDataArrayPath READ getSelectedDataArrayPath WRITE setSelectedDataArrayPath)
+  /**
+   * @brief Setter property for SelectedPresetName
+   */
+  void setSelectedPresetName(const QString& value);
+  /**
+   * @brief Getter property for SelectedPresetName
+   * @return Value of SelectedPresetName
+   */
+  QString getSelectedPresetName() const;
 
-    SIMPL_INSTANCE_PROPERTY(QString, RgbArrayName)
-    Q_PROPERTY(QString RgbArrayName READ getRgbArrayName WRITE setRgbArrayName)
+  Q_PROPERTY(QString SelectedPresetName READ getSelectedPresetName WRITE setSelectedPresetName)
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
-    const QString getCompiledLibraryName() const override;
+  /**
+   * @brief Setter property for SelectedPresetControlPoints
+   */
+  void setSelectedPresetControlPoints(const QJsonArray& value);
+  /**
+   * @brief Getter property for SelectedPresetControlPoints
+   * @return Value of SelectedPresetControlPoints
+   */
+  QJsonArray getSelectedPresetControlPoints() const;
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    const QString getBrandingString() const override;
+  Q_PROPERTY(QJsonArray SelectedPresetControlPoints READ getSelectedPresetControlPoints WRITE setSelectedPresetControlPoints)
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    const QString getFilterVersion() const override;
+  /**
+   * @brief Setter property for SelectedDataArrayPath
+   */
+  void setSelectedDataArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for SelectedDataArrayPath
+   * @return Value of SelectedDataArrayPath
+   */
+  DataArrayPath getSelectedDataArrayPath() const;
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+  Q_PROPERTY(DataArrayPath SelectedDataArrayPath READ getSelectedDataArrayPath WRITE setSelectedDataArrayPath)
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getGroupName() const override;
+  /**
+   * @brief Setter property for RgbArrayName
+   */
+  void setRgbArrayName(const QString& value);
+  /**
+   * @brief Getter property for RgbArrayName
+   * @return Value of RgbArrayName
+   */
+  QString getRgbArrayName() const;
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getSubGroupName() const override;
+  Q_PROPERTY(QString RgbArrayName READ getRgbArrayName WRITE setRgbArrayName)
 
-    /**
-     * @brief getUuid Return the unique identifier for this filter.
-     * @return A QUuid object.
-     */
-    const QUuid getUuid() override;
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
+  QString getCompiledLibraryName() const override;
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    const QString getHumanLabel() const override;
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+   */
+  QString getBrandingString() const override;
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void setupFilterParameters() override;
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  QString getFilterVersion() const override;
 
-    /**
-     * @brief execute Reimplemented from @see AbstractFilter class
-     */
-    void execute() override;
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    void preflight() override;
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getGroupName() const override;
 
-  signals:
-    /**
-     * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-     * be pushed from a user-facing control (such as a widget)
-     * @param filter Filter instance pointer 
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  QString getSubGroupName() const override;
 
-    /**
-     * @brief parametersChanged Emitted when any Filter parameter is changed internally
-     */
-    void parametersChanged();
+  /**
+   * @brief getUuid Return the unique identifier for this filter.
+   * @return A QUuid object.
+   */
+  QUuid getUuid() const override;
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-     */
-    void preflightAboutToExecute();
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  QString getHumanLabel() const override;
 
-    /**
-     * @brief preflightExecuted Emitted just after calling dataCheck()
-     */
-    void preflightExecuted();
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void setupFilterParameters() override;
 
-  protected:
-    GenerateColorTable();
+  /**
+   * @brief execute Reimplemented from @see AbstractFilter class
+   */
+  void execute() override;
 
-    /**
-    * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-    */
-    void dataCheck();
+  /**
+   * @brief preflight Reimplemented from @see AbstractFilter class
+   */
+  void preflight() override;
 
-    /**
-    * @brief Initializes all the private instance variables.
-    */
-    void initialize();
+signals:
+  /**
+   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+   * be pushed from a user-facing control (such as a widget)
+   * @param filter Filter instance pointer
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-  public:
-    GenerateColorTable(const GenerateColorTable&) = delete; // Copy Constructor Not Implemented
-    GenerateColorTable(GenerateColorTable&&) = delete;      // Move Constructor Not Implemented
-    GenerateColorTable& operator=(const GenerateColorTable&) = delete; // Copy Assignment Not Implemented
-    GenerateColorTable& operator=(GenerateColorTable&&) = delete;      // Move Assignment Not Implemented
+  /**
+   * @brief parametersChanged Emitted when any Filter parameter is changed internally
+   */
+  void parametersChanged();
+
+  /**
+   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+   */
+  void preflightAboutToExecute();
+
+  /**
+   * @brief preflightExecuted Emitted just after calling dataCheck()
+   */
+  void preflightExecuted();
+
+protected:
+  GenerateColorTable();
+
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
+
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
+
+public:
+  GenerateColorTable(const GenerateColorTable&) = delete;            // Copy Constructor Not Implemented
+  GenerateColorTable(GenerateColorTable&&) = delete;                 // Move Constructor Not Implemented
+  GenerateColorTable& operator=(const GenerateColorTable&) = delete; // Copy Assignment Not Implemented
+  GenerateColorTable& operator=(GenerateColorTable&&) = delete;      // Move Assignment Not Implemented
+
+private:
+  QString m_SelectedPresetName = {};
+  QJsonArray m_SelectedPresetControlPoints = {};
+  DataArrayPath m_SelectedDataArrayPath = {};
+  QString m_RgbArrayName = {};
 };
 

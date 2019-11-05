@@ -32,6 +32,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/SIMPLib.h"
 
@@ -40,9 +42,22 @@
 class SIMPLib_EXPORT ITransformContainer : public Observable
 {
 public:
-  SIMPL_SHARED_POINTERS(ITransformContainer)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ITransformContainer, Observable)
-  
+  using Self = ITransformContainer;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for ITransformContainer
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for ITransformContainer
+   */
+  static QString ClassName();
+
   ITransformContainer();
   ~ITransformContainer() override;
 
@@ -56,4 +71,5 @@ public:
   ITransformContainer& operator=(const ITransformContainer&) = delete; // Copy Assignment Not Implemented
   ITransformContainer& operator=(ITransformContainer&&) = delete;      // Move Assignment Not Implemented
 
+private:
 };

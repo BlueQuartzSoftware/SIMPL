@@ -3,8 +3,6 @@
 // -----------------------------------------------------------------------------
 #pragma once
 
-
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/ApplyImageTransforms.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Filtering/FilterFactory.hpp"

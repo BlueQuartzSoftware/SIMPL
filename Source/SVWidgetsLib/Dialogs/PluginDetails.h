@@ -54,8 +54,16 @@ class PluginDetails : public QWidget, private Ui::PluginDetails
     PluginDetails(QWidget* parent = nullptr);
     ~PluginDetails() override;
 
-    SIMPL_INSTANCE_PROPERTY(QString, PluginName)
-  
+    /**
+     * @brief Setter property for PluginName
+     */
+    void setPluginName(const QString& value);
+    /**
+     * @brief Getter property for PluginName
+     * @return Value of PluginName
+     */
+    QString getPluginName() const;
+
     /**
      * @brief Load the details for the plugin name stored in the PluginName property
      */
@@ -72,5 +80,8 @@ class PluginDetails : public QWidget, private Ui::PluginDetails
     PluginDetails(PluginDetails&&) = delete;       // Move Constructor Not Implemented
     PluginDetails& operator=(const PluginDetails&) = delete; // Copy Assignment Not Implemented
     PluginDetails& operator=(PluginDetails&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    QString m_PluginName = {};
 };
 

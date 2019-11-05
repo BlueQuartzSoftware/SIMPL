@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
 
 #include "CalculatorSeparator.h"
@@ -42,7 +44,12 @@
 class SIMPLib_EXPORT CommaSeparator : public CalculatorSeparator
 {
   public:
-    SIMPL_SHARED_POINTERS(CommaSeparator)
+    using Self = CommaSeparator;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
     static Pointer New()
     {
@@ -61,5 +68,7 @@ class SIMPLib_EXPORT CommaSeparator : public CalculatorSeparator
     CommaSeparator(CommaSeparator&&) = delete;      // Move Constructor Not Implemented
     CommaSeparator& operator=(const CommaSeparator&) = delete; // Copy Assignment Not Implemented
     CommaSeparator& operator=(CommaSeparator&&) = delete;      // Move Assignment Not Implemented
+
+  private:
 };
 

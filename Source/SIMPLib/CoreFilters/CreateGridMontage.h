@@ -47,39 +47,81 @@ class SIMPLib_EXPORT CreateGridMontage : public AbstractFilter
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
 public:
-  SIMPL_SHARED_POINTERS(CreateGridMontage)
-  SIMPL_FILTER_NEW_MACRO(CreateGridMontage)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateGridMontage, AbstractFilter)
+  using Self = CreateGridMontage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  static Pointer New();
+  
+  QString CreateGridMontage::getNameOfClass() const override;
+  static QString CreateGridMontage::ClassName();
+  //static int CreateGridMontage::IsTypeOf(const char* type);
 
   ~CreateGridMontage() override;
 
-  SIMPL_FILTER_PARAMETER(QString, MontageName)
+  /**
+   * @brief Getter for the MontageName property
+   * @return
+   */
+  QString getMontageName() const;
+  
+  /**
+   * @brief Setter for the MontageName property
+   * @param value
+   */
+  void setMontageName(const QString& value);
+
   Q_PROPERTY(QString MontageName READ getMontageName WRITE setMontageName)
 
-  SIMPL_FILTER_PARAMETER(DataContainerGrid, GridSelection)
+  /**
+   * @brief Getter for the GridSelection property.
+   * @return
+   */
+  DataContainerGrid getGridSelection() const;
+
+  /**
+   * @brief Setter for the GridSelection property.
+   * @param value
+   */
+  void setGridSelection(const DataContainerGrid& value);
+
   Q_PROPERTY(DataContainerGrid GridSelection READ getGridSelection WRITE setGridSelection)
 
-  SIMPL_FILTER_PARAMETER(QStringList, DataContainerNameList)
+  /**
+    * @brief Getter for the DataContainerNameList property
+    * @return
+    */
+  QStringList getDataContainerNameList() const;
+
+  /**
+   * @brief Setter for the DataContainerNameList property
+   * @param value
+   */
+  void setDataContainerNameList(const QStringList& value);
+
   Q_PROPERTY(QStringList DataContainerNameList READ getDataContainerNameList WRITE setDataContainerNameList)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */
-  const QString getCompiledLibraryName() const override;
+  QString getCompiledLibraryName() const override;
 
   /**
    * @brief getBrandingString Returns the branding string for the filter, which is a tag
    * used to denote the filter's association with specific plugins
    * @return Branding string
    */
-  const QString getBrandingString() const override;
+  QString getBrandingString() const override;
 
   /**
    * @brief getFilterVersion Returns a version string for this filter. Default
    * value is an empty string.
    * @return
    */
-  const QString getFilterVersion() const override;
+  QString getFilterVersion() const override;
 
   /**
    * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -89,23 +131,23 @@ public:
   /**
    * @brief getGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getGroupName() const override;
+  QString getGroupName() const override;
 
   /**
    * @brief getSubGroupName Reimplemented from @see AbstractFilter class
    */
-  const QString getSubGroupName() const override;
+  QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  const QUuid getUuid() override;
+  QUuid getUuid() const override;
 
   /**
    * @brief getHumanLabel Reimplemented from @see AbstractFilter class
    */
-  const QString getHumanLabel() const override;
+  QString getHumanLabel() const override;
 
   /**
    * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -161,6 +203,11 @@ protected:
    * @brief Initializes all the private instance variables.
    */
   void initialize();
+
+private:
+  QString m_MontageName;
+  DataContainerGrid m_GridSelection;
+  QStringList m_DataContainerNameList;
 
 public:
   CreateGridMontage(const CreateGridMontage&) = delete;            // Copy Constructor Not Implemented

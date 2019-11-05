@@ -29,10 +29,13 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "ArraySelectionExample.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -144,7 +147,7 @@ AbstractFilter::Pointer ArraySelectionExample::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getCompiledLibraryName() const
+QString ArraySelectionExample::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -152,7 +155,7 @@ const QString ArraySelectionExample::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getGroupName() const
+QString ArraySelectionExample::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -160,7 +163,7 @@ const QString ArraySelectionExample::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid ArraySelectionExample::getUuid()
+QUuid ArraySelectionExample::getUuid() const
 {
   return QUuid("{1a9b7e20-6f6f-50b8-bbfa-8117450919a5}");
 }
@@ -168,7 +171,7 @@ const QUuid ArraySelectionExample::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getSubGroupName() const
+QString ArraySelectionExample::getSubGroupName() const
 {
   return "Test";
 }
@@ -176,7 +179,48 @@ const QString ArraySelectionExample::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getHumanLabel() const
+QString ArraySelectionExample::getHumanLabel() const
 {
   return "DataContainerArrayProxy Example";
+}
+
+// -----------------------------------------------------------------------------
+ArraySelectionExample::Pointer ArraySelectionExample::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<ArraySelectionExample> ArraySelectionExample::New()
+{
+  struct make_shared_enabler : public ArraySelectionExample
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString ArraySelectionExample::getNameOfClass() const
+{
+  return QString("ArraySelectionExample");
+}
+
+// -----------------------------------------------------------------------------
+QString ArraySelectionExample::ClassName()
+{
+  return QString("ArraySelectionExample");
+}
+
+// -----------------------------------------------------------------------------
+void ArraySelectionExample::setDataContainerArrayProxy(const DataContainerArrayProxy& value)
+{
+  m_DataContainerArrayProxy = value;
+}
+
+// -----------------------------------------------------------------------------
+DataContainerArrayProxy ArraySelectionExample::getDataContainerArrayProxy() const
+{
+  return m_DataContainerArrayProxy;
 }

@@ -41,7 +41,6 @@
 
 #include <QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
 
@@ -55,8 +54,21 @@ class AbstractDataStructureContainer;
 class SIMPLib_EXPORT IDataStructureNode
 {
 public:
-  SIMPL_SHARED_POINTERS(IDataStructureNode)
-  SIMPL_TYPE_MACRO(IDataStructureNode)
+  using Self = IDataStructureNode;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<Self>;
+  static Pointer NullPointer();
+
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  virtual QString getNameOfClass() const;
+  /**
+   * @brief Returns the name of the class for AbstractMessage
+   */
+  static QString ClassName();
 
   using ParentType = AbstractDataStructureContainer;
   // using ParentWkPtr = std::weak_ptr<ParentType>;
@@ -205,7 +217,7 @@ protected:
    * @param parent
    */
   void createParentConnection(IDataStructureNode* child, AbstractDataStructureContainer* parent) const;
-  
+
   /**
    * @brief Clears the child's parent pointer.  This does not remove the child from the parent's collection.
    * THIS METHOD IS ONLY USED BY IDataStructureNode<T> AND SHOULD NOT BE USED BY ANY CLASS THAT DERIVES FROM IT.

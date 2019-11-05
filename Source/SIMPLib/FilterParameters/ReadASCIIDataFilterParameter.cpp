@@ -82,3 +82,28 @@ void ReadASCIIDataFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, 
 
   emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }
+
+// -----------------------------------------------------------------------------
+ReadASCIIDataFilterParameter::Pointer ReadASCIIDataFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+ReadASCIIDataFilterParameter::Pointer ReadASCIIDataFilterParameter::New()
+{
+  Pointer sharedPtr(new(ReadASCIIDataFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString ReadASCIIDataFilterParameter::getNameOfClass() const
+{
+  return QString("ReadASCIIDataFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString ReadASCIIDataFilterParameter::ClassName()
+{
+  return QString("ReadASCIIDataFilterParameter");
+}

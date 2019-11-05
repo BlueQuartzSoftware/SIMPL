@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -65,9 +67,23 @@
 class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(DynamicTableFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(DynamicTableFilterParameter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DynamicTableFilterParameter, FilterParameter)
+    using Self = DynamicTableFilterParameter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static Pointer New();
+
+    /**
+     * @brief Returns the name of the class for DynamicTableFilterParameter
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for DynamicTableFilterParameter
+     */
+    static QString ClassName();
 
     using SetterCallbackType = std::function<void(DynamicTableData)>;
     using GetterCallbackType = std::function<DynamicTableData(void)>;
@@ -99,9 +115,35 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
 
     ~DynamicTableFilterParameter() override;
 
-    SIMPL_INSTANCE_PROPERTY(DynamicTableData, DefaultTableData)
-    SIMPL_INSTANCE_PROPERTY(int, ErrorCondition)
-    SIMPL_INSTANCE_PROPERTY(QString, ErrorMessage)
+    /**
+     * @brief Setter property for DefaultTableData
+     */
+    void setDefaultTableData(const DynamicTableData& value);
+    /**
+     * @brief Getter property for DefaultTableData
+     * @return Value of DefaultTableData
+     */
+    DynamicTableData getDefaultTableData() const;
+
+    /**
+     * @brief Setter property for ErrorCondition
+     */
+    void setErrorCondition(int value);
+    /**
+     * @brief Getter property for ErrorCondition
+     * @return Value of ErrorCondition
+     */
+    int getErrorCondition() const;
+
+    /**
+     * @brief Setter property for ErrorMessage
+     */
+    void setErrorMessage(const QString& value);
+    /**
+     * @brief Getter property for ErrorMessage
+     * @return Value of ErrorMessage
+     */
+    QString getErrorMessage() const;
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls
@@ -127,15 +169,30 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
     * that this FilterParameter subclass represents.
     * from the filter parameter.
     */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+     * @brief Setter property for SetterCallback
+     */
+    void setSetterCallback(const DynamicTableFilterParameter::SetterCallbackType& value);
+    /**
+     * @brief Getter property for SetterCallback
+     * @return Value of SetterCallback
+     */
+    DynamicTableFilterParameter::SetterCallbackType getSetterCallback() const;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
     * @return The GetterCallback
     */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
-
+    /**
+     * @brief Setter property for GetterCallback
+     */
+    void setGetterCallback(const DynamicTableFilterParameter::GetterCallbackType& value);
+    /**
+     * @brief Getter property for GetterCallback
+     * @return Value of GetterCallback
+     */
+    DynamicTableFilterParameter::GetterCallbackType getGetterCallback() const;
 
   protected:
       /**
@@ -149,5 +206,12 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
     DynamicTableFilterParameter(DynamicTableFilterParameter&&) = delete;      // Move Constructor Not Implemented
     DynamicTableFilterParameter& operator=(const DynamicTableFilterParameter&) = delete; // Copy Assignment Not Implemented
     DynamicTableFilterParameter& operator=(DynamicTableFilterParameter&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    DynamicTableData m_DefaultTableData = {};
+    int m_ErrorCondition = {};
+    QString m_ErrorMessage = {};
+    DynamicTableFilterParameter::SetterCallbackType m_SetterCallback = {};
+    DynamicTableFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 

@@ -33,13 +33,18 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <memory>
+
 #include "WriteTriangleGeometry.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 
+#include <QtCore/QTextStream>
+
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
@@ -47,6 +52,8 @@
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Utilities/FileSystemPathHelper.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 #define WRITE_EDGES_FILE 0
 
@@ -298,7 +305,7 @@ AbstractFilter::Pointer WriteTriangleGeometry::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getCompiledLibraryName() const
+QString WriteTriangleGeometry::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -306,7 +313,7 @@ const QString WriteTriangleGeometry::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getBrandingString() const
+QString WriteTriangleGeometry::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -314,7 +321,7 @@ const QString WriteTriangleGeometry::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getFilterVersion() const
+QString WriteTriangleGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -325,7 +332,7 @@ const QString WriteTriangleGeometry::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getGroupName() const
+QString WriteTriangleGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -333,7 +340,7 @@ const QString WriteTriangleGeometry::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid WriteTriangleGeometry::getUuid()
+QUuid WriteTriangleGeometry::getUuid() const
 {
   return QUuid("{5e523ec1-49ac-541e-a4ba-6fa725798b91}");
 }
@@ -341,7 +348,7 @@ const QUuid WriteTriangleGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getSubGroupName() const
+QString WriteTriangleGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::OutputFilters;
 }
@@ -349,7 +356,72 @@ const QString WriteTriangleGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getHumanLabel() const
+QString WriteTriangleGeometry::getHumanLabel() const
 {
   return "Export Triangle Geometry";
+}
+
+// -----------------------------------------------------------------------------
+WriteTriangleGeometry::Pointer WriteTriangleGeometry::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<WriteTriangleGeometry> WriteTriangleGeometry::New()
+{
+  struct make_shared_enabler : public WriteTriangleGeometry
+  {
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString WriteTriangleGeometry::getNameOfClass() const
+{
+  return QString("WriteTriangleGeometry");
+}
+
+// -----------------------------------------------------------------------------
+QString WriteTriangleGeometry::ClassName()
+{
+  return QString("WriteTriangleGeometry");
+}
+
+// -----------------------------------------------------------------------------
+void WriteTriangleGeometry::setDataContainerSelection(const DataArrayPath& value)
+{
+  m_DataContainerSelection = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath WriteTriangleGeometry::getDataContainerSelection() const
+{
+  return m_DataContainerSelection;
+}
+
+// -----------------------------------------------------------------------------
+void WriteTriangleGeometry::setOutputNodesFile(const QString& value)
+{
+  m_OutputNodesFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString WriteTriangleGeometry::getOutputNodesFile() const
+{
+  return m_OutputNodesFile;
+}
+
+// -----------------------------------------------------------------------------
+void WriteTriangleGeometry::setOutputTrianglesFile(const QString& value)
+{
+  m_OutputTrianglesFile = value;
+}
+
+// -----------------------------------------------------------------------------
+QString WriteTriangleGeometry::getOutputTrianglesFile() const
+{
+  return m_OutputTrianglesFile;
 }

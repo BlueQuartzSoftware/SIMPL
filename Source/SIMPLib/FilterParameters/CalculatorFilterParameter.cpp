@@ -130,3 +130,52 @@ void CalculatorFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, con
     }
   }
 }
+
+// -----------------------------------------------------------------------------
+CalculatorFilterParameter::Pointer CalculatorFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+CalculatorFilterParameter::Pointer CalculatorFilterParameter::New()
+{
+  Pointer sharedPtr(new(CalculatorFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString CalculatorFilterParameter::getNameOfClass() const
+{
+  return QString("CalculatorFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString CalculatorFilterParameter::ClassName()
+{
+  return QString("CalculatorFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void CalculatorFilterParameter::setSetterCallback(const CalculatorFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+CalculatorFilterParameter::SetterCallbackType CalculatorFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void CalculatorFilterParameter::setGetterCallback(const CalculatorFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+CalculatorFilterParameter::GetterCallbackType CalculatorFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

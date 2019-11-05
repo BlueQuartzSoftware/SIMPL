@@ -104,3 +104,52 @@ void FileListInfoFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = jsonObj;
   }
 }
+
+// -----------------------------------------------------------------------------
+FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::New()
+{
+  Pointer sharedPtr(new(FileListInfoFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString FileListInfoFilterParameter::getNameOfClass() const
+{
+  return QString("FileListInfoFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString FileListInfoFilterParameter::ClassName()
+{
+  return QString("FileListInfoFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void FileListInfoFilterParameter::setSetterCallback(const FileListInfoFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+FileListInfoFilterParameter::SetterCallbackType FileListInfoFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void FileListInfoFilterParameter::setGetterCallback(const FileListInfoFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+FileListInfoFilterParameter::GetterCallbackType FileListInfoFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

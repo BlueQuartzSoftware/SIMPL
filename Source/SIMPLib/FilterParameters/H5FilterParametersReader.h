@@ -35,11 +35,12 @@
 
 #pragma once
 
+#include <memory>
+
 #include "hdf5.h"
 
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
@@ -53,116 +54,140 @@
 class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersReader
 {
   public:
-    SIMPL_SHARED_POINTERS(H5FilterParametersReader)
-    SIMPL_STATIC_NEW_MACRO(H5FilterParametersReader)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(H5FilterParametersReader, AbstractFilterParametersReader)
+    using Self = H5FilterParametersReader;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
 
-     ~H5FilterParametersReader() override;
+    static Pointer New();
 
-     /**
-      * @brief OpenDREAM3DFile This will open the HDF5 based DREAM3D file and open the proper HDF5 internal
-      * group that is associated with the pipeline storage
-      * @param filepath
-      * @param fid The HDF5 file Id that represents the open HDF5 file
-      * @return Return a pointer to a newly instantiated instance of this class. A Null Pointer will be returned if
-      * the file can not be opened or the group is missing.
-      */
-     static Pointer OpenDREAM3DFileForReadingPipeline(QString filePath, hid_t& fid);
+    /**
+     * @brief Returns the name of the class for H5FilterParametersReader
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for H5FilterParametersReader
+     */
+    static QString ClassName();
 
-     SIMPL_INSTANCE_PROPERTY(hid_t, PipelineGroupId)
+    ~H5FilterParametersReader() override;
 
-     hid_t getCurrentGroupId() const;
+    /**
+     * @brief OpenDREAM3DFile This will open the HDF5 based DREAM3D file and open the proper HDF5 internal
+     * group that is associated with the pipeline storage
+     * @param filepath
+     * @param fid The HDF5 file Id that represents the open HDF5 file
+     * @return Return a pointer to a newly instantiated instance of this class. A Null Pointer will be returned if
+     * the file can not be opened or the group is missing.
+     */
+    static Pointer OpenDREAM3DFileForReadingPipeline(QString filePath, hid_t& fid);
 
-     int openFilterGroup(AbstractFilter* filter, int index) override;
-     int closeFilterGroup() override;
+    /**
+     * @brief Setter property for PipelineGroupId
+     */
+    void setPipelineGroupId(const hid_t& value);
+    /**
+     * @brief Getter property for PipelineGroupId
+     * @return Value of PipelineGroupId
+     */
+    hid_t getPipelineGroupId() const;
 
-     /**
-      * @brief ReadPipelineFromFile
-      * @param filePath
-      * @return
-      */
-     FilterPipeline::Pointer readPipelineFromFile(QString filePath, IObserver* obs = nullptr);
+    hid_t getCurrentGroupId() const;
 
-     /**
-      * @brief readPipelineFromFile
-      * @param fid
-      * @param obs
-      * @return
-      */
-     FilterPipeline::Pointer readPipelineFromFile(hid_t fid, IObserver* obs = nullptr);
+    int openFilterGroup(AbstractFilter* filter, int index) override;
+    int closeFilterGroup() override;
 
-     /**
-      * @brief getJsonFromFile
-      * @param filePath
-      * @param obs
-      * @return
-      */
-     QString getJsonFromFile(QString filePath, IObserver* obs = nullptr);
+    /**
+     * @brief ReadPipelineFromFile
+     * @param filePath
+     * @return
+     */
+    FilterPipeline::Pointer readPipelineFromFile(QString filePath, IObserver* obs = nullptr);
 
-     QString readString(const QString name, QString value) override;
-     QVector<QString> readStrings(const QString name, QVector<QString> value) override;
-     QStringList readStringList(const QString name, QStringList value) override;
+    /**
+     * @brief readPipelineFromFile
+     * @param fid
+     * @param obs
+     * @return
+     */
+    FilterPipeline::Pointer readPipelineFromFile(hid_t fid, IObserver* obs = nullptr);
 
-     int8_t readValue(const QString name, int8_t value) override;
-     int16_t readValue(const QString name, int16_t value) override;
-     int32_t readValue(const QString name, int32_t value) override;
-     int64_t readValue(const QString name, int64_t value) override;
-     uint8_t readValue(const QString name, uint8_t value) override;
-     uint16_t readValue(const QString name, uint16_t value) override;
-     uint32_t readValue(const QString name, uint32_t value) override;
-     uint64_t readValue(const QString name, uint64_t value) override;
-     float readValue(const QString name, float value) override;
-     double readValue(const QString name, double value) override;
-     bool readValue(const QString name, bool value) override;
-     AttributeMatrix::Type readValue(const QString name, AttributeMatrix::Type value) override;
+    /**
+     * @brief getJsonFromFile
+     * @param filePath
+     * @param obs
+     * @return
+     */
+    QString getJsonFromFile(QString filePath, IObserver* obs = nullptr);
 
-     QVector<int8_t> readArray(const QString name, QVector<int8_t> value) override;
-     QVector<int16_t> readArray(const QString name, QVector<int16_t> value) override;
-     QVector<int32_t> readArray(const QString name, QVector<int32_t> value) override;
-     QVector<int64_t> readArray(const QString name, QVector<int64_t> value) override;
-     QVector<uint8_t> readArray(const QString name, QVector<uint8_t> value) override;
-     QVector<uint16_t> readArray(const QString name, QVector<uint16_t> value) override;
-     QVector<uint32_t> readArray(const QString name, QVector<uint32_t> value) override;
-     QVector<uint64_t> readArray(const QString name, QVector<uint64_t> value) override;
-     QVector<float> readArray(const QString name, QVector<float> value) override;
-     QVector<double> readArray(const QString name, QVector<double> value) override;
+    QString readString(const QString& name, QString value) override;
+    QVector<QString> readStrings(const QString& name, QVector<QString> value) override;
+    QStringList readStringList(const QString& name, QStringList value) override;
 
-     IntVec3Type readIntVec3(const QString name, IntVec3Type v) override;
-     FloatVec3Type readFloatVec3(const QString name, FloatVec3Type v) override;
+    int8_t readValue(const QString& name, int8_t value) override;
+    int16_t readValue(const QString& name, int16_t value) override;
+    int32_t readValue(const QString& name, int32_t value) override;
+    int64_t readValue(const QString& name, int64_t value) override;
+    uint8_t readValue(const QString& name, uint8_t value) override;
+    uint16_t readValue(const QString& name, uint16_t value) override;
+    uint32_t readValue(const QString& name, uint32_t value) override;
+    uint64_t readValue(const QString& name, uint64_t value) override;
+    float readValue(const QString& name, float value) override;
+    double readValue(const QString& name, double value) override;
+    bool readValue(const QString& name, bool value) override;
+    AttributeMatrix::Type readValue(const QString& name, AttributeMatrix::Type value) override;
 
-     Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString name, Float2ndOrderPoly_t v) override;
-     Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString name, Float3rdOrderPoly_t v) override;
-     Float4thOrderPoly_t readFloat4thOrderPoly(const QString name, Float4thOrderPoly_t v) override;
-     FileListInfo_t readFileListInfo(const QString name, FileListInfo_t v) override;
-     ComparisonInput_t readComparisonInput(const QString name, ComparisonInput_t v, int vectorPos) override;
-     ComparisonInputs readComparisonInputs(const QString name, ComparisonInputs v) override;
-     ComparisonInputsAdvanced readComparisonInputsAdvanced(const QString name, ComparisonInputsAdvanced v) override;
-     AxisAngleInput_t readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos) override;
-     QVector<AxisAngleInput_t> readAxisAngles(const QString name, QVector<AxisAngleInput_t> defValue) override;
-     QSet<QString> readArraySelections(const QString name, QSet<QString> v) override;
+    QVector<int8_t> readArray(const QString& name, QVector<int8_t> value) override;
+    QVector<int16_t> readArray(const QString& name, QVector<int16_t> value) override;
+    QVector<int32_t> readArray(const QString& name, QVector<int32_t> value) override;
+    QVector<int64_t> readArray(const QString& name, QVector<int64_t> value) override;
+    QVector<uint8_t> readArray(const QString& name, QVector<uint8_t> value) override;
+    QVector<uint16_t> readArray(const QString& name, QVector<uint16_t> value) override;
+    QVector<uint32_t> readArray(const QString& name, QVector<uint32_t> value) override;
+    QVector<uint64_t> readArray(const QString& name, QVector<uint64_t> value) override;
+    QVector<float> readArray(const QString& name, QVector<float> value) override;
+    QVector<double> readArray(const QString& name, QVector<double> value) override;
 
-     DataContainerArrayProxy readDataContainerArrayProxy(const QString& name, DataContainerArrayProxy v) override;
-     DataArrayPath readDataArrayPath(const QString& name, DataArrayPath v) override;
-     QVector<DataArrayPath> readDataArrayPathVector(const QString& name, QVector<DataArrayPath> def) override;
-     DynamicTableData readDynamicTableData(const QString& name, DynamicTableData def) override;
+    IntVec3Type readIntVec3(const QString& name, IntVec3Type v) override;
+    FloatVec3Type readFloatVec3(const QString& name, FloatVec3Type v) override;
 
-     QPair<double, double> readPairOfDoubles(const QString& name, QPair<double, double> v) override;
+    Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString& name, Float2ndOrderPoly_t v) override;
+    Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString& name, Float3rdOrderPoly_t v) override;
+    Float4thOrderPoly_t readFloat4thOrderPoly(const QString& name, Float4thOrderPoly_t v) override;
+    FileListInfo_t readFileListInfo(const QString& name, FileListInfo_t v) override;
+    ComparisonInput_t readComparisonInput(const QString& name, ComparisonInput_t v, int vectorPos) override;
+    ComparisonInputs readComparisonInputs(const QString& name, ComparisonInputs v) override;
+    ComparisonInputsAdvanced readComparisonInputsAdvanced(const QString& name, ComparisonInputsAdvanced v) override;
+    AxisAngleInput_t readAxisAngle(const QString& name, AxisAngleInput_t v, int vectorPos) override;
+    QVector<AxisAngleInput_t> readAxisAngles(const QString& name, QVector<AxisAngleInput_t> defValue) override;
+    QSet<QString> readArraySelections(const QString& name, QSet<QString> v) override;
 
-   protected:
-     H5FilterParametersReader();
+    DataContainerArrayProxy readDataContainerArrayProxy(const QString& name, DataContainerArrayProxy v) override;
+    DataArrayPath readDataArrayPath(const QString& name, DataArrayPath v) override;
+    QVector<DataArrayPath> readDataArrayPathVector(const QString& name, QVector<DataArrayPath> def) override;
+    DynamicTableData readDynamicTableData(const QString& name, DynamicTableData def) override;
 
-   private:
-     hid_t m_CurrentGroupId = -1;
-     QJsonObject m_PipelineRoot;
-     QJsonObject m_CurrentFilterObject;
-     int m_Version = -1;
-     int m_CurrentIndex = -1;
+    QPair<double, double> readPairOfDoubles(const QString& name, QPair<double, double> v) override;
 
-   public:
-     H5FilterParametersReader(const H5FilterParametersReader&) = delete;            // Copy Constructor Not Implemented
-     H5FilterParametersReader(H5FilterParametersReader&&) = delete;                 // Move Constructor Not Implemented
-     H5FilterParametersReader& operator=(const H5FilterParametersReader&) = delete; // Copy Assignment Not Implemented
-     H5FilterParametersReader& operator=(H5FilterParametersReader&&) = delete;      // Move Assignment Not Implemented
+  protected:
+    H5FilterParametersReader();
+
+  private:
+    hid_t m_PipelineGroupId = {};
+
+    hid_t m_CurrentGroupId = -1;
+    QJsonObject m_PipelineRoot;
+    QJsonObject m_CurrentFilterObject;
+    int m_Version = -1;
+    int m_CurrentIndex = -1;
+
+  public:
+    H5FilterParametersReader(const H5FilterParametersReader&) = delete;            // Copy Constructor Not Implemented
+    H5FilterParametersReader(H5FilterParametersReader&&) = delete;                 // Move Constructor Not Implemented
+    H5FilterParametersReader& operator=(const H5FilterParametersReader&) = delete; // Copy Assignment Not Implemented
+    H5FilterParametersReader& operator=(H5FilterParametersReader&&) = delete;      // Move Assignment Not Implemented
 };
 
 

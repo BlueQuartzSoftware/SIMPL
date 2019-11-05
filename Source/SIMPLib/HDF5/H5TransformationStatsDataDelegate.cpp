@@ -607,10 +607,9 @@ int H5TransformationStatsDataDelegate::writeFeatureDiameterInfo(TransformationSt
   /*
    * Feature Diameter Info is encode as 3 floats: BinStepSize, MaxDiameter, MinDiameter
    */
-  float featureDiameterInfo[3] = {0.0f, 0.0f, 0.0f};
-  std::tie(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[2]) = data->getFeatureDiameterInfo();
+  std::array<float, 3> featureDiameterInfo = data->getFeatureDiameterInfo();
 
-  return QH5Lite::writePointerDataset(pid, SIMPL::StringConstants::Feature_Diameter_Info, rank, dims, featureDiameterInfo);
+  return QH5Lite::writePointerDataset(pid, SIMPL::StringConstants::Feature_Diameter_Info, rank, dims, featureDiameterInfo.data());
 }
 
 // -----------------------------------------------------------------------------
@@ -625,7 +624,7 @@ int H5TransformationStatsDataDelegate::readFeatureDiameterInfo(TransformationSta
   float featureDiameterInfo[3] = {0.0f, 0.0f, 0.0f};
 
   err = QH5Lite::readPointerDataset(groupId, SIMPL::StringConstants::Feature_Diameter_Info, featureDiameterInfo);
-  data->setFeatureDiameterInfo(std::make_tuple(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[1]));
+  data->setFeatureDiameterInfo(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[1]);
   return err;
 }
 
@@ -653,4 +652,29 @@ int H5TransformationStatsDataDelegate::readBinNumbers(TransformationStatsData* d
   err = p->readH5Data(groupId);
   data->setBinNumbers(p);
   return err;
+}
+
+// -----------------------------------------------------------------------------
+H5TransformationStatsDataDelegate::Pointer H5TransformationStatsDataDelegate::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+H5TransformationStatsDataDelegate::Pointer H5TransformationStatsDataDelegate::New()
+{
+  Pointer sharedPtr(new(H5TransformationStatsDataDelegate));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString H5TransformationStatsDataDelegate::getNameOfClass() const
+{
+  return QString("H5TransformationStatsDataDelegate");
+}
+
+// -----------------------------------------------------------------------------
+QString H5TransformationStatsDataDelegate::ClassName()
+{
+  return QString("H5TransformationStatsDataDelegate");
 }

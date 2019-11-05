@@ -33,9 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
@@ -47,7 +44,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
-
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 class RemoveComponentFromArrayTest
 {

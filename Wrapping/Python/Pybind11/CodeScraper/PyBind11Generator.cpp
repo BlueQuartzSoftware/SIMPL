@@ -313,6 +313,10 @@ void PyBind11Generator::generatePybind11Header(const QString& hFile)
   {
     return;
   }
+  if(fi.baseName() == "SIMPLPythonMacros")
+  {
+    return;
+  }
 
   {
     // Read the Source File

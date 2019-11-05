@@ -35,7 +35,6 @@
 
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Filtering/ComparisonInputsAdvanced.h"
 #include "SIMPLib/Filtering/ComparisonSet.h"
@@ -49,13 +48,30 @@
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 
 class MultiThresholdObjects2Test
 {
 public:
   MultiThresholdObjects2Test() = default;
   virtual ~MultiThresholdObjects2Test() = default;
-  SIMPL_TYPE_MACRO(MultiThresholdObjects2Test)
+
+  /**
+   * @brief Returns the name of the class for MultiThresholdObjects2Test
+   */
+  QString getNameOfClass() const
+  {
+    return QString("MultiThresholdObjects2Test");
+  }
+
+  /**
+   * @brief Returns the name of the class for MultiThresholdObjects2Test
+   */
+  QString ClassName()
+  {
+    return QString("MultiThresholdObjects2Test");
+  }
 
   // -----------------------------------------------------------------------------
   //

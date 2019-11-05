@@ -124,3 +124,64 @@ void AttributeMatrixCreationFilterParameter::dataArrayPathRenamed(AbstractFilter
     }
   }
 }
+
+// -----------------------------------------------------------------------------
+AttributeMatrixCreationFilterParameter::Pointer AttributeMatrixCreationFilterParameter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrixCreationFilterParameter::Pointer AttributeMatrixCreationFilterParameter::New()
+{
+  Pointer sharedPtr(new(AttributeMatrixCreationFilterParameter));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+QString AttributeMatrixCreationFilterParameter::getNameOfClass() const
+{
+  return QString("AttributeMatrixCreationFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+QString AttributeMatrixCreationFilterParameter::ClassName()
+{
+  return QString("AttributeMatrixCreationFilterParameter");
+}
+
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationFilterParameter::setDefaultGeometryTypes(const IGeometry::Types& value)
+{
+  m_DefaultGeometryTypes = value;
+}
+
+// -----------------------------------------------------------------------------
+IGeometry::Types AttributeMatrixCreationFilterParameter::getDefaultGeometryTypes() const
+{
+  return m_DefaultGeometryTypes;
+}
+
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationFilterParameter::setSetterCallback(const AttributeMatrixCreationFilterParameter::SetterCallbackType& value)
+{
+  m_SetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrixCreationFilterParameter::SetterCallbackType AttributeMatrixCreationFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationFilterParameter::setGetterCallback(const AttributeMatrixCreationFilterParameter::GetterCallbackType& value)
+{
+  m_GetterCallback = value;
+}
+
+// -----------------------------------------------------------------------------
+AttributeMatrixCreationFilterParameter::GetterCallbackType AttributeMatrixCreationFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
+}

@@ -36,10 +36,11 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <memory>
+
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ScaleVolume class. See [Filter documentation](@ref scalevolume) for details.
@@ -47,53 +48,122 @@
 class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ScaleVolume SUPERCLASS AbstractFilter)
+    PYB11_SHARED_POINTERS(ScaleVolume)
+    PYB11_FILTER_NEW_MACRO(ScaleVolume)
+    PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+    PYB11_FILTER_PARAMETER(DataArrayPath, SurfaceDataContainerName)
+    PYB11_FILTER_PARAMETER(bool, ApplyToVoxelVolume)
+    PYB11_FILTER_PARAMETER(bool, ApplyToSurfaceMesh)
+    PYB11_FILTER_PARAMETER(FloatVec3Type, ScaleFactor)
     PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
     PYB11_PROPERTY(DataArrayPath SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
     PYB11_PROPERTY(bool ApplyToVoxelVolume READ getApplyToVoxelVolume WRITE setApplyToVoxelVolume)
     PYB11_PROPERTY(bool ApplyToSurfaceMesh READ getApplyToSurfaceMesh WRITE setApplyToSurfaceMesh)
     PYB11_PROPERTY(FloatVec3Type ScaleFactor READ getScaleFactor WRITE setScaleFactor)
+#endif
 
   public:
-    SIMPL_SHARED_POINTERS(ScaleVolume)
-    SIMPL_FILTER_NEW_MACRO(ScaleVolume)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ScaleVolume, AbstractFilter)
+    using Self = ScaleVolume;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<Self>;
+    static Pointer NullPointer();
+
+    static std::shared_ptr<ScaleVolume> New();
+
+    /**
+     * @brief Returns the name of the class for ScaleVolume
+     */
+    QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for ScaleVolume
+     */
+    static QString ClassName();
 
     ~ScaleVolume() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+    /**
+     * @brief Setter property for DataContainerName
+     */
+    void setDataContainerName(const DataArrayPath& value);
+    /**
+     * @brief Getter property for DataContainerName
+     * @return Value of DataContainerName
+     */
+    DataArrayPath getDataContainerName() const;
+
     Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SurfaceDataContainerName)
+    /**
+     * @brief Setter property for SurfaceDataContainerName
+     */
+    void setSurfaceDataContainerName(const DataArrayPath& value);
+    /**
+     * @brief Getter property for SurfaceDataContainerName
+     * @return Value of SurfaceDataContainerName
+     */
+    DataArrayPath getSurfaceDataContainerName() const;
+
     Q_PROPERTY(DataArrayPath SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
 
-    SIMPL_FILTER_PARAMETER(bool, ApplyToVoxelVolume)
+    /**
+     * @brief Setter property for ApplyToVoxelVolume
+     */
+    void setApplyToVoxelVolume(bool value);
+    /**
+     * @brief Getter property for ApplyToVoxelVolume
+     * @return Value of ApplyToVoxelVolume
+     */
+    bool getApplyToVoxelVolume() const;
+
     Q_PROPERTY(bool ApplyToVoxelVolume READ getApplyToVoxelVolume WRITE setApplyToVoxelVolume)
 
-    SIMPL_FILTER_PARAMETER(bool, ApplyToSurfaceMesh)
+    /**
+     * @brief Setter property for ApplyToSurfaceMesh
+     */
+    void setApplyToSurfaceMesh(bool value);
+    /**
+     * @brief Getter property for ApplyToSurfaceMesh
+     * @return Value of ApplyToSurfaceMesh
+     */
+    bool getApplyToSurfaceMesh() const;
+
     Q_PROPERTY(bool ApplyToSurfaceMesh READ getApplyToSurfaceMesh WRITE setApplyToSurfaceMesh)
 
-    SIMPL_FILTER_PARAMETER(FloatVec3Type, ScaleFactor)
+    /**
+     * @brief Setter property for ScaleFactor
+     */
+    void setScaleFactor(const FloatVec3Type& value);
+    /**
+     * @brief Getter property for ScaleFactor
+     * @return Value of ScaleFactor
+     */
+    FloatVec3Type getScaleFactor() const;
+
     Q_PROPERTY(FloatVec3Type ScaleFactor READ getScaleFactor WRITE setScaleFactor)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    const QString getCompiledLibraryName() const override;
+    QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    const QString getBrandingString() const override;
+    QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    const QString getFilterVersion() const override;
+    QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
@@ -103,23 +173,23 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getGroupName() const override;
+    QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    const QString getSubGroupName() const override;
+    QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    const QUuid getUuid() override;
+    QUuid getUuid() const override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    const QString getHumanLabel() const override;
+    QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -187,5 +257,12 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
     ScaleVolume(ScaleVolume&&) = delete;         // Move Constructor Not Implemented
     ScaleVolume& operator=(const ScaleVolume&) = delete; // Copy Assignment Not Implemented
     ScaleVolume& operator=(ScaleVolume&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    DataArrayPath m_DataContainerName = {};
+    DataArrayPath m_SurfaceDataContainerName = {};
+    bool m_ApplyToVoxelVolume = {};
+    bool m_ApplyToSurfaceMesh = {};
+    FloatVec3Type m_ScaleFactor = {};
 };
 

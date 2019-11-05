@@ -34,6 +34,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
 
 // SIMPLib.h MUST be included before this or the guard will block the include but not its uses below.

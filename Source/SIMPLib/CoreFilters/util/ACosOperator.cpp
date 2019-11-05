@@ -58,7 +58,11 @@ ACosOperator::~ACosOperator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ACosOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+void ACosOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath,
+                             QStack<ICalculatorArray::Pointer>& executionStack){CREATE_NEW_ARRAY_ARCTRIG(filter, calculatedArrayPath, executionStack, acos)}
+
+// -----------------------------------------------------------------------------
+ACosOperator::Pointer ACosOperator::NullPointer()
 {
-  CREATE_NEW_ARRAY_ARCTRIG(filter, calculatedArrayPath, executionStack, acos)
+  return Pointer(static_cast<Self*>(nullptr));
 }
