@@ -1,17 +1,38 @@
-// -----------------------------------------------------------------------------
-// Insert your license & copyright information here
-// -----------------------------------------------------------------------------
+/* ============================================================================
+ * Copyright (c) 2019 BlueQuartz Software, LLC
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the names of any of the BlueQuartz Software contributors
+ * may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 #pragma once
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFile>
-#include <QtCore/QString>
-
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/CoreFilters/CreateDataArray.h"
-#include "SIMPLib/CoreFilters/CreateDataContainer.h"
-#include "SIMPLib/CoreFilters/CreateGeometry.h"
-#include "SIMPLib/CoreFilters/DataContainerWriter.h"
+#include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/CoreFilters/GenerateTiltSeries.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
@@ -26,18 +47,37 @@
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
-// -----------------------------------------------------------------------------
-QTextStream& operator<<(QTextStream& out, const FilterPipeline::ExecutionResult& result)
+template <class T>
+bool dataArrayEqual(const T& a, const T& b)
 {
-  out << static_cast<unsigned int>(result);
-  return out;
+  std::vector<size_t> aDims = a.getComponentDimensions();
+  size_t aSize = a.getNumberOfTuples();
+
+  std::vector<size_t> bDims = b.getComponentDimensions();
+  size_t bSize = b.getNumberOfTuples();
+
+  if(aDims != bDims)
+  {
+    return false;
+  }
+
+  if(aSize != bSize)
+  {
+    return false;
+  }
+
+  return std::equal(a.begin(), a.end(), b.begin(), b.end());
 }
 
 // -----------------------------------------------------------------------------
 class GenerateTiltSeriesTest
 {
-  const DataArrayPath k_DCName = DataArrayPath("Data Container", "", "");
-  const DataArrayPath k_CellDataArray = DataArrayPath("Data Container", "Cell Data", "FeatureIds");
+  const DataArrayPath k_CellDataArray = DataArrayPath("SyntheticVolumeDataContainer", "CellData", "FeatureIds");
+  const QString k_RotationBaseString = QString("Rotation_%1_%2");
+  const QString k_FeatureIdsName = QString("FeatureIds");
+  const QString k_SliceDataName = QString("Slice Data");
+  static constexpr int k_NumRotations = 12;
+  static constexpr float k_Increment = 15.0f;
 
 public:
   GenerateTiltSeriesTest() = default;
@@ -53,8 +93,7 @@ public:
   void RemoveTestFiles()
   {
 #if REMOVE_TEST_FILES
-      QFile::remove(UnitTest::GenerateTiltSeriesTest::TestFile1);
-      QFile::remove(UnitTest::GenerateTiltSeriesTest::TestFile2);
+    // QFile::remove(UnitTest::GenerateTiltSeriesTest::TestFile1);
 #endif
   }
 
@@ -63,47 +102,65 @@ public:
   // -----------------------------------------------------------------------------
   int TestGenerateTiltSeriesTest()
   {
-    CreateDataContainer::Pointer createDataContainer = CreateDataContainer::New();
-    createDataContainer->setDataContainerName(k_DCName);
+    DataContainerArray::Pointer dca = DataContainerArray::New();
 
-    CreateGeometry::Pointer createGeometry = CreateGeometry::New();
-    IntVec3Type dims(500, 500, 500);
-    createGeometry->setDimensions(dims);
-    FloatVec3Type spacing(0.25f, 0.5f, 1.2f);
-    createGeometry->setSpacing(spacing);
-    FloatVec3Type origin(-100.34f, 234.947f, 1823.3f);
-    createGeometry->setOrigin(origin);
-    createGeometry->setDataContainerName(k_DCName);
-    createGeometry->setImageCellAttributeMatrixName("Cell Data");
+    DataContainerReader::Pointer dataContainerReader = DataContainerReader::New();
+    dataContainerReader->setDataContainerArray(dca);
+    dataContainerReader->setInputFile(UnitTest::GenerateTiltSeriesTest::TestFile1);
+    DataContainerArrayProxy proxy = dataContainerReader->readDataContainerArrayStructure(UnitTest::GenerateTiltSeriesTest::TestFile1);
+    dataContainerReader->setInputFileDataContainerArrayProxy(proxy);
 
-    CreateDataArray::Pointer createDataArray = CreateDataArray::New();
-    createDataArray->setScalarType(SIMPL::ScalarTypes::Type::Int32);
-    createDataArray->setNumberOfComponents(1);
-    createDataArray->setNewArray(k_CellDataArray);
-
-    GenerateTiltSeries::Pointer generateTiltSeries = GenerateTiltSeries::New();
-    generateTiltSeries->setRotationAxis(0);
-    generateTiltSeries->setIncrement(1.0f);
-    FloatVec3Type sampleSpacing(0.1f, 0.4f, 1.5f);
-    generateTiltSeries->setSpacing(sampleSpacing);
-    generateTiltSeries->setInputDataArrayPath(k_CellDataArray);
-
-    DataContainerWriter::Pointer writer = DataContainerWriter::New();
-    writer->setOutputFile(UnitTest::GenerateTiltSeriesTest::TestFile1);
-
-    FilterPipeline::Pointer pipeline = FilterPipeline::New();
-    pipeline->pushBack(createDataContainer);
-    pipeline->pushBack(createGeometry);
-    pipeline->pushBack(createDataArray);
-    pipeline->pushBack(generateTiltSeries);
-    pipeline->pushBack(writer);
-
-    int err = pipeline->preflightPipeline();
+    dataContainerReader->execute();
+    int err = dataContainerReader->getErrorCode();
     DREAM3D_REQUIRED(err, >=, 0)
 
-    pipeline->execute();
-    FilterPipeline::ExecutionResult result = pipeline->getExecutionResult();
-    DREAM3D_REQUIRE_EQUAL(result, FilterPipeline::ExecutionResult::Completed)
+    DataArrayPath featureIdsPath("", k_SliceDataName, k_FeatureIdsName);
+
+    const std::map<QString, int> rotations = {{"X", 0}, {"Y", 1}, {"Z", 2}};
+
+    GenerateTiltSeries::Pointer generateTiltSeries = GenerateTiltSeries::New();
+    generateTiltSeries->setDataContainerArray(dca);
+    generateTiltSeries->setIncrement(k_Increment);
+    generateTiltSeries->setInputDataArrayPath(k_CellDataArray);
+
+    for(const auto& rotation : rotations)
+    {
+      QString rotationString = rotation.first;
+      int rotationValue = rotation.second;
+      QString outputDc = QString("Rotation_Test_%1_").arg(rotationString);
+
+      generateTiltSeries->setOutputPrefix(outputDc);
+      generateTiltSeries->setRotationAxis(rotationValue);
+
+      for(int i = 0; i < k_NumRotations; i++)
+      {
+        DataArrayPath outputFeatureIdsPath(outputDc + QString::number(i), k_SliceDataName, k_FeatureIdsName);
+
+        QString rotationDc = QString(k_RotationBaseString).arg(rotationString).arg(i);
+        featureIdsPath.setDataContainerName(rotationDc);
+        Int8ArrayType::Pointer dataArray = dca->getPrereqIDataArrayFromPath<Int8ArrayType, AbstractFilter>(nullptr, featureIdsPath);
+        DREAM3D_REQUIRE_VALID_POINTER(dataArray)
+
+        ImageGeom::Pointer imageGeom = dca->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(nullptr, featureIdsPath);
+        DREAM3D_REQUIRE_VALID_POINTER(imageGeom)
+
+        FloatVec3Type spacing = imageGeom->getSpacing();
+        generateTiltSeries->setSpacing(spacing);
+
+        generateTiltSeries->preflight();
+        err = generateTiltSeries->getErrorCode();
+        DREAM3D_REQUIRED(err, >=, 0)
+
+        generateTiltSeries->execute();
+        err = generateTiltSeries->getErrorCode();
+        DREAM3D_REQUIRED(err, >=, 0)
+
+        Int8ArrayType::Pointer testArray = dca->getPrereqIDataArrayFromPath<Int8ArrayType, AbstractFilter>(nullptr, outputFeatureIdsPath);
+        DREAM3D_REQUIRE_VALID_POINTER(testArray)
+
+        DREAM3D_REQUIRE(dataArrayEqual(*testArray, *dataArray))
+      }
+    }
 
     return EXIT_SUCCESS;
   }
@@ -119,6 +176,4 @@ public:
 
     DREAM3D_REGISTER_TEST(RemoveTestFiles())
   }
-
-private:
 };

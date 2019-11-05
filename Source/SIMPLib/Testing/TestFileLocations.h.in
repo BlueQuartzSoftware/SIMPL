@@ -22,8 +22,7 @@ namespace UnitTest
 
   namespace GenerateTiltSeriesTest
   {
-  const QString TestFile1("@TEST_TEMP_DIR@/GenerateTiltSeriesTest.dream3d");
-  const QString TestFile2("@TEST_TEMP_DIR@/GenerateTiltSeriesTest.dream3d");
+  const QString TestFile1("@DREAM3D_DATA_DIR@/Data/GenerateTiltSeries/GenerateTiltSeriesTest.dream3d");
   } // namespace GenerateTiltSeriesTest
 
   namespace RecursivePipelineTest
