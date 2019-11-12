@@ -136,11 +136,11 @@ QVector<QString> FilePathGenerator::GenerateVectorFileList(int start, int end, i
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilePathGenerator::TileRCIncexLayout2D FilePathGenerator::GenerateRCIndexMontageFileList(int rowStart, int rowEnd, int colStart, int colEnd, bool& hasMissingFiles, bool rcOrdering,
+FilePathGenerator::TileRCIndexLayout2D FilePathGenerator::GenerateRCIndexMontageFileList(int rowStart, int rowEnd, int colStart, int colEnd, bool& hasMissingFiles, bool rcOrdering,
                                                                                          const QString& inputPath, const QString& filePrefix, const QString& fileSuffix, const QString& fileExtension,
                                                                                          int paddingDigits)
 {
-  TileRCIncexLayout2D tileLayout2D;
+  TileRCIndexLayout2D tileLayout2D;
 
   QDir dir(inputPath);
   if(!dir.exists())
