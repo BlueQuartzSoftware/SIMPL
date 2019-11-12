@@ -93,7 +93,6 @@ SizeVec3Type GridTileIndex::getTilePos() const
 // -----------------------------------------------------------------------------
 DataContainerShPtr GridTileIndex::getDataContainer() const
 {
-  const AbstractMontage* m = getMontage();
   const GridMontage* montage = dynamic_cast<const GridMontage*>(getMontage());
   if(nullptr == montage)
   {
@@ -108,7 +107,6 @@ DataContainerShPtr GridTileIndex::getDataContainer() const
 // -----------------------------------------------------------------------------
 bool GridTileIndex::isValid() const
 {
-  const AbstractMontage* m = getMontage();
   const GridMontage* montage = dynamic_cast<const GridMontage*>(getMontage());
   if(nullptr == montage)
   {

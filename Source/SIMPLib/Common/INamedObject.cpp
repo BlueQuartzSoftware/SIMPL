@@ -132,3 +132,11 @@ bool INamedObject::operator==(const INamedObject& other) const
 {
   return getNameHash() == other.getNameHash();
 }
+
+// -----------------------------------------------------------------------------
+INamedObject::Pointer INamedObject::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+

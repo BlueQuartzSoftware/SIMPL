@@ -34,6 +34,10 @@
 
 #include "SIMPLib/Common/INamedObject.h"
 
+INamedCollection::INamedCollection() = default;
+
+INamedCollection::~INamedCollection() = default;
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -49,3 +53,11 @@ void INamedCollection::handleRemovingObject(INamedObject* obj)
 {
   obj->removeFromCollection(this);
 }
+
+// -----------------------------------------------------------------------------
+INamedCollection::Pointer INamedCollection::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+

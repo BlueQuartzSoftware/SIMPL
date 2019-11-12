@@ -76,3 +76,11 @@ std::vector<DataArrayPath> AbstractMontage::getDataArrayPaths() const
 
   return paths;
 }
+
+// -----------------------------------------------------------------------------
+AbstractMontage::Pointer AbstractMontage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+

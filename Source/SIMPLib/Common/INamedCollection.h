@@ -32,7 +32,6 @@
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/SIMPLib.h"
 
 class INamedObject;
@@ -47,57 +46,73 @@ class INamedObject;
 class SIMPLib_EXPORT INamedCollection
 {
 public:
-  SIMPL_SHARED_POINTERS(INamedCollection)
+    using Self = INamedCollection;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<const Self>;
+    static Pointer NullPointer();
 
-  using NameList = QStringList;
+    INamedCollection();
+    virtual ~INamedCollection();
 
-  /**
-   * @brief Returns the number of items in the collection.
-   * @return
-   */
-  virtual size_t size() const = 0;
+    INamedCollection(const INamedCollection&) = default;            // Copy Constructor Not Implemented
+    INamedCollection(INamedCollection&&) = default;                 // Move Constructor Not Implemented
+    INamedCollection& operator=(const INamedCollection&) = default; // Copy Assignment Not Implemented
+    INamedCollection& operator=(INamedCollection&&) = default;      // Move Assignment Not Implemented
 
-  /**
-   * @brief Returns true if the collection is empty.  Returns false otherwise.
-   * @return
-   */
-  virtual bool isEmpty() const = 0;
+    using NameList = QStringList;
 
-  /**
-   * @brief Clears the collection of all items.
-   */
-  virtual void clear() = 0;
+    /**
+     * @brief Returns the number of items in the collection.
+     * @return
+     */
+    virtual size_t size() const = 0;
 
-  /**
-   * @brief Erases any item with the given name.
-   * @param name
-   */
-  virtual void erase(const QString& name) = 0;
+    /**
+     * @brief Returns true if the collection is empty.  Returns false otherwise.
+     * @return
+     */
+    virtual bool isEmpty() const = 0;
 
-  /**
-   * @brief Returns true if the collection contains an item with the given name.
-   * Returns false otherwise.
-   * @param name
-   * @return
-   */
-  virtual bool contains(const QString& name) const = 0;
+    /**
+     * @brief Clears the collection of all items.
+     */
+    virtual void clear() = 0;
 
-  /**
-   * @brief Returns a list of all names in the collection.
-   * @return
-   */
-  virtual NameList getNameList() const = 0;
+    /**
+     * @brief Erases any item with the given name.
+     * @param name
+     */
+    virtual void erase(const QString& name) = 0;
 
-protected:
-  /**
-   * @brief Alerts the INamedObject that it has been added to a collection.
-   * @param obj
-   */
-  void handleAddingObject(INamedObject* obj);
+    /**
+     * @brief Returns true if the collection contains an item with the given name.
+     * Returns false otherwise.
+     * @param name
+     * @return
+     */
+    virtual bool contains(const QString& name) const = 0;
 
-  /**
-   * @brief Alerts the INamedObject that it has been removed from a collection.
-   * @param obj
-   */
-  void handleRemovingObject(INamedObject* obj);
+    /**
+     * @brief Returns a list of all names in the collection.
+     * @return
+     */
+    virtual NameList getNameList() const = 0;
+
+  protected:
+    /**
+     * @brief Alerts the INamedObject that it has been added to a collection.
+     * @param obj
+     */
+    void handleAddingObject(INamedObject* obj);
+
+    /**
+     * @brief Alerts the INamedObject that it has been removed from a collection.
+     * @param obj
+     */
+    void handleRemovingObject(INamedObject* obj);
+
+  private:
+
 };

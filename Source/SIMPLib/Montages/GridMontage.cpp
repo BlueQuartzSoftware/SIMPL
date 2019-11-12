@@ -645,3 +645,11 @@ bool GridMontage::setDataContainers(std::vector<DataContainerShPtr> dataContaine
   m_DataContainers = dataContainers;
   return true;
 }
+
+// -----------------------------------------------------------------------------
+GridMontage::Pointer GridMontage::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+

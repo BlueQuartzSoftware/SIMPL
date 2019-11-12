@@ -35,7 +35,6 @@
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/INamedObject.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
 
@@ -62,7 +61,13 @@ using DataContainerArrayShPtr = std::shared_ptr<DataContainerArray>;
 class SIMPLib_EXPORT AbstractMontage : public INamedObject
 {
 public:
-  SIMPL_SHARED_POINTERS(AbstractMontage)
+    using Self = AbstractMontage;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<const Self>;
+    static Pointer NullPointer();
+
 
   using CollectionType = std::vector<DataContainerShPtr>;
   using Iterator = CollectionType::iterator;
@@ -161,6 +166,9 @@ protected:
    * @param name
    */
   AbstractMontage(const QString& name);
+
+  private:
+
 };
 
 using AbstractMontageShPtr = std::shared_ptr<AbstractMontage>;

@@ -32,6 +32,8 @@
 
 #pragma once
 
+#include <QtCore/QString>
+
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Montages/DataContainerGrid.h"
@@ -55,9 +57,9 @@ public:
   static Pointer NullPointer();
 
   static Pointer New();
-  
-  QString CreateGridMontage::getNameOfClass() const override;
-  static QString CreateGridMontage::ClassName();
+
+  QString getNameOfClass() const override;
+  static QString ClassName();
   //static int CreateGridMontage::IsTypeOf(const char* type);
 
   ~CreateGridMontage() override;
