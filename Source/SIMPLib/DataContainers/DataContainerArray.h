@@ -520,7 +520,15 @@ public:
       // First try to get the Parent DataContainer. If an error occurs the error message will have been set
       // so just return a nullptr shared pointer
       DataContainerShPtr dc = getPrereqDataContainer<Filter>(filter, path.getDataContainerName(), false);
-      if(nullptr == dc) { return AttributeMatrix::NullPointer(); }
+      if(nullptr == dc)
+      {
+        if(filter != nullptr)
+        {
+          QString ss = QObject::tr("DataContainer:'%1' Does not exist").arg(path.getDataContainerName());
+          filter->setErrorCondition(err * 1000, ss);
+        }
+        return AttributeMatrix::NullPointer();
+      }
 
       // Now just return what ever the DataContainer gives us. if the AttributeMatrix was not available then an
       // error message and code will have been set into the "filter" object if that object was non-null itself.
