@@ -582,7 +582,7 @@ std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> GenerateTiltSeries::gener
   float jIncr = resampleSpacing[xAxis];
 
   axisLength = {bounds[2 * xAxis + 1] - bounds[2 * xAxis], bounds[2 * yAxis + 1] - bounds[2 * yAxis], bounds[2 * zAxis + 1] - bounds[2 * zAxis]};
-  diagonalDistance = std::sqrtf(axisLength[0] * axisLength[0] + axisLength[1] * axisLength[1]);
+  diagonalDistance = std::sqrt(axisLength[0] * axisLength[0] + axisLength[1] * axisLength[1]);
 
   newOrigin[xAxis] = center[xAxis] - diagonalDistance / 2.0f;
   newOrigin[yAxis] = center[yAxis];
@@ -676,7 +676,7 @@ std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> GenerateTiltSeries::gener
   std::array<float, 3> newOrigin = {0.0f, 0.0f, 0.0f};
 
   axisLength = {bounds[2 * yAxis + 1] - bounds[2 * yAxis], bounds[2 * zAxis + 1] - bounds[2 * zAxis], bounds[2 * xAxis + 1] - bounds[2 * xAxis]};
-  diagonalDistance = std::sqrtf(axisLength[0] * axisLength[0] + axisLength[1] * axisLength[1]);
+  diagonalDistance = std::sqrt(axisLength[0] * axisLength[0] + axisLength[1] * axisLength[1]);
 
   newOrigin[xAxis] = center[xAxis];
   newOrigin[yAxis] = bounds[yAxis * 2];
@@ -771,7 +771,7 @@ std::pair<FloatArrayType::Pointer, ImageGeom::Pointer> GenerateTiltSeries::gener
   std::array<float, 3> newOrigin = {0.0f, 0.0f, 0.0f};
 
   axisLength = {bounds[2 * xAxis + 1] - bounds[2 * xAxis], bounds[2 * yAxis + 1] - bounds[2 * yAxis], bounds[2 * zAxis + 1] - bounds[2 * zAxis]};
-  diagonalDistance = std::sqrtf(axisLength[xAxis] * axisLength[xAxis] + axisLength[yAxis] * axisLength[yAxis]);
+  diagonalDistance = std::sqrt(axisLength[xAxis] * axisLength[xAxis] + axisLength[yAxis] * axisLength[yAxis]);
 
   newOrigin[xAxis] = bounds[xAxis]; // xMin
   newOrigin[yAxis] = center[yAxis] - diagonalDistance / 2.0f;
