@@ -76,8 +76,8 @@ class GenerateTiltSeriesTest
   const QString k_RotationBaseString = QString("Rotation_%1_%2");
   const QString k_FeatureIdsName = QString("FeatureIds");
   const QString k_SliceDataName = QString("Slice Data");
-  static constexpr int k_NumRotations = 12;
-  static constexpr float k_Increment = 15.0f;
+  const int k_NumRotations = 12;
+  const float k_Increment = 15.0f;
 
 public:
   GenerateTiltSeriesTest() = default;
