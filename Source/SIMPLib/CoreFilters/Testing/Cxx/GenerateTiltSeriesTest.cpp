@@ -32,6 +32,7 @@
 
 #pragma once
 
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/CoreFilters/GenerateTiltSeries.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -120,7 +121,8 @@ public:
 
     GenerateTiltSeries::Pointer generateTiltSeries = GenerateTiltSeries::New();
     generateTiltSeries->setDataContainerArray(dca);
-    generateTiltSeries->setIncrement(k_Increment);
+    FloatVec3Type rotationLimits = {0.0f, 180.0f, k_Increment};
+    generateTiltSeries->setRotationLimits(rotationLimits);
     generateTiltSeries->setInputDataArrayPath(k_CellDataArray);
 
     for(const auto& rotation : rotations)
