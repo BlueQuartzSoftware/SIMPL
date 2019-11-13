@@ -10,14 +10,14 @@ This **Filter** creates a series of slices through the Image Geometry where each
 
 ![images/GenerateTiltSeries.](Images/GenerateTiltSeries.png)
 
-Each Slice is saved as a new DataContainer with a Cell Attribute Matrix. The user will select which Cell Level Data Array to resample using a simple nearest neighbor algorithm. The filter will only rotation from Zero to **less than** 180 Degrees.
+Each Slice is saved as a new DataContainer with a Cell Attribute Matrix. The user will select which Cell Level Data Array to resample using a simple nearest neighbor algorithm. The user can change the default rotation limits of 0.0 < 180.0 (increments of 10.0) degrees by setting the *Rotation Limits* input parameter.
 
 ## Parameters ##
 
 | Name | Type | Description |
 |------|------|------|
 | Rotation Axis | Int | 0=<100>, 1=<010>, 2=<001> |
-| Rotation Increment | Float | The number of degrees of rotation between each slice |
+| Rotation Limits | Float Vec 3 | The minimum, maximum and increment angle in degrees |
 | Resample Spacing | Float Vec 3 | The Spacing in the X, Y, Z direction for the resampling |
 | Input Data Array Path | DataArrayPath | The path to the Cell level data array to resample |
 

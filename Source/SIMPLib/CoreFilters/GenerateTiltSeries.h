@@ -38,6 +38,7 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLArray.hpp"
 
 /**
  * @brief The GenerateTiltSeries class. See [Filter documentation](@ref GenerateTiltSeries) for details.
@@ -52,7 +53,7 @@ class SIMPLib_EXPORT GenerateTiltSeries : public AbstractFilter
     PYB11_SHARED_POINTERS(GenerateTiltSeries)
     PYB11_STATIC_NEW_MACRO(GenerateTiltSeries)
     PYB11_PROPERTY(int RotationAxis READ getRotationAxis WRITE setRotationAxis)
-    PYB11_PROPERTY(float Increment READ getIncrement WRITE setIncrement)
+    PYB11_PROPERTY(float RotationLimits READ getRotationLimits WRITE setRotationLimits)
     PYB11_PROPERTY(float Spacing READ getSpacing WRITE setSpacing)
     PYB11_PROPERTY(DataArrayPath InputDataArrayPath READ getInputDataArrayPath WRITE setInputDataArrayPath)
     PYB11_PROPERTY(QString OutputPrefix READ getOutputPrefix WRITE setOutputPrefix)
@@ -88,7 +89,7 @@ public:
   /**
    * @brief Setter property for RotationAxis
    */
-  void setRotationAxis(const int& value);
+  void setRotationAxis(int value);
   /**
    * @brief Getter property for RotationAxis
    * @return Value of RotationAxis
@@ -98,16 +99,16 @@ public:
   Q_PROPERTY(int RotationAxis READ getRotationAxis WRITE setRotationAxis)
 
   /**
-   * @brief Setter property for Increment
+   * @brief Setter property for RotationLimits
    */
-  void setIncrement(const float& value);
+  void setRotationLimits(const FloatVec3Type& value);
   /**
-   * @brief Getter property for Increment
-   * @return Value of Increment
+   * @brief Getter property for RotationLimits
+   * @return Value of RotationLimits
    */
-  float getIncrement() const;
+  FloatVec3Type getRotationLimits() const;
 
-  Q_PROPERTY(float Increment READ getIncrement WRITE setIncrement)
+  Q_PROPERTY(FloatVec3Type RotationLimits READ getRotationLimits WRITE setRotationLimits)
 
   /**
    * @brief Setter property for Spacing
@@ -247,7 +248,7 @@ protected:
 
 private:
   int m_RotationAxis = 0;
-  float m_Increment = 1.0f;
+  FloatVec3Type m_RotationLimits = FloatVec3Type{0.0f, 180.f, 10.0f};
   FloatVec3Type m_Spacing = FloatVec3Type(1.0, 1.0, 1.0);
   DataArrayPath m_InputDataArrayPath = DataArrayPath("DataContainer", "AttributeMatrix", "FeatureIds");
   QString m_OutputPrefix = {"Rotation_"};

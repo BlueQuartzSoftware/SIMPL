@@ -35,7 +35,7 @@
 #include <thread>
 #include <cmath>
 
-#define GTS_GENERATE_DEBUG_ARRAYS 0
+#define GTS_GENERATE_DEBUG_ARRAYS 1
 // If we are writing out all the arrays for debugging then we MUST be single threaded.
 #if(GTS_GENERATE_DEBUG_ARRAYS == 1)
 #undef SIMPL_USE_PARALLEL_ALGORITHMS
@@ -225,7 +225,8 @@ public:
 
 #if GTS_GENERATE_DEBUG_ARRAYS
     // Write out the sampling grid
-    DataContainer::Pointer gridGeomDC = DataContainer::New(QString("Vertex Grid %1").arg(m_GridIndex));
+    QString dcName = QString("%1 Vertex Grid %2").arg(m_Filter->getOutputPrefix()).arg(m_GridIndex);
+    DataContainer::Pointer gridGeomDC = DataContainer::New(dcName);
     VertexGeom::Pointer gridVertGeom = VertexGeom::CreateGeometry(copyOfGrid->getNumberOfTuples(), "Grid Geometry", true);
     gridVertGeom->setVertices(copyOfGrid);
     gridGeomDC->setGeometry(gridVertGeom);
@@ -349,7 +350,7 @@ void GenerateTiltSeries::setupFilterParameters()
     parameter->setGetterCallback(SIMPL_BIND_GETTER(GenerateTiltSeries, this, RotationAxis));
     parameters.push_back(parameter);
   }
-  parameters.push_back(SIMPL_NEW_FLOAT_FP("Rotation Increment (Deg)", Increment, FilterParameter::Parameter, GenerateTiltSeries));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Rotation Limits (Start, Stop, Increment) Degrees", RotationLimits, FilterParameter::Parameter, GenerateTiltSeries));
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Resample Spacing", Spacing, FilterParameter::Parameter, GenerateTiltSeries));
   //  DataArrayCreationFilterParameter::RequirementType dacReq;
   //  parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Array Path", CreatedArrayPath, FilterParameter::Parameter, GenerateTiltSeries, dacReq));
@@ -401,10 +402,9 @@ void GenerateTiltSeries::dataCheck()
   ImageGeom::Pointer gridGeometry = gridPair.second;
   SizeVec3Type gridDims = gridGeometry->getDimensions();
 
-  float increment = getIncrement();
   size_t gridIndex = 0;
 
-  for(float currentDeg = 0.0f; currentDeg < 180.0f; currentDeg += increment)
+  for(float currentDeg = m_RotationLimits[0]; currentDeg < m_RotationLimits[1]; currentDeg += m_RotationLimits[2])
   {
     QString gridDCName = m_OutputPrefix + QString::number(gridIndex);
     DataContainer::Pointer gridDC = DataContainer::New(gridDCName);
@@ -482,9 +482,8 @@ void GenerateTiltSeries::execute()
   int32_t rotAxisSelection = getRotationAxis();
 
   // Now Start Rotating the grid around the axis
-  float increment = getIncrement();
   size_t gridIndex = 0;
-  for(float currentDeg = 0.0f; currentDeg < 180.0f; currentDeg += increment)
+  for(float currentDeg = m_RotationLimits[0]; currentDeg < m_RotationLimits[1]; currentDeg += m_RotationLimits[2])
   {
     QString msg;
     QTextStream out(&msg);
@@ -533,14 +532,16 @@ void GenerateTiltSeries::execute()
 #if GTS_GENERATE_DEBUG_ARRAYS
   // Write out the sampling grid
   {
-    DataContainer::Pointer gridGeomDC = DataContainer::New("Grid Geom (Vertex)");
+    QString dcName = QString("%1 Grid Geom (Vertex)").arg(getOutputPrefix());
+    DataContainer::Pointer gridGeomDC = DataContainer::New(dcName);
     VertexGeom::Pointer gridVertGeom = VertexGeom::CreateGeometry(gridCoords->getNumberOfTuples(), "Grid Geometry", true);
     gridVertGeom->setVertices(gridCoords);
     gridGeomDC->setGeometry(gridVertGeom);
     getDataContainerArray()->insertOrAssign(gridGeomDC);
   }
   {
-    DataContainer::Pointer gridGeomDC = DataContainer::New("Grid Geom (Image)");
+    QString dcName = QString("%1 Grid Geom (Image)").arg(getOutputPrefix());
+    DataContainer::Pointer gridGeomDC = DataContainer::New(dcName);
     gridGeomDC->setGeometry(gridGeometry);
     getDataContainerArray()->insertOrAssign(gridGeomDC);
   }
@@ -941,7 +942,7 @@ QString GenerateTiltSeries::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void GenerateTiltSeries::setRotationAxis(const int& value)
+void GenerateTiltSeries::setRotationAxis(int value)
 {
   m_RotationAxis = value;
 }
@@ -953,15 +954,15 @@ int GenerateTiltSeries::getRotationAxis() const
 }
 
 // -----------------------------------------------------------------------------
-void GenerateTiltSeries::setIncrement(const float& value)
+void GenerateTiltSeries::setRotationLimits(const FloatVec3Type& value)
 {
-  m_Increment = value;
+  m_RotationLimits = value;
 }
 
 // -----------------------------------------------------------------------------
-float GenerateTiltSeries::getIncrement() const
+FloatVec3Type GenerateTiltSeries::getRotationLimits() const
 {
-  return m_Increment;
+  return m_RotationLimits;
 }
 
 // -----------------------------------------------------------------------------
