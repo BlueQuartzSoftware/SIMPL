@@ -35,7 +35,7 @@
 #include <thread>
 #include <cmath>
 
-#define GTS_GENERATE_DEBUG_ARRAYS 1
+#define GTS_GENERATE_DEBUG_ARRAYS 0
 // If we are writing out all the arrays for debugging then we MUST be single threaded.
 #if(GTS_GENERATE_DEBUG_ARRAYS == 1)
 #undef SIMPL_USE_PARALLEL_ALGORITHMS
