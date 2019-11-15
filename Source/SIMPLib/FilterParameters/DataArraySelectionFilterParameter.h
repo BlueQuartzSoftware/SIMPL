@@ -151,6 +151,15 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
                                              AttributeMatrix::Type attributeMatrixType,
                                              IGeometry::Type geometryType);
 
+    /**
+     * @brief CreateRequirement
+     * @param primitiveTypes
+     * @param allowedCompDim
+     * @param attributeMatrixType
+     * @param geometryType
+     * @return
+     */
+    static RequirementType CreateRequirement(const QVector<QString>& primitiveTypes, size_t allowedCompDim, AttributeMatrix::Type attributeMatrixType, IGeometry::Type geometryType);
 
     /**
     * @brief getWidgetType Returns the type of widget that displays and controls
