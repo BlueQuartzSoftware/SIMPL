@@ -735,6 +735,142 @@ public:
   }
 };
 
+// -----------------------------------------------------------------------------
+template <typename T>
+class IVec7 : public SIMPLArray<T, 7>
+{
+  using ParentType = SIMPLArray<T, 7>;
+
+public:
+  IVec7(const IVec7&) = default;
+  IVec7(IVec7&&) noexcept = default;
+  IVec7& operator=(const IVec7&) = default;
+  IVec7& operator=(IVec7&&) noexcept = default;
+  ~IVec7() = default;
+
+  /**
+   * @brief IVec6 Default constructor initializes all values to ZERO.
+   */
+  IVec7()
+  {
+    (*this)[0] = static_cast<T>(0);
+    (*this)[1] = static_cast<T>(0);
+    (*this)[2] = static_cast<T>(0);
+    (*this)[3] = static_cast<T>(0);
+    (*this)[4] = static_cast<T>(0);
+    (*this)[5] = static_cast<T>(0);
+    (*this)[6] = static_cast<T>(0);
+  }
+  /**
+   * @brief IVec6
+   * @param x
+   * @param y
+   * @param z
+   * @param a
+   * @param b
+   * @param c
+   */
+  IVec7(T x, T y, T z, T a, T b, T c, T d)
+  {
+    (*this)[0] = x;
+    (*this)[1] = y;
+    (*this)[2] = z;
+    (*this)[3] = a;
+    (*this)[4] = b;
+    (*this)[5] = c;
+    (*this)[6] = d;
+  }
+  /**
+   * @brief IVec6
+   * @param data
+   */
+  IVec7(const std::array<T, 6>& data)
+  {
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+    (*this)[2] = data[2];
+    (*this)[3] = data[3];
+    (*this)[4] = data[4];
+    (*this)[5] = data[5];
+    (*this)[5] = data[6];
+  }
+  /**
+   * @brief IVec6
+   * @param data
+   */
+  IVec7(const std::tuple<T, T, T, T, T, T, T>& data)
+  {
+    (*this)[0] = std::get<0>(data);
+    (*this)[1] = std::get<1>(data);
+    (*this)[2] = std::get<2>(data);
+    (*this)[3] = std::get<3>(data);
+    (*this)[4] = std::get<4>(data);
+    (*this)[5] = std::get<5>(data);
+    (*this)[6] = std::get<6>(data);
+  }
+  /**
+   * @brief IVec6
+   * @param data
+   */
+  IVec7(const T* data)
+  {
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+    (*this)[2] = data[2];
+    (*this)[3] = data[3];
+    (*this)[4] = data[4];
+    (*this)[5] = data[5];
+    (*this)[6] = data[6];
+  }
+  /**
+   * @brief IVec6
+   * @param data
+   */
+  IVec7(const std::vector<T>& data)
+  {
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+    (*this)[2] = data[2];
+    (*this)[3] = data[3];
+    (*this)[4] = data[4];
+    (*this)[5] = data[5];
+    (*this)[6] = data[6];
+  }
+
+  /**
+   * @brief this is a convenience function that helps with the python bindings
+   */
+  inline void setValues(const T& x, const T& y, const T& z, const T& i, const T& j, const T& k, const T& l)
+  {
+    (*this)[0] = x;
+    (*this)[1] = y;
+    (*this)[2] = z;
+    (*this)[3] = i;
+    (*this)[4] = j;
+    (*this)[5] = k;
+    (*this)[6] = l;
+  }
+
+  /**
+   * @brief toTuple Converts the internal data structure to a std::tuple<T, T, T>
+   * @return
+   */
+  std::tuple<T, T, T, T, T, T, T> toTuple() const
+  {
+    return std::make_tuple((*this)[0], (*this)[1], (*this)[2], (*this)[3], (*this)[4], (*this)[5], (*this)[6]);
+  }
+
+  /**
+   * @brief Converts this array into another array using a static_cast<OutType> mechanism
+   */
+  template <typename OutType>
+  IVec7<OutType> convertType()
+  {
+    return IVec6<OutType>(static_cast<OutType>((*this)[0]), static_cast<OutType>((*this)[1]), static_cast<OutType>((*this)[2]), static_cast<OutType>((*this)[3]), static_cast<OutType>((*this)[4]),
+                          static_cast<OutType>((*this)[5]), static_cast<OutType>((*this)[6]));
+  }
+};
+
 using FloatVec3Type = IVec3<float>;
 using IntVec3Type = IVec3<int>;
 using SizeVec3Type = IVec3<size_t>;
@@ -745,3 +881,6 @@ using SizeVec4Type = IVec4<size_t>;
 
 using FloatVec6Type = IVec6<float>;
 using IntVec6Type = IVec6<int32_t>;
+
+using FloatVec7Type = IVec7<float>;
+using IntVec7Type = IVec7<int32_t>;
