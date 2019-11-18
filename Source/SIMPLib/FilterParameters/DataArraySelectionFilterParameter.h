@@ -207,12 +207,12 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     /**
      * @brief Setter property for DefaultAttributeMatrixTypes
      */
-    void setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value);
+    void setDefaultAttributeMatrixTypes(const AttributeMatrix::Types& value);
     /**
      * @brief Getter property for DefaultAttributeMatrixTypes
      * @return Value of DefaultAttributeMatrixTypes
      */
-    QVector<AttributeMatrix::Type> getDefaultAttributeMatrixTypes() const;
+    AttributeMatrix::Types getDefaultAttributeMatrixTypes() const;
 
     /**
     * @param DefaultAttributeArrayTypes Default attribute array types required for Attribute Array selections
@@ -292,7 +292,7 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
 
   private:
     IGeometry::Types m_DefaultGeometryTypes = {};
-    QVector<AttributeMatrix::Type> m_DefaultAttributeMatrixTypes = {};
+    AttributeMatrix::Types m_DefaultAttributeMatrixTypes = {};
     QVector<QString> m_DefaultAttributeArrayTypes = {};
     std::vector<std::vector<size_t>> m_DefaultComponentDimensions = {};
     DataArraySelectionFilterParameter::SetterCallbackType m_SetterCallback = {};

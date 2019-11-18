@@ -148,7 +148,7 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
   }
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {
-    QVector<AttributeMatrix::Type> amTypes(1, attributeMatrixType);
+    AttributeMatrix::Types amTypes(1, attributeMatrixType);
     req.amTypes = amTypes;
   }
   if(IGeometry::Type::Any != geometryType)
@@ -181,7 +181,7 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
   }
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {
-    QVector<AttributeMatrix::Type> amTypes(1, attributeMatrixType);
+    AttributeMatrix::Types amTypes(1, attributeMatrixType);
     req.amTypes = amTypes;
   }
   if(IGeometry::Type::Any != geometryType)
@@ -292,13 +292,13 @@ IGeometry::Types DataArraySelectionFilterParameter::getDefaultGeometryTypes() co
 }
 
 // -----------------------------------------------------------------------------
-void DataArraySelectionFilterParameter::setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value)
+void DataArraySelectionFilterParameter::setDefaultAttributeMatrixTypes(const AttributeMatrix::Types& value)
 {
   m_DefaultAttributeMatrixTypes = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<AttributeMatrix::Type> DataArraySelectionFilterParameter::getDefaultAttributeMatrixTypes() const
+AttributeMatrix::Types DataArraySelectionFilterParameter::getDefaultAttributeMatrixTypes() const
 {
   return m_DefaultAttributeMatrixTypes;
 }
