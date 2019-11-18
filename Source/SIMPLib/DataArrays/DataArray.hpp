@@ -680,6 +680,15 @@ public:
   }
 
   /**
+   * @brief Returns the initial value for the array.
+   * @return
+   */
+  virtual T getInitValue() const
+  {
+    return m_InitValue;
+  }
+
+  /**
    * @brief Makes this class responsible for freeing the memory
    */
   void takeOwnership() override
