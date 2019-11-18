@@ -784,7 +784,7 @@ public:
    * @brief IVec6
    * @param data
    */
-  IVec7(const std::array<T, 6>& data)
+  IVec7(const std::array<T, 7>& data)
   {
     (*this)[0] = data[0];
     (*this)[1] = data[1];
@@ -792,7 +792,7 @@ public:
     (*this)[3] = data[3];
     (*this)[4] = data[4];
     (*this)[5] = data[5];
-    (*this)[5] = data[6];
+    (*this)[6] = data[6];
   }
   /**
    * @brief IVec6
