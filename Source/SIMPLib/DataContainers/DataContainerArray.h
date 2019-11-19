@@ -56,6 +56,10 @@ using DataContainerShPtr = std::shared_ptr<DataContainer>;
 
 class IDataArray;
 using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
+
+class GridMontage;
+using GridMontageShPtr = std::shared_ptr<GridMontage>;
+
 /**
  * @class DataContainerArray DataContainerArray.h DREAM3DLib/Common/DataContainerArray.h
  * @brief  This class holds the list of filters that will be run. This should be
@@ -357,7 +361,7 @@ public:
      * @param collectionType
      * @return
      */
-    AbstractMontageShPtr createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames = QStringList(),
+    GridMontageShPtr createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames = QStringList(),
       GridMontage::CollectionMethod collectionMethod = GridMontage::CollectionMethod::CombOrder);
 
 

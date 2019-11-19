@@ -520,7 +520,7 @@ AbstractMontageShPtr DataContainerArray::getPrereqMontage(AbstractFilter* filter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames,
+GridMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames,
                                                                     GridMontage::CollectionMethod collectionMethod)
 {
   GridMontage::Pointer montage = GridMontage::New(montageName, size[0], size[1], size[2]);
