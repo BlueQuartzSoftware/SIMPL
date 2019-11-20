@@ -312,6 +312,7 @@ DataContainerArray::MontageCollection DataContainerReader::readMontageGroup(cons
   H5ScopedFileSentinel sentinel(&fileId, true);
 
   hid_t groupId = QH5Utilities::openHDF5Object(fileId, SIMPL::StringConstants::MontageGroupName);
+  sentinel.addGroupId(&groupId);
   int err = 0;
   DataContainerArray::MontageCollection montages = MontageSupport::IO::ReadMontagesFromHDF5(groupId, dca, err);
   if(err < 0)
