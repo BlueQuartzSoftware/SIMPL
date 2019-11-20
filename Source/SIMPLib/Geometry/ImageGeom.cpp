@@ -1045,9 +1045,9 @@ ToolTipGenerator ImageGeom::getToolTipGenerator() const
   toolTipGen.addValue("Type", TypeToString(getGeometryType()));
   toolTipGen.addValue("Units", LengthUnitToString(getUnits()));
   toolTipGen.addTitle("Extents");
-  toolTipGen.addValue("X", "0 to " + QString::number(volDims[0] - 1) + " (dimension: " + QString::number(volDims[0]));
-  toolTipGen.addValue("Y", "0 to " + QString::number(volDims[1] - 1) + " (dimension: " + QString::number(volDims[1]));
-  toolTipGen.addValue("Z", "0 to " + QString::number(volDims[2] - 1) + " (dimension: " + QString::number(volDims[2]));
+  toolTipGen.addValue("X", "0 to " + QString::number(volDims[0] - 1) + " (dimension: " + QString::number(volDims[0]) + ")");
+  toolTipGen.addValue("Y", "0 to " + QString::number(volDims[1] - 1) + " (dimension: " + QString::number(volDims[1]) + ")");
+  toolTipGen.addValue("Z", "0 to " + QString::number(volDims[2] - 1) + " (dimension: " + QString::number(volDims[2]) + ")");
   toolTipGen.addValue("Origin", QString::number(origin[0]) + ", " + QString::number(origin[1]) + ", " + QString::number(origin[2]));
   toolTipGen.addValue("Spacing", QString::number(spacing[0]) + ", " + QString::number(spacing[1]) + ", " + QString::number(spacing[2]));
   toolTipGen.addValue("Volume", usa.toString(vol) + " " + lengthUnit + "s ^3");
