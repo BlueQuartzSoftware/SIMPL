@@ -68,6 +68,7 @@ public:
   DataStructureWidget(QWidget* parent = nullptr);
   ~DataStructureWidget() override;
 
+  // These are needed for the CSS properties
   void setImageGeomIcon(const QIcon& path);
   void setVertexGeomIcon(const QIcon& path);
   void setEdgeGeomIcon(const QIcon& path);
@@ -76,6 +77,25 @@ public:
   void setTetrahedralGeomIcon(const QIcon& path);
   void setHexahedralGeomIcon(const QIcon& path);
   void setRectilinearGeomIcon(const QIcon& path);
+
+  QIcon getImageGeomIcon();
+  QIcon getVertexGeomIcon();
+  QIcon getEdgeGeomIcon();
+  QIcon getTriangleGeomIcon();
+  QIcon getQuadGeomIcon();
+  QIcon getTetrahedralGeomIcon();
+  QIcon getHexahedralGeomIcon();
+  QIcon getRectilinearGeomIcon();
+
+  //-------- Setup some QProperties that we can use from the CSS theme files to set the proper icon
+  Q_PROPERTY(QIcon ImageGeomIcon READ getImageGeomIcon WRITE setImageGeomIcon)
+  Q_PROPERTY(QIcon VertexGeomIcon READ getVertexGeomIcon WRITE setVertexGeomIcon)
+  Q_PROPERTY(QIcon EdgeGeomIcon READ getEdgeGeomIcon WRITE setEdgeGeomIcon)
+  Q_PROPERTY(QIcon TriangleGeomIcon READ getTriangleGeomIcon WRITE setTriangleGeomIcon)
+  Q_PROPERTY(QIcon QuadGeomIcon READ getQuadGeomIcon WRITE setQuadGeomIcon)
+  Q_PROPERTY(QIcon TetrahedralGeomIcon READ getTetrahedralGeomIcon WRITE setTetrahedralGeomIcon)
+  Q_PROPERTY(QIcon HexahedralGeomIcon READ getHexahedralGeomIcon WRITE setHexahedralGeomIcon)
+  Q_PROPERTY(QIcon RectilinearGeomIcon READ getRectilinearGeomIcon WRITE setRectilinearGeomIcon)
 
 public slots:
   /**

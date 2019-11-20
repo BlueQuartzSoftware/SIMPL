@@ -222,3 +222,66 @@ void DataStructureWidget::setRectilinearGeomIcon(const QIcon &path)
 {
   m_Ui->dataBrowserTreeView->setRectilinearGeomIcon(path);
 }
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getImageGeomIcon()
+{
+  return m_Ui->dataBrowserTreeView->getImageGeomIcon();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getVertexGeomIcon()
+{
+  return m_Ui->dataBrowserTreeView->getVertexGeomIcon();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getEdgeGeomIcon()
+{
+  return m_Ui->dataBrowserTreeView->getEdgeGeomIcon();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getTriangleGeomIcon()
+{
+  return m_Ui->dataBrowserTreeView->getTriangleGeomIcon();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getQuadGeomIcon()
+{
+  return m_Ui->dataBrowserTreeView->getQuadGeomIcon();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getTetrahedralGeomIcon()
+{
+  return m_Ui->dataBrowserTreeView->getTetrahedralGeomIcon();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getHexahedralGeomIcon()
+{
+  return m_Ui->dataBrowserTreeView->getHexahedralGeomIcon();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getRectilinearGeomIcon()
+{
+  return m_Ui->dataBrowserTreeView->getRectilinearGeomIcon();
+}
