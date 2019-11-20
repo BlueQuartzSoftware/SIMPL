@@ -45,8 +45,16 @@
 class SIMPLib_EXPORT CreateGridMontage : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(CreateGridMontage SUPERCLASS AbstractFilter)
-  PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  PYB11_SHARED_POINTERS(CreateGridMontage)
+  PYB11_FILTER_NEW_MACRO(CreateGridMontage)
+
+  PYB11_PROPERTY(QString MontageName READ getMontageName WRITE setMontageName)
+  PYB11_PROPERTY(DataContainerGrid GridSelection READ getGridSelection WRITE setGridSelection)
+  PYB11_PROPERTY(QStringList DataContainerNameList READ getDataContainerNameList WRITE setDataContainerNameList)
+#endif
 
 public:
   using Self = CreateGridMontage;

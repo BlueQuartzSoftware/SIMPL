@@ -130,8 +130,7 @@ DataContainerArray::MontageCollection MontageSupport::IO::ReadMontagesFromHDF5(h
     // This object will make sure the HDF5 Group id is closed when it goes out of scope.
     H5GroupAutoCloser bundleIdClose(&montageId);
 
-    bool success = montageCollection.insert(ReadMontageFromHDF5(montageId, dca, err));
-    if(err < 0)
+    if(!montageCollection.insert(ReadMontageFromHDF5(montageId, dca, err)))
     {
       return montageCollection;
     }

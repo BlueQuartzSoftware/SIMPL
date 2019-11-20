@@ -606,7 +606,7 @@ int GridMontage::writeH5Data(hid_t groupId) const
     return err;
   }
 
-  size_t count = static_cast<size_t>(m_DataContainers.size());
+  // size_t count = static_cast<size_t>(m_DataContainers.size());
   QStringList dcNameList;
 
   for(const auto& dc : m_DataContainers)
