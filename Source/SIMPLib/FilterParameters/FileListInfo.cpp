@@ -29,59 +29,41 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#pragma once
 
-#include <QtCore/QJsonObject>
-#include <QtCore/QMetaType>
-#include <QtCore/QString>
+#include "FileListInfo.h"
 
-#include "SIMPLib/SIMPLib.h"
+// -----------------------------------------------------------------------------
+FileListInfo::FileListInfo() = default;
 
-class SIMPLib_EXPORT FileListInfo
+// -----------------------------------------------------------------------------
+FileListInfo::~FileListInfo() = default;
+
+// -----------------------------------------------------------------------------
+void FileListInfo::writeSuperclassJson(QJsonObject& json) const
 {
-public:
-  virtual ~FileListInfo();
+  json["PaddingDigits"] = static_cast<qint32>(PaddingDigits);
+  json["Ordering"] = static_cast<qint32>(Ordering);
+  json["IncrementIndex"] = static_cast<qint32>(IncrementIndex);
+  json["InputPath"] = InputPath;
+  json["FilePrefix"] = FilePrefix;
+  json["FileSuffix"] = FileSuffix;
+  json["FileExtension"] = FileExtension;
+}
 
-  qint32 PaddingDigits = 3;
-  quint32 Ordering = 0; /* Ordering=0 = RowColumn, Ordering=1 = ColumnRow */
-  qint32 IncrementIndex = 1;
-  QString InputPath;
-  QString FilePrefix;
-  QString FileSuffix;
-  QString FileExtension;
-
-  /**
-   * @brief writeJson
-   * @param json
-   */
-  virtual void writeJson(QJsonObject& json) const = 0;
-
-  /**
-   * @brief readJson
-   * @param json
-   * @return
-   */
-  virtual bool readJson(QJsonObject& json) = 0;
-
-protected:
-  FileListInfo();
-
-  /**
-   * @brief writeSuperclassJson
-   * @param json
-   */
-  void writeSuperclassJson(QJsonObject& json) const;
-
-  /**
-   * @brief readSuperclassJson
-   * @param json
-   * @return
-   */
-  bool readSuperclassJson(QJsonObject& json);
-
-public:
-  FileListInfo(const FileListInfo&) = default;            // Copy Constructor Not Implemented
-  FileListInfo(FileListInfo&&) = default;                 // Move Constructor Not Implemented
-  FileListInfo& operator=(const FileListInfo&) = default; // Copy Assignment Not Implemented
-  FileListInfo& operator=(FileListInfo&&) = default;      // Move Assignment Not Implemented
-};
+// -----------------------------------------------------------------------------
+bool FileListInfo::readSuperclassJson(QJsonObject& json)
+{
+  if(json["PaddingDigits"].isDouble() && json["Ordering"].isDouble() && json["RowStart"].isDouble() && json["ColStart"].isDouble() && json["IncrementIndex"].isDouble() &&
+     json["InputPath"].isString() && json["FilePrefix"].isString() && json["FileSuffix"].isString() && json["FileExtension"].isString())
+  {
+    PaddingDigits = static_cast<qint32>(json["PaddingDigits"].toInt());
+    Ordering = static_cast<quint32>(json["Ordering"].toInt());
+    IncrementIndex = static_cast<qint32>(json["IncrementIndex"].toInt());
+    InputPath = json["InputPath"].toString();
+    FilePrefix = json["FilePrefix"].toString();
+    FileSuffix = json["FileSuffix"].toString();
+    FileExtension = json["FileExtension"].toString();
+    return true;
+  }
+  return false;
+}

@@ -83,7 +83,7 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_FILTER_PARAMETER(FPRangePair, InitRange)
   PYB11_FILTER_PARAMETER(QString, EstimatedPrimaryFeatures)
   PYB11_FILTER_PARAMETER(QString, InputFile)
-  PYB11_FILTER_PARAMETER(FileListInfo_t, InputFileListInfo)
+  PYB11_FILTER_PARAMETER(StackFileListInfo, InputFileListInfo)
   PYB11_FILTER_PARAMETER(QString, SelectedXCoordArrayName)
   PYB11_FILTER_PARAMETER(QStringList, DataArrayList)
   PYB11_FILTER_PARAMETER(DataArrayPath, CreatedDataContainer)
@@ -126,7 +126,7 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(FPRangePair InitRange READ getInitRange WRITE setInitRange)
   PYB11_PROPERTY(QString EstimatedPrimaryFeatures READ getEstimatedPrimaryFeatures WRITE setEstimatedPrimaryFeatures)
   PYB11_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
-  PYB11_PROPERTY(FileListInfo_t InputFileListInfo READ getInputFileListInfo WRITE setInputFileListInfo)
+  PYB11_PROPERTY(StackFileListInfo InputFileListInfo READ getInputFileListInfo WRITE setInputFileListInfo)
   PYB11_PROPERTY(QString SelectedXCoordArrayName READ getSelectedXCoordArrayName WRITE setSelectedXCoordArrayName)
   PYB11_PROPERTY(QStringList DataArrayList READ getDataArrayList WRITE setDataArrayList)
   PYB11_PROPERTY(DataArrayPath CreatedDataContainer READ getCreatedDataContainer WRITE setCreatedDataContainer)
@@ -348,14 +348,14 @@ public:
   /**
    * @brief Setter property for InputFileListInfo
    */
-  void setInputFileListInfo(const FileListInfo_t& value);
+  void setInputFileListInfo(const StackFileListInfo& value);
   /**
    * @brief Getter property for InputFileListInfo
    * @return Value of InputFileListInfo
    */
-  FileListInfo_t getInputFileListInfo() const;
+  StackFileListInfo getInputFileListInfo() const;
 
-  Q_PROPERTY(FileListInfo_t InputFileListInfo READ getInputFileListInfo WRITE setInputFileListInfo)
+  Q_PROPERTY(StackFileListInfo InputFileListInfo READ getInputFileListInfo WRITE setInputFileListInfo)
 
   /**
    * @brief Setter property for SelectedXCoordArrayName
@@ -789,7 +789,7 @@ private:
   FPRangePair m_InitRange = {};
   QString m_EstimatedPrimaryFeatures = {};
   QString m_InputFile = {};
-  FileListInfo_t m_InputFileListInfo = {};
+  StackFileListInfo m_InputFileListInfo = {};
   QString m_SelectedXCoordArrayName = {};
   QStringList m_DataArrayList = {};
   DataArrayPath m_CreatedDataContainer = {};

@@ -267,7 +267,7 @@ void FileListInfoWidget::getGuiParametersFromFilter()
 {
   blockSignals(true);
 
-  FileListInfo_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<FileListInfo_t>();
+  StackFileListInfo data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<StackFileListInfo>();
 
   m_Ui->inputDir->setText(data.InputPath);
 
@@ -290,7 +290,7 @@ void FileListInfoWidget::getGuiParametersFromFilter()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::validateInputFile()
 {
-  FileListInfo_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<FileListInfo_t>();
+  StackFileListInfo data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<StackFileListInfo>();
 
   QString currentPath = data.InputPath;
   QFileInfo fi(currentPath);
@@ -605,7 +605,7 @@ void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
 
-  FileListInfo_t data;
+  StackFileListInfo data;
   data.IncrementIndex = m_Ui->increment->value();
   data.EndIndex = m_Ui->endIndex->value();
   data.FileExtension = m_Ui->fileExt->text();

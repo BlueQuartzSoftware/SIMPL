@@ -29,59 +29,42 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#pragma once
 
-#include <QtCore/QJsonObject>
-#include <QtCore/QMetaType>
-#include <QtCore/QString>
+#include "MontageFileListInfo.h"
 
-#include "SIMPLib/SIMPLib.h"
+// -----------------------------------------------------------------------------
+MontageFileListInfo::MontageFileListInfo() = default;
 
-class SIMPLib_EXPORT FileListInfo
+// -----------------------------------------------------------------------------
+MontageFileListInfo::~MontageFileListInfo() = default;
+
+// -----------------------------------------------------------------------------
+void MontageFileListInfo::writeJson(QJsonObject& json) const
 {
-public:
-  virtual ~FileListInfo();
+  writeSuperclassJson(json);
 
-  qint32 PaddingDigits = 3;
-  quint32 Ordering = 0; /* Ordering=0 = RowColumn, Ordering=1 = ColumnRow */
-  qint32 IncrementIndex = 1;
-  QString InputPath;
-  QString FilePrefix;
-  QString FileSuffix;
-  QString FileExtension;
+  json["RowStart"] = static_cast<qint32>(RowStart);
+  json["RowEnd"] = static_cast<qint32>(RowEnd);
+  json["ColStart"] = static_cast<qint32>(ColStart);
+  json["ColEnd"] = static_cast<qint32>(ColEnd);
+}
 
-  /**
-   * @brief writeJson
-   * @param json
-   */
-  virtual void writeJson(QJsonObject& json) const = 0;
+// -----------------------------------------------------------------------------
+bool MontageFileListInfo::readJson(QJsonObject& json)
+{
+  bool result = readSuperclassJson(json);
+  if(!result)
+  {
+    return false;
+  }
 
-  /**
-   * @brief readJson
-   * @param json
-   * @return
-   */
-  virtual bool readJson(QJsonObject& json) = 0;
-
-protected:
-  FileListInfo();
-
-  /**
-   * @brief writeSuperclassJson
-   * @param json
-   */
-  void writeSuperclassJson(QJsonObject& json) const;
-
-  /**
-   * @brief readSuperclassJson
-   * @param json
-   * @return
-   */
-  bool readSuperclassJson(QJsonObject& json);
-
-public:
-  FileListInfo(const FileListInfo&) = default;            // Copy Constructor Not Implemented
-  FileListInfo(FileListInfo&&) = default;                 // Move Constructor Not Implemented
-  FileListInfo& operator=(const FileListInfo&) = default; // Copy Assignment Not Implemented
-  FileListInfo& operator=(FileListInfo&&) = default;      // Move Assignment Not Implemented
-};
+  if(json["RowStart"].isDouble() && json["RowEnd"].isDouble() && json["ColStart"].isDouble() && json["ColEnd"].isDouble())
+  {
+    RowStart = static_cast<qint32>(json["RowStart"].toInt());
+    RowEnd = static_cast<quint32>(json["RowEnd"].toInt());
+    ColStart = static_cast<qint32>(json["ColStart"].toInt());
+    ColEnd = static_cast<qint32>(json["ColEnd"].toInt());
+    return true;
+  }
+  return false;
+}

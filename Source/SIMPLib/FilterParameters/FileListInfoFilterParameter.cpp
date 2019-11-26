@@ -51,7 +51,7 @@ FileListInfoFilterParameter::~FileListInfoFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::New(const QString& humanLabel, const QString& propertyName, const FileListInfo_t& defaultValue, FilterParameter::Category category,
+FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::New(const QString& humanLabel, const QString& propertyName, const StackFileListInfo& defaultValue, FilterParameter::Category category,
                                                                       SetterCallbackType setterCallback, GetterCallbackType getterCallback)
 {
 
@@ -85,7 +85,7 @@ void FileListInfoFilterParameter::readJson(const QJsonObject& json)
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject jsonObj = jsonValue.toObject();
-    FileListInfo_t fileListInfo;
+    StackFileListInfo fileListInfo;
     fileListInfo.readJson(jsonObj);
     m_SetterCallback(fileListInfo);
   }
@@ -98,7 +98,7 @@ void FileListInfoFilterParameter::writeJson(QJsonObject& json)
 {
   if (m_GetterCallback)
   {
-    FileListInfo_t fileListInfo = m_GetterCallback();
+    StackFileListInfo fileListInfo = m_GetterCallback();
     QJsonObject jsonObj;
     fileListInfo.writeJson(jsonObj);
     json[getPropertyName()] = jsonObj;

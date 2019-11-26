@@ -35,53 +35,37 @@
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/FilterParameters/FileListInfo.h"
 
-class SIMPLib_EXPORT FileListInfo
+class SIMPLib_EXPORT MontageFileListInfo : public FileListInfo
 {
 public:
-  virtual ~FileListInfo();
+  MontageFileListInfo();
+  ~MontageFileListInfo() override;
 
-  qint32 PaddingDigits = 3;
-  quint32 Ordering = 0; /* Ordering=0 = RowColumn, Ordering=1 = ColumnRow */
-  qint32 IncrementIndex = 1;
-  QString InputPath;
-  QString FilePrefix;
-  QString FileSuffix;
-  QString FileExtension;
+  qint32 RowStart = 0;
+  qint32 RowEnd = 2;
+  qint32 ColStart = 0;
+  qint32 ColEnd = 2;
 
   /**
    * @brief writeJson
    * @param json
    */
-  virtual void writeJson(QJsonObject& json) const = 0;
+  void writeJson(QJsonObject& json) const override;
 
   /**
    * @brief readJson
    * @param json
    * @return
    */
-  virtual bool readJson(QJsonObject& json) = 0;
-
-protected:
-  FileListInfo();
-
-  /**
-   * @brief writeSuperclassJson
-   * @param json
-   */
-  void writeSuperclassJson(QJsonObject& json) const;
-
-  /**
-   * @brief readSuperclassJson
-   * @param json
-   * @return
-   */
-  bool readSuperclassJson(QJsonObject& json);
+  bool readJson(QJsonObject& json) override;
 
 public:
-  FileListInfo(const FileListInfo&) = default;            // Copy Constructor Not Implemented
-  FileListInfo(FileListInfo&&) = default;                 // Move Constructor Not Implemented
-  FileListInfo& operator=(const FileListInfo&) = default; // Copy Assignment Not Implemented
-  FileListInfo& operator=(FileListInfo&&) = default;      // Move Assignment Not Implemented
+  MontageFileListInfo(const MontageFileListInfo&) = default;            // Copy Constructor Not Implemented
+  MontageFileListInfo(MontageFileListInfo&&) = default;                 // Move Constructor Not Implemented
+  MontageFileListInfo& operator=(const MontageFileListInfo&) = default; // Copy Assignment Not Implemented
+  MontageFileListInfo& operator=(MontageFileListInfo&&) = default;      // Move Assignment Not Implemented
 };
+
+Q_DECLARE_METATYPE(MontageFileListInfo)

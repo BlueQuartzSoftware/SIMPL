@@ -35,53 +35,35 @@
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/FilterParameters/FileListInfo.h"
 
-class SIMPLib_EXPORT FileListInfo
+class SIMPLib_EXPORT StackFileListInfo : public FileListInfo
 {
 public:
-  virtual ~FileListInfo();
+  StackFileListInfo();
+  ~StackFileListInfo() override;
 
-  qint32 PaddingDigits = 3;
-  quint32 Ordering = 0; /* Ordering=0 = RowColumn, Ordering=1 = ColumnRow */
-  qint32 IncrementIndex = 1;
-  QString InputPath;
-  QString FilePrefix;
-  QString FileSuffix;
-  QString FileExtension;
+  qint32 StartIndex = 0;
+  qint32 EndIndex = 1;
 
   /**
    * @brief writeJson
    * @param json
    */
-  virtual void writeJson(QJsonObject& json) const = 0;
+  void writeJson(QJsonObject& json) const override;
 
   /**
    * @brief readJson
    * @param json
    * @return
    */
-  virtual bool readJson(QJsonObject& json) = 0;
-
-protected:
-  FileListInfo();
-
-  /**
-   * @brief writeSuperclassJson
-   * @param json
-   */
-  void writeSuperclassJson(QJsonObject& json) const;
-
-  /**
-   * @brief readSuperclassJson
-   * @param json
-   * @return
-   */
-  bool readSuperclassJson(QJsonObject& json);
+  bool readJson(QJsonObject& json) override;
 
 public:
-  FileListInfo(const FileListInfo&) = default;            // Copy Constructor Not Implemented
-  FileListInfo(FileListInfo&&) = default;                 // Move Constructor Not Implemented
-  FileListInfo& operator=(const FileListInfo&) = default; // Copy Assignment Not Implemented
-  FileListInfo& operator=(FileListInfo&&) = default;      // Move Assignment Not Implemented
+  StackFileListInfo(const StackFileListInfo&) = default;            // Copy Constructor Not Implemented
+  StackFileListInfo(StackFileListInfo&&) = default;                 // Move Constructor Not Implemented
+  StackFileListInfo& operator=(const StackFileListInfo&) = default; // Copy Assignment Not Implemented
+  StackFileListInfo& operator=(StackFileListInfo&&) = default;      // Move Assignment Not Implemented
 };
+
+Q_DECLARE_METATYPE(StackFileListInfo)

@@ -855,10 +855,10 @@ Float4thOrderPoly_t H5FilterParametersReader::readFloat4thOrderPoly(const QStrin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FileListInfo_t H5FilterParametersReader::readFileListInfo(const QString& name, FileListInfo_t defaultValue)
+StackFileListInfo H5FilterParametersReader::readFileListInfo(const QString& name, StackFileListInfo defaultValue)
 {
 
-  FileListInfo_t v;
+  StackFileListInfo v;
 
   hid_t gid = QH5Utilities::openHDF5Object(m_CurrentGroupId, name);
   if(gid < 0)
