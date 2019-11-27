@@ -43,7 +43,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 #include "SIMPLib/FilterParameters/AxisAngleInput.h"
-#include "SIMPLib/FilterParameters/FileListInfo.h"
+#include "SIMPLib/FilterParameters/StackFileListInfo.h"
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomial.h"
 
 namespace py = pybind11;
@@ -330,12 +330,12 @@ PYBIND11_MODULE(dream3d, m)
     .def(py::init< const float &, const float &, const float &, const float &>())
   ;
 
-  py::class_<FileListInfo_t>(mod, "FileListInfo")
+  py::class_<StackFileListInfo>(mod, "FileListInfo")
     .def(py::init <> ([] ( const int & paddingDigits, const unsigned int & ordering, const int & startIndex,
       const int & endIndex, const int & incrementIndex, const py::str & inputPath, const py::str & filePrefix,
       const py::str & fileSuffix, const py::str &fileExtension)
       {
-        FileListInfo_t fileListInfo;
+        StackFileListInfo fileListInfo;
         fileListInfo.PaddingDigits = paddingDigits;
         fileListInfo.Ordering = ordering;
         fileListInfo.StartIndex = startIndex;

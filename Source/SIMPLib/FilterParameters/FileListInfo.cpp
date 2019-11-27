@@ -53,8 +53,8 @@ void FileListInfo::writeSuperclassJson(QJsonObject& json) const
 // -----------------------------------------------------------------------------
 bool FileListInfo::readSuperclassJson(QJsonObject& json)
 {
-  if(json["PaddingDigits"].isDouble() && json["Ordering"].isDouble() && json["RowStart"].isDouble() && json["ColStart"].isDouble() && json["IncrementIndex"].isDouble() &&
-     json["InputPath"].isString() && json["FilePrefix"].isString() && json["FileSuffix"].isString() && json["FileExtension"].isString())
+  if(json["PaddingDigits"].isDouble() && json["Ordering"].isDouble() && json["IncrementIndex"].isDouble() && json["InputPath"].isString() && json["FilePrefix"].isString() &&
+     json["FileSuffix"].isString() && json["FileExtension"].isString())
   {
     PaddingDigits = static_cast<qint32>(json["PaddingDigits"].toInt());
     Ordering = static_cast<quint32>(json["Ordering"].toInt());

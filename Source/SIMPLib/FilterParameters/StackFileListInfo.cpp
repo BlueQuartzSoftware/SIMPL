@@ -56,7 +56,7 @@ bool StackFileListInfo::readJson(QJsonObject& json)
     return false;
   }
 
-  if(json["RowStart"].isDouble() && json["RowEnd"].isDouble() && json["ColStart"].isDouble() && json["ColEnd"].isDouble())
+  if(json["StartIndex"].isDouble() && json["EndIndex"].isDouble())
   {
     StartIndex = static_cast<qint32>(json["StartIndex"].toInt());
     EndIndex = static_cast<quint32>(json["EndIndex"].toInt());
