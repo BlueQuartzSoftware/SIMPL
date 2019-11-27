@@ -44,7 +44,7 @@ public:
   using Pointer = std::shared_ptr<Self>;
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
-  using ConstWeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<const Self>;
   static Pointer NullPointer()
   {
     return Pointer(static_cast<Self*>(nullptr));
@@ -126,7 +126,7 @@ public:
   using Pointer = std::shared_ptr<Self>;
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
-  using ConstWeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<const Self>;
   static Pointer NullPointer()
   {
     return Pointer(static_cast<Self*>(nullptr));
