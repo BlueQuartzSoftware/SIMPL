@@ -28,6 +28,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   FindDerivativesFilterTest
   FeatureDataCSVWriterTest
   GenerateColorTableTest
+  GenerateTiltSeriesTest
   ImportAsciDataArrayTest
   ImportHDF5DatasetTest
   MoveDataTest

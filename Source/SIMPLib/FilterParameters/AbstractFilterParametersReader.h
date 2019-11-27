@@ -117,7 +117,7 @@ class SIMPLib_EXPORT AbstractFilterParametersReader
     virtual Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString& name, Float2ndOrderPoly_t v);
     virtual Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString& name, Float3rdOrderPoly_t v);
     virtual Float4thOrderPoly_t readFloat4thOrderPoly(const QString& name, Float4thOrderPoly_t v);
-    virtual FileListInfo_t readFileListInfo(const QString& name, FileListInfo_t v);
+    virtual StackFileListInfo readFileListInfo(const QString& name, StackFileListInfo v);
     virtual ComparisonInput_t readComparisonInput(const QString& name, ComparisonInput_t v, int vectorPos);
     virtual ComparisonInputs readComparisonInputs(const QString& name, ComparisonInputs v);
     virtual ComparisonInputsAdvanced readComparisonInputsAdvanced(const QString& name, ComparisonInputsAdvanced v);

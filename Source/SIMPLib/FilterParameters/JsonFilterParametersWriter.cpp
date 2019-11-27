@@ -60,8 +60,7 @@ JsonFilterParametersWriter::JsonFilterParametersWriter()
 //
 // -----------------------------------------------------------------------------
 JsonFilterParametersWriter::JsonFilterParametersWriter(QString& fileName, QString& pipelineName, int& numFilters)
-: m_ExpandReaderFilters(true)
-, m_MaxFilterIndex(-1)
+: m_MaxFilterIndex(-1)
 , m_CurrentIndex(0)
 {
   m_FileName = fileName;

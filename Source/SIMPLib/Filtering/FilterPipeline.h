@@ -94,7 +94,7 @@ public:
   using Pointer = std::shared_ptr<Self>;
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
-  using ConstWeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<const Self>;
   static Pointer NullPointer();
 
   /**
@@ -262,7 +262,7 @@ public:
    * @param progress
    * @param messageText
    */
-  void notifyProgressMessage(int progress, const QString& messageText);
+  void notifyProgressMessage(int progress, const QString& messageText) override;
 
   /**
    * @brief clearErrorCondition
@@ -318,7 +318,7 @@ protected:
   void updatePrevNextFilters();
 
 signals:
-  void messageGenerated(AbstractMessage::Pointer message);
+  //  void messageGenerated(AbstractMessage::Pointer message);
 
   /**
    * @brief This method is emitted from the pipeline and signals a pipeline pause

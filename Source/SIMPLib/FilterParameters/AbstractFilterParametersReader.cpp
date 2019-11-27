@@ -410,13 +410,13 @@ Float4thOrderPoly_t AbstractFilterParametersReader::readFloat4thOrderPoly(const 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FileListInfo_t AbstractFilterParametersReader::readFileListInfo(const QString& name, FileListInfo_t defaultValue)
+StackFileListInfo AbstractFilterParametersReader::readFileListInfo(const QString& name, StackFileListInfo defaultValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defaultValue)
 
   // This should never be executed
-  return FileListInfo_t();
+  return StackFileListInfo();
 }
 
 // -----------------------------------------------------------------------------

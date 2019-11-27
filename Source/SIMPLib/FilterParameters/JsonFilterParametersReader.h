@@ -56,7 +56,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     using Pointer = std::shared_ptr<Self>;
     using ConstPointer = std::shared_ptr<const Self>;
     using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<const Self>;
     static Pointer NullPointer();
 
     static Pointer New();

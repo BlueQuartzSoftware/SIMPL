@@ -51,6 +51,7 @@ set(_PublicFilters
   FeatureDataCSVWriter
   FindDerivatives
   GenerateColorTable
+  GenerateTiltSeries
   ImportAsciDataArray
   ImportHDF5Dataset
   InitializeData

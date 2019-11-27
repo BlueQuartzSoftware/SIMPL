@@ -386,7 +386,7 @@ int AbstractFilterParametersWriter::writeValue(const QString& name, Float4thOrde
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString& name, FileListInfo_t v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, StackFileListInfo v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)

@@ -77,7 +77,7 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     using Pointer = std::shared_ptr<Self>;
     using ConstPointer = std::shared_ptr<const Self>;
     using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<const Self>;
     static Pointer NullPointer();
 
     static std::shared_ptr<WriteASCIIData> New();

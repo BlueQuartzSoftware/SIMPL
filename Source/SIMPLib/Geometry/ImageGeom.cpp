@@ -1163,25 +1163,15 @@ ImageGeom::ErrorType ImageGeom::computeCellIndex(const float coords[3], size_t i
 // -----------------------------------------------------------------------------
 ImageGeom::ErrorType ImageGeom::computeCellIndex(const float coords[], size_t& index)
 {
-  ImageGeom::ErrorType err = ImageGeom::ErrorType::NoError;
   size_t cell[3] = {0, 0, 0};
-  for(size_t i = 0; i < 3; i++)
+  ImageGeom::ErrorType err = computeCellIndex(coords, cell);
+  if(err == ImageGeom::ErrorType::NoError)
   {
-    if(coords[i] < m_Origin[i])
+    index = (m_Dimensions[0] * m_Dimensions[1] * cell[2]) + (m_Dimensions[0] * cell[1]) + cell[0];
+    if(index > getNumberOfElements())
     {
-      return static_cast<ImageGeom::ErrorType>(i * 2);
+      err = ImageGeom::ErrorType::IndexOutOfBounds;
     }
-    cell[i] = static_cast<size_t>((coords[i] - m_Origin[i]) / m_Spacing[i]);
-    if(cell[i] > m_Dimensions[i])
-    {
-      return static_cast<ImageGeom::ErrorType>(i * 2 + 1);
-    }
-  }
-
-  index = (m_Dimensions[0] * m_Dimensions[1] * cell[2]) + (m_Dimensions[0] * cell[1]) + cell[0];
-  if(index > getNumberOfElements())
-  {
-    err = ImageGeom::ErrorType::IndexOutOfBounds;
   }
   return err;
 }
