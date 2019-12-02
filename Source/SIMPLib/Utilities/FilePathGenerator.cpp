@@ -150,10 +150,10 @@ FilePathGenerator::TileRCIncexLayout2D FilePathGenerator::GenerateRCIndexMontage
 
   bool missingFiles = false;
 
-  for(int r = rowStart; r < rowEnd; r++)
+  for(int r = rowStart; r <= rowEnd; r++)
   {
     TileRCIndexRow2D tileRow2D;
-    for(int c = colStart; c < colEnd; c++)
+    for(int c = colStart; c <= colEnd; c++)
     {
       TileRCIndex2D tile2D;
 
