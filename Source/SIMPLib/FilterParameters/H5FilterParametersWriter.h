@@ -57,7 +57,7 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
     using Pointer = std::shared_ptr<Self>;
     using ConstPointer = std::shared_ptr<const Self>;
     using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<const Self>;
     static Pointer NullPointer();
 
     static Pointer New();
@@ -142,7 +142,7 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
     int writeValue(const QString& name, Float2ndOrderPoly_t v) override;
     int writeValue(const QString& name, Float3rdOrderPoly_t v) override;
     int writeValue(const QString& name, Float4thOrderPoly_t v) override;
-    int writeValue(const QString& name, FileListInfo_t v) override;
+    int writeValue(const QString& name, StackFileListInfo v) override;
 
     int writeValue(const QString& name, ComparisonInput_t v) override;
     int writeValue(const QString& name, ComparisonInputs v) override;

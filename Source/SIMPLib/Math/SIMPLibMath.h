@@ -59,25 +59,26 @@
      Microsoft doesn't define M_2PI ever, other compilers may lack some of these
      too, hence the sequence as it is: load math.h, then see what's lacking still.
   */
-  #ifndef _USE_MATH_DEFINES
-   #define _USE_MATH_DEFINES 1
-  #endif
+//  #ifndef _USE_MATH_DEFINES
+//   #define _USE_MATH_DEFINES 1
+//  #endif
 
-  /*
-  "It's a known, long-standing bug in the compiler system's headers.  For
-  some reason the manufacturer, in its infinite wisdom, chose to #define
-  macros min() and max() in violation of the upper-case convention and so
-  break any legitimate functions with those names, including those in the
-  standard C++ library."
-  */
-  #ifndef NOMINMAX
-    #define NOMINMAX
-  #endif
+/*
+"It's a known, long-standing bug in the compiler system's headers.  For
+some reason the manufacturer, in its infinite wisdom, chose to #define
+macros min() and max() in violation of the upper-case convention and so
+break any legitimate functions with those names, including those in the
+standard C++ library."
+*/
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 
 #endif
 
-#include <cstddef>
 #include <cmath>
+
+#include <cstddef>
 
 #include <vector>
 #include <limits>

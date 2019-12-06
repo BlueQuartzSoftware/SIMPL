@@ -70,7 +70,7 @@ public:
   using Pointer = std::shared_ptr<Self>;
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
-  using ConstWeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<const Self>;
   static Pointer NullPointer()
   {
     return Pointer(static_cast<Self*>(nullptr));
@@ -166,7 +166,7 @@ public:
   , m_CompDims(std::move(compDims))
   {
     m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), static_cast<size_t>(1), std::multiplies<>());
-    m_InitValue = static_cast<T>(0);
+    m_InitValue = initValue;
     if(allocate)
     {
       resizeTuples(numTuples);

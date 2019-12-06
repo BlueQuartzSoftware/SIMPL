@@ -58,7 +58,7 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
     using Pointer = std::shared_ptr<Self>;
     using ConstPointer = std::shared_ptr<const Self>;
     using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<const Self>;
     static Pointer NullPointer();
 
     static Pointer New();
@@ -156,7 +156,7 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
     Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString& name, Float2ndOrderPoly_t v) override;
     Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString& name, Float3rdOrderPoly_t v) override;
     Float4thOrderPoly_t readFloat4thOrderPoly(const QString& name, Float4thOrderPoly_t v) override;
-    FileListInfo_t readFileListInfo(const QString& name, FileListInfo_t v) override;
+    StackFileListInfo readFileListInfo(const QString& name, StackFileListInfo v) override;
     ComparisonInput_t readComparisonInput(const QString& name, ComparisonInput_t v, int vectorPos) override;
     ComparisonInputs readComparisonInputs(const QString& name, ComparisonInputs v) override;
     ComparisonInputsAdvanced readComparisonInputsAdvanced(const QString& name, ComparisonInputsAdvanced v) override;

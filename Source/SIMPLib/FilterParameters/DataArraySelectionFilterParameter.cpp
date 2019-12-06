@@ -148,7 +148,40 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
   }
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {
-    QVector<AttributeMatrix::Type> amTypes(1, attributeMatrixType);
+    AttributeMatrix::Types amTypes(1, attributeMatrixType);
+    req.amTypes = amTypes;
+  }
+  if(IGeometry::Type::Any != geometryType)
+  {
+    req.dcGeometryTypes = IGeometry::Types(1, geometryType);
+  }
+  return req;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParameter::CreateRequirement(const QVector<QString>& primitiveTypes, size_t allowedCompDim,
+                                                                                                        AttributeMatrix::Type attributeMatrixType, IGeometry::Type geometryType)
+{
+  using SizeTVectorType = std::vector<size_t>;
+  DataArraySelectionFilterParameter::RequirementType req;
+
+  for(const auto& type : primitiveTypes)
+  {
+    if(type.compare(SIMPL::Defaults::AnyPrimitive) != 0)
+    {
+      req.daTypes.push_back(type);
+    }
+  }
+
+  if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
+  {
+    req.componentDimensions = std::vector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
+  }
+  if(AttributeMatrix::Type::Any != attributeMatrixType)
+  {
+    AttributeMatrix::Types amTypes(1, attributeMatrixType);
     req.amTypes = amTypes;
   }
   if(IGeometry::Type::Any != geometryType)
@@ -259,13 +292,13 @@ IGeometry::Types DataArraySelectionFilterParameter::getDefaultGeometryTypes() co
 }
 
 // -----------------------------------------------------------------------------
-void DataArraySelectionFilterParameter::setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value)
+void DataArraySelectionFilterParameter::setDefaultAttributeMatrixTypes(const AttributeMatrix::Types& value)
 {
   m_DefaultAttributeMatrixTypes = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<AttributeMatrix::Type> DataArraySelectionFilterParameter::getDefaultAttributeMatrixTypes() const
+AttributeMatrix::Types DataArraySelectionFilterParameter::getDefaultAttributeMatrixTypes() const
 {
   return m_DefaultAttributeMatrixTypes;
 }

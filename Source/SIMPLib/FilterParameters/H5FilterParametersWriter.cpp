@@ -538,7 +538,7 @@ int H5FilterParametersWriter::writeValue(const QString& name, Float4thOrderPoly_
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5FilterParametersWriter::writeValue(const QString& name, FileListInfo_t v)
+int H5FilterParametersWriter::writeValue(const QString& name, StackFileListInfo v)
 {
   int err = 0;
   hid_t dcaGid = QH5Utilities::createGroup(m_CurrentGroupId, name);

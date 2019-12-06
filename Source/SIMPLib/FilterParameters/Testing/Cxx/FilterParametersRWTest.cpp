@@ -501,31 +501,31 @@ public:
   Q_PROPERTY(DynamicTableData DynamicData2 READ getDynamicData2 WRITE setDynamicData2)
 
   // -----------------------------------------------------------------------------
-  void setFileListInfo1(const FileListInfo_t& value)
+  void setFileListInfo1(const StackFileListInfo& value)
   {
     m_FileListInfo1 = value;
   }
 
   // -----------------------------------------------------------------------------
-  FileListInfo_t getFileListInfo1() const
+  StackFileListInfo getFileListInfo1() const
   {
     return m_FileListInfo1;
   }
 
-  Q_PROPERTY(FileListInfo_t FileListInfo1 READ getFileListInfo1 WRITE setFileListInfo1)
+  Q_PROPERTY(StackFileListInfo FileListInfo1 READ getFileListInfo1 WRITE setFileListInfo1)
   // -----------------------------------------------------------------------------
-  void setFileListInfo2(const FileListInfo_t& value)
+  void setFileListInfo2(const StackFileListInfo& value)
   {
     m_FileListInfo2 = value;
   }
 
   // -----------------------------------------------------------------------------
-  FileListInfo_t getFileListInfo2() const
+  StackFileListInfo getFileListInfo2() const
   {
     return m_FileListInfo2;
   }
 
-  Q_PROPERTY(FileListInfo_t FileListInfo2 READ getFileListInfo2 WRITE setFileListInfo2)
+  Q_PROPERTY(StackFileListInfo FileListInfo2 READ getFileListInfo2 WRITE setFileListInfo2)
 
   // -----------------------------------------------------------------------------
   void setIntVec3_1(const IntVec3Type& value)
@@ -1028,7 +1028,7 @@ public:
 
     {
       FileListInfoFilterParameter::Pointer fp =
-          FileListInfoFilterParameter::New("Test", "FileListInfo1", FileListInfo_t(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, FileListInfo2),
+          FileListInfoFilterParameter::New("Test", "FileListInfo1", StackFileListInfo(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, FileListInfo2),
                                            SIMPL_BIND_GETTER(FilterParametersRWTest, this, FileListInfo1));
 
       QJsonObject obj;
@@ -1044,7 +1044,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(m_FileListInfo1.PaddingDigits, m_FileListInfo2.PaddingDigits)
       DREAM3D_REQUIRE_EQUAL(m_FileListInfo1.StartIndex, m_FileListInfo2.StartIndex)
 
-      m_FileListInfo2 = FileListInfo_t();
+      m_FileListInfo2 = StackFileListInfo();
     }
 
     {
@@ -1433,8 +1433,8 @@ private:
   DataContainerArrayProxy m_DcaProxy2 = {};
   DynamicTableData m_DynamicData1 = {};
   DynamicTableData m_DynamicData2 = {};
-  FileListInfo_t m_FileListInfo1 = {};
-  FileListInfo_t m_FileListInfo2 = {};
+  StackFileListInfo m_FileListInfo1 = {};
+  StackFileListInfo m_FileListInfo2 = {};
   IntVec3Type m_IntVec3_1 = {};
   IntVec3Type m_IntVec3_2 = {};
   FloatVec3Type m_FloatVec3_1 = {};

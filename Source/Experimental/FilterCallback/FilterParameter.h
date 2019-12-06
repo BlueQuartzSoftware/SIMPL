@@ -118,7 +118,7 @@ class IFilterParameter
     using Pointer = std::shared_ptr<Self>;
     using ConstPointer = std::shared_ptr<const Self>;
     using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<const Self>;
     static Pointer NullPointer();
 
     using EnumType = unsigned int;
@@ -195,7 +195,7 @@ class Int32Parameter : public IFilterParameter
     using Pointer = std::shared_ptr<Self>;
     using ConstPointer = std::shared_ptr<const Self>;
     using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<const Self>;
     static Pointer NullPointer();
 
     using SetterCallbackType = std::function<void(int)>;
@@ -248,7 +248,7 @@ class DoubleParameter : public IFilterParameter
     using Pointer = std::shared_ptr<Self>;
     using ConstPointer = std::shared_ptr<const Self>;
     using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<const Self>;
     static Pointer NullPointer();
 
     using SetterCallbackType = std::function<void(double)>;
@@ -300,7 +300,7 @@ class DataArrayPathParameter : public IFilterParameter
     using Pointer = std::shared_ptr<Self>;
     using ConstPointer = std::shared_ptr<const Self>;
     using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<const Self>;
     static Pointer NullPointer();
 
     using SetterCallbackType = std::function<void(DataArrayPath)>;

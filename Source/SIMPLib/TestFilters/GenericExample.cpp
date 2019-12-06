@@ -104,7 +104,7 @@ GenericExample::GenericExample()
   m_Origin[1] = 0.0;
   m_Origin[2] = 0.0;
 
-  FileListInfo_t flInfo;
+  StackFileListInfo flInfo;
   flInfo.PaddingDigits = 2;
   flInfo.Ordering = 0;
   flInfo.StartIndex = 0;
@@ -667,13 +667,13 @@ QString GenericExample::getInputFile() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setInputFileListInfo(const FileListInfo_t& value)
+void GenericExample::setInputFileListInfo(const StackFileListInfo& value)
 {
   m_InputFileListInfo = value;
 }
 
 // -----------------------------------------------------------------------------
-FileListInfo_t GenericExample::getInputFileListInfo() const
+StackFileListInfo GenericExample::getInputFileListInfo() const
 {
   return m_InputFileListInfo;
 }

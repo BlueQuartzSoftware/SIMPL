@@ -40,7 +40,7 @@
 #include <QtCore/QString>
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/FilterParameters/FileListInfo.h"
+#include "SIMPLib/FilterParameters/StackFileListInfo.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/SIMPLib.h"
 
@@ -69,7 +69,7 @@ public:
   using Pointer = std::shared_ptr<Self>;
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
-  using ConstWeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<const Self>;
   static Pointer NullPointer();
 
   static Pointer New();
@@ -83,8 +83,8 @@ public:
    */
   static QString ClassName();
 
-  typedef std::function<void(FileListInfo_t)> SetterCallbackType;
-  typedef std::function<FileListInfo_t(void)> GetterCallbackType;
+  typedef std::function<void(StackFileListInfo)> SetterCallbackType;
+  typedef std::function<StackFileListInfo(void)> GetterCallbackType;
 
   /**
    * @brief New This function instantiates an instance of the FileListInfoFilterParameter. Although this
@@ -102,7 +102,7 @@ public:
   * that this FilterParameter subclass represents.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const FileListInfo_t& defaultValue, Category category, SetterCallbackType setterCallback,
+  static Pointer New(const QString& humanLabel, const QString& propertyName, const StackFileListInfo& defaultValue, Category category, SetterCallbackType setterCallback,
                      GetterCallbackType getterCallback);
 
   ~FileListInfoFilterParameter() override;

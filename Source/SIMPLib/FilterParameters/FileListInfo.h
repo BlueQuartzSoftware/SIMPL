@@ -1,5 +1,6 @@
 /* ============================================================================
  * Copyright (c) 2019 BlueQuartz Software, LLC
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -11,9 +12,9 @@
  * list of conditions and the following disclaimer in the documentation and/or
  * other materials provided with the distribution.
  *
- * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
- * contributors may be used to endorse or promote products derived from this software
- * without specific prior written permission.
+ * Neither the names of any of the BlueQuartz Software contributors
+ * may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -26,56 +27,61 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
+ *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
 #include <QtCore/QJsonObject>
-#include <QtCore/QString>
 #include <QtCore/QMetaType>
+#include <QtCore/QString>
 
-typedef struct
+#include "SIMPLib/SIMPLib.h"
+
+class SIMPLib_EXPORT FileListInfo
 {
+public:
+  virtual ~FileListInfo();
+
   qint32 PaddingDigits = 3;
-  quint32 Ordering = 0; /* Ordering=0 = Ascending, Ordering=1 = Descending */
-  qint32 StartIndex = 0;
-  qint32 EndIndex = 1;
+  quint32 Ordering = 0; /* Ordering=0 = RowColumn, Ordering=1 = ColumnRow */
   qint32 IncrementIndex = 1;
   QString InputPath;
   QString FilePrefix;
   QString FileSuffix;
   QString FileExtension;
 
-  void writeJson(QJsonObject& json)
-  {
-    json["PaddingDigits"] = static_cast<double>(PaddingDigits);
-    json["Ordering"] = static_cast<double>(Ordering);
-    json["StartIndex"] = static_cast<double>(StartIndex);
-    json["EndIndex"] = static_cast<double>(EndIndex);
-    json["IncrementIndex"] = static_cast<double>(IncrementIndex);
-    json["InputPath"] = InputPath;
-    json["FilePrefix"] = FilePrefix;
-    json["FileSuffix"] = FileSuffix;
-    json["FileExtension"] = FileExtension;
-  }
+  /**
+   * @brief writeJson
+   * @param json
+   */
+  virtual void writeJson(QJsonObject& json) const = 0;
 
-  bool readJson(QJsonObject& json)
-  {
-    if(json["PaddingDigits"].isDouble() && json["Ordering"].isDouble() && json["StartIndex"].isDouble() && json["EndIndex"].isDouble() && json["IncrementIndex"].isDouble() &&
-       json["InputPath"].isString() && json["FilePrefix"].isString() && json["FileSuffix"].isString() && json["FileExtension"].isString())
-    {
-      PaddingDigits = static_cast<qint32>(json["PaddingDigits"].toDouble());
-      Ordering = static_cast<quint32>(json["Ordering"].toDouble());
-      StartIndex = static_cast<qint32>(json["StartIndex"].toDouble());
-      EndIndex = static_cast<qint32>(json["EndIndex"].toDouble());
-      IncrementIndex = static_cast<qint32>(json["IncrementIndex"].toDouble());
-      InputPath = json["InputPath"].toString();
-      FilePrefix = json["FilePrefix"].toString();
-      FileSuffix = json["FileSuffix"].toString();
-      FileExtension = json["FileExtension"].toString();
-      return true;
-    }
-    return false;
-  }
-} FileListInfo_t;
+  /**
+   * @brief readJson
+   * @param json
+   * @return
+   */
+  virtual bool readJson(QJsonObject& json) = 0;
 
-Q_DECLARE_METATYPE(FileListInfo_t)
+protected:
+  FileListInfo();
+
+  /**
+   * @brief writeSuperclassJson
+   * @param json
+   */
+  void writeSuperclassJson(QJsonObject& json) const;
+
+  /**
+   * @brief readSuperclassJson
+   * @param json
+   * @return
+   */
+  bool readSuperclassJson(QJsonObject& json);
+
+public:
+  FileListInfo(const FileListInfo&) = default;            // Copy Constructor Not Implemented
+  FileListInfo(FileListInfo&&) = default;                 // Move Constructor Not Implemented
+  FileListInfo& operator=(const FileListInfo&) = default; // Copy Assignment Not Implemented
+  FileListInfo& operator=(FileListInfo&&) = default;      // Move Assignment Not Implemented
+};
