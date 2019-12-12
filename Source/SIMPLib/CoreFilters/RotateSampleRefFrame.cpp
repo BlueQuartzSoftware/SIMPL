@@ -351,8 +351,8 @@ void RotateSampleRefFrame::setupFilterParameters()
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Rotation Representation");
     parameter->setPropertyName("RotationRepresentation");
-    parameter->setSetterCallback(SIMPL_BIND_SETTER(RotateSampleRefFrame, this, RotationRepresentation));
-    parameter->setGetterCallback(SIMPL_BIND_GETTER(RotateSampleRefFrame, this, RotationRepresentation));
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(RotateSampleRefFrame, this, RotationRepresentationChoice));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(RotateSampleRefFrame, this, RotationRepresentationChoice));
     QVector<QString> choices{"Axis Angle", "Rotation Matrix"};
     parameter->setChoices(choices);
     QStringList linkedProps{"RotationAngle", "RotationAxis", "RotationTable"};
@@ -416,7 +416,7 @@ void RotateSampleRefFrame::dataCheck()
     return;
   }
 
-  if(!isRotationRepresentationValid(m_RotationRepresentation))
+  if(!isRotationRepresentationValid(m_RotationRepresentationChoice))
   {
     QString ss = QObject::tr("Invalid rotation representation");
     setErrorCondition(-45001, ss);
@@ -448,7 +448,7 @@ void RotateSampleRefFrame::dataCheck()
     return;
   }
 
-  const RotationRepresentation representation = getRotationRepresentationEnum();
+  const RotationRepresentation representation = getRotationRepresentation();
 
   switch(representation)
   {
@@ -790,31 +790,31 @@ DynamicTableData RotateSampleRefFrame::getRotationTable() const
 }
 
 // -----------------------------------------------------------------------------
-void RotateSampleRefFrame::setRotationRepresentation(int value)
+void RotateSampleRefFrame::setRotationRepresentationChoice(int value)
 {
-  m_RotationRepresentation = value;
+  m_RotationRepresentationChoice = value;
 }
 
 // -----------------------------------------------------------------------------
-int RotateSampleRefFrame::getRotationRepresentation() const
+int RotateSampleRefFrame::getRotationRepresentationChoice() const
 {
-  return m_RotationRepresentation;
+  return m_RotationRepresentationChoice;
 }
 
 // -----------------------------------------------------------------------------
-RotateSampleRefFrame::RotationRepresentation RotateSampleRefFrame::getRotationRepresentationEnum() const
+RotateSampleRefFrame::RotationRepresentation RotateSampleRefFrame::getRotationRepresentation() const
 {
-  return static_cast<RotationRepresentation>(m_RotationRepresentation);
+  return static_cast<RotationRepresentation>(m_RotationRepresentationChoice);
 }
 
 // -----------------------------------------------------------------------------
-void RotateSampleRefFrame::setRotationRepresentationEnum(RotationRepresentation value)
+void RotateSampleRefFrame::setRotationRepresentation(RotationRepresentation value)
 {
-  m_RotationRepresentation = static_cast<int>(value);
+  m_RotationRepresentationChoice = static_cast<int>(value);
 }
 
 // -----------------------------------------------------------------------------
-bool RotateSampleRefFrame::isRotationRepresentationValid(int value)
+bool RotateSampleRefFrame::isRotationRepresentationValid(int value) const
 {
   return (value >= 0) && (value <= 1);
 }

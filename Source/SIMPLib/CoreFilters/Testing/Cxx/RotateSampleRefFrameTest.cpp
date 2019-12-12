@@ -61,7 +61,7 @@ private:
   const QString k_RotationAngleName = "RotationAngle";
   const QString k_RotationAxisName = "RotationAxis";
   const QString k_RotationTableName = "RotationTable";
-  const QString k_RotationRepresentationName = "RotationRepresentation";
+  const QString k_RotationRepresentationChoiceName = "RotationRepresentationChoice";
   const QString k_CellAttributeMatrixPathName = "CellAttributeMatrixPath";
   const int k_AxisAngle = 0;
   const int k_RotationMatrix = 1;
@@ -231,7 +231,7 @@ public:
     rotateFilter->setDataContainerArray(dca);
 
     setProperty(rotateFilter, k_CellAttributeMatrixPathName, path);
-    setProperty(rotateFilter, k_RotationRepresentationName, k_AxisAngle);
+    setProperty(rotateFilter, k_RotationRepresentationChoiceName, k_AxisAngle);
 
     // Correct axis angle inputs
 
@@ -256,7 +256,7 @@ public:
 
     // Correct rotation matrix inputs
 
-    setProperty(rotateFilter, k_RotationRepresentationName, k_RotationMatrix);
+    setProperty(rotateFilter, k_RotationRepresentationChoiceName, k_RotationMatrix);
 
     //  0 0 1
     //  0 1 0
@@ -377,7 +377,7 @@ public:
 
       {
         // Set to axis angle representation
-        setProperty(rotateFilter, k_RotationRepresentationName, k_AxisAngle);
+        setProperty(rotateFilter, k_RotationRepresentationChoiceName, k_AxisAngle);
 
         // Copy original data for rotation
 
@@ -408,7 +408,7 @@ public:
 
       {
         // Set to rotation matrix representation
-        setProperty(rotateFilter, k_RotationRepresentationName, k_RotationMatrix);
+        setProperty(rotateFilter, k_RotationRepresentationChoiceName, k_RotationMatrix);
 
         // Copy original data for rotation
 

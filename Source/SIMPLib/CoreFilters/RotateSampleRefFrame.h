@@ -63,9 +63,9 @@ class SIMPLib_EXPORT RotateSampleRefFrame : public AbstractFilter
   PYB11_PROPERTY(float RotationAngle READ getRotationAngle WRITE setRotationAngle)
   PYB11_PROPERTY(bool SliceBySlice READ getSliceBySlice WRITE setSliceBySlice)
   PYB11_PROPERTY(DynamicTableData RotationTable READ getRotationTable WRITE setRotationTable)
-  PYB11_PROPERTY(int RotationRepresentation READ getRotationRepresentation WRITE setRotationRepresentation)
-  PYB11_METHOD(RotationRepresentation getRotationRepresentationEnum)
-  PYB11_METHOD(void setRotationRepresentationEnum ARGS value)
+  PYB11_PROPERTY(int RotationRepresentationChoice READ getRotationRepresentationChoice WRITE setRotationRepresentationChoice)
+  PYB11_METHOD(RotationRepresentation getRotationRepresentation)
+  PYB11_METHOD(void setRotationRepresentation ARGS value)
   PYB11_METHOD(bool isRotationRepresentationValid ARGS value)
 #endif
 
@@ -110,20 +110,20 @@ public:
    * @brief Returns the current rotation representation in enum form.
    * @return
    */
-  RotationRepresentation getRotationRepresentationEnum() const;
+  RotationRepresentation getRotationRepresentation() const;
 
   /**
    * @brief Sets the rotation representation value to the given enum value
    * @param value
    */
-  void setRotationRepresentationEnum(RotationRepresentation value);
+  void setRotationRepresentation(RotationRepresentation value);
 
   /**
    * @brief Returns true if the selected index for the rotation representation choice widget is a valid enum value.
    * @param value
    * @return
    */
-  static bool isRotationRepresentationValid(int value);
+  bool isRotationRepresentationValid(int value) const;
 
   /**
    * @brief Setter property for CellAttributeMatrixPath
@@ -185,18 +185,18 @@ public:
   void setRotationTable(const DynamicTableData& value);
 
   /**
-   * @brief Setter property for RotationRepresentation
+   * @brief Setter property for RotationRepresentationChoice
    * @param value
    */
-  void setRotationRepresentation(int value);
+  void setRotationRepresentationChoice(int value);
 
   /**
-   * @brief Getter property for RotationRepresentation
+   * @brief Getter property for RotationRepresentationChoice
    * @return
    */
-  int getRotationRepresentation() const;
+  int getRotationRepresentationChoice() const;
 
-  Q_PROPERTY(int RotationRepresentation READ getRotationRepresentation WRITE setRotationRepresentation)
+  Q_PROPERTY(int RotationRepresentationChoice READ getRotationRepresentationChoice WRITE setRotationRepresentationChoice)
 
   /**
    * @brief Getter property for RotationTable
@@ -322,5 +322,5 @@ private:
   float m_RotationAngle = 0.0f;
   bool m_SliceBySlice = false;
   DynamicTableData m_RotationTable;
-  int m_RotationRepresentation = 0;
+  int m_RotationRepresentationChoice = 0;
 };
