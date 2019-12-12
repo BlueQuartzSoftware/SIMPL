@@ -46,7 +46,7 @@
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
-#include "UnitTestSupport.hpp"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 
