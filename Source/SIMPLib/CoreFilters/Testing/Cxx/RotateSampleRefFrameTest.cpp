@@ -63,8 +63,8 @@ private:
   const QString k_RotationTableName = "RotationTable";
   const QString k_RotationRepresentationName = "RotationRepresentation";
   const QString k_CellAttributeMatrixPathName = "CellAttributeMatrixPath";
-  static constexpr int k_AxisAngle = 0;
-  static constexpr int k_RotationMatrix = 1;
+  const int k_AxisAngle = 0;
+  const int k_RotationMatrix = 1;
 
   template <class T>
   static bool dataArrayEqual(const DataArray<T>& a, const DataArray<T>& b)
