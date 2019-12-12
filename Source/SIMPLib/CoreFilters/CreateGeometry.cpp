@@ -180,6 +180,7 @@ void CreateGeometry::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_INT_VEC3_FP("Dimensions", Dimensions, FilterParameter::Parameter, CreateGeometry, 0));
     parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Parameter, CreateGeometry, 0));
     parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Spacing", Spacing, FilterParameter::Parameter, CreateGeometry, 0));
+    parameters.back()->setLegacyPropertyName("Resolution");
     parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Attribute Matrix", ImageCellAttributeMatrixName, DataContainerName, FilterParameter::CreatedArray, CreateGeometry, 0));
   }
   {

@@ -77,6 +77,10 @@ QString FloatFilterParameter::getWidgetType() const
 void FloatFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
+  if(jsonValue.isUndefined())
+  {
+    jsonValue = json[getLegacyPropertyName()];
+  }
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     float f = static_cast<float>(jsonValue.toDouble());

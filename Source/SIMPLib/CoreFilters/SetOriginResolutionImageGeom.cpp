@@ -128,6 +128,7 @@ void SetOriginResolutionImageGeom::setupFilterParameters()
   linkedProps << "Spacing";
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Change Spacing", ChangeResolution, FilterParameter::Parameter, SetOriginResolutionImageGeom, linkedProps));
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Spacing", Spacing, FilterParameter::Parameter, SetOriginResolutionImageGeom));
+  parameters.back()->setLegacyPropertyName("Resolution");
 
   setFilterParameters(parameters);
 }

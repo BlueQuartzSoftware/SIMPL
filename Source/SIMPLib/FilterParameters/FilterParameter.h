@@ -105,6 +105,20 @@ class SIMPLib_EXPORT FilterParameter
     QString getPropertyName() const;
 
     /**
+     * @brief This sets an alternate or legacy property name that was used in past versions of a filter.
+     *
+     * This can be useful if the filter changed the name of the property and to keep old pipeline files working
+     * @param value
+     */
+    void setLegacyPropertyName(const QString& value);
+
+    /**
+     * @brief Returns the legacy property name
+     * @return
+     */
+    QString getLegacyPropertyName() const;
+
+    /**
      * @brief getWidgetType This is a pure virtual function. All subclasses need
      * to implement this function.
      * @return
@@ -185,6 +199,7 @@ class SIMPLib_EXPORT FilterParameter
 
     QString m_HumanLabel = {};
     QString m_PropertyName = {};
+    QString m_LegacyPropertyName = {};
     FilterParameter::Category m_Category = {};
     bool m_ReadOnly = {};
     int m_GroupIndex = {};

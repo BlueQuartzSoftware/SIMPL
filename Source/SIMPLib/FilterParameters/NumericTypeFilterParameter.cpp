@@ -80,6 +80,10 @@ QString NumericTypeFilterParameter::getWidgetType() const
 void NumericTypeFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
+  if(jsonValue.isUndefined())
+  {
+    jsonValue = json[getLegacyPropertyName()];
+  }
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     m_SetterCallback(static_cast<SIMPL::NumericTypes::Type>(jsonValue.toInt(0.0)));

@@ -175,6 +175,18 @@ QString FilterParameter::getPropertyName() const
 }
 
 // -----------------------------------------------------------------------------
+void FilterParameter::setLegacyPropertyName(const QString& value)
+{
+  m_LegacyPropertyName = value;
+}
+
+// -----------------------------------------------------------------------------
+QString FilterParameter::getLegacyPropertyName() const
+{
+  return m_LegacyPropertyName;
+}
+
+// -----------------------------------------------------------------------------
 void FilterParameter::setCategory(const FilterParameter::Category& value)
 {
   m_Category = value;
