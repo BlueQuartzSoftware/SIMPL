@@ -35,6 +35,7 @@
 
 #include <Eigen/Dense>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
@@ -43,14 +44,14 @@
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
-
-#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
-
+#include "SIMPLib/Geometry/ImageGeom.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
+
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 
 class RotateSampleRefFrameTest
 {
@@ -86,9 +87,9 @@ private:
     FloatVec3Type originA = a.getOrigin();
     FloatVec3Type spacingA = a.getSpacing();
 
-    SizeVec3Type dimsB = a.getDimensions();
-    FloatVec3Type originB = a.getOrigin();
-    FloatVec3Type spacingB = a.getSpacing();
+    SizeVec3Type dimsB = b.getDimensions();
+    FloatVec3Type originB = b.getOrigin();
+    FloatVec3Type spacingB = b.getSpacing();
 
     return (dimsA == dimsB) && (originA == originB) && (spacingA == spacingB);
   }
@@ -260,7 +261,7 @@ public:
     //  0 1 0
     // -1 0 0
 
-    std::vector<std::vector<double>> table = {{0.0f, 0.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, {-1.0f, 0.0f, 0.0f}};
+    std::vector<std::vector<double>> table = {{0.0, 0.0, 1.0}, {0.0, 1.0, 0.0}, {-1.0, 0.0, 0.0}};
 
     DynamicTableData tableData(table);
 
@@ -278,7 +279,7 @@ public:
     // 0 1 0
     // 0 0 1
 
-    table = {{1.0f, 0.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}};
+    table = {{1.0, 0.0, 1.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}};
 
     tableData.setTableData(table);
 
@@ -296,7 +297,7 @@ public:
     // 0 1 0
     // 1 0 1
 
-    table = {{1.0f, 0.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 1.0f}};
+    table = {{1.0, 0.0, 1.0}, {0.0, 1.0, 0.0}, {1.0, 0.0, 1.0}};
 
     tableData.setTableData(table);
 
@@ -422,7 +423,7 @@ public:
         // Set properties
 
         Eigen::Vector3f axis(x, y, z);
-        float angleRadians = angle * SIMPLib::Constants::k_DegToRad;
+        float angleRadians = angle * static_cast<float>(SIMPLib::Constants::k_DegToRad);
         Eigen::AngleAxisf axisAngle(angleRadians, axis);
 
         Eigen::Matrix3f rotationMatrix = axisAngle.toRotationMatrix();
@@ -434,7 +435,7 @@ public:
           std::vector<double> row;
           for(int j = 0; j < rotationMatrix.cols(); j++)
           {
-            row.push_back(rotationMatrix(i, j));
+            row.push_back(static_cast<double>(rotationMatrix(i, j)));
           }
           data.push_back(row);
         }
@@ -466,7 +467,7 @@ public:
     std::cout << "----Start RotateSampleRefFrameTest----\n";
 
     int err = EXIT_SUCCESS;
-    DREAM3D_REGISTER_TEST(TestFilterAvailability());
+    DREAM3D_REGISTER_TEST(TestFilterAvailability())
 
     DREAM3D_REGISTER_TEST(TestFilterParameters())
     DREAM3D_REGISTER_TEST(TestRotateSampleRefFrameTest())
