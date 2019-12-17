@@ -214,6 +214,11 @@ namespace UnitTest
    const QString OutputFile("@TEST_TEMP_DIR@/FeatureDataCSVOutputTestFile.txt");
   }
 
+  namespace RotateSampleRefFrameTest
+  {
+    const QString TestFile1("@DREAM3D_DATA_DIR@/Data/RotateSampleRefFrame/RotateSampleRefFrameTest.dream3d");
+  }
+
   namespace RestUnitTest
   {
     // Server Configuration File
