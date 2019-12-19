@@ -351,7 +351,7 @@ void RotateSampleRefFrame::setupFilterParameters()
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Rotation Representation");
-    parameter->setPropertyName("RotationRepresentation");
+    parameter->setPropertyName("RotationRepresentationChoice");
     parameter->setSetterCallback(SIMPL_BIND_SETTER(RotateSampleRefFrame, this, RotationRepresentationChoice));
     parameter->setGetterCallback(SIMPL_BIND_GETTER(RotateSampleRefFrame, this, RotationRepresentationChoice));
     QVector<QString> choices{"Axis Angle", "Rotation Matrix"};
