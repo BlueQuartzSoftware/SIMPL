@@ -138,12 +138,6 @@ public:
   */
   void preflight() override;
 
-signals:
-  void updateFilterParameters(AbstractFilter* filter);
-  void parametersChanged();
-  void preflightAboutToExecute();
-  void preflightExecuted();
-
 protected:
   Filt0();
 
