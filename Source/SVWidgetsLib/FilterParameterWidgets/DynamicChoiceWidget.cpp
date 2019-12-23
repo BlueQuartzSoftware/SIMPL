@@ -167,16 +167,18 @@ void DynamicChoiceWidget::widgetChanged(int index)
 // -----------------------------------------------------------------------------
 void DynamicChoiceWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
+  Q_UNUSED(filter)
   QString index = value->currentText();
-
   if(!index.isEmpty())
   {
-    QVariant v(index);
-    bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-
-    if(!ok)
+    DynamicChoiceFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+    if(setter)
     {
-      FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), m_FilterParameter);
+      setter(index);
+    }
+    else
+    {
+      getFilter()->notifyMissingProperty(getFilterParameter());
     }
   }
 }

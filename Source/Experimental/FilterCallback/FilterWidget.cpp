@@ -53,7 +53,7 @@ void IntFilterParameterWidget::parametersUpdated()
   if(nullptr != filtParam)
   {
     Int32Parameter::SetterCallbackType setter = filtParam->getSetterCallback();
-    if(setter)
+    if(setter) <<<<<<<<<<<<<<<<<<<<
     {
       setter(value);
     }

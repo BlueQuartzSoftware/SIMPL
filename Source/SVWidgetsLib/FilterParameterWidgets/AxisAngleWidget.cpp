@@ -113,6 +113,8 @@ void AxisAngleWidget::widgetChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void AxisAngleWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
+  Q_UNUSED(filter)
+
   bool ok = false;
   AxisAngleInput_t data;
   AxisAngleInput_t defValue = m_FilterParameter->getDefaultValue().value<AxisAngleInput_t>();
@@ -120,15 +122,17 @@ void AxisAngleWidget::filterNeedsInputParameters(AbstractFilter* filter)
   QLabel* errorLabel = nullptr;
   QLocale loc;
 
-  FOPW_EXTRACT_VALUE(angle);
-  FOPW_EXTRACT_VALUE(h);
-  FOPW_EXTRACT_VALUE(k);
-  FOPW_EXTRACT_VALUE(l);
+  FOPW_EXTRACT_VALUE(angle)
+  FOPW_EXTRACT_VALUE(h)
+  FOPW_EXTRACT_VALUE(k)
+  FOPW_EXTRACT_VALUE(l)
 
-  QVariant v;
-  v.setValue(data);
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(!ok)
+  AxisAngleFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(data);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

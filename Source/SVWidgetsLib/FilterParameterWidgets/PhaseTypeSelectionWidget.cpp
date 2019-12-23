@@ -367,18 +367,18 @@ void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
     phaseTypes[i + 1] = static_cast<PhaseType::Type>(cb->itemData(cb->currentIndex(), Qt::UserRole).toUInt(&ok));
   }
 
-  var.setValue(phaseTypes);
-  ok = false;
-
-  // Set the value into the Filter
-  ok = filter->setProperty(m_FilterParameter->getPhaseTypeDataProperty().toLatin1().constData(), var);
-  if(!ok)
+  Q_UNUSED(filter)
+  PhaseTypeSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(phaseTypes);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
 
   DataArrayPath path = m_SelectedAttributeMatrixPath->getDataArrayPath();
-
   var.setValue(path);
   ok = false;
   // Set the value into the Filter

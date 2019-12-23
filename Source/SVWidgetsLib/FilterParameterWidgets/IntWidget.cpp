@@ -132,9 +132,13 @@ void IntWidget::filterNeedsInputParameters(AbstractFilter* filter)
     errorLabel->show();
   }
 
-  QVariant v(i);
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(!ok)
+  Q_UNUSED(filter)
+  IntFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(i);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

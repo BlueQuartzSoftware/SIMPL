@@ -126,10 +126,13 @@ void LinkedBooleanWidget::widgetChanged(int state)
 // -----------------------------------------------------------------------------
 void LinkedBooleanWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-
-  QVariant var(value->isChecked());
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(!ok)
+  Q_UNUSED(filter)
+  LinkedBooleanFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(value->isChecked());
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

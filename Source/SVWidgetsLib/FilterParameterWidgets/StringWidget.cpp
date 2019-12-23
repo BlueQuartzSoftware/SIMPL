@@ -107,8 +107,13 @@ void StringWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void StringWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, stringEdit->getText());
-  if(!ok)
+  Q_UNUSED(filter)
+  StringFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(stringEdit->getText());
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

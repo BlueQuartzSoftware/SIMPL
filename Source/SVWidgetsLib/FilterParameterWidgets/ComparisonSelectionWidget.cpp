@@ -342,13 +342,13 @@ void ComparisonSelectionWidget::setComparisons(QVector<ComparisonInput_t> compar
 // -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  QVariant var;
-  ComparisonInputs comps = getComparisonInputs();
-  var.setValue(comps);
-  bool ok = false;
-  // Set the value into the Filter
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(!ok)
+  Q_UNUSED(filter)
+  ComparisonSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(getComparisonInputs());
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
