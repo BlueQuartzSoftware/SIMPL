@@ -146,35 +146,35 @@ int VTKFileReader::ignoreData(std::ifstream& in, int byteSize, char* text, int x
   int err = 0;
   if(strcmp(text, cunsigned_char) == 0)
   {
-    err |= skipVolume<unsigned char>(in, byteSize, xDim, yDim, zDim);
+    err |= skipVolume<uint8_t>(in, byteSize, xDim, yDim, zDim);
   }
   if(strcmp(text, cchar) == 0)
   {
-    err |= skipVolume<char>(in, byteSize, xDim, yDim, zDim);
+    err |= skipVolume<int8_t>(in, byteSize, xDim, yDim, zDim);
   }
   if(strcmp(text, cunsigned_short) == 0)
   {
-    err |= skipVolume<unsigned short>(in, byteSize, xDim, yDim, zDim);
+    err |= skipVolume<uint16_t>(in, byteSize, xDim, yDim, zDim);
   }
   if(strcmp(text, cshort) == 0)
   {
-    err |= skipVolume<short>(in, byteSize, xDim, yDim, zDim);
+    err |= skipVolume<int16_t>(in, byteSize, xDim, yDim, zDim);
   }
   if(strcmp(text, cunsigned_int) == 0)
   {
-    err |= skipVolume<unsigned int>(in, byteSize, xDim, yDim, zDim);
+    err |= skipVolume<uint32_t>(in, byteSize, xDim, yDim, zDim);
   }
   if(strcmp(text, cint) == 0)
   {
-    err |= skipVolume<int>(in, byteSize, xDim, yDim, zDim);
+    err |= skipVolume<int32_t>(in, byteSize, xDim, yDim, zDim);
   }
   if(strcmp(text, cunsigned_long) == 0)
   {
-    err |= skipVolume<unsigned long long int>(in, byteSize, xDim, yDim, zDim);
+    err |= skipVolume<uint64_t>(in, byteSize, xDim, yDim, zDim);
   }
   if(strcmp(text, clong) == 0)
   {
-    err |= skipVolume<long long int>(in, byteSize, xDim, yDim, zDim);
+    err |= skipVolume<int64_t>(in, byteSize, xDim, yDim, zDim);
   }
   if(strcmp(text, cfloat) == 0)
   {

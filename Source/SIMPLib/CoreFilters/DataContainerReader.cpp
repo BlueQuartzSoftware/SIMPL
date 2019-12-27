@@ -32,22 +32,19 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include "DataContainerReader.h"
 
 #include <memory>
 
-#include "DataContainerReader.h"
-
 #include <QtCore/QFileInfo>
+#include <QtCore/QTextStream>
+#include <QtCore/QDebug>
 
 #include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Utilities.h"
-
-#include <QtCore/QTextStream>
-
-#include <QtCore/QDebug>
+#include "H5Support/QH5Lite.h"
 
 #include "SIMPLib/Common/Constants.h"
-
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerBundle.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"

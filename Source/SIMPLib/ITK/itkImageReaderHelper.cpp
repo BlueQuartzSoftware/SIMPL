@@ -20,7 +20,7 @@
 class ITK_IMAGE_READER_CLASS_NAME : public AbstractFilter
 {
 public:
-  ITK_IMAGE_READER_CLASS_NAME() = deafult;
+  ITK_IMAGE_READER_CLASS_NAME() = default;
   ~ITK_IMAGE_READER_CLASS_NAME() = default;
 
 protected:
@@ -31,15 +31,15 @@ protected:
 
   template <typename TComponent>
   void readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck);
-  template <typename TComponent, unsigned int dimensions>
+  template <typename TComponent, uint32_t dimensions>
   void readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck);
 
-  template <typename TPixel, unsigned int dimensions>
+  template <typename TPixel, uint32_t dimensions>
   void readImage(const DataArrayPath& dataArrayPath, const QString& filename, bool dataCheck);
 
   void readImage(const DataArrayPath& dataArrayPath, bool dataCheck);
 
-  template <typename TPixel, unsigned int dimensions>
+  template <typename TPixel, uint32_t dimensions>
   void readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Image<TPixel, dimensions>>::Pointer& reader, DataContainer::Pointer& container);
 };
 
@@ -53,7 +53,7 @@ void
 ITK_IMAGE_READER_CLASS_NAME
 ::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
 {
-  const unsigned int dimensions = imageIO->GetNumberOfDimensions();
+  const uint32_t dimensions = imageIO->GetNumberOfDimensions();
   switch(dimensions)
   {
   case 1:
@@ -77,15 +77,13 @@ ITK_IMAGE_READER_CLASS_NAME
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename TComponent, unsigned int dimensions>
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
+template <typename TComponent, uint32_t dimensions>
+void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
 {
   using PixelTypeType = itk::ImageIOBase::IOPixelType;
   PixelTypeType pixel = imageIO->GetPixelType();
 
-  const unsigned int nbComponents = imageIO->GetNumberOfComponents();
+  const uint32_t nbComponents = imageIO->GetNumberOfComponents();
   switch(pixel)
   {
   case itk::ImageIOBase::SCALAR:
@@ -135,10 +133,8 @@ ITK_IMAGE_READER_CLASS_NAME
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename TPixel, unsigned int dimensions>
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImage(const DataArrayPath& dataArrayPath, const QString& filename, bool dataCheck)
+template <typename TPixel, uint32_t dimensions>
+void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath, const QString& filename, bool dataCheck)
 {
   DataContainer::Pointer container = getDataContainerArray()->getDataContainer(dataArrayPath.getDataContainerName());
   if(nullptr == container.get())
@@ -195,28 +191,28 @@ ITK_IMAGE_READER_CLASS_NAME
     switch(component)
     {
     case itk::ImageIOBase::UCHAR:
-      readImage<unsigned char>(dataArrayPath, imageIO, filename, dataCheck);
+      readImage<uint8_t>(dataArrayPath, imageIO, filename, dataCheck);
       break;
     case itk::ImageIOBase::CHAR:
-      readImage<char>(dataArrayPath, imageIO, filename, dataCheck);
+      readImage<int8_t>(dataArrayPath, imageIO, filename, dataCheck);
       break;
     case itk::ImageIOBase::USHORT:
-      readImage<unsigned short>(dataArrayPath, imageIO, filename, dataCheck);
+      readImage<uint16_t>(dataArrayPath, imageIO, filename, dataCheck);
       break;
     case itk::ImageIOBase::SHORT:
-      readImage<short>(dataArrayPath, imageIO, filename, dataCheck);
+      readImage<int16_t>(dataArrayPath, imageIO, filename, dataCheck);
       break;
     case itk::ImageIOBase::UINT:
-      readImage<unsigned int>(dataArrayPath, imageIO, filename, dataCheck);
+      readImage<uint32_t>(dataArrayPath, imageIO, filename, dataCheck);
       break;
     case itk::ImageIOBase::INT:
-      readImage<int>(dataArrayPath, imageIO, filename, dataCheck);
+      readImage<int32_t>(dataArrayPath, imageIO, filename, dataCheck);
       break;
     case itk::ImageIOBase::ULONG:
-      readImage<unsigned long>(dataArrayPath, imageIO, filename, dataCheck);
+      readImage<uint64_t>(dataArrayPath, imageIO, filename, dataCheck);
       break;
     case itk::ImageIOBase::LONG:
-      readImage<long>(dataArrayPath, imageIO, filename, dataCheck);
+      readImage<int64_t>(dataArrayPath, imageIO, filename, dataCheck);
       break;
     case itk::ImageIOBase::FLOAT:
       readImage<float>(dataArrayPath, imageIO, filename, dataCheck);
@@ -240,7 +236,7 @@ ITK_IMAGE_READER_CLASS_NAME
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename TPixel, unsigned int dimensions>
+template <typename TPixel, uint32_t dimensions>
 void ITK_IMAGE_READER_CLASS_NAME ::readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Image<TPixel, dimensions>>::Pointer& reader,
                                                               DataContainer::Pointer& container)
 {
@@ -256,9 +252,9 @@ void ITK_IMAGE_READER_CLASS_NAME ::readImageOutputInformation(const DataArrayPat
   SizeVec3Type tDims = {1, 1, 1};
   for(size_t i = 0; i < dimensions; i++)
   {
-    torigin[i] = origin[i];
-    tspacing[i] = spacing[i];
-    tDims[i] = size[i];
+    torigin[i] = static_cast<float>(origin[i]);
+    tspacing[i] = static_cast<float>(spacing[i]);
+    tDims[i] = static_cast<float>(size[i]);
   }
   ImageGeom::Pointer image = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
   image->setDimensions(tDims);
