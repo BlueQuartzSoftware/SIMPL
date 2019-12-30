@@ -1617,23 +1617,24 @@ T* DataArray<T>::resizeAndExtend(size_t size)
 //
 // -----------------------------------------------------------------------------
 
-template class DataArray<bool>;
+template class SIMPLib_EXPORT DataArray<bool>;
 
-template class DataArray<char>;
+template class SIMPLib_EXPORT DataArray<char>;
 
-template class DataArray<int8_t>;
-template class DataArray<uint8_t>;
+template class SIMPLib_EXPORT DataArray<int8_t>;
+template class SIMPLib_EXPORT DataArray<uint8_t>;
 
-template class DataArray<int16_t>;
-template class DataArray<uint16_t>;
+template class SIMPLib_EXPORT DataArray<int16_t>;
+template class SIMPLib_EXPORT DataArray<uint16_t>;
 
-template class DataArray<int32_t>;
-template class DataArray<uint32_t>;
+template class SIMPLib_EXPORT DataArray<int32_t>;
+template class SIMPLib_EXPORT DataArray<uint32_t>;
 
-template class DataArray<int64_t>;
-template class DataArray<uint64_t>;
+template class SIMPLib_EXPORT DataArray<int64_t>;
+template class SIMPLib_EXPORT DataArray<uint64_t>;
 
-template class DataArray<float>;
-template class DataArray<double>;
+template class SIMPLib_EXPORT DataArray<float>;
+template class SIMPLib_EXPORT DataArray<double>;
 
-template class DataArray<size_t>;
+template class SIMPLib_EXPORT DataArray<size_t>;
+

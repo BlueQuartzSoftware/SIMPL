@@ -1008,6 +1008,8 @@ extern template class DataArray<double>;
 
 extern template class DataArray<size_t>;
 
+// -----------------------------------------------------------------------------
+// Declare our aliases
 using BoolArrayType = DataArray<bool>;
 
 using CharArrayType = DataArray<char>;
