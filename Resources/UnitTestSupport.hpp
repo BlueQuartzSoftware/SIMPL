@@ -428,8 +428,8 @@ bool AlmostEqualUlpsFinal(float* A, float* B, int maxUlps)
     QString buf;                                                                                                                                                                                       \
     QTextStream ss(&buf);                                                                                                                                                                              \
     ss << "Your test required the following\n            '";                                                                                                                                           \
-    ss << "AlmostEqualUlpsFinal(" << #L << ", " << #R << ", " << #Ulps << "'\n             but this condition was not met with MaxUlps=" << Ulps << "\n";                                              \
-    ss << "             " << L << "==" << R;                                                                                                                                                           \
+    ss << "AlmostEqualUlpsFinal(" << #L << ", " << #R << ", " << #Ulps << ")'\n             but this condition was not met with MaxUlps=" << Ulps << "\n";                                              \
+    ss << "             " << *L << "==" << *R;                                                                                                                                                           \
     DREAM3D_TEST_THROW_EXCEPTION(buf.toStdString())                                                                                                                                                    \
   }
 
