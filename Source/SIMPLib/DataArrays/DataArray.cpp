@@ -1298,8 +1298,24 @@ QString DataArray<T>::getInfoString(SIMPL::InfoStringFormat format) const
     ss << "</tbody></table>\n";
     ss << "</body></html>";
   }
-  else
+  else if(format == SIMPL::MarkDown)
   {
+    ss << "+ Name: " << getName() << "\n";
+    ss << "+ Type: " << getTypeAsString() << "\n";
+    ss << "+ Num. Tuple: " << getNumberOfTuples() << "\n";
+    QString compDimStr = "(";
+    for(size_t i = 0; i < m_CompDims.size(); i++)
+    {
+      compDimStr = compDimStr + QString::number(m_CompDims[i]);
+      if(i < m_CompDims.size() - 1)
+      {
+        compDimStr = compDimStr + QString(", ");
+      }
+    }
+    compDimStr = compDimStr + ")";
+    ss << "+ Comp. Dims: " << compDimStr << "\n";
+    ss << "+ Total Elements:  " << m_Size << "\n";
+    ss << "+ Total Memory: " << (m_Size * sizeof(T)) << "\n";
   }
   return info;
 }
