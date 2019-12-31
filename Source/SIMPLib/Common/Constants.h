@@ -75,6 +75,7 @@ const uint8_t Checked = 2;
 enum InfoStringFormat
 {
   HtmlFormat = 0,
+  MarkDown = 1,
   //      JsonFormat,
   //      TextFormat,
   //      XmlFormat,
