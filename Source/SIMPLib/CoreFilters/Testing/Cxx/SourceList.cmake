@@ -45,6 +45,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   # RenameTimingTest
   ReplaceValueTest
   RequiredZThicknessTest
+  RotateSampleRefFrameTest
   ScaleVolumeTest
   SetOriginResolutionImageGeomTest
   SplitAttributeArrayTest
