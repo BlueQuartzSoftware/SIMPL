@@ -1632,6 +1632,10 @@ T* DataArray<T>::resizeAndExtend(size_t size)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+#if !defined(__APPLE__) && !defined(_MSC_VER)
+#undef SIMPLib_EXPORT
+#define SIMPLib_EXPORT
+#endif
 
 template class SIMPLib_EXPORT DataArray<bool>;
 
@@ -1652,5 +1656,6 @@ template class SIMPLib_EXPORT DataArray<uint64_t>;
 template class SIMPLib_EXPORT DataArray<float>;
 template class SIMPLib_EXPORT DataArray<double>;
 
+#if defined(__APPLE__) || defined(_MSC_VER)
 template class SIMPLib_EXPORT DataArray<size_t>;
-
+#endif
