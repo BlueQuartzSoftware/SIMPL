@@ -103,14 +103,16 @@ void ConstrainedIntWidget::widgetChanged(int i)
 // -----------------------------------------------------------------------------
 void ConstrainedIntWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  bool ok = true;
-  QVariant v(spinBox->value());
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(!ok)
+  Q_UNUSED(filter)
+  ConstrainedIntFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(spinBox->value());
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
-
 }
 
 // -----------------------------------------------------------------------------

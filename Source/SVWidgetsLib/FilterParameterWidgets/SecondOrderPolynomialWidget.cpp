@@ -143,10 +143,13 @@ void SecondOrderPolynomialWidget::filterNeedsInputParameters(AbstractFilter* fil
   FOPW_EXTRACT_VALUE(c01)
   FOPW_EXTRACT_VALUE(c00)
 
-  QVariant v;
-  v.setValue(data);
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(!ok)
+  Q_UNUSED(filter)
+  SecondOrderPolynomialFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(data);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

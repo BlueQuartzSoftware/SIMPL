@@ -267,12 +267,14 @@ void DataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   QString da = selectedPath.getDataArrayName();
 
   DataArrayPath path(dc, am, da);
-  QVariant var;
-  var.setValue(path);
-  bool ok = false;
-  // Set the value into the Filter
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(!ok)
+
+  Q_UNUSED(filter)
+  DataArraySelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(path);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

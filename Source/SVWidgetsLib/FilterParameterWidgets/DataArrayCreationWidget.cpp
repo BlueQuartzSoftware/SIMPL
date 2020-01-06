@@ -275,12 +275,13 @@ void DataArrayCreationWidget::filterNeedsInputParameters(AbstractFilter* filter)
   // Generate the path to the AttributeArray
   DataArrayPath selectedPath = m_SelectedAttributeMatrixPath->getDataArrayPath();
   selectedPath.setDataArrayName(stringEdit->getText());
-  QVariant var;
-  var.setValue(selectedPath);
-  bool ok = false;
-  // Set the value into the Filter
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(!ok)
+  Q_UNUSED(filter)
+  DataArrayCreationFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(selectedPath);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

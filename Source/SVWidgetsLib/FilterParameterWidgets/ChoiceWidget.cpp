@@ -133,11 +133,13 @@ void ChoiceWidget::widgetChanged(int index, bool emitParametersChanged)
 // -----------------------------------------------------------------------------
 void ChoiceWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  int index = value->currentIndex();
-  QVariant v(index);
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-
-  if(!ok)
+  Q_UNUSED(filter)
+  ChoiceFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(value->currentIndex());
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

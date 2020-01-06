@@ -89,6 +89,7 @@ void PreflightUpdatedValueWidget::setupGui()
 // -----------------------------------------------------------------------------
 void PreflightUpdatedValueWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
+  Q_UNUSED(filter)
 }
 
 // -----------------------------------------------------------------------------

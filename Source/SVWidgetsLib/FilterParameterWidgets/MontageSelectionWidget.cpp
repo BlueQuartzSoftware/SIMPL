@@ -208,13 +208,13 @@ void MontageSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   MontageSelection selection = getMontageSelection();
 
-  QVariant var;
-  var.setValue(selection);
-  bool ok = false;
-
-  // Set the value into the Filter
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(!ok)
+  Q_UNUSED(filter)
+  MontageSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(selection);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

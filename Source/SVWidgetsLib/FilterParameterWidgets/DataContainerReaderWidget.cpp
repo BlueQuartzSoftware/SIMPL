@@ -588,7 +588,7 @@ void DataContainerReaderWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void DataContainerReaderWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  // qDebug() << "DataContainerReaderWidget::filterNeedsInputParameters()";
+  Q_UNUSED(filter)
 
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   QString path = validator->convertToAbsolutePath(m_LineEdit->text());

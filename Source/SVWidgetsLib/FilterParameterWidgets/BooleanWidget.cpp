@@ -98,6 +98,7 @@ void BooleanWidget::setupGui()
 // -----------------------------------------------------------------------------
 void BooleanWidget::widgetChanged(int state)
 {
+  Q_UNUSED(state)
   emit parametersChanged();
 }
 
@@ -106,10 +107,13 @@ void BooleanWidget::widgetChanged(int state)
 // -----------------------------------------------------------------------------
 void BooleanWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-
-  QVariant var(value->isChecked());
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(!ok)
+  Q_UNUSED(filter)
+  BooleanFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(value->isChecked());
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

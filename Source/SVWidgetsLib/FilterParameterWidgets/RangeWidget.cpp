@@ -126,11 +126,13 @@ void RangeWidget::filterNeedsInputParameters(AbstractFilter* filter)
   pair.first = minValue->text().toDouble();
   pair.second = maxValue->text().toDouble();
 
-  QVariant var;
-  var.setValue(pair);
-  QString propertyName = PROPERTY_NAME_AS_CHAR;
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(!ok)
+  Q_UNUSED(filter)
+  RangeFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(pair);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

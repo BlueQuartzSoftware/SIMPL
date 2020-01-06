@@ -139,10 +139,13 @@ void DoubleWidget::filterNeedsInputParameters(AbstractFilter* filter)
     errorLabel->setText("No value entered. Filter will use default value of " + getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
   }
-
-  QVariant v(i);
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(!ok)
+  Q_UNUSED(filter)
+  DoubleFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(i);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

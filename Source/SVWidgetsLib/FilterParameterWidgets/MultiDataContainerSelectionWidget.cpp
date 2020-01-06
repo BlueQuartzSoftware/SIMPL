@@ -467,17 +467,16 @@ void MultiDataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilte
 	{
     dcNames.push_back(selectedDataContainersListWidget->item(i)->text());
 	}
-
-	// Generate the path to the AttributeArray
-	QVariant var;
-  var.setValue(dcNames);
-	bool ok = false;
-	// Set the value into the Filter
-	ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-	if (!ok)
-	{
-		getFilter()->notifyMissingProperty(getFilterParameter());
-	}
+  Q_UNUSED(filter)
+  MultiDataContainerSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(dcNames);
+  }
+  else
+  {
+    getFilter()->notifyMissingProperty(getFilterParameter());
+  }
 }
 
 // -----------------------------------------------------------------------------

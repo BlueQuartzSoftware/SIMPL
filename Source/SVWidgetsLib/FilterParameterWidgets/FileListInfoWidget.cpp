@@ -68,15 +68,15 @@ FileListInfoWidget::FileListInfoWidget(FilterParameter* parameter, AbstractFilte
 : FilterParameterWidget(parameter, filter, parent)
 , m_Ui(new Ui::FileListInfoWidget)
 {
-  FileListInfoFilterParameter* fli = dynamic_cast<FileListInfoFilterParameter*>(parameter);
-  if(nullptr == fli)
+  m_FilterParameter = dynamic_cast<FileListInfoFilterParameter*>(parameter);
+  if(nullptr == m_FilterParameter)
   {
     QString msg;
     QTextStream ss(&msg);
     ss << "FileListInfoWidget can ONLY be used with FileListInfoFilterParameter objects. The programmer of the filter has a bug.";
     ss << " The name of the filter was " << filter->getHumanLabel() << " and the name of the Filter Parameter was " << parameter->getHumanLabel();
     ss << " and is trying to get the propery " << parameter->getPropertyName() << " in the filter";
-    Q_ASSERT_X(nullptr != fli, msg.toLatin1().constData(), __FILE__);
+    Q_ASSERT_X(nullptr != m_FilterParameter, msg.toLatin1().constData(), __FILE__);
   }
   m_Ui->setupUi(this);
   setupGui();
@@ -600,8 +600,6 @@ void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
     emit errorSettingFilterParameter(ss);
     return;
   }
-  bool ok = false;
-
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
 
@@ -616,10 +614,12 @@ void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
   data.PaddingDigits = m_Ui->totalDigits->value();
   data.StartIndex = m_Ui->startIndex->value();
 
-  QVariant v;
-  v.setValue(data);
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(!ok)
+  FileListInfoFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(data);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
