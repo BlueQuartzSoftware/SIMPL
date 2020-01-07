@@ -26,12 +26,6 @@
 /* define to 1 if we are supporting ITK Filters */
 #cmakedefine SIMPL_USE_ITK
 
-/* define if Python wrapping is enabled through Pybind11 */
-#cmakedefine SIMPL_ENABLE_PYTHON
-
-/* define to 1 if we are checking relative paths */
-#cmakedefine SIMPL_RELATIVE_PATH_CHECK @SIMPL_RELATIVE_PATH_CHECK@
-
 /* ****************************************************************************
 * These define features that SIMPL will have when compiled.
 **************************************************************************** */
@@ -39,8 +33,11 @@
 /* define to 1 if we are enabling NTFS file checking */
 #cmakedefine SIMPL_NTFS_FILE_CHECK @SIMPL_NTFS_FILE_CHECK@
 
-/* define to 1 if we are enabling Python Wrapping through Pybind11 */
+/* define if Python wrapping is enabled through Pybind11 */
 #cmakedefine SIMPL_ENABLE_PYTHON
+
+/* define to 1 if we are checking relative paths */
+#cmakedefine SIMPL_RELATIVE_PATH_CHECK @SIMPL_RELATIVE_PATH_CHECK@
 
 /* ****************************************************************************
 * These define what source groups are being compiled

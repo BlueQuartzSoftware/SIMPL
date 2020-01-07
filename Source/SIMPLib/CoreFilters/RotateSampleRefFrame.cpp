@@ -159,7 +159,7 @@ RotateArgs createRotateParams(const ImageGeom& imageGeom, const Matrix3fR& rotat
 {
   const SizeVec3Type origDims = imageGeom.getDimensions();
   const FloatVec3Type spacing = imageGeom.getSpacing();
-  const FloatVec3Type origin = imageGeom.getOrigin();
+  //const FloatVec3Type origin = imageGeom.getOrigin();
 
   float xMin = std::numeric_limits<float>::max();
   float xMax = std::numeric_limits<float>::min();
@@ -323,8 +323,8 @@ struct RotateSampleRefFrame::Impl
 //
 // -----------------------------------------------------------------------------
 RotateSampleRefFrame::RotateSampleRefFrame()
-: m_CellAttributeMatrixPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "")
-, p_Impl(std::make_unique<Impl>())
+: p_Impl(std::make_unique<Impl>())
+, m_CellAttributeMatrixPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "")
 {
   std::vector<std::vector<double>> defaultTable{{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}};
   m_RotationTable.setTableData(defaultTable);
