@@ -67,9 +67,6 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
      */
     static QString ClassName();
 
-    using SetterCallbackType = std::function<void(int)>;
-    using GetterCallbackType = std::function<int(void)>;
-
     /**
      * @brief New This function instantiates an instance of the LinkedChoicesFilterParameter. Although this function is available to be used,
      * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_LINKED_CHOICES_FP(...) macro at the top of this file.
@@ -125,36 +122,6 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
      */
     void writeJson(QJsonObject& json) override;
 
-    /**
-    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-    * that this FilterParameter subclass represents.
-    * from the filter parameter.
-    */
-    /**
-     * @brief Setter property for SetterCallback
-     */
-    void setSetterCallback(const LinkedChoicesFilterParameter::SetterCallbackType& value);
-    /**
-     * @brief Getter property for SetterCallback
-     * @return Value of SetterCallback
-     */
-    LinkedChoicesFilterParameter::SetterCallbackType getSetterCallback() const;
-
-    /**
-    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-    * that this FilterParameter subclass represents.
-    * @return The GetterCallback
-    */
-    /**
-     * @brief Setter property for GetterCallback
-     */
-    void setGetterCallback(const LinkedChoicesFilterParameter::GetterCallbackType& value);
-    /**
-     * @brief Getter property for GetterCallback
-     * @return Value of GetterCallback
-     */
-    LinkedChoicesFilterParameter::GetterCallbackType getGetterCallback() const;
-
   protected:
       /**
        * @brief LinkedChoicesFilterParameter The default constructor.  It is protected because this
@@ -170,7 +137,5 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
 
   private:
     QStringList m_LinkedProperties = {};
-    LinkedChoicesFilterParameter::SetterCallbackType m_SetterCallback = {};
-    LinkedChoicesFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
 
