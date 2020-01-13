@@ -295,12 +295,13 @@ void ShapeTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
     shapeTypes[i + 1] = sType;
   }
 
-  QVariant var;
-  var.setValue(shapeTypes);
-  ok = false;
-  // Set the value into the Filter
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(!ok)
+  Q_UNUSED(filter)
+  ShapeTypeSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(shapeTypes);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

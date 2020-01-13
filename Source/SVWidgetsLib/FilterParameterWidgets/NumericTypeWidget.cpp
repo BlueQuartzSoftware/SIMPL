@@ -98,7 +98,6 @@ void NumericTypeWidget::widgetChanged(int index)
 // -----------------------------------------------------------------------------
 void NumericTypeWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  bool ok = true;
   int defValue = getFilterParameter()->getDefaultValue().toInt();
   int i = defValue;
 
@@ -117,12 +116,13 @@ void NumericTypeWidget::filterNeedsInputParameters(AbstractFilter* filter)
     errorLabel->hide();
   }
 
-  SIMPL::NumericTypes::Type type = static_cast<SIMPL::NumericTypes::Type>(i);
-  QVariant v;
-  v.setValue(type);
-
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(!ok)
+  Q_UNUSED(filter)
+  NumericTypeFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(static_cast<SIMPL::NumericTypes::Type>(i));
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

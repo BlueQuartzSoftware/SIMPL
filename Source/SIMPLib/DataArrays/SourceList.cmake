@@ -14,6 +14,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
 )
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataArray.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataArray.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataArrayFilter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StatsDataArray.cpp

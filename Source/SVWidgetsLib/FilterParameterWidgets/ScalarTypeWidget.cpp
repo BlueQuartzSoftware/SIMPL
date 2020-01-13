@@ -98,7 +98,6 @@ void ScalarTypeWidget::widgetChanged(int index)
 // -----------------------------------------------------------------------------
 void ScalarTypeWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  bool ok = true;
   int defValue = getFilterParameter()->getDefaultValue().toInt();
   int i = defValue;
 
@@ -117,12 +116,13 @@ void ScalarTypeWidget::filterNeedsInputParameters(AbstractFilter* filter)
     errorLabel->hide();
   }
 
-  SIMPL::ScalarTypes::Type type = static_cast<SIMPL::ScalarTypes::Type>(i);
-  QVariant v;
-  v.setValue(type);
-
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(!ok)
+  Q_UNUSED(filter)
+  ScalarTypeFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(static_cast<SIMPL::ScalarTypes::Type>(i));
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

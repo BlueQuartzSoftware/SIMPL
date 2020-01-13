@@ -54,16 +54,24 @@ ThresholdFilterHelper::~ThresholdFilterHelper() = default;
 //
 // -----------------------------------------------------------------------------
 #define FILTER_DATA_HELPER(dType, ops, Type)                                                                                                                                                           \
-  if(dType.compare(#Type) == 0)                                                                                                                                                                        \
+  if(dType == #Type)                                                                                                                                                                                   \
   {                                                                                                                                                                                                    \
     if(ops == SIMPL::Comparison::Operator_LessThan)                                                                                                                                                    \
+    {                                                                                                                                                                                                  \
       filterDataLessThan<Type>(input);                                                                                                                                                                 \
+    }                                                                                                                                                                                                  \
     else if(ops == SIMPL::Comparison::Operator_GreaterThan)                                                                                                                                            \
+    {                                                                                                                                                                                                  \
       filterDataGreaterThan<Type>(input);                                                                                                                                                              \
+    }                                                                                                                                                                                                  \
     else if(ops == SIMPL::Comparison::Operator_Equal)                                                                                                                                                  \
+    {                                                                                                                                                                                                  \
       filterDataEqualTo<Type>(input);                                                                                                                                                                  \
+    }                                                                                                                                                                                                  \
     else if(ops == SIMPL::Comparison::Operator_NotEqual)                                                                                                                                               \
+    {                                                                                                                                                                                                  \
       filterDataNotEqualTo<Type>(input);                                                                                                                                                               \
+    }                                                                                                                                                                                                  \
     return 1;                                                                                                                                                                                          \
   }
 
@@ -79,52 +87,53 @@ int ThresholdFilterHelper::execute(const IDataArray::Pointer& input, IDataArray*
   m_Output->initializeWithZeros();
   QString dType = input->getTypeAsString();
 
-  FILTER_DATA_HELPER(dType, comparisonOperator, float);
-  FILTER_DATA_HELPER(dType, comparisonOperator, double);
+  FILTER_DATA_HELPER(dType, comparisonOperator, float)
+  FILTER_DATA_HELPER(dType, comparisonOperator, double)
 
-  FILTER_DATA_HELPER(dType, comparisonOperator, int8_t);
-  FILTER_DATA_HELPER(dType, comparisonOperator, uint8_t);
-#if CMP_TYPE_CHAR_IS_SIGNED
-  FILTER_DATA_HELPER(dType, comparisonOperator, char);
-#else
-  FILTER_DATA_HELPER(dType, comparisonOperator, char);
-#endif
-  FILTER_DATA_HELPER(dType, comparisonOperator, signed char);
-  FILTER_DATA_HELPER(dType, comparisonOperator, unsigned char);
+  FILTER_DATA_HELPER(dType, comparisonOperator, int8_t)
+  FILTER_DATA_HELPER(dType, comparisonOperator, uint8_t)
+  //#if CMP_TYPE_CHAR_IS_SIGNED
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, char);
+  //#else
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, char);
+  //#endif
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, signed char)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, unsigned char)
 
-  FILTER_DATA_HELPER(dType, comparisonOperator, int16_t);
-  FILTER_DATA_HELPER(dType, comparisonOperator, short);
-  FILTER_DATA_HELPER(dType, comparisonOperator, signed short);
-  FILTER_DATA_HELPER(dType, comparisonOperator, uint16_t);
-  FILTER_DATA_HELPER(dType, comparisonOperator, unsigned short);
+  FILTER_DATA_HELPER(dType, comparisonOperator, int16_t)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, short)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, signed short)
+  FILTER_DATA_HELPER(dType, comparisonOperator, uint16_t)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, unsigned short)
 
-  FILTER_DATA_HELPER(dType, comparisonOperator, int32_t);
-  FILTER_DATA_HELPER(dType, comparisonOperator, uint32_t);
-#if(CMP_SIZEOF_INT == 4)
-  FILTER_DATA_HELPER(dType, comparisonOperator, int);
-  FILTER_DATA_HELPER(dType, comparisonOperator, signed int);
-  FILTER_DATA_HELPER(dType, comparisonOperator, unsigned int);
-#endif
+  FILTER_DATA_HELPER(dType, comparisonOperator, int32_t)
+  FILTER_DATA_HELPER(dType, comparisonOperator, uint32_t)
+  //#if(CMP_SIZEOF_INT == 4)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, int)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, signed int)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, unsigned int)
+  //#endif
 
-#if(CMP_SIZEOF_LONG == 4)
-  FILTER_DATA_HELPER(dType, comparisonOperator, long int);
-  FILTER_DATA_HELPER(dType, comparisonOperator, signed long int);
-  FILTER_DATA_HELPER(dType, comparisonOperator, unsigned long int);
-#elif(CMP_SIZEOF_LONG == 8)
-  FILTER_DATA_HELPER(dType, comparisonOperator, long int);
-  FILTER_DATA_HELPER(dType, comparisonOperator, signed long int);
-  FILTER_DATA_HELPER(dType, comparisonOperator, unsigned long int);
-#endif
+  //#if(CMP_SIZEOF_LONG == 4)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, long int)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, signed long int)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, unsigned long int)
+  //#elif(CMP_SIZEOF_LONG == 8)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, long int)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, signed long int)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, unsigned long int)
+  //#endif
 
-#if(CMP_SIZEOF_LONG_LONG == 8)
-  FILTER_DATA_HELPER(dType, comparisonOperator, long long int);
-  FILTER_DATA_HELPER(dType, comparisonOperator, signed long long int);
-  FILTER_DATA_HELPER(dType, comparisonOperator, unsigned long long int);
-#endif
-  FILTER_DATA_HELPER(dType, comparisonOperator, int64_t);
-  FILTER_DATA_HELPER(dType, comparisonOperator, uint64_t);
+  //#if(CMP_SIZEOF_LONG_LONG == 8)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, long long int)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, signed long long int)
+  //  FILTER_DATA_HELPER(dType, comparisonOperator, unsigned long long int)
+  //#endif
 
-  FILTER_DATA_HELPER(dType, comparisonOperator, bool);
+  FILTER_DATA_HELPER(dType, comparisonOperator, int64_t)
+  FILTER_DATA_HELPER(dType, comparisonOperator, uint64_t)
+
+  FILTER_DATA_HELPER(dType, comparisonOperator, bool)
 
   return -1;
 }

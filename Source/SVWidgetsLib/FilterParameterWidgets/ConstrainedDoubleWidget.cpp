@@ -104,10 +104,13 @@ void ConstrainedDoubleWidget::widgetChanged(double d)
 // -----------------------------------------------------------------------------
 void ConstrainedDoubleWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  bool ok = false;
-  QVariant v(spinBox->value());
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(!ok)
+  Q_UNUSED(filter)
+  ConstrainedDoubleFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(spinBox->value());
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

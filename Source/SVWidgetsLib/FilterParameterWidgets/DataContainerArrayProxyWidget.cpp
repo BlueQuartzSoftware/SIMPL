@@ -443,14 +443,13 @@ void DataContainerArrayProxyWidget::updateDataArrayPath(QString propertyName, co
 // -----------------------------------------------------------------------------
 void DataContainerArrayProxyWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  // qDebug() << "DataContainerArrayProxyWidget::filterNeedsInputParameters(AbstractFilter* filter)";
-
-  QVariant var;
-  var.setValue(m_DcaProxy);
-  bool ok = false;
-  // Set the value into the Filter
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(!ok)
+  Q_UNUSED(filter)
+  DataContainerArrayProxyFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(m_DcaProxy);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
