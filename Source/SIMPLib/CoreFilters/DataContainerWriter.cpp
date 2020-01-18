@@ -381,8 +381,7 @@ int DataContainerWriter::writePipeline()
     {
       break;
     }
-
-      previousFilter = previousFilter->getPreviousFilter().lock();
+    previousFilter = previousFilter->getPreviousFilter().lock();
   }
 
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
@@ -397,7 +396,7 @@ int DataContainerWriter::writePipeline()
     currentFilter = nextFilter;
   }
 
-  return writer->writePipelineToFile(pipeline, m_OutputFile, SIMPL::StringConstants::PipelineGroupName);
+  return writer->writePipelineToFile(pipeline, m_OutputFile, SIMPL::StringConstants::PipelineGroupName, true);
 }
 
 // -----------------------------------------------------------------------------
