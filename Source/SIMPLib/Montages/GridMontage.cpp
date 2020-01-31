@@ -548,12 +548,12 @@ QString GridMontage::getInfoString() const
   htmlGenerator.addTitle("Montage Info");
   htmlGenerator.addValue("Name", getName());
   htmlGenerator.addValue("Type", "Grid");
-  htmlGenerator.addValue("Number of Tiles", usa.toString(static_cast<uint64_t>(getTileCount())));
+  htmlGenerator.addValue("Number of Tiles", usa.toString(static_cast<quint64>(getTileCount())));
   htmlGenerator.addSpacer();
   htmlGenerator.addTitle("Tile Dimensions");
-  htmlGenerator.addValue("Rows", usa.toString(static_cast<uint64_t>(getRowCount())));
-  htmlGenerator.addValue("Columns", usa.toString(static_cast<uint64_t>(getColumnCount())));
-  htmlGenerator.addValue("Depth", usa.toString(static_cast<uint64_t>(getDepthCount())));
+  htmlGenerator.addValue("Rows", usa.toString(static_cast<quint64>(getRowCount())));
+  htmlGenerator.addValue("Columns", usa.toString(static_cast<quint64>(getColumnCount())));
+  htmlGenerator.addValue("Depth", usa.toString(static_cast<quint64>(getDepthCount())));
 
   htmlGenerator.addSpacer();
 
