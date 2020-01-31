@@ -32,6 +32,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/SIMPLib.h"
 
 class INamedObject;
