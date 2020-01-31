@@ -108,10 +108,13 @@ void IntVec2Widget::filterNeedsInputParameters(AbstractFilter* filter)
   data[0] = xData->text().toInt(&ok);
   data[1] = yData->text().toInt(&ok);
 
-  QVariant v;
-  v.setValue(data);
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(!ok)
+  Q_UNUSED(filter)
+  IntVec2FilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(data);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

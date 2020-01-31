@@ -100,9 +100,11 @@ void UInt64Widget::widgetChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void UInt64Widget::filterNeedsInputParameters(AbstractFilter* filter)
 {
+  Q_UNUSED(filter)
+
   bool ok = true;
   int defValue = getFilterParameter()->getDefaultValue().toInt();
-  uint64_t i = defValue;
+  uint64_t i = static_cast<uint64_t>(defValue);
 
   // Next make sure there is something in the
   if(!value->text().isEmpty())
@@ -115,7 +117,7 @@ void UInt64Widget::filterNeedsInputParameters(AbstractFilter* filter)
       SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
       errorLabel->setText("Value entered is beyond the representable range for a 64 bit integer. The filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
       errorLabel->show();
-      i = defValue;
+      i = static_cast<uint64_t>(defValue);
     }
     else
     {
@@ -135,6 +137,10 @@ void UInt64Widget::filterNeedsInputParameters(AbstractFilter* filter)
   if(setter)
   {
     setter(i);
+  }
+  else
+  {
+    getFilter()->notifyMissingProperty(getFilterParameter());
   }
 }
 

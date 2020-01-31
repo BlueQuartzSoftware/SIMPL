@@ -37,18 +37,17 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
 #pragma once
 
-#include <QtCore/QString>
+#include <cstring>
 
+#include <QtCore/QString>
 #include <QtCore/QTextStream>
 
-#include "SIMPLib/DataArrays/IDataArray.h"
-
-#include "SIMPLib/DataArrays/IDataArrayFilter.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataArrays/IDataArrayFilter.h"
+
 
 template<typename T>
 class StructArray : public IDataArray

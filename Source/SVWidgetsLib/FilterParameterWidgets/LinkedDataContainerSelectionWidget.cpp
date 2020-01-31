@@ -333,14 +333,13 @@ void LinkedDataContainerSelectionWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void LinkedDataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  // Generate the path to the AttributeArray
-  // DataArrayPath path(dataContainerList->currentText(), attributeMatrixList->currentText(), attributeArrayList->currentText());
-  QVariant var(m_SelectedDataContainerPath->text());
-  // var.setValue(path);
-  bool ok = false;
-  // Set the value into the Filter
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(!ok)
+  Q_UNUSED(filter)
+  LinkedDataContainerSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(DataArrayPath(m_SelectedDataContainerPath->text()));
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

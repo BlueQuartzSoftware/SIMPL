@@ -72,6 +72,7 @@ set(_PublicFilters
   RenameDataContainer
   ReplaceValueInArray
   RequiredZThickness
+  RotateSampleRefFrame
   ScaleVolume
   SetOriginResolutionImageGeom
   SplitAttributeArray

@@ -161,6 +161,7 @@ private:
   QAction* m_ShowFileAction = nullptr;
   QString m_CurrentText = "";
   bool m_DidCausePreflight = false;
+  FileListInfoFilterParameter* m_FilterParameter = nullptr;
 
   /**
    * @brief connectSignalsSlots

@@ -35,6 +35,8 @@
 #include <memory>
 #include <typeinfo>
 
+#include "H5Support/QH5Lite.h"
+
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Geometry/IGeometry3D.h"
 #include "SIMPLib/Geometry/IGeometryGrid.h"

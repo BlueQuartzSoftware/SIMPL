@@ -81,13 +81,9 @@ QString LinkedChoicesFilterParameter::getWidgetType() const
 void LinkedChoicesFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && getSetterCallback())
   {
-    jsonValue = json[getLegacyPropertyName()];
-  }
-  if(!jsonValue.isUndefined() && m_SetterCallback)
-  {
-    m_SetterCallback(jsonValue.toInt(0.0));
+    getSetterCallback()(jsonValue.toInt(0.0));
   }
 }
 
@@ -96,9 +92,9 @@ void LinkedChoicesFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void LinkedChoicesFilterParameter::writeJson(QJsonObject& json)
 {
-  if(m_GetterCallback)
+  if(getGetterCallback())
   {
-    json[getPropertyName()] = m_GetterCallback();
+    json[getPropertyName()] = getGetterCallback()();
   }
 }
 
@@ -137,28 +133,4 @@ void LinkedChoicesFilterParameter::setLinkedProperties(const QStringList& value)
 QStringList LinkedChoicesFilterParameter::getLinkedProperties() const
 {
   return m_LinkedProperties;
-}
-
-// -----------------------------------------------------------------------------
-void LinkedChoicesFilterParameter::setSetterCallback(const LinkedChoicesFilterParameter::SetterCallbackType& value)
-{
-  m_SetterCallback = value;
-}
-
-// -----------------------------------------------------------------------------
-LinkedChoicesFilterParameter::SetterCallbackType LinkedChoicesFilterParameter::getSetterCallback() const
-{
-  return m_SetterCallback;
-}
-
-// -----------------------------------------------------------------------------
-void LinkedChoicesFilterParameter::setGetterCallback(const LinkedChoicesFilterParameter::GetterCallbackType& value)
-{
-  m_GetterCallback = value;
-}
-
-// -----------------------------------------------------------------------------
-LinkedChoicesFilterParameter::GetterCallbackType LinkedChoicesFilterParameter::getGetterCallback() const
-{
-  return m_GetterCallback;
 }

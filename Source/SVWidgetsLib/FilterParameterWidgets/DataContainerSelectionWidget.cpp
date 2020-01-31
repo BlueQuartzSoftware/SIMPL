@@ -269,4 +269,8 @@ void DataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* fi
   {
     setter(dap);
   }
+  else
+  {
+    getFilter()->notifyMissingProperty(getFilterParameter());
+  }
 }

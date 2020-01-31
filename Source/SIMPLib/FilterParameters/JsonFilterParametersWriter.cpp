@@ -49,22 +49,15 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-JsonFilterParametersWriter::JsonFilterParametersWriter()
-: m_ExpandReaderFilters(true)
-, m_MaxFilterIndex(-1)
-, m_CurrentIndex(0)
-{
-}
+JsonFilterParametersWriter::JsonFilterParametersWriter() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-JsonFilterParametersWriter::JsonFilterParametersWriter(QString& fileName, QString& pipelineName, int& numFilters)
-: m_MaxFilterIndex(-1)
-, m_CurrentIndex(0)
+JsonFilterParametersWriter::JsonFilterParametersWriter(QString& fileName, QString& pipelineName)
+: m_FileName(fileName)
+, m_PipelineName(pipelineName)
 {
-  m_FileName = fileName;
-  m_PipelineName = pipelineName;
 }
 
 // -----------------------------------------------------------------------------
@@ -75,10 +68,10 @@ JsonFilterParametersWriter::~JsonFilterParametersWriter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int JsonFilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, QList<IObserver *> obs)
+int JsonFilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, bool expandPipeline, QList<IObserver*> obs)
 {
   int err = 0;
-  err = populateWriter(pipeline, pipelineName, obs);
+  err = populateWriter(pipeline, pipelineName, expandPipeline, obs);
   if(err < 0)
   {
     return err;
@@ -93,9 +86,14 @@ int JsonFilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString JsonFilterParametersWriter::writePipelineToString(FilterPipeline::Pointer pipeline, QString pipelineName, QList<IObserver*> obs)
+QString JsonFilterParametersWriter::writePipelineToString(FilterPipeline::Pointer pipeline, QString pipelineName, bool expandPipeline, QList<IObserver*> obs)
 {
-  populateWriter(pipeline, pipelineName, obs);
+  int err = 0;
+  err = populateWriter(pipeline, pipelineName, expandPipeline, obs);
+  if(err < 0)
+  {
+    return {""};
+  }
 
   QJsonDocument doc = toDocument();
   QString contents = QString::fromStdString(doc.toJson().toStdString());
@@ -108,7 +106,7 @@ QString JsonFilterParametersWriter::writePipelineToString(FilterPipeline::Pointe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, QList<IObserver*> obs)
+int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, bool expandPipeline, QList<IObserver*> obs)
 {
   if(nullptr == pipeline.get())
   {
@@ -145,7 +143,7 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
     if(nullptr != filter.get())
     {
       DataContainerReader::Pointer reader = std::dynamic_pointer_cast<DataContainerReader>(filter);
-      if((reader.get() != nullptr) && m_ExpandReaderFilters)
+      if((reader.get() != nullptr) && expandPipeline)
       {
         offset = reader->writeExistingPipelineToFile(m_Root, i);
       }
@@ -292,7 +290,7 @@ int JsonFilterParametersWriter::closeFilterGroup()
 // -----------------------------------------------------------------------------
 QString JsonFilterParametersWriter::generateIndexString(int currentIndex)
 {
-  Q_UNUSED(currentIndex);
+  Q_UNUSED(currentIndex)
   QString numStr = QString::number(m_CurrentIndex);
 
   if(m_MaxFilterIndex > 10)
@@ -360,18 +358,6 @@ void JsonFilterParametersWriter::setPipelineName(const QString& value)
 QString JsonFilterParametersWriter::getPipelineName() const
 {
   return m_PipelineName;
-}
-
-// -----------------------------------------------------------------------------
-void JsonFilterParametersWriter::setExpandReaderFilters(bool value)
-{
-  m_ExpandReaderFilters = value;
-}
-
-// -----------------------------------------------------------------------------
-bool JsonFilterParametersWriter::getExpandReaderFilters() const
-{
-  return m_ExpandReaderFilters;
 }
 
 // -----------------------------------------------------------------------------

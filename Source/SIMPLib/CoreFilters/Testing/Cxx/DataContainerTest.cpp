@@ -33,7 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <stdlib.h>
+#include <cstdlib>
+#include <tuple>
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
@@ -43,7 +44,6 @@
 #include <QtCore/QVector>
 
 #include "SIMPLib/SIMPLib.h"
-
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/StructArray.hpp"
@@ -51,7 +51,6 @@
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
-
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/CoreFilters/DataContainerWriter.h"
 #include "SIMPLib/DataArrays/StringDataArray.h"
@@ -61,7 +60,6 @@
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
-
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
@@ -184,7 +182,7 @@ public:
   void CreateDataArray(AttributeMatrix::Pointer attrMat, std::vector<size_t> compDims)
   {
     QString name("[");
-    for(int i = 0; i < compDims.size(); i++)
+    for(size_t i = 0; i < compDims.size(); i++)
     {
       name = name + QString::number(compDims[i]);
       if(i < compDims.size() - 1)
@@ -207,6 +205,7 @@ public:
   // -----------------------------------------------------------------------------
   void CreateStringArray(AttributeMatrix::Pointer attrMat, std::vector<size_t> compDims)
   {
+    std::ignore = compDims;
     QString name("ExampleStringDataArray");
     StringDataArray::Pointer data = StringDataArray::CreateArray(attrMat->getNumberOfTuples(), name, true);
     for(size_t i = 0; i < attrMat->getNumberOfTuples(); i++)
@@ -320,16 +319,16 @@ public:
     AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(tupleDims, getCellFeatureAttributeMatrixName(), AttributeMatrix::Type::CellFeature);
     m->addOrReplaceAttributeMatrix(attrMatrix);
 
-    int size = nx * ny * nz;
+    size_t size = static_cast<size_t>(nx * ny * nz);
     Int32ArrayType::Pointer featureIds = Int32ArrayType::CreateArray(size, SIMPL::CellData::FeatureIds, true);
-    for(int i = 0; i < size; ++i)
+    for(size_t i = 0; i < size; ++i)
     {
-      featureIds->setValue(i, i + DataContainerIOTest::Offset);
+      featureIds->setValue(i, static_cast<int32_t>(i + DataContainerIOTest::Offset));
     }
     attrMatrix->insertOrAssign(featureIds);
 
     BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(size, SIMPL::CellData::BoundaryCells, true);
-    for(int i = 0; i < size; ++i)
+    for(size_t i = 0; i < size; ++i)
     {
       boolArray->setValue(i, i + DataContainerIOTest::Offset);
     }
@@ -337,7 +336,7 @@ public:
 
     std::vector<size_t> dims(1, 3);
     FloatArrayType::Pointer avgEuler = FloatArrayType::CreateArray(size, dims, SIMPL::FeatureData::AxisEulerAngles, true);
-    for(int32_t i = 0; i < size; ++i)
+    for(size_t i = 0; i < size; ++i)
     {
       avgEuler->setComponent(i, 0, i * 0.665f);
       avgEuler->setComponent(i, 1, i * 0.325f);
@@ -351,7 +350,7 @@ public:
     m->addOrReplaceAttributeMatrix(ensemAttrMat);
 
     FloatArrayType::Pointer surfArea = FloatArrayType::CreateArray(4, SIMPL::EnsembleData::TotalSurfaceAreas, true);
-    for(int i = 0; i < 4; ++i)
+    for(size_t i = 0; i < 4; ++i)
     {
       surfArea->setValue(i, i + 41.2f);
     }
@@ -374,7 +373,7 @@ public:
     writer->execute();
     int err = writer->getErrorCode();
 
-    DREAM3D_REQUIRE_EQUAL(err, 0);
+    DREAM3D_REQUIRE_EQUAL(err, 0)
   }
 
   // -----------------------------------------------------------------------------
@@ -413,7 +412,7 @@ public:
 
     writer->execute();
     err = writer->getErrorCode();
-    DREAM3D_REQUIRE_EQUAL(err, 0);
+    DREAM3D_REQUIRE_EQUAL(err, 0)
 
     QMap<QString, DataContainerProxy>& dcsToRead = dcaProxy.getDataContainers();
     // uint32_t dcType = SIMPL::DataContainerType::UnknownDataContainer;
@@ -467,7 +466,7 @@ public:
 
     writer2->execute();
     err = writer2->getErrorCode();
-    DREAM3D_REQUIRE_EQUAL(err, 0);
+    DREAM3D_REQUIRE_EQUAL(err, 0)
   }
 
   // -----------------------------------------------------------------------------
@@ -498,25 +497,25 @@ public:
 
     // get the array as an IDataArray
     IDataArray::Pointer ida = attrMat->getAttributeArray("Test");
-    DREAM3D_REQUIRE_VALID_POINTER(ida.get());
+    DREAM3D_REQUIRE_VALID_POINTER(ida.get())
 
     std::vector<size_t> dims(1, 1);
     t = attrMat->getPrereqArray<T, AbstractFilter>(nullptr, "Test", -723, dims);
-    DREAM3D_REQUIRE_VALID_POINTER(ida.get());
+    DREAM3D_REQUIRE_VALID_POINTER(ida.get())
 
     // Remove the AttributeArray from the AttributeMatrix
     ida = attrMat->removeAttributeArray("Test");
-    DREAM3D_REQUIRE_VALID_POINTER(ida.get());
+    DREAM3D_REQUIRE_VALID_POINTER(ida.get())
 
     // Now try and get the array again. we should fail
     t = attrMat->getAttributeArrayAs<T>("Test");
-    DREAM3D_REQUIRE_NULL_POINTER(t.get());
+    DREAM3D_REQUIRE_NULL_POINTER(t.get())
     // Try to get it as an IDataArray. We should fail
     ida = attrMat->getAttributeArray("Test");
-    DREAM3D_REQUIRE_NULL_POINTER(ida.get());
+    DREAM3D_REQUIRE_NULL_POINTER(ida.get())
 
     t = attrMat->getPrereqArray<T, AbstractFilter>(nullptr, "Test", -723, dims);
-    DREAM3D_REQUIRE_NULL_POINTER(t.get());
+    DREAM3D_REQUIRE_NULL_POINTER(t.get())
 
     // Remove the AttributeMatrix to setup for the next test.
     m->removeAttributeMatrix(getCellAttributeMatrixName());
@@ -549,7 +548,7 @@ public:
       }
 
       JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-      jsonWriter->writePipelineToFile(pipeline, jsonFile, nullptr);
+      jsonWriter->writePipelineToFile(pipeline, jsonFile, {"TEST PIPELINE"}, false);
 
       JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
       pipeline = jsonReader->readPipelineFromFile(jsonFile, nullptr);
@@ -574,7 +573,7 @@ public:
       }
 
       H5FilterParametersWriter::Pointer h5Writer = H5FilterParametersWriter::New();
-      h5Writer->writePipelineToFile(pipeline, h5File, "Pipeline");
+      h5Writer->writePipelineToFile(pipeline, h5File, "Pipeline", false);
 
       H5FilterParametersReader::Pointer h5Reader = H5FilterParametersReader::New();
       pipeline = h5Reader->readPipelineFromFile(h5File, nullptr);
@@ -916,20 +915,20 @@ public:
     DataContainer::Pointer dc1 = DataContainer::New(k_DC1);
 
     result = dca->addOrReplaceDataContainer(dc0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dca->size(), ==, 1)
 
     // Add the same DataContainer a second time. Still returns true. Size stays at 1
     result = dca->insertOrAssign(dc0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dca->size(), ==, 1)
 
     result = dca->push_back(dc0);
-    DREAM3D_REQUIRED(false, ==, result);
+    DREAM3D_REQUIRED(false, ==, result)
     DREAM3D_REQUIRED(dca->size(), ==, 1)
 
     result = dca->addOrReplaceDataContainer(dc1);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dca->size(), ==, 2)
 
     dc0 = dca->removeDataContainer(k_DC0);
@@ -941,15 +940,15 @@ public:
     DREAM3D_REQUIRED(dca->empty(), ==, true)
 
     result = dca->addOrReplaceDataContainer(dc0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dca->size(), ==, 1)
 
     result = dca->push_back(dc0);
-    DREAM3D_REQUIRED(false, ==, result);
+    DREAM3D_REQUIRED(false, ==, result)
     DREAM3D_REQUIRED(dca->size(), ==, 1)
 
     result = dca->addOrReplaceDataContainer(dc1);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dca->size(), ==, 2)
 
     // getDataContainers
@@ -965,7 +964,7 @@ public:
     DREAM3D_REQUIRED(dca->size(), ==, 2)
     dca->clear();
     DREAM3D_REQUIRED(dca->empty(), ==, true)
-    for(int i = 0; i < 10; i++)
+    for(size_t i = 0; i < 10; i++)
     {
       DataContainer::Pointer dc = DataContainer::New("Foo" + QString::number(i));
       dca->addOrReplaceDataContainer(dc);
@@ -974,14 +973,14 @@ public:
     }
 
     result = dca->insertOrAssign(dc0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dca->size(), ==, 11)
 
     result = dca->insertOrAssign(dc0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dca->size(), ==, 11)
     result = dca->insertOrAssign(dc1);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dca->size(), ==, 12)
   }
 
@@ -1009,20 +1008,20 @@ public:
     AttributeMatrix::Pointer am1 = AttributeMatrix::New(tDims, k_DC1, AttributeMatrix::Type::Generic);
 
     result = dc->addOrReplaceAttributeMatrix(am0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dc->size(), ==, 1)
 
     // Add the same AttributeMatrix a second time. Still returns true. Size stays at 1
     result = dc->insertOrAssign(am0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dc->size(), ==, 1)
 
     result = dc->push_back(am0);
-    DREAM3D_REQUIRED(false, ==, result);
+    DREAM3D_REQUIRED(false, ==, result)
     DREAM3D_REQUIRED(dc->size(), ==, 1)
 
     result = dc->addOrReplaceAttributeMatrix(am1);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dc->size(), ==, 2)
 
     am0 = dc->removeAttributeMatrix(k_DC0);
@@ -1034,15 +1033,15 @@ public:
     DREAM3D_REQUIRED(dc->empty(), ==, true)
 
     result = dc->addOrReplaceAttributeMatrix(am0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dc->size(), ==, 1)
 
     result = dc->push_back(am0);
-    DREAM3D_REQUIRED(false, ==, result);
+    DREAM3D_REQUIRED(false, ==, result)
     DREAM3D_REQUIRED(dc->size(), ==, 1)
 
     result = dc->addOrReplaceAttributeMatrix(am1);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dc->size(), ==, 2)
 
     // getDataContainers
@@ -1058,7 +1057,7 @@ public:
     DREAM3D_REQUIRED(dc->size(), ==, 2)
     dc->clear();
     DREAM3D_REQUIRED(dc->empty(), ==, true)
-    for(int i = 0; i < 10; i++)
+    for(size_t i = 0; i < 10; i++)
     {
       AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "Foo" + QString::number(i), AttributeMatrix::Type::Generic);
       dc->addOrReplaceAttributeMatrix(am);
@@ -1067,14 +1066,14 @@ public:
     }
 
     result = dc->insertOrAssign(am0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dc->size(), ==, 11)
 
     result = dc->insertOrAssign(am0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dc->size(), ==, 11)
     result = dc->insertOrAssign(am1);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(dc->size(), ==, 12)
   }
 
@@ -1102,20 +1101,20 @@ public:
     Int32ArrayType::Pointer am1 = Int32ArrayType::CreateArray(100, k_DC1, true);
 
     result = am->addOrReplaceAttributeArray(am0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(am->size(), ==, 1)
 
     // Add the same AttributeMatrix a second time. Still returns true. Size stays at 1
     result = am->insertOrAssign(am0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(am->size(), ==, 1)
 
     result = am->push_back(am0);
-    DREAM3D_REQUIRED(false, ==, result);
+    DREAM3D_REQUIRED(false, ==, result)
     DREAM3D_REQUIRED(am->size(), ==, 1)
 
     result = am->addOrReplaceAttributeArray(am1);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(am->size(), ==, 2)
 
     IDataArray::Pointer da0 = am->removeAttributeArray(k_DC0);
@@ -1127,15 +1126,15 @@ public:
     DREAM3D_REQUIRED(am->empty(), ==, true)
 
     result = am->addOrReplaceAttributeArray(am0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(am->size(), ==, 1)
 
     result = am->push_back(am0);
-    DREAM3D_REQUIRED(false, ==, result);
+    DREAM3D_REQUIRED(false, ==, result)
     DREAM3D_REQUIRED(am->size(), ==, 1)
 
     result = am->addOrReplaceAttributeArray(am1);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(am->size(), ==, 2)
 
     // getDataContainers
@@ -1160,14 +1159,14 @@ public:
     }
 
     result = am->insertOrAssign(am0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(am->size(), ==, 11)
 
     result = am->insertOrAssign(am0);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(am->size(), ==, 11)
     result = am->insertOrAssign(am1);
-    DREAM3D_REQUIRED(true, ==, result);
+    DREAM3D_REQUIRED(true, ==, result)
     DREAM3D_REQUIRED(am->size(), ==, 12)
   }
 

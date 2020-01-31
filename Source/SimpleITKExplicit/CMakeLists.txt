@@ -74,11 +74,17 @@ function(sitk_install_exported_target tgt)
   endif()
 endfunction()
 
-set(install_dir "bin")
+#-- Configure Target Installation Rules
+set(install_dir "tools")
 set(lib_install_dir "lib")
-if(WIN32)
-    set(install_dir ".")
-    set(lib_install_dir ".")
+
+if(APPLE)
+  get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
+  set(install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}bin")
+  set(lib_install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}lib")
+elseif(WIN32)
+  set(install_dir ".")
+  set(lib_install_dir ".")
 endif()
 
 set(SimpleITKExplicit_INSTALL_RUNTIME_DIR "${install_dir}")

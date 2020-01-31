@@ -435,8 +435,6 @@ public:
     TEST_TYPE_STRING(quint16)
     TEST_TYPE_STRING(qint32)
     TEST_TYPE_STRING(quint32)
-    TEST_TYPE_STRING(qint64)
-    TEST_TYPE_STRING(quint64)
 
     TEST_TYPE_STRING(int8_t)
     TEST_TYPE_STRING(uint8_t)
@@ -448,11 +446,7 @@ public:
     TEST_TYPE_STRING(uint64_t)
     TEST_TYPE_STRING(float)
     TEST_TYPE_STRING(double)
-    //   long long int myint = 50;
-    //   std::cout << "myint has type: " << typeid(myint).name() << '\n';
-
-    //   qDebug() << typeid(int64_t).name() << " " << typeid(qint64).name() << " " << typeid(signed long long int).name() << " " << typeid(long long int).name() << " " << typeid(long long).name();
-  }
+}
 
   // -----------------------------------------------------------------------------
   //
@@ -1016,8 +1010,8 @@ true);
 
     typename DataArray<T>::Pointer copy = DataArray<T>::CreateArray(numTuples, cDims, name, false);
 
-    DREAM3D_REQUIRED(copy->getNumberOfTuples(), ==, src->getNumberOfTuples());
-    DREAM3D_REQUIRED(copy->isAllocated(), ==, src->isAllocated());
+    DREAM3D_REQUIRED(copy->getNumberOfTuples(), ==, src->getNumberOfTuples())
+    DREAM3D_REQUIRED(copy->isAllocated(), ==, src->isAllocated())
 
     // Create the array again, this time allocating the data and putting in some known data
     src = DataArray<T>::CreateArray(numTuples, cDims, name, true);
@@ -1195,7 +1189,7 @@ true);
   template <typename T> void TestSetTupleForType()
   {
     size_t numTuples = 10;
-    std::vector<size_t> cDims(1, 5);
+    std::vector<size_t> cDims = {5};
     QString name("Source Array");
 
     // Each index of the vector is a tuple with a vector containing the components for that tuple
@@ -1229,6 +1223,9 @@ true);
       {
         T val = src->getComponent(i, j);
         DREAM3D_REQUIRE_EQUAL(data[i][j], val)
+
+        T* ptr = src->getPointer((cDims[0] * i) + j);
+        DREAM3D_REQUIRE_EQUAL(*ptr, val);
       }
     }
   }

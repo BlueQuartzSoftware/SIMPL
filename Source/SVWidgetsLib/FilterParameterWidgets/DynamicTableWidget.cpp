@@ -188,13 +188,15 @@ void DynamicTableWidget::filterNeedsInputParameters(AbstractFilter* filter)
   data.setRowHeaders(rHeaders);
   data.setColHeaders(cHeaders);
 
-  QVariant v;
-  v.setValue(data);
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-
-  if(!ok)
+  Q_UNUSED(filter)
+  DynamicTableFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
   {
-    FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), m_FilterParameter);
+    setter(data);
+  }
+  else
+  {
+    getFilter()->notifyMissingProperty(getFilterParameter());
   }
 }
 

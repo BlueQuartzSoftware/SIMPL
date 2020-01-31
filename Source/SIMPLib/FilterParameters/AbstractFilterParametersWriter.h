@@ -85,7 +85,7 @@ class SIMPLib_EXPORT AbstractFilterParametersWriter
     virtual int openFilterGroup(AbstractFilter* filter, int index) = 0;
     virtual int closeFilterGroup() = 0;
 
-    virtual int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, QList<IObserver*> obs = QList<IObserver*>()) = 0;
+    virtual int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, bool expandPipeline, QList<IObserver*> obs = QList<IObserver*>()) = 0;
 
     virtual int writeValue(const QString& name, const QString& value);
     virtual int writeValue(const QString& name, const QVector<QString>& value);

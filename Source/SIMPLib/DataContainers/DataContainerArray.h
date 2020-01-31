@@ -897,5 +897,4 @@ public:
     DataContainerArray& operator=(const DataContainerArray&) = delete; // Copy Assignment Not Implemented
     DataContainerArray& operator=(DataContainerArray&&) = delete;      // Move Assignment Not Implemented
 };
-
-
+Q_DECLARE_METATYPE(DataContainerArray::Pointer);

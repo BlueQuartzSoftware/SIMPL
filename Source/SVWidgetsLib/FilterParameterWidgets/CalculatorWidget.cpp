@@ -409,8 +409,12 @@ void CalculatorWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void CalculatorWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, equation->text());
-  if(!ok)
+  CalculatorFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(equation->text());
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

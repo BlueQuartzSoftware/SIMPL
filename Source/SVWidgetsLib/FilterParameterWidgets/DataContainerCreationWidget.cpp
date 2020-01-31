@@ -127,6 +127,10 @@ void DataContainerCreationWidget::filterNeedsInputParameters(AbstractFilter* fil
   {
     setter(dap);
   }
+  else
+  {
+    getFilter()->notifyMissingProperty(getFilterParameter());
+  }
 }
 
 // -----------------------------------------------------------------------------
