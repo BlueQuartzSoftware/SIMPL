@@ -66,7 +66,7 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
      * @param obs Any observer that we can pass error/warning messages back to in case something goes wrong.
      * @return
      */
-    int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, QList<IObserver*> obs = QList<IObserver*>()) override;
+    int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, bool expandPipeline, QList<IObserver*> obs = QList<IObserver*>()) override;
 
     SIMPL_INSTANCE_PROPERTY(hid_t, PipelineGroupId)
 

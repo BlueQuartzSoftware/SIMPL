@@ -539,7 +539,7 @@ public:
       }
 
       JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-      jsonWriter->writePipelineToFile(pipeline, jsonFile, nullptr);
+      jsonWriter->writePipelineToFile(pipeline, jsonFile, nullptr, false);
 
       JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
       pipeline = jsonReader->readPipelineFromFile(jsonFile, nullptr);
@@ -564,7 +564,7 @@ public:
       }
 
       H5FilterParametersWriter::Pointer h5Writer = H5FilterParametersWriter::New();
-      h5Writer->writePipelineToFile(pipeline, h5File, "Pipeline");
+      h5Writer->writePipelineToFile(pipeline, h5File, "Pipeline", false);
 
       H5FilterParametersReader::Pointer h5Reader = H5FilterParametersReader::New();
       pipeline = h5Reader->readPipelineFromFile(h5File, nullptr);

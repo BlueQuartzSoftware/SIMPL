@@ -35,9 +35,10 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -55,38 +56,75 @@
 class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParametersWriter
 {
   public:
-    SIMPL_SHARED_POINTERS(JsonFilterParametersWriter)
-    SIMPL_STATIC_NEW_MACRO(JsonFilterParametersWriter)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(JsonFilterParametersWriter, AbstractFilterParametersWriter)
+    using Self = JsonFilterParametersWriter;
+    using Pointer = std::shared_ptr<Self>;
+    using ConstPointer = std::shared_ptr<const Self>;
+    using WeakPointer = std::weak_ptr<Self>;
+    using ConstWeakPointer = std::weak_ptr<const Self>;
+    static Pointer NullPointer();
 
-    SIMPL_INSTANCE_PROPERTY(QString, FileName)
-    SIMPL_INSTANCE_PROPERTY(QString, PipelineName)
-    SIMPL_INSTANCE_PROPERTY(bool, ExpandReaderFilters)
+    static Pointer New();
 
-    JsonFilterParametersWriter(QString& fileName, QString& pipelineName, int& numFilters);
+    /**
+     * @brief JsonFilterParametersWriter
+     * @param fileName
+     * @param pipelineName
+     */
+    JsonFilterParametersWriter(QString& fileName, QString& pipelineName);
 
     ~JsonFilterParametersWriter() override;
 
     /**
-    * @brief WritePipelineToFile This function will write a pipeline to a
-    * JSON file. The file path passed in <b>WILL BE OVER WRITTEN</b> by this
-    * function <b>WITHOUT WARNING</b>
-    * @param pipeline The pipeline to be written
-    * @param filePath The file path to write
-    * @param pipelineName The name of the pipeline (Typically the name of the file)
-    * @param obs Any observer that we can pass error/warning messages back to in case something goes wrong.
-    * @return
-    */
-    int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, QList<IObserver*> obs = QList<IObserver*>()) override;
+     * @brief Returns the name of the class for JsonFilterParametersWriter
+     */
+    const QString getNameOfClass() const override;
+    /**
+     * @brief Returns the name of the class for JsonFilterParametersWriter
+     */
+    static QString ClassName();
 
     /**
-    * @brief WritePipelineToString This function will write a pipeline to a QString.
-    * @param pipeline The pipeline to be written
-    * @param pipelineName The name of the pipeline (Typically the name of the file)
-    * @param obs Any observer that we can pass error/warning messages back to in case something goes wrong.
-    * @return The pipeline as a QString
-    */
-    QString writePipelineToString(FilterPipeline::Pointer pipeline, QString pipelineName, QList<IObserver *> obs = QList<IObserver*>());
+     * @brief Setter property for FileName
+     */
+    void setFileName(const QString& value);
+    /**
+     * @brief Getter property for FileName
+     * @return Value of FileName
+     */
+    QString getFileName() const;
+
+    /**
+     * @brief Setter property for PipelineName
+     */
+    void setPipelineName(const QString& value);
+    /**
+     * @brief Getter property for PipelineName
+     * @return Value of PipelineName
+     */
+    QString getPipelineName() const;
+
+    /**
+     * @brief WritePipelineToFile This function will write a pipeline to a
+     * JSON file. The file path passed in <b>WILL BE OVER WRITTEN</b> by this
+     * function <b>WITHOUT WARNING</b>
+     * @param pipeline The pipeline to be written
+     * @param filePath The file path to write
+     * @param pipelineName The name of the pipeline (Typically the name of the file)
+     * @param expandPipeline Expand any embeded pipelines that are in DataContainerReader filters
+     * @param obs Any observer that we can pass error/warning messages back to in case something goes wrong.
+     * @return
+     */
+    int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, bool expandPipelines, QList<IObserver*> obs = QList<IObserver*>()) override;
+
+    /**
+     * @brief WritePipelineToString This function will write a pipeline to a QString.
+     * @param pipeline The pipeline to be written
+     * @param pipelineName The name of the pipeline (Typically the name of the file)
+     * @param expandPipeline Expand any embeded pipelines that are in DataContainerReader filters
+     * @param obs Any observer that we can pass error/warning messages back to in case something goes wrong.
+     * @return The pipeline as a QString
+     */
+    QString writePipelineToString(FilterPipeline::Pointer pipeline, QString pipelineName, bool expandPipeline, QList<IObserver*> obs = QList<IObserver*>());
 
     /**
      * @brief openFilterGroup
@@ -102,6 +140,26 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
      */
     int closeFilterGroup() override;
 
+  protected:
+    JsonFilterParametersWriter();
+
+  private:
+    int m_CurrentIndex = 0;
+    int m_MaxFilterIndex = -1;
+    QString m_FileName = {};
+    QString m_PipelineName = {};
+    QJsonObject m_Root;
+    QJsonObject m_CurrentFilterIndex;
+
+    /**
+     * @brief Setter property for MaxFilterIndex
+     */
+    void setMaxFilterIndex(int value);
+    /**
+     * @brief Getter property for MaxFilterIndex
+     * @return Value of MaxFilterIndex
+     */
+    int getMaxFilterIndex() const;
 
     /**
      * @brief getCurrentGroupObject
@@ -109,20 +167,29 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
      */
     QJsonObject& getCurrentGroupObject();
 
-    SIMPL_INSTANCE_PROPERTY(int, MaxFilterIndex)
+    /**
+     * @brief populateWriter
+     * @param pipeline
+     * @param pipelineName
+     * @param obs
+     * @return
+     */
+    int populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, bool expandPipeline, QList<IObserver*> obs);
 
-  protected:
-    JsonFilterParametersWriter();
-
-  private:
-    QJsonObject m_Root;
-    QJsonObject m_CurrentFilterIndex;
-    int         m_CurrentIndex;
-
-    int populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, QList<IObserver *> obs);
+    /**
+     * @brief writePipeline
+     */
     void writePipeline();
+
+    /**
+     * @brief clearWriter
+     */
     void clearWriter();
 
+    /**
+     * @brief toDocument
+     * @return
+     */
     QJsonDocument toDocument();
 
     /**

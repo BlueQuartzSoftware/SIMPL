@@ -35,14 +35,15 @@
 
 #include "H5FilterParametersWriter.h"
 
-#include <QtCore/QDir>
+#include <tuple>
+
 #include <QtCore/QFile>
-#include <QtCore/QJsonDocument>
+#include <QtCore/QFileInfo>
+#include <QtCore/QTextStream>
 
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 #include "H5Support/H5ScopedSentinel.h"
-
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersConstants.h"
@@ -70,7 +71,7 @@ hid_t H5FilterParametersWriter::getCurrentGroupId() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, QList<IObserver *> obs)
+int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, bool expandPipeline, QList<IObserver*> obs)
 {
   if(nullptr == pipeline.get())
   {
@@ -136,7 +137,7 @@ int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeli
   QH5Lite::writeStringAttribute(pipelineGroupId, "/" + SIMPL::StringConstants::PipelineGroupName, SIMPL::StringConstants::PipelineCurrentName, pipelineName);
 
   JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-  QString jsonString = jsonWriter->writePipelineToString(pipeline, pipelineName, obs);
+  QString jsonString = jsonWriter->writePipelineToString(pipeline, pipelineName, expandPipeline, obs);
   QH5Lite::writeStringDataset(pipelineGroupId, pipelineName, jsonString);
 
   return 0;

@@ -295,8 +295,7 @@ QString H5FilterParametersReader::getJsonFromFile(QString filePath, IObserver* o
     }
 
     JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-    jsonWriter->setExpandReaderFilters(false);
-    jsonString = jsonWriter->writePipelineToString(pipeline, "");
+    jsonString = jsonWriter->writePipelineToString(pipeline, "", false);
   }
 
   return jsonString;
@@ -308,7 +307,7 @@ QString H5FilterParametersReader::getJsonFromFile(QString filePath, IObserver* o
 int H5FilterParametersReader::openFilterGroup(AbstractFilter* filter, int index)
 {
   int err = 0;
-
+  std::ignore = filter;
   if(m_Version < 0)
   {
     if(m_PipelineGroupId <= 0)
@@ -1049,6 +1048,7 @@ AxisAngleInput_t H5FilterParametersReader::readAxisAngle(const QString name, Axi
 // -----------------------------------------------------------------------------
 QVector<AxisAngleInput_t> H5FilterParametersReader::readAxisAngles(const QString name, QVector<AxisAngleInput_t> v)
 {
+  std::ignore = v;
   QVector<AxisAngleInput_t> axisAngleInputsVector;
   AxisAngleInput_t axisAngleDummyInput;
   axisAngleDummyInput.angle = 0.0f;

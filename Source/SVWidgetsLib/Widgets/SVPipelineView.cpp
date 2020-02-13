@@ -666,7 +666,7 @@ int SVPipelineView::writePipeline(const QString& outputPath)
     }
 
     H5FilterParametersWriter::Pointer dream3dWriter = H5FilterParametersWriter::New();
-    err = dream3dWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), observers);
+    err = dream3dWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), false, observers);
   }
   else if(ext == "json")
   {
@@ -677,7 +677,7 @@ int SVPipelineView::writePipeline(const QString& outputPath)
     }
 
     JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-    jsonWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), observers);
+    jsonWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), false, observers);
   }
   else
   {
@@ -749,7 +749,7 @@ void SVPipelineView::copySelectedFilters()
   }
 
   JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-  QString jsonString = jsonWriter->writePipelineToString(pipeline, "Pipeline");
+  QString jsonString = jsonWriter->writePipelineToString(pipeline, "Pipeline", false);
 
   QClipboard* clipboard = QApplication::clipboard();
   clipboard->setText(jsonString);
