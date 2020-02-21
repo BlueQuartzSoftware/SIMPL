@@ -270,5 +270,5 @@ void ITK_IMAGE_READER_CLASS_NAME ::readImageOutputInformation(const DataArrayPat
     return;
   }
 
-  getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<ValueType>, AbstractFilter, ValueType>(this, dataArrayPath, 0, cDims);
+  getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<ValueType>>(this, dataArrayPath, 0, cDims);
 }

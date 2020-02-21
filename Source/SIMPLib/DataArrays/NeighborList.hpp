@@ -73,6 +73,8 @@ class NeighborList : public IDataArray
       return Pointer(static_cast<Self*>(nullptr));
     }
 
+    using value_type = T;
+
     /**
      * @brief Returns the name of the class for AbstractMessage
      */
