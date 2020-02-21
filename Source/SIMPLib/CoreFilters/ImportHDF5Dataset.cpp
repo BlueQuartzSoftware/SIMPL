@@ -159,7 +159,7 @@ void ImportHDF5Dataset::dataCheck()
   }
 
   int err = 0;
-  AttributeMatrix::Pointer am = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
+  AttributeMatrix::Pointer am = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
   if(getErrorCode() < 0)
   {
     return;

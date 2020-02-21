@@ -163,7 +163,7 @@ void MoveMultiData::dataCheck()
     for(int i = 0; i < amSrcPaths.size(); i++)
     {
       DataContainer::Pointer amSrcDataContainer = getDataContainerArray()->getPrereqDataContainer(this, amSrcPaths[i].getDataContainerName());
-      AttributeMatrix::Pointer amSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, amSrcPaths[i], -301);
+      AttributeMatrix::Pointer amSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, amSrcPaths[i], -301);
 
       if(getErrorCode() < 0)
       {
@@ -186,13 +186,13 @@ void MoveMultiData::dataCheck()
   }
   else if(getWhatToMove() == k_MoveMultiDataArray)
   {
-    AttributeMatrix::Pointer daDestAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, amDestPath, -301);
+    AttributeMatrix::Pointer daDestAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, amDestPath, -301);
     
     // Repeat for each DataArray
     for(int i = 0; i < daSrcPaths.size(); i++)
     {
-      AttributeMatrix::Pointer daSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, daSrcPaths[i], -301);
-      IDataArray::Pointer daSrcDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, daSrcPaths[i]);
+      AttributeMatrix::Pointer daSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, daSrcPaths[i], -301);
+      IDataArray::Pointer daSrcDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, daSrcPaths[i]);
 
       if(getErrorCode() < 0)
       {

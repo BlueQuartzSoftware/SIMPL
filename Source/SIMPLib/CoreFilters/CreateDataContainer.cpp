@@ -98,7 +98,7 @@ void CreateDataContainer::dataCheck()
   clearErrorCode();
   clearWarningCode();
 
-  getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName(), DataContainerID);
+  getDataContainerArray()->createNonPrereqDataContainer(this, getDataContainerName(), DataContainerID);
 }
 
 // -----------------------------------------------------------------------------

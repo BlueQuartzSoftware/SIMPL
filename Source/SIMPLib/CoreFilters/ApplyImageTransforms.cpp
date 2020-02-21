@@ -110,7 +110,7 @@ void ApplyImageTransforms::dataCheck()
   {
     QString dcName = m_ImageDataContainers[i];
 
-    ImageGeom::Pointer imageGeom = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, dcName);
+    ImageGeom::Pointer imageGeom = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom>(this, dcName);
     if(getErrorCode() < 0)
     {
       return;

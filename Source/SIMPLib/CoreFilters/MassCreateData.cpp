@@ -101,7 +101,7 @@ void MassCreateData::dataCheck()
   const int iterations = 4000;
   for(int i = 0; i < iterations; i++)
   {
-    DataContainerShPtr dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName().getDataContainerName() + QString::number(i), DataContainerBaseID + i);
+    DataContainerShPtr dc = getDataContainerArray()->createNonPrereqDataContainer(this, getDataContainerName().getDataContainerName() + QString::number(i), DataContainerBaseID + i);
   }
 }
 

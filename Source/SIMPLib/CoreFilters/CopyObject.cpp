@@ -187,7 +187,7 @@ void CopyObject::dataCheck()
       setErrorCondition(-11001, ss);
     }
 
-    AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getAttributeMatrixToCopy(), -301);
+    AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, getAttributeMatrixToCopy(), -301);
 
     if(getErrorCode() < 0)
     {
@@ -211,7 +211,7 @@ void CopyObject::dataCheck()
       setErrorCondition(-11001, ss);
     }
 
-    IDataArray::Pointer array = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getAttributeArrayToCopy());
+    IDataArray::Pointer array = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, getAttributeArrayToCopy());
 
     if(getErrorCode() < 0)
     {

@@ -105,7 +105,7 @@ int32_t SanityCheckFileSizeVersusAllocatedSize(size_t allocatedBytes, size_t fil
 template <typename T> int32_t readBinaryFile(RawBinaryReader* filter)
 {
 
-  typename DataArray<T>::Pointer p = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>, AbstractFilter>(filter, filter->getCreatedAttributeArrayPath());
+  typename DataArray<T>::Pointer p = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>>(filter, filter->getCreatedAttributeArrayPath());
   QString filename = filter->getInputFile();
   int64_t skipHeaderBytes = filter->getSkipHeaderBytes();
 
@@ -273,7 +273,7 @@ void RawBinaryReader::dataCheck()
     setErrorCondition(-391, ss);
   }
 
-  AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getCreatedAttributeArrayPath(), -30003);
+  AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, getCreatedAttributeArrayPath(), -30003);
   if(getErrorCode() < 0)
   {
     return;
@@ -286,52 +286,52 @@ void RawBinaryReader::dataCheck()
   std::vector<size_t> cDims(1, m_NumberOfComponents);
   if(m_ScalarType == SIMPL::NumericTypes::Type::Int8)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter, int8_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(int8_t) * m_NumberOfComponents * totalDim;
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt8)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter, uint8_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(uint8_t) * m_NumberOfComponents * totalDim;
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Int16)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter, int16_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(int16_t) * m_NumberOfComponents * totalDim;
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt16)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter, uint16_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(uint16_t) * m_NumberOfComponents * totalDim;
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Int32)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter, int32_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(int32_t) * m_NumberOfComponents * totalDim;
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt32)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter, uint32_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(uint32_t) * m_NumberOfComponents * totalDim;
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Int64)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter, int64_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(int64_t) * m_NumberOfComponents * totalDim;
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt64)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter, uint64_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(uint64_t) * m_NumberOfComponents * totalDim;
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Float)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter, float>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
+    getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(float) * m_NumberOfComponents * totalDim;
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Double)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
+    getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(double) * m_NumberOfComponents * totalDim;
   }
 

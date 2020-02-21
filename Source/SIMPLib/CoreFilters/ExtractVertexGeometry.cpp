@@ -186,7 +186,7 @@ void ExtractVertexGeometry::dataCheck()
   size_t elementCount = 0;
   if(IGeometry::Type::Image == geomType || IGeometry::Type::RectGrid == geomType)
   {
-    vertexDataContainer = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getVertexDataContainerName(), DataContainerID);
+    vertexDataContainer = getDataContainerArray()->createNonPrereqDataContainer(this, getVertexDataContainerName(), DataContainerID);
     IGeometryGrid::Pointer imageGeom = std::dynamic_pointer_cast<IGeometryGrid>(fromGeometry);
     SizeVec3Type imageDims = imageGeom->getDimensions();
     VertexGeom::Pointer vertexGeom = VertexGeom::CreateGeometry(imageDims[0] * imageDims[1] * imageDims[2], "VertexGeometry", !getInPreflight());
@@ -225,7 +225,7 @@ void ExtractVertexGeometry::dataCheck()
       return;
     }
 
-    IDataArray::Pointer iDataArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, dap);
+    IDataArray::Pointer iDataArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, dap);
     if(getErrorCode() < 0)
     {
       return;

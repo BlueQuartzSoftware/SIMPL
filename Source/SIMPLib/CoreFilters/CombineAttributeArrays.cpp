@@ -275,7 +275,7 @@ void CombineAttributeArrays::dataCheck()
   for(int32_t i = 0; i < paths.count(); i++)
   {
     DataArrayPath path = paths.at(i);
-    IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);
+    IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, path);
     if(nullptr != ptr.lock())
     {
       m_SelectedWeakPtrVector.push_back(ptr);

@@ -169,12 +169,12 @@ void ScaleVolume::dataCheck()
 
   if(m_ApplyToVoxelVolume)
   {
-    getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getDataContainerName());
+    getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom>(this, getDataContainerName());
   }
 
   if(m_ApplyToSurfaceMesh)
   {
-    getDataContainerArray()->getPrereqGeometryFromDataContainer<IGeometry2D, AbstractFilter>(this, getSurfaceDataContainerName());
+    getDataContainerArray()->getPrereqGeometryFromDataContainer<IGeometry2D>(this, getSurfaceDataContainerName());
   }
 }
 

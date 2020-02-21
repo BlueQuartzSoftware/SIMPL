@@ -122,7 +122,7 @@ void RenameAttributeArray::dataCheck()
     m_LastArrayName = getNewArrayName();
   }
 
-  AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedArrayPath(), -301);
+  AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, getSelectedArrayPath(), -301);
   if(getErrorCode() < 0)
   {
     return;

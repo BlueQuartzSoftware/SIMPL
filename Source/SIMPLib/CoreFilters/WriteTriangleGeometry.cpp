@@ -138,7 +138,7 @@ void WriteTriangleGeometry::dataCheck()
     return;
   }
 
-  TriangleGeom::Pointer triangles = dataContainer->getPrereqGeometry<TriangleGeom, AbstractFilter>(this);
+  TriangleGeom::Pointer triangles = dataContainer->getPrereqGeometry<TriangleGeom>(this);
   if(getErrorCode() < 0)
   {
     return;

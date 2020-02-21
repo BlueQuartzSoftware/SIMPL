@@ -230,7 +230,7 @@ void ArrayCalculator::dataCheck()
   clearErrorCode();
   clearWarningCode();
 
-  getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, -301);
+  getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, -301);
   if(getErrorCode() < 0)
   {
     return;
@@ -351,37 +351,37 @@ void ArrayCalculator::dataCheck()
   switch(m_ScalarType)
   {
   case SIMPL::ScalarTypes::Type::Int8:
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::UInt8:
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Int16:
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::UInt16:
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Int32:
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::UInt32:
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Int64:
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::UInt64:
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Float:
-    getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Double:
-    getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Bool:
-    getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   default:
     QString ss = QObject::tr("The output array type is not valid.  No DataArray could be created.");
@@ -683,7 +683,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation()
 {
   int err = 0;
 
-  AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
+  AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
 
   QVector<QString> itemList = getRegularExpressionMatches();
 
@@ -1046,7 +1046,7 @@ void ArrayCalculator::checkForAmbiguousArrayName(QString strItem, QString warnin
   if(getInPreflight())
   {
     int err = 0;
-    AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
+    AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
     if(getErrorCode() < 0)
     {
       return;

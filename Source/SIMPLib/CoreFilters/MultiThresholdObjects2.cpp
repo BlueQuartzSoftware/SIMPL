@@ -142,7 +142,7 @@ void MultiThresholdObjects2::dataCheck()
     //AbstractComparison::Pointer comp = m_SelectedThresholds[0];
     std::vector<size_t> cDims(1, 1);
     DataArrayPath tempPath(dcName, amName, getDestinationArrayName());
-    m_DestinationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true, cDims, "", ThresholdArrayID);
+    m_DestinationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>>(this, tempPath, true, cDims, "", ThresholdArrayID);
     if(nullptr != m_DestinationPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_Destination = m_DestinationPtr.lock()->getPointer(0);
@@ -156,7 +156,7 @@ void MultiThresholdObjects2::dataCheck()
       if (nullptr != comp)
       {
         tempPath.update(dcName, amName, comp->getAttributeArrayName());
-        IDataArray::Pointer inputData = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, tempPath);
+        IDataArray::Pointer inputData = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, tempPath);
         if(getErrorCode() >= 0)
         {
           cDims = inputData->getComponentDimensions();
