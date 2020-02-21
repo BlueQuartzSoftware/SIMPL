@@ -396,38 +396,44 @@ using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 #define Dream3DArraySwitchOutputComponentMacro(call, type, path, errorCondition)                                                                                                                       \
   switch(type)                                                                                                                                                                                         \
   {                                                                                                                                                                                                    \
-  case itk::ImageIOBase::IOComponentType::UCHAR - 1:                                                                                                                                                   \
-    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint8_t, 0);                                                                                                                                     \
+  case itk::ImageIOBase::IOComponentType::UCHAR:                                                                                                                                                       \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint8_t, 0);                                                                                                                         \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::CHAR - 1:                                                                                                                                                    \
-    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int8_t, 0);                                                                                                                                      \
+  case itk::ImageIOBase::IOComponentType::CHAR:                                                                                                                                                        \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int8_t, 0);                                                                                                                          \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::USHORT - 1:                                                                                                                                                  \
-    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint16_t, 0);                                                                                                                                    \
+  case itk::ImageIOBase::IOComponentType::USHORT:                                                                                                                                                      \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint16_t, 0);                                                                                                                        \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::SHORT - 1:                                                                                                                                                   \
-    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int16_t, 0);                                                                                                                                     \
+  case itk::ImageIOBase::IOComponentType::SHORT:                                                                                                                                                       \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int16_t, 0);                                                                                                                         \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::UINT - 1:                                                                                                                                                    \
-    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint32_t, 0);                                                                                                                                    \
+  case itk::ImageIOBase::IOComponentType::UINT:                                                                                                                                                        \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint32_t, 0);                                                                                                                        \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::INT - 1:                                                                                                                                                     \
-    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int32_t, 0);                                                                                                                                     \
+  case itk::ImageIOBase::IOComponentType::INT:                                                                                                                                                         \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int32_t, 0);                                                                                                                         \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::ULONG - 1:                                                                                                                                                   \
-    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint64_t, 0);                                                                                                                                    \
+  case itk::ImageIOBase::IOComponentType::ULONG:                                                                                                                                                       \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint64_t, 0);                                                                                                                        \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::LONG - 1:                                                                                                                                                    \
-    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int64_t, 0);                                                                                                                                     \
+  case itk::ImageIOBase::IOComponentType::LONG:                                                                                                                                                        \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int64_t, 0);                                                                                                                         \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::FLOAT - 1:                                                                                                                                                   \
-    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, float, 0);                                                                                                                                       \
+  case itk::ImageIOBase::IOComponentType::ULONGLONG:                                                                                                                                                   \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint64_t, 0);                                                                                                                        \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::DOUBLE - 1:                                                                                                                                                  \
-    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, double, 0);                                                                                                                                      \
+  case itk::ImageIOBase::IOComponentType::LONGLONG:                                                                                                                                                    \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int64_t, 0);                                                                                                                         \
+    break;                                                                                                                                                                                             \
+  case itk::ImageIOBase::IOComponentType::FLOAT:                                                                                                                                                       \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, float, 0);                                                                                                                           \
+    break;                                                                                                                                                                                             \
+  case itk::ImageIOBase::IOComponentType::DOUBLE:                                                                                                                                                      \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, double, 0);                                                                                                                          \
     break;                                                                                                                                                                                             \
   default:                                                                                                                                                                                             \
-    setErrorCondition(errorCondition, "Unsupported pixel component");                                                                                                                                 \
+    setErrorCondition(errorCondition, "Unsupported pixel component");                                                                                                                                  \
     break;                                                                                                                                                                                             \
   }
 
