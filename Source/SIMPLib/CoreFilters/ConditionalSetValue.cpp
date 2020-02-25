@@ -70,7 +70,7 @@ void ConditionalSetValue::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Conditional Array", ConditionalArrayPath, FilterParameter::RequiredArray, ConditionalSetValue, req));
   }
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, AttributeMatrix::Category::Any);
+    DataArraySelectionFilterParameter::RequirementType req;
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array", SelectedArrayPath, FilterParameter::RequiredArray, ConditionalSetValue, req));
   }
   setFilterParameters(parameters);
@@ -91,7 +91,8 @@ void ConditionalSetValue::readFilterParameters(AbstractFilterParametersReader* r
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> void checkValuesInt(AbstractFilter* filter, double replaceValue, QString strType)
+template <typename T> 
+void checkValuesInt(AbstractFilter* filter, double replaceValue, QString strType)
 {
   QString ss;
 
@@ -106,7 +107,8 @@ template <typename T> void checkValuesInt(AbstractFilter* filter, double replace
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> void checkValuesFloatDouble(AbstractFilter* filter, double replaceValue, QString strType)
+template <typename T> 
+void checkValuesFloatDouble(AbstractFilter* filter, double replaceValue, QString strType)
 {
   QString ss;
 
@@ -123,13 +125,13 @@ template <typename T> void checkValuesFloatDouble(AbstractFilter* filter, double
 //
 // -----------------------------------------------------------------------------
 
-template <typename T> void replaceValue(AbstractFilter* filter, IDataArray::Pointer inDataPtr, BoolArrayType::Pointer condDataPtr, double replaceValue)
+template <typename T> 
+void replaceValue(AbstractFilter* filter, IDataArray::Pointer inDataPtr, BoolArrayType::Pointer condDataPtr, double replaceValue)
 {
   typename DataArray<T>::Pointer inputArrayPtr = std::dynamic_pointer_cast<DataArray<T>>(inDataPtr);
 
   T replaceVal = static_cast<T>(replaceValue);
 
-  T* inData = inputArrayPtr->getPointer(0);
   bool* condData = condDataPtr->getPointer(0);
   size_t numTuples = inputArrayPtr->getNumberOfTuples();
 
@@ -137,7 +139,7 @@ template <typename T> void replaceValue(AbstractFilter* filter, IDataArray::Poin
   {
     if(condData[iter])
     {
-      inData[iter] = replaceVal;
+      inputArrayPtr->initializeTuple(iter, &replaceVal);
     }
   }
 }
@@ -164,33 +166,20 @@ void ConditionalSetValue::dataCheck()
   {
     return;
   }
-  if(getErrorCondition() >= 0)
-  {
-    dataArrayPaths.push_back(getSelectedArrayPath());
-  }
-
-  if(m_ArrayPtr.lock()->getNumberOfComponents() > 1)
-  {
-    QString ss = QObject::tr("Selected array '%1' must be a scalar array (1 component). The number of components is %2")
-                     .arg(getSelectedArrayPath().getDataArrayName())
-                     .arg(m_ArrayPtr.lock()->getNumberOfComponents());
-    setErrorCondition(-11002);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
+  dataArrayPaths.push_back(getSelectedArrayPath());
 
   QVector<size_t> cDims(1, 1);
-  m_ConditionalArrayPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getConditionalArrayPath(),
-                                                                                                           cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_ConditionalArrayPtr.lock())                                                                      /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_ConditionalArrayPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getConditionalArrayPath(), cDims);
+  if(nullptr != m_ConditionalArrayPtr.lock())
   {
     m_ConditionalArray = m_ConditionalArrayPtr.lock()->getPointer(0);
-  } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if(getErrorCondition() >= 0)
-  {
-    dataArrayPaths.push_back(getConditionalArrayPath());
   }
-
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
+  dataArrayPaths.push_back(getConditionalArrayPath());
+  
   getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, dataArrayPaths);
 
   QString dType = m_ArrayPtr.lock()->getTypeAsString();
