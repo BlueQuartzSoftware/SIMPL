@@ -269,7 +269,7 @@ void ConvertData::dataCheck()
       return;
     }
 
-    IDataArray::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, getSelectedCellArrayPath());
+    IDataArray::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedCellArrayPath());
     if(getErrorCode() < 0)
     {
       return;

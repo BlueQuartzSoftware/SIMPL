@@ -365,7 +365,7 @@ void FindDerivatives::dataCheck()
     }
   }
 
-  m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, getSelectedArrayPath());
+  m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedArrayPath());
   if(getErrorCode() < 0)
   {
     return;

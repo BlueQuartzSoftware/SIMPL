@@ -102,10 +102,9 @@ int32_t SanityCheckFileSizeVersusAllocatedSize(size_t allocatedBytes, size_t fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> int32_t readBinaryFile(RawBinaryReader* filter)
+template <typename T> int32_t readBinaryFile(RawBinaryReader* filter, const std::vector<size_t>& cDims)
 {
-
-  typename DataArray<T>::Pointer p = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>>(filter, filter->getCreatedAttributeArrayPath());
+  typename DataArray<T>::Pointer p = filter->getDataContainerArray()->getPrereqArrayFromPath<DataArray<T>>(filter, filter->getCreatedAttributeArrayPath(), cDims);
   QString filename = filter->getInputFile();
   int64_t skipHeaderBytes = filter->getSkipHeaderBytes();
 
@@ -386,44 +385,46 @@ void RawBinaryReader::execute()
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getCreatedAttributeArrayPath().getDataContainerName());
 
+  std::vector<size_t> cDims(1, m_NumberOfComponents);
+
   int32_t err = 0;
   switch(m_ScalarType)
   {
   case SIMPL::NumericTypes::Type::Int8:
-    err = readBinaryFile<int8_t>(this);
+    err = readBinaryFile<int8_t>(this, cDims);
     break;
   case SIMPL::NumericTypes::Type::UInt8:
-    err = readBinaryFile<uint8_t>(this);
+    err = readBinaryFile<uint8_t>(this, cDims);
     break;
   case SIMPL::NumericTypes::Type::Int16:
-    err = readBinaryFile<int16_t>(this);
+    err = readBinaryFile<int16_t>(this, cDims);
     break;
   case SIMPL::NumericTypes::Type::UInt16:
-    err = readBinaryFile<uint16_t>(this);
+    err = readBinaryFile<uint16_t>(this, cDims);
     break;
   case SIMPL::NumericTypes::Type::Int32:
-    err = readBinaryFile<int32_t>(this);
+    err = readBinaryFile<int32_t>(this, cDims);
     break;
   case SIMPL::NumericTypes::Type::UInt32:
-    err = readBinaryFile<uint32_t>(this);
+    err = readBinaryFile<uint32_t>(this, cDims);
     break;
   case SIMPL::NumericTypes::Type::Int64:
-    err = readBinaryFile<int64_t>(this);
+    err = readBinaryFile<int64_t>(this, cDims);
     break;
   case SIMPL::NumericTypes::Type::UInt64:
-    err = readBinaryFile<uint64_t>(this);
+    err = readBinaryFile<uint64_t>(this, cDims);
     break;
   case SIMPL::NumericTypes::Type::Float:
-    err = readBinaryFile<float>(this);
+    err = readBinaryFile<float>(this, cDims);
     break;
   case SIMPL::NumericTypes::Type::Double:
-    err = readBinaryFile<double>(this);
+    err = readBinaryFile<double>(this, cDims);
     break;
   case SIMPL::NumericTypes::Type::Bool:
-    err = readBinaryFile<uint8_t>(this);
+    err = readBinaryFile<uint8_t>(this, cDims);
     break;
   case SIMPL::NumericTypes::Type::SizeT:
-    err = readBinaryFile<size_t>(this);
+    err = readBinaryFile<size_t>(this, cDims);
     break;
   case SIMPL::NumericTypes::Type::UnknownNumType:
     break;

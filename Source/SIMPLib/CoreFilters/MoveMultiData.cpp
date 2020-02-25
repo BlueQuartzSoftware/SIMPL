@@ -192,7 +192,7 @@ void MoveMultiData::dataCheck()
     for(int i = 0; i < daSrcPaths.size(); i++)
     {
       AttributeMatrix::Pointer daSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, daSrcPaths[i], -301);
-      IDataArray::Pointer daSrcDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, daSrcPaths[i]);
+      IDataArray::Pointer daSrcDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath(this, daSrcPaths[i]);
 
       if(getErrorCode() < 0)
       {

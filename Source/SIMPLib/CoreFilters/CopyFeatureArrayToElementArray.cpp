@@ -136,7 +136,7 @@ void CopyFeatureArrayToElementArray::dataCheck()
   } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   m_InArrayPtr =
-      getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, getSelectedFeatureArrayPath()); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+      getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedFeatureArrayPath()); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
 
   DataArrayPath tempPath(getFeatureIdsArrayPath().getDataContainerName(), getFeatureIdsArrayPath().getAttributeMatrixName(), "");
   getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, tempPath, -301);

@@ -158,7 +158,7 @@ void MultiThresholdObjects::dataCheck()
     {
       ComparisonInput_t comp = m_SelectedThresholds[i];
       tempPath.update(comp.dataContainerName, comp.attributeMatrixName, comp.attributeArrayName);
-      IDataArray::Pointer inputData = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, tempPath);
+      IDataArray::Pointer inputData = getDataContainerArray()->getPrereqIDataArrayFromPath(this, tempPath);
       if(getErrorCode() >= 0)
       {
         cDims = inputData->getComponentDimensions();

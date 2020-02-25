@@ -257,7 +257,7 @@ void GenerateColorTable::dataCheck()
   clearErrorCode();
   clearWarningCode();
 
-  getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, getSelectedDataArrayPath());
+  getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedDataArrayPath());
 
   DataArrayPath tmpPath = getSelectedDataArrayPath();
   tmpPath.setDataArrayName(getRgbArrayName());

@@ -156,7 +156,7 @@ void MultiThresholdObjects2::dataCheck()
       if (nullptr != comp)
       {
         tempPath.update(dcName, amName, comp->getAttributeArrayName());
-        IDataArray::Pointer inputData = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, tempPath);
+        IDataArray::Pointer inputData = getDataContainerArray()->getPrereqIDataArrayFromPath(this, tempPath);
         if(getErrorCode() >= 0)
         {
           cDims = inputData->getComponentDimensions();

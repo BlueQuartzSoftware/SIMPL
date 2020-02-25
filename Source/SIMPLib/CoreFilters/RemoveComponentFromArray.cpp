@@ -127,7 +127,7 @@ void RemoveComponentFromArray::dataCheck()
   clearErrorCode();
   clearWarningCode();
 
-  m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, getSelectedArrayPath());
+  m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedArrayPath());
 
   if(m_SaveRemovedComponent)
   {

@@ -138,7 +138,7 @@ void CreateFeatureArrayFromElementArray::dataCheck()
     m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, getSelectedCellArrayPath());
+  m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedCellArrayPath());
 
   getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, getCellFeatureAttributeMatrixName(), -301);
 

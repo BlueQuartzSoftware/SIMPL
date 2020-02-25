@@ -211,7 +211,7 @@ void CopyObject::dataCheck()
       setErrorCondition(-11001, ss);
     }
 
-    IDataArray::Pointer array = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, getAttributeArrayToCopy());
+    IDataArray::Pointer array = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getAttributeArrayToCopy());
 
     if(getErrorCode() < 0)
     {

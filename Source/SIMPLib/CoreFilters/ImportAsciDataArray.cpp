@@ -575,7 +575,7 @@ void ImportAsciDataArray::execute()
   int32_t err = 0;
   if(m_ScalarType == SIMPL::NumericTypes::Type::Int8)
   {
-    Int8ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int8ArrayType>(this, getCreatedAttributeArrayPath());
+    Int8ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<Int8ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
     err = readAsciFile<int8_t, int32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
@@ -584,7 +584,7 @@ void ImportAsciDataArray::execute()
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt8)
   {
-    UInt8ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt8ArrayType>(this, getCreatedAttributeArrayPath());
+    UInt8ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<UInt8ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
     err = readAsciFile<uint8_t, uint32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
@@ -593,7 +593,7 @@ void ImportAsciDataArray::execute()
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Int16)
   {
-    Int16ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int16ArrayType>(this, getCreatedAttributeArrayPath());
+    Int16ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<Int16ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
     err = readAsciFile<int16_t,int16_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
@@ -602,7 +602,7 @@ void ImportAsciDataArray::execute()
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt16)
   {
-    UInt16ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt16ArrayType>(this, getCreatedAttributeArrayPath());
+    UInt16ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<UInt16ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
     err = readAsciFile<uint16_t,uint16_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
@@ -611,7 +611,7 @@ void ImportAsciDataArray::execute()
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Int32)
   {
-    Int32ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int32ArrayType>(this, getCreatedAttributeArrayPath());
+    Int32ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<Int32ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
     err = readAsciFile<int32_t,int32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
@@ -620,7 +620,7 @@ void ImportAsciDataArray::execute()
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt32)
   {
-    UInt32ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType>(this, getCreatedAttributeArrayPath());
+    UInt32ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<UInt32ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
     err = readAsciFile<uint32_t,uint32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
@@ -629,7 +629,7 @@ void ImportAsciDataArray::execute()
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Int64)
   {
-    Int64ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int64ArrayType>(this, getCreatedAttributeArrayPath());
+    Int64ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<Int64ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
     err = readAsciFile<int64_t,int64_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
@@ -638,7 +638,7 @@ void ImportAsciDataArray::execute()
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt64)
   {
-    UInt64ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt64ArrayType>(this, getCreatedAttributeArrayPath());
+    UInt64ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<UInt64ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
     err = readAsciFile<uint64_t,uint64_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
@@ -647,7 +647,7 @@ void ImportAsciDataArray::execute()
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Float)
   {
-    FloatArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<FloatArrayType>(this, getCreatedAttributeArrayPath());
+    FloatArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType>(this, getCreatedAttributeArrayPath(), cDims);
     err = readAsciFile<float,float>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
@@ -656,7 +656,7 @@ void ImportAsciDataArray::execute()
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Double)
   {
-    DoubleArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType>(this, getCreatedAttributeArrayPath());
+    DoubleArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<DoubleArrayType>(this, getCreatedAttributeArrayPath(), cDims);
     err = readAsciFile<double,double>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
@@ -665,7 +665,7 @@ void ImportAsciDataArray::execute()
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Bool)
   {
-    BoolArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<BoolArrayType>(this, getCreatedAttributeArrayPath());
+    BoolArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType>(this, getCreatedAttributeArrayPath(), cDims);
     err = readAsciFile<bool, bool>(p, m_InputFile, m_SkipHeaderLines, delimiter, true);
     if(err >= 0)
     {

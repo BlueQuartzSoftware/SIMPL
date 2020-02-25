@@ -109,7 +109,7 @@ void SplitAttributeArray::dataCheck()
   clearWarningCode();
   initialize();
 
-  m_InputArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, getInputArrayPath());
+  m_InputArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getInputArrayPath());
 
   if(getErrorCode() < 0)
   {

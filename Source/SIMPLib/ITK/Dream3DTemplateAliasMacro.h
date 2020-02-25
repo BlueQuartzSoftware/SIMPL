@@ -344,7 +344,7 @@ using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 // which is saved in the filter's data container array.
 #define Dream3DArraySwitchMacroLongOutputType(call, path, errorCondition, typeOUT, isTypeOUT, typeOUTTypename)                                                                                         \
   {                                                                                                                                                                                                    \
-    IDataArrayShPtrType ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, path);                                                                            \
+    IDataArrayShPtrType ptr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, path);                                                                            \
     if(nullptr != ptr)                                                                                                                                                                                 \
     {                                                                                                                                                                                                  \
       ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom>(this, path.getDataContainerName());                                    \
@@ -447,7 +447,7 @@ using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 //
 #define Dream3DArrayOutputComponentFromDataMacro(call, input2_path, input1_path, errorCondition)                                                                                                       \
   {                                                                                                                                                                                                    \
-    IDataArrayShPtrType ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, input2_path);                                                                     \
+    IDataArrayShPtrType ptr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, input2_path);                                                                     \
     if(ptr.get() != nullptr)                                                                                                                                                                           \
     {                                                                                                                                                                                                  \
       ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom>(this, input2_path.getDataContainerName());                             \

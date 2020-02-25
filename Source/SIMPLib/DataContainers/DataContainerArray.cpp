@@ -628,7 +628,7 @@ bool DataContainerArray::validateNumberOfTuples(AbstractFilter* filter, const QV
     valid = false;
     return valid;
   }
-  IDataArrayShPtrType array0 = getPrereqIDataArrayFromPath<IDataArray>(filter, paths.at(0));
+  IDataArrayShPtrType array0 = getPrereqIDataArrayFromPath(filter, paths.at(0));
   if(nullptr == array0.get() && nullptr != filter)
   {
     ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
@@ -649,7 +649,7 @@ bool DataContainerArray::validateNumberOfTuples(AbstractFilter* filter, const QV
       valid = false;
       return valid;
     }
-    IDataArrayShPtrType nextArray = getPrereqIDataArrayFromPath<IDataArray>(filter, paths.at(i));
+    IDataArrayShPtrType nextArray = getPrereqIDataArrayFromPath(filter, paths.at(i));
     if(nullptr == nextArray.get() && nullptr != filter)
     {
       ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
@@ -710,4 +710,61 @@ bool DataContainerArray::validateNumberOfTuples(AbstractFilter* filter, QVector<
     }
   }
   return valid;
+}
+
+// -----------------------------------------------------------------------------
+IDataArray::Pointer DataContainerArray::getPrereqIDataArrayFromPath(AbstractFilter* filter, const DataArrayPath& path) const
+{
+  QString ss;
+  IDataArray::Pointer dataArray = nullptr;
+
+  if(path.isEmpty())
+  {
+    if(filter)
+    {
+      ss = QObject::tr("DataContainerArray::getPrereqIDataArrayFromPath Error at line %1. The DataArrayPath object was empty").arg(__LINE__);
+      filter->setErrorCondition(-90000, ss);
+    }
+    return dataArray;
+  }
+
+  if(!path.isValid())
+  {
+    if(filter)
+    {
+      ss = QObject::tr("DataContainerArray::getPrereqIDataArrayFromPath Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(path.serialize());
+      filter->setErrorCondition(-90001, ss);
+    }
+    return dataArray;
+  }
+
+  QString dcName = path.getDataContainerName();
+  QString amName = path.getAttributeMatrixName();
+  QString daName = path.getDataArrayName();
+
+
+  DataContainerShPtr dc = getDataContainer(dcName);
+  if(nullptr == dc.get())
+  {
+    if(filter)
+    {
+      ss = QObject::tr("The DataContainer '%1' was not found in the DataContainerArray").arg(dcName);
+      filter->setErrorCondition(-999, ss);
+    }
+    return dataArray;
+  }
+
+  AttributeMatrix::Pointer attrMat = dc->getAttributeMatrix(amName);
+  if(nullptr == attrMat.get())
+  {
+    if(filter)
+    {
+      ss = QObject::tr("The AttributeMatrix '%1' was not found in the DataContainer '%2'").arg(amName).arg(dcName);
+      filter->setErrorCondition(-307020, ss);
+    }
+    return dataArray;
+  }
+
+  dataArray = attrMat->getPrereqIDataArray(filter, daName, -90002); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  return dataArray;
 }

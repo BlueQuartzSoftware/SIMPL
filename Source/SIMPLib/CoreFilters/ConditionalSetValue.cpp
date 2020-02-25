@@ -165,7 +165,7 @@ void ConditionalSetValue::dataCheck()
 
   QVector<DataArrayPath> dataArrayPaths;
 
-  m_ArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, getSelectedArrayPath());
+  m_ArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedArrayPath());
   if(getErrorCode() < 0)
   {
     return;

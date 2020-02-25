@@ -455,63 +455,7 @@ public:
     * @param path
     * @return
     */
-    template<class ArrayType>
-    typename ArrayType::Pointer getPrereqIDataArrayFromPath(AbstractFilter* filter, const DataArrayPath& path) const
-    {
-
-      QString ss;
-      typename ArrayType::Pointer dataArray = ArrayType::NullPointer();
-
-      if(path.isEmpty())
-      {
-        if(filter)
-        {
-          ss = QObject::tr("DataContainerArray::getPrereqIDataArrayFromPath Error at line %1. The DataArrayPath object was empty").arg(__LINE__);
-          filter->setErrorCondition(-90000, ss);
-        }
-        return dataArray;
-      }
-
-      if(!path.isValid())
-      {
-        if(filter)
-        {
-          ss = QObject::tr("DataContainerArray::getPrereqIDataArrayFromPath Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(path.serialize());
-          filter->setErrorCondition(-90001, ss);
-        }
-        return dataArray;
-      }
-
-      QString dcName = path.getDataContainerName();
-      QString amName = path.getAttributeMatrixName();
-      QString daName = path.getDataArrayName();
-
-
-      DataContainerShPtr dc = getDataContainer(dcName);
-      if(nullptr == dc.get())
-      {
-        if(filter)
-        {
-          ss = QObject::tr("The DataContainer '%1' was not found in the DataContainerArray").arg(dcName);
-          filter->setErrorCondition(-999, ss);
-        }
-        return dataArray;
-      }
-
-      AttributeMatrix::Pointer attrMat = dc->getAttributeMatrix(amName);
-      if(nullptr == attrMat.get())
-      {
-        if(filter)
-        {
-          ss = QObject::tr("The AttributeMatrix '%1' was not found in the DataContainer '%2'").arg(amName).arg(dcName);
-          filter->setErrorCondition(-307020, ss);
-        }
-        return dataArray;
-      }
-
-      dataArray = attrMat->getPrereqIDataArray<ArrayType>(filter, daName, -90002); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-      return dataArray;
-    }
+    IDataArray::Pointer getPrereqIDataArrayFromPath(AbstractFilter* filter, const DataArrayPath& path) const;
 
     /**
      * @brief createNonPrereqArray This method will create a new DataArray in the AttributeMatrix. The conditions for this

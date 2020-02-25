@@ -382,43 +382,7 @@ public:
      * @param err
      * @return
      */
-    template <class ArrayType> typename ArrayType::Pointer getPrereqIDataArray(AbstractFilter* filter, const QString& attributeArrayName, int err) const
-    {
-      QString ss;
-      typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
-      // Make sure the name is not empty for the AttributeArrayName. This would be detected below
-      // in the call to get either one BUT the reason for the failure would not be evident so we make these explicit checks
-      // here and send back nice error messages to ther user/programmer.
-      if(attributeArrayName.isEmpty())
-      {
-        if(filter)
-        {
-          ss = QObject::tr("AttributeMatrix:'%1' The name of a requested Attribute Array was empty. Please provide a name for this array").arg(getName());
-          filter->setErrorCondition(err, ss);
-        }
-      }
-      // Now ask for the actual AttributeArray from the AttributeMatrix
-      if(!doesAttributeArrayExist(attributeArrayName))
-      {
-        if(filter)
-        {
-          ss = QObject::tr("The AttributeMatrix named '%1' does NOT have a DataArray with name '%2'. This filter requires this DataArray in order to execute.").arg(getName()).arg(attributeArrayName);
-          filter->setErrorCondition(err, ss);
-        }
-        return attributeArray;
-      }
-
-      IDataArrayShPtrType ptr = getAttributeArray(attributeArrayName);
-      if(std::dynamic_pointer_cast<ArrayType>(ptr) != nullptr)
-      {
-        return std::dynamic_pointer_cast<ArrayType>(ptr);
-      }
-
-      ss = QObject::tr("Unable to cast input array %1 to the necessary type.").arg(attributeArrayName);
-      filter->setErrorCondition(err, ss);
-
-      return attributeArray;
-    }
+    IDataArray::Pointer getPrereqIDataArray(AbstractFilter* filter, const QString& attributeArrayName, int err) const;
 
     /**
      * @brief createNonPrereqArray This method will create a new DataArray in the AttributeMatrix. The condition for this

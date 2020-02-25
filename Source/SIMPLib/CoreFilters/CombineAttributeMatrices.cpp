@@ -239,7 +239,7 @@ void CombineAttributeMatrices::dataCheck()
   for(QList<QString>::iterator iter = fArrayNames.begin(); iter != fArrayNames.end(); ++iter)
   {
     tempPath.update(getFirstAttributeMatrixPath().getDataContainerName(), getCombinedAttributeMatrixName(), *iter);
-    IDataArray::Pointer tmpDataArray = firstAttrMat->getPrereqIDataArray<IDataArray>(this, *iter, -90001);
+    IDataArray::Pointer tmpDataArray = firstAttrMat->getPrereqIDataArray(this, *iter, -90001);
     if(getErrorCode() >= 0)
     {
       std::vector<size_t> cDims = tmpDataArray->getComponentDimensions();
@@ -250,7 +250,7 @@ void CombineAttributeMatrices::dataCheck()
   for(QList<QString>::iterator iter = sArrayNames.begin(); iter != sArrayNames.end(); ++iter)
   {
     tempPath.update(getSecondAttributeMatrixPath().getDataContainerName(), getCombinedAttributeMatrixName(), *iter);
-    IDataArray::Pointer tmpDataArray = secondAttrMat->getPrereqIDataArray<IDataArray>(this, *iter, -90001);
+    IDataArray::Pointer tmpDataArray = secondAttrMat->getPrereqIDataArray(this, *iter, -90001);
     if(getErrorCode() >= 0)
     {
       if(!fArrayNames.contains(*iter))

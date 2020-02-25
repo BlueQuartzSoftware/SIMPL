@@ -178,7 +178,7 @@ void MoveData::dataCheck()
   {
     AttributeMatrix::Pointer daSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, daSrcPath, -301);
     AttributeMatrix::Pointer daDestAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, amDestPath, -301);
-    IDataArray::Pointer daSrcDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, daSrcPath);
+    IDataArray::Pointer daSrcDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath(this, daSrcPath);
 
     if(getErrorCode() < 0)
     {

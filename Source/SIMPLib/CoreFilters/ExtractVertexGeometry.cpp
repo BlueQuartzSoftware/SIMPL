@@ -225,7 +225,7 @@ void ExtractVertexGeometry::dataCheck()
       return;
     }
 
-    IDataArray::Pointer iDataArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray>(this, dap);
+    IDataArray::Pointer iDataArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, dap);
     if(getErrorCode() < 0)
     {
       return;
