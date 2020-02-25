@@ -323,14 +323,14 @@ public:
     /**
      * @brief getPrereqArray
      * @param filter An instance of an AbstractFilter that is calling this function. Can be nullptr in which case
-     * no error message will be returned if there is an error.
+     * no error message will be returned if there is an error. Will only check component dims if cDims is not empty.
      * @param attributeArrayName The name of the Attribute Array
      * @param err The error code to set into the filter if there is an error
      * @param cDims The component Dimensions of the Data Array
      * @return A valid IDataArray Subclass if the array exists otherwise a null shared pointer.
      */
     template <class ArrayType>
-    typename ArrayType::Pointer getPrereqArray(AbstractFilter* filter, QString attributeArrayName, int err, std::vector<size_t> cDims) const
+    typename ArrayType::Pointer getPrereqArray(AbstractFilter* filter, QString attributeArrayName, int err, const std::vector<size_t>& cDims = {}) const
     {
       QString ss;
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
@@ -355,16 +355,18 @@ public:
         }
         return attributeArray;
       }
-      int NumComp = cDims[0];
-      for(int i = 1; i < cDims.size(); i++)
+
+      if(!cDims.empty())
       {
-        NumComp *= cDims[i];
+        size_t numComp = std::accumulate(cDims.cbegin(), cDims.cend(), static_cast<size_t>(1), std::multiplies<size_t>());
+
+        // Check to make sure the AttributeArray we have is of the proper type, size and number of components
+        if(false == dataArrayCompatibility<ArrayType>(attributeArrayName, numComp, filter))
+        {
+          return attributeArray;
+        }
       }
-      // Check to make sure the AttributeArray we have is of the proper type, size and number of components
-      if(false == dataArrayCompatibility<ArrayType>(attributeArrayName, NumComp, filter) )
-      {
-        return attributeArray;
-      }
+
       IDataArrayShPtrType iDataArray = getAttributeArray(attributeArrayName);
       attributeArray = std::dynamic_pointer_cast< ArrayType >(iDataArray);
       if(nullptr == attributeArray.get() && filter)

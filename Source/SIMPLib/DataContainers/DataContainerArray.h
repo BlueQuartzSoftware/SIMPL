@@ -392,9 +392,8 @@ public:
      * @return Valid or nullptr shared pointer based on availability of the array
      */
     template <class ArrayType>
-    typename ArrayType::Pointer getPrereqArrayFromPath(AbstractFilter* filter, const DataArrayPath& path, std::vector<size_t> cDims) const
+    typename ArrayType::Pointer getPrereqArrayFromPath(AbstractFilter* filter, const DataArrayPath& path, const std::vector<size_t>& cDims = {}) const
     {
-
       QString ss;
       typename ArrayType::Pointer dataArray = ArrayType::NullPointer();
 

@@ -140,7 +140,7 @@ public:
 
         QString rotationDc = QString(k_RotationBaseString).arg(rotationString).arg(i);
         featureIdsPath.setDataContainerName(rotationDc);
-        Int8ArrayType::Pointer dataArray = dca->getPrereqIDataArrayFromPath<Int8ArrayType>(nullptr, featureIdsPath);
+        Int8ArrayType::Pointer dataArray = dca->getPrereqArrayFromPath<Int8ArrayType>(nullptr, featureIdsPath);
         DREAM3D_REQUIRE_VALID_POINTER(dataArray)
 
         ImageGeom::Pointer imageGeom = dca->getPrereqGeometryFromDataContainer<ImageGeom>(nullptr, featureIdsPath);
@@ -157,7 +157,7 @@ public:
         err = generateTiltSeries->getErrorCode();
         DREAM3D_REQUIRED(err, >=, 0)
 
-        Int8ArrayType::Pointer testArray = dca->getPrereqIDataArrayFromPath<Int8ArrayType>(nullptr, outputFeatureIdsPath);
+        Int8ArrayType::Pointer testArray = dca->getPrereqArrayFromPath<Int8ArrayType>(nullptr, outputFeatureIdsPath);
         DREAM3D_REQUIRE_VALID_POINTER(testArray)
 
         DREAM3D_REQUIRE(dataArrayEqual(*testArray, *dataArray))

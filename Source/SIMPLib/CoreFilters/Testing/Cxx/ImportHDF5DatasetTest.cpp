@@ -442,7 +442,7 @@ public:
 
         QString dsetPath = dsetInfoList[i].dataSetPath;
         QString dsetName = dsetPath.remove("/Pointer/");
-        typename DataArray<T>::Pointer da = dca->getPrereqIDataArrayFromPath<DataArray<T>>(filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", dsetName));
+        typename DataArray<T>::Pointer da = dca->getPrereqArrayFromPath<DataArray<T>>(filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", dsetName));
         size_t totalArrayValues = da->getNumberOfTuples() * da->getNumberOfComponents();
         DREAM3D_REQUIRE_EQUAL(totalArrayValues, tDimsProduct * cDimsProduct);
 

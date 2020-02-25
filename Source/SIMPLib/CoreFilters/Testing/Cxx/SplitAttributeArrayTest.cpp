@@ -250,22 +250,22 @@ public:
     DREAM3D_REQUIRED(err, >=, 0)
     using DataArrayPtrType = std::shared_ptr<DataArray<T>>;
     DataArrayPtrType mcArray_original =
-        filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>>(filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType));
+        filter->getDataContainerArray()->getPrereqArrayFromPath<DataArray<T>>(filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType));
 
     std::vector<DataArrayPtrType> mcArraysAfterSplit;
-    DataArrayPtrType mcArray0 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>>(
+    DataArrayPtrType mcArray0 = filter->getDataContainerArray()->getPrereqArrayFromPath<DataArray<T>>(
         filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType + "Component0"));
     mcArraysAfterSplit.push_back(mcArray0);
-    DataArrayPtrType mcArray1 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>>(
+    DataArrayPtrType mcArray1 = filter->getDataContainerArray()->getPrereqArrayFromPath<DataArray<T>>(
         filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType + "Component1"));
     mcArraysAfterSplit.push_back(mcArray1);
-    DataArrayPtrType mcArray2 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>>(
+    DataArrayPtrType mcArray2 = filter->getDataContainerArray()->getPrereqArrayFromPath<DataArray<T>>(
         filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType + "Component2"));
     mcArraysAfterSplit.push_back(mcArray2);
-    DataArrayPtrType mcArray3 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>>(
+    DataArrayPtrType mcArray3 = filter->getDataContainerArray()->getPrereqArrayFromPath<DataArray<T>>(
         filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType + "Component3"));
     mcArraysAfterSplit.push_back(mcArray3);
-    DataArrayPtrType mcArray4 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>>(
+    DataArrayPtrType mcArray4 = filter->getDataContainerArray()->getPrereqArrayFromPath<DataArray<T>>(
         filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType + "Component4"));
     mcArraysAfterSplit.push_back(mcArray4);
 
