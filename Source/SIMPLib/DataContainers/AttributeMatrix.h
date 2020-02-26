@@ -330,7 +330,7 @@ public:
      * @return A valid IDataArray Subclass if the array exists otherwise a null shared pointer.
      */
     template <class ArrayType>
-    typename ArrayType::Pointer getPrereqArray(AbstractFilter* filter, QString attributeArrayName, int err, const std::vector<size_t>& cDims = {}) const
+    typename ArrayType::Pointer getPrereqArray(AbstractFilter* filter, const QString& attributeArrayName, int err, const std::vector<size_t>& cDims = {}) const
     {
       QString ss;
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
