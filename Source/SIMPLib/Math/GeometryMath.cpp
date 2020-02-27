@@ -130,6 +130,61 @@ bool GeometryMath::RayIntersectsBox(const float* p, const float* q, const float*
 }
 
 // -----------------------------------------------------------------------------
+bool GeometryMath::FindRayIntersectionsWithSphere(float* p, float* R, float length, float* c, float radius, float& t1, float& t2)
+{
+  // initialize t1 and t2 to -1 - means no intersection
+  t1 = -1.0f;
+  t2 = -1.0f;
+
+  // determine distance (tc) to where perpendicular distance will be calculated
+  float Lx = c[0] - p[0];
+  float Ly = c[1] - p[1];
+  float Lz = c[2] - p[2];
+  float L2 = (Lx * Lx + Ly * Ly + Lz * Lz);
+  float radius2 = radius * radius;
+  float tc = Lx * R[0] + Ly * R[1] + Lz * R[2];
+
+  // check1 if ray intersects sphere
+  if(tc < 0.0 && L2 > radius2)
+  {
+    return false;
+  }
+
+  // determine perpendicular distance (d) squared from sphere center to ray
+  float d2 = L2 - (tc * tc);
+
+  // check2 if ray intersects sphere
+  if(d2 > radius2)
+  {
+    return false;
+  }
+
+  // determine distance along ray from where perpendicular distance is calculated to point on sphere
+  float t1c = sqrt(radius2 - d2);
+
+  // determine intersection points on sphere by combining tc and t1c
+  t1 = tc - t1c;
+  t2 = tc + t1c;
+
+  // check3 if ray intersects sphere
+  if(t1 > length)
+  {
+    return false;
+  }
+
+  if(t1 < 0.0f)
+  {
+    t1 = 0.0f;
+  }
+  if(t2 > length)
+  {
+    t2 = length;
+  }
+
+  return true;
+}
+
+// -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 float GeometryMath::LengthOfRayInBox(const float* p, const float* q, const float* ll, const float* ur)
