@@ -107,7 +107,7 @@ void DataContainerArrayWidget::setupGui()
 
   if(nullptr != m_Filter)
   {
-    connect(m_Filter, SIGNAL(preflightExecuted()), this, SLOT(updateView()));
+    connect(m_Filter, &AbstractFilter::preflightExecuted, this, &DataContainerArrayWidget::updateView);
   }
 }
 

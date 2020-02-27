@@ -102,11 +102,11 @@ FilterParameter* DataContainerArrayProxyWidget::getFilterParameter() const
 void DataContainerArrayProxyWidget::setupGui()
 {
 
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
+  connect(getFilter(), &AbstractFilter::preflightAboutToExecute, this, &DataContainerArrayProxyWidget::beforePreflight);
 
-  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
+  connect(getFilter(), &AbstractFilter::preflightExecuted, this, &DataContainerArrayProxyWidget::afterPreflight);
 
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &DataContainerArrayProxyWidget::filterNeedsInputParameters);
 
   // If the DataArrayPath is updated in the filter, update the widget
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
