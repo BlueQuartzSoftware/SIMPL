@@ -200,11 +200,11 @@ void PipelineListener::closeFiles()
 // -----------------------------------------------------------------------------
 QString PipelineListener::getNameOfClass() const
 {
-  return QString("_SUPERPipelineListener");
+  return QString("PipelineListener");
 }
 
 // -----------------------------------------------------------------------------
 QString PipelineListener::ClassName()
 {
-  return QString("_SUPERPipelineListener");
+  return QString("PipelineListener");
 }

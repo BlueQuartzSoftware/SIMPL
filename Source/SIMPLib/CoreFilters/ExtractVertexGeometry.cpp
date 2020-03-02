@@ -392,13 +392,13 @@ std::shared_ptr<ExtractVertexGeometry> ExtractVertexGeometry::New()
 // -----------------------------------------------------------------------------
 QString ExtractVertexGeometry::getNameOfClass() const
 {
-  return QString("_SUPERExtractVertexGeometry");
+  return QString("ExtractVertexGeometry");
 }
 
 // -----------------------------------------------------------------------------
 QString ExtractVertexGeometry::ClassName()
 {
-  return QString("_SUPERExtractVertexGeometry");
+  return QString("ExtractVertexGeometry");
 }
 
 // -----------------------------------------------------------------------------

@@ -272,13 +272,13 @@ std::shared_ptr<ApplyImageTransforms> ApplyImageTransforms::New()
 // -----------------------------------------------------------------------------
 QString ApplyImageTransforms::getNameOfClass() const
 {
-  return QString("_SUPERApplyImageTransforms");
+  return QString("ApplyImageTransforms");
 }
 
 // -----------------------------------------------------------------------------
 QString ApplyImageTransforms::ClassName()
 {
-  return QString("_SUPERApplyImageTransforms");
+  return QString("ApplyImageTransforms");
 }
 
 // -----------------------------------------------------------------------------
