@@ -165,7 +165,7 @@ void ConditionalSetValue::dataCheck()
 
   QVector<DataArrayPath> dataArrayPaths;
 
-  m_ArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
+  m_ArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedArrayPath());
   if(getErrorCode() < 0)
   {
     return;
@@ -173,7 +173,7 @@ void ConditionalSetValue::dataCheck()
   dataArrayPaths.push_back(getSelectedArrayPath());
 
   std::vector<size_t> cDims(1, 1);
-  m_ConditionalArrayPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getConditionalArrayPath(), cDims);
+  m_ConditionalArrayPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>>(this, getConditionalArrayPath(), cDims);
   if(getErrorCode() < 0)
   {
     return;
@@ -184,7 +184,7 @@ void ConditionalSetValue::dataCheck()
   }
   dataArrayPaths.push_back(getConditionalArrayPath());
 
-  getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, dataArrayPaths);
+  getDataContainerArray()->validateNumberOfTuples(this, dataArrayPaths);
 
   QString dType = m_ArrayPtr.lock()->getTypeAsString();
   if(dType.compare(SIMPL::TypeNames::Int8) == 0)

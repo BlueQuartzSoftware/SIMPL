@@ -285,7 +285,7 @@ void FindDerivatives::dataCheck()
     return;
   }
 
-  AttributeMatrix::Pointer inAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedArrayPath, -301);
+  AttributeMatrix::Pointer inAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedArrayPath, -301);
   AttributeMatrix::Pointer destAttrMat = m->getPrereqAttributeMatrix(this, getDerivativesArrayPath().getAttributeMatrixName(), -301);
 
   if(getErrorCode() < 0)
@@ -365,7 +365,7 @@ void FindDerivatives::dataCheck()
     }
   }
 
-  m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
+  m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedArrayPath());
   if(getErrorCode() < 0)
   {
     return;
@@ -375,7 +375,7 @@ void FindDerivatives::dataCheck()
   cDims *= 3;
   std::vector<size_t> dims(1, cDims);
 
-  m_DerivativesArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(
+  m_DerivativesArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>>(
       this, getDerivativesArrayPath(), 0, dims, "", DerivativesArrayID);    /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_DerivativesArrayPtr.lock())       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {

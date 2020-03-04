@@ -128,7 +128,7 @@ void FeatureDataCSVWriter::dataCheck()
   clearErrorCode();
   clearWarningCode();
 
-  getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getCellFeatureAttributeMatrixPath(), -301);
+  getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, getCellFeatureAttributeMatrixPath(), -301);
 
   QFileInfo fi(getFeatureDataFile());
   if(fi.suffix().compare("") == 0)

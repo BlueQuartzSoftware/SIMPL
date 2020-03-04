@@ -131,7 +131,7 @@ void LinkedDataContainerSelectionWidget::widgetChanged()
 {
   int index = -1;
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  IGeometry::Pointer igeom = dca->getPrereqGeometryFromDataContainer<IGeometry, AbstractFilter>(nullptr, m_SelectedDataContainerPath->text());
+  IGeometry::Pointer igeom = dca->getPrereqGeometryFromDataContainer<IGeometry>(nullptr, m_SelectedDataContainerPath->text());
   
   if(igeom)
   {

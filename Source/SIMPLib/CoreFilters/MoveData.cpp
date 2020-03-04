@@ -156,7 +156,7 @@ void MoveData::dataCheck()
   {
     DataContainer::Pointer amDestDataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerDestination());
     DataContainer::Pointer amSrcDataContainer = getDataContainerArray()->getPrereqDataContainer(this, amSrcPath.getDataContainerName());
-    AttributeMatrix::Pointer amSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, amSrcPath, -301);
+    AttributeMatrix::Pointer amSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, amSrcPath, -301);
 
     if(getErrorCode() < 0)
     {
@@ -176,9 +176,9 @@ void MoveData::dataCheck()
   }
   else if(getWhatToMove() == k_MoveDataArray)
   {
-    AttributeMatrix::Pointer daSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, daSrcPath, -301);
-    AttributeMatrix::Pointer daDestAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, amDestPath, -301);
-    IDataArray::Pointer daSrcDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, daSrcPath);
+    AttributeMatrix::Pointer daSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, daSrcPath, -301);
+    AttributeMatrix::Pointer daDestAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, amDestPath, -301);
+    IDataArray::Pointer daSrcDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath(this, daSrcPath);
 
     if(getErrorCode() < 0)
     {

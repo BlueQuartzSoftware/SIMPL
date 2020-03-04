@@ -170,7 +170,7 @@ void ReplaceValueInArray::dataCheck()
   clearErrorCode();
   clearWarningCode();
 
-  m_ArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArray());
+  m_ArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedArray());
   if(getErrorCode() < 0)
   {
     return;

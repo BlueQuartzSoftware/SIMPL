@@ -47,6 +47,7 @@
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 class DataContainer;
 using DataContainerShPtr = std::shared_ptr<DataContainer>;
@@ -308,10 +309,7 @@ public:
     */
     void renameDataArrayPaths(DataArrayPath::RenameContainer renamePaths);
 
-    template <class Filter> DataContainerShPtr getPrereqDataContainer(Filter* filter, const DataArrayPath& dap, bool createIfNotExists = false)
-    {
-      return getPrereqDataContainer(filter, dap.getDataContainerName(), createIfNotExists);
-    }
+    DataContainerShPtr getPrereqDataContainer(AbstractFilter* filter, const DataArrayPath& dap, bool createIfNotExists = false);
 
     /**
      * @brief getPrereqDataContainer
@@ -319,29 +317,7 @@ public:
      * @param createIfNotExists
      * @return
      */
-    template<typename Filter>
-    DataContainerShPtr getPrereqDataContainer(Filter* filter, const QString& name, bool createIfNotExists = false)
-    {
-      DataContainerShPtr dc = getDataContainer(name);
-      if(nullptr == dc.get() && !createIfNotExists)
-      {
-        if (filter)
-        {
-          QString ss = "The DataContainer Object with the specific name '" + name + "' was not available.";
-          filter->setErrorCondition(-999, ss);
-        }
-        return dc;
-      }
-
-      if(nullptr != dc && createIfNotExists)
-      {
-        DataContainerShPtr dataContainer = DataContainer::New(name); // Create a new Data Container
-        addOrReplaceDataContainer(dataContainer); // Put the new DataContainer into the array
-        return dataContainer; // Return the wrapped pointer
-      }
-      // The DataContainer we asked for was present and NON Null so return that.
-      return dc;
-    }
+    DataContainerShPtr getPrereqDataContainer(AbstractFilter* filter, const QString& name, bool createIfNotExists = false);
 
     /**
      * @brief createNonPrereqDataContainer
@@ -350,10 +326,7 @@ public:
      * @param id
      * @return
      */
-    template <class Filter> DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const DataArrayPath& dap, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
-    {
-      return createNonPrereqDataContainer<Filter>(filter, dap.getDataContainerName(), id);
-    }
+    DataContainerShPtr createNonPrereqDataContainer(AbstractFilter* filter, const DataArrayPath& dap, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
 
     /**
      * @brief This function will create a new DataContainer of type <T>
@@ -361,45 +334,7 @@ public:
      * @return Valid DataContainer Object UNLESS the DataContainer with the given name already exists or the
      * dataContainerName is empty in which case a Null DataContainer will be returned.
      */
-    template<typename Filter>
-    DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
-    {
-      if(dataContainerName.isEmpty())
-      {
-        if (filter)
-        {
-          QString ss = QObject::tr("The DataContainer Object must have a name to be created.");
-          filter->setErrorCondition(-887, ss);
-          return DataContainer::NullPointer();
-        }
-      }
-
-      if (dataContainerName.contains('/'))
-      {
-        if (filter)
-        {
-          QString ss = QObject::tr("The DataContainer Object has forward slashes in its name.");
-          filter->setErrorCondition(-888, ss);
-          return DataContainer::NullPointer();
-        }
-      }
-
-      
-      DataContainerShPtr dataContainer = DataContainer::New(dataContainerName);
-      bool dcExists = !push_back(dataContainer);
-      if(dcExists)
-      {
-        if(filter)
-        {
-          QString ss = QObject::tr("The DataContainer Object with the specific name '%1' already exists.").arg(dataContainerName);
-          filter->setErrorCondition(-889, ss);
-          return DataContainer::NullPointer();
-        }
-      }
-
-      RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(dataContainerName, "", ""));
-      return dataContainer;
-    }
+    DataContainerShPtr createNonPrereqDataContainer(AbstractFilter* filter, const QString& dataContainerName, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
 
 
     /**
@@ -409,11 +344,11 @@ public:
      * @param dcName
      * @return
      */
-    template<typename GeometryType, typename Filter>
-    typename GeometryType::Pointer getPrereqGeometryFromDataContainer(Filter* filter, const QString& dcName)
+    template<typename GeometryType>
+    typename GeometryType::Pointer getPrereqGeometryFromDataContainer(AbstractFilter* filter, const QString& dcName)
     {
       typename GeometryType::Pointer geom = GeometryType::NullPointer();
-      DataContainerShPtr dc = getPrereqDataContainer<Filter>(filter, dcName, false);
+      DataContainerShPtr dc = getPrereqDataContainer(filter, dcName, false);
       if(nullptr == dc) { return geom; }
 
       return dc->getPrereqGeometry<GeometryType>(filter);
@@ -426,10 +361,11 @@ public:
      * @param path
      * @return
      */
-    template <typename GeometryType, typename Filter> typename GeometryType::Pointer getPrereqGeometryFromDataContainer(Filter* filter, const DataArrayPath& path)
+    template <typename GeometryType>
+    typename GeometryType::Pointer getPrereqGeometryFromDataContainer(AbstractFilter* filter, const DataArrayPath& path)
     {
       typename GeometryType::Pointer geom = GeometryType::NullPointer();
-      DataContainerShPtr dc = getPrereqDataContainer<Filter>(filter, path.getDataContainerName(), false);
+      DataContainerShPtr dc = getPrereqDataContainer(filter, path.getDataContainerName(), false);
       if(nullptr == dc)
       {
         return geom;
@@ -446,18 +382,7 @@ public:
      * @param err The error code to display to the user
      * @return
      */
-    template<typename Filter>
-    AttributeMatrix::Pointer getPrereqAttributeMatrixFromPath(Filter* filter, const DataArrayPath& path, int err)
-    {
-      // First try to get the Parent DataContainer. If an error occurs the error message will have been set
-      // so just return a nullptr shared pointer
-      DataContainerShPtr dc = getPrereqDataContainer<Filter>(filter, path.getDataContainerName(), false);
-      if(nullptr == dc) { return AttributeMatrix::NullPointer(); }
-
-      // Now just return what ever the DataContainer gives us. if the AttributeMatrix was not available then an
-      // error message and code will have been set into the "filter" object if that object was non-null itself.
-      return dc->getPrereqAttributeMatrix(filter, path.getAttributeMatrixName(), err);
-    }
+    AttributeMatrix::Pointer getPrereqAttributeMatrixFromPath(AbstractFilter* filter, const DataArrayPath& path, int err);
 
     /**
      * @brief getPrereqArrayFromPath
@@ -466,10 +391,9 @@ public:
      * @param cDims The component dimensions of the IDataArray subclass
      * @return Valid or nullptr shared pointer based on availability of the array
      */
-    template <class ArrayType, class Filter>
-    typename ArrayType::Pointer getPrereqArrayFromPath(Filter* filter, const DataArrayPath& path, std::vector<size_t> cDims) const
+    template <class ArrayType>
+    typename ArrayType::Pointer getPrereqArrayFromPath(AbstractFilter* filter, const DataArrayPath& path, const std::vector<size_t>& cDims = {}) const
     {
-
       QString ss;
       typename ArrayType::Pointer dataArray = ArrayType::NullPointer();
 
@@ -520,7 +444,7 @@ public:
         return dataArray;
       }
 
-      dataArray = attrMat->getPrereqArray<ArrayType, Filter>(filter, daName, -80002, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+      dataArray = attrMat->getPrereqArray<ArrayType>(filter, daName, -80002, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
       return dataArray;
     }
 
@@ -530,63 +454,7 @@ public:
     * @param path
     * @return
     */
-    template<class ArrayType, class Filter>
-    typename ArrayType::Pointer getPrereqIDataArrayFromPath(Filter* filter, const DataArrayPath& path) const
-    {
-
-      QString ss;
-      typename ArrayType::Pointer dataArray = ArrayType::NullPointer();
-
-      if(path.isEmpty())
-      {
-        if(filter)
-        {
-          ss = QObject::tr("DataContainerArray::getPrereqIDataArrayFromPath Error at line %1. The DataArrayPath object was empty").arg(__LINE__);
-          filter->setErrorCondition(-90000, ss);
-        }
-        return dataArray;
-      }
-
-      if(!path.isValid())
-      {
-        if(filter)
-        {
-          ss = QObject::tr("DataContainerArray::getPrereqIDataArrayFromPath Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(path.serialize());
-          filter->setErrorCondition(-90001, ss);
-        }
-        return dataArray;
-      }
-
-      QString dcName = path.getDataContainerName();
-      QString amName = path.getAttributeMatrixName();
-      QString daName = path.getDataArrayName();
-
-
-      DataContainerShPtr dc = getDataContainer(dcName);
-      if(nullptr == dc.get())
-      {
-        if(filter)
-        {
-          ss = QObject::tr("The DataContainer '%1' was not found in the DataContainerArray").arg(dcName);
-          filter->setErrorCondition(-999, ss);
-        }
-        return dataArray;
-      }
-
-      AttributeMatrix::Pointer attrMat = dc->getAttributeMatrix(amName);
-      if(nullptr == attrMat.get())
-      {
-        if(filter)
-        {
-          ss = QObject::tr("The AttributeMatrix '%1' was not found in the DataContainer '%2'").arg(amName).arg(dcName);
-          filter->setErrorCondition(-307020, ss);
-        }
-        return dataArray;
-      }
-
-      dataArray = attrMat->getPrereqIDataArray<ArrayType, Filter>(filter, daName, -90002); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-      return dataArray;
-    }
+    IDataArray::Pointer getPrereqIDataArrayFromPath(AbstractFilter* filter, const DataArrayPath& path) const;
 
     /**
      * @brief createNonPrereqArray This method will create a new DataArray in the AttributeMatrix. The conditions for this
@@ -599,8 +467,8 @@ public:
      * @param dims The dimensions of the components of the AttributeArray
      * @return A Shared Pointer to the newly created array
      */
-    template <class ArrayType, class Filter, typename T>
-    typename ArrayType::Pointer createNonPrereqArrayFromPath(Filter* filter, const DataArrayPath& path, T initValue, const std::vector<size_t>& compDims, const QString& property = "",
+    template <class ArrayType>
+    typename ArrayType::Pointer createNonPrereqArrayFromPath(AbstractFilter* filter, const DataArrayPath& path, typename ArrayType::value_type initValue, const std::vector<size_t>& compDims, const QString& property = "",
                                                              RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       typename ArrayType::Pointer dataArray = ArrayType::NullPointer();
@@ -679,7 +547,7 @@ public:
 
       // If something goes wrong at this point the error message will be directly set in the 'filter' object so we just
       // simply return what ever is given to us.
-      dataArray = attrMat->createNonPrereqArray<ArrayType, Filter, T>(filter, path.getDataArrayName(), initValue, compDims, id);
+      dataArray = attrMat->createNonPrereqArray<ArrayType>(filter, path.getDataArrayName(), initValue, compDims, id);
       return dataArray;
     }
 
@@ -692,63 +560,7 @@ public:
      * @param paths The paths that should be checked
      * @return bool Validation check
      */
-    template<typename Filter>
-    bool validateNumberOfTuples(Filter* filter, const QVector<DataArrayPath>& paths) const
-    {
-      if (paths.size() <= 1) { return false; }
-      QVector<IDataArrayShPtrType> dataArrays;
-      bool valid = true;
-      QString ss;
-      if (!paths.at(0).isValid() && nullptr != filter)
-      {
-        ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
-        filter->setErrorCondition(-10000, ss);
-        valid = false;
-        return valid;
-      }
-      IDataArrayShPtrType array0 = getPrereqIDataArrayFromPath<IDataArray, Filter>(filter, paths.at(0));
-      if (nullptr == array0.get() && nullptr != filter)
-      {
-        ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
-        filter->setErrorCondition(-10100, ss);
-        valid = false;
-        return valid;
-      }
-
-      dataArrays.push_back(array0);
-      for (int32_t i = 1; i < paths.size(); i++)
-      {
-        if (!paths.at(i).isValid() && nullptr != filter)
-        {
-          ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
-          filter->setErrorCondition(-10000, ss);
-          valid = false;
-          return valid;
-        }
-        IDataArrayShPtrType nextArray = getPrereqIDataArrayFromPath<IDataArray, Filter>(filter, paths.at(i));
-        if (nullptr == nextArray.get() && nullptr != filter)
-        {
-          ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
-          filter->setErrorCondition(-10100, ss);
-          valid = false;
-          return valid;
-        }
-
-        dataArrays.push_back(nextArray);
-      }
-      size_t numTuples = dataArrays[0]->getNumberOfTuples();
-      for (int32_t i = 1; i < dataArrays.size(); i++)
-      {
-        if (numTuples != dataArrays[i]->getNumberOfTuples() && nullptr != filter)
-        {
-          ss = QObject::tr("The number of tuples for the DataArray %1 is %2 and for DataArray %3 is %4. The number of tuples must match.")
-               .arg(dataArrays[0]->getName()).arg(dataArrays[0]->getNumberOfTuples()).arg(dataArrays[i]->getName()).arg(dataArrays[i]->getNumberOfTuples());
-          filter->setErrorCondition(-10200, ss);
-          valid = false;
-        }
-      }
-      return valid;
-    }
+    bool validateNumberOfTuples(AbstractFilter* filter, const QVector<DataArrayPath>& paths) const;
 
     /**
      * @brief validateNumberOfTuples This method will validate that all of the DataArray
@@ -759,34 +571,7 @@ public:
      * @param paths The paths that should be checked
      * @return bool Validation check
      */
-    template <typename Filter>
-    bool validateNumberOfTuples(Filter* filter, QVector<IDataArrayShPtrType> dataArrays) const
-    {
-      if (dataArrays.size() <= 1) { return false; }
-      bool valid = true;
-      QString ss;
-      for (const auto & dataArray : dataArrays)
-      {
-        if (nullptr == dataArray && nullptr != filter)
-        {
-          ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available").arg(__LINE__);
-          filter->setErrorCondition(-10100, ss);
-          valid = false;
-        }
-      }
-      size_t numTuples = dataArrays[0]->getNumberOfTuples();
-      for (int32_t i = 1; i < dataArrays.size(); i++)
-      {
-        if (numTuples != dataArrays[i]->getNumberOfTuples() && nullptr != filter)
-        {
-          ss = QObject::tr("The number of tuples for the DataArray %1 is %2 and for DataArray %3 is %4. The number of tuples must match.")
-               .arg(dataArrays[i - 1]->getName()).arg(dataArrays[i - 1]->getNumberOfTuples()).arg(dataArrays[i]->getName()).arg(dataArrays[i]->getNumberOfTuples());
-          filter->setErrorCondition(-10200, ss);
-          valid = false;
-        }
-      }
-      return valid;
-    }
+    bool validateNumberOfTuples(AbstractFilter* filter, QVector<IDataArrayShPtrType> dataArrays) const;
 
     /**
      * @brief deepCopy

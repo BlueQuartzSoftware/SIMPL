@@ -263,13 +263,13 @@ void ConvertData::dataCheck()
 
   if(getInPreflight())
   {
-    AttributeMatrix::Pointer cellAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedCellArrayPath, -301);
+    AttributeMatrix::Pointer cellAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedCellArrayPath, -301);
     if(getErrorCode() < 0)
     {
       return;
     }
 
-    IDataArray::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedCellArrayPath());
+    IDataArray::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedCellArrayPath());
     if(getErrorCode() < 0)
     {
       return;

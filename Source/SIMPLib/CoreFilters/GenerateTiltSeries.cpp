@@ -118,7 +118,7 @@ public:
 
     //========= Input Data Structure Elements
     DataContainerArray::Pointer dca = m_Filter->getDataContainerArray();
-    IDataArray::Pointer inputData = dca->getPrereqIDataArrayFromPath<IDataArray>(m_Filter, m_Filter->getInputDataArrayPath());
+    IDataArray::Pointer inputData = dca->getPrereqIDataArrayFromPath(m_Filter, m_Filter->getInputDataArrayPath());
     DataArrayPath inputDataArrayPath = m_Filter->getInputDataArrayPath();
     DataContainer::Pointer inputDC = dca->getDataContainer(inputDataArrayPath.getDataContainerName());
     ImageGeom::Pointer inputImageGeom = inputDC->getGeometryAs<ImageGeom>();
@@ -374,7 +374,7 @@ void GenerateTiltSeries::dataCheck()
 
   // Validate correct range of Rotation Axis (0|1|2)
   DataContainerArray::Pointer dca = getDataContainerArray();
-  IDataArray::Pointer inputData = dca->getPrereqIDataArrayFromPath<IDataArray>(this, getInputDataArrayPath());
+  IDataArray::Pointer inputData = dca->getPrereqIDataArrayFromPath(this, getInputDataArrayPath());
   if(getErrorCode() < 0)
   {
     return;
