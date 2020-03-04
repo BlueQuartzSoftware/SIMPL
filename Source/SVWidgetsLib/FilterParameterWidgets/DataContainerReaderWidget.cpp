@@ -318,11 +318,11 @@ FilterParameter* DataContainerReaderWidget::getFilterParameter() const
 void DataContainerReaderWidget::setupGui()
 {
 
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
+  connect(getFilter(), &AbstractFilter::preflightAboutToExecute, this, &DataContainerReaderWidget::beforePreflight);
 
-  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
+  connect(getFilter(), &AbstractFilter::preflightExecuted, this, &DataContainerReaderWidget::afterPreflight);
 
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &DataContainerReaderWidget::filterNeedsInputParameters);
 
   // Put in a QStandardItemModel
   QAbstractItemModel* oldModel = dcaProxyView->model();

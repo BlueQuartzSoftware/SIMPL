@@ -68,13 +68,13 @@ FloatVec2Widget::~FloatVec2Widget() = default;
 void FloatVec2Widget::setupGui()
 {
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
+  connect(getFilter(), &AbstractFilter::preflightAboutToExecute, this, &FloatVec2Widget::beforePreflight);
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
+  connect(getFilter(), &AbstractFilter::preflightExecuted, this, &FloatVec2Widget::afterPreflight);
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &FloatVec2Widget::filterNeedsInputParameters);
 
   connect(xData, SIGNAL(textChanged(const QString&)), this, SLOT(xDataChanged(const QString&)));
   connect(yData, SIGNAL(textChanged(const QString&)), this, SLOT(yDataChanged(const QString&)));
