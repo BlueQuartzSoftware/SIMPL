@@ -1402,7 +1402,7 @@ QSize DataArrayPathSelectionWidget::updatedSizeHint(QSize sizeHint) const
   // Check Width
   QFontMetrics fm(font());
   int textPadding = xMargin;
-  int textWidth = fm.width(text()) + textPadding;
+  int textWidth = fm.QFONTMETRICS_WIDTH(text()) + textPadding;
   int minWidth = textWidth + xMargin + (2 * sizeHint.height());
   if(sizeHint.width() < minWidth)
   {

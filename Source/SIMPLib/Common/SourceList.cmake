@@ -23,6 +23,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/CreatedArrayHelpIndexEntry.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IObserver.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PhaseType.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/QtBackwardCompatibilityMacro.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibDLLExport.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibSetGetMacros.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ScopedFileMonitor.hpp

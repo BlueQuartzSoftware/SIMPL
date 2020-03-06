@@ -432,7 +432,7 @@ void MultiDataArraySelectionWidget::selectionChanged()
     for (int i=0; i<orderSize; i++)
     {
       int row = selectedArraysListWidget->selectionModel()->selectedRows()[i].row();
-      if(selectedArraysListWidget->item(row)->backgroundColor() != QColor(235, 110, 110))
+      if(selectedArraysListWidget->item(row)->background() != QColor(235, 110, 110))
       {
         allErrorRows = false;
       }

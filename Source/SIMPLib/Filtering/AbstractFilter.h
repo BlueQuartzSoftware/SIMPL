@@ -36,7 +36,6 @@
 #pragma once
 
 #include <memory>
-
 #include <map>
 
 #include <QtCore/QString>

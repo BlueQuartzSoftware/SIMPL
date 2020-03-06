@@ -331,7 +331,7 @@ void MultiDataContainerSelectionWidget::selectionChanged()
     for (int i=0; i<orderSize; i++)
     {
       int row = selectedDataContainersListWidget->selectionModel()->selectedRows()[i].row();
-      if(selectedDataContainersListWidget->item(row)->backgroundColor() != QColor(235, 110, 110))
+      if(selectedDataContainersListWidget->item(row)->background() != QColor(235, 110, 110))
       {
         allErrorRows = false;
       }
