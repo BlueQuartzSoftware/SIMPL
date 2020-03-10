@@ -50,7 +50,6 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(FileWriter SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(FileWriter)
-    PYB11_FILTER_NEW_MACRO(FileWriter)
     PYB11_FILTER_PARAMETER(QString, OutputFile)
     PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
 #endif
@@ -62,8 +61,6 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
     using WeakPointer = std::weak_ptr<Self>;
     using ConstWeakPointer = std::weak_ptr<const Self>;
     static Pointer NullPointer();
-
-    static std::shared_ptr<FileWriter> New();
 
     /**
      * @brief Returns the name of the class for FileWriter

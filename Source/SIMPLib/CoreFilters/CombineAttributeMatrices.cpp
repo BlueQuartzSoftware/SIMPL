@@ -273,18 +273,6 @@ void CombineAttributeMatrices::dataCheck()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CombineAttributeMatrices::preflight()
-{
-  setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
-  dataCheck();
-  emit preflightExecuted();
-  setInPreflight(false);
-}
 
 template <typename T> void copyData(IDataArray::Pointer fromData, IDataArray::Pointer toData, size_t location)
 {

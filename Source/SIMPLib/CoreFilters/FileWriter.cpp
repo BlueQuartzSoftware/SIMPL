@@ -116,17 +116,6 @@ FileWriter::Pointer FileWriter::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-std::shared_ptr<FileWriter> FileWriter::New()
-{
-  struct make_shared_enabler : public FileWriter
-  {
-  };
-  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
-  val->setupFilterParameters();
-  return val;
-}
-
-// -----------------------------------------------------------------------------
 QString FileWriter::getNameOfClass() const
 {
   return QString("FileWriter");

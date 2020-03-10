@@ -275,10 +275,6 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
      */
     void execute() override;
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    void preflight() override;
 
   protected:
     ImportAsciDataArray();
@@ -286,7 +282,7 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
-    void dataCheck();
+    void dataCheck() override;
 
     /**
      * @brief Initializes all the private instance variables.

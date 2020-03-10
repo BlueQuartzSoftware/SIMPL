@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2009-2019 BlueQuartz Software, LLC
+ * Copyright (c) 2020 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -26,8 +26,8 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * The code contained herein was partially funded by the followig contracts:
- *    United States Air Force Prime Contract FA8650-10-D-5210
+ * The code contained herein was partially funded by the following contracts:
+ *    United States Air Force Prime Contract FA8650-15-D-5231
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -37,33 +37,23 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
-
-class IDataArray;
-using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 /**
- * @brief The ReadASCIIData class. See [Filter documentation](@ref ReadASCIIData) for details.
+ * @brief The BadFilter class. See [Filter documentation](@ref BadFilter) for details.
  */
-class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
+class SIMPLib_EXPORT BadFilter : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(ReadASCIIData SUPERCLASS AbstractFilter)
-  PYB11_SHARED_POINTERS(ReadASCIIData)
-  PYB11_FILTER_NEW_MACRO(ReadASCIIData)
-  PYB11_FILTER_PARAMETER(ASCIIWizardData, WizardData)
-  PYB11_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)
-#endif
-
 public:
-  using Self = ReadASCIIData;
+  using Self = BadFilter;
   using Pointer = std::shared_ptr<Self>;
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
   using ConstWeakPointer = std::weak_ptr<const Self>;
-  
+
+  ~BadFilter() override;
+
   /**
    * @brief Returns a NullPointer wrapped by a shared_ptr<>
    * @return
@@ -77,42 +67,17 @@ public:
   static Pointer New();
 
   /**
-   * @brief Returns the name of the class for ReadASCIIData
+   * @brief Returns the name of the class for PipelineAnnotation
    */
   QString getNameOfClass() const override;
   /**
-   * @brief Returns the name of the class for ReadASCIIData
+   * @brief Returns the name of the class for PipelineAnnotation
    */
   static QString ClassName();
 
-  ~ReadASCIIData() override;
-
   /**
-   * @brief Setter property for WizardData
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */
-  void setWizardData(const ASCIIWizardData& value);
-  /**
-   * @brief Getter property for WizardData
-   * @return Value of WizardData
-   */
-  ASCIIWizardData getWizardData() const;
-
-  Q_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)
-
-  enum ErrorCodes
-  {
-    EMPTY_FILE = -100,
-    EMPTY_ATTR_MATRIX = -101,
-    INCONSISTENT_TUPLES = -102,
-    INCONSISTENT_COLS = -103,
-    CONVERSION_FAILURE = -104,
-    DUPLICATE_NAMES = -105,
-    INVALID_ARRAY_TYPE = -106
-  };
-
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
   QString getCompiledLibraryName() const override;
 
   /**
@@ -161,57 +126,21 @@ public:
   void setupFilterParameters() override;
 
   /**
-   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+   * @brief execute Reimplemented from @see AbstractFilter class
    */
-  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  void execute() override;
+
+protected:
+  BadFilter();
 
   /**
-  * @brief readFilterParametersFromJson Reads the filter parameters from a file
-  * @param reader Reader that is used to read the parameters from a file
-  */
-  void readFilterParameters(QJsonObject& obj) override;
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck() override;
 
-  /**
-  * @brief writeFilterParametersToJson Writes the filter parameters to a file
-  * @param root The root json object
-  */
-  void writeFilterParameters(QJsonObject& obj) const override;
-
-   /**
-    * @brief execute Reimplemented from @see AbstractFilter class
-    */
-    void execute() override;
-
-
-    /**
-    * @brief Updates any DataArrayPath properties from the old path to a new path
-    * For DataArrayPaths longer than the given path, only the specified values are modified
-    * @param renamePath
-    */
-    void renameDataArrayPath(const DataArrayPath::RenameType& renamePath) override;
-
-  protected:
-    ReadASCIIData();
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck() override;
-
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
-
-
-  private:
-    ASCIIWizardData m_WizardData = {};
-
-    QMap<int, IDataArrayShPtrType> m_ASCIIArrayMap;
-
-  public:
-    ReadASCIIData(const ReadASCIIData&) = delete;  // Copy Constructor Not Implemented
-    ReadASCIIData(ReadASCIIData&&) = delete;       // Move Constructor Not Implemented
-    ReadASCIIData& operator=(const ReadASCIIData&) = delete; // Copy Assignment Not Implemented
-    ReadASCIIData& operator=(ReadASCIIData&&) = delete;      // Move Assignment Not Implemented
+public:
+  BadFilter(const BadFilter&) = delete;            // Copy Constructor Not Implemented
+  BadFilter(BadFilter&&) = delete;                 // Move Constructor Not Implemented
+  BadFilter& operator=(const BadFilter&) = delete; // Copy Assignment Not Implemented
+  BadFilter& operator=(BadFilter&&) = delete;      // Move Assignment Not Implemented
 };
-

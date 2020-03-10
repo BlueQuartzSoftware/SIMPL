@@ -233,10 +233,6 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
      */
     void execute() override;
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    void preflight() override;
 
     /**
      * @brief readExistingPipelineFromFile Reads the existing pipeline that is stored in the file and store it
@@ -274,7 +270,7 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
-    void dataCheck();
+    void dataCheck() override;
 
     /**
      * @brief Initializes all the private instance variables.

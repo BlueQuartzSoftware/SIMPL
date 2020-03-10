@@ -158,10 +158,6 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
      */
     void execute() override;
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    void preflight() override;
 
     /**
     * @brief Returns a list of DataArrayPaths that have been renamed along with their corresponding renamed value
@@ -174,7 +170,7 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
-    void dataCheck();
+    void dataCheck() override;
 
     /**
      * @brief Initializes all the private instance variables.

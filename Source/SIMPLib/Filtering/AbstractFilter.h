@@ -83,7 +83,6 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(AbstractFilter)
   PYB11_SHARED_POINTERS(AbstractFilter)
-  PYB11_STATIC_NEW_MACRO(AbstractFilter)
   PYB11_PROPERTY(QString NameOfClass READ getNameOfClass)  
   PYB11_PROPERTY(QString GroupName READ getGroupName)
   PYB11_PROPERTY(QString SubGroupName READ getSubGroupName)
@@ -128,8 +127,6 @@ public:
    * @brief Returns the name of the class for AbstractFilter
    */
   static QString ClassName();
-
-  static Pointer New();
 
   ~AbstractFilter() override;
 
@@ -235,13 +232,13 @@ public:
   /**
    * @brief execute Implements the main functionality of the filter
    */
-  virtual void execute();
+  virtual void execute() = 0;
 
   /**
    * @brief preflight Communicates with the GUI to request user settings for the filter and
    * run any necessary sanity checks before execution
    */
-  virtual void preflight();
+  void preflight();
 
   /**
    * @brief getPluginInstance Returns an instance of the filter's plugin
@@ -554,6 +551,11 @@ protected:
   AbstractFilter();
 
   /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  virtual void dataCheck() = 0;
+
+  /**
    * @brief Checks if the path matches the one saved with the specified ID.  Index 0 is used for
    * non-renamable DataArrayPaths, and any DataID 0 value will bypass the check and return false.
    * If the path does not match and the ID is already used, return true and update the path.  If
@@ -587,7 +589,6 @@ private:
   AbstractFilter::WeakPointer m_NextFilter = {};
 
   bool m_Cancel;
-  QUuid m_Uuid;
   int m_ErrorCode = 0;
   int m_WarningCode = 0;
 

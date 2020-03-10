@@ -94,7 +94,7 @@ class SIMPLib_EXPORT FileReader : public AbstractFilter
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
-    virtual void dataCheck();
+    virtual void dataCheck() override;
 
     /**
      * @brief Initializes all the private instance variables.

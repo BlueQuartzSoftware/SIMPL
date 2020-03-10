@@ -40,7 +40,7 @@
 #include "SIMPLib/Messages/FilterStatusMessage.h"
 #include "SIMPLib/Messages/FilterWarningMessage.h"
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Filtering/BadFilter.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
@@ -63,7 +63,7 @@ public:
   // -----------------------------------------------------------------------------
   void TestErrorMessage()
   {
-    AbstractFilter::Pointer f = AbstractFilter::New();
+    AbstractFilter::Pointer f = BadFilter::New();
     f->setErrorCondition(-10, "Description");
 
     FilterProgressMessage::Pointer progressMessage = FilterProgressMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Testing Warning Message...", -23);

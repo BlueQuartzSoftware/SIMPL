@@ -167,18 +167,6 @@ void CreateStringArray::dataCheck()
   m_OutputArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray>(this, getNewArray(), m_InitializationValue, cDims, "", StringArrayID);
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CreateStringArray::preflight()
-{
-  setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
-  dataCheck();
-  emit preflightExecuted();
-  setInPreflight(false);
-}
 
 // -----------------------------------------------------------------------------
 //

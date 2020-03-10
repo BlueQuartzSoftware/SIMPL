@@ -150,10 +150,6 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
      */
     void execute() override;
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    void preflight() override;
 
     /**
      * @brief removeSelectionsFromDataContainerArray Attempts to remove those DataContainers, AttributeMatrices, and DataArrays selected by the user.
@@ -174,7 +170,7 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
-    void dataCheck();
+    void dataCheck() override;
 
     /**
      * @brief Initializes all the private instance variables.

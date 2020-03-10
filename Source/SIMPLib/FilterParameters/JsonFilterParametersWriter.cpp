@@ -43,6 +43,7 @@
 
 #include "SIMPLib/Common/Constants.h"
 
+#include "SIMPLib/Filtering/BadFilter.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/Messages/PipelineErrorMessage.h"
 
@@ -153,7 +154,7 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
     }
     else
     {
-      AbstractFilter::Pointer badFilter = AbstractFilter::New();
+      AbstractFilter::Pointer badFilter = BadFilter::New();
       openFilterGroup(badFilter.get(), i + offset);
       m_CurrentFilterIndex["Unknown Filter"] = "ERROR: Filter instance was nullptr within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers";
       closeFilterGroup();
