@@ -94,8 +94,22 @@ void ArraySelectionExample::dataCheck()
   // std::cout << " ArraySelectionExample   Preflighting " << std::endl;
   clearErrorCode();
   clearWarningCode();
+}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ArraySelectionExample::preflight()
+{
+  setInPreflight(true);
+  // Read up the structure from the file
   m_DataContainerArrayProxy = DataContainerArrayProxy(getDataContainerArray().get());
+  // Annouce we are about to preflight
+  emit preflightAboutToExecute();
+  emit updateFilterParameters(this);
+  dataCheck();
+  emit preflightExecuted();
+  setInPreflight(false);
 }
 
 // -----------------------------------------------------------------------------

@@ -238,7 +238,7 @@ public:
    * @brief preflight Communicates with the GUI to request user settings for the filter and
    * run any necessary sanity checks before execution
    */
-  void preflight();
+  virtual void preflight();
 
   /**
    * @brief getPluginInstance Returns an instance of the filter's plugin
