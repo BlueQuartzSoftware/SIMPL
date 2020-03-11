@@ -57,8 +57,6 @@ class SIMPLib_EXPORT FileReader : public AbstractFilter
     using ConstWeakPointer = std::weak_ptr<const Self>;
     static Pointer NullPointer();
 
-    static std::shared_ptr<FileReader> New();
-
     /**
      * @brief Returns the name of the class for FileReader
      */
@@ -83,13 +81,13 @@ class SIMPLib_EXPORT FileReader : public AbstractFilter
      * @brief readHeader Reads the header of the input file
      * @return Integer error value
      */
-    virtual int32_t readHeader();
+    virtual int32_t readHeader() = 0;
 
     /**
      * @brief readFile Reads the contents of the input file
      * @return Integer error value
      */
-    virtual int32_t readFile();
+    virtual int32_t readFile() = 0;
 
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays

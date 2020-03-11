@@ -94,13 +94,13 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
      * @brief writeHeader Writes the header of the output file
      * @return Integer error value
      */
-    virtual int32_t writeHeader();
+    virtual int32_t writeHeader() = 0;
 
     /**
      * @brief writeFile Writes the contents of the output file
      * @return Integer error value
      */
-    virtual int32_t writeFile();
+    virtual int32_t writeFile() = 0;
 
   public:
     FileWriter(const FileWriter&) = delete;     // Copy Constructor Not Implemented

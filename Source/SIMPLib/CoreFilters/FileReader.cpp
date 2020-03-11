@@ -67,24 +67,6 @@ void FileReader::dataCheck()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int32_t FileReader::readHeader()
-{
-  setErrorCondition(-1, "FileReader should be subclassed and functionality implemented there");
-  return -1;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int32_t FileReader::readFile()
-{
-  setErrorCondition(-1, "FileReader should be subclassed and functionality implemented there");
-  return -1;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void FileReader::execute()
 {
   int32_t err = 0;
@@ -104,17 +86,6 @@ void FileReader::execute()
 FileReader::Pointer FileReader::NullPointer()
 {
   return Pointer(static_cast<Self*>(nullptr));
-}
-
-// -----------------------------------------------------------------------------
-std::shared_ptr<FileReader> FileReader::New()
-{
-  struct make_shared_enabler : public FileReader
-  {
-  };
-  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
-  val->setupFilterParameters();
-  return val;
 }
 
 // -----------------------------------------------------------------------------

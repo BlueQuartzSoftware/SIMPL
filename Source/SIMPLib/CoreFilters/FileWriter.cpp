@@ -58,24 +58,6 @@ FileWriter::~FileWriter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int32_t FileWriter::writeHeader()
-{
-  setErrorCondition(-1, "FileWriter should be subclassed and functionality implemented there");
-  return -1;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int32_t FileWriter::writeFile()
-{
-  setErrorCondition(-1, "FileWriter should be subclassed and functionality implemented there");
-  return -1;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void FileWriter::execute()
 {
   clearErrorCode();
