@@ -819,25 +819,29 @@ public:
 
   inline reference operator[](size_type index)
   {
-    // assert(index < m_Size);
     return m_Array[index];
   }
 
   inline const T& operator[](size_type index) const
   {
-    // assert(index < m_Size);
     return m_Array[index];
   }
 
   inline reference at(size_type index)
   {
-    assert(index < m_Size);
+    if(index >= m_Size)
+    {
+      throw std::out_of_range("DataArray subscript out of range");
+    }
     return m_Array[index];
   }
 
   inline const T& at(size_type index) const
   {
-    assert(index < m_Size);
+    if(index >= m_Size)
+    {
+      throw std::out_of_range("DataArray subscript out of range");
+    }
     return m_Array[index];
   }
 
