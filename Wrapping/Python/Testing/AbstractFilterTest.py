@@ -12,22 +12,22 @@ def BasicTest():
     """
     This will test the basic AbstractFilter methods
     """
-    filter = simpl.AbstractFilter.New()
+    filter = simpl.EmptyFilter.New()
 
     groupName = filter.GroupName
-    assert groupName == "YOUR CLASS SHOULD IMPLEMENT THIS"
+    assert groupName == "Core"
 
     subGroupName = filter.SubGroupName
-    assert subGroupName == "YOUR CLASS SHOULD IMPLEMENT THIS"
+    assert subGroupName == "Misc"
 
     humanLabel = filter.HumanLabel
-    assert humanLabel == "YOUR CLASS SHOULD IMPLEMENT THIS"
+    assert humanLabel == "Unknown Filter: "
 
     filterVersion = filter.FilterVersion
-    assert filterVersion == "0.0.0"
+    assert filterVersion != "0.0.0"
 
     compiledLibraryName = filter.CompiledLibraryName
-    assert compiledLibraryName == ""
+    assert compiledLibraryName == "Core"
 
     filter.Cancel = False
     b = filter.Cancel
