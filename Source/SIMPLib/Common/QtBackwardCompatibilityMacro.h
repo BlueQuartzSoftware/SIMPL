@@ -10,7 +10,7 @@
 #define QFONTMETRICS_WIDTH horizontalAdvance
 #endif
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
 
 #ifndef QVECTOR_FROM_STD_VECTOR
 #define QVECTOR_FROM_STD_VECTOR(def, qvector, other) def qvector = def::fromStdVector(other);
