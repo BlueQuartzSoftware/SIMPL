@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2019-2019 BlueQuartz Software, LLC
+ * Copyright (c) 2020 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -26,117 +26,140 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * The code contained herein was partially funded by the followig contracts:
- *    United States Air Force Prime Contract FA8650-15-D-5280
+ * The code contained herein was partially funded by the following contracts:
+ *    United States Air Force Prime Contract FA8650-15-D-5231
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "LinkedPathCreationWidget.h"
-
-
-
-#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-
-#include "FilterParameterWidgetsDialogs.h"
+#include "BadFilter.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedPathCreationWidget::LinkedPathCreationWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
-: FilterParameterWidget(parameter, filter, parent)
-{
-  m_FilterParameter = dynamic_cast<LinkedPathCreationFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "LinkedPathCreationWidget can ONLY be used with a StringFilterParameter object");
+BadFilter::BadFilter() = default;
 
-  setupGui();
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+BadFilter::~BadFilter() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BadFilter::setupFilterParameters()
+{
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedPathCreationWidget::~LinkedPathCreationWidget() = default;
+void BadFilter::dataCheck()
+{
+  setErrorCondition(-3016, "BadFilter is not meant to be run.");
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LinkedPathCreationWidget::setupGui()
+void BadFilter::execute()
 {
-  setupUi(this);
+  setErrorCondition(-3016, "BadFilter is not meant to be run.");
+}
 
-  blockSignals(true);
-  if(getFilterParameter() != nullptr)
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AbstractFilter::Pointer BadFilter::newFilterInstance(bool copyFilterParameters) const
+{
+  BadFilter::Pointer filter = BadFilter::New();
+  if(copyFilterParameters)
   {
-    label->setText(getFilterParameter()->getHumanLabel());
-
-    QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-    stringEdit->setText(str, true);
+    copyFilterParameterInstanceVariables(filter.get());
   }
-  blockSignals(false);
-
-  stringEdit->hideButtons();
-
-  // Catch when the filter is about to execute the preflight
-  connect(getFilter(), &AbstractFilter::preflightAboutToExecute, this, &LinkedPathCreationWidget::beforePreflight);
-
-  // Catch when the filter is finished running the preflight
-  connect(getFilter(), &AbstractFilter::preflightExecuted, this, &LinkedPathCreationWidget::afterPreflight);
-
-  // Catch when the filter wants its values updated
-  connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &LinkedPathCreationWidget::filterNeedsInputParameters);
-
-  connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
+  return filter;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LinkedPathCreationWidget::beforePreflight()
+QString BadFilter::getCompiledLibraryName() const
 {
+  return "";
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LinkedPathCreationWidget::afterPreflight()
+QString BadFilter::getBrandingString() const
 {
-  dataPathDisplay->setDataArrayPath(m_FilterParameter->getLinkedDataArrayPath());
-  style()->unpolish(this);
-  style()->polish(this);
+  return "";
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPathHelper::DataType LinkedPathCreationWidget::getDataType() const
+QString BadFilter::getFilterVersion() const
 {
-  DataArrayPathHelper::DataType type = dataPathDisplay->getDataType();
-  int typei = static_cast<int>(type);
-  typei = (typei + 1) % 3;
-  type = static_cast<DataArrayPathHelper::DataType>(typei);
-  return type;
+  return "0.0.0";
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int LinkedPathCreationWidget::getDataTypei() const
+QString BadFilter::getGroupName() const
 {
-  return static_cast<int>(getDataType());
+  return "";
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LinkedPathCreationWidget::filterNeedsInputParameters(AbstractFilter* filter)
+QUuid BadFilter::getUuid() const
 {
-  Q_UNUSED(filter)
-  LinkedPathCreationFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
+  return QUuid();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString BadFilter::getSubGroupName() const
+{
+  return "";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString BadFilter::getHumanLabel() const
+{
+  return "";
+}
+
+// -----------------------------------------------------------------------------
+BadFilter::Pointer BadFilter::NullPointer()
+{
+  return Pointer(static_cast<Self*>(nullptr));
+}
+
+// -----------------------------------------------------------------------------
+std::shared_ptr<BadFilter> BadFilter::New()
+{
+  struct make_shared_enabler : public BadFilter
   {
-    setter(stringEdit->getText());
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  };
+  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
+  val->setupFilterParameters();
+  return val;
+}
+
+// -----------------------------------------------------------------------------
+QString BadFilter::getNameOfClass() const
+{
+  return QString("BadFilter");
+}
+
+// -----------------------------------------------------------------------------
+QString BadFilter::ClassName()
+{
+  return QString("BadFilter");
 }

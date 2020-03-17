@@ -33,9 +33,6 @@
 /* define to 1 if we are enabling NTFS file checking */
 #cmakedefine SIMPL_NTFS_FILE_CHECK @SIMPL_NTFS_FILE_CHECK@
 
-/* define if Python wrapping is enabled through Pybind11 */
-#cmakedefine SIMPL_ENABLE_PYTHON
-
 /* define to 1 if we are checking relative paths */
 #cmakedefine SIMPL_RELATIVE_PATH_CHECK @SIMPL_RELATIVE_PATH_CHECK@
 
@@ -77,9 +74,7 @@
 /* Include the DLL export preprocessor defines */
 #include "SIMPLib/Common/SIMPLibDLLExport.h"
 
-#ifdef SIMPL_ENABLE_PYTHON
 #include "SIMPLib/Common/SIMPLPythonMacros.h"
-#endif
 
 /* We are going to disable some warnings just to get a grip on all the warnings that get produced
 * during an MSVC build */

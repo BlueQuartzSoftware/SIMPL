@@ -113,11 +113,11 @@ FilterParameter* GenerateColorTableWidget::getFilterParameter() const
 void GenerateColorTableWidget::setupGui()
 {
 
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
+  connect(getFilter(), &AbstractFilter::preflightAboutToExecute, this, &GenerateColorTableWidget::beforePreflight);
 
-  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
+  connect(getFilter(), &AbstractFilter::preflightExecuted, this, &GenerateColorTableWidget::afterPreflight);
 
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &GenerateColorTableWidget::filterNeedsInputParameters);
 
   if(getFilterParameter() != nullptr)
   {

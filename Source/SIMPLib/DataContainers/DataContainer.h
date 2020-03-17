@@ -351,7 +351,7 @@ public:
    * @param filter
    * @return
    */
-  template <typename GeometryType, typename Filter> typename GeometryType::Pointer getPrereqGeometry(Filter* filter) const
+  template <typename GeometryType> typename GeometryType::Pointer getPrereqGeometry(AbstractFilter* filter) const
   {
     typename GeometryType::Pointer geom = GeometryType::NullPointer();
     IGeometry::Pointer igeom = getGeometry();

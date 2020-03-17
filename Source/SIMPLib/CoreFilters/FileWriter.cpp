@@ -58,24 +58,6 @@ FileWriter::~FileWriter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int32_t FileWriter::writeHeader()
-{
-  setErrorCondition(-1, "FileWriter should be subclassed and functionality implemented there");
-  return -1;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int32_t FileWriter::writeFile()
-{
-  setErrorCondition(-1, "FileWriter should be subclassed and functionality implemented there");
-  return -1;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void FileWriter::execute()
 {
   clearErrorCode();
@@ -113,17 +95,6 @@ void FileWriter::execute()
 FileWriter::Pointer FileWriter::NullPointer()
 {
   return Pointer(static_cast<Self*>(nullptr));
-}
-
-// -----------------------------------------------------------------------------
-std::shared_ptr<FileWriter> FileWriter::New()
-{
-  struct make_shared_enabler : public FileWriter
-  {
-  };
-  std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();
-  val->setupFilterParameters();
-  return val;
 }
 
 // -----------------------------------------------------------------------------

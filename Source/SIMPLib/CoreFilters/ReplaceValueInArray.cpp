@@ -170,7 +170,7 @@ void ReplaceValueInArray::dataCheck()
   clearErrorCode();
   clearWarningCode();
 
-  m_ArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArray());
+  m_ArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedArray());
   if(getErrorCode() < 0)
   {
     return;
@@ -244,18 +244,6 @@ void ReplaceValueInArray::dataCheck()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ReplaceValueInArray::preflight()
-{
-  setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
-  dataCheck();
-  emit preflightExecuted();
-  setInPreflight(false);
-}
 
 // -----------------------------------------------------------------------------
 //

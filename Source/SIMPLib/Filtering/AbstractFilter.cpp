@@ -145,18 +145,14 @@ void AbstractFilter::setupFilterParameters()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::execute()
-{
-  setErrorCondition(-3015, "QAbstractFilter does not implement an execute method. Please use a subclass instead.");
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void AbstractFilter::preflight()
 {
   setInPreflight(true);
-  setErrorCondition(-3016, "AbstractFilter does not implement a preflight method. Please use a subclass instead.");
+  emit preflightAboutToExecute();
+  emit updateFilterParameters(this);
+  dataCheck();
+  emit preflightExecuted();
+  setInPreflight(false);
 }
 
 // -----------------------------------------------------------------------------
@@ -495,27 +491,7 @@ QString AbstractFilter::getFilterVersion() const
 // -----------------------------------------------------------------------------
 QUuid AbstractFilter::getUuid() const
 {
-  if(m_Uuid.isNull())
-  {
-    // We cannot actually set the internal m_Uuid because the method is marked const.
-    //    uint l = 100;
-    //    ushort w1 = 200;
-    //    ushort w2 = 300;
-
-    //    QString libName = getCompiledLibraryName();
-    //    uchar b[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-    //    int32_t i = 0;
-    //    while(i < 8 && i < libName.size())
-    //    {
-    //      b[i] = static_cast<uint8_t>(libName.at(i).toLatin1());
-    //      i++;
-    //    }
-    //    QUuid uuid = QUuid(l, w1, w2, b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7]);
-    //    QString nameSpace = QString("%1 %2").arg(getNameOfClass()).arg(getHumanLabel());
-    //    QUuid p1 = QUuid::createUuidV5(uuid, nameSpace);
-    //    m_Uuid = p1;
-  }
-  return m_Uuid;
+  return QUuid();
 }
 
 // -----------------------------------------------------------------------------
@@ -681,13 +657,6 @@ QString AbstractFilter::getNameOfClass() const
 QString AbstractFilter::ClassName()
 {
   return QString("AbstractFilter");
-}
-
-// -----------------------------------------------------------------------------
-AbstractFilter::Pointer AbstractFilter::New()
-{
-  Pointer sharedPtr(new(AbstractFilter));
-  return sharedPtr;
 }
 
 // -----------------------------------------------------------------------------

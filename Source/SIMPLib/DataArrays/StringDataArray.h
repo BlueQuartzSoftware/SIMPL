@@ -86,6 +86,8 @@ public:
 
   static Pointer New();
 
+  using value_type = QString;
+
   /**
    * @brief Returns the name of the class for StringDataArray
    */

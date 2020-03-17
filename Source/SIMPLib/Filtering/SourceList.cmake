@@ -6,6 +6,7 @@ set(SUBDIR_NAME Filtering)
 set(SIMPLib_${SUBDIR_NAME}_Moc_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractDecisionFilter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractFilter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/BadFilter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonInputs.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonInputsAdvanced.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterPipeline.h
@@ -35,6 +36,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractComparison.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractDecisionFilter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractFilter.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/BadFilter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonInputs.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonInputsAdvanced.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonSet.cpp

@@ -189,7 +189,7 @@ class FilterParameterWidgetUtils
               for(auto& daProxy : dataArrays)
               {
                 QString daName = daProxy.getName();
-                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(nullptr, DataArrayPath(dc.getName(), amProxy.getName(), daName));
+                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath(nullptr, DataArrayPath(dc.getName(), amProxy.getName(), daName));
                 aaCombo->addItem(daName);
 
                 if(nullptr != da.get() && ((!daTypes.isEmpty() && !daTypes.contains(da->getTypeAsString())) || (!cDims.empty() && !VectorContains<size_t>(cDims, da->getComponentDimensions()))))
@@ -293,7 +293,7 @@ class FilterParameterWidgetUtils
                   }
                 }
 
-                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(nullptr, DataArrayPath(dc.getName(), amProxy.getName(), daName));
+                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath(nullptr, DataArrayPath(dc.getName(), amProxy.getName(), daName));
                 attributeArraysWidget->addItem(daItem);
 
                 if(nullptr != da.get() && ((!daTypes.isEmpty() && !daTypes.contains(da->getTypeAsString())) || (!cDims.isEmpty() && !cDims.contains(da->getComponentDimensions()))))

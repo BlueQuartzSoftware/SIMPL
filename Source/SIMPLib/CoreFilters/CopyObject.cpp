@@ -187,7 +187,7 @@ void CopyObject::dataCheck()
       setErrorCondition(-11001, ss);
     }
 
-    AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getAttributeMatrixToCopy(), -301);
+    AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, getAttributeMatrixToCopy(), -301);
 
     if(getErrorCode() < 0)
     {
@@ -211,7 +211,7 @@ void CopyObject::dataCheck()
       setErrorCondition(-11001, ss);
     }
 
-    IDataArray::Pointer array = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getAttributeArrayToCopy());
+    IDataArray::Pointer array = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getAttributeArrayToCopy());
 
     if(getErrorCode() < 0)
     {
@@ -232,19 +232,6 @@ void CopyObject::dataCheck()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CopyObject::preflight()
-{
-  // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true);              // Set the fact that we are preflighting.
-  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
-  emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted();          // We are done preflighting this filter
-  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
-}
 
 // -----------------------------------------------------------------------------
 //

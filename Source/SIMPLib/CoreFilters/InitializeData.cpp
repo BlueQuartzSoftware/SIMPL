@@ -179,9 +179,9 @@ void InitializeData::dataCheck()
   }
 
   DataArrayPath attributeMatrixPath(m_CellAttributeMatrixPaths[0].getDataContainerName(), m_CellAttributeMatrixPaths[0].getAttributeMatrixName(), "");
-  getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, attributeMatrixPath, -301);
+  getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, attributeMatrixPath, -301);
 
-  ImageGeom::Pointer image = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, attributeMatrixPath.getDataContainerName());
+  ImageGeom::Pointer image = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom>(this, attributeMatrixPath.getDataContainerName());
   if(nullptr == image.get())
   {
     return;
@@ -335,18 +335,6 @@ template <typename T> void InitializeData::checkInitialization(IDataArray::Point
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InitializeData::preflight()
-{
-  setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
-  dataCheck();
-  emit preflightExecuted();
-  setInPreflight(false);
-}
 
 // -----------------------------------------------------------------------------
 //

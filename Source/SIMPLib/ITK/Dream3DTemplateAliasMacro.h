@@ -344,10 +344,10 @@ using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 // which is saved in the filter's data container array.
 #define Dream3DArraySwitchMacroLongOutputType(call, path, errorCondition, typeOUT, isTypeOUT, typeOUTTypename)                                                                                         \
   {                                                                                                                                                                                                    \
-    IDataArrayShPtrType ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);                                                                            \
+    IDataArrayShPtrType ptr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, path);                                                                            \
     if(nullptr != ptr)                                                                                                                                                                                 \
     {                                                                                                                                                                                                  \
-      ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, path.getDataContainerName());                                    \
+      ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom>(this, path.getDataContainerName());                                    \
       if(nullptr != imageGeometry)                                                                                                                                                                     \
       {                                                                                                                                                                                                \
         std::vector<size_t> tDims = imageGeometry->getDimensions().toContainer<std::vector<size_t>>();                                                                                                     \
@@ -447,10 +447,10 @@ using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 //
 #define Dream3DArrayOutputComponentFromDataMacro(call, input2_path, input1_path, errorCondition)                                                                                                       \
   {                                                                                                                                                                                                    \
-    IDataArrayShPtrType ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, input2_path);                                                                     \
+    IDataArrayShPtrType ptr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, input2_path);                                                                     \
     if(ptr.get() != nullptr)                                                                                                                                                                           \
     {                                                                                                                                                                                                  \
-      ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, input2_path.getDataContainerName());                             \
+      ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom>(this, input2_path.getDataContainerName());                             \
       if(imageGeometry.get() != nullptr)                                                                                                                                                               \
       {                                                                                                                                                                                                \
         std::vector<size_t> tDims(3, 0);                                                                                                                                                               \

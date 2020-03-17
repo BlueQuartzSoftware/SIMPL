@@ -212,7 +212,7 @@ void CombineAttributeMatrices::dataCheck()
   AttributeMatrix::Pointer combinedAttrMat = m->getAttributeMatrix(getCombinedAttributeMatrixName());
 
   std::vector<size_t> cDims(1, 1);
-  m_FirstIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFirstIndexArrayPath(),
+  m_FirstIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>>(this, getFirstIndexArrayPath(),
                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_FirstIndexPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
@@ -223,7 +223,7 @@ void CombineAttributeMatrices::dataCheck()
     return;
   }
 
-  m_SecondIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getSecondIndexArrayPath(),
+  m_SecondIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>>(this, getSecondIndexArrayPath(),
                                                                                                          cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_SecondIndexPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
@@ -239,7 +239,7 @@ void CombineAttributeMatrices::dataCheck()
   for(QList<QString>::iterator iter = fArrayNames.begin(); iter != fArrayNames.end(); ++iter)
   {
     tempPath.update(getFirstAttributeMatrixPath().getDataContainerName(), getCombinedAttributeMatrixName(), *iter);
-    IDataArray::Pointer tmpDataArray = firstAttrMat->getPrereqIDataArray<IDataArray, AbstractFilter>(this, *iter, -90001);
+    IDataArray::Pointer tmpDataArray = firstAttrMat->getPrereqIDataArray(this, *iter, -90001);
     if(getErrorCode() >= 0)
     {
       std::vector<size_t> cDims = tmpDataArray->getComponentDimensions();
@@ -250,7 +250,7 @@ void CombineAttributeMatrices::dataCheck()
   for(QList<QString>::iterator iter = sArrayNames.begin(); iter != sArrayNames.end(); ++iter)
   {
     tempPath.update(getSecondAttributeMatrixPath().getDataContainerName(), getCombinedAttributeMatrixName(), *iter);
-    IDataArray::Pointer tmpDataArray = secondAttrMat->getPrereqIDataArray<IDataArray, AbstractFilter>(this, *iter, -90001);
+    IDataArray::Pointer tmpDataArray = secondAttrMat->getPrereqIDataArray(this, *iter, -90001);
     if(getErrorCode() >= 0)
     {
       if(!fArrayNames.contains(*iter))
@@ -262,7 +262,7 @@ void CombineAttributeMatrices::dataCheck()
   }
 
   tempPath.update(getFirstIndexArrayPath().getDataContainerName(), getFirstIndexArrayPath().getAttributeMatrixName(), getNewIndexArrayName());
-  m_NewIndexPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, 0, cDims);
+  m_NewIndexPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>>(this, tempPath, 0, cDims);
   if(nullptr != m_NewIndexPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_NewIndex = m_NewIndexPtr.lock()->getPointer(0);
@@ -273,18 +273,6 @@ void CombineAttributeMatrices::dataCheck()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CombineAttributeMatrices::preflight()
-{
-  setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
-  dataCheck();
-  emit preflightExecuted();
-  setInPreflight(false);
-}
 
 template <typename T> void copyData(IDataArray::Pointer fromData, IDataArray::Pointer toData, size_t location)
 {

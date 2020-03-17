@@ -54,12 +54,6 @@ def PipelineTest():
   filterCount = pipeline.size()
   print("Filter Count: %d" % filterCount)
 
-  pipeline = simpl.FilterPipeline.New()
-  print("Pipeline to Null")
-  reader = simpl.AbstractFilter.New()
-  writer = simpl.AbstractFilter.New()
-  print("Filter to null")
-
   time.sleep(2)
 
 

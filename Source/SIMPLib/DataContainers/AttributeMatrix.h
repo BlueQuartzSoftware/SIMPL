@@ -58,6 +58,7 @@
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 class AttributeMatrixProxy;
 class DataContainerProxy;
@@ -322,14 +323,14 @@ public:
     /**
      * @brief getPrereqArray
      * @param filter An instance of an AbstractFilter that is calling this function. Can be nullptr in which case
-     * no error message will be returned if there is an error.
+     * no error message will be returned if there is an error. Will only check component dims if cDims is not empty.
      * @param attributeArrayName The name of the Attribute Array
      * @param err The error code to set into the filter if there is an error
      * @param cDims The component Dimensions of the Data Array
      * @return A valid IDataArray Subclass if the array exists otherwise a null shared pointer.
      */
-    template <class ArrayType, class Filter>
-    typename ArrayType::Pointer getPrereqArray(Filter* filter, QString attributeArrayName, int err, std::vector<size_t> cDims) const
+    template <class ArrayType>
+    typename ArrayType::Pointer getPrereqArray(AbstractFilter* filter, const QString& attributeArrayName, int err, const std::vector<size_t>& cDims = {}) const
     {
       QString ss;
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
@@ -354,16 +355,18 @@ public:
         }
         return attributeArray;
       }
-      int NumComp = cDims[0];
-      for(int i = 1; i < cDims.size(); i++)
+
+      if(!cDims.empty())
       {
-        NumComp *= cDims[i];
+        size_t numComp = std::accumulate(cDims.cbegin(), cDims.cend(), static_cast<size_t>(1), std::multiplies<size_t>());
+
+        // Check to make sure the AttributeArray we have is of the proper type, size and number of components
+        if(false == dataArrayCompatibility<ArrayType>(attributeArrayName, numComp, filter))
+        {
+          return attributeArray;
+        }
       }
-      // Check to make sure the AttributeArray we have is of the proper type, size and number of components
-      if(false == dataArrayCompatibility<ArrayType, Filter>(attributeArrayName, NumComp, filter) )
-      {
-        return attributeArray;
-      }
+
       IDataArrayShPtrType iDataArray = getAttributeArray(attributeArrayName);
       attributeArray = std::dynamic_pointer_cast< ArrayType >(iDataArray);
       if(nullptr == attributeArray.get() && filter)
@@ -381,43 +384,7 @@ public:
      * @param err
      * @return
      */
-    template <class ArrayType, class Filter> typename ArrayType::Pointer getPrereqIDataArray(Filter* filter, const QString& attributeArrayName, int err) const
-    {
-      QString ss;
-      typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
-      // Make sure the name is not empty for the AttributeArrayName. This would be detected below
-      // in the call to get either one BUT the reason for the failure would not be evident so we make these explicit checks
-      // here and send back nice error messages to ther user/programmer.
-      if(attributeArrayName.isEmpty())
-      {
-        if(filter)
-        {
-          ss = QObject::tr("AttributeMatrix:'%1' The name of a requested Attribute Array was empty. Please provide a name for this array").arg(getName());
-          filter->setErrorCondition(err, ss);
-        }
-      }
-      // Now ask for the actual AttributeArray from the AttributeMatrix
-      if(!doesAttributeArrayExist(attributeArrayName))
-      {
-        if(filter)
-        {
-          ss = QObject::tr("The AttributeMatrix named '%1' does NOT have a DataArray with name '%2'. This filter requires this DataArray in order to execute.").arg(getName()).arg(attributeArrayName);
-          filter->setErrorCondition(err, ss);
-        }
-        return attributeArray;
-      }
-
-      IDataArrayShPtrType ptr = getAttributeArray(attributeArrayName);
-      if(std::dynamic_pointer_cast<ArrayType>(ptr) != nullptr)
-      {
-        return std::dynamic_pointer_cast<ArrayType>(ptr);
-      }
-
-      ss = QObject::tr("Unable to cast input array %1 to the necessary type.").arg(attributeArrayName);
-      filter->setErrorCondition(err, ss);
-
-      return attributeArray;
-    }
+    IDataArray::Pointer getPrereqIDataArray(AbstractFilter* filter, const QString& attributeArrayName, int err) const;
 
     /**
      * @brief createNonPrereqArray This method will create a new DataArray in the AttributeMatrix. The condition for this
@@ -429,8 +396,8 @@ public:
      * @param dims The dimensions of the components of the AttributeArray
      * @return A Shared Pointer to the newly created array
      */
-    template <class ArrayType, class Filter, typename T>
-    typename ArrayType::Pointer createNonPrereqArray(Filter* filter, const QString& attributeArrayName, T initValue, const std::vector<size_t>& compDims,
+    template <class ArrayType>
+    typename ArrayType::Pointer createNonPrereqArray(AbstractFilter* filter, const QString& attributeArrayName, typename ArrayType::value_type initValue, const std::vector<size_t>& compDims,
                                                      RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
@@ -448,7 +415,7 @@ public:
       IDataArrayShPtrType iDataArray = getAttributeArray(attributeArrayName);
       if (nullptr == iDataArray.get())
       {
-        createAndAddAttributeArray<ArrayType, Filter, T>(filter, attributeArrayName, initValue, compDims);
+        createAndAddAttributeArray<ArrayType>(filter, attributeArrayName, initValue, compDims);
       }
       else if (filter)
       {
@@ -483,8 +450,8 @@ public:
     * @param name The name that the array will be known by
     * @param dims The size the data on each tuple
     */
-    template <class ArrayType, class Filter, typename T>
-    void createAndAddAttributeArray(Filter* filter, const QString& name, T initValue, std::vector<size_t> compDims, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
+    template <class ArrayType>
+    void createAndAddAttributeArray(AbstractFilter* filter, const QString& name, typename ArrayType::value_type initValue, std::vector<size_t> compDims, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       bool allocateData = false;
       if(nullptr == filter) { allocateData = true; }
@@ -512,7 +479,7 @@ public:
      * @param filter
      * @return
      */
-    template<class ArrayType, class AbstractFilter>
+    template<class ArrayType>
     bool dataArrayCompatibility(const QString& arrayName, int numComp, AbstractFilter* filter) const
     {
       // Make sure the types are the same

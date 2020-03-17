@@ -108,13 +108,13 @@ QPixmap AbstractIOFileWidget::getIcon()
 void AbstractIOFileWidget::setupGui()
 {
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
+  connect(getFilter(), &AbstractFilter::preflightAboutToExecute, this, &AbstractIOFileWidget::beforePreflight);
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
+  connect(getFilter(), &AbstractFilter::preflightExecuted, this, &AbstractIOFileWidget::afterPreflight);
 
   // Catch when the filter wants its m_LineEdits updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &AbstractIOFileWidget::filterNeedsInputParameters);
 
   QtSFileCompleter* com = new QtSFileCompleter(this, false);
   m_LineEdit->setCompleter(com);

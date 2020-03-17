@@ -186,7 +186,7 @@ void ExtractVertexGeometry::dataCheck()
   size_t elementCount = 0;
   if(IGeometry::Type::Image == geomType || IGeometry::Type::RectGrid == geomType)
   {
-    vertexDataContainer = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getVertexDataContainerName(), DataContainerID);
+    vertexDataContainer = getDataContainerArray()->createNonPrereqDataContainer(this, getVertexDataContainerName(), DataContainerID);
     IGeometryGrid::Pointer imageGeom = std::dynamic_pointer_cast<IGeometryGrid>(fromGeometry);
     SizeVec3Type imageDims = imageGeom->getDimensions();
     VertexGeom::Pointer vertexGeom = VertexGeom::CreateGeometry(imageDims[0] * imageDims[1] * imageDims[2], "VertexGeometry", !getInPreflight());
@@ -225,7 +225,7 @@ void ExtractVertexGeometry::dataCheck()
       return;
     }
 
-    IDataArray::Pointer iDataArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, dap);
+    IDataArray::Pointer iDataArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, dap);
     if(getErrorCode() < 0)
     {
       return;
@@ -255,19 +255,6 @@ void ExtractVertexGeometry::dataCheck()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ExtractVertexGeometry::preflight()
-{
-  // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true);              // Set the fact that we are preflighting.
-  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
-  emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted();          // We are done preflighting this filter
-  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
-}
 
 // -----------------------------------------------------------------------------
 //

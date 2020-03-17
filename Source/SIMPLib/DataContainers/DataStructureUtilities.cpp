@@ -151,7 +151,7 @@ bool DataStructureUtilities::validateNumberOfTuples(const DataContainerArrayShPt
     valid = false;
     return valid;
   }
-  IDataArray::Pointer array0 = getPrereqIDataArrayFromPath<IDataArray>(filter, paths.at(0));
+  IDataArray::Pointer array0 = getPrereqIDataArrayFromPath(filter, paths.at(0));
   if(nullptr == array0.get() && nullptr != filter)
   {
     ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
@@ -172,7 +172,7 @@ bool DataStructureUtilities::validateNumberOfTuples(const DataContainerArrayShPt
       valid = false;
       return valid;
     }
-    IDataArray::Pointer nextArray = getPrereqIDataArrayFromPath<IDataArray>(filter, paths.at(i));
+    IDataArray::Pointer nextArray = getPrereqIDataArrayFromPath(filter, paths.at(i));
     if(nullptr == nextArray.get() && nullptr != filter)
     {
       ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
