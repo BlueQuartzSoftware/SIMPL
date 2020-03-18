@@ -213,7 +213,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   int fontHeight = fontMetrics.height();
   int fontMargin = ((option.rect.height() - fontHeight) / 2) - 1;
 
-  int indexFontWidth = fontMetrics.width(QString::number(model->getMaxFilterCount()));
+  int indexFontWidth = fontMetrics.QFONTMETRICS_WIDTH(QString::number(model->getMaxFilterCount()));
 
   painter->setFont(font);
 
@@ -342,11 +342,11 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   if (itemType == PipelineItem::ItemType::DropIndicator)
   {
     QString dropIndicatorText = model->dropIndicatorText(index);
-    humanLabelWidth = fontMetrics.width(dropIndicatorText);
+    humanLabelWidth = fontMetrics.QFONTMETRICS_WIDTH(dropIndicatorText);
   }
   else
   {
-    humanLabelWidth = fontMetrics.width(filter->getHumanLabel());
+    humanLabelWidth = fontMetrics.QFONTMETRICS_WIDTH(filter->getHumanLabel());
   }
 
   // Draw the filter human label

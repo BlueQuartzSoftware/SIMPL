@@ -234,7 +234,7 @@ void WriteTriangleGeometry::execute()
 
   notifyStatusMessage("Writing Triangles Text File");
   QFileInfo triFI(getOutputTrianglesFile());
-  parentPath = triFI.path();
+  parentPath.setPath(triFI.path());
 
   if(!parentPath.mkpath("."))
   {

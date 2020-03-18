@@ -342,7 +342,8 @@ std::list<DataArrayPath> CombineAttributeArrays::getDeletedPaths()
 {
   if(getMoveValues())
   {
-    return getSelectedDataArrayPaths().toList().toStdList();
+    QList<DataArrayPath> tList = getSelectedDataArrayPaths().toList();
+    return std::list<DataArrayPath>(tList.begin(), tList.end());
   }
   return std::list<DataArrayPath>();
 }

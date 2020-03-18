@@ -74,6 +74,7 @@
 /* Include the DLL export preprocessor defines */
 #include "SIMPLib/Common/SIMPLibDLLExport.h"
 
+
 #include "SIMPLib/Common/SIMPLPythonMacros.h"
 
 /* We are going to disable some warnings just to get a grip on all the warnings that get produced
@@ -93,6 +94,10 @@
 #endif
 
 #ifdef QT_CORE_LIB
+
+/* Include the QtBackwardCompatibility Macros */
+#include "SIMPLib/Common/QtBackwardCompatibilityMacro.h"
+
 #include <QtCore/QMetaType>
 Q_DECLARE_METATYPE(uint8_t)
 Q_DECLARE_METATYPE(int8_t)
@@ -102,4 +107,5 @@ Q_DECLARE_METATYPE(uint32_t)
 Q_DECLARE_METATYPE(int32_t)
 Q_DECLARE_METATYPE(uint64_t)
 Q_DECLARE_METATYPE(int64_t)
+
 #endif

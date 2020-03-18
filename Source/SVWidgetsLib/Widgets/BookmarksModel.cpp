@@ -863,7 +863,7 @@ QDir BookmarksModel::findPipelinesDirectory()
 
 #endif
 
-  pipelinesDir = pipelinesDir.absolutePath() + QDir::separator() + dirName;
+  pipelinesDir.setPath(pipelinesDir.absolutePath() + QDir::separator() + dirName);
   return pipelinesDir;
 }
 

@@ -88,8 +88,8 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
   FilterManager* fm = FilterManager::Instance();
   QSet<QString> grpNames = fm->getGroupNames();
 
-  QList<QString> grpNameSorted = grpNames.toList();
-  qSort(grpNameSorted);
+  QLIST_FROM_QSET(QList<QString>, grpNameSorted, grpNames)
+  std::sort(grpNameSorted.begin(), grpNameSorted.end());
 
   // Clear out the default stuff
   filterLibrary->clear();

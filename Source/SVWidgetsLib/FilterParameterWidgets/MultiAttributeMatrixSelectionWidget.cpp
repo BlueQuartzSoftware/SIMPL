@@ -448,7 +448,7 @@ void MultiAttributeMatrixSelectionWidget::selectionChanged()
     for (int i=0; i<orderSize; i++)
     {
       int row = attributeMatricesOrderWidget->selectionModel()->selectedRows()[i].row();
-      if (attributeMatricesOrderWidget->item(row)->backgroundColor() != QColor(235, 110, 110))
+      if(attributeMatricesOrderWidget->item(row)->background() != QColor(235, 110, 110))
       {
         allErrorRows = false;
       }
@@ -516,11 +516,11 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
         if(!matrixNames.contains(name))
         {
           //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
-          item->setBackgroundColor(QColor(235, 110, 110));
+          item->setBackground(QColor(235, 110, 110));
         }
         else
         {
-          item->setBackgroundColor(QColor(255, 255, 255));
+          item->setBackground(QColor(255, 255, 255));
         }
       }
 

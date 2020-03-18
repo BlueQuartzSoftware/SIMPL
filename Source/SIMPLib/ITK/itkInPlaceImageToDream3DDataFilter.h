@@ -1,5 +1,13 @@
 #pragma once
 
+#include "itkConfigure.h"
+#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wself-assign-field"
+#endif
+#endif
+
 #include <itkImage.h>
 #include <itkNumericTraits.h>
 #include <itkNumericTraitsRGBAPixel.h>

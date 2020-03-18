@@ -76,18 +76,63 @@
 
 #pragma once
 
-#include <memory>
+#include <itkConfigure.h>
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
-
-class IDataArray;
-using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
-
-#include <QString>
+#if(ITK_VERSION_MAJOR == 5) && (ITK_VERSION_MINOR >= 1)
+#include <itkCommonEnums.h>
+#else
 #include <itkImageIOBase.h>
-#include <itkRGBAPixel.h>
-#include <itkRGBPixel.h>
-#include <itkVector.h>
+#endif
+
+#define EXECUTE_FUNCTION_TEMPLATE_NO_BOOL(observableObj, templateName, inputData, ...)                                                                                                                 \
+  if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(inputData))                                                                                                                                     \
+  {                                                                                                                                                                                                    \
+    templateName<float>(__VA_ARGS__);                                                                                                                                                                  \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(inputData))                                                                                                                               \
+  {                                                                                                                                                                                                    \
+    templateName<double>(__VA_ARGS__);                                                                                                                                                                 \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(inputData))                                                                                                                                 \
+  {                                                                                                                                                                                                    \
+    templateName<int8_t>(__VA_ARGS__);                                                                                                                                                                 \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(inputData))                                                                                                                                \
+  {                                                                                                                                                                                                    \
+    templateName<uint8_t>(__VA_ARGS__);                                                                                                                                                                \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(inputData))                                                                                                                                \
+  {                                                                                                                                                                                                    \
+    templateName<int16_t>(__VA_ARGS__);                                                                                                                                                                \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(inputData))                                                                                                                               \
+  {                                                                                                                                                                                                    \
+    templateName<uint16_t>(__VA_ARGS__);                                                                                                                                                               \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(inputData))                                                                                                                                \
+  {                                                                                                                                                                                                    \
+    templateName<int32_t>(__VA_ARGS__);                                                                                                                                                                \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(inputData))                                                                                                                               \
+  {                                                                                                                                                                                                    \
+    templateName<uint32_t>(__VA_ARGS__);                                                                                                                                                               \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(inputData))                                                                                                                                \
+  {                                                                                                                                                                                                    \
+    templateName<int64_t>(__VA_ARGS__);                                                                                                                                                                \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(inputData))                                                                                                                               \
+  {                                                                                                                                                                                                    \
+    templateName<uint64_t>(__VA_ARGS__);                                                                                                                                                               \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<SizeTArrayType>()(inputData))                                                                                                                                \
+  {                                                                                                                                                                                                    \
+    templateName<size_t>(__VA_ARGS__);                                                                                                                                                                 \
+  }                                                                                                                                                                                                    \
+  else                                                                                                                                                                                                 \
+  {                                                                                                                                                                                                    \
+    observableObj->setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "The input array was of unsupported type");                                                                         \
+  }
 
 //--------------------------------------------------------------------------
 // Allow individual switching of support for each scalar size/signedness and
@@ -390,46 +435,54 @@ using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 ///////////////////////////////////////////////////////////////////////////////////////
 //
 // Subtract 1 to enum values because 'type' values are expected to start at 0 while
-// itk::ImageIOBase::IOComponentType '0' value is UNKNOWNCOMPONENTTYPE and therefore
+// itk::ITK_IOCOMPONENT_CLASS::IOComponentType '0' value is UNKNOWNCOMPONENTTYPE and therefore
 // should be skipped.
 //
+#if(ITK_VERSION_MAJOR == 5) && (ITK_VERSION_MINOR >= 1)
+#define ITK_IOCOMPONENT_CLASS CommonEnums
+#define ITK_IOCOMPONENT_TYPE IOComponent
+#else
+#define ITK_IOCOMPONENT_CLASS ImageIOBase
+#define ITK_IOCOMPONENT_TYPE IOComponentType
+#endif
+
 #define Dream3DArraySwitchOutputComponentMacro(call, type, path, errorCondition)                                                                                                                       \
   switch(type)                                                                                                                                                                                         \
   {                                                                                                                                                                                                    \
-  case itk::ImageIOBase::IOComponentType::UCHAR:                                                                                                                                                       \
+  case itk::ITK_IOCOMPONENT_CLASS::ITK_IOCOMPONENT_TYPE::UCHAR:                                                                                                                                        \
     Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint8_t, 0);                                                                                                                         \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::CHAR:                                                                                                                                                        \
+  case itk::ITK_IOCOMPONENT_CLASS::ITK_IOCOMPONENT_TYPE::CHAR:                                                                                                                                         \
     Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int8_t, 0);                                                                                                                          \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::USHORT:                                                                                                                                                      \
+  case itk::ITK_IOCOMPONENT_CLASS::ITK_IOCOMPONENT_TYPE::USHORT:                                                                                                                                       \
     Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint16_t, 0);                                                                                                                        \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::SHORT:                                                                                                                                                       \
+  case itk::ITK_IOCOMPONENT_CLASS::ITK_IOCOMPONENT_TYPE::SHORT:                                                                                                                                        \
     Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int16_t, 0);                                                                                                                         \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::UINT:                                                                                                                                                        \
+  case itk::ITK_IOCOMPONENT_CLASS::ITK_IOCOMPONENT_TYPE::UINT:                                                                                                                                         \
     Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint32_t, 0);                                                                                                                        \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::INT:                                                                                                                                                         \
+  case itk::ITK_IOCOMPONENT_CLASS::ITK_IOCOMPONENT_TYPE::INT:                                                                                                                                          \
     Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int32_t, 0);                                                                                                                         \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::ULONG:                                                                                                                                                       \
+  case itk::ITK_IOCOMPONENT_CLASS::ITK_IOCOMPONENT_TYPE::ULONG:                                                                                                                                        \
     Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint64_t, 0);                                                                                                                        \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::LONG:                                                                                                                                                        \
+  case itk::ITK_IOCOMPONENT_CLASS::ITK_IOCOMPONENT_TYPE::LONG:                                                                                                                                         \
     Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int64_t, 0);                                                                                                                         \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::ULONGLONG:                                                                                                                                                   \
+  case itk::ITK_IOCOMPONENT_CLASS::ITK_IOCOMPONENT_TYPE::ULONGLONG:                                                                                                                                    \
     Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint64_t, 0);                                                                                                                        \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::LONGLONG:                                                                                                                                                    \
+  case itk::ITK_IOCOMPONENT_CLASS::ITK_IOCOMPONENT_TYPE::LONGLONG:                                                                                                                                     \
     Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int64_t, 0);                                                                                                                         \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::FLOAT:                                                                                                                                                       \
+  case itk::ITK_IOCOMPONENT_CLASS::ITK_IOCOMPONENT_TYPE::FLOAT:                                                                                                                                        \
     Dream3DArraySwitchMacroOutputType(call, path, errorCondition, float, 0);                                                                                                                           \
     break;                                                                                                                                                                                             \
-  case itk::ImageIOBase::IOComponentType::DOUBLE:                                                                                                                                                      \
+  case itk::ITK_IOCOMPONENT_CLASS::ITK_IOCOMPONENT_TYPE::DOUBLE:                                                                                                                                       \
     Dream3DArraySwitchMacroOutputType(call, path, errorCondition, double, 0);                                                                                                                          \
     break;                                                                                                                                                                                             \
   default:                                                                                                                                                                                             \
@@ -458,7 +511,7 @@ using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
         if(getErrorCode() >= 0)                                                                                                                                                                        \
         {                                                                                                                                                                                              \
           QString str_type = ptr->getTypeAsString();                                                                                                                                                   \
-          itk::ImageIOBase::IOComponentType type = itk::ImageIOBase::GetComponentTypeFromString(str_type.toStdString());                                                                               \
+          itk::ITK_IOCOMPONENT_CLASS::IOComponentType type = itk::ITK_IOCOMPONENT_CLASS::GetComponentTypeFromString(str_type.toStdString());                                                           \
           Dream3DArraySwitchOutputComponentMacro(call, type, input1_path, errorCondition)                                                                                                              \
         }                                                                                                                                                                                              \
       }                                                                                                                                                                                                \

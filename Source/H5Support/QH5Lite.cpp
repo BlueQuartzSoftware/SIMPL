@@ -381,6 +381,13 @@ herr_t QH5Lite::getDatasetInfo(hid_t loc_id, const QString& dsetName, QVector<hs
   return err;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+#define QVECTOR_FROM_STD_VECTOR(def, qvector, svector) def qvector = def::fromStdVector(svector);
+#define QVECTOR_TO_STD_VECTOR(def, qvector, svector) def svector = qvector.toStdVector();
+#else
+#define QVECTOR_TO_STD_VECTOR(def, qvecVarName, svector) def svector(qvecVarName.begin(), qvecVarName.end());
+#endif
+
 // -----------------------------------------------------------------------------
 //  You must close the attributeType argument or resource leaks will occur. Use
 //  H5Tclose(tid); after your call to this method if you do not need the id for
@@ -388,7 +395,7 @@ herr_t QH5Lite::getDatasetInfo(hid_t loc_id, const QString& dsetName, QVector<hs
 // -----------------------------------------------------------------------------
 herr_t QH5Lite::getAttributeInfo(hid_t loc_id, const QString& objName, const QString& attrName, QVector<hsize_t>& dims, H5T_class_t& type_class, size_t& type_size, hid_t& tid)
 {
-  std::vector<hsize_t> rDims = dims.toStdVector();
+  QVECTOR_TO_STD_VECTOR(std::vector<hsize_t>, dims, rDims)
   herr_t err = H5Lite::getAttributeInfo(loc_id, objName.toStdString(), attrName.toStdString(), rDims, type_class, type_size, tid);
   dims.resize(static_cast<qint32>(rDims.size()));
   for(std::vector<hsize_t>::size_type i = 0; i < rDims.size(); ++i)

@@ -368,7 +368,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
   }
 
   QFontMetrics fm(op.font);
-  int textWidth = fm.width(text);
+  int textWidth = fm.QFONTMETRICS_WIDTH(text);
 
   // Highlight the path
   if(pathHighlighted)
@@ -406,7 +406,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
   // Draw icon for created paths
   if(isCreatedPath)
   {
-    int textWidth = fm.width(text);
+    int textWidth = fm.QFONTMETRICS_WIDTH(text);
 
     QRect imgRect;
     int xOffset = 5;
