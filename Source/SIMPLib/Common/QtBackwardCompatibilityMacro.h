@@ -35,7 +35,7 @@
 #endif
 
 #ifndef QLIST_FROM_QSET
-#define QLIST_FROM_QSET(def, qlist, other) def qlist = other.toList();
+#define QLIST_FROM_QSET(def, qlist, other) def qlist = other.values();
 #endif
 
 #endif
