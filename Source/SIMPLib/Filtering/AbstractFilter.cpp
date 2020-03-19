@@ -404,7 +404,7 @@ QJsonObject AbstractFilter::toJson()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool AbstractFilter::getCancel()
+bool AbstractFilter::getCancel() const
 {
   return m_Cancel;
 }
@@ -546,7 +546,7 @@ void AbstractFilter::setErrorCondition(int code, const QString& messageText)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyStatusMessage(const QString& messageText)
+void AbstractFilter::notifyStatusMessage(const QString& messageText) const
 {
   FilterStatusMessage::Pointer pm = FilterStatusMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText);
   emit messageGenerated(pm);
@@ -565,7 +565,7 @@ void AbstractFilter::setWarningCondition(int code, const QString& messageText)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyProgressMessage(int progress, const QString& messageText)
+void AbstractFilter::notifyProgressMessage(int progress, const QString& messageText) const
 {
   FilterProgressMessage::Pointer pm = FilterProgressMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText, progress);
   emit messageGenerated(pm);

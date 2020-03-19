@@ -111,7 +111,7 @@ FilterPipeline::~FilterPipeline() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString FilterPipeline::getName()
+QString FilterPipeline::getName() const
 {
   return m_PipelineName;
 }
@@ -630,7 +630,7 @@ void FilterPipeline::setErrorCondition(int code, const QString& messageText)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::notifyStatusMessage(const QString& messageText)
+void FilterPipeline::notifyStatusMessage(const QString& messageText) const
 {
   PipelineStatusMessage::Pointer pm = PipelineStatusMessage::New(getName(), messageText);
   emit messageGenerated(pm);
@@ -649,7 +649,7 @@ void FilterPipeline::setWarningCondition(int code, const QString& messageText)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::notifyProgressMessage(int progress, const QString& messageText)
+void FilterPipeline::notifyProgressMessage(int progress, const QString& messageText) const
 {
   PipelineProgressMessage::Pointer pm = PipelineProgressMessage::New(getName(), messageText, progress);
   emit messageGenerated(pm);
