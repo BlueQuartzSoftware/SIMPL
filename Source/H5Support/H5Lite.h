@@ -257,10 +257,7 @@ namespace H5Support_NAMESPACE
        * pass H5T_NATIVE_UINT8 as the dataType.
        */
       template <typename T>
-      static herr_t writeVectorDataset (hid_t loc_id,
-                                        const std::string& dsetName,
-                                        std::vector<hsize_t>& dims,
-                                        std::vector<T>& data)
+      static herr_t writeVectorDataset(hid_t loc_id, const std::string& dsetName, const std::vector<hsize_t>& dims, const std::vector<T>& data)
       {
         H5SUPPORT_MUTEX_LOCK()
 
@@ -276,13 +273,8 @@ namespace H5Support_NAMESPACE
         }
         //Create the DataSpace
         std::vector<uint64_t>::size_type size = dims.size();
-        //std::vector<hsize_t> _dims(size, 0);
-        std::vector<hsize_t> _dims(size, 0);
-        for (std::vector<uint64_t>::size_type i = 0; i < size; ++i)
-        {
-          _dims[i] = static_cast<hsize_t>(dims[i]);
-        }
-        sid = H5Screate_simple( static_cast<int>(size), &(_dims.front()), nullptr );
+
+        sid = H5Screate_simple(static_cast<int>(size), dims.data(), nullptr);
         if (sid < 0)
         {
           return -101;
@@ -291,7 +283,7 @@ namespace H5Support_NAMESPACE
         did = H5Dcreate (loc_id, dsetName.c_str(), dataType, sid, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
         if ( did >= 0 )
         {
-          err = H5Dwrite( did, dataType, H5S_ALL, H5S_ALL, H5P_DEFAULT, &(data.front()) );
+          err = H5Dwrite(did, dataType, H5S_ALL, H5S_ALL, H5P_DEFAULT, data.data());
           if (err < 0 )
           {
             std::cout << "Error Writing Data" << std::endl;

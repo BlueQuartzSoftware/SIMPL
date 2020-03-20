@@ -12,7 +12,6 @@
 
 //-- C++
 #include <memory>
-
 #include <vector>
 
 #include <hdf5.h>
@@ -20,12 +19,9 @@
 //--Qt Includes
 #include <QtCore/QString>
 #include <QtCore/QtDebug>
-
-// SIMPLib Includes
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
-
 #include "SIMPLib/DataContainers/IDataStructureNode.h"
 
 class IDataArray;
