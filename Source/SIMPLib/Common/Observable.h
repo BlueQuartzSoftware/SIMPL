@@ -95,13 +95,13 @@ class SIMPLib_EXPORT Observable : public QObject
 
     void setWarningConditionWithPrefix(int code, const QString &prefix, const QString& messageText);
 
-    virtual void notifyStatusMessage(const QString& messageText);
+    virtual void notifyStatusMessage(const QString& messageText) const;
 
-    void notifyStatusMessageWithPrefix(const QString &prefix, const QString& messageText);
+    void notifyStatusMessageWithPrefix(const QString& prefix, const QString& messageText) const;
 
-    virtual void notifyProgressMessage(int progress, const QString& messageText);
+    virtual void notifyProgressMessage(int progress, const QString& messageText) const;
 
-    void notifyProgressMessageWithPrefix(int progress, const QString &prefix, const QString& messageText);
+    void notifyProgressMessageWithPrefix(int progress, const QString& prefix, const QString& messageText) const;
 
   signals:
 
@@ -109,7 +109,7 @@ class SIMPLib_EXPORT Observable : public QObject
      * @brief messageGenerated This is a Qt Signal that is used when the filter generates Errors, Warnings, Status and Progress Messages
      * @param msg
      */
-    void messageGenerated(const AbstractMessage::Pointer& msg);
+    void messageGenerated(const AbstractMessage::Pointer& msg) const;
 
   private:
 };

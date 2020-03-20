@@ -110,7 +110,7 @@ void Observable::setWarningConditionWithPrefix(int code, const QString &prefix, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyStatusMessage(const QString& messageText)
+void Observable::notifyStatusMessage(const QString& messageText) const
 {
   GenericStatusMessage::Pointer pm = GenericStatusMessage::New(messageText);
   emit messageGenerated(pm);
@@ -119,7 +119,7 @@ void Observable::notifyStatusMessage(const QString& messageText)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyStatusMessageWithPrefix(const QString &prefix, const QString &messageText)
+void Observable::notifyStatusMessageWithPrefix(const QString& prefix, const QString& messageText) const
 {
   QString msg = messageText;
   msg.prepend(tr("%1 - ").arg(prefix));
@@ -130,7 +130,7 @@ void Observable::notifyStatusMessageWithPrefix(const QString &prefix, const QStr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyProgressMessage(int progress, const QString& messageText)
+void Observable::notifyProgressMessage(int progress, const QString& messageText) const
 {
   GenericProgressMessage::Pointer pm = GenericProgressMessage::New(messageText, progress);
   emit messageGenerated(pm);
@@ -139,7 +139,7 @@ void Observable::notifyProgressMessage(int progress, const QString& messageText)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyProgressMessageWithPrefix(int progress, const QString &prefix, const QString &messageText)
+void Observable::notifyProgressMessageWithPrefix(int progress, const QString& prefix, const QString& messageText) const
 {
   QString msg = messageText;
   msg.prepend(tr("%1: ").arg(prefix));

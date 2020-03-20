@@ -438,14 +438,14 @@ public:
    * @brief notifyStatusMessage
    * @param messageText
    */
-  void notifyStatusMessage(const QString& messageText) override;
+  void notifyStatusMessage(const QString& messageText) const override;
 
   /**
    * @brief notifyProgressMessage
    * @param progress
    * @param messageText
    */
-  void notifyProgressMessage(int progress, const QString& messageText) override;
+  void notifyProgressMessage(int progress, const QString& messageText) const override;
 
   /**
    * @brief notifyMissingProperty
@@ -466,7 +466,7 @@ public:
    * @brief getCancel Returns if the filter has been cancelled.
    * @return
    */
-  virtual bool getCancel();
+  virtual bool getCancel() const;
 
   /**
    * @brief copyFilterParameterInstanceVariables
