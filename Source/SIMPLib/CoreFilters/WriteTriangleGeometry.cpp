@@ -138,7 +138,7 @@ void WriteTriangleGeometry::dataCheck()
     return;
   }
 
-  TriangleGeom::Pointer triangles = dataContainer->getPrereqGeometry<TriangleGeom, AbstractFilter>(this);
+  TriangleGeom::Pointer triangles = dataContainer->getPrereqGeometry<TriangleGeom>(this);
   if(getErrorCode() < 0)
   {
     return;
@@ -156,18 +156,6 @@ void WriteTriangleGeometry::dataCheck()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void WriteTriangleGeometry::preflight()
-{
-  setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
-  dataCheck();
-  emit preflightExecuted();
-  setInPreflight(false);
-}
 
 // -----------------------------------------------------------------------------
 //
@@ -246,7 +234,7 @@ void WriteTriangleGeometry::execute()
 
   notifyStatusMessage("Writing Triangles Text File");
   QFileInfo triFI(getOutputTrianglesFile());
-  parentPath = triFI.path();
+  parentPath.setPath(triFI.path());
 
   if(!parentPath.mkpath("."))
   {

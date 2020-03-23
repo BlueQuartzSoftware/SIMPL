@@ -307,17 +307,17 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 1);
 
-    m_XBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getXBoundsArrayPath(), cDims);
+    m_XBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getXBoundsArrayPath(), cDims);
     if(m_XBoundsPtr.lock())
     {
       m_XBounds = m_XBoundsPtr.lock()->getPointer(0);
     }
-    m_YBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getYBoundsArrayPath(), cDims);
+    m_YBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getYBoundsArrayPath(), cDims);
     if(m_YBoundsPtr.lock())
     {
       m_YBounds = m_YBoundsPtr.lock()->getPointer(0);
     }
-    m_ZBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getZBoundsArrayPath(), cDims);
+    m_ZBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getZBoundsArrayPath(), cDims);
     if(m_ZBoundsPtr.lock())
     {
       m_ZBounds = m_ZBoundsPtr.lock()->getPointer(0);
@@ -371,7 +371,7 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 3);
 
-    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath0(), cDims);
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getSharedVertexListArrayPath0(), cDims);
 
     if(getErrorCode() < 0)
     {
@@ -400,9 +400,9 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 3);
 
-    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath1(), cDims);
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getSharedVertexListArrayPath1(), cDims);
     cDims[0] = 2;
-    m_EdgesPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedEdgeList, AbstractFilter>(this, getSharedEdgeListArrayPath(), cDims);
+    m_EdgesPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedEdgeList>(this, getSharedEdgeListArrayPath(), cDims);
     if(m_EdgesPtr.lock())
     {
       m_Edges = m_EdgesPtr.lock()->getPointer(0);
@@ -441,8 +441,8 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 3);
 
-    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath2(), cDims);
-    m_TrisPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedTriList, AbstractFilter>(this, getSharedTriListArrayPath(), cDims);
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getSharedVertexListArrayPath2(), cDims);
+    m_TrisPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedTriList>(this, getSharedTriListArrayPath(), cDims);
     if(m_TrisPtr.lock())
     {
       m_Tris = m_TrisPtr.lock()->getPointer(0);
@@ -481,9 +481,9 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 3);
 
-    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath3(), cDims);
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getSharedVertexListArrayPath3(), cDims);
     cDims[0] = 4;
-    m_QuadsPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedQuadList, AbstractFilter>(this, getSharedQuadListArrayPath(), cDims);
+    m_QuadsPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedQuadList>(this, getSharedQuadListArrayPath(), cDims);
     if(m_QuadsPtr.lock())
     {
       m_Quads = m_QuadsPtr.lock()->getPointer(0);
@@ -522,9 +522,9 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 3);
 
-    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath4(), cDims);
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getSharedVertexListArrayPath4(), cDims);
     cDims[0] = 4;
-    m_TetsPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedTetList, AbstractFilter>(this, getSharedTetListArrayPath(), cDims);
+    m_TetsPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedTetList>(this, getSharedTetListArrayPath(), cDims);
     if(m_TetsPtr.lock())
     {
       m_Tets = m_TetsPtr.lock()->getPointer(0);
@@ -564,9 +564,9 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 3);
 
-    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath5(), cDims);
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getSharedVertexListArrayPath5(), cDims);
     cDims[0] = 8;
-    m_HexesPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedHexList, AbstractFilter>(this, getSharedHexListArrayPath(), cDims);
+    m_HexesPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedHexList>(this, getSharedHexListArrayPath(), cDims);
     if (m_HexesPtr.lock())
     {
       m_Hexes = m_HexesPtr.lock()->getPointer(0);
@@ -612,19 +612,6 @@ void CreateGeometry::dataCheck()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CreateGeometry::preflight()
-{
-  // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true);              // Set the fact that we are preflighting.
-  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
-  emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted();          // We are done preflighting this filter
-  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
-}
 
 // -----------------------------------------------------------------------------
 //

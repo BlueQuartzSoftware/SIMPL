@@ -167,9 +167,9 @@ void QRoundProgressBar::setFormat(const QString &format)
 
 void QRoundProgressBar::resetFormat()
 {
-    m_format = QString::null;
+  m_format = QString();
 
-    valueFormatChanged();
+  valueFormatChanged();
 }
 
 void QRoundProgressBar::setDecimals(int count)
@@ -218,13 +218,13 @@ void QRoundProgressBar::paintEvent(QPaintEvent* /*event*/)
     p.end();
 
     QPainter painter(this);
-    painter.fillRect(baseRect, palette().background());
+    painter.fillRect(baseRect, palette().window());
     painter.drawImage(0,0, buffer);
 }
 
 void QRoundProgressBar::drawBackground(QPainter &p, const QRectF &baseRect)
 {
-    p.fillRect(baseRect, palette().background());
+  p.fillRect(baseRect, palette().window());
 }
 
 void QRoundProgressBar::drawBase(QPainter &p, const QRectF &baseRect)

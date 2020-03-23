@@ -50,7 +50,6 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
 #ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(FileWriter SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(FileWriter)
-    PYB11_FILTER_NEW_MACRO(FileWriter)
     PYB11_FILTER_PARAMETER(QString, OutputFile)
     PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
 #endif
@@ -62,8 +61,6 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
     using WeakPointer = std::weak_ptr<Self>;
     using ConstWeakPointer = std::weak_ptr<const Self>;
     static Pointer NullPointer();
-
-    static std::shared_ptr<FileWriter> New();
 
     /**
      * @brief Returns the name of the class for FileWriter
@@ -90,29 +87,6 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
 
     void execute() override;
 
-  signals:
-    /**
-     * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-     * be pushed from a user-facing control (such as a widget)
-     * @param filter Filter instance pointer
-     */
-    void updateFilterParameters(AbstractFilter* filter);
-
-    /**
-     * @brief parametersChanged Emitted when any Filter parameter is changed internally
-     */
-    void parametersChanged();
-
-    /**
-     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-     */
-    void preflightAboutToExecute();
-
-    /**
-     * @brief preflightExecuted Emitted just after calling dataCheck()
-     */
-    void preflightExecuted();
-
   protected:
     FileWriter();
 
@@ -120,13 +94,13 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
      * @brief writeHeader Writes the header of the output file
      * @return Integer error value
      */
-    virtual int32_t writeHeader();
+    virtual int32_t writeHeader() = 0;
 
     /**
      * @brief writeFile Writes the contents of the output file
      * @return Integer error value
      */
-    virtual int32_t writeFile();
+    virtual int32_t writeFile() = 0;
 
   public:
     FileWriter(const FileWriter&) = delete;     // Copy Constructor Not Implemented

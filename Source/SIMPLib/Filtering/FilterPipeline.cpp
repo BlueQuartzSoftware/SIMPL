@@ -52,6 +52,7 @@
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Utilities/StringOperations.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Filtering/BadFilter.h"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/CoreFilters/EmptyFilter.h"
@@ -171,7 +172,7 @@ QJsonObject FilterPipeline::toJson()
     }
     else
     {
-      AbstractFilter::Pointer badFilter = AbstractFilter::New();
+      AbstractFilter::Pointer badFilter = BadFilter::New();
 
       QJsonObject badFilterJson = badFilter->toJson();
       badFilterJson["Unknown Filter"] = "ERROR: Filter instance was nullptr within the FilterPipeline instance. Report this error to the DREAM3D Developers";

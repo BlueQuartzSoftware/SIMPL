@@ -300,7 +300,7 @@ void WriteASCIIData::dataCheck()
 
   for(auto const& path : paths)
   {
-    IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);
+    IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, path);
 
     if(getErrorCode() < 0)
     {
@@ -327,18 +327,6 @@ void WriteASCIIData::dataCheck()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void WriteASCIIData::preflight()
-{
-  setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
-  dataCheck();
-  emit preflightExecuted();
-  setInPreflight(false);
-}
 
 // -----------------------------------------------------------------------------
 //

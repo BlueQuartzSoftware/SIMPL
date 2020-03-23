@@ -146,10 +146,6 @@ public:
    */
   void execute() override;
 
-  /**
-   * @brief preflight Reimplemented from @see AbstractFilter class
-   */
-  void preflight() override;
 
 public slots:
   /**
@@ -158,28 +154,6 @@ public slots:
   void resumePipeline();
 
 signals:
-  /**
-   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-   * be pushed from a user-facing control (such as a widget)
-   * @param filter Filter instance pointer
-   */
-  void updateFilterParameters(AbstractFilter* filter);
-
-  /**
-   * @brief parametersChanged Emitted when any Filter parameter is changed internally
-   */
-  void parametersChanged();
-
-  /**
-   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-   */
-  void preflightAboutToExecute();
-
-  /**
-   * @brief preflightExecuted Emitted just after calling dataCheck()
-   */
-  void preflightExecuted();
-
   /**
    * @brief pipelineHasPaused Emitted when the pipeline needs to be paused
    */
@@ -195,7 +169,7 @@ protected:
   /**
    * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
    */
-  void dataCheck();
+  void dataCheck() override;
 
   /**
    * @brief Initializes all the private instance variables.

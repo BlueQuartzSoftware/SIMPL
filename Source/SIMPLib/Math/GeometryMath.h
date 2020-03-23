@@ -258,6 +258,19 @@ class SIMPLib_EXPORT GeometryMath
     static bool RayIntersectsBox(const float* p, const float* q, const float* lowerLeft, const float* upperRight);
 
     /**
+     * @brief FindRayIntersectionsWithSphere
+     * @param p
+     * @param R
+     * @param length
+     * @param c
+     * @param radius
+     * @param t1
+     * @param t2
+     * @return
+     */
+    static bool FindRayIntersectionsWithSphere(float* p, float* R, float length, float* c, float radius, float& t1, float& t2);
+
+    /**
      * @brief Determines length of a segment between two points that lies within a box defined by the lower left and upper right corners
      * @param p
      * @param q
@@ -375,7 +388,6 @@ class SIMPLib_EXPORT GeometryMath
     GeometryMath(GeometryMath&&) = delete;        // Move Constructor Not Implemented
     GeometryMath& operator=(const GeometryMath&) = delete; // Copy Assignment Not Implemented
     GeometryMath& operator=(GeometryMath&&) = delete;      // Move Assignment Not Implemented
-
   private:
 };
 

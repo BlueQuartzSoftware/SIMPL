@@ -127,7 +127,7 @@ void RemoveComponentFromArray::dataCheck()
   clearErrorCode();
   clearWarningCode();
 
-  m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
+  m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedArrayPath());
 
   if(m_SaveRemovedComponent)
   {
@@ -180,18 +180,6 @@ void RemoveComponentFromArray::dataCheck()
   m_ReducedArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath2, cDims, m_InArrayPtr.lock(), ReducedDataArrayID);
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RemoveComponentFromArray::preflight()
-{
-  setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
-  dataCheck();
-  emit preflightExecuted();
-  setInPreflight(false);
-}
 
 // -----------------------------------------------------------------------------
 //

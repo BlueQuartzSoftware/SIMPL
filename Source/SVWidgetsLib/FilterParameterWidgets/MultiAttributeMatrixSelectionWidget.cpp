@@ -124,13 +124,13 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
 
   // Lastly, hook up the filter's signals and slots to our own signals and slots
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
+  connect(getFilter(), &AbstractFilter::preflightAboutToExecute, this, &MultiAttributeMatrixSelectionWidget::beforePreflight);
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
+  connect(getFilter(), &AbstractFilter::preflightExecuted, this, &MultiAttributeMatrixSelectionWidget::afterPreflight);
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &MultiAttributeMatrixSelectionWidget::filterNeedsInputParameters);
 
   // If the DataArrayPath is updated in the filter, update the widget
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
@@ -448,7 +448,7 @@ void MultiAttributeMatrixSelectionWidget::selectionChanged()
     for (int i=0; i<orderSize; i++)
     {
       int row = attributeMatricesOrderWidget->selectionModel()->selectedRows()[i].row();
-      if (attributeMatricesOrderWidget->item(row)->backgroundColor() != QColor(235, 110, 110))
+      if(attributeMatricesOrderWidget->item(row)->background() != QColor(235, 110, 110))
       {
         allErrorRows = false;
       }
@@ -516,11 +516,11 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
         if(!matrixNames.contains(name))
         {
           //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
-          item->setBackgroundColor(QColor(235, 110, 110));
+          item->setBackground(QColor(235, 110, 110));
         }
         else
         {
-          item->setBackgroundColor(QColor(255, 255, 255));
+          item->setBackground(QColor(255, 255, 255));
         }
       }
 

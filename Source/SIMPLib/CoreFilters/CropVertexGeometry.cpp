@@ -135,7 +135,7 @@ void CropVertexGeometry::dataCheck()
   clearWarningCode();
   initialize();
 
-  getDataContainerArray()->getPrereqGeometryFromDataContainer<VertexGeom, AbstractFilter>(this, getDataContainerName());
+  getDataContainerArray()->getPrereqGeometryFromDataContainer<VertexGeom>(this, getDataContainerName());
 
   if(getXMax() < getXMin())
   {
@@ -153,7 +153,7 @@ void CropVertexGeometry::dataCheck()
     setErrorCondition(-5550, ss);
   }
 
-  DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getCroppedDataContainerName(), DataContainerID);
+  DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer(this, getCroppedDataContainerName(), DataContainerID);
 
   if(getErrorCode() < 0)
   {
@@ -193,7 +193,7 @@ void CropVertexGeometry::dataCheck()
         for(auto&& data_array : tempDataArrayList)
         {
           tempPath.update(getCroppedDataContainerName().getDataContainerName(), tmpAttrMat->getName(), data_array);
-          IDataArray::Pointer tmpDataArray = tmpAttrMat->getPrereqIDataArray<IDataArray, AbstractFilter>(this, data_array, -90002);
+          IDataArray::Pointer tmpDataArray = tmpAttrMat->getPrereqIDataArray(this, data_array, -90002);
           if(getErrorCode() >= 0)
           {
             std::vector<size_t> cDims = tmpDataArray->getComponentDimensions();
@@ -205,19 +205,6 @@ void CropVertexGeometry::dataCheck()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CropVertexGeometry::preflight()
-{
-  // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true);              // Set the fact that we are preflighting.
-  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
-  emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted();          // We are done preflighting this filter
-  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
-}
 
 // -----------------------------------------------------------------------------
 //

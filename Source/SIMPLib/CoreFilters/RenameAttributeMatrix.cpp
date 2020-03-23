@@ -125,7 +125,7 @@ void RenameAttributeMatrix::dataCheck()
   }
 
   DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer(this, getSelectedAttributeMatrixPath().getDataContainerName());
-  getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedAttributeMatrixPath(), -301);
+  getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, getSelectedAttributeMatrixPath(), -301);
 
   if(getErrorCode() < 0)
   {
@@ -146,18 +146,6 @@ void RenameAttributeMatrix::dataCheck()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RenameAttributeMatrix::preflight()
-{
-  setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
-  dataCheck();
-  emit preflightExecuted();
-  setInPreflight(false);
-}
 
 // -----------------------------------------------------------------------------
 //

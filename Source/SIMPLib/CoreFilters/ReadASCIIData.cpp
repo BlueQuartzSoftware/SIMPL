@@ -352,57 +352,57 @@ void ReadASCIIData::dataCheck()
 
     if(dataType == SIMPL::TypeNames::Double)
     {
-      DoubleArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      DoubleArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType>(this, arrayPath, 0, cDims, "");
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Float)
     {
-      FloatArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      FloatArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType>(this, arrayPath, 0, cDims, "");
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Int8)
     {
-      Int8ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      Int8ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType>(this, arrayPath, 0, cDims, "");
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Int16)
     {
-      Int16ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      Int16ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType>(this, arrayPath, 0, cDims, "");
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Int32)
     {
-      Int32ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      Int32ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType>(this, arrayPath, 0, cDims, "");
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Int64)
     {
-      Int64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      Int64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType>(this, arrayPath, 0, cDims, "");
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::UInt8)
     {
-      UInt8ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      UInt8ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType>(this, arrayPath, 0, cDims, "");
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::UInt16)
     {
-      UInt16ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      UInt16ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType>(this, arrayPath, 0, cDims, "");
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::UInt32)
     {
-      UInt32ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      UInt32ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType>(this, arrayPath, 0, cDims, "");
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::UInt64)
     {
-      UInt64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      UInt64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType>(this, arrayPath, 0, cDims, "");
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::String)
     {
-      StringDataArray::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray, AbstractFilter, QString>(this, arrayPath, "", cDims, "");
+      StringDataArray::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray>(this, arrayPath, "", cDims, "");
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else
@@ -414,19 +414,6 @@ void ReadASCIIData::dataCheck()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ReadASCIIData::preflight()
-{
-  // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true);              // Set the fact that we are preflighting.
-  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
-  emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted();          // We are done preflighting this filter
-  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
-}
 
 // -----------------------------------------------------------------------------
 //

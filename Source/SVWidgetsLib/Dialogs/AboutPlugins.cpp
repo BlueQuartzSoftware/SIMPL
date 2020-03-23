@@ -190,12 +190,12 @@ void AboutPlugins::addPluginToTable(ISIMPLibPlugin* plugin, int row)
 
   // Add name of plugin to the row
   QTableWidgetItem* nameItem = new QTableWidgetItem(plugin->getPluginBaseName());
-  nameItem->setBackgroundColor(defaultColor);
+  nameItem->setBackground(defaultColor);
   pluginsTable->setItem(row, NAME_INDEX, nameItem);
 
   // Set checkbox cell to default settings
   QTableWidgetItem* enabledItem = new QTableWidgetItem();
-  enabledItem->setBackgroundColor(defaultColor);
+  enabledItem->setBackground(defaultColor);
   pluginsTable->setItem(row, ENABLED_INDEX, enabledItem);
 
   // Add check box that is centered in the cell
@@ -223,12 +223,12 @@ void AboutPlugins::addPluginToTable(ISIMPLibPlugin* plugin, int row)
   {
     statusItem = new QTableWidgetItem("Disabled");
   }
-  statusItem->setBackgroundColor(Qt::white);
+  statusItem->setBackground(Qt::white);
   pluginsTable->setItem(row, STATUS_INDEX, statusItem);
 
   // Add version information
   QTableWidgetItem* versionItem = new QTableWidgetItem(plugin->getVersion());
-  versionItem->setBackgroundColor(Qt::white);
+  versionItem->setBackground(Qt::white);
   pluginsTable->setItem(row, VERSION_INDEX, versionItem);
 }
 
@@ -248,23 +248,23 @@ void AboutPlugins::addPlaceHolderToTable(SIMPLibPlugin* plugin, int row)
   // Add name of plugin to the row
   QTableWidgetItem* nameItem = new QTableWidgetItem(plugin->getPluginName());
   nameItem->setFont(errorFont);
-  nameItem->setBackgroundColor(errorColor);
+  nameItem->setBackground(errorColor);
   pluginsTable->setItem(row, NAME_INDEX, nameItem);
 
   // Add empty checkbox item to the row
   QTableWidgetItem* enabledItem = new QTableWidgetItem();
-  enabledItem->setBackgroundColor(errorColor);
+  enabledItem->setBackground(errorColor);
   pluginsTable->setItem(row, ENABLED_INDEX, enabledItem);
 
   // Add status to the row
   QTableWidgetItem* statusItem = new QTableWidgetItem(NOT_FOUND_STRING);
-  statusItem->setBackgroundColor(errorColor);
+  statusItem->setBackground(errorColor);
   statusItem->setFont(errorFont);
   pluginsTable->setItem(row, STATUS_INDEX, statusItem);
 
   // Add version information
   QTableWidgetItem* versionItem = new QTableWidgetItem(plugin->getVersion());
-  versionItem->setBackgroundColor(errorColor);
+  versionItem->setBackground(errorColor);
   pluginsTable->setItem(row, VERSION_INDEX, versionItem);
 }
 

@@ -34,6 +34,7 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "SVPipelineView.h"
 
+#include <algorithm>
 #include <iostream>
 #include <utility>
 
@@ -729,7 +730,7 @@ void SVPipelineView::copySelectedFilters()
 std::vector<AbstractFilter::Pointer> SVPipelineView::getSelectedFilters()
 {
   QModelIndexList selectedIndexes = selectionModel()->selectedRows();
-  qSort(selectedIndexes);
+  std::sort(selectedIndexes.begin(), selectedIndexes.end());
 
   std::vector<AbstractFilter::Pointer> filters;
   PipelineModel* model = getPipelineModel();
@@ -760,8 +761,7 @@ void SVPipelineView::listenDeleteKeyTriggered()
   {
     return;
   }
-
-  qSort(selectedIndexes);
+  std::sort(selectedIndexes.begin(), selectedIndexes.end());
 
   PipelineModel* model = getPipelineModel();
 
@@ -883,7 +883,7 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
     return;
   }
 
-  qSort(selectedIndexes);
+  std::sort(selectedIndexes.begin(), selectedIndexes.end());
 
   QPixmap dragPixmap = getDraggingPixmap(selectedIndexes);
 
@@ -1418,7 +1418,7 @@ void SVPipelineView::setFiltersEnabled(QModelIndexList indexes, bool enabled)
 void SVPipelineView::setSelectedFiltersEnabled(bool enabled)
 {
   QModelIndexList indexes = selectionModel()->selectedRows();
-  qSort(indexes);
+  std::sort(indexes.begin(), indexes.end());
   setFiltersEnabled(indexes, enabled);
 }
 
@@ -1676,7 +1676,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QMode
 {
   PipelineModel* model = getPipelineModel();
   QModelIndexList selectedIndexes = selectionModel()->selectedRows();
-  qSort(selectedIndexes);
+  std::sort(selectedIndexes.begin(), selectedIndexes.end());
 
   QMenu menu;
 

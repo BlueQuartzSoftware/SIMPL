@@ -35,15 +35,15 @@
 
 #include <QtCore/QDebug>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
-
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
+#include "SIMPLib/CoreFilters/ConditionalSetValue.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
@@ -209,7 +209,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void validateReplacedValues(IDataArray::Pointer iArray, IDataArray::Pointer cArray)
+  template <typename T>
+  void validateReplacedValues(IDataArray::Pointer iArray, IDataArray::Pointer cArray)
   {
     typename DataArray<T>::Pointer dataArrayPtr = std::dynamic_pointer_cast<DataArray<T>>(iArray);
     typename DataArray<bool>::Pointer condArrayPtr = std::dynamic_pointer_cast<DataArray<bool>>(cArray);
@@ -239,14 +240,42 @@ public:
   }
 
   // -----------------------------------------------------------------------------
+  void setPropertyAndCheckNE(ConditionalSetValue* filter, double replaceValue, const DataArrayPath& selectedArrayPath, const DataArrayPath& conditionalArrayPath, int32_t errCompare)
+  {
+    filter->setSelectedArrayPath(selectedArrayPath);
+
+    filter->setConditionalArrayPath(conditionalArrayPath);
+
+    filter->setReplaceValue(replaceValue);
+
+    filter->execute();
+    int32_t err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, errCompare);
+  }
+
+  // -----------------------------------------------------------------------------
+  template <typename T>
+  void setPropertyAndCheckEQ(ConditionalSetValue* filter, DataContainer::Pointer dc, double replaceValue, const DataArrayPath& selectedArrayPath, const DataArrayPath& conditionalArrayPath)
+  {
+    filter->setSelectedArrayPath(selectedArrayPath);
+
+    filter->setConditionalArrayPath(conditionalArrayPath);
+
+    filter->setReplaceValue(replaceValue);
+    filter->execute();
+    int32_t err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, 0);
+
+    IDataArray::Pointer dataArray = dc->getAttributeMatrix(selectedArrayPath.getAttributeMatrixName())->getAttributeArray(selectedArrayPath.getDataArrayName());
+    IDataArray::Pointer condArray = dc->getAttributeMatrix(conditionalArrayPath.getAttributeMatrixName())->getAttributeArray(conditionalArrayPath.getDataArrayName());
+    validateReplacedValues<T>(dataArray, condArray);
+  }
+
+  // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void validateReplaceValue(AbstractFilter::Pointer filter, DataContainerArray::Pointer dca)
+  void validateReplaceValue(ConditionalSetValue* filter, DataContainerArray::Pointer dca)
   {
-    QVariant var;
-    bool propWasSet;
-    int err = 0;
-
     DataContainer::Pointer dc = dca->getDataContainer("ConditionalSetValueTest");
     IDataArray::Pointer dataArray;
     IDataArray::Pointer condArray;
@@ -277,32 +306,29 @@ public:
 
     DataArrayPath conditionalArray("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "ConditionalArray");
 
-    // Fail if an input array is not scalar
-    SET_PROPERTIES_AND_CHECK_NE(filter, 5.0, attrMat_uint8_3, conditionalArray, -11002)
-
     // Fail if the replace value is out of range
-    SET_PROPERTIES_AND_CHECK_NE(filter, 256.0, attrMat_uint8_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 128.0, attrMat_int8_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 65536.0, attrMat_uint16_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 32768.0, attrMat_int16_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 4294967296.0, attrMat_uint32_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 2147483648.0, attrMat_int32_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 20000000000000000000.0, attrMat_uint64_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 10000000000000000000.0, attrMat_int64_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 3.41e38, attrMat_float_1, conditionalArray, -101)
+    setPropertyAndCheckNE(filter, 256.0, attrMat_uint8_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 128.0, attrMat_int8_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 65536.0, attrMat_uint16_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 32768.0, attrMat_int16_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 4294967296.0, attrMat_uint32_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 2147483648.0, attrMat_int32_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 20000000000000000000.0, attrMat_uint64_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 10000000000000000000.0, attrMat_int64_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 3.41e38, attrMat_float_1, conditionalArray, -101);
     // not checking double, because cannot make a value outside of the range
 
     // Succeed for all possible test combinations
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint8_1, conditionalArray, dataArray, condArray, uint8_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int8_1, conditionalArray, dataArray, condArray, int8_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint16_1, conditionalArray, dataArray, condArray, uint16_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int16_1, conditionalArray, dataArray, condArray, int16_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint32_1, conditionalArray, dataArray, condArray, uint32_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int32_1, conditionalArray, dataArray, condArray, int32_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint64_1, conditionalArray, dataArray, condArray, uint64_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int64_1, conditionalArray, dataArray, condArray, int64_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_float_1, conditionalArray, dataArray, condArray, float)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_double_1, conditionalArray, dataArray, condArray, double)
+    setPropertyAndCheckEQ<uint8_t>(filter, dc, 5.0, attrMat_uint8_1, conditionalArray);
+    setPropertyAndCheckEQ<int8_t>(filter, dc, 5.0, attrMat_int8_1, conditionalArray);
+    setPropertyAndCheckEQ<uint16_t>(filter, dc, 5.0, attrMat_uint16_1, conditionalArray);
+    setPropertyAndCheckEQ<int16_t>(filter, dc, 5.0, attrMat_int16_1, conditionalArray);
+    setPropertyAndCheckEQ<uint32_t>(filter, dc, 5.0, attrMat_uint32_1, conditionalArray);
+    setPropertyAndCheckEQ<int32_t>(filter, dc, 5.0, attrMat_int32_1, conditionalArray);
+    setPropertyAndCheckEQ<uint64_t>(filter, dc, 5.0, attrMat_uint64_1, conditionalArray);
+    setPropertyAndCheckEQ<int64_t>(filter, dc, 5.0, attrMat_int64_1, conditionalArray);
+    setPropertyAndCheckEQ<float>(filter, dc, 5.0, attrMat_float_1, conditionalArray);
+    setPropertyAndCheckEQ<double>(filter, dc, 5.0, attrMat_double_1, conditionalArray);
   }
 
   // -----------------------------------------------------------------------------
@@ -312,17 +338,12 @@ public:
   {
     DataContainerArray::Pointer dca = initializeDataContainerArray();
 
-    QString filtName = "ConditionalSetValue";
-    FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer factory = fm->getFactoryFromClassName(filtName);
-    DREAM3D_REQUIRE(factory.get() != nullptr)
-
-    AbstractFilter::Pointer conditionalSetValueFilter = factory->create();
+    ConditionalSetValue::Pointer conditionalSetValueFilter = ConditionalSetValue::New();
     DREAM3D_REQUIRE(conditionalSetValueFilter.get() != nullptr)
 
     conditionalSetValueFilter->setDataContainerArray(dca);
 
-    validateReplaceValue(conditionalSetValueFilter, dca);
+    validateReplaceValue(conditionalSetValueFilter.get(), dca);
 
     return EXIT_SUCCESS;
   }

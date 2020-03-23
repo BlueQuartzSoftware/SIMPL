@@ -109,7 +109,7 @@ void SplitAttributeArray::dataCheck()
   clearWarningCode();
   initialize();
 
-  m_InputArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getInputArrayPath());
+  m_InputArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, getInputArrayPath());
 
   if(getErrorCode() < 0)
   {
@@ -152,19 +152,6 @@ void SplitAttributeArray::dataCheck()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SplitAttributeArray::preflight()
-{
-  // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true);              // Set the fact that we are preflighting.
-  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
-  emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted();          // We are done preflighting this filter
-  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
-}
 
 // -----------------------------------------------------------------------------
 //

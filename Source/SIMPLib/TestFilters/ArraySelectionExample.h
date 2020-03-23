@@ -161,19 +161,13 @@ public:
   */
   void preflight() override;
 
-signals:
-  void updateFilterParameters(AbstractFilter* filter);
-  void parametersChanged();
-  void preflightAboutToExecute();
-  void preflightExecuted();
-
 protected:
   ArraySelectionExample();
 
   /**
    * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
    */
-  void dataCheck();
+  void dataCheck() override;
 
   /**
    * @brief Initializes all the private instance variables.

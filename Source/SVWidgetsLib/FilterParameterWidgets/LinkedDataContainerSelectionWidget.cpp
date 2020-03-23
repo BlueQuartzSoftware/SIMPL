@@ -98,13 +98,13 @@ void LinkedDataContainerSelectionWidget::setupGui()
     return;
   }
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
+  connect(getFilter(), &AbstractFilter::preflightAboutToExecute, this, &LinkedDataContainerSelectionWidget::beforePreflight);
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
+  connect(getFilter(), &AbstractFilter::preflightExecuted, this, &LinkedDataContainerSelectionWidget::afterPreflight);
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &LinkedDataContainerSelectionWidget::filterNeedsInputParameters);
 
   if(getFilterParameter() == nullptr)
   {
@@ -131,7 +131,7 @@ void LinkedDataContainerSelectionWidget::widgetChanged()
 {
   int index = -1;
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  IGeometry::Pointer igeom = dca->getPrereqGeometryFromDataContainer<IGeometry, AbstractFilter>(nullptr, m_SelectedDataContainerPath->text());
+  IGeometry::Pointer igeom = dca->getPrereqGeometryFromDataContainer<IGeometry>(nullptr, m_SelectedDataContainerPath->text());
   
   if(igeom)
   {

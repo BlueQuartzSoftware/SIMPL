@@ -66,13 +66,13 @@ ScalarTypeWidget::~ScalarTypeWidget() = default;
 void ScalarTypeWidget::setupGui()
 {
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
+  connect(getFilter(), &AbstractFilter::preflightAboutToExecute, this, &ScalarTypeWidget::beforePreflight);
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
+  connect(getFilter(), &AbstractFilter::preflightExecuted, this, &ScalarTypeWidget::afterPreflight);
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &ScalarTypeWidget::filterNeedsInputParameters);
 
   connect(value, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetChanged(int)));
 

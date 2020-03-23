@@ -197,7 +197,7 @@ public:
     attrMat->insertOrAssign(foo);
 
     QString autoName = foo->getName() + "_Auto";
-    attrMat->createNonPrereqArray<DataArray<T>, AbstractFilter, T>(nullptr, autoName, static_cast<T>(10), compDims);
+    attrMat->createNonPrereqArray<DataArray<T>>(nullptr, autoName, static_cast<T>(10), compDims);
   }
 
   // -----------------------------------------------------------------------------
@@ -293,21 +293,21 @@ public:
     // 1D VolumeDataContainer
     tupleDims.push_back(nx);
     {
-      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "1D_VolumeDataContainer", DataContainerID1);
+      DataContainer::Pointer dc = dca->createNonPrereqDataContainer(nullptr, "1D_VolumeDataContainer", DataContainerID1);
       PopulateVolumeDataContainer(dc, tupleDims, "1D_AttributeMatrix");
     }
 
     // 2D VolumeDataContainer
     tupleDims.push_back(ny);
     {
-      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "2D_VolumeDataContainer", DataContainerID2);
+      DataContainer::Pointer dc = dca->createNonPrereqDataContainer(nullptr, "2D_VolumeDataContainer", DataContainerID2);
       PopulateVolumeDataContainer(dc, tupleDims, "2D_AttributeMatrix");
     }
 
     // 3D VolumeDataContainer
     tupleDims.push_back(nz);
     {
-      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "3D_VolumeDataContainer", DataContainerID3);
+      DataContainer::Pointer dc = dca->createNonPrereqDataContainer(nullptr, "3D_VolumeDataContainer", DataContainerID3);
       PopulateVolumeDataContainer(dc, tupleDims, "3D_AttributeMatrix");
     }
 
@@ -500,7 +500,7 @@ public:
     DREAM3D_REQUIRE_VALID_POINTER(ida.get())
 
     std::vector<size_t> dims(1, 1);
-    t = attrMat->getPrereqArray<T, AbstractFilter>(nullptr, "Test", -723, dims);
+    t = attrMat->getPrereqArray<T>(nullptr, "Test", -723, dims);
     DREAM3D_REQUIRE_VALID_POINTER(ida.get())
 
     // Remove the AttributeArray from the AttributeMatrix
@@ -514,7 +514,7 @@ public:
     ida = attrMat->getAttributeArray("Test");
     DREAM3D_REQUIRE_NULL_POINTER(ida.get())
 
-    t = attrMat->getPrereqArray<T, AbstractFilter>(nullptr, "Test", -723, dims);
+    t = attrMat->getPrereqArray<T>(nullptr, "Test", -723, dims);
     DREAM3D_REQUIRE_NULL_POINTER(t.get())
 
     // Remove the AttributeMatrix to setup for the next test.

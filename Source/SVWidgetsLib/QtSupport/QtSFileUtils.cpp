@@ -99,12 +99,11 @@ QString QtSFileUtils::GenerateFileSystemPath(const QString& pathEnding)
 // -----------------------------------------------------------------------------
 QString QtSFileUtils::GetPathSeperator()
 {
-  QString sep(":"); // Assume : on Linux and macOS and unix
-  if(QSysInfo::windowsVersion() != QSysInfo::WV_None)
-  {
-    sep = QString(";");
-  }
-  return sep;
+#if defined(Q_OS_WIN)
+  return QString(";");
+#else
+  return QString(":");
+#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -144,38 +143,39 @@ QString QtSFileUtils::FindInPath(const QString& exe)
 void QtSFileUtils::ShowPathInGui(QWidget* parent, const QString& pathIn)
 {
   const QFileInfo fileInfo(pathIn);
-  if(QSysInfo::windowsVersion() != QSysInfo::WV_None)
+#if defined(Q_OS_WIN)
+
+  const QString explorer = FindInPath(QLatin1String("explorer.exe"));
+  if(explorer.isEmpty())
   {
-    const QString explorer = FindInPath(QLatin1String("explorer.exe"));
-    if(explorer.isEmpty())
-    {
-      QMessageBox::warning(parent, QString("Launching Windows Explorer Failed"), QString("Could not find explorer.exe in path to launch Windows Explorer."));
-      return;
-    }
-    QStringList param;
-    if(!fileInfo.isDir())
-    {
-      param += QLatin1String("/select,");
-    }
-    param += QDir::toNativeSeparators(fileInfo.canonicalFilePath());
-    QProcess::startDetached(explorer, param);
+    QMessageBox::warning(parent, QString("Launching Windows Explorer Failed"), QString("Could not find explorer.exe in path to launch Windows Explorer."));
+    return;
   }
-  else if(QSysInfo::MacVersion() != QSysInfo::MV_None)
+  QStringList param;
+  if(!fileInfo.isDir())
   {
-    QStringList scriptArgs;
-    scriptArgs << QLatin1String("-e") << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"").arg(fileInfo.absoluteFilePath());
-    QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
-    scriptArgs.clear();
-    scriptArgs << QLatin1String("-e") << QLatin1String("tell application \"Finder\" to activate");
-    QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
+    param += QLatin1String("/select,");
   }
-  else
-  {
-    // we cannot select a file here, because no file browser really supports it...
-    QString s("file://");
-    s = s + pathIn;
-    QDesktopServices::openUrl(s);
-  }
+  param += QDir::toNativeSeparators(fileInfo.canonicalFilePath());
+  QProcess::startDetached(explorer, param);
+
+#elif defined(Q_OS_MAC)
+
+  QStringList scriptArgs;
+  scriptArgs << QLatin1String("-e") << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"").arg(fileInfo.absoluteFilePath());
+  QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
+  scriptArgs.clear();
+  scriptArgs << QLatin1String("-e") << QLatin1String("tell application \"Finder\" to activate");
+  QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
+
+#else
+
+  // we cannot select a file here, because no file browser really supports it...
+  QString s("file://");
+  s = s + pathIn;
+  QDesktopServices::openUrl(s);
+
+#endif
 }
 
 // -----------------------------------------------------------------------------

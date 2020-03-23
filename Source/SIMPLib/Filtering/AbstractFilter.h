@@ -36,7 +36,6 @@
 #pragma once
 
 #include <memory>
-
 #include <map>
 
 #include <QtCore/QString>
@@ -83,7 +82,6 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
 #ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(AbstractFilter)
   PYB11_SHARED_POINTERS(AbstractFilter)
-  PYB11_STATIC_NEW_MACRO(AbstractFilter)
   PYB11_PROPERTY(QString NameOfClass READ getNameOfClass)  
   PYB11_PROPERTY(QString GroupName READ getGroupName)
   PYB11_PROPERTY(QString SubGroupName READ getSubGroupName)
@@ -128,8 +126,6 @@ public:
    * @brief Returns the name of the class for AbstractFilter
    */
   static QString ClassName();
-
-  static Pointer New();
 
   ~AbstractFilter() override;
 
@@ -235,7 +231,7 @@ public:
   /**
    * @brief execute Implements the main functionality of the filter
    */
-  virtual void execute();
+  virtual void execute() = 0;
 
   /**
    * @brief preflight Communicates with the GUI to request user settings for the filter and
@@ -501,6 +497,28 @@ signals:
   */
   void dataArrayPathUpdated(const QString& propertyName, const DataArrayPath::RenameType& renamePath);
 
+  /**
+   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+   * be pushed from a user-facing control (such as a widget)
+   * @param filter Filter instance pointer
+   */
+  void updateFilterParameters(AbstractFilter* filter);
+
+  /**
+   * @brief parametersChanged Emitted when any Filter parameter is changed internally
+   */
+  void parametersChanged();
+
+  /**
+   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+   */
+  void preflightAboutToExecute();
+
+  /**
+   * @brief preflightExecuted Emitted just after calling dataCheck()
+   */
+  void preflightExecuted();
+
 public slots:
 
   /**
@@ -530,6 +548,11 @@ public slots:
 
 protected:
   AbstractFilter();
+
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  virtual void dataCheck() = 0;
 
   /**
    * @brief Checks if the path matches the one saved with the specified ID.  Index 0 is used for
@@ -565,7 +588,6 @@ private:
   AbstractFilter::WeakPointer m_NextFilter = {};
 
   bool m_Cancel;
-  QUuid m_Uuid;
   int m_ErrorCode = 0;
   int m_WarningCode = 0;
 

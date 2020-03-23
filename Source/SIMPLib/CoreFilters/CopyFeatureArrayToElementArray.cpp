@@ -128,7 +128,7 @@ void CopyFeatureArrayToElementArray::dataCheck()
   }
 
   std::vector<size_t> cDims(1, 1);
-  m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(),
+  m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>>(this, getFeatureIdsArrayPath(),
                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_FeatureIdsPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
@@ -136,10 +136,10 @@ void CopyFeatureArrayToElementArray::dataCheck()
   } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   m_InArrayPtr =
-      getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedFeatureArrayPath()); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+      getDataContainerArray()->getPrereqIDataArrayFromPath(this, getSelectedFeatureArrayPath()); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
 
   DataArrayPath tempPath(getFeatureIdsArrayPath().getDataContainerName(), getFeatureIdsArrayPath().getAttributeMatrixName(), "");
-  getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, tempPath, -301);
+  getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, tempPath, -301);
 
   if(getErrorCode() < 0)
   {
@@ -150,18 +150,6 @@ void CopyFeatureArrayToElementArray::dataCheck()
   TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, m_InArrayPtr.lock()->getComponentDimensions(), m_InArrayPtr.lock(), ElementArrayID);
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CopyFeatureArrayToElementArray::preflight()
-{
-  setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
-  dataCheck();
-  emit preflightExecuted();
-  setInPreflight(false);
-}
 
 // -----------------------------------------------------------------------------
 //

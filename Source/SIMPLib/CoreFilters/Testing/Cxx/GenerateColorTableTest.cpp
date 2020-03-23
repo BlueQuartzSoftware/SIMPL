@@ -233,7 +233,7 @@ public:
     // Validate Results
     {
       DataArrayPath daPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "CI_RGB");
-      UInt8ArrayType::Pointer da = dca->getPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(nullptr, daPath, std::vector<size_t>(1, 3));
+      UInt8ArrayType::Pointer da = dca->getPrereqArrayFromPath<UInt8ArrayType>(nullptr, daPath, std::vector<size_t>(1, 3));
       if(da.get() != nullptr)
       {
         QFile file(presetFilePath);
@@ -260,7 +260,7 @@ public:
     }
 
     DataArrayPath amPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "");
-    AttributeMatrix::Pointer am = dca->getPrereqAttributeMatrixFromPath<AbstractFilter>(nullptr, amPath, -300);
+    AttributeMatrix::Pointer am = dca->getPrereqAttributeMatrixFromPath(nullptr, amPath, -300);
     am->removeAttributeArray("CI_RGB");
   }
 

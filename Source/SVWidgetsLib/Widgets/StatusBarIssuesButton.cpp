@@ -5,6 +5,8 @@
 #include <QtGui/QPainter>
 #include <QtWidgets/QStyleOption>
 
+#include "SIMPLib/Common/QtBackwardCompatibilityMacro.h"
+
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // -----------------------------------------------------------------------------
@@ -39,7 +41,7 @@ void StatusBarIssuesButton::updateMinimumWidth()
 
     QFontMetrics fontMetrics(font);
     QString number = QString::number(m_ErrorBadgeCount + m_WarningBadgeCount);
-    int fw = fontMetrics.width(number);
+    int fw = fontMetrics.QFONTMETRICS_WIDTH(number);
 
     m_BadgeWidth = fw + (2 * m_BadgeMargin);
     setMinimumWidth(110 + m_BadgeWidth);
@@ -114,7 +116,7 @@ void StatusBarIssuesButton::paintEvent(QPaintEvent* event)
   {
 
     QString number = QString::number(m_ErrorBadgeCount + m_WarningBadgeCount);
-    int fw = fontMetrics.width(number);
+    int fw = fontMetrics.QFONTMETRICS_WIDTH(number);
 
     QPainterPath badgePath;
     badgePath.addRoundedRect(rect.width() - m_BadgeWidth - getTextMargin(), // X

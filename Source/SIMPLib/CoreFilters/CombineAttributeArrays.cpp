@@ -275,7 +275,7 @@ void CombineAttributeArrays::dataCheck()
   for(int32_t i = 0; i < paths.count(); i++)
   {
     DataArrayPath path = paths.at(i);
-    IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);
+    IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, path);
     if(nullptr != ptr.lock())
     {
       m_SelectedWeakPtrVector.push_back(ptr);
@@ -308,18 +308,6 @@ void CombineAttributeArrays::dataCheck()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CombineAttributeArrays::preflight()
-{
-  setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
-  dataCheck();
-  emit preflightExecuted();
-  setInPreflight(false);
-}
 
 // -----------------------------------------------------------------------------
 //
@@ -354,7 +342,8 @@ std::list<DataArrayPath> CombineAttributeArrays::getDeletedPaths()
 {
   if(getMoveValues())
   {
-    return getSelectedDataArrayPaths().toList().toStdList();
+    QList<DataArrayPath> tList = getSelectedDataArrayPaths().toList();
+    return std::list<DataArrayPath>(tList.begin(), tList.end());
   }
   return std::list<DataArrayPath>();
 }
