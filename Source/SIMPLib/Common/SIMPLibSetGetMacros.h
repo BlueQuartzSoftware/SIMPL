@@ -342,16 +342,16 @@ public:                                                                         
  */
 
 /**
-* @brief PYB11_CREATE_BINDINGS This macro lets the wrapper know that we want to
-* wrap this class with Python bindings. It should only take a single argument
-* which is the name of the class. If this line is commented out using the standard
-* C++ style of single line comment then <b>NO WRAPPING</b> will be performed
-* on the class.
-* @code
-* PYB11_CREATE_BINDINGS(AbstractFilter)
-* @endcode
-*/
-#define PYB11_CREATE_BINDINGS(...)
+ * @brief PYB11_BEGIN_BINDINGS This macro lets the wrapper know that we want to
+ * wrap this class with Python bindings. It should only take a single argument
+ * which is the name of the class. If this line is commented out using the standard
+ * C++ style of single line comment then <b>NO WRAPPING</b> will be performed
+ * on the class.
+ * @code
+ * PYB11_BEGIN_BINDINGS(AbstractFilter)
+ * @endcode
+ */
+#define PYB11_BEGIN_BINDINGS(...)
 
 /**
 * @brief PYB11_NO_BINDINGS This macro will ensure that the class is NOT wrapped

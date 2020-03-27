@@ -49,17 +49,15 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(ConvertData SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(ConvertData SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(ConvertData)
     PYB11_FILTER_NEW_MACRO(ConvertData)
-    PYB11_FILTER_PARAMETER(SIMPL::NumericTypes::Type, ScalarType)
-    PYB11_FILTER_PARAMETER(QString, OutputArrayName)
-    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedCellArrayPath)
     PYB11_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
     PYB11_PROPERTY(QString OutputArrayName READ getOutputArrayName WRITE setOutputArrayName)
     PYB11_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = ConvertData;

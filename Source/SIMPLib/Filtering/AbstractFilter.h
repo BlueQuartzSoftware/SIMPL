@@ -79,8 +79,8 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   
   // This line MUST be first when exposing a class and properties to Python
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(AbstractFilter)
   PYB11_SHARED_POINTERS(AbstractFilter)
   PYB11_PROPERTY(QString NameOfClass READ getNameOfClass)  
   PYB11_PROPERTY(QString GroupName READ getGroupName)
@@ -94,7 +94,6 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_PROPERTY(int WarningCode READ getWarningCode)
   PYB11_PROPERTY(bool InPreflight READ getInPreflight WRITE setInPreflight)
   PYB11_PROPERTY(int PipelineIndex READ getPipelineIndex WRITE setPipelineIndex)
-
   PYB11_METHOD(void generateHtmlSummary)
   PYB11_METHOD(void execute)
   PYB11_METHOD(void preflight)
@@ -105,7 +104,8 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_METHOD(void notifyProgressMessage ARGS progress messageText)
   PYB11_METHOD(void clearErrorCode)
   PYB11_METHOD(void clearWarningCode)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
   // Friend declarations for RenameDataPath so that it can set and check the instance's created data by ID.
   friend void RenameDataPath::AlertFilterCreatedPath(AbstractFilter*, RenameDataPath::DataID_t, const DataArrayPath&);

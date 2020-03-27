@@ -52,17 +52,15 @@ class SIMPLib_EXPORT CopyFeatureArrayToElementArray : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(CopyFeatureArrayToElementArray SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(CopyFeatureArrayToElementArray SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(CopyFeatureArrayToElementArray)
     PYB11_FILTER_NEW_MACRO(CopyFeatureArrayToElementArray)
-    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedFeatureArrayPath)
-    PYB11_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
-    PYB11_FILTER_PARAMETER(QString, CreatedArrayName)
     PYB11_PROPERTY(DataArrayPath SelectedFeatureArrayPath READ getSelectedFeatureArrayPath WRITE setSelectedFeatureArrayPath)
     PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
     PYB11_PROPERTY(QString CreatedArrayName READ getCreatedArrayName WRITE setCreatedArrayName)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = CopyFeatureArrayToElementArray;

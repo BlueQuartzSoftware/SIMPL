@@ -49,10 +49,11 @@
 class SIMPLib_EXPORT IGeometryGrid : public IGeometry
 {
   // This class needs to be wrapped so Python/Pybind11 can do the proper casting
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(IGeometryGrid SUPERCLASS IGeometry)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(IGeometryGrid SUPERCLASS IGeometry)
   PYB11_SHARED_POINTERS(IGeometryGrid)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = IGeometryGrid;

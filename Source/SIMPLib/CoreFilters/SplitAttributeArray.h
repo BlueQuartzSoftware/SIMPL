@@ -53,15 +53,14 @@ class SIMPLib_EXPORT SplitAttributeArray : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(SplitAttributeArray SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(SplitAttributeArray SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(SplitAttributeArray)
   PYB11_FILTER_NEW_MACRO(SplitAttributeArray)
-  PYB11_FILTER_PARAMETER(DataArrayPath, InputArrayPath)
-  PYB11_FILTER_PARAMETER(QString, SplitArraysSuffix)
   PYB11_PROPERTY(DataArrayPath InputArrayPath READ getInputArrayPath WRITE setInputArrayPath)
   PYB11_PROPERTY(QString SplitArraysSuffix READ getSplitArraysSuffix WRITE setSplitArraysSuffix)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = SplitAttributeArray;

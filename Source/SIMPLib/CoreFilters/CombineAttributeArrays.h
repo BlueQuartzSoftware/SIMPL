@@ -50,18 +50,15 @@ class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(CombineAttributeArrays SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(CombineAttributeArrays SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(CombineAttributeArrays)
   PYB11_FILTER_NEW_MACRO(CombineAttributeArrays)
-  PYB11_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedDataArrayPaths)
-  PYB11_FILTER_PARAMETER(QString, StackedDataArrayName)
-  PYB11_FILTER_PARAMETER(bool, NormalizeData)
-  PYB11_FILTER_PARAMETER(bool, MoveValues)
   PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
   PYB11_PROPERTY(QString StackedDataArrayName READ getStackedDataArrayName WRITE setStackedDataArrayName)
   PYB11_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = CombineAttributeArrays;

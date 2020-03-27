@@ -48,9 +48,9 @@
 class SIMPLib_EXPORT ComparisonSet : public AbstractComparison
 {
   using AbstractComparisonPtr = AbstractComparison::Pointer;
-#ifdef SIMPL_ENABLE_PYTHON
+  // Start Python bindings declarations
   // clang-format off
-  PYB11_CREATE_BINDINGS(ComparisonSet SUPERCLASS AbstractComparison)
+  PYB11_BEGIN_BINDINGS(ComparisonSet SUPERCLASS AbstractComparison)
   PYB11_SHARED_POINTERS(ComparisonSet)
   PYB11_STATIC_NEW_MACRO(ComparisonSet)
   PYB11_CREATION()
@@ -59,8 +59,9 @@ class SIMPLib_EXPORT ComparisonSet : public AbstractComparison
   PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
   PYB11_METHOD(void addComparison ARGS AbstractComparisonPtr,comparison)
   PYB11_METHOD(void insertComparison ARGS int,index AbstractComparisonPtr,comparison)
+  PYB11_END_BINDINGS()
   // clang-format on
-#endif
+  // End Python bindings declarations
 
 public:
   using Self = ComparisonSet;

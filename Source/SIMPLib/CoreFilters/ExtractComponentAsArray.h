@@ -53,17 +53,15 @@ class SIMPLib_EXPORT ExtractComponentAsArray : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(ExtractComponentAsArray SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(ExtractComponentAsArray SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(ExtractComponentAsArray)
     PYB11_FILTER_NEW_MACRO(ExtractComponentAsArray)
-    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
-    PYB11_FILTER_PARAMETER(int, CompNumber)
-    PYB11_FILTER_PARAMETER(QString, NewArrayArrayName)
     PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
     PYB11_PROPERTY(int CompNumber READ getCompNumber WRITE setCompNumber)
     PYB11_PROPERTY(QString NewArrayArrayName READ getNewArrayArrayName WRITE setNewArrayArrayName)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = ExtractComponentAsArray;

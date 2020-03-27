@@ -54,15 +54,17 @@ class SIMPLH5DataReaderRequirements;
  */
 class SIMPLib_EXPORT DataArrayProxy
 {
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(DataArrayProxy)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(DataArrayProxy)
   PYB11_CREATION()
   PYB11_PROPERTY(std::vector<size_t> TupleDims READ getTupleDims WRITE setTupleDims)
   PYB11_PROPERTY(std::vector<size_t> CompDims READ getCompDims WRITE setCompDims)
   PYB11_PROPERTY(QString Path READ getPath WRITE setPath)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(uint8_t Flag READ getFlag WRITE setFlag)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
+
 public:
   using CompDimsVector = std::vector<std::vector<size_t>>;
 

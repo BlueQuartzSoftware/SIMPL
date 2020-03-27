@@ -52,15 +52,15 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(SIMPLH5DataReader)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(SIMPLH5DataReader)
     PYB11_SHARED_POINTERS(SIMPLH5DataReader)
     PYB11_STATIC_NEW_MACRO(SIMPLH5DataReader)
-
     PYB11_METHOD(bool openFile ARGS filePath)
     PYB11_METHOD(bool closeFile)
     PYB11_METHOD(DataContainerArrayProxy readDataContainerArrayStructure ARGS SIMPLH5DataReaderRequirements err)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = SIMPLH5DataReader;

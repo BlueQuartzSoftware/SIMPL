@@ -47,10 +47,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-TransformationStatsData::TransformationStatsData()
-{
-  initialize();
-}
+TransformationStatsData::TransformationStatsData() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -133,18 +130,6 @@ StatsData::Pointer TransformationStatsData::deepCopy()
   SD_DEEP_COPY_VECTOR(AxisODF_Weights)
 
   return ptr;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void TransformationStatsData::initialize()
-{
-  m_FeatureSize_DistType = SIMPL::DistributionType::LogNormal;
-  m_BOverA_DistType = SIMPL::DistributionType::Beta;
-  m_COverA_DistType = SIMPL::DistributionType::Beta;
-  m_Neighbors_DistType = SIMPL::DistributionType::LogNormal;
-  m_Omegas_DistType = SIMPL::DistributionType::Beta;
 }
 
 // -----------------------------------------------------------------------------

@@ -49,13 +49,13 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(RemoveArrays SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(RemoveArrays SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(RemoveArrays)
     PYB11_FILTER_NEW_MACRO(RemoveArrays)
-    PYB11_FILTER_PARAMETER(DataContainerArrayProxy, DataArraysToRemove)
     PYB11_PROPERTY(DataContainerArrayProxy DataArraysToRemove READ getDataArraysToRemove WRITE setDataArraysToRemove)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = RemoveArrays;

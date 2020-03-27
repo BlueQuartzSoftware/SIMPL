@@ -358,11 +358,6 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     StatsData::Pointer deepCopy() override;
 
     /**
-     * @brief initialize
-     */
-    void initialize() override;
-
-    /**
      * @brief writeHDF5Data
      * @param groupId
      * @return
@@ -391,34 +386,34 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
   protected:
     TransformationStatsData();
 
-  public:
-    TransformationStatsData(const TransformationStatsData&) = delete; // Copy Constructor Not Implemented
-    TransformationStatsData(TransformationStatsData&&) = delete;      // Move Constructor Not Implemented
-    TransformationStatsData& operator=(const TransformationStatsData&) = delete; // Copy Assignment Not Implemented
-    TransformationStatsData& operator=(TransformationStatsData&&) = delete;      // Move Assignment Not Implemented
-
   private:
     std::array<float, 3> m_FeatureDiameterInfo;
 
     float m_BoundaryArea = {};
     float m_ParentPhase = {};
     VectorOfFloatArray m_FeatureSizeDistribution = {};
-    uint32_t m_FeatureSize_DistType = {};
+    uint32_t m_FeatureSize_DistType = SIMPL::DistributionType::LogNormal;
     FloatArrayType::Pointer m_BinNumbers = {};
     VectorOfFloatArray m_FeatureSize_BOverA = {};
-    uint32_t m_BOverA_DistType = {};
+    uint32_t m_BOverA_DistType = SIMPL::DistributionType::Beta;
     VectorOfFloatArray m_FeatureSize_COverA = {};
-    uint32_t m_COverA_DistType = {};
+    uint32_t m_COverA_DistType = SIMPL::DistributionType::Beta;
     VectorOfFloatArray m_FeatureSize_Neighbors = {};
-    uint32_t m_Neighbors_DistType = {};
+    uint32_t m_Neighbors_DistType = SIMPL::DistributionType::LogNormal;
     VectorOfFloatArray m_FeatureSize_Omegas = {};
-    uint32_t m_Omegas_DistType = {};
+    uint32_t m_Omegas_DistType = SIMPL::DistributionType::Beta;
     FloatArrayType::Pointer m_MisorientationBins = {};
     VectorOfFloatArray m_MDF_Weights = {};
     FloatArrayType::Pointer m_ODF = {};
     VectorOfFloatArray m_ODF_Weights = {};
     FloatArrayType::Pointer m_AxisOrientation = {};
     VectorOfFloatArray m_AxisODF_Weights = {};
+
+  public:
+    TransformationStatsData(const TransformationStatsData&) = delete;            // Copy Constructor Not Implemented
+    TransformationStatsData(TransformationStatsData&&) = delete;                 // Move Constructor Not Implemented
+    TransformationStatsData& operator=(const TransformationStatsData&) = delete; // Copy Assignment Not Implemented
+    TransformationStatsData& operator=(TransformationStatsData&&) = delete;      // Move Assignment Not Implemented
 };
 
 

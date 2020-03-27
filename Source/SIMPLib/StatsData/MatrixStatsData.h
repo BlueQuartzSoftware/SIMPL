@@ -135,11 +135,6 @@ class SIMPLib_EXPORT MatrixStatsData : public StatsData
     StatsData::Pointer deepCopy() override;
 
     /**
-     * @brief initialize
-     */
-    void initialize() override;
-
-    /**
      * @brief writeHDF5Data
      * @param groupId
      * @return

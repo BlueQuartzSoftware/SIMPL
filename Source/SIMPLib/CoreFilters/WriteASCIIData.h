@@ -52,17 +52,10 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(WriteASCIIData SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(WriteASCIIData SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(WriteASCIIData)
     PYB11_FILTER_NEW_MACRO(WriteASCIIData)
-    PYB11_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedDataArrayPaths)
-    PYB11_FILTER_PARAMETER(QString, OutputPath)
-    PYB11_FILTER_PARAMETER(QString, OutputFilePath)
-    PYB11_FILTER_PARAMETER(int, Delimiter)
-    PYB11_FILTER_PARAMETER(QString, FileExtension)
-    PYB11_FILTER_PARAMETER(int, MaxValPerLine)
-    PYB11_FILTER_PARAMETER(int, OutputStyle)
     PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
     PYB11_PROPERTY(QString OutputPath READ getOutputPath WRITE setOutputPath)
     PYB11_PROPERTY(QString OutputFilePath READ getOutputFilePath WRITE setOutputFilePath)
@@ -70,7 +63,8 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     PYB11_PROPERTY(QString FileExtension READ getFileExtension WRITE setFileExtension)
     PYB11_PROPERTY(int MaxValPerLine READ getMaxValPerLine WRITE setMaxValPerLine)
     PYB11_PROPERTY(int OutputStyle READ getOutputStyle WRITE setOutputStyle)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = WriteASCIIData;

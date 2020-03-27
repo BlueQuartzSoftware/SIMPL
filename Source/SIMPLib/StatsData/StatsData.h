@@ -91,14 +91,15 @@ using VectorOfFloatArray = QVector<FloatArrayType::Pointer>;
 class SIMPLib_EXPORT StatsData
 {
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(StatsData)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(StatsData)
   PYB11_SHARED_POINTERS(StatsData)
   PYB11_STATIC_NEW_MACRO(StatsData)
   PYB11_METHOD(QString getStatsType)
   PYB11_METHOD(PhaseType::Type getPhaseType)
   PYB11_PROPERTY(float PhaseFraction READ getPhaseFraction WRITE setPhaseFraction)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = StatsData;
@@ -178,11 +179,6 @@ public:
    * @return
    */
   static FloatArrayType::Pointer CreateDistributionArrays(uint32_t distributionType);
-
-  /**
-   * @brief initialize
-   */
-  virtual void initialize();
 
   /**
    * @brief deepCopy
@@ -312,13 +308,13 @@ public:
 protected:
   StatsData();
 
+private:
+  QString m_Name = "StatsData";
+  float m_PhaseFraction = 0.0f;
+
 public:
   StatsData(const StatsData&) = delete;            // Copy Constructor Not Implemented
   StatsData(StatsData&&) = delete;                 // Move Constructor Not Implemented
   StatsData& operator=(const StatsData&) = delete; // Copy Assignment Not Implemented
   StatsData& operator=(StatsData&&) = delete;      // Move Assignment Not Implemented
-
-private:
-  QString m_Name = {};
-  float m_PhaseFraction = {};
 };

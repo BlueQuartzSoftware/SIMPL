@@ -47,10 +47,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PrecipitateStatsData::PrecipitateStatsData()
-{
-  initialize();
-}
+PrecipitateStatsData::PrecipitateStatsData() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -158,23 +155,6 @@ StatsData::Pointer PrecipitateStatsData::deepCopy()
   SD_DEEP_COPY_VECTOR(AxisODF_Weights)
 
   return ptr;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PrecipitateStatsData::initialize()
-{
-  m_FeatureSize_DistType = SIMPL::DistributionType::LogNormal;
-  //  m_RadialDistFunctionType = SIMPL::DistributionType::UnknownDistributionType;
-  m_BOverA_DistType = SIMPL::DistributionType::Beta;
-  m_COverA_DistType = SIMPL::DistributionType::Beta;
-  m_Clustering_DistType = SIMPL::DistributionType::LogNormal;
-  m_Omegas_DistType = SIMPL::DistributionType::Beta;
-  m_PrecipBoundaryFraction = 0.0;
-  m_FeatureDiameterInfo[0] = 0.1f; // Bin Step Size
-  m_FeatureDiameterInfo[1] = 1.0f; // MaxFeatureDiameter
-  m_FeatureDiameterInfo[2] = 0.1f; // MinFeatureDiameter
 }
 
 // -----------------------------------------------------------------------------

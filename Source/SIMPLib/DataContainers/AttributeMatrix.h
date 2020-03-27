@@ -85,8 +85,8 @@ enum RenameErrorCodes
 class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureContainerNode<IDataArray>
 {
   // clang-format off
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(AttributeMatrix)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(AttributeMatrix)
   PYB11_SHARED_POINTERS(AttributeMatrix)
   PYB11_STATIC_CREATION(New ARGS std::vector<size_t> QString AttributeMatrix::Type)
   
@@ -95,17 +95,16 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureC
  
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(std::vector<size_t> TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
-
   PYB11_METHOD(bool doesAttributeArrayExist ARGS Name)
   PYB11_METHOD(bool addOrReplaceAttributeArray OVERLOAD const.IDataArrayShPtrType.&,Data)
   PYB11_METHOD(bool insertOrAssign ARGS IDataArrayShPtrType)
-
   PYB11_METHOD(IDataArray removeAttributeArray ARGS Name)
   PYB11_METHOD(int renameAttributeArray ARGS OldName NewName OverWrite)
   PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.QString.&,Name CONST_METHOD)
   PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
+  PYB11_END_BINDINGS()
   // clang-format on
-#endif
+  // End Python bindings declarations
 
 public:
   using Self = AttributeMatrix;

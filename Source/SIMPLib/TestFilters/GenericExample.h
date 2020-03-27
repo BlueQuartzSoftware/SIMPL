@@ -66,53 +66,10 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(GenericExample SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(GenericExample SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(GenericExample)
   PYB11_FILTER_NEW_MACRO(GenericExample)
-  PYB11_FILTER_PARAMETER(QString, StlFilePrefix)
-  PYB11_FILTER_PARAMETER(bool, ShowPrefix)
-  PYB11_FILTER_PARAMETER(int, MaxIterations)
-  PYB11_FILTER_PARAMETER(Float2ndOrderPoly_t, SecondOrderACoeff)
-  PYB11_FILTER_PARAMETER(Float3rdOrderPoly_t, ThirdOrderACoeff)
-  PYB11_FILTER_PARAMETER(Float4thOrderPoly_t, FourthOrderACoeff)
-  PYB11_FILTER_PARAMETER(double, MisorientationTolerance)
-  PYB11_FILTER_PARAMETER(DataArrayPath, InputPhaseTypesArrayPath)
-  PYB11_FILTER_PARAMETER(ShapeType::Types, ShapeTypeData)
-  PYB11_FILTER_PARAMETER(int, PhaseCount)
-  PYB11_FILTER_PARAMETER(FPRangePair, InitRange)
-  PYB11_FILTER_PARAMETER(QString, EstimatedPrimaryFeatures)
-  PYB11_FILTER_PARAMETER(QString, InputFile)
-  PYB11_FILTER_PARAMETER(StackFileListInfo, InputFileListInfo)
-  PYB11_FILTER_PARAMETER(QString, SelectedXCoordArrayName)
-  PYB11_FILTER_PARAMETER(QStringList, DataArrayList)
-  PYB11_FILTER_PARAMETER(DataArrayPath, CreatedDataContainer)
-  PYB11_FILTER_PARAMETER(DataContainerArrayProxy, DcaProxy)
-  PYB11_FILTER_PARAMETER(QString, InputPath)
-  PYB11_FILTER_PARAMETER(QString, OutputFile)
-  PYB11_FILTER_PARAMETER(QString, OutputPath)
-  PYB11_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedMultiArrayPaths)
-  PYB11_FILTER_PARAMETER(bool, WriteAlignmentShifts)
-  PYB11_FILTER_PARAMETER(int, ConversionType)
-  PYB11_FILTER_PARAMETER(IntVec3Type, Dimensions)
-  PYB11_FILTER_PARAMETER(IntVec2Type, Range)
-  PYB11_FILTER_PARAMETER(FloatVec3Type, Origin)
-  PYB11_FILTER_PARAMETER(AxisAngleInput_t, CrystalSymmetryRotations)
-  PYB11_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, AttributeMatrixPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, CreatedAttributeMatrix)
-  PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
-  PYB11_FILTER_PARAMETER(int, SizeDistributionFitType)
-  PYB11_FILTER_PARAMETER(ComparisonInputs, SelectedThresholds)
-  PYB11_FILTER_PARAMETER(QString, CalcExpression)
-  PYB11_FILTER_PARAMETER(DataArrayPath, CreatedDataArray)
-  PYB11_FILTER_PARAMETER(bool, Bool1)
-  PYB11_FILTER_PARAMETER(double, Double2)
-  PYB11_FILTER_PARAMETER(bool, Bool2)
-  PYB11_FILTER_PARAMETER(int, AlgorithmSelection)
-  PYB11_FILTER_PARAMETER(int, DistanceMetric)
-  PYB11_FILTER_PARAMETER(MontageSelection, MontageSelection)
-
   PYB11_PROPERTY(QString StlFilePrefix READ getStlFilePrefix WRITE setStlFilePrefix)
   PYB11_PROPERTY(bool ShowPrefix READ getShowPrefix WRITE setShowPrefix)
   PYB11_PROPERTY(int MaxIterations READ getMaxIterations WRITE setMaxIterations)
@@ -155,7 +112,8 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(int AlgorithmSelection READ getAlgorithmSelection WRITE setAlgorithmSelection)
   PYB11_PROPERTY(int DistanceMetric READ getDistanceMetric WRITE setDistanceMetric)
   PYB11_PROPERTY(MontageSelection MontageSelection READ getMontageSelection WRITE setMontageSelection)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = GenericExample;

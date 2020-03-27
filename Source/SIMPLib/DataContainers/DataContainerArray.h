@@ -67,35 +67,27 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
 {
   Q_OBJECT
   // clang-format off
-
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(DataContainerArray)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(DataContainerArray)
   PYB11_SHARED_POINTERS(DataContainerArray)
   PYB11_STATIC_NEW_MACRO(DataContainerArray)
-
   PYB11_METHOD(bool addOrReplaceDataContainer ARGS DataContainer)
   PYB11_METHOD(bool insertOrAssign ARGS DataContainer)
-
   PYB11_METHOD(DataContainer::Pointer getDataContainer OVERLOAD const.QString.&,Name CONST_METHOD)
   PYB11_METHOD(DataContainer::Pointer getDataContainer OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
-
   PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.QString.&,Name CONST_METHOD)
   PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
-
   PYB11_METHOD(DataContainer::Pointer removeDataContainer ARGS Name)
   PYB11_METHOD(bool renameDataContainer OVERLOAD const.QString.&,OldName const.QString.&,NewName)
   PYB11_METHOD(bool renameDataContainer OVERLOAD const.DataArrayPath.&,OldPath const.DataArrayPath.&,NewPath )
-
   PYB11_METHOD(void clearDataContainers)
   PYB11_METHOD(int getNumDataContainers)
   PYB11_METHOD(void duplicateDataContainer ARGS OldName, NewName)
-
   PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix ARGS DataArrayPath)
   PYB11_METHOD(bool doesAttributeMatrixExist ARGS DataArrayPath)
-
   PYB11_METHOD(bool doesAttributeArrayExist ARGS DataArrayPath)
-#endif
-
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
   // clang-format on
 
 public:

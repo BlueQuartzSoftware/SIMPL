@@ -49,17 +49,15 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(CreateStringArray SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(CreateStringArray SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(CreateStringArray)
     PYB11_FILTER_NEW_MACRO(CreateStringArray)
-    PYB11_FILTER_PARAMETER(int, NumberOfComponents)
-    PYB11_FILTER_PARAMETER(DataArrayPath, NewArray)
-    PYB11_FILTER_PARAMETER(QString, InitializationValue)
     PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
     PYB11_PROPERTY(DataArrayPath NewArray READ getNewArray WRITE setNewArray)
     PYB11_PROPERTY(QString InitializationValue READ getInitializationValue WRITE setInitializationValue)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = CreateStringArray;

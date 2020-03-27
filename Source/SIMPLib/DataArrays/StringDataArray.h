@@ -60,9 +60,8 @@
 class SIMPLib_EXPORT StringDataArray : public IDataArray
 {
   // clang-format off
-
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(StringDataArray SUPER IDataArray)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(StringDataArray SUPER IDataArray)
   PYB11_SHARED_POINTERS(StringDataArray)
   PYB11_STATIC_NEW_MACRO(StringDataArray)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
@@ -72,8 +71,8 @@ class SIMPLib_EXPORT StringDataArray : public IDataArray
   PYB11_METHOD(void setValue ARGS size_t,i const.QString.&,value)
   PYB11_METHOD(size_t getSize)
   PYB11_METHOD(size_t getNumberOfTuples)
-#endif
-
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
   // clang-format on
 
 public:

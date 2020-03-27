@@ -166,11 +166,6 @@ class SIMPLib_EXPORT BoundaryStatsData : public StatsData
     StatsData::Pointer deepCopy() override;
 
     /**
-     * @brief initialize
-     */
-    void initialize() override;
-
-    /**
      * @brief writeHDF5Data
      * @param groupId
      * @return

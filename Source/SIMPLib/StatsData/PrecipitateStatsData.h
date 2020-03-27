@@ -1,38 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
@@ -88,12 +87,10 @@ typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
 class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
 {
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(PrecipitateStatsData SUPERCLASS StatsData)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(PrecipitateStatsData SUPERCLASS StatsData)
   PYB11_SHARED_POINTERS(PrecipitateStatsData)
   PYB11_STATIC_NEW_MACRO(PrecipitateStatsData)
-  PYB11_STATIC_CREATION(initialize)
-
   PYB11_PROPERTY(float BinStepSize READ getBinStepSize WRITE setBinStepSize)
   PYB11_PROPERTY(float MaxFeatureDiameter READ getMaxFeatureDiameter WRITE setMaxFeatureDiameter)
   PYB11_PROPERTY(float MinFeatureDiameter READ getMinFeatureDiameter WRITE setMinFeatureDiameter)
@@ -105,7 +102,8 @@ class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
   PYB11_PROPERTY(float BoundaryArea READ getBoundaryArea WRITE setBoundaryArea)
   PYB11_PROPERTY(float PrecipBoundaryFraction READ getPrecipBoundaryFraction WRITE setPrecipBoundaryFraction)
   PYB11_METHOD(QString getStatsType)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = PrecipitateStatsData;
@@ -394,11 +392,6 @@ public:
     StatsData::Pointer deepCopy() override;
 
     /**
-     * @brief initialize
-     */
-    void initialize() override;
-
-    /**
      * @brief writeHDF5Data
      * @param groupId
      * @return
@@ -434,22 +427,22 @@ public:
     PrecipitateStatsData& operator=(PrecipitateStatsData&&) = delete;      // Move Assignment Not Implemented
 
   private:
-    std::array<float, 3> m_FeatureDiameterInfo;
+    std::array<float, 3> m_FeatureDiameterInfo = {0.1f, 1.0f, 0.1f};
 
     float m_BoundaryArea = {};
-    float m_PrecipBoundaryFraction = {};
+    float m_PrecipBoundaryFraction = 0.0f;
     VectorOfFloatArray m_FeatureSizeDistribution = {};
-    uint32_t m_FeatureSize_DistType = {};
+    uint32_t m_FeatureSize_DistType = SIMPL::DistributionType::LogNormal;
     RdfData::Pointer m_RadialDistFunction = {};
     FloatArrayType::Pointer m_BinNumbers = {};
     VectorOfFloatArray m_FeatureSize_BOverA = {};
-    uint32_t m_BOverA_DistType = {};
+    uint32_t m_BOverA_DistType = SIMPL::DistributionType::Beta;
     VectorOfFloatArray m_FeatureSize_COverA = {};
-    uint32_t m_COverA_DistType = {};
+    uint32_t m_COverA_DistType = SIMPL::DistributionType::Beta;
     VectorOfFloatArray m_FeatureSize_Clustering = {};
-    uint32_t m_Clustering_DistType = {};
+    uint32_t m_Clustering_DistType = SIMPL::DistributionType::LogNormal;
     VectorOfFloatArray m_FeatureSize_Omegas = {};
-    uint32_t m_Omegas_DistType = {};
+    uint32_t m_Omegas_DistType = SIMPL::DistributionType::Beta;
     FloatArrayType::Pointer m_MisorientationBins = {};
     VectorOfFloatArray m_MDF_Weights = {};
     FloatArrayType::Pointer m_ODF = {};
@@ -457,5 +450,3 @@ public:
     FloatArrayType::Pointer m_AxisOrientation = {};
     VectorOfFloatArray m_AxisODF_Weights = {};
 };
-
-

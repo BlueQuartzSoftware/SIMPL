@@ -49,23 +49,18 @@ class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(CombineAttributeMatrices SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(CombineAttributeMatrices SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(CombineAttributeMatrices)
     PYB11_FILTER_NEW_MACRO(CombineAttributeMatrices)
-    PYB11_FILTER_PARAMETER(DataArrayPath, FirstAttributeMatrixPath)
-    PYB11_FILTER_PARAMETER(DataArrayPath, SecondAttributeMatrixPath)
-    PYB11_FILTER_PARAMETER(DataArrayPath, FirstIndexArrayPath)
-    PYB11_FILTER_PARAMETER(DataArrayPath, SecondIndexArrayPath)
-    PYB11_FILTER_PARAMETER(QString, CombinedAttributeMatrixName)
-    PYB11_FILTER_PARAMETER(QString, NewIndexArrayName)
     PYB11_PROPERTY(DataArrayPath FirstAttributeMatrixPath READ getFirstAttributeMatrixPath WRITE setFirstAttributeMatrixPath)
     PYB11_PROPERTY(DataArrayPath SecondAttributeMatrixPath READ getSecondAttributeMatrixPath WRITE setSecondAttributeMatrixPath)
     PYB11_PROPERTY(DataArrayPath FirstIndexArrayPath READ getFirstIndexArrayPath WRITE setFirstIndexArrayPath)
     PYB11_PROPERTY(DataArrayPath SecondIndexArrayPath READ getSecondIndexArrayPath WRITE setSecondIndexArrayPath)
     PYB11_PROPERTY(QString CombinedAttributeMatrixName READ getCombinedAttributeMatrixName WRITE setCombinedAttributeMatrixName)
     PYB11_PROPERTY(QString NewIndexArrayName READ getNewIndexArrayName WRITE setNewIndexArrayName)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = CombineAttributeMatrices;

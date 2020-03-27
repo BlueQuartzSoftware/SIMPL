@@ -47,21 +47,17 @@ class SIMPLib_EXPORT CopyObject : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(CopyObject SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(CopyObject SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(CopyObject)
   PYB11_FILTER_NEW_MACRO(CopyObject)
-  PYB11_FILTER_PARAMETER(int, ObjectToCopy)
-  PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerToCopy)
-  PYB11_FILTER_PARAMETER(DataArrayPath, AttributeMatrixToCopy)
-  PYB11_FILTER_PARAMETER(DataArrayPath, AttributeArrayToCopy)
-  PYB11_FILTER_PARAMETER(QString, CopiedObjectName)
   PYB11_PROPERTY(int ObjectToCopy READ getObjectToCopy WRITE setObjectToCopy)
   PYB11_PROPERTY(DataArrayPath DataContainerToCopy READ getDataContainerToCopy WRITE setDataContainerToCopy)
   PYB11_PROPERTY(DataArrayPath AttributeMatrixToCopy READ getAttributeMatrixToCopy WRITE setAttributeMatrixToCopy)
   PYB11_PROPERTY(DataArrayPath AttributeArrayToCopy READ getAttributeArrayToCopy WRITE setAttributeArrayToCopy)
   PYB11_PROPERTY(QString CopiedObjectName READ getCopiedObjectName WRITE setCopiedObjectName)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = CopyObject;

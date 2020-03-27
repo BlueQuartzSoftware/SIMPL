@@ -51,15 +51,14 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(FeatureCountDecision SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(FeatureCountDecision SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(FeatureCountDecision)
     PYB11_STATIC_NEW_MACRO(FeatureCountDecision)
-    PYB11_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
-    PYB11_FILTER_PARAMETER(int, MaxGrains)
     PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
     PYB11_PROPERTY(int MaxGrains READ getMaxGrains WRITE setMaxGrains)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = FeatureCountDecision;

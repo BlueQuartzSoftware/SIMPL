@@ -41,16 +41,16 @@ using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 class SIMPLib_EXPORT IDataArray : public IDataStructureNode
 {
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(IDataArray)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(IDataArray)
   PYB11_SHARED_POINTERS(IDataArray)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
-
   PYB11_METHOD(QString getTypeAsString)
   PYB11_METHOD(std::vector<size_t> getComponentDimensions)
   PYB11_METHOD(size_t getNumberOfTuples)
   PYB11_METHOD(int getNumberOfComponents)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = IDataArray;

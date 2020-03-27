@@ -48,21 +48,17 @@ class SIMPLib_EXPORT MoveData : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(MoveData SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(MoveData SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(MoveData)
     PYB11_FILTER_NEW_MACRO(MoveData)
-    PYB11_FILTER_PARAMETER(int, WhatToMove)
-    PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerDestination)
-    PYB11_FILTER_PARAMETER(DataArrayPath, AttributeMatrixSource)
-    PYB11_FILTER_PARAMETER(DataArrayPath, AttributeMatrixDestination)
-    PYB11_FILTER_PARAMETER(DataArrayPath, DataArraySource)
     PYB11_PROPERTY(int WhatToMove READ getWhatToMove WRITE setWhatToMove)
     PYB11_PROPERTY(DataArrayPath DataContainerDestination READ getDataContainerDestination WRITE setDataContainerDestination)
     PYB11_PROPERTY(DataArrayPath AttributeMatrixSource READ getAttributeMatrixSource WRITE setAttributeMatrixSource)
     PYB11_PROPERTY(DataArrayPath AttributeMatrixDestination READ getAttributeMatrixDestination WRITE setAttributeMatrixDestination)
     PYB11_PROPERTY(DataArrayPath DataArraySource READ getDataArraySource WRITE setDataArraySource)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = MoveData;

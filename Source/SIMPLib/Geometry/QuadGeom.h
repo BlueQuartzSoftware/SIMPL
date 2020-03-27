@@ -50,33 +50,26 @@
 class SIMPLib_EXPORT QuadGeom : public IGeometry2D
 {
   // clang-format off
-
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(QuadGeom SUPERCLASS IGeometry2D)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(QuadGeom SUPERCLASS IGeometry2D)
   PYB11_SHARED_POINTERS(QuadGeom)
   PYB11_STATIC_NEW_MACRO(QuadGeom)
-
   PYB11_CREATION(CreateGeometry ARGS OVERLOAD size_t SharedVertexList::Pointer QString bool)
   PYB11_CREATION(CreateGeometry ARGS OVERLOAD SharedQuadList::Pointer SharedVertexList::Pointer QString)
-
   PYB11_METHOD(void setVertices SharedVertexList::Pointer,vertices)
   PYB11_METHOD(SharedVertextList::Pointer getVertices)
-
   PYB11_METHOD(void setEdges SharedEdgeList::Pointer,edges)
   PYB11_METHOD(SharedEdgeList::Pointer getEdges)
-
   PYB11_METHOD(void setQuads SharedQuadList::Pointer,quads)
   PYB11_METHOD(SharedQuadList::Pointer getQuads)
-
   PYB11_METHOD(void setCoords size_t,vertId float,coords[3])
   PYB11_METHOD(void getCoords size_t,vertId float,coords[3])
-
   PYB11_METHOD(size_t getNumberOfVertices)
   PYB11_METHOD(size_t getNumberOfEdges)
   PYB11_METHOD(size_t getNumberOfQuads)
   PYB11_METHOD(size_t getNumberOfElements)
-#endif
-
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
   // clang-format on
 
 public:

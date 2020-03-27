@@ -57,17 +57,15 @@ class SIMPLib_EXPORT WriteTriangleGeometry : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(WriteTriangleGeometry SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(WriteTriangleGeometry SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(WriteTriangleGeometry)
     PYB11_FILTER_NEW_MACRO(WriteTriangleGeometry)
-    PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerSelection)
-    PYB11_FILTER_PARAMETER(QString, OutputNodesFile)
-    PYB11_FILTER_PARAMETER(QString, OutputTrianglesFile)
     PYB11_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
     PYB11_PROPERTY(QString OutputNodesFile READ getOutputNodesFile WRITE setOutputNodesFile)
     PYB11_PROPERTY(QString OutputTrianglesFile READ getOutputTrianglesFile WRITE setOutputTrianglesFile)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = WriteTriangleGeometry;

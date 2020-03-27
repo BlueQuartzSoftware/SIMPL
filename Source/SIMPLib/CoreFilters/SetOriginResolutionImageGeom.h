@@ -49,21 +49,17 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(SetOriginResolutionImageGeom SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(SetOriginResolutionImageGeom SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(SetOriginResolutionImageGeom)
     PYB11_FILTER_NEW_MACRO(SetOriginResolutionImageGeom)
-    PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
-    PYB11_FILTER_PARAMETER(bool, ChangeOrigin)
-    PYB11_FILTER_PARAMETER(FloatVec3Type, Origin)
-    PYB11_FILTER_PARAMETER(bool, ChangeResolution)
-    PYB11_FILTER_PARAMETER(FloatVec3Type, Spacing)
     PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
     PYB11_PROPERTY(bool ChangeOrigin READ getChangeOrigin WRITE setChangeOrigin)
     PYB11_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
     PYB11_PROPERTY(bool ChangeResolution READ getChangeResolution WRITE setChangeResolution)
     PYB11_PROPERTY(FloatVec3Type Spacing READ getSpacing WRITE setSpacing)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = SetOriginResolutionImageGeom;

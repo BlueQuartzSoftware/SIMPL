@@ -48,44 +48,10 @@ class SIMPLib_EXPORT CreateGeometry : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(CreateGeometry SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(CreateGeometry SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(CreateGeometry)
   PYB11_FILTER_NEW_MACRO(CreateGeometry)
-  PYB11_FILTER_PARAMETER(int, GeometryType)
-  PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath0)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath1)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath2)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath3)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath4)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath5)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedEdgeListArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedTriListArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedQuadListArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedTetListArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedHexListArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, XBoundsArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, YBoundsArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, ZBoundsArrayPath)
-  PYB11_FILTER_PARAMETER(IntVec3Type, Dimensions)
-  PYB11_FILTER_PARAMETER(FloatVec3Type, Origin)
-  PYB11_FILTER_PARAMETER(FloatVec3Type, Spacing)
-  PYB11_FILTER_PARAMETER(QString, ImageCellAttributeMatrixName)
-  PYB11_FILTER_PARAMETER(QString, RectGridCellAttributeMatrixName)
-  PYB11_FILTER_PARAMETER(QString, VertexAttributeMatrixName0)
-  PYB11_FILTER_PARAMETER(QString, VertexAttributeMatrixName1)
-  PYB11_FILTER_PARAMETER(QString, VertexAttributeMatrixName2)
-  PYB11_FILTER_PARAMETER(QString, VertexAttributeMatrixName3)
-  PYB11_FILTER_PARAMETER(QString, VertexAttributeMatrixName4)
-  PYB11_FILTER_PARAMETER(QString, VertexAttributeMatrixName5)
-  PYB11_FILTER_PARAMETER(QString, EdgeAttributeMatrixName)
-  PYB11_FILTER_PARAMETER(QString, FaceAttributeMatrixName0)
-  PYB11_FILTER_PARAMETER(QString, FaceAttributeMatrixName1)
-  PYB11_FILTER_PARAMETER(QString, TetCellAttributeMatrixName)
-  PYB11_FILTER_PARAMETER(QString, HexCellAttributeMatrixName)
-  PYB11_FILTER_PARAMETER(bool, TreatWarningsAsErrors)
-  PYB11_FILTER_PARAMETER(bool, ArrayHandling)
   PYB11_PROPERTY(int GeometryType READ getGeometryType WRITE setGeometryType)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(DataArrayPath SharedVertexListArrayPath0 READ getSharedVertexListArrayPath0 WRITE setSharedVertexListArrayPath0)
@@ -116,7 +82,8 @@ class SIMPLib_EXPORT CreateGeometry : public AbstractFilter
   PYB11_PROPERTY(QString TetCellAttributeMatrixName READ getTetCellAttributeMatrixName WRITE setTetCellAttributeMatrixName)
   PYB11_PROPERTY(bool TreatWarningsAsErrors READ getTreatWarningsAsErrors WRITE setTreatWarningsAsErrors)
   PYB11_PROPERTY(bool ArrayHandling READ getArrayHandling WRITE setArrayHandling)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = CreateGeometry;

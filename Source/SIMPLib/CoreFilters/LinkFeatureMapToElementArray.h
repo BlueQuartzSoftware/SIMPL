@@ -49,17 +49,15 @@ class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(LinkFeatureMapToElementArray SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(LinkFeatureMapToElementArray SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(LinkFeatureMapToElementArray)
     PYB11_FILTER_NEW_MACRO(LinkFeatureMapToElementArray)
-    PYB11_FILTER_PARAMETER(QString, CellFeatureAttributeMatrixName)
-    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedCellArrayPath)
-    PYB11_FILTER_PARAMETER(QString, ActiveArrayName)
     PYB11_PROPERTY(QString CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
     PYB11_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
     PYB11_PROPERTY(QString ActiveArrayName READ getActiveArrayName WRITE setActiveArrayName)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = LinkFeatureMapToElementArray;

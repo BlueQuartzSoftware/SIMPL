@@ -50,19 +50,16 @@ class SIMPLib_EXPORT PostSlackMessage : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(PostSlackMessage SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(PostSlackMessage SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(PostSlackMessage)
   PYB11_FILTER_NEW_MACRO(PostSlackMessage)
-  PYB11_FILTER_PARAMETER(QString, SlackUser)
-  PYB11_FILTER_PARAMETER(QString, SlackUrl)
-  PYB11_FILTER_PARAMETER(QString, SlackMessage)
-  PYB11_FILTER_PARAMETER(bool, WarningsAsError)
   PYB11_PROPERTY(QString SlackUser READ getSlackUser WRITE setSlackUser)
   PYB11_PROPERTY(QString SlackUrl READ getSlackUrl WRITE setSlackUrl)
   PYB11_PROPERTY(QString SlackMessage READ getSlackMessage WRITE setSlackMessage)
   PYB11_PROPERTY(bool WarningsAsError READ getWarningsAsError WRITE setWarningsAsError)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = PostSlackMessage;

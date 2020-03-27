@@ -79,6 +79,11 @@ set(_PublicFilters
   WriteTriangleGeometry
 )
 
+if( SIMPL_USE_ITK )
+  set(_PublicFilters ${_PublicFilters}
+    
+  )
+endif()
 
 
 list(LENGTH _PublicFilters PluginNumFilters)

@@ -50,15 +50,11 @@ class SIMPLib_EXPORT RotateSampleRefFrame : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(RotateSampleRefFrame SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(RotateSampleRefFrame SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(RotateSampleRefFrame)
   PYB11_FILTER_NEW_MACRO(RotateSampleRefFrame)
   PYB11_ENUMERATION(RotationRepresentation)
-  PYB11_FILTER_PARAMETER(DataArrayPath, CellAttributeMatrixPath)
-  PYB11_FILTER_PARAMETER(FloatVec3Type, RotationAxis)
-  PYB11_FILTER_PARAMETER(float, RotationAngle)
-  PYB11_FILTER_PARAMETER(bool, SliceBySlice)
   PYB11_PROPERTY(DataArrayPath CellAttributeMatrixPath READ getCellAttributeMatrixPath WRITE setCellAttributeMatrixPath)
   PYB11_PROPERTY(FloatVec3Type RotationAxis READ getRotationAxis WRITE setRotationAxis)
   PYB11_PROPERTY(float RotationAngle READ getRotationAngle WRITE setRotationAngle)
@@ -68,7 +64,8 @@ class SIMPLib_EXPORT RotateSampleRefFrame : public AbstractFilter
   PYB11_METHOD(RotationRepresentation getRotationRepresentation)
   PYB11_METHOD(void setRotationRepresentation ARGS value)
   PYB11_METHOD(bool isRotationRepresentationValid ARGS value)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = RotateSampleRefFrame;

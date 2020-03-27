@@ -53,21 +53,17 @@ class SIMPLib_EXPORT MakeDataContainer : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(MakeDataContainer SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(MakeDataContainer SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(MakeDataContainer)
   PYB11_FILTER_NEW_MACRO(MakeDataContainer)
-  PYB11_FILTER_PARAMETER(QString, FeatureIdsArrayName)
-  PYB11_FILTER_PARAMETER(QString, CellEulerAnglesArrayName)
-  PYB11_FILTER_PARAMETER(QString, CellPhasesArrayName)
-  PYB11_FILTER_PARAMETER(QString, CrystalStructuresArrayName)
-  PYB11_FILTER_PARAMETER(QString, LatticeConstantsArrayName)
   PYB11_PROPERTY(QString FeatureIdsArrayName READ getFeatureIdsArrayName WRITE setFeatureIdsArrayName)
   PYB11_PROPERTY(QString CellEulerAnglesArrayName READ getCellEulerAnglesArrayName WRITE setCellEulerAnglesArrayName)
   PYB11_PROPERTY(QString CellPhasesArrayName READ getCellPhasesArrayName WRITE setCellPhasesArrayName)
   PYB11_PROPERTY(QString CrystalStructuresArrayName READ getCrystalStructuresArrayName WRITE setCrystalStructuresArrayName)
   PYB11_PROPERTY(QString LatticeConstantsArrayName READ getLatticeConstantsArrayName WRITE setLatticeConstantsArrayName)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = MakeDataContainer;

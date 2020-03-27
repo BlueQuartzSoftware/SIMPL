@@ -47,18 +47,10 @@ class SIMPLib_EXPORT CropVertexGeometry : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(CropVertexGeometry SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(CropVertexGeometry SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(CropVertexGeometry)
   PYB11_FILTER_NEW_MACRO(CropVertexGeometry)
-  PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
-  PYB11_FILTER_PARAMETER(DataArrayPath, CroppedDataContainerName)
-  PYB11_FILTER_PARAMETER(float, XMin)
-  PYB11_FILTER_PARAMETER(float, YMin)
-  PYB11_FILTER_PARAMETER(float, ZMin)
-  PYB11_FILTER_PARAMETER(float, XMax)
-  PYB11_FILTER_PARAMETER(float, YMax)
-  PYB11_FILTER_PARAMETER(float, ZMax)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(DataArrayPath CroppedDataContainerName READ getCroppedDataContainerName WRITE setCroppedDataContainerName)
   PYB11_PROPERTY(float XMin READ getXMin WRITE setXMin)
@@ -67,7 +59,8 @@ class SIMPLib_EXPORT CropVertexGeometry : public AbstractFilter
   PYB11_PROPERTY(float XMax READ getXMax WRITE setXMax)
   PYB11_PROPERTY(float YMax READ getYMax WRITE setYMax)
   PYB11_PROPERTY(float ZMax READ getZMax WRITE setZMax)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = CropVertexGeometry;

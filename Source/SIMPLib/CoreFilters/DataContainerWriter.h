@@ -54,17 +54,15 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     
     // This line MUST be first when exposing a class and properties to Python
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(DataContainerWriter SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(DataContainerWriter SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(DataContainerWriter)
     PYB11_FILTER_NEW_MACRO(DataContainerWriter)
-    PYB11_FILTER_PARAMETER(QString, OutputFile)
-    PYB11_FILTER_PARAMETER(bool, WriteXdmfFile)
-    PYB11_FILTER_PARAMETER(bool, WriteTimeSeries)
     PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
     PYB11_PROPERTY(bool WriteXdmfFile READ getWriteXdmfFile WRITE setWriteXdmfFile)
     PYB11_PROPERTY(bool WriteTimeSeries READ getWriteTimeSeries WRITE setWriteTimeSeries)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = DataContainerWriter;

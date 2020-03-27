@@ -40,16 +40,24 @@
  */
 
 /**
- * @brief PYB11_CREATE_BINDINGS This macro lets the wrapper know that we want to
+ * @brief PYB11_BEGIN_BINDINGS This macro lets the wrapper know that we want to
  * wrap this class with Python bindings. It should only take a single argument
  * which is the name of the class. If this line is commented out using the standard
  * C++ style of single line comment then <b>NO WRAPPING</b> will be performed
  * on the class.
  * @code
- * PYB11_CREATE_BINDINGS(AbstractFilter)
+ * PYB11_BEGIN_BINDINGS(AbstractFilter)
  * @endcode
  */
-#define PYB11_CREATE_BINDINGS(...)
+#define PYB11_BEGIN_BINDINGS(...)
+
+/**
+ * @brief PYB11_END_BINDINGS This macro is used to define the end of the python bindings section
+ * @code
+ * PYB11_END_BINDINGS(AbstractFilter)
+ * @endcode
+ */
+#define PYB11_END_BINDINGS(...)
 
 /**
  * @brief PYB11_STATIC_NEW_MACRO
@@ -68,12 +76,6 @@
  *
  */
 #define PYB11_SHARED_POINTERS(...)
-
-/**
- * @brief PYB11_FILTER_PARAMETER
- *
- */
-#define PYB11_FILTER_PARAMETER(...)
 
 /**
  * @brief PYB11_NO_BINDINGS This macro will ensure that the class is NOT wrapped

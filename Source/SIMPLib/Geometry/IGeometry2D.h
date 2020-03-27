@@ -45,10 +45,11 @@
  */
 class SIMPLib_EXPORT IGeometry2D : public IGeometry
 {
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(IGeometry2D SUPERCLASS IGeometry)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(IGeometry2D SUPERCLASS IGeometry)
   PYB11_SHARED_POINTERS(IGeometry2D)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = IGeometry2D;

@@ -51,25 +51,10 @@ class SIMPLib_EXPORT ExtractAttributeArraysFromGeometry : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(ExtractAttributeArraysFromGeometry SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(ExtractAttributeArraysFromGeometry SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(ExtractAttributeArraysFromGeometry)
   PYB11_FILTER_NEW_MACRO(ExtractAttributeArraysFromGeometry)
-  PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath0)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath1)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath2)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath3)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath4)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath5)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedEdgeListArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedTriListArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedQuadListArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedTetListArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, SharedHexListArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, XBoundsArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, YBoundsArrayPath)
-  PYB11_FILTER_PARAMETER(DataArrayPath, ZBoundsArrayPath)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(DataArrayPath SharedVertexListArrayPath0 READ getSharedVertexListArrayPath0 WRITE setSharedVertexListArrayPath0)
   PYB11_PROPERTY(DataArrayPath SharedVertexListArrayPath1 READ getSharedVertexListArrayPath1 WRITE setSharedVertexListArrayPath1)
@@ -83,7 +68,8 @@ class SIMPLib_EXPORT ExtractAttributeArraysFromGeometry : public AbstractFilter
   PYB11_PROPERTY(DataArrayPath XBoundsArrayPath READ getXBoundsArrayPath WRITE setXBoundsArrayPath)
   PYB11_PROPERTY(DataArrayPath YBoundsArrayPath READ getYBoundsArrayPath WRITE setYBoundsArrayPath)
   PYB11_PROPERTY(DataArrayPath ZBoundsArrayPath READ getZBoundsArrayPath WRITE setZBoundsArrayPath)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = ExtractAttributeArraysFromGeometry;

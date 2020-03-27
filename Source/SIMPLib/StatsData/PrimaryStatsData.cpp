@@ -49,10 +49,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PrimaryStatsData::PrimaryStatsData()
-{
-  initialize();
-}
+PrimaryStatsData::PrimaryStatsData() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -136,17 +133,6 @@ StatsData::Pointer PrimaryStatsData::deepCopy()
   return ptr;
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PrimaryStatsData::initialize()
-{
-  m_FeatureSize_DistType = SIMPL::DistributionType::LogNormal;
-  m_BOverA_DistType = SIMPL::DistributionType::Beta;
-  m_COverA_DistType = SIMPL::DistributionType::Beta;
-  m_Neighbors_DistType = SIMPL::DistributionType::LogNormal;
-  m_Omegas_DistType = SIMPL::DistributionType::Beta;
-}
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

@@ -272,7 +272,7 @@ macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath 
 
       #-- Check to make sure we have a Documentation file for the filter
       if(NOT EXISTS ${filterDocPath} )
-        message(FATAL_ERROR "*** Missing Documenation File for ${filterDocPath}")
+        message(FATAL_ERROR "*** Missing Documentation File for ${filterDocPath}")
       endif()
 
       get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)

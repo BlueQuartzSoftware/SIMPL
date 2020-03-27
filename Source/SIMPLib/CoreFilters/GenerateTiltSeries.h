@@ -47,18 +47,19 @@ class SIMPLib_EXPORT GenerateTiltSeries : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
+  // Start Python bindings declarations
   // clang-format off
-    PYB11_CREATE_BINDINGS(GenerateTiltSeries SUPERCLASS AbstractFilter)
-    PYB11_SHARED_POINTERS(GenerateTiltSeries)
-    PYB11_STATIC_NEW_MACRO(GenerateTiltSeries)
-    PYB11_PROPERTY(int RotationAxis READ getRotationAxis WRITE setRotationAxis)
-    PYB11_PROPERTY(float RotationLimits READ getRotationLimits WRITE setRotationLimits)
-    PYB11_PROPERTY(float Spacing READ getSpacing WRITE setSpacing)
-    PYB11_PROPERTY(DataArrayPath InputDataArrayPath READ getInputDataArrayPath WRITE setInputDataArrayPath)
-    PYB11_PROPERTY(QString OutputPrefix READ getOutputPrefix WRITE setOutputPrefix)
+  PYB11_BEGIN_BINDINGS(GenerateTiltSeries SUPERCLASS AbstractFilter)
+  PYB11_SHARED_POINTERS(GenerateTiltSeries)
+  PYB11_STATIC_NEW_MACRO(GenerateTiltSeries)
+  PYB11_PROPERTY(int RotationAxis READ getRotationAxis WRITE setRotationAxis)
+  PYB11_PROPERTY(float RotationLimits READ getRotationLimits WRITE setRotationLimits)
+  PYB11_PROPERTY(float Spacing READ getSpacing WRITE setSpacing)
+  PYB11_PROPERTY(DataArrayPath InputDataArrayPath READ getInputDataArrayPath WRITE setInputDataArrayPath)
+  PYB11_PROPERTY(QString OutputPrefix READ getOutputPrefix WRITE setOutputPrefix)
+  PYB11_END_BINDINGS()
   // clang-format on
-#endif
+  // End Python bindings declarations
 
 public:
   using Self = GenerateTiltSeries;

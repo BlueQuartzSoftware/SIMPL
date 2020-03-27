@@ -54,8 +54,8 @@ class SIMPLib_EXPORT Observable : public QObject
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(Observable)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(Observable)
     PYB11_METHOD(void setErrorCondition ARGS code messageText)
     PYB11_METHOD(void setErrorConditionWithPrefix ARGS code prefix messageText)
     PYB11_METHOD(void setWarningCondition ARGS code messageText)
@@ -64,7 +64,8 @@ class SIMPLib_EXPORT Observable : public QObject
     PYB11_METHOD(void notifyStatusMessageWithPrefix ARGS prefix messageText)
     PYB11_METHOD(void notifyProgressMessage ARGS progress messageText)
     PYB11_METHOD(void notifyProgressMessageWithPrefix ARGS progress prefix messageText)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     /**

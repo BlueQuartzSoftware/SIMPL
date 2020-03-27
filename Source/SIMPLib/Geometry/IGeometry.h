@@ -79,14 +79,12 @@ class SIMPLib_EXPORT IGeometry : public Observable
 {
   // This line MUST be first when exposing a class and properties to Python
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(IGeometry)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(IGeometry)
   PYB11_SHARED_POINTERS(IGeometry)
-
   PYB11_ENUMERATION(Type)
   PYB11_ENUMERATION(VtkCellType)
   PYB11_ENUMERATION(LengthUnit)
-
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_METHOD(Type getGeometryType)
   PYB11_METHOD(QString getGeometryTypeAsString)
@@ -99,7 +97,8 @@ class SIMPLib_EXPORT IGeometry : public Observable
   PYB11_METHOD(void addOrReplaceAttributeMatrix ARGS Name AttributeMatrix)
   PYB11_METHOD(AttributeMatrix getAttributeMatrix ARGS Name)
   PYB11_METHOD(AttributeMatrix removeAttributeMatrix ARGS Name)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = IGeometry;

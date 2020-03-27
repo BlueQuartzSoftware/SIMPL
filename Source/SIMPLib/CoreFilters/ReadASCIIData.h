@@ -49,13 +49,13 @@ class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(ReadASCIIData SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(ReadASCIIData SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(ReadASCIIData)
   PYB11_FILTER_NEW_MACRO(ReadASCIIData)
-  PYB11_FILTER_PARAMETER(ASCIIWizardData, WizardData)
   PYB11_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = ReadASCIIData;

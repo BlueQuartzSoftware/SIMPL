@@ -50,11 +50,12 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(Breakpoint SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(Breakpoint SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(Breakpoint)
   PYB11_FILTER_NEW_MACRO(Breakpoint)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = Breakpoint;

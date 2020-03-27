@@ -29,7 +29,7 @@ const QString kReturnValuePolicy("RETURN_VALUE_POLICY");
 const QString kConstGetOverload("CONST_GET_OVERLOAD");
 
 /* These are for the macros that appear in the header files */
-const QString kPYB11_CREATE_BINDINGS("PYB11_CREATE_BINDINGS");
+const QString kPYB11_BEGIN_BINDINGS("PYB11_BEGIN_BINDINGS");
 const QString kPYB11_PROPERTY("PYB11_PROPERTY");
 const QString kPYB11_METHOD("PYB11_METHOD");
 const QString kPYB11_STATIC_CREATION("PYB11_STATIC_CREATION");

@@ -48,13 +48,14 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(DynamicTableData)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(DynamicTableData)
     PYB11_STATIC_CREATION(Create ARGS std::vector<std::vector<double>> std::list<std::string> std::list<std::string>)
     PYB11_PROPERTY(QStringList ColHeaders READ getColHeaders WRITE setColHeaders)
     PYB11_PROPERTY(QStringList RowHeaders READ getRowHeaders WRITE setRowHeaders)
     PYB11_PROPERTY(std::vector<std::vector<double>> TableData READ getTableData WRITE setTableData)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     DynamicTableData();

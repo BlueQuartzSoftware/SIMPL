@@ -48,8 +48,8 @@
 */
 class SIMPLib_EXPORT ComparisonValue : public AbstractComparison
 {
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(ComparisonValue SUPERCLASS AbstractComparison)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(ComparisonValue SUPERCLASS AbstractComparison)
   PYB11_SHARED_POINTERS(ComparisonValue)
   PYB11_STATIC_NEW_MACRO(ComparisonValue)
   PYB11_CREATION()
@@ -58,7 +58,9 @@ class SIMPLib_EXPORT ComparisonValue : public AbstractComparison
   PYB11_PROPERTY(double CompValue READ getCompValue WRITE setCompValue)
   PYB11_PROPERTY(ComparisonSet::Pointer ParentSet READ getParentSet WRITE setParentSet)
   PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
+
 public:
   using Self = ComparisonValue;
   using Pointer = std::shared_ptr<Self>;

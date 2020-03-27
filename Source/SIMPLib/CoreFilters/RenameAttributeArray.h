@@ -48,15 +48,14 @@ class SIMPLib_EXPORT RenameAttributeArray : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(RenameAttributeArray SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(RenameAttributeArray SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(RenameAttributeArray)
     PYB11_FILTER_NEW_MACRO(RenameAttributeArray)
-    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
-    PYB11_FILTER_PARAMETER(QString, NewArrayName)
     PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
     PYB11_PROPERTY(QString NewArrayName READ getNewArrayName WRITE setNewArrayName)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = RenameAttributeArray;

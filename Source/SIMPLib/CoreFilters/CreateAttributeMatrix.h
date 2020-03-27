@@ -49,17 +49,15 @@ class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(CreateAttributeMatrix SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(CreateAttributeMatrix SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(CreateAttributeMatrix)
     PYB11_FILTER_NEW_MACRO(CreateAttributeMatrix)
-    PYB11_FILTER_PARAMETER(DataArrayPath, CreatedAttributeMatrix)
-    PYB11_FILTER_PARAMETER(int, AttributeMatrixType)
-    PYB11_FILTER_PARAMETER(DynamicTableData, TupleDimensions)
     PYB11_PROPERTY(DataArrayPath CreatedAttributeMatrix READ getCreatedAttributeMatrix WRITE setCreatedAttributeMatrix)
     PYB11_PROPERTY(int AttributeMatrixType READ getAttributeMatrixType WRITE setAttributeMatrixType)
     PYB11_PROPERTY(DynamicTableData TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = CreateAttributeMatrix;

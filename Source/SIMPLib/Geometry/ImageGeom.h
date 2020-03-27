@@ -51,29 +51,24 @@
 class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 {
   // clang-format off
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(ImageGeom SUPERCLASS IGeometryGrid)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(ImageGeom SUPERCLASS IGeometryGrid)
   PYB11_SHARED_POINTERS(ImageGeom)
   PYB11_STATIC_NEW_MACRO(ImageGeom)
   PYB11_STATIC_CREATION(CreateGeometry ARGS QString)
-
   PYB11_ENUMERATION(ErrorType)
-
   PYB11_METHOD(void setDimensions OVERLOAD size_t,x size_t,y size_t,z)
   PYB11_METHOD(SizeVec3Type getDimensions)
-
   PYB11_METHOD(void setSpacing OVERLOAD float,x float,y float,z)
   PYB11_METHOD(FloatVec3Type getSpacing)
-
   PYB11_METHOD(size_t getXPoints)
   PYB11_METHOD(size_t getYPoints)
   PYB11_METHOD(size_t getZPoints)
-
   PYB11_METHOD(void setOrigin OVERLOAD float,x float,y float,z)
   PYB11_METHOD(FloatVec3Type getOrigin)
-
   PYB11_METHOD(FloatVec6Type getBoundingBox OVERLOAD CONST_METHOD)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
   // clang-format on
 
 public:

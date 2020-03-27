@@ -51,11 +51,11 @@
 class SIMPLib_EXPORT StatsDataArray : public IDataArray
 {
   // clang-format off
-
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(StatsDataArray SUPER IDataArray)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(StatsDataArray SUPER IDataArray)
   PYB11_SHARED_POINTERS(StatsDataArray)
   PYB11_STATIC_NEW_MACRO(StatsDataArray)
+  PYB11_STATIC_CREATION(New)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t int size_t* QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t std::vector<size_t> QString bool)
@@ -65,8 +65,8 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
   PYB11_METHOD(StatsData::Pointer getStatsData ARGS int,index)
   PYB11_METHOD(void fillArrayWithNewStatsData OVERLOAD size_t,n PhaseType::Type*,phase_types)
   PYB11_METHOD(void fillArrayWithNewStatsData OVERLOAD size_t,n PhaseType::EnumType*,phase_types)
-#endif
-
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
   // clang-format on
 
 public:

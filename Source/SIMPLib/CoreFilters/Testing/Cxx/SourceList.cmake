@@ -53,6 +53,14 @@ set(TEST_${SUBDIR_NAME}_NAMES
   WriteTriangleGeometryTest
 )
 
+
+if( SIMPL_USE_ITK )
+  set(TEST_${SUBDIR_NAME}_NAMES ${TEST_${SUBDIR_NAME}_NAMES}
+  )
+endif()
+
+
+
 SIMPL_ADD_UNIT_TEST("${TEST_${SUBDIR_NAME}_NAMES}" "${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx")
 SIMPL_ADD_UNIT_TEST_MOC_FILE(ExecuteProcessTest "${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx")
 

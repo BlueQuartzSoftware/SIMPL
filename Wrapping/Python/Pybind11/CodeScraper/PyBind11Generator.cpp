@@ -369,7 +369,7 @@ void PyBind11Generator::generatePybind11Header(const QString& hFile)
       tokens = tokens[1].replace(")", "").trimmed().split(" ");
       enumerations << tokens[0];
     }
-    else if(line.contains(kPYB11_CREATE_BINDINGS))
+    else if(line.contains(kPYB11_BEGIN_BINDINGS))
     {
       bindingClass.setNeedsWrapping(true);
       line = line.trimmed();

@@ -76,30 +76,24 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
 
   // This line MUST be first when exposing a class and properties to Python
   // clang-format off
-
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(DataContainer)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(DataContainer)
   PYB11_SHARED_POINTERS(DataContainer)
   PYB11_STATIC_CREATION(New OVERLOAD QString)
   PYB11_STATIC_CREATION(New OVERLOAD DataArrayPath)
-
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(IGeometry Geometry READ getGeometry WRITE setGeometry)
-
   PYB11_METHOD(QString getInfoString ARGS InfoStringFormat)
   PYB11_METHOD(bool addOrReplaceAttributeMatrix ARGS AttributeMatrix)
   PYB11_METHOD(bool insertOrAssign ARGS AttributeMatrix)
-
   PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.QString.&,Name CONST_METHOD)
   PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
-
   PYB11_METHOD(AttributeMatrix removeAttributeMatrix ARGS Name)
   PYB11_METHOD(bool renameAttributeMatrix ARGS OldName NewName OverWrite)
-
   PYB11_METHOD(bool doesAttributeMatrixExist ARGS Name)
   PYB11_METHOD(void setGeometry ARGS Geometry)
-#endif
-
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
   // clang-format on
 public:
   using Self = DataContainer;

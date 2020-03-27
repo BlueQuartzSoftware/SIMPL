@@ -51,21 +51,17 @@ class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(RemoveComponentFromArray SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(RemoveComponentFromArray SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(RemoveComponentFromArray)
     PYB11_FILTER_NEW_MACRO(RemoveComponentFromArray)
-    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
-    PYB11_FILTER_PARAMETER(int, CompNumber)
-    PYB11_FILTER_PARAMETER(bool, SaveRemovedComponent)
-    PYB11_FILTER_PARAMETER(QString, NewArrayArrayName)
-    PYB11_FILTER_PARAMETER(QString, ReducedArrayArrayName)
     PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
     PYB11_PROPERTY(int CompNumber READ getCompNumber WRITE setCompNumber)
     PYB11_PROPERTY(bool SaveRemovedComponent READ getSaveRemovedComponent WRITE setSaveRemovedComponent)
     PYB11_PROPERTY(QString NewArrayArrayName READ getNewArrayArrayName WRITE setNewArrayArrayName)
     PYB11_PROPERTY(QString ReducedArrayArrayName READ getReducedArrayArrayName WRITE setReducedArrayArrayName)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = RemoveComponentFromArray;

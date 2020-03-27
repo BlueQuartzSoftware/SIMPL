@@ -65,8 +65,8 @@ class SIMPLib_EXPORT FilterPipeline : public Observable
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(FilterPipeline)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(FilterPipeline)
   PYB11_SHARED_POINTERS(FilterPipeline)
   PYB11_STATIC_NEW_MACRO(FilterPipeline)
   PYB11_PROPERTY(int ErrorCode READ getErrorCode)
@@ -75,7 +75,6 @@ class SIMPLib_EXPORT FilterPipeline : public Observable
   PYB11_PROPERTY(State State READ getState)
   PYB11_PROPERTY(ExecutionResult ExecutionResult READ getExecutionResult)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
-
   PYB11_METHOD(DataContainerArrayShPtrType run)
   PYB11_METHOD(void preflightPipeline)
   PYB11_METHOD(bool pushFront ARGS AbstractFilter)
@@ -87,7 +86,8 @@ class SIMPLib_EXPORT FilterPipeline : public Observable
   PYB11_METHOD(bool empty)
   PYB11_METHOD(void clearErrorCode)
   PYB11_METHOD(void clearWarningCode)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = FilterPipeline;

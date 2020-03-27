@@ -55,13 +55,13 @@ class SIMPLib_EXPORT ThresholdExample : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(ThresholdExample SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(ThresholdExample SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(ThresholdExample)
   PYB11_FILTER_NEW_MACRO(ThresholdExample)
-  PYB11_FILTER_PARAMETER(ComparisonInputs, CellComparisonInputs)
   PYB11_PROPERTY(ComparisonInputs CellComparisonInputs READ getCellComparisonInputs WRITE setCellComparisonInputs)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = ThresholdExample;

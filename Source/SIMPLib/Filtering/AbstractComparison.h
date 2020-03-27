@@ -49,11 +49,12 @@
 class SIMPLib_EXPORT AbstractComparison
 {
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(AbstractComparison)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(AbstractComparison)
   PYB11_SHARED_POINTERS(AbstractComparison)
   PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = AbstractComparison;

@@ -49,21 +49,17 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(ScaleVolume SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(ScaleVolume SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(ScaleVolume)
     PYB11_FILTER_NEW_MACRO(ScaleVolume)
-    PYB11_FILTER_PARAMETER(DataArrayPath, DataContainerName)
-    PYB11_FILTER_PARAMETER(DataArrayPath, SurfaceDataContainerName)
-    PYB11_FILTER_PARAMETER(bool, ApplyToVoxelVolume)
-    PYB11_FILTER_PARAMETER(bool, ApplyToSurfaceMesh)
-    PYB11_FILTER_PARAMETER(FloatVec3Type, ScaleFactor)
     PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
     PYB11_PROPERTY(DataArrayPath SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
     PYB11_PROPERTY(bool ApplyToVoxelVolume READ getApplyToVoxelVolume WRITE setApplyToVoxelVolume)
     PYB11_PROPERTY(bool ApplyToSurfaceMesh READ getApplyToSurfaceMesh WRITE setApplyToSurfaceMesh)
     PYB11_PROPERTY(FloatVec3Type ScaleFactor READ getScaleFactor WRITE setScaleFactor)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = ScaleVolume;

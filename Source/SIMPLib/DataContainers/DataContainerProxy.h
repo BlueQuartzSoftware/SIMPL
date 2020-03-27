@@ -50,15 +50,16 @@
 class SIMPLib_EXPORT DataContainerProxy
 {
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(DataContainerProxy)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(DataContainerProxy)
   PYB11_CREATION()
   PYB11_PROPERTY(StorageType AttributeMatricies READ getAttributeMatricies WRITE setAttributeMatricies CONST_GET_OVERLOAD)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(uint8_t Flag READ getFlag WRITE setFlag)
   PYB11_METHOD(AttributeMatrixProxy getAttributeMatrixProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
   PYB11_METHOD(void toggleFlag)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   // This enumeration is not a class enumeration because it is not possible to

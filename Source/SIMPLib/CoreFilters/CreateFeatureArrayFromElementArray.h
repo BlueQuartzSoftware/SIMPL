@@ -52,19 +52,16 @@ class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(CreateFeatureArrayFromElementArray SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(CreateFeatureArrayFromElementArray SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(CreateFeatureArrayFromElementArray)
     PYB11_FILTER_NEW_MACRO(CreateFeatureArrayFromElementArray)
-    PYB11_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
-    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedCellArrayPath)
-    PYB11_FILTER_PARAMETER(QString, CreatedArrayName)
-    PYB11_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     PYB11_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
     PYB11_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
     PYB11_PROPERTY(QString CreatedArrayName READ getCreatedArrayName WRITE setCreatedArrayName)
     PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = CreateFeatureArrayFromElementArray;

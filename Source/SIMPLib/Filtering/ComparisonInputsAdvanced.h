@@ -57,23 +57,18 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
 {
   Q_OBJECT
   // clang-format off
-
-
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(ComparisonInputsAdvanced)
-
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(ComparisonInputsAdvanced)
   PYB11_CREATION()
- 
   PYB11_PROPERTY(QVector<AbstractComparison::Pointer> Inputs READ getInputs)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(QString AttributeMatrixName READ getAttributeMatrixName WRITE setAttributeMatrixName)
-
   PYB11_METHOD(void addInput OVERLOAD int,unionOperator const.QString,arrayName int,compOperator double,compValue)
   PYB11_METHOD(void addInput OVERLOAD int,unionOperator bool,invertComparison QVector<AbstractComparison::Pointer>,comparisons)
   PYB11_METHOD(void addInput OVERLOAD AbstractComparison::Pointer,input)
   PYB11_METHOD(int size)
-#endif
-
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
   // clang-format on
 
 public:

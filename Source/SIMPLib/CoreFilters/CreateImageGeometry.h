@@ -50,19 +50,16 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(CreateImageGeometry SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(CreateImageGeometry SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(CreateImageGeometry)
     PYB11_FILTER_NEW_MACRO(CreateImageGeometry)
-    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedDataContainer)
-    PYB11_FILTER_PARAMETER(IntVec3Type, Dimensions)
-    PYB11_FILTER_PARAMETER(FloatVec3Type, Origin)
-    PYB11_FILTER_PARAMETER(FloatVec3Type, Spacing)
     PYB11_PROPERTY(DataArrayPath SelectedDataContainer READ getSelectedDataContainer WRITE setSelectedDataContainer)
     PYB11_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
     PYB11_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
     PYB11_PROPERTY(FloatVec3Type Spacing READ getSpacing WRITE setSpacing)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = CreateImageGeometry;

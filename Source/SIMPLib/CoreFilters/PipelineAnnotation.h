@@ -45,13 +45,13 @@ class SIMPLib_EXPORT PipelineAnnotation : public AbstractFilter
 {
   Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(PipelineAnnotation SUPERCLASS AbstractFilter)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(PipelineAnnotation SUPERCLASS AbstractFilter)
   PYB11_SHARED_POINTERS(PipelineAnnotation)
   PYB11_FILTER_NEW_MACRO(PipelineAnnotation)
-  PYB11_FILTER_PARAMETER(QString, Summary)
   PYB11_PROPERTY(QString Summary READ getSummary WRITE setSummary)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = PipelineAnnotation;

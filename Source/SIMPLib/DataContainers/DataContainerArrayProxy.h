@@ -49,14 +49,15 @@ class DataContainerArray;
 class SIMPLib_EXPORT DataContainerArrayProxy
 {
 
-#ifdef SIMPL_ENABLE_PYTHON
+  // Start Python bindings declarations
   // clang-format off
-  PYB11_CREATE_BINDINGS(DataContainerArrayProxy)
+  PYB11_BEGIN_BINDINGS(DataContainerArrayProxy)
   PYB11_CREATION()
   PYB11_PROPERTY(StorageType DataContainers READ getDataContainers WRITE setDataContainers CONST_GET_OVERLOAD)
   PYB11_METHOD(DataContainerProxy.& getDataContainerProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
+  PYB11_END_BINDINGS()
   // clang-format on
-#endif
+  // End Python bindings declarations
 
 public:
   using StorageType = QMap<QString, DataContainerProxy>;

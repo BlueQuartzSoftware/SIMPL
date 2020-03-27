@@ -45,9 +45,10 @@
 class SIMPLib_EXPORT SIMPLH5DataReaderRequirements
 {
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(SIMPLH5DataReaderRequirements)
-#endif
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(SIMPLH5DataReaderRequirements)
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   SIMPLH5DataReaderRequirements();

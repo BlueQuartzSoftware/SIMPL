@@ -45,11 +45,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StatsData::StatsData() :
-m_Name("StatsData")
-{
-  initialize();
-}
+StatsData::StatsData() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -157,14 +153,6 @@ FloatArrayType::Pointer StatsData::CreateDistributionArrays(uint32_t distributio
 StatsData::Pointer StatsData::deepCopy()
 {
   return StatsData::NullPointer();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void StatsData::initialize()
-{
-  // These should be implemented in the subclasses.
 }
 
 // -----------------------------------------------------------------------------

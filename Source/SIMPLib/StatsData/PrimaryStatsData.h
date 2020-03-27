@@ -84,12 +84,10 @@ typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
 class SIMPLib_EXPORT PrimaryStatsData : public StatsData
 {
 
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(PrimaryStatsData SUPER StatsData)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(PrimaryStatsData SUPER StatsData)
   PYB11_SHARED_POINTERS(PrimaryStatsData)
   PYB11_STATIC_NEW_MACRO(PrimaryStatsData)
-  PYB11_STATIC_CREATION(initialize)
-
   PYB11_PROPERTY(float BinStepSize READ getBinStepSize WRITE setBinStepSize)
   PYB11_PROPERTY(float MaxFeatureDiameter READ getMaxFeatureDiameter WRITE setMaxFeatureDiameter)
   PYB11_PROPERTY(float MinFeatureDiameter READ getMinFeatureDiameter WRITE setMinFeatureDiameter)
@@ -99,7 +97,8 @@ class SIMPLib_EXPORT PrimaryStatsData : public StatsData
   PYB11_METHOD(FloatArrayType::Pointer generateBinNumbers)
   PYB11_PROPERTY(float PhaseFraction READ getPhaseFraction WRITE setPhaseFraction)
   PYB11_PROPERTY(float BoundaryArea READ getBoundaryArea WRITE setBoundaryArea)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
 public:
   using Self = PrimaryStatsData;
@@ -383,11 +382,6 @@ public:
   StatsData::Pointer deepCopy() override;
 
   /**
-   * @brief initialize
-   */
-  void initialize() override;
-
-  /**
    * @brief writeHDF5Data
    * @param groupId
    * @return
@@ -427,16 +421,16 @@ private:
 
   float m_BoundaryArea = {};
   VectorOfFloatArray m_FeatureSizeDistribution = {};
-  uint32_t m_FeatureSize_DistType = {};
+  uint32_t m_FeatureSize_DistType = SIMPL::DistributionType::LogNormal;
   FloatArrayType::Pointer m_BinNumbers = {};
   VectorOfFloatArray m_FeatureSize_BOverA = {};
-  uint32_t m_BOverA_DistType = {};
+  uint32_t m_BOverA_DistType = SIMPL::DistributionType::Beta;
   VectorOfFloatArray m_FeatureSize_COverA = {};
-  uint32_t m_COverA_DistType = {};
+  uint32_t m_COverA_DistType = SIMPL::DistributionType::Beta;
   VectorOfFloatArray m_FeatureSize_Neighbors = {};
-  uint32_t m_Neighbors_DistType = {};
+  uint32_t m_Neighbors_DistType = SIMPL::DistributionType::LogNormal;
   VectorOfFloatArray m_FeatureSize_Omegas = {};
-  uint32_t m_Omegas_DistType = {};
+  uint32_t m_Omegas_DistType = SIMPL::DistributionType::Beta;
   FloatArrayType::Pointer m_MisorientationBins = {};
   VectorOfFloatArray m_MDF_Weights = {};
   FloatArrayType::Pointer m_ODF = {};

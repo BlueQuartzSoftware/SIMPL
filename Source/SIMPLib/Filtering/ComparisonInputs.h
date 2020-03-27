@@ -43,15 +43,15 @@
 
 typedef struct
 {
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(ComparisonInput_t)
-
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(ComparisonInput_t)
   PYB11_PROPERTY(QString dataContainerName)
   PYB11_PROPERTY(QString attributeMatrixName)
   PYB11_PROPERTY(QString attributeArrayName)
   PYB11_PROPERTY(int compOperator) 
   PYB11_PROPERTY(double compValue)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
   QString dataContainerName;
   QString attributeMatrixName;
@@ -96,9 +96,8 @@ class SIMPLib_EXPORT ComparisonInputs : public QObject
 {
   Q_OBJECT
   // clang-format off
-
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(ComparisonInputs)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(ComparisonInputs)
   PYB11_CREATION()  
   PYB11_PROPERTY(QVector<ComparisonInput_t> Inputs READ getInputs)
   PYB11_METHOD(void addInput OVERLOAD const.QString,dataContainerName const.QString,attributeMatrixName const.QString,arrayName int,compOperator double,compValue)
@@ -106,8 +105,8 @@ class SIMPLib_EXPORT ComparisonInputs : public QObject
   //PYB11_METHOD(ComparisonInput_t& getInput ARGS index)
   //PYB11_METHOD(ComparisonInput_t& operator[] ARGS index)
   PYB11_METHOD(int size)
-#endif
-
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
   // clang-format on
 
 public:

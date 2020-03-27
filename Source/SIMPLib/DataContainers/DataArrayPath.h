@@ -81,18 +81,18 @@ private:
  */
 class SIMPLib_EXPORT DataArrayPath
 {
-#ifdef SIMPL_ENABLE_PYTHON
-  PYB11_CREATE_BINDINGS(DataArrayPath)
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(DataArrayPath)
   PYB11_CREATION(ARGS QString QString QString)
   PYB11_CREATION(ARGS QString)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(QString AttributeMatrixName READ getAttributeMatrixName WRITE setAttributeMatrixName)
   PYB11_PROPERTY(QString DataArrayName READ getDataArrayName WRITE setDataArrayName)
-
   PYB11_METHOD(bool isEmpty)
   PYB11_METHOD(bool isValid)
   PYB11_METHOD(void update ARGS dcName amName daName)
-#endif
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
   using HashType = size_t;
 

@@ -48,15 +48,14 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
 {
     Q_OBJECT
 
-#ifdef SIMPL_ENABLE_PYTHON
-    PYB11_CREATE_BINDINGS(RenameDataContainer SUPERCLASS AbstractFilter)
+    // Start Python bindings declarations
+    PYB11_BEGIN_BINDINGS(RenameDataContainer SUPERCLASS AbstractFilter)
     PYB11_SHARED_POINTERS(RenameDataContainer)
     PYB11_FILTER_NEW_MACRO(RenameDataContainer)
-    PYB11_FILTER_PARAMETER(DataArrayPath, SelectedDataContainerName)
-    PYB11_FILTER_PARAMETER(DataArrayPath, NewDataContainerName)
     PYB11_PROPERTY(DataArrayPath SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
     PYB11_PROPERTY(DataArrayPath NewDataContainerName READ getNewDataContainerName WRITE setNewDataContainerName)
-#endif
+    PYB11_END_BINDINGS()
+    // End Python bindings declarations
 
   public:
     using Self = RenameDataContainer;

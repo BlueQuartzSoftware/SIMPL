@@ -245,8 +245,4 @@ if (SIMPL_ENABLE_ANACONDA_PACKAGE)
   #     COMMENT "Installing the dream3d Conda package")
   # endif()
 
-
-
 endif()
-
-
