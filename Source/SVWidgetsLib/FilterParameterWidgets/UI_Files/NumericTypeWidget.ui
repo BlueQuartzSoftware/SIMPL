@@ -105,6 +105,11 @@
        <string>Bool</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>Size_t</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>

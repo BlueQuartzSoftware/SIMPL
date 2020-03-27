@@ -38,6 +38,8 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <cstring>
+#include <array>
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
@@ -1391,6 +1393,83 @@ true);
     }
   }
 
+  template <typename T>
+  void TestByteSwapElementType(T init)
+  {
+    using DataArrayType = DataArray<T>;
+
+    DataArrayType array(8, QString("Test Array"), init);
+
+#if 0
+    std::cout << array.getTypeAsString().toStdString() << std::endl;
+    std::cout << "Input: " << init << "\t Compare Value: " << compare << std::endl;
+    uint8_t* ptr = reinterpret_cast<uint8_t*>(array.getVoidPointer(0));
+    for(size_t i = 0; i < 8 * sizeof(T); i++)
+    {
+      if(i % sizeof(T) == 0)
+      {
+        printf(" ");
+      }
+      printf("%0x", ptr[i]);
+    }
+    printf("\n");
+#endif
+
+    std::array<uint8_t, sizeof(T)> in;
+    ::memcpy(in.data(), &init, sizeof(T));
+
+    // Reverse the bytes into the comparison
+    std::array<uint8_t, sizeof(T)> comp;
+    for(size_t i = 0; i < sizeof(T); i++)
+    {
+      comp[i] = in[sizeof(T) - 1 - i];
+    }
+
+    uint8_t* ptr = reinterpret_cast<uint8_t*>(array.getVoidPointer(0));
+    size_t size = sizeof(T);
+
+    array.byteSwapElements();
+
+    for(size_t i = 0; i < 8; i++)
+    {
+      int result = std::memcmp(comp.data(), ptr, size);
+      DREAM3D_REQUIRED(result, ==, 0)
+      ptr = ptr + size;
+    }
+
+#if 0
+    for(size_t i = 0; i < 8 * sizeof(T); i++)
+    {
+      if(i % sizeof(T) == 0)
+      {
+        printf(" ");
+      }
+      printf("%0x", ptr[i]);
+    }
+    printf("\n");
+    printf("---------------\n");
+#endif
+  }
+
+  // -----------------------------------------------------------------------------
+  void TestByteSwapElements()
+  {
+    TestByteSwapElementType<uint8_t>(0xAB);
+    TestByteSwapElementType<int8_t>(0xAB);
+
+    TestByteSwapElementType<uint16_t>(0xABCD);
+    TestByteSwapElementType<int16_t>(0xABCD);
+
+    TestByteSwapElementType<uint32_t>(0x55ABCDEF);
+    TestByteSwapElementType<int32_t>(0x55ABCDEF);
+
+    TestByteSwapElementType<uint64_t>(0x5566778899ABCDEF);
+    TestByteSwapElementType<int64_t>(0x5566778899ABCDEF);
+
+    TestByteSwapElementType<float>(-151057.0f);
+    TestByteSwapElementType<double>(0x412abe865d8413c8);
+  }
+
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
@@ -1415,6 +1494,7 @@ true);
     DREAM3D_REGISTER_TEST(TestWrapPointer())
     DREAM3D_REGISTER_TEST(TestPrintDataArray())
     DREAM3D_REGISTER_TEST(TestSetTuple())
+    DREAM3D_REGISTER_TEST(TestByteSwapElements())
 
 #if REMOVE_TEST_FILES
     DREAM3D_REGISTER_TEST(RemoveTestFiles())

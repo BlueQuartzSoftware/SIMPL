@@ -35,6 +35,58 @@
 
 #include "DataArray.hpp"
 
+//  Allow user to force SIMPL_ENDIAN_NO_INTRINSICS in case they aren't available for a
+//  particular platform/compiler combination.
+#ifndef SIMPL_ENDIAN_NO_INTRINSICS
+
+#ifndef __has_builtin      // Optional of course
+#define __has_builtin(x) 0 // Compatibility with non-clang compilers
+#endif
+
+#if defined(_MSC_VER)
+//  Microsoft documents these as being compatible since Windows 95 and specifically
+//  lists runtime library support since Visual Studio 2003 (aka 7.1).
+//  Clang/c2 uses the Microsoft rather than GCC intrinsics, so we check for
+//  defined(_MSC_VER) before defined(__clang__)
+#define SIMPL_ENDIAN_INTRINSIC_MSG "cstdlib _byteswap_ushort, etc."
+#include <cstdlib>
+#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(x) _byteswap_ushort(x)
+#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_4(x) _byteswap_ulong(x)
+#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_8(x) _byteswap_uint64(x)
+
+//  GCC and Clang recent versions provide intrinsic byte swaps via builtins
+#elif(defined(__clang__) && __has_builtin(__builtin_bswap32) && __has_builtin(__builtin_bswap64)) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)))
+#define SIMPL_ENDIAN_INTRINSIC_MSG "__builtin_bswap16, etc."
+// prior to 4.8, gcc did not provide __builtin_bswap16 on some platforms so we emulate it
+// see http://gcc.gnu.org/bugzilla/show_bug.cgi?id=52624
+// Clang has a similar problem, but their feature test macros make it easier to detect
+#if(defined(__clang__) && __has_builtin(__builtin_bswap16)) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)))
+#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(x) __builtin_bswap16(x)
+#else
+#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(x) __builtin_bswap32((x) << 16)
+#endif
+#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_4(x) __builtin_bswap32(x)
+#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_8(x) __builtin_bswap64(x)
+
+//  Linux systems provide the byteswap.h header, with
+#elif defined(__linux__)
+//  don't check for obsolete forms defined(linux) and defined(__linux) on the theory that
+//  compilers that predefine only these are so old that byteswap.h probably isn't present.
+#define SIMPL_ENDIAN_INTRINSIC_MSG "byteswap.h bswap_16, etc."
+#include <byteswap.h>
+#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(x) bswap_16(x)
+#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_4(x) bswap_32(x)
+#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_8(x) bswap_64(x)
+
+#else
+#define SIMPL_ENDIAN_NO_INTRINSICS
+#define SIMPL_ENDIAN_INTRINSIC_MSG "no byte swap intrinsics"
+#endif
+
+#elif !defined(SIMPL_ENDIAN_INTRINSIC_MSG)
+#define SIMPL_ENDIAN_INTRINSIC_MSG "no byte swap intrinsics"
+#endif // SIMPL_ENDIAN_NO_INTRINSICS
+
 #include <string>
 #include <cstring>
 #include <functional>
@@ -1348,6 +1400,7 @@ int DataArray<T>::readH5Data(hid_t parentId)
   return err;
 }
 
+#if 0
 // -----------------------------------------------------------------------------
 template <typename T>
 void DataArray<T>::byteSwapElements()
@@ -1372,6 +1425,32 @@ void DataArray<T>::byteSwapElements()
     ptr += size; // increment the pointer
   }
 }
+
+#else
+// -----------------------------------------------------------------------------
+template <typename T>
+void DataArray<T>::byteSwapElements()
+{
+  for(size_t i = 0; i < m_Size; ++i)
+  {
+    if(sizeof(T) == 2)
+    {
+      m_Array[i] = SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(m_Array[i]);
+    }
+    else if(sizeof(T) == 4)
+    {
+      uint32_t* ptr = reinterpret_cast<uint32_t*>(m_Array + i);
+      *ptr = SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_4(*ptr);
+    }
+    else if(sizeof(T) == 8)
+    {
+      uint64_t* ptr = reinterpret_cast<uint64_t*>(m_Array + i);
+      *ptr = SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_8(*ptr);
+    }
+  }
+}
+
+#endif
 
 template <typename T>
 typename DataArray<T>::iterator DataArray<T>::begin()
