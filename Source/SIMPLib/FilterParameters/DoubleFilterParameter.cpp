@@ -99,6 +99,10 @@ QString DoubleFilterParameter::getWidgetType() const
 void DoubleFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
+  if(jsonValue.isUndefined())
+  {
+    jsonValue = json[getLegacyPropertyName()];
+  }
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     m_SetterCallback(jsonValue.toDouble());

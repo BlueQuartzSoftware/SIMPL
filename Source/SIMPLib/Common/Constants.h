@@ -598,6 +598,7 @@ const unsigned int UnknownRefFrameZDirection = 2;
     const QString DataContainerBundleGroupName("DataContainerBundles");
     const QString DataContainerNames("DataContainerNames");
     const QString MetaDataArrays("MetaDataArrays");
+    const QString MontageGroupName("Montages");
     const QString DataContainerType("DataContainerType");
     const QString AttributeMatrixType("AttributeMatrixType");
 

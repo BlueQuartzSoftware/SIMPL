@@ -196,6 +196,13 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
     QString getInfoString(SIMPL::InfoStringFormat format) const override;
 
     /**
+     * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
+     * with values populated to match the geometry.
+     * @return
+     */
+    ToolTipGenerator getToolTipGenerator() const override;
+
+    /**
      * @brief writeGeometryToHDF5
      * @param parentId
      * @param writeXdmf

@@ -18,6 +18,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     DataArraySelectionWidget
     DataContainerArrayProxyWidget
     DataContainerCreationWidget
+    DataContainerGridSelectionWidget
     DataContainerReaderWidget
     DataContainerSelectionWidget
     DoubleWidget
@@ -35,6 +36,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     LinkedBooleanWidget
     LinkedPathCreationWidget
     MontageSelectionWidget
+    MontageStructureSelectionWidget
     MultiAttributeMatrixSelectionWidget
     MultiDataContainerSelectionWidget
     MultiDataArraySelectionWidget
@@ -177,6 +179,7 @@ set(SVWidgetsLib_FilterParameterWidgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/FilterParameterWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonSelectionTableModel.h
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonSelectionItemDelegate.h
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/DataContainerGridModel.h
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/DynamicTableItemDelegate.h
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonContainerWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/IComparisonWidget.h
@@ -196,6 +199,7 @@ set(SVWidgetsLib_FilterParameterWidgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/FilterParameterWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonSelectionTableModel.cpp
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonSelectionItemDelegate.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/DataContainerGridModel.cpp
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/DynamicTableItemDelegate.cpp
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/FilterParameterWidgetsDialogs.cpp
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonContainerWidget.cpp

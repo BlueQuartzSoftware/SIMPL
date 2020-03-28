@@ -750,32 +750,34 @@ QVector<DataArrayPath> DataContainer::getAllDataArrayPaths() const
 // -----------------------------------------------------------------------------
 QString DataContainer::getInfoString(SIMPL::InfoStringFormat format) const
 {
-  QString info;
-  QTextStream ss(&info);
   if(format == SIMPL::HtmlFormat)
   {
-    ss << "<html><head></head>\n";
-    ss << "<body>\n";
-    ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
-    ss << "<tbody>\n";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Data Container Info</th></tr>";
-
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Name:</th><td>)" << getName() << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Attribute Matrix Count:</th><td>)" << getNumAttributeMatrices() << "</td></tr>";
-    ss << "<tr><td></td><td></td></tr>";
-    if(getGeometry().get() != nullptr)
-    {
-      ss << getGeometry()->getInfoString(SIMPL::HtmlFormat);
-    }
-
-    ss << "</tbody></table>\n";
-    ss << "</body></html>";
+    return getToolTipGenerator().generateHTML();
   }
-  else
-  {
-    ss << "Requested InfoStringFormat is not supported. " << format;
-  }
+  
+  QString info;
+  QTextStream ss(&info);
+  ss << "Requested InfoStringFormat is not supported. " << format;
   return info;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ToolTipGenerator DataContainer::getToolTipGenerator() const
+{
+  ToolTipGenerator toolTipGen;
+
+  toolTipGen.addTitle("Data Container Info");
+  toolTipGen.addValue("Name", getName());
+  toolTipGen.addValue("Attribute Matrix Count", QString::number(getNumAttributeMatrices()));
+
+  if(getGeometry().get() != nullptr)
+  {
+    toolTipGen.append(getGeometry()->getToolTipGenerator());
+  }
+
+  return toolTipGen;
 }
 
 // -----------------------------------------------------------------------------

@@ -1,37 +1,38 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 #include "DataContainerArray.h"
 
 #include <QtCore/QTextStream>
@@ -39,8 +40,10 @@
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Montages/AbstractMontage.h"
+#include "SIMPLib/Montages/GridMontage.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -444,6 +447,152 @@ bool DataContainerArray::renameDataContainerBundle(const QString& oldName, const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+DataContainerArray::MontageCollection DataContainerArray::getMontageCollection() const
+{
+  return m_MontageCollection;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataContainerArray::addMontage(const AbstractMontageShPtr& montage)
+{
+  return m_MontageCollection.insert(montage);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArray::addOrReplaceMontage(const AbstractMontageShPtr& montage)
+{
+  m_MontageCollection.erase(montage->getName());
+  m_MontageCollection.insert(montage);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArray::removeMontage(const QString& name)
+{
+  m_MontageCollection.erase(name);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AbstractMontageShPtr DataContainerArray::getMontage(const QString& name) const
+{
+  auto iter = m_MontageCollection.find(name);
+  if(m_MontageCollection.end() == iter)
+  {
+    return nullptr;
+  }
+  return (*iter);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList DataContainerArray::getMontageNames() const
+{
+  QStringList names;
+  for(const auto& montage : m_MontageCollection)
+  {
+    names.push_back(montage->getName());
+  }
+
+  return names;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AbstractMontageShPtr DataContainerArray::getPrereqMontage(AbstractFilter* filter, const QString& name)
+{
+  AbstractMontageShPtr montage = getMontage(name);
+  if(nullptr == montage)
+  {
+    filter->setErrorCondition(-4950, "The prerequisite montage '" + name + "' could not be found.");
+  }
+  return montage;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+GridMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames,
+                                                                    GridMontage::CollectionMethod collectionMethod)
+{
+  GridMontage::Pointer montage = GridMontage::New(montageName, size[0], size[1], size[2]);
+
+  if(nullptr == montage)
+  {
+    filter->setErrorCondition(-4965, "The montage '" + montageName + "' could not be instantiated");
+    return nullptr;
+  }
+
+  QStringListIterator dcNameIter(dcNames);
+
+  switch(collectionMethod)
+  {
+  case GridMontage::CollectionMethod::CombOrder:
+    for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
+    {
+      for(size_t row = 0; row < size[0] && dcNameIter.hasNext(); row++)
+      {
+        for(size_t col = 0; col < size[1] && dcNameIter.hasNext(); col++)
+        {
+          setMontageTileFromDataContainerName(filter, row, col, depth, montage, dcNameIter.next());
+        }
+      }
+    }
+    break;
+  case GridMontage::CollectionMethod::SnakeOrder:
+    for(size_t depth = 0; depth < size[2] && dcNameIter.hasNext(); depth++)
+    {
+      for(size_t row = 0; row < size[0] && dcNameIter.hasNext(); row++)
+      {
+        if(row % 2 == 0)
+        {
+          for(size_t col = 0; col < size[1] && dcNameIter.hasNext(); col++)
+          {
+            setMontageTileFromDataContainerName(filter, row, col, depth, montage, dcNameIter.next());
+          }
+        }
+        else
+        {
+          for(int64_t col = static_cast<int64_t>(size[1] - 1); col >= 0 && dcNameIter.hasNext(); col--)
+          {
+            setMontageTileFromDataContainerName(filter, row, col, depth, montage, dcNameIter.next());
+          }
+        }
+      }
+    }
+    break;
+  }
+
+  if(!addMontage(montage))
+  {
+    filter->setErrorCondition(-4960, "The montage '" + montageName + "' could not be added to the Data Structure");
+    return nullptr;
+  }
+
+  return montage;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArray::setMontageTileFromDataContainerName(AbstractFilter* filter, size_t row, size_t col, size_t depth, const GridMontage::Pointer& montage, const QString& dcName)
+{
+  GridTileIndex index = montage->getTileIndex(row, col, depth);
+  DataContainer::Pointer dc = getPrereqDataContainer(filter, dcName);
+  montage->setDataContainer(index, dc);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 DataContainerArray::Pointer DataContainerArray::deepCopy(bool forceNoAllocate) const
 {
   DataContainerArray::Pointer dcaCopy = DataContainerArray::New();
@@ -454,6 +603,14 @@ DataContainerArray::Pointer DataContainerArray::deepCopy(bool forceNoAllocate) c
 
     // End add DataContainer
     dcaCopy->push_back(dcCopy);
+  }
+
+  const MontageCollection montageCollection = getMontageCollection();
+  MontageCollection mccopy = MontageCollection();
+  for(const auto& montage : montageCollection)
+  {
+    AbstractMontage::Pointer montageCopy = montage->propagate(dcaCopy);
+    dcaCopy->addMontage(montageCopy);
   }
 
   return dcaCopy;

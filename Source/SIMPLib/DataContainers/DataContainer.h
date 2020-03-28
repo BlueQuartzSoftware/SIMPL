@@ -53,6 +53,8 @@
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Geometry/IGeometry.h"
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Utilities/ToolTipGenerator.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 class IDataArray;
@@ -189,6 +191,13 @@ public:
    * @param format The format of the string to be returned.
    */
   virtual QString getInfoString(SIMPL::InfoStringFormat format) const;
+
+  /**
+   * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
+   * with values populated to match the current DataContainer.
+   * @return
+   */
+  virtual ToolTipGenerator getToolTipGenerator() const;
 
   /**
    * @brief Adds the data for a named array. If an AttributeMatrix with the same

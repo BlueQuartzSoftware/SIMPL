@@ -42,11 +42,14 @@
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/Common/NamedCollection.hpp"
 #include "SIMPLib/DataContainers/IDataContainerBundle.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Montages/AbstractMontage.h"
+#include "SIMPLib/Montages/GridMontage.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 class DataContainer;
@@ -54,6 +57,10 @@ using DataContainerShPtr = std::shared_ptr<DataContainer>;
 
 class IDataArray;
 using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
+
+class GridMontage;
+using GridMontageShPtr = std::shared_ptr<GridMontage>;
+
 /**
  * @class DataContainerArray DataContainerArray.h DREAM3DLib/Common/DataContainerArray.h
  * @brief  This class holds the list of filters that will be run. This should be
@@ -110,6 +117,7 @@ public:
   static QString ClassName();
 
   using Container = ChildCollection;
+  using MontageCollection = NamedCollection<AbstractMontage>;
 
   ~DataContainerArray() override;
 
@@ -296,12 +304,74 @@ public:
     void removeDataContainerFromBundles(const QString& name);
 
     /**
-    * @brief renameDataArrayPaths
-    * @param renamePaths
-    */
+     * @brief Returns a copy of the Montage collection.
+     * @return
+     */
+    MontageCollection getMontageCollection() const;
+
+    /**
+     * @brief Attempts to add the given montage to the collection.
+     * This will fail if a montage by the same name already exists in the collection.
+     * Returns true if it succeded.  Returns false otherwise.
+     * @param montage
+     * @return
+     */
+    bool addMontage(const AbstractMontageShPtr& montage);
+
+    /**
+     * @brief Adds the given montage to the collection if no montages of the same name exist yet.
+     * Otherwise, the current montage is replaced with the one provided.
+     * @param montage
+     */
+    void addOrReplaceMontage(const AbstractMontageShPtr& montage);
+
+    /**
+     * @brief Removes any montage of the given name from the collection.
+     * @param name
+     */
+    void removeMontage(const QString& name);
+
+    /**
+     * @brief Finds and returns a shared pointer to a montage with the given name.
+     * If none are found, this returns nullptr.
+     * @param name
+     * @return
+     */
+    AbstractMontageShPtr getMontage(const QString& name) const;
+
+    /**
+     * @brief Returns a list of names for all montages in the collection.
+     * @return
+     */
+    QStringList getMontageNames() const;
+
+    /**
+     * @brief createNonPrereqGridMontage
+     * @param filter
+     * @param montageName
+     * @param size
+     * @param dcNames
+     * @param collectionType
+     * @return
+     */
+    GridMontageShPtr createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames = QStringList(),
+      GridMontage::CollectionMethod collectionMethod = GridMontage::CollectionMethod::CombOrder);
+
+
+    /**
+     * @brief renameDataArrayPaths
+     * @param renamePaths
+     */
     void renameDataArrayPaths(DataArrayPath::RenameContainer renamePaths);
 
     DataContainerShPtr getPrereqDataContainer(AbstractFilter* filter, const DataArrayPath& dap, bool createIfNotExists = false);
+
+    /**
+     * @brief getPrereqMontage
+     * @param filter
+     * @param name
+     */
+    AbstractMontageShPtr getPrereqMontage(AbstractFilter* filter, const QString& name);
 
     /**
      * @brief getPrereqDataContainer
@@ -577,6 +647,16 @@ public:
 
   private:
     QMap<QString, IDataContainerBundle::Pointer> m_DataContainerBundles;
+    MontageCollection m_MontageCollection;
+
+    /**
+     * @brief setMontageTileFromDataContainerName
+     * @param row
+     * @param col
+     * @param depth
+     * @param dcName
+     */
+    void setMontageTileFromDataContainerName(AbstractFilter* filter, size_t row, size_t col, size_t depth, const GridMontage::Pointer& montage, const QString& dcName);
 
   public:
     DataContainerArray(const DataContainerArray&) = delete; // Copy Constructor Not Implemented

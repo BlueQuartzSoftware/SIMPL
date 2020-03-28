@@ -37,6 +37,7 @@ set(_PublicFilters
   CreateDataContainer
   CreateFeatureArrayFromElementArray
   CreateImageGeometry
+  CreateGridMontage
   CreateStringArray
   CopyObject
   CreateGeometry

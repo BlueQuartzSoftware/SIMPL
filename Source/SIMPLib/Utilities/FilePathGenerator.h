@@ -56,7 +56,7 @@ public:
 
   using TileRCIndex2D = Tile<2, int32_t, QString>;
   using TileRCIndexRow2D = std::vector<TileRCIndex2D>;
-  using TileRCIncexLayout2D = std::vector<TileRCIndexRow2D>;
+  using TileRCIndexLayout2D = std::vector<TileRCIndexRow2D>;
 
   /**
    * @brief This struct is used to hold actual coordinates of each tile. Where those coordinates reference is left
@@ -111,7 +111,7 @@ public:
    * @param paddingDigits The number of padding digits (ZERO character) to use for each of the indices.
    * @return
    */
-  static TileRCIncexLayout2D GenerateRCIndexMontageFileList(int rowStart, int rowEnd, int colStart, int colEnd, bool& hasMissingFiles, bool rcOrdering, const QString& inputPath,
+  static TileRCIndexLayout2D GenerateRCIndexMontageFileList(int rowStart, int rowEnd, int colStart, int colEnd, bool& hasMissingFiles, bool rcOrdering, const QString& inputPath,
                                                             const QString& filePrefix, const QString& fileSuffix, const QString& fileExtension, int paddingDigits);
 
 protected:

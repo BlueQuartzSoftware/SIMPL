@@ -42,6 +42,7 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReader.h"
@@ -278,6 +279,13 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
      * @return
      */
     DataContainerArrayShPtrType readData(DataContainerArrayProxy& proxy);
+
+    /**
+     * @brief readMontageGroup
+     * @param dca
+     * @return
+     */
+    DataContainerArray::MontageCollection readMontageGroup(const DataContainerArray::Pointer& dca);
 
   protected slots:
     /**

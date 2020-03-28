@@ -83,6 +83,10 @@ QString DataContainerReaderFilterParameter::getWidgetType() const
 void DataContainerReaderFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
+  if(jsonValue.isUndefined())
+  {
+    jsonValue = json[getLegacyPropertyName()];
+  }
   if(!jsonValue.isUndefined())
   {
     QJsonObject jsonObject = jsonValue.toObject();

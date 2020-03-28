@@ -273,6 +273,15 @@ void DataContainerWriter::execute()
     return;
   }
 
+  // Write Montages
+  err = writeMontages(m_FileId);
+  if(err < 0)
+  {
+    QString ss = QObject::tr("Error writing montages");
+    setErrorCondition(-11113, ss);
+    return;
+  }
+
   // Write the XDMF File
   if(m_WriteXdmfFile)
   {
@@ -308,6 +317,36 @@ int DataContainerWriter::writeDataContainerBundles(hid_t fileId)
     iter.next();
     IDataContainerBundle::Pointer bundle = iter.value();
     err = bundle->writeH5Data(dcbGid);
+    if(err < 0)
+    {
+      return err;
+    }
+  }
+  H5Gclose(dcbGid);
+  dcbGid = -1;
+  return 0;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int DataContainerWriter::writeMontages(hid_t fileId)
+{
+  int err = QH5Utilities::createGroupsFromPath(SIMPL::StringConstants::MontageGroupName, m_FileId);
+  if(err < 0)
+  {
+    QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(SIMPL::StringConstants::MontageGroupName);
+    setErrorCondition(-62, ss);
+    return -1;
+  }
+  hid_t dcbGid = H5Gopen(m_FileId, SIMPL::StringConstants::MontageGroupName.toLatin1().data(), H5P_DEFAULT);
+
+  H5GroupAutoCloser groupCloser(&dcbGid);
+
+  DataContainerArray::MontageCollection montages = getDataContainerArray()->getMontageCollection();
+  for(const auto& montage : montages)
+  {
+    err = montage->writeH5Data(dcbGid);
     if(err < 0)
     {
       return err;

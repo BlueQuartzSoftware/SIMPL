@@ -80,6 +80,10 @@ QString FourthOrderPolynomialFilterParameter::getWidgetType() const
 void FourthOrderPolynomialFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
+  if(jsonValue.isUndefined())
+  {
+    jsonValue = json[getLegacyPropertyName()];
+  }
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject obj = jsonValue.toObject();

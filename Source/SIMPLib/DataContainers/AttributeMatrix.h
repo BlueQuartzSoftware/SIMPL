@@ -57,6 +57,8 @@
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Utilities/ToolTipGenerator.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
@@ -610,6 +612,13 @@ public:
      * @return
      */
     virtual QString getInfoString(SIMPL::InfoStringFormat format) const;
+
+    /**
+     * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
+     * with values populated to match the current AttributeMatrix.
+     * @return
+     */
+    virtual ToolTipGenerator getToolTipGenerator() const;
 
   protected:
     AttributeMatrix(const std::vector<size_t>& tDims, const QString& name, AttributeMatrix::Type attrType);

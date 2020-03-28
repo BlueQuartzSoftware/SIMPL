@@ -302,6 +302,15 @@ public:
   virtual void setInitValue(T initValue);
 
   /**
+   * @brief Returns the initial value for the array.
+   * @return
+   */
+  virtual T getInitValue() const
+  {
+    return m_InitValue;
+  }
+
+  /**
    * @brief Makes this class responsible for freeing the memory
    */
   void takeOwnership() override;
@@ -514,6 +523,38 @@ public:
    * @return
    */
   int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& label) const override;
+
+  /**
+   * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
+   * with values populated to match the current DataArray.
+   * @return
+   */
+  ToolTipGenerator getToolTipGenerator() const override
+  {
+    ToolTipGenerator toolTipGen;
+    QLocale usa(QLocale::English, QLocale::UnitedStates);
+
+    toolTipGen.addTitle("Attribute Array Info");
+    toolTipGen.addValue("Name", getName());
+    toolTipGen.addValue("Type", getTypeAsString());
+    toolTipGen.addValue("Number of Tuples", usa.toString(static_cast<qlonglong>(getNumberOfTuples())));
+
+    QString compDimStr = "(";
+    for(int i = 0; i < m_CompDims.size(); i++)
+    {
+      compDimStr = compDimStr + QString::number(m_CompDims[i]);
+      if(i < m_CompDims.size() - 1)
+      {
+        compDimStr = compDimStr + QString(", ");
+      }
+    }
+    compDimStr += ")";
+    toolTipGen.addValue("Component Dimensions", compDimStr);
+    toolTipGen.addValue("Total Elements", usa.toString(static_cast<qlonglong>(m_Size)));
+    toolTipGen.addValue("Total Memory Required", usa.toString(static_cast<qlonglong>(m_Size * sizeof(T))));
+
+    return toolTipGen;
+  }
 
   /**
    * @brief getInfoString

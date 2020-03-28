@@ -23,6 +23,7 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/IDataStructureNode.h"
+#include "SIMPLib/Utilities/ToolTipGenerator.h"
 
 class IDataArray;
 using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
@@ -286,6 +287,13 @@ public:
      * the instance of the object.
      */
     virtual QString getInfoString(SIMPL::InfoStringFormat format) const = 0;
+
+    /**
+     * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
+     * with values populated to match the current DataArray.
+     * @return
+     */
+    virtual ToolTipGenerator getToolTipGenerator() const = 0;
 
   protected:
 

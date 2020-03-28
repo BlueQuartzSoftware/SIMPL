@@ -45,7 +45,9 @@
 IDataStructureNode::HashType IDataStructureNode::CreateStringHash(const QString& string)
 {
   std::hash<std::string> hashFn;
-  return hashFn(string.toStdString());
+  std::string stdStr = std::string(string.toStdString());
+  HashType hash = hashFn(stdStr);
+  return hash;
 }
 
 // -----------------------------------------------------------------------------

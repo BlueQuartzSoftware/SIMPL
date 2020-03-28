@@ -30,6 +30,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataArraySelectionFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerArrayProxyFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerCreationFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerGridSelectionFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerReaderFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerSelectionFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DoubleFilterParameter.h
@@ -60,6 +61,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/LinkedPathCreationFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageFileListInfo.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageSelectionFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageStructureSelectionFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiAttributeMatrixSelectionFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiDataContainerSelectionFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiDataArraySelectionFilterParameter.h
@@ -100,6 +102,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataArraySelectionFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerArrayProxyFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerCreationFilterParameter.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerGridSelectionFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerReaderFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerSelectionFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DoubleFilterParameter.cpp
@@ -129,6 +132,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/LinkedPathCreationFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageFileListInfo.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageSelectionFilterParameter.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageStructureSelectionFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiAttributeMatrixSelectionFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiDataContainerSelectionFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiDataArraySelectionFilterParameter.cpp

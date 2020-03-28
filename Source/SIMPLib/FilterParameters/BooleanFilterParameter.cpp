@@ -78,6 +78,10 @@ QString BooleanFilterParameter::getWidgetType() const
 void BooleanFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
+  if(jsonValue.isUndefined())
+  {
+    jsonValue = json[getLegacyPropertyName()];
+  }
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     m_SetterCallback(static_cast<bool>(jsonValue.toInt()));

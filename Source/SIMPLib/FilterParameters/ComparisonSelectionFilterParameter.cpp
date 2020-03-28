@@ -89,6 +89,10 @@ QString ComparisonSelectionFilterParameter::getWidgetType() const
 void ComparisonSelectionFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
+  if(jsonValue.isUndefined())
+  {
+    jsonValue = json[getLegacyPropertyName()];
+  }
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonArray jsonArray = jsonValue.toArray();

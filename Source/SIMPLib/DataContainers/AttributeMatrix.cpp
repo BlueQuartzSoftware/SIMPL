@@ -694,88 +694,91 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format) const
   QTextStream ss(&info);
   if(format == SIMPL::HtmlFormat)
   {
-    ss << "<html><head></head>\n";
-    ss << "<body>\n";
-    ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
-    ss << "<tbody>\n";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Matrix Info</th></tr>";
-
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Name:</th><td>)" << getName() << "</td></tr>";
-
-    QString typeString;
-    switch(m_Type)
-    {
-    case AttributeMatrix::Type::Vertex:
-      typeString = "Vertex";
-      break;
-    case AttributeMatrix::Type::Edge:
-      typeString = "Edge";
-      break;
-    case AttributeMatrix::Type::Face:
-      typeString = "Face";
-      break;
-    case AttributeMatrix::Type::Cell:
-      typeString = "Cell";
-      break;
-    case AttributeMatrix::Type::VertexFeature:
-      typeString = "Vertex Feature";
-      break;
-    case AttributeMatrix::Type::EdgeFeature:
-      typeString = "Edge Feature";
-      break;
-    case AttributeMatrix::Type::FaceFeature:
-      typeString = "Face Feature";
-      break;
-    case AttributeMatrix::Type::CellFeature:
-      typeString = "Cell Feature";
-      break;
-    case AttributeMatrix::Type::VertexEnsemble:
-      typeString = "Vertex Ensemble";
-      break;
-    case AttributeMatrix::Type::EdgeEnsemble:
-      typeString = "Edge Ensemble";
-      break;
-    case AttributeMatrix::Type::FaceEnsemble:
-      typeString = "Face Ensemble";
-      break;
-    case AttributeMatrix::Type::CellEnsemble:
-      typeString = "Cell Ensemble";
-      break;
-    case AttributeMatrix::Type::MetaData:
-      typeString = "MetaData";
-      break;
-    case AttributeMatrix::Type::Generic:
-      typeString = "Generic";
-      break;
-    default:
-      typeString = "Unknown";
-      break;
-    }
-
-    QLocale usa(QLocale::English, QLocale::UnitedStates);
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type:</th><td>)" << typeString << "</td></tr>";
-    QString tupleStr = "(";
-    for(int i = 0; i < m_TupleDims.size(); i++)
-    {
-      QString numStr = usa.toString(static_cast<qlonglong>(m_TupleDims[i]));
-      tupleStr = tupleStr + numStr;
-      if(i < m_TupleDims.size() - 1)
-      {
-        tupleStr = tupleStr + QString(" x ");
-      }
-    }
-    tupleStr = tupleStr + ")";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Tuple Dimensions:</th><td>)" << tupleStr << "</td></tr>";
-
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Attribute Array Count:</th><td>)" << getNumAttributeArrays() << "</td></tr>";
-    ss << "</tbody></table>\n";
-    ss << "</body></html>";
+    return getToolTipGenerator().generateHTML();
   }
   else
   {
   }
   return info;
 }
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ToolTipGenerator AttributeMatrix::getToolTipGenerator() const
+{
+  ToolTipGenerator toolTipGen;
+
+  toolTipGen.addTitle("Attribute Matrix Info");
+  toolTipGen.addValue("Name", getName());
+
+  QString typeString;
+  switch(m_Type)
+  {
+  case AttributeMatrix::Type::Vertex:
+    typeString = "Vertex";
+    break;
+  case AttributeMatrix::Type::Edge:
+    typeString = "Edge";
+    break;
+  case AttributeMatrix::Type::Face:
+    typeString = "Face";
+    break;
+  case AttributeMatrix::Type::Cell:
+    typeString = "Cell";
+    break;
+  case AttributeMatrix::Type::VertexFeature:
+    typeString = "Vertex Feature";
+    break;
+  case AttributeMatrix::Type::EdgeFeature:
+    typeString = "Edge Feature";
+    break;
+  case AttributeMatrix::Type::FaceFeature:
+    typeString = "Face Feature";
+    break;
+  case AttributeMatrix::Type::CellFeature:
+    typeString = "Cell Feature";
+    break;
+  case AttributeMatrix::Type::VertexEnsemble:
+    typeString = "Vertex Ensemble";
+    break;
+  case AttributeMatrix::Type::EdgeEnsemble:
+    typeString = "Edge Ensemble";
+    break;
+  case AttributeMatrix::Type::FaceEnsemble:
+    typeString = "Face Ensemble";
+    break;
+  case AttributeMatrix::Type::CellEnsemble:
+    typeString = "Cell Ensemble";
+    break;
+  case AttributeMatrix::Type::MetaData:
+    typeString = "MetaData";
+    break;
+  case AttributeMatrix::Type::Generic:
+    typeString = "Generic";
+    break;
+  default:
+    typeString = "Unknown";
+    break;
+  }
+  toolTipGen.addValue("Type", typeString);
+
+  QLocale usa(QLocale::English, QLocale::UnitedStates);
+  QString tupleStr = "(";
+  for(int i = 0; i < m_TupleDims.size(); i++)
+  {
+    QString numStr = usa.toString(static_cast<qlonglong>(m_TupleDims[i]));
+    tupleStr = tupleStr + numStr;
+    if(i < m_TupleDims.size() - 1)
+    {
+      tupleStr = tupleStr + QString(" x ");
+    }
+  }
+  tupleStr = tupleStr + ")";
+  toolTipGen.addValue("Tuple Dimensions", tupleStr);
+
+  return toolTipGen;
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

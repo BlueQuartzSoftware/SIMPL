@@ -32,6 +32,7 @@ set(SIMPLib_Utilities_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibEndian.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringOperations.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/TimeUtilities.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ToolTipGenerator.h
 )
 
 set(SIMPLib_Utilities_SRCS
@@ -51,6 +52,7 @@ set(SIMPLib_Utilities_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReaderRequirements.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringOperations.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/TestObserver.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ToolTipGenerator.cpp
 )
 
 cmp_IDE_SOURCE_PROPERTIES( "${SUBDIR_NAME}" "${SIMPLib_${SUBDIR_NAME}_HDRS};${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}" "${SIMPLib_${SUBDIR_NAME}_SRCS}" "${PROJECT_INSTALL_HEADERS}")

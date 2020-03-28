@@ -52,6 +52,7 @@
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/Filtering/FilterManager.h"
+#include "SIMPLib/Montages/MontageSupport.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReader.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
@@ -209,6 +210,12 @@ void DataContainerReader::dataCheck()
   }
   QMap<QString, IDataContainerBundle::Pointer> bundles = tempDCA->getDataContainerBundles();
   dca->setDataContainerBundles(bundles);
+
+  DataContainerArray::MontageCollection montageGroup = readMontageGroup(dca);
+  for(const auto& montage : montageGroup)
+  {
+    dca->addMontage(montage);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -221,7 +228,6 @@ void DataContainerReader::execute()
    * will be passed up the chain if something goes wrong.
    */
   dataCheck();
-
 }
 
 // -----------------------------------------------------------------------------
@@ -235,7 +241,7 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
   SIMPLH5DataReader::Pointer simplReader = SIMPLH5DataReader::New();
   connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, int code) { setErrorCondition(code, msg); });
 
-  if (!simplReader->openFile(getInputFile()))
+  if(!simplReader->openFile(getInputFile()))
   {
     return DataContainerArray::New();
   }
@@ -267,6 +273,32 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
   }
 
   return dca;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerArray::MontageCollection DataContainerReader::readMontageGroup(const DataContainerArray::Pointer& dca)
+{
+  hid_t fileId = QH5Utilities::openFile(getInputFile(), true); // Open the file Read Only
+  if(fileId < 0)
+  {
+    QString ss = QObject::tr("Error opening input file '%1'").arg(getInputFile());
+    setErrorCondition(-155, ss);
+    return DataContainerArray::MontageCollection();
+  }
+  H5ScopedFileSentinel sentinel(&fileId, true);
+
+  hid_t groupId = QH5Utilities::openHDF5Object(fileId, SIMPL::StringConstants::MontageGroupName);
+  sentinel.addGroupId(&groupId);
+  int err = 0;
+  DataContainerArray::MontageCollection montages = MontageSupport::IO::ReadMontagesFromHDF5(groupId, dca, err);
+  if(err < 0)
+  {
+    QString ss = QObject::tr("Error reading montage collection");
+    setErrorCondition(-160, ss);
+  }
+  return montages;
 }
 
 // -----------------------------------------------------------------------------
