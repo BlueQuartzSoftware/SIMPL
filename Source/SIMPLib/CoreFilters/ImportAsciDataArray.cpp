@@ -534,7 +534,10 @@ void ImportAsciDataArray::dataCheck()
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType>(this, getCreatedAttributeArrayPath(), false, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
   }
-
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::SizeT)
+  {
+    getDataContainerArray()->createNonPrereqArrayFromPath<SizeTArrayType>(this, getCreatedAttributeArrayPath(), false, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
+  }
   readHeaderPortion();
   
   
@@ -655,6 +658,15 @@ void ImportAsciDataArray::execute()
   {
     BoolArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType>(this, getCreatedAttributeArrayPath(), cDims);
     err = readAsciFile<bool, bool>(p, m_InputFile, m_SkipHeaderLines, delimiter, true);
+    if(err >= 0)
+    {
+      m_Array = p;
+    }
+  }
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::SizeT)
+  {
+    SizeTArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<SizeTArrayType>(this, getCreatedAttributeArrayPath(), cDims);
+    err = readAsciFile<size_t, size_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;

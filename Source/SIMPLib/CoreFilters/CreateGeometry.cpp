@@ -456,7 +456,7 @@ void CreateGeometry::dataCheck()
     TriangleGeom::Pointer triangle = TriangleGeom::NullPointer();
     if(static_cast<int>(getArrayHandling()) == k_CopyArrays)
     {
-      triangle = TriangleGeom::CreateGeometry(std::static_pointer_cast<SizeTArrayType>(m_TrisPtr.lock()->deepCopy(getInPreflight())),
+      triangle = TriangleGeom::CreateGeometry(std::static_pointer_cast<SharedTriList>(m_TrisPtr.lock()->deepCopy(getInPreflight())),
                                               std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::TriangleGeometry);
     }
     else
