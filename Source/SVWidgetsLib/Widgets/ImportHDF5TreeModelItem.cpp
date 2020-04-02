@@ -300,7 +300,7 @@ void ImportHDF5TreeModelItem::initializeChildItems()
     m_NumAttrs = object_info.num_attrs;
 
     std::list<std::string> itemList;
-    herr_t err = H5Utilities::getGroupObjects(groupId, H5Utilities::H5Support_ANY, itemList);
+    herr_t err = H5Utilities::getGroupObjects(groupId, H5Utilities::CustomHDFDataTypes::Any, itemList);
     if(err < 0)
     {
       std::cout << "Error getting group objects. " << __FILE__ << ":" << __LINE__ << std::endl;

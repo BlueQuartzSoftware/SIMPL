@@ -21,6 +21,7 @@ set(SIMPLib_Utilities_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FileSystemPathHelper.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/GenericDataParser.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageSelection.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelDataAlgorithm.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelData2DAlgorithm.h

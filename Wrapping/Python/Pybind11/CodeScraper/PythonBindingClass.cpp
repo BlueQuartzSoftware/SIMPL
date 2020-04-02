@@ -590,8 +590,7 @@ QString PythonBindingClass::generatePropertiesCode()
     else if(tokens.size() == 6)
     {
       out << TAB << "/* Property accessors for " << varName << " */" << NEWLINE_SIMPL;
-      out << TAB << ".def_property(\"" << varName << "\", &" << getClassName() << "::get" << varName << ", &" << getClassName() << "::set" << varName << ")" << NEWLINE_SIMPL;
-
+      out << TAB << ".def_property(\"" << varName << "\", &" << getClassName() << "::" << tokens[3] << ", &" << getClassName() << "::" << tokens[5] << ")" << NEWLINE_SIMPL;
       argCode << SIMPL::Python::fromCamelCase(varName);
       docCode << "    :param " << pyType << " " << SIMPL::Python::fromCamelCase(varName) << ": Sets the " << varName << " value.\n";
 

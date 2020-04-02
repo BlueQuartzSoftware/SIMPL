@@ -1053,6 +1053,8 @@ extern template class DataArray<double>;
 
 extern template class DataArray<size_t>;
 
+#ifndef SIMPL_DATA_ARRAY_ALIAS
+#define SIMPL_DATA_ARRAY_ALIAS
 // -----------------------------------------------------------------------------
 // Declare our aliases
 using BoolArrayType = DataArray<bool>;
@@ -1076,3 +1078,4 @@ using FloatArrayType = DataArray<float>;
 using DoubleArrayType = DataArray<double>;
 
 using SizeTArrayType = DataArray<size_t>;
+#endif

@@ -35,8 +35,9 @@
 
 #include "BoundaryStatsData.h"
 
-#include <QtCore/QString>
 #include <vector>
+
+#include <QtCore/QString>
 
 #include "H5Support/H5Utilities.h"
 

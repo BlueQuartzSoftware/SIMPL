@@ -120,9 +120,8 @@ DataContainerArray::MontageCollection MontageSupport::IO::ReadMontagesFromHDF5(h
   DataContainerArray::MontageCollection montageCollection;
 
   // Get list of montages
-  int filter = H5Utilities::H5Support_ANY;
   QStringList names;
-  QH5Utilities::getGroupObjects(parentId, filter, names);
+  QH5Utilities::getGroupObjects(parentId, H5Utilities::CustomHDFDataTypes::Any, names);
 
   for(const QString& name : names)
   {

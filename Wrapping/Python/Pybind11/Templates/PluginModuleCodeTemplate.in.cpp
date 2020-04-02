@@ -23,7 +23,7 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
  * These are Plugin specific Headers. Yep sort of hard coded and brittle.
  ******************************************************************************/
 #ifdef ORIENTATIONANALYSIS_PYBIND_11_HEADER
-#include "OrientationLib/OrientationMath/OrientationConverter.hpp"
+#include "EbsdLib/OrientationMath/OrientationConverter.hpp"
 #endif
 
 /******************************************************************************

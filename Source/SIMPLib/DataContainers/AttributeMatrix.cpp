@@ -236,7 +236,7 @@ QVector<QString> AttributeMatrix::GetTypesAsStrings()
 void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, SIMPLH5DataReaderRequirements* req, const QString &h5InternalPath)
 {
   QList<QString> attributeMatrixNames;
-  QH5Utilities::getGroupObjects(containerId, H5Utilities::H5Support_GROUP, attributeMatrixNames);
+  QH5Utilities::getGroupObjects(containerId, H5Utilities::CustomHDFDataTypes::Group, attributeMatrixNames);
   foreach(QString attributeMatrixName, attributeMatrixNames)
   {
     if(attributeMatrixName.compare(SIMPL::Geometry::Geometry) != 0)
