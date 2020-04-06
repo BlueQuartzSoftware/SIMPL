@@ -147,6 +147,7 @@ void DataContainerReader::initialize()
 // -----------------------------------------------------------------------------
 void DataContainerReader::dataCheck()
 {
+
   // Sync the file proxy and cached proxy if the time stamps are different
   QFileInfo fi(getInputFile());
   if(getInputFile() == getLastFileRead() && getLastRead() < fi.lastModified())
@@ -176,6 +177,16 @@ void DataContainerReader::dataCheck()
   }
 
   DataContainerArray::Pointer dca = getDataContainerArray();
+
+  if(m_InputFileDataContainerArrayProxy.getDataContainers().empty())
+  {
+    QString msg = "The DataContainerArrayProxy object is empty. Nothing will be read from the input file. If you are programmatically calling " + getNameOfClass() +
+                  " you may need to insert a line such as \n\
+    DataContainerArrayProxy proxy = reader->readDataContainerArrayStructure(inputFile);\n\
+    reader->setInputFileDataContainerArrayProxy(proxy);\n"
+                  " into your code before calling preflight or execute on the filter or pipeline";
+    setWarningCondition(1000, msg);
+  }
 
   // Read either the structure or all the data depending on the preflight status
   DataContainerArray::Pointer tempDCA = readData(m_InputFileDataContainerArrayProxy);
