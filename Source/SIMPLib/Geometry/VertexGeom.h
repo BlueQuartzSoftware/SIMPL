@@ -56,9 +56,6 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
   PYB11_BEGIN_BINDINGS(VertexGeom SUPERCLASS IGeometry)
   PYB11_SHARED_POINTERS(VertexGeom)
   PYB11_STATIC_NEW_MACRO(VertexGeom)
-  
-  PYB11_CREATION(CreateGeometry ARGS size_t QString bool)
-  PYB11_CREATION(CreateGeometry ARGS SharedVertexList::Pointer QString)
   PYB11_METHOD(void setVertices SharedVertexList::Pointer,vertices)
   PYB11_METHOD(SharedVertexList::Pointer getVertices)
   PYB11_METHOD(void setCoords size_t,vertId float,coords[3])

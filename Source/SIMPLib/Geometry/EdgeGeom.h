@@ -53,8 +53,6 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
   PYB11_BEGIN_BINDINGS(EdgeGeom SUPERCLASS IGeometry)
   PYB11_SHARED_POINTERS(EdgeGeom)
   PYB11_STATIC_NEW_MACRO(EdgeGeom)
-  PYB11_CREATION(CreateGeometry ARGS size_t SharedVertexList::Pointer QString bool)
-  PYB11_CREATION(CreateGeometry ARGS SharedEdgeList::Pointer SharedVertexList::Pointer QString)
   PYB11_METHOD(void setVertices SharedVertexList::Pointer,vertices)
   PYB11_METHOD(SharedVertexList::Pointer getVertices)
   PYB11_METHOD(void setEdges SharedEdgeList::Pointer,edges)

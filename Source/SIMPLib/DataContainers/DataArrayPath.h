@@ -83,8 +83,8 @@ class SIMPLib_EXPORT DataArrayPath
 {
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(DataArrayPath)
-  PYB11_CREATION(ARGS QString QString QString)
-  PYB11_CREATION(ARGS QString)
+  PYB11_CREATION(QString QString QString)
+  PYB11_CREATION(QString)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(QString AttributeMatrixName READ getAttributeMatrixName WRITE setAttributeMatrixName)
   PYB11_PROPERTY(QString DataArrayName READ getDataArrayName WRITE setDataArrayName)

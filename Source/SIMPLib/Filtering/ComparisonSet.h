@@ -53,12 +53,11 @@ class SIMPLib_EXPORT ComparisonSet : public AbstractComparison
   PYB11_BEGIN_BINDINGS(ComparisonSet SUPERCLASS AbstractComparison)
   PYB11_SHARED_POINTERS(ComparisonSet)
   PYB11_STATIC_NEW_MACRO(ComparisonSet)
-  PYB11_CREATION()
   PYB11_PROPERTY(QVector<AbstractComparison::Pointer> Comparisons READ getComparisons WRITE setComparisons)
   PYB11_PROPERTY(bool InvertComparison READ getInvertComparison WRITE setInvertComparison)
   PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
-  PYB11_METHOD(void addComparison ARGS AbstractComparisonPtr,comparison)
-  PYB11_METHOD(void insertComparison ARGS int,index AbstractComparisonPtr,comparison)
+  PYB11_METHOD(void addComparison ARGS comparison)
+  PYB11_METHOD(void insertComparison ARGS index comparison)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations
