@@ -173,7 +173,8 @@ cmpReplaceFileIfDifferent(OLD_FILE_PATH  ${SIMPLib_BINARY_DIR}/CoreFilters/Regis
                           NEW_FILE_PATH  ${RegisterKnownFiltersFile} )
 
 
-set(${PROJECT_NAME}_LINK_LIBS Qt5::Core Qt5::Network H5Support)
+set(${PROJECT_NAME}_LINK_LIBS Qt5::Core Qt5::Network)
+
 if( "${SIMPL_USE_MULTITHREADED_ALGOS}" STREQUAL "ON")
   list(APPEND ${PROJECT_NAME}_LINK_LIBS TBB::tbb TBB::tbbmalloc)
 endif()
@@ -186,13 +187,33 @@ if(APPLE AND "${ITK_VERSION_MAJOR}" STREQUAL "5" AND SIMPL_USE_ITK)
   list(APPEND ${PROJECT_NAME}_LINK_LIBS SimpleITKExplicit)
 endif()
 
-#-- Add a library for the SIMPLib Code
+#-------------------------------------------------------------------------------
+# Add the SIMPLib Library
 add_library(${PROJECT_NAME} ${LIB_TYPE} ${Project_SRCS} )
 CMP_AddDefinitions(TARGET ${PROJECT_NAME})
 
+#-------------------------------------------------------------------------------
+# Add in the H5Support Header Only Library
+set(H5Support_HDRS
+  ${H5Support_SOURCE_DIR}/Source/H5Support/H5Lite.h       
+  ${H5Support_SOURCE_DIR}/Source/H5Support/H5Macros.h   
+  ${H5Support_SOURCE_DIR}/Source/H5Support/H5ScopedErrorHandler.h 
+  ${H5Support_SOURCE_DIR}/Source/H5Support/H5ScopedSentinel.h   
+  ${H5Support_SOURCE_DIR}/Source/H5Support/H5Support.h         
+  ${H5Support_SOURCE_DIR}/Source/H5Support/H5SupportVersion.h   
+  ${H5Support_SOURCE_DIR}/Source/H5Support/H5Utilities.h     
+  ${H5Support_SOURCE_DIR}/Source/H5Support/QH5Lite.h          
+  ${H5Support_SOURCE_DIR}/Source/H5Support/QH5Utilities.h
+)
+target_sources(${PROJECT_NAME}  PUBLIC ${H5Support_HDRS})
+source_group("${SIMPLibPRoj_SOURCE_DIR}/H5Support" FILES ${H5Support_HDRS})
+list(APPEND ${PROJECT_NAME}_LINK_LIBS ${HDF5_C_TARGET_NAME})
+target_compile_definitions( ${PROJECT_NAME} PUBLIC -DH5Support_USE_QT)
+target_include_directories(${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${H5Support_SOURCE_DIR}/Source>)
+
 #-- Add Target specific definitions
 if(WIN32 AND BUILD_SHARED_LIBS)
-      target_compile_definitions(${PROJECT_NAME} PUBLIC "-DSIMPLib_BUILT_AS_DYNAMIC_LIB")
+  target_compile_definitions(${PROJECT_NAME} PUBLIC "-DSIMPLib_BUILT_AS_DYNAMIC_LIB")
 endif()
 
 #-- Configure Target Specific Include Directories
@@ -204,8 +225,14 @@ target_include_directories(${PROJECT_NAME}
                               $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
                               $<BUILD_INTERFACE:${TARGET_SOURCE_DIR_PARENT}>
                               $<BUILD_INTERFACE:${TARGET_BINARY_DIR_PARENT}>
+)
+
+if( "${SIMPL_USE_MULTITHREADED_ALGOS}" STREQUAL "ON")
+  target_include_directories(${PROJECT_NAME} 
+                            PUBLIC
                               $<BUILD_INTERFACE:${TBB_INCLUDE_DIRS}>
 )
+endif()
 
 if(SIMPL_USE_EIGEN)
   target_include_directories(${PROJECT_NAME} 

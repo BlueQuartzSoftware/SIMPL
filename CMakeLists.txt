@@ -82,6 +82,18 @@ if(NOT EXISTS "${CMP_SOURCE_DIR}")
   message(FATAL_ERROR "CMP_SOURCE_DIR does not exist at '${CMP_SOURCE_DIR}'")
 endif()
 
+#------------------------------------------------------------------------------
+# If the developer has set another H5Support directory then use that, otherwise look
+# for the H5Support directory at the same level as the SIMPL directory
+if("${H5Support_SOURCE_DIR}" STREQUAL "")
+  set(H5Support_SOURCE_DIR ${SIMPL_PARENT}/H5Support)
+  message(STATUS "H5Support_SOURCE_DIR: ${H5Support_SOURCE_DIR}")
+endif()
+
+if(NOT EXISTS "${H5Support_SOURCE_DIR}")
+  message(FATAL_ERROR "H5Support_SOURCE_DIR does not exist at '${H5Support_SOURCE_DIR}'")
+endif()
+
 
 #------------------------------------------------------------------------------
 # There are several different Release Types that we are going to use.
@@ -375,11 +387,6 @@ install(
   COMPONENT
     Devel
 )
-
-# -----------------------------------------------------------------------
-# Add in the Necessary HDF5 Support Sources into a library
-# -----------------------------------------------------------------------
-add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/H5Support ${PROJECT_BINARY_DIR}/H5Support)
 
 # -----------------------------------------------------------------------
 # Add in the support to host the documentation over a thin-http server

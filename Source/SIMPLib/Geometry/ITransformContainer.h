@@ -37,7 +37,7 @@
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/SIMPLib.h"
 
-#include "H5Support/H5Lite.h"
+#include <hdf5.h>
 
 class SIMPLib_EXPORT ITransformContainer : public Observable
 {

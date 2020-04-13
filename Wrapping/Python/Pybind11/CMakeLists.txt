@@ -114,7 +114,7 @@ if(SIMPL_BUILD_TESTING)
     message(FATAL_ERROR "Please set the ANACONDA_DIR variable either through the CMake-GUI or through the -DANACONDA_DIR=/path/to/Anaconda3")
   endif()
   if(NOT SIMPL_ENABLE_ANACONDA_PACKAGE)
-    message(FATAL_ERROR "Please SIMPL_ENABLE_ANACONDA_PACKAGE=ON in order for the Python unit tests to execute correctly.")
+    message(FATAL_ERROR "Please -DSIMPL_ENABLE_ANACONDA_PACKAGE=ON in order for the Python unit tests to execute correctly.")
   endif()
 
   #------------------------------
@@ -176,6 +176,9 @@ if (SIMPL_ENABLE_ANACONDA_PACKAGE)
     ANACONDA_ENVIRONMENT_NAME is the virtual environment name. Leaving this blank might work....\n\
     SIMPL_ENABLE_ANACONDA_PACKAGE This will enable the creation of a script that will create an Anaconda3 package for DREAM3D/SIMPL\n\
     SIMPL_ENABLE_ANACONDA_LOCAL_INSTALL Will install the python package to the ANACONDA_ENVIRONMENT_NAME name on your local computer. Use this with caution.\n\
+    \n\
+    The complete CMake configure arguments would be:\n\
+    -DSIMPL_ENABLE_PYTHON=ON -DANACONDA_DIR=  -DANACONDA_ENVIRONMENT_NAME=  -DSIMPL_ENABLE_ANACONDA_PACKAGE=ON -DSIMPL_ENABLE_ANACONDA_LOCAL_INSTALL=OFF
     ")
   endif()
   #if()

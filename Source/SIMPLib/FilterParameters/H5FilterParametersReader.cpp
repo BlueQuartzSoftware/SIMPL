@@ -153,7 +153,7 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(hid_t fid
   {
     // Use QH5Lite to ask how many "groups" are in the "Pipeline Group"
     QList<QString> groupList;
-    herr_t err = QH5Utilities::getGroupObjects(pipelineGroupId, H5Utilities::H5Support_GROUP, groupList);
+    herr_t err = QH5Utilities::getGroupObjects(pipelineGroupId, H5Utilities::CustomHDFDataTypes::Group, groupList);
 
     // Get a FilterManager Instance
     FilterManager* filterManager = FilterManager::Instance();
@@ -261,7 +261,7 @@ QString H5FilterParametersReader::getJsonFromFile(QString filePath, IObserver* o
   {
     // Use QH5Lite to ask how many "groups" are in the "Pipeline Group"
     QList<QString> groupList;
-    herr_t err = QH5Utilities::getGroupObjects(pipelineGroupId, H5Utilities::H5Support_GROUP, groupList);
+    herr_t err = QH5Utilities::getGroupObjects(pipelineGroupId, H5Utilities::CustomHDFDataTypes::Group, groupList);
 
     // Get a FilterManager Instance
     FilterManager* filterManager = FilterManager::Instance();
@@ -1112,7 +1112,7 @@ DataContainerArrayProxy H5FilterParametersReader::readDataContainerArrayProxy(co
     return defValue;
   }
   QList<QString> dcaNames;
-  int err = QH5Utilities::getGroupObjects(dcaGid, H5Utilities::H5Support_GROUP, dcaNames);
+  int err = QH5Utilities::getGroupObjects(dcaGid, H5Utilities::CustomHDFDataTypes::Group, dcaNames);
   if(err < 0)
   {
     return defValue;
@@ -1127,7 +1127,7 @@ DataContainerArrayProxy H5FilterParametersReader::readDataContainerArrayProxy(co
     dcProxy.setFlag(Qt::Checked);
     // Loop over the attribute Matrices
     QList<QString> amNames;
-    err = QH5Utilities::getGroupObjects(dcGid, H5Utilities::H5Support_GROUP, amNames);
+    err = QH5Utilities::getGroupObjects(dcGid, H5Utilities::CustomHDFDataTypes::Group, amNames);
     if(err < 0)
     {
       return defValue;

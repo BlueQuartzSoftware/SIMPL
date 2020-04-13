@@ -295,7 +295,7 @@ bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, const DataContain
   H5ScopedGroupSentinel sentinel(&dcbGroupId, false);
 
   QList<QString> groupNames;
-  err = QH5Utilities::getGroupObjects(dcbGroupId, H5Utilities::H5Support_GROUP, groupNames);
+  err = QH5Utilities::getGroupObjects(dcbGroupId, H5Utilities::CustomHDFDataTypes::Group, groupNames);
   if(err < 0)
   {
     QString ss = QObject::tr("Error getting group objects from HDF5 group '%1' ").arg(SIMPL::StringConstants::DataContainerBundleGroupName);

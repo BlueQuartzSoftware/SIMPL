@@ -36,10 +36,11 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 #include <QtCore/QVector>
 
-#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLibDLLExport.h"
 #include "SIMPLib/Common/Constants.h"
 
 class SIMPLib_EXPORT RgbColor

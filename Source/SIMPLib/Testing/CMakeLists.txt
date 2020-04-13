@@ -44,7 +44,6 @@ endforeach()
 
 set(LINKED_LIBRARIES
   Qt5::Core
-  H5Support
   SIMPLib
   ${ITK_LIBRARIES}
 )

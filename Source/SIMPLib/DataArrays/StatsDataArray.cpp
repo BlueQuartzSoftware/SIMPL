@@ -474,7 +474,7 @@ int StatsDataArray::readH5Data(hid_t parentId)
   }
 
   QList<QString> names;
-  err = QH5Utilities::getGroupObjects(gid, H5Utilities::H5Support_GROUP, names);
+  err = QH5Utilities::getGroupObjects(gid, H5Utilities::CustomHDFDataTypes::Group, names);
   if(err < 0)
   {
     err |= QH5Utilities::closeHDF5Object(gid);

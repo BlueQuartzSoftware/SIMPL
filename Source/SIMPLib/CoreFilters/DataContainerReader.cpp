@@ -147,6 +147,7 @@ void DataContainerReader::initialize()
 // -----------------------------------------------------------------------------
 void DataContainerReader::dataCheck()
 {
+
   // Sync the file proxy and cached proxy if the time stamps are different
   QFileInfo fi(getInputFile());
   if(getInputFile() == getLastFileRead() && getLastRead() < fi.lastModified())
@@ -176,6 +177,16 @@ void DataContainerReader::dataCheck()
   }
 
   DataContainerArray::Pointer dca = getDataContainerArray();
+
+  if(m_InputFileDataContainerArrayProxy.getDataContainers().empty())
+  {
+    QString msg = "The DataContainerArrayProxy object is empty. Nothing will be read from the input file. If you are programmatically calling " + getNameOfClass() +
+                  " you may need to insert a line such as \n\
+    DataContainerArrayProxy proxy = reader->readDataContainerArrayStructure(inputFile);\n\
+    reader->setInputFileDataContainerArrayProxy(proxy);\n"
+                  " into your code before calling preflight or execute on the filter or pipeline";
+    setWarningCondition(1000, msg);
+  }
 
   // Read either the structure or all the data depending on the preflight status
   DataContainerArray::Pointer tempDCA = readData(m_InputFileDataContainerArrayProxy);
@@ -348,7 +359,7 @@ int DataContainerReader::readExistingPipelineFromFile(hid_t fileId)
 
   // Use QH5Lite to ask how many "groups" are in the "Pipeline Group"
   QList<QString> groupList;
-  err = QH5Utilities::getGroupObjects(pipelineGroupId, H5Utilities::H5Support_GROUP, groupList);
+  err = QH5Utilities::getGroupObjects(pipelineGroupId, H5Utilities::CustomHDFDataTypes::Group, groupList);
 
   // Loop over the items getting the "ClassName" attribute from each group
   QString classNameStr = "";
