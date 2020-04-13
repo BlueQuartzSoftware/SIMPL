@@ -50,6 +50,7 @@ class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(MoveMultiData SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(MoveMultiData)
     PYB11_FILTER_NEW_MACRO(MoveMultiData)
     PYB11_PROPERTY(int WhatToMove READ getWhatToMove WRITE setWhatToMove)

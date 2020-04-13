@@ -52,6 +52,7 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(FeatureDataCSVWriter SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(FeatureDataCSVWriter)
     PYB11_FILTER_NEW_MACRO(FeatureDataCSVWriter)
     PYB11_PROPERTY(DataArrayPath CellFeatureAttributeMatrixPath READ getCellFeatureAttributeMatrixPath WRITE setCellFeatureAttributeMatrixPath)

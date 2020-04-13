@@ -52,6 +52,7 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(CreateImageGeometry SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(CreateImageGeometry)
     PYB11_FILTER_NEW_MACRO(CreateImageGeometry)
     PYB11_PROPERTY(DataArrayPath SelectedDataContainer READ getSelectedDataContainer WRITE setSelectedDataContainer)

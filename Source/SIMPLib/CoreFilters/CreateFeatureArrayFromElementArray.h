@@ -54,6 +54,7 @@ class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(CreateFeatureArrayFromElementArray SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(CreateFeatureArrayFromElementArray)
     PYB11_FILTER_NEW_MACRO(CreateFeatureArrayFromElementArray)
     PYB11_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)

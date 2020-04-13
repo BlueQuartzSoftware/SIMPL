@@ -50,6 +50,7 @@ class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(RenameAttributeMatrix SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(RenameAttributeMatrix)
     PYB11_FILTER_NEW_MACRO(RenameAttributeMatrix)
     PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrixPath READ getSelectedAttributeMatrixPath WRITE setSelectedAttributeMatrixPath)

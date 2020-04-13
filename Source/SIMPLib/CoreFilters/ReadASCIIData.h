@@ -51,6 +51,7 @@ class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(ReadASCIIData SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(ReadASCIIData)
   PYB11_FILTER_NEW_MACRO(ReadASCIIData)
   PYB11_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)

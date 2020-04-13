@@ -56,6 +56,7 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(ExecuteProcess SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(ExecuteProcess)
   PYB11_FILTER_NEW_MACRO(ExecuteProcess)
   PYB11_PROPERTY(QString Arguments READ getArguments WRITE setArguments)

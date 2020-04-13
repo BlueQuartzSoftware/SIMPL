@@ -52,6 +52,7 @@ class SIMPLib_EXPORT MultiThresholdObjects : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(MultiThresholdObjects SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(MultiThresholdObjects)
     PYB11_FILTER_NEW_MACRO(MultiThresholdObjects)
     PYB11_PROPERTY(QString DestinationArrayName READ getDestinationArrayName WRITE setDestinationArrayName)

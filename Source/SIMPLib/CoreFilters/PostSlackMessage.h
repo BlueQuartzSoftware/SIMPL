@@ -52,6 +52,7 @@ class SIMPLib_EXPORT PostSlackMessage : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(PostSlackMessage SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(PostSlackMessage)
   PYB11_FILTER_NEW_MACRO(PostSlackMessage)
   PYB11_PROPERTY(QString SlackUser READ getSlackUser WRITE setSlackUser)

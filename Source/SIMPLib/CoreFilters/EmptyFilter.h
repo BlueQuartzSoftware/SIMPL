@@ -50,6 +50,7 @@ class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(EmptyFilter SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(EmptyFilter)
     PYB11_FILTER_NEW_MACRO(EmptyFilter)
     PYB11_END_BINDINGS()

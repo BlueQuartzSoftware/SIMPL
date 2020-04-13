@@ -55,6 +55,7 @@ class SIMPLib_EXPORT InitializeData : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(InitializeData SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(InitializeData)
   PYB11_FILTER_NEW_MACRO(InitializeData)
   PYB11_PROPERTY(QVector<DataArrayPath> CellAttributeMatrixPaths READ getCellAttributeMatrixPaths WRITE setCellAttributeMatrixPaths)

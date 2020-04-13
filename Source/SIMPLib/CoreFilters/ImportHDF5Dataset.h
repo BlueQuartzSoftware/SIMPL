@@ -53,6 +53,7 @@ class SIMPLib_EXPORT ImportHDF5Dataset : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(ImportHDF5Dataset SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(ImportHDF5Dataset)
   PYB11_FILTER_NEW_MACRO(ImportHDF5Dataset)
   PYB11_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)

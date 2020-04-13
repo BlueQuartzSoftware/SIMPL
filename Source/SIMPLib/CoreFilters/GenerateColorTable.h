@@ -20,6 +20,7 @@ class SIMPLib_EXPORT GenerateColorTable : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(GenerateColorTable SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(GenerateColorTable)
   PYB11_FILTER_NEW_MACRO(GenerateColorTable)
   PYB11_PROPERTY(QString SelectedPresetName READ getSelectedPresetName WRITE setSelectedPresetName)

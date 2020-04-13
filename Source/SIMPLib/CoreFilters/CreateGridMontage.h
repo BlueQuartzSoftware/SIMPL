@@ -48,6 +48,7 @@ class SIMPLib_EXPORT CreateGridMontage : public AbstractFilter
 
   // clang-format off
   PYB11_BEGIN_BINDINGS(CreateGridMontage SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(CreateGridMontage)
   PYB11_FILTER_NEW_MACRO(CreateGridMontage)
 

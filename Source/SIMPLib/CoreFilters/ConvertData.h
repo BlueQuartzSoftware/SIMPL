@@ -51,6 +51,7 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(ConvertData SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(ConvertData)
     PYB11_FILTER_NEW_MACRO(ConvertData)
     PYB11_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)

@@ -59,6 +59,7 @@ class SIMPLib_EXPORT WriteTriangleGeometry : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(WriteTriangleGeometry SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(WriteTriangleGeometry)
     PYB11_FILTER_NEW_MACRO(WriteTriangleGeometry)
     PYB11_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)

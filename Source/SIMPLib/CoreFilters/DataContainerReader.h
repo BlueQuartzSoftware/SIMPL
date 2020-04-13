@@ -62,6 +62,7 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(DataContainerReader SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(DataContainerReader)
     PYB11_FILTER_NEW_MACRO(DataContainerReader)
     PYB11_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)

@@ -51,6 +51,7 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(RemoveArrays SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(RemoveArrays)
     PYB11_FILTER_NEW_MACRO(RemoveArrays)
     PYB11_PROPERTY(DataContainerArrayProxy DataArraysToRemove READ getDataArraysToRemove WRITE setDataArraysToRemove)

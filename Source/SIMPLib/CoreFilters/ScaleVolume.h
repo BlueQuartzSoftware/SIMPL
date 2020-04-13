@@ -51,6 +51,7 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(ScaleVolume SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(ScaleVolume)
     PYB11_FILTER_NEW_MACRO(ScaleVolume)
     PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)

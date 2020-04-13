@@ -55,6 +55,7 @@ class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(ReplaceValueInArray SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(ReplaceValueInArray)
     PYB11_FILTER_NEW_MACRO(ReplaceValueInArray)
     PYB11_PROPERTY(DataArrayPath SelectedArray READ getSelectedArray WRITE setSelectedArray)

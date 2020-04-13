@@ -56,6 +56,7 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(DataContainerWriter SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(DataContainerWriter)
     PYB11_FILTER_NEW_MACRO(DataContainerWriter)
     PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)

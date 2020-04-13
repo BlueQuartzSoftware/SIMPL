@@ -53,6 +53,7 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(RequiredZThickness SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(RequiredZThickness)
     PYB11_STATIC_NEW_MACRO(RequiredZThickness)
     PYB11_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)

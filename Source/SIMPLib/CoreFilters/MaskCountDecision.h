@@ -53,6 +53,7 @@ class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(MaskCountDecision SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(MaskCountDecision)
     PYB11_STATIC_NEW_MACRO(MaskCountDecision)
     PYB11_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
