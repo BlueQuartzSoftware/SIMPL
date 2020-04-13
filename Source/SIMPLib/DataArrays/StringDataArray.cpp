@@ -242,7 +242,7 @@ size_t StringDataArray::getTypeSize() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StringDataArray::eraseTuples(std::vector<size_t>& idxs)
+int StringDataArray::eraseTuples(const std::vector<size_t>& idxs)
 {
 
   int err = 0;
@@ -314,7 +314,7 @@ int StringDataArray::copyTuple(size_t currentPos, size_t newPos)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool StringDataArray::copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
+bool StringDataArray::copyFromArray(size_t destTupleOffset, IDataArray::ConstPointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
 {
   if(destTupleOffset >= m_Array.size())
   {
@@ -325,7 +325,11 @@ bool StringDataArray::copyFromArray(size_t destTupleOffset, IDataArray::Pointer 
     return false;
   }
 
-  Self* source = dynamic_cast<Self*>(sourceArray.get());
+  const Self* source = dynamic_cast<const Self*>(sourceArray.get());
+  if(source == nullptr)
+  {
+    return false;
+  }
 
   if(srcTupleOffset + totalSrcTuples > sourceArray->getNumberOfTuples())
   {
@@ -346,9 +350,9 @@ bool StringDataArray::copyFromArray(size_t destTupleOffset, IDataArray::Pointer 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StringDataArray::initializeTuple(size_t pos, void* value)
+void StringDataArray::initializeTuple(size_t pos, const void* value)
 {
-  m_Array[pos] = *(reinterpret_cast<QString*>(value));
+  m_Array[pos] = *(reinterpret_cast<const QString*>(value));
 }
 
 // -----------------------------------------------------------------------------
@@ -447,7 +451,7 @@ QString StringDataArray::getFullNameOfClass() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StringDataArray::writeH5Data(hid_t parentId, std::vector<size_t> tDims) const
+int StringDataArray::writeH5Data(hid_t parentId, const std::vector<size_t>& tDims) const
 {
   return H5DataArrayWriter::writeStringDataArray<StringDataArray>(parentId, this);
 }
@@ -455,7 +459,7 @@ int StringDataArray::writeH5Data(hid_t parentId, std::vector<size_t> tDims) cons
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StringDataArray::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) const
+int StringDataArray::writeXdmfAttribute(QTextStream& out, const int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) const
 {
   out << "<!-- Xdmf is not supported for " << getNameOfClass() << " with type " << getTypeAsString() << " --> ";
   return -1;

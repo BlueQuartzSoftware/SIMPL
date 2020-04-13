@@ -49,7 +49,7 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
   PYB11_METHOD(QString getTypeAsString)
   PYB11_METHOD(std::vector<size_t> getComponentDimensions)
   PYB11_METHOD(size_t getNumberOfTuples)
-  PYB11_METHOD(int getNumberOfComponents)
+  PYB11_METHOD(int32_t getNumberOfComponents)
   PYB11_END_BINDINGS()
   // End Python bindings declarations
 
@@ -73,7 +73,7 @@ public:
     IDataArray(const QString& name = "");
     ~IDataArray() override;
 
-    virtual Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) const = 0;
+    virtual Pointer createNewArray(size_t numElements, int32_t rank, const size_t* dims, const QString& name, bool allocate = true) const = 0;
     virtual Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) const = 0;
     // virtual Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) = 0;
 
@@ -83,7 +83,7 @@ public:
      */
     DataArrayPath getDataArrayPath() const override;
 
-    virtual int getClassVersion() const = 0;
+    virtual int32_t getClassVersion() const = 0;
 
     /**
      * @brief Has all the memory needed for this class been allocated?
@@ -123,7 +123,7 @@ public:
      */
     virtual size_t getSize() const = 0;
 
-    virtual int getNumberOfComponents() const = 0;
+    virtual int32_t getNumberOfComponents() const = 0;
     virtual std::vector<size_t> getComponentDimensions() const = 0;
 
     /**
@@ -147,7 +147,7 @@ public:
      * @param idxs The indices to erase
      * @return
      */
-    virtual int eraseTuples(std::vector<size_t>& idxs) = 0;
+    virtual int32_t eraseTuples(const std::vector<size_t>& idxs) = 0;
 
     /**
      * @brief Copies a Tuple from one position to another.
@@ -155,7 +155,7 @@ public:
      * @param newPos The destination index to place the copied data
      * @return
      */
-    virtual int copyTuple(size_t currentPos, size_t newPos) = 0;
+    virtual int32_t copyTuple(size_t currentPos, size_t newPos) = 0;
 
     /**
      * @brief copyData This method copies all data from the <b>sourceArray</b> into
@@ -178,7 +178,7 @@ public:
      * @param sourceArray
      * @return
      */
-    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray);
+    bool copyFromArray(size_t destTupleOffset, IDataArray::ConstPointer sourceArray);
 
     /**
      * @brief copyData This method copies the number of tuples specified by the
@@ -199,14 +199,14 @@ public:
      * @param sourceArray
      * @return
      */
-    virtual bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) = 0;
+    virtual bool copyFromArray(size_t destTupleOffset, IDataArray::ConstPointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) = 0;
 
     /**
      * @brief Splats the same value c across all values in the Tuple
      * @param pos The index of the Tuple
      * @param value pointer to value
      */
-    virtual void initializeTuple(size_t pos, void* value) = 0;
+    virtual void initializeTuple(size_t pos, const void* value) = 0;
 
     /**
      * @brief Sets all the values to zero.
@@ -240,7 +240,7 @@ public:
      * @param i
      * @param j
      */
-    virtual void printComponent(QTextStream& out, size_t i, int j) const = 0;
+    virtual void printComponent(QTextStream& out, size_t i, int32_t j) const = 0;
 
     /**
      * @brief deepCopy
@@ -255,14 +255,14 @@ public:
      * @param tDims
      * @return
      */
-    virtual int writeH5Data(hid_t parentId, std::vector<size_t> tDims) const = 0;
+    virtual int32_t writeH5Data(hid_t parentId, const std::vector<size_t>& tDims) const = 0;
 
     /**
      * @brief readH5Data
      * @param parentId
      * @return
      */
-    virtual int readH5Data(hid_t parentId) = 0;
+    virtual int32_t readH5Data(hid_t parentId) = 0;
 
     /**
      * @brief writeXdmfAttribute
@@ -273,7 +273,7 @@ public:
      * @param label
      * @return
      */
-    virtual int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& label) const = 0;
+    virtual int32_t writeXdmfAttribute(QTextStream& out, const int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& label) const = 0;
 
     /**
      * @brief getTypeAsString

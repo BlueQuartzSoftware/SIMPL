@@ -52,10 +52,9 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
 {
   // clang-format off
   // Start Python bindings declarations
-  PYB11_BEGIN_BINDINGS(StatsDataArray SUPER IDataArray)
+  PYB11_BEGIN_BINDINGS(StatsDataArray SUPERCLASS IDataArray)
   PYB11_SHARED_POINTERS(StatsDataArray)
   PYB11_STATIC_NEW_MACRO(StatsDataArray)
-  PYB11_STATIC_CREATION(New)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t int size_t* QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t std::vector<size_t> QString bool)
@@ -193,7 +192,7 @@ public:
    * @param idx
    * @return
    */
-  StatsData::Pointer operator[](int idx);
+  StatsData::Pointer operator[](int idx) const;
 
   /* **************** This is the interface for the IDataArray Class which MUST
    *  Be implemented. Most of it is useless and will simply ASSERT if called. */
@@ -265,7 +264,7 @@ public:
    * @param idxs The indices to remove
    * @return error code.
    */
-  int eraseTuples(std::vector<size_t>& idxs) override;
+  int eraseTuples(const std::vector<size_t>& idxs) override;
 
   /**
    * @brief Copies a Tuple from one position to another.
@@ -298,14 +297,14 @@ public:
    * @param sourceArray
    * @return
    */
-  bool copyFromArray(size_t destTupleOffset, IDataArrayShPtrType sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
+  bool copyFromArray(size_t destTupleOffset, IDataArray::ConstPointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
 
   /**
    * @brief Splats the same value c across all values in the Tuple
    * @param i The index of the Tuple
    * @param c The value to splat across all components in the tuple
    */
-  void initializeTuple(size_t i, void* p) override;
+  void initializeTuple(size_t i, const void* p) override;
 
   /**
    * @brief Sets all the values to zero.
@@ -353,7 +352,7 @@ public:
    * @param parentId
    * @return
    */
-  int writeH5Data(hid_t parentId, std::vector<size_t> tDims) const override;
+  int writeH5Data(hid_t parentId, const std::vector<size_t>& tDims) const override;
 
   /**
    * @brief readH5Data
@@ -370,7 +369,7 @@ public:
    * @param groupPath
    * @return
    */
-  int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) const override;
+  int writeXdmfAttribute(QTextStream& out, const int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) const override;
 
   /**
    * @brief getInfoString

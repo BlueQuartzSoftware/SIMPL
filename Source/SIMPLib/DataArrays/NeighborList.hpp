@@ -374,7 +374,7 @@ class NeighborList : public IDataArray
      * @param idxs The indices to remove
      * @return error code.
      */
-    int eraseTuples(std::vector<size_t>& idxs) override
+    int eraseTuples(const std::vector<size_t>& idxs) override
     {
       int err = 0;
       // If nothing is to be erased just return
@@ -455,12 +455,17 @@ class NeighborList : public IDataArray
      * @param sourceArray
      * @return
      */
-    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override
+    bool copyFromArray(size_t destTupleOffset, IDataArray::ConstPointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override
     {
       if(!m_IsAllocated) { return false; }
       if(destTupleOffset >= m_Array.size() ) { return false; }
       if(!sourceArray->isAllocated()) { return false; }
-      Self* source = dynamic_cast<Self*>(sourceArray.get());
+      const Self* source = dynamic_cast<const Self*>(sourceArray.get());
+
+      if(source == nullptr)
+      {
+        return false;
+      }
 
       if(sourceArray->getNumberOfComponents() != getNumberOfComponents())
       {
@@ -508,7 +513,7 @@ class NeighborList : public IDataArray
      * @param i The index of the Tuple
      * @param c The value to splat across all components in the tuple
      */
-    void initializeTuple(size_t i, void* p) override
+    void initializeTuple(size_t i, const void* p) override
     {
       Q_UNUSED(i);
       Q_UNUSED(p);
@@ -672,7 +677,7 @@ class NeighborList : public IDataArray
      * @param parentId
      * @return
      */
-    int writeH5Data(hid_t parentId, std::vector<size_t> tDims) const override
+    int writeH5Data(hid_t parentId, const std::vector<size_t>& tDims) const override
     {
       int err = 0;
 
@@ -813,7 +818,7 @@ class NeighborList : public IDataArray
      * @param groupPath
      * @return
      */
-    int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName,
+    int writeXdmfAttribute(QTextStream& out, const int64_t* volDims, const QString& hdfFileName,
                                    const QString& groupPath, const QString& label) const override
     {
       int precision = 0;

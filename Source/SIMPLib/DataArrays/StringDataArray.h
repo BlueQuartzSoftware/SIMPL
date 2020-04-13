@@ -61,7 +61,7 @@ class SIMPLib_EXPORT StringDataArray : public IDataArray
 {
   // clang-format off
   // Start Python bindings declarations
-  PYB11_BEGIN_BINDINGS(StringDataArray SUPER IDataArray)
+  PYB11_BEGIN_BINDINGS(StringDataArray SUPERCLASS IDataArray)
   PYB11_SHARED_POINTERS(StringDataArray)
   PYB11_STATIC_NEW_MACRO(StringDataArray)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
@@ -231,7 +231,7 @@ public:
    * @param idxs The indices to remove
    * @return error code.
    */
-  int eraseTuples(std::vector<size_t>& idxs) override;
+  int eraseTuples(const std::vector<size_t>& idxs) override;
 
   /**
    * @brief Copies a Tuple from one position to another.
@@ -264,14 +264,14 @@ public:
    * @param sourceArray
    * @return
    */
-  bool copyFromArray(size_t destTupleOffset, IDataArrayShPtrType sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
+  bool copyFromArray(size_t destTupleOffset, IDataArray::ConstPointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
 
   /**
    * @brief Does Nothing
    * @param pos The index of the Tuple
    * @param value pointer to value
    */
-  void initializeTuple(size_t pos, void* value) override;
+  void initializeTuple(size_t pos, const void* value) override;
 
   /**
    * @brief Sets all the values to empty string.
@@ -342,7 +342,7 @@ public:
    * @param parentId
    * @return
    */
-  int writeH5Data(hid_t parentId, std::vector<size_t> tDims) const override;
+  int writeH5Data(hid_t parentId, const std::vector<size_t>& tDims) const override;
 
   /**
    * @brief writeXdmfAttribute
@@ -352,7 +352,7 @@ public:
    * @param groupPath
    * @return
    */
-  int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) const override;
+  int writeXdmfAttribute(QTextStream& out, const int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) const override;
 
   /**
    * @brief getInfoString
