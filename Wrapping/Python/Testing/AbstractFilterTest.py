@@ -1,50 +1,28 @@
-""" This is a basic test for AbstractFilter """
-
-import time
-
-from dream3d import simplpy
-from dream3d import simpl
-from dream3d import simpl_helpers as sc
-from dream3d import simpl_test_dirs as sd
-
+import simpl
 
 def BasicTest():
-    """
-    This will test the basic AbstractFilter methods
-    """
-    filter = simpl.EmptyFilter.New()
+    filter = simpl.EmptyFilter()
 
-    groupName = filter.GroupName
-    assert groupName == "Core"
+    assert filter.GroupName == 'Core'
 
-    subGroupName = filter.SubGroupName
-    assert subGroupName == "Misc"
+    assert filter.SubGroupName == 'Misc'
 
-    humanLabel = filter.HumanLabel
-    assert humanLabel == "Unknown Filter: "
+    assert filter.HumanLabel == 'Unknown Filter: '
 
-    filterVersion = filter.FilterVersion
-    assert filterVersion != "0.0.0"
+    assert filter.FilterVersion != '0.0.0'
 
-    compiledLibraryName = filter.CompiledLibraryName
-    assert compiledLibraryName == "Core"
+    assert filter.CompiledLibraryName == 'Core'
 
     filter.Cancel = False
-    b = filter.Cancel
-    assert b is False
+    assert not filter.Cancel
 
     filter.Enabled = True
-    b = filter.Enabled
-    assert b is True
+    assert filter.Enabled
 
-    filter.setErrorCondition(-1000, "Foo")
-    e = filter.ErrorCode
-    assert e == -1000
+    filter.setErrorCondition(-1000, 'Foo')
+    assert filter.ErrorCode == -1000
 
-"""
-Main entry point for python script
-"""
-if __name__ == "__main__":
-    print("AbstractFilter Test Starting")
+if __name__ == '__main__':
+    print('AbstractFilter Test Starting')
     BasicTest()
-    print("AbstractFilter Test Complete")
+    print('AbstractFilter Test Complete')

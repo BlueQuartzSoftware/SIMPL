@@ -468,9 +468,71 @@ include(${SIMPLProj_SOURCE_DIR}/Support/Support.cmake)
 # Find the Pybind11 installation
 option(SIMPL_ENABLE_PYTHON "Generate and Compile Python wrapping codes" OFF)
 if(SIMPL_ENABLE_PYTHON)
+  include(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/CreatePybind11Module.cmake)
 
-  # --------------------------------------------------------------------
-  # add the Pybind11 Python Wrapping
-  add_subdirectory(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11 ${PROJECT_BINARY_DIR}/Pybind11)
- # include(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Testing/SourceList.cmake)
+  get_target_property(SIMPL_PY_SOURCES SIMPLib SOURCES)
+
+  set(SIMPL_PY_SOURCES_FILE ${SIMPLProj_BINARY_DIR}/SIMPL_py_sources.txt)
+
+  file(WRITE ${SIMPL_PY_SOURCES_FILE} "${SIMPL_PY_SOURCES}")
+
+  CreatePybind11Module(MODULE_NAME "simpl"
+    OUTPUT_DIR "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore"
+    FILE_LIST_PATH ${SIMPL_PY_SOURCES_FILE}
+    SOURCE_DIR "${SIMPLProj_SOURCE_DIR}/Source"
+    HEADER_PATH "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/pySIMPLHeader.cpp"
+    BODY_PATH "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/pySIMPLBody.cpp"
+    PYTHON_OUTPUT_DIR "${SIMPLProj_BINARY_DIR}/Wrapping/dream3d"
+    LINK_LIBRARIES SIMPLib
+    INCLUDE_DIRS ${SIMPLProj_SOURCE_DIR}/Wrapping/Python
+  )
+
+  if(SIMPL_BUILD_TESTING)
+    file(READ ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/SIMPL/simpl_test_dirs.in.py SIMPL_TEST_DIRS_FILE)
+
+    string(REPLACE "\${CMAKE_LIBRARY_OUTPUT_DIRECTORY}" $<TARGET_FILE_DIR:simpl> SIMPL_TEST_DIRS_FILE ${SIMPL_TEST_DIRS_FILE})
+    string(REPLACE "\${SIMPLProj_BINARY_DIR}" ${SIMPLProj_BINARY_DIR} SIMPL_TEST_DIRS_FILE ${SIMPL_TEST_DIRS_FILE})
+    string(REPLACE "\${DREAM3D_DATA_DIR}" ${DREAM3D_DATA_DIR} SIMPL_TEST_DIRS_FILE ${SIMPL_TEST_DIRS_FILE})
+
+    file(GENERATE
+      OUTPUT ${SIMPLProj_BINARY_DIR}/Wrapping/dream3d/$<CONFIG>/simpl_test_dirs.py
+      CONTENT ${SIMPL_TEST_DIRS_FILE}
+    )
+
+    set(PYTHON_TEST_INPUT_DIR "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Testing")
+
+    set(SIMPL_PYTHON_TESTS
+      "AbstractFilterTest"
+      "AttributeMatrixTest"
+      "DataArrayTest"
+      "DataContainerArrayTest"
+      "DataContainerTest"
+      "GeometryTest"
+      "ImageReadTest"
+      "TestBindings"
+
+      "Create_Edge_Geometry"
+      "Create_Quad_Geometry"
+      "Create_RectilinearGrid"
+      "Create_Triangle_Geometry"
+      "Create_Vertex_Geometry"
+      
+      "Array_Calculator_Test"
+      "Convert_Attribute_Array_Data_Type"
+      "Copy_Object_Test"
+      "Crop_Vertex_Geometry"
+      "Export_Triangle_Geometry"
+      "Import_Ascii_Data_Array"
+      "Import_Hdf5_Dataset"
+      "Remove_Component_From_Array"
+      "Rename_Attribute_Array"
+      "Split_Attribute_Array"
+      "NumPy_Round_Trip"
+    )
+
+    CreatePythonTests(PREFIX "PY_SIMPL"
+      INPUT_DIR ${PYTHON_TEST_INPUT_DIR}
+      TEST_NAMES ${SIMPL_PYTHON_TESTS}
+    )
+  endif()
 endif()

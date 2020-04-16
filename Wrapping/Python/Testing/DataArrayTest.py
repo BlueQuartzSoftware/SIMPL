@@ -1,33 +1,24 @@
+import numpy as np
 
-import time
-
-try:
-    import numpy as np
-except ImportError:
-    raise RuntimeError("This module depends on the numpy module. Please make\
-sure that it is installed properly.")
-
-# These are the SIMPL python modules
-from dream3d import simplpy
-from dream3d import simpl
-from dream3d import simpl_helpers as sc
-from dream3d import simpl_test_dirs as sd
-
+import simpl
+import simplpy
+import simpl_helpers as sc
+import simpl_test_dirs as sd
 
 def DataArrayTest():
-    """
+    '''
     This is the Top level to test the creation of Data Arrays from numpy and placing those
     arrays into a DREAM3D DataContainer heirarchy.
-    """
+    '''
     dca = sc.CreateDataContainerArray()
 
-    dc = sc.CreateDataContainer("ImageDataContainer")
+    dc = sc.CreateDataContainer('ImageDataContainer')
     dca.addOrReplaceDataContainer(dc)
 
     shape = simpl.VectorSizeT([4, 5, 2])
-    cellAm = sc.CreateAttributeMatrix(shape, "CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell)
+    cellAm = sc.CreateAttributeMatrix(shape, 'CellAttributeMatrix', simpl.AttributeMatrix.Type.Cell)
     dc.addOrReplaceAttributeMatrix(cellAm)
-    shape = [4,5,2]
+    shape = [4, 5, 2]
     # Create the Component Dimensions for the Array, 1 Component in this case
     cDims = simpl.VectorSizeT([1])
 
@@ -38,33 +29,30 @@ def DataArrayTest():
     arrayList = []
 
     for index, item in enumerate(arrayTypes):
-        # print("+++ Creating Array: %s" % item)
+        # print('+++ Creating Array: %s' % item)
         z_flat, array = sc.CreateDataArray(arrayTypes[index].__name__, shape, cDims, item)
         cellAm.addOrReplaceAttributeArray(array)
         arrayList.append(z_flat)
         # Now add an array that is purely allocated on the C++/SIMPL side of things.
-        # print ("  Creating Int32Array locally to the Loop.... Int32 SIMPL %s" % array.Name)
-        array = simpl.Int32ArrayType(shape[0]*shape[1]*shape[2], "Int32 SIMPL " + array.Name, True)
+        # print ('  Creating Int32Array locally to the Loop.... Int32 SIMPL %s' % array.Name)
+        array = simpl.Int32Array(shape[0] * shape[1] * shape[2], 'Int32 SIMPL ' + array.Name, True)
         # cellAm.addOrReplaceAttributeArray(array)
         # for x in range(shape[0]*shape[1]*shape[2]):
         #     array.setValue(x, x)
         # This will force cleanup the array that just got created.
-        array = simpl.Int32ArrayType.Cleanup()
-        # print("--- Loop Complete for %s" % item)
+        array = None
+        # print('--- Loop Complete for %s' % item)
 
     # Create a Geometry Object and store it in the DataContainer
-    imageGeom = simpl.ImageGeom.CreateGeometry("ImageGeometry")
+    imageGeom = simpl.ImageGeom.CreateGeometry('ImageGeometry')
     imageGeom.setDimensions(shape[0], shape[1], shape[2])
     imageGeom.setSpacing(1.0, 2.0, 3.0)
     imageGeom.setOrigin(5.5, -9.0, 0.0)
     dc.setGeometry(imageGeom)
 
-    err = sc.WriteDREAM3DFile(sd.GetTestTempDirectory() + "/DataArrayTest.dream3d", dca, True)
+    err = sc.WriteDREAM3DFile(sd.GetTestTempDirectory() + '/DataArrayTest.dream3d', dca, True)
     assert err == 0
 
-"""
-Main entry point for python script
-"""
-if __name__ == "__main__":
+if __name__ == '__main__':
     DataArrayTest()
-    print("[DataArrayTest] Complete")
+    print('[DataArrayTest] Complete')
