@@ -153,7 +153,7 @@ void registerSIMPLArray(pybind11::module& mod, const char* name)
 {
   namespace py = pybind11;
   using namespace py::literals;
-  using array_t = IVecType<T, Dim_>::Type;
+  using array_t = typename IVecType<T, Dim_>::Type;
   py::class_<array_t>(mod, name)
       .def(py::init<>([](py::list values) {
         array_t vec;
