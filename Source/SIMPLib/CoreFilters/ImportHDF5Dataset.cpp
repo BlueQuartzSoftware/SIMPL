@@ -563,14 +563,6 @@ IDataArrayShPtrType ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ImportHDF5Dataset::getHDF5Dimensions()
-{
-  return m_HDF5Dimensions;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 AbstractFilter::Pointer ImportHDF5Dataset::newFilterInstance(bool copyFilterParameters) const
 {
   ImportHDF5Dataset::Pointer filter = ImportHDF5Dataset::New();
