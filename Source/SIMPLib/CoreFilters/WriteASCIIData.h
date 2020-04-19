@@ -264,9 +264,9 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     QVector<DataArrayPath> m_SelectedDataArrayPaths = {};
     QString m_OutputPath = {};
     QString m_OutputFilePath = {};
-    int m_Delimiter = {};
-    QString m_FileExtension = {};
-    int m_MaxValPerLine = {};
+    int m_Delimiter = {0};
+    QString m_FileExtension = {QString(".txt")};
+    int m_MaxValPerLine = {-1};
     int m_OutputStyle = {};
 
     /**
@@ -280,7 +280,7 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
      * @brief Specific function to write string arrays to a text file
      * @param inputData
      */
-    void writeStringArray(const IDataArrayShPtrType& inputData, const QString& outputFile, char delimiter);
+    void writeStringArray(const IDataArrayShPtrType& inputData, const std::string& outputFile, char delimiter);
 
     /**
      * @brief m_SelectedWeakPtrVector

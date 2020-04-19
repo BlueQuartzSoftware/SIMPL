@@ -32,17 +32,15 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-#include <memory>
-
 #include "WriteASCIIData.h"
 
-#include <QtCore/QDir>
+#include <fstream>
 
+
+#include <QtCore/QDir>
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
-
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
 #include "SIMPLib/DataArrays/StringDataArray.h"
@@ -62,7 +60,8 @@
  * @brief The ExportDataPrivate class is a templated class that implements a method to generically
  * export data to an ASCII file
  */
-template <typename TInputType> class WriteASCIIDataPrivate
+template <typename TInputType> 
+class WriteASCIIDataPrivate
 {
 public:
   using DataArrayType = DataArray<TInputType>;
@@ -81,19 +80,19 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void static Execute(WriteASCIIData* filter, IDataArray::Pointer inputData, char delimiter, const QString& outputFile, int32_t MaxValPerLine)
+  void static Execute(WriteASCIIData* filter, IDataArray::Pointer inputData, char delimiter, const std::string& outputFile, int32_t MaxValPerLine)
   {
     typename DataArrayType::Pointer inputArray = std::dynamic_pointer_cast<DataArrayType>(inputData);
 
-    QFile file(outputFile);
-    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+	std::ofstream out(outputFile, std::ios_base::out);
+	
+    if(!out.is_open())
     {
-      QString ss = QObject::tr("The output file could not be opened: '%1'").arg(outputFile);
-      filter->setErrorCondition(-11012, ss);
+      std::stringstream ss;
+      ss << "The output file could not be opened: " << outputFile;
+      filter->setErrorCondition(-11012, QString::fromStdString(ss.str()));
       return;
     }
-
-    QTextStream out(&file);
 
     int32_t nComp = inputArray->getNumberOfComponents();
 
@@ -129,14 +128,7 @@ public:
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-WriteASCIIData::WriteASCIIData()
-: m_SelectedDataArrayPaths(QVector<DataArrayPath>())
-, m_OutputPath("")
-, m_Delimiter(0)
-, m_FileExtension(".txt")
-, m_MaxValPerLine(-1)
-{
-}
+WriteASCIIData::WriteASCIIData() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -396,7 +388,7 @@ void WriteASCIIData::writeMultiFileOutput()
 
     if( std::dynamic_pointer_cast<StringDataArray>(selectedArrayPtr).get() != nullptr)
     {
-       writeStringArray(selectedArrayPtr, exportArrayFile, delimiter);
+       writeStringArray(selectedArrayPtr, exportArrayFile.toStdString(), delimiter);
     }
     else if( selectedArrayPtr->getTypeAsString().compare("NeighborList<T>") == 0)
     {
@@ -411,7 +403,7 @@ void WriteASCIIData::writeMultiFileOutput()
       setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StatsDataArray is unsupported when writing ASCII Data.");
     }
     else
-      EXECUTE_TEMPLATE(this, WriteASCIIDataPrivate, selectedArrayPtr, this, selectedArrayPtr, delimiter, exportArrayFile, m_MaxValPerLine)
+      EXECUTE_TEMPLATE(this, WriteASCIIDataPrivate, selectedArrayPtr, this, selectedArrayPtr, delimiter, exportArrayFile.toStdString(), m_MaxValPerLine)
 
     if(getErrorCode() < 0)
     {
@@ -520,26 +512,25 @@ void WriteASCIIData::writeSingleFileOutput()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void WriteASCIIData::writeStringArray(const IDataArray::Pointer& inputData, const QString& outputFile, char delimiter)
+void WriteASCIIData::writeStringArray(const IDataArray::Pointer& inputData, const std::string& outputFile, char delimiter)
 {
   StringDataArray::Pointer inputArray = std::dynamic_pointer_cast<StringDataArray>(inputData);
 
-  QFile file(outputFile);
-  if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+  std::ofstream out(outputFile, std::ios_base::out);
+  if(!out.is_open())
   {
-    QString ss = QObject::tr("The output file could not be opened: '%1'").arg(outputFile);
-    setErrorCondition(-11011, ss);
+    std::stringstream ss;
+	ss << "The output file could not be opened: " << outputFile;
+    setErrorCondition(-11011, QString::fromStdString(ss.str()));
     return;
   }
-
-  QTextStream out(&file);
 
   size_t nTuples = inputArray->getNumberOfTuples();
 
   int32_t recCount = 0;
   for(size_t i = 0; i < nTuples; i++)
   {
-    out << inputArray->getValue(i);
+    out << inputArray->getValue(i).toStdString();
 
     recCount++;
 
