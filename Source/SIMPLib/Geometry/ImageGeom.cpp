@@ -45,6 +45,8 @@
 
 #include <QtCore/QTextStream>
 
+#include <thread>
+
 #include "SIMPLib/Geometry/ImageGeom.h"
 
 #include "H5Support/H5Lite.h"
@@ -916,7 +918,7 @@ void ImageGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType:
     connect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), observable, SLOT(processDerivativesMessage(const AbstractMessage::Pointer&)));
   }
 
-  size_t grain = dims[2] == 1 ? 1 : dims[2] / tbb::task_scheduler_init::default_num_threads();
+  size_t grain = dims[2] == 1 ? 1 : dims[2] / std::thread::hardware_concurrency();
 
   if(grain == 0) // This can happen if dims[2] > number of processors
   {

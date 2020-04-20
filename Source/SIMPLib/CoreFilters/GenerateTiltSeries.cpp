@@ -43,7 +43,6 @@
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 #include <tbb/task_group.h>
-#include <tbb/task_scheduler_init.h>
 #endif
 
 #include "SIMPLib/Common/Constants.h"
@@ -457,7 +456,6 @@ void GenerateTiltSeries::execute()
   DataContainerArray::Pointer dca = getDataContainerArray();
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  tbb::task_scheduler_init init;
   std::shared_ptr<tbb::task_group> g(new tbb::task_group);
   // C++11 RIGHT HERE....
   int32_t nthreads = static_cast<int32_t>(std::thread::hardware_concurrency()); // Returns ZERO if not defined on this platform

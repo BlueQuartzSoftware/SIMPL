@@ -42,10 +42,7 @@
 // This is consistent with previous behavior, only earlier parallelization split the includes between
 // the corresponding .h and .cpp files.
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-// clang-format off
 #include <tbb/task_group.h>
-#include <tbb/task_scheduler_init.h>
-// clang-format on
 #endif
 
 /**
@@ -122,7 +119,6 @@ private:
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   uint32_t m_MaxThreads = 1;
   uint32_t m_CurThreads = 0;
-  tbb::task_scheduler_init init;
   std::shared_ptr<tbb::task_group> m_TaskGroup;
 #endif
 };
