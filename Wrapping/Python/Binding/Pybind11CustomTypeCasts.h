@@ -223,7 +223,7 @@ public:
    */
   static handle cast(const ASCIIWizardData& src, return_value_policy /* policy */, handle /* parent */)
   {
-    py::dict awdDict = py::dict();
+    py::dict awdDict;
     awdDict["inputFilePath"] = src.inputFilePath;
     awdDict["beginIndex"] = src.beginIndex;
     awdDict["numberOfLines"] = src.numberOfLines;
@@ -235,7 +235,7 @@ public:
     awdDict["attrMatType"] = src.attrMatType;
     awdDict["tupleDimensions"] = src.tupleDims;
     awdDict["dataTypes"] = src.dataTypes;
-    return awdDict;
+    return std::move(awdDict);
   }
 };
 
@@ -288,12 +288,12 @@ public:
    */
   static handle cast(const QVector<DataArrayPath>& src, return_value_policy /* policy */, handle /* parent */)
   {
-    py::list dataArrayPaths = py::list();
+    py::list dataArrayPaths;
     for(auto dataArrayPath : src)
     {
       dataArrayPaths.append(dataArrayPath);
     }
-    return dataArrayPaths;
+    return std::move(dataArrayPaths);
   }
 };
 
@@ -348,13 +348,13 @@ public:
   static handle cast(const QMap<QString, DataContainerProxy>& src, return_value_policy /* policy */, handle /* parent */)
   {
     std::map<QString, DataContainerProxy> qmapStd = src.toStdMap();
-    py::dict qmapDict = py::dict();
+    py::dict qmapDict;
     for(auto it = qmapStd.begin(); it != qmapStd.end(); ++it)
     {
       QString key(it->first);
       qmapDict[py::str(key.toStdString())] = py::cast(it->second);
     }
-    return qmapDict;
+    return std::move(qmapDict);
   }
 };
 
@@ -408,14 +408,14 @@ public:
    */
   static handle cast(const QMap<QString, AttributeMatrixProxy>& src, return_value_policy /* policy */, handle /* parent */)
   {
-    py::dict qmapDict = py::dict();
+    py::dict qmapDict;
     std::map<QString, AttributeMatrixProxy> qmapStd = src.toStdMap();
     for(auto it = qmapStd.begin(); it != qmapStd.end(); ++it)
     {
       QString key(it->first);
       qmapDict[py::str(key.toStdString())] = py::cast(it->second);
     }
-    return qmapDict;
+    return std::move(qmapDict);
   }
 };
 
@@ -468,12 +468,12 @@ public:
    */
   static handle cast(const QVector<ShapeType::Type>& src, return_value_policy /* policy */, handle /* parent */)
   {
-    py::list shapeTypes = py::list();
+    py::list shapeTypes;
     for(auto shapeType : src)
     {
       shapeTypes.append(shapeType);
     }
-    return shapeTypes;
+    return std::move(shapeTypes);
   }
 };
 
@@ -529,12 +529,12 @@ public:
    */
   static handle cast(const QVector<PhaseType::Type>& src, return_value_policy /* policy */, handle /* parent */)
   {
-    py::list phaseTypes = py::list();
+    py::list phaseTypes;
     for(PhaseType::Type phaseType : src)
     {
       phaseTypes.append(phaseType);
     }
-    return phaseTypes;
+    return std::move(phaseTypes);
   }
 };
 
@@ -623,7 +623,7 @@ public:
    */
   static handle cast(const VectorOfFloatArray& src, return_value_policy /* policy */, handle /* parent */)
   {
-    py::list floatArrays = py::list();
+    py::list floatArrays;
     for(FloatArrayType::Pointer floatArray : src)
     {
       py::list floatArrayList;
@@ -635,7 +635,7 @@ public:
 
       floatArrays.append(floatArray);
     }
-    return floatArrays;
+    return std::move(floatArrays);
   }
 };
 
