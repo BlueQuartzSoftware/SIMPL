@@ -118,7 +118,7 @@ public:
    *
    * For example if you have a 2D image dimensions of 80(w) x 60(h) then the "cdims" would be [80][60]
    */
-  DataArray(size_t numTuples, const QString& name, comp_dims_type compDims, T initValue);
+  DataArray(size_t numTuples, const QString& name, const comp_dims_type& compDims, T initValue);
 
   /**
    * @brief Protected Constructor
@@ -128,7 +128,7 @@ public:
    * @param initValue The value to use when initializing each element of the array
    * @param allocate Will all the memory be allocated at time of construction
    */
-  DataArray(size_t numTuples, const QString& name, comp_dims_type compDims, T initValue, bool allocate);
+  DataArray(size_t numTuples, const QString& name, const comp_dims_type& compDims, T initValue, bool allocate);
 
   ~DataArray() override;
 

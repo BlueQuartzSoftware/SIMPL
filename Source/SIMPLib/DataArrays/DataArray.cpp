@@ -153,10 +153,10 @@ DataArray<T>::DataArray(size_t numTuples, const QString& name, T initValue)
  * For example if you have a 2D image dimensions of 80(w) x 60(h) then the "cdims" would be [80][60]
  */
 template <typename T>
-DataArray<T>::DataArray(size_t numTuples, const QString& name, comp_dims_type compDims, T initValue)
+DataArray<T>::DataArray(size_t numTuples, const QString& name, const comp_dims_type& compDims, T initValue)
 : IDataArray(name)
 , m_NumTuples(numTuples)
-, m_CompDims(std::move(compDims))
+, m_CompDims(compDims)
 , m_InitValue(initValue)
 {
   m_NumComponents = std::accumulate(m_CompDims.cbegin(), m_CompDims.cend(), static_cast<size_t>(1), std::multiplies<>());
@@ -172,10 +172,10 @@ DataArray<T>::DataArray(size_t numTuples, const QString& name, comp_dims_type co
  * @param allocate Will all the memory be allocated at time of construction
  */
 template <typename T>
-DataArray<T>::DataArray(size_t numTuples, const QString& name, comp_dims_type compDims, T initValue, bool allocate)
+DataArray<T>::DataArray(size_t numTuples, const QString& name, const comp_dims_type& compDims, T initValue, bool allocate)
 : IDataArray(name)
 , m_NumTuples(numTuples)
-, m_CompDims(std::move(compDims))
+, m_CompDims(compDims)
 , m_InitValue(initValue)
 {
   m_NumComponents = std::accumulate(m_CompDims.cbegin(), m_CompDims.cend(), static_cast<size_t>(1), std::multiplies<>());
@@ -273,7 +273,7 @@ typename DataArray<T>::Pointer DataArray<T>::CreateArray(const comp_dims_type& t
     return nullptr;
   }
 
-  size_t numTuples = std::accumulate(tupleDims.begin(), tupleDims.end(), static_cast<size_t>(1), std::multiplies<>());
+  size_t numTuples = std::accumulate(tupleDims.cbegin(), tupleDims.cend(), static_cast<size_t>(1), std::multiplies<>());
 
   auto d = std::make_shared<DataArray<T>>(numTuples, name, compDims, static_cast<T>(0), allocate);
   if(allocate)
@@ -410,53 +410,47 @@ IDataArray::Pointer DataArray<T>::deepCopy(bool forceNoAllocate) const
 template <typename T>
 SIMPL::NumericTypes::Type DataArray<T>::getType() const
 {
-  T value = static_cast<T>(0x00);
-  if(typeid(value) == typeid(int8_t))
+  if(std::is_same<T, int8_t>::value)
   {
     return SIMPL::NumericTypes::Type::Int8;
   }
-  if(typeid(value) == typeid(uint8_t))
+  else if(std::is_same<T, uint8_t>::value)
   {
     return SIMPL::NumericTypes::Type::UInt8;
   }
-
-  if(typeid(value) == typeid(int16_t))
+  else if(std::is_same<T, int16_t>::value)
   {
     return SIMPL::NumericTypes::Type::Int16;
   }
-  if(typeid(value) == typeid(uint16_t))
+  else if(std::is_same<T, uint16_t>::value)
   {
     return SIMPL::NumericTypes::Type::UInt16;
   }
-
-  if(typeid(value) == typeid(int32_t))
+  else if(std::is_same<T, int32_t>::value)
   {
     return SIMPL::NumericTypes::Type::Int32;
   }
-  if(typeid(value) == typeid(uint32_t))
+  else if(std::is_same<T, uint32_t>::value)
   {
     return SIMPL::NumericTypes::Type::UInt32;
   }
-
-  if(typeid(value) == typeid(int64_t))
+  else if(std::is_same<T, int64_t>::value)
   {
     return SIMPL::NumericTypes::Type::Int64;
   }
-  if(typeid(value) == typeid(uint64_t))
+  else if(std::is_same<T, uint64_t>::value)
   {
     return SIMPL::NumericTypes::Type::UInt64;
   }
-
-  if(typeid(value) == typeid(float))
+  else if(std::is_same<T, float>::value)
   {
     return SIMPL::NumericTypes::Type::Float;
   }
-  if(typeid(value) == typeid(double))
+  else if(std::is_same<T, double>::value)
   {
     return SIMPL::NumericTypes::Type::Double;
   }
-
-  if(typeid(value) == typeid(bool))
+  else if(std::is_same<T, bool>::value)
   {
     return SIMPL::NumericTypes::Type::Bool;
   }
@@ -468,67 +462,62 @@ SIMPL::NumericTypes::Type DataArray<T>::getType() const
 template <typename T>
 void DataArray<T>::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const
 {
-  T value = static_cast<T>(0x00);
   xdmfTypeName = "UNKNOWN";
   precision = 0;
-  if(typeid(value) == typeid(int8_t))
+
+  if(std::is_same<T, int8_t>::value)
   {
     xdmfTypeName = "Char";
     precision = 1;
   }
-  if(typeid(value) == typeid(uint8_t))
+  else if(std::is_same<T, uint8_t>::value)
   {
     xdmfTypeName = "UChar";
     precision = 1;
   }
-
-  if(typeid(value) == typeid(int16_t))
+  else if(std::is_same<T, int16_t>::value)
   {
     xdmfTypeName = "Int";
     precision = 2;
   }
-  if(typeid(value) == typeid(uint16_t))
+  else if(std::is_same<T, uint16_t>::value)
   {
     xdmfTypeName = "UInt";
     precision = 2;
   }
-
-  if(typeid(value) == typeid(int32_t))
+  else if(std::is_same<T, int32_t>::value)
   {
     xdmfTypeName = "Int";
     precision = 4;
   }
-  if(typeid(value) == typeid(uint32_t))
+  else if(std::is_same<T, uint32_t>::value)
   {
     xdmfTypeName = "UInt";
     precision = 4;
   }
-
-  if(typeid(value) == typeid(int64_t))
+  else if(std::is_same<T, int64_t>::value)
   {
     xdmfTypeName = "Int";
     precision = 8;
   }
-  if(typeid(value) == typeid(uint64_t))
+  else if(std::is_same<T, uint64_t>::value)
   {
     xdmfTypeName = "UInt";
     precision = 8;
   }
-
-  if(typeid(value) == typeid(float))
+  else if(std::is_same<T, float>::value)
   {
     xdmfTypeName = "Float";
     precision = 4;
   }
-  if(typeid(value) == typeid(double))
+  else if(std::is_same<T, double>::value)
   {
     xdmfTypeName = "Float";
     precision = 8;
   }
-
-  if(typeid(value) == typeid(bool))
+  else if(std::is_same<T, bool>::value)
   {
-    xdmfTypeName = "uchar";
+    xdmfTypeName = "UChar";
     precision = 1;
   }
 }
@@ -557,6 +546,10 @@ bool DataArray<T>::copyFromArray(size_t destTupleOffset, IDataArray::ConstPointe
     return false;
   }
   const Self* source = dynamic_cast<const Self*>(sourceArray.get());
+  if(source == nullptr)
+  {
+    return false;
+  }
   if(nullptr == source->getPointer(0))
   {
     return false;
@@ -1020,11 +1013,11 @@ void DataArray<T>::printTuple(QTextStream& out, size_t i, char delimiter) const
 {
   int32_t precision = out.realNumberPrecision();
   T value = static_cast<T>(0x00);
-  if(typeid(value) == typeid(float))
+  if(std::is_same<T, float>::value)
   {
     out.setRealNumberPrecision(8);
   }
-  if(typeid(value) == typeid(double))
+  else if(std::is_same<T, double>::value)
   {
     out.setRealNumberPrecision(16);
   }
@@ -1060,151 +1053,51 @@ QString DataArray<T>::getFullNameOfClass() const
 template <typename T>
 QString DataArray<T>::getTypeAsString() const
 {
-  T value = static_cast<T>(0);
-  if(typeid(value) == typeid(float))
+  if(std::is_same<T, int8_t>::value)
+  {
+    return "int8_t";
+  }
+  else if(std::is_same<T, uint8_t>::value)
+  {
+    return "uint8_t";
+  }
+  else if(std::is_same<T, int16_t>::value)
+  {
+    return "int16_t";
+  }
+  else if(std::is_same<T, uint16_t>::value)
+  {
+    return "uint16_t";
+  }
+  else if(std::is_same<T, int32_t>::value)
+  {
+    return "int32_t";
+  }
+  else if(std::is_same<T, uint32_t>::value)
+  {
+    return "uint32_t";
+  }
+  else if(std::is_same<T, int64_t>::value)
+  {
+    return "int64_t";
+  }
+  else if(std::is_same<T, uint64_t>::value)
+  {
+    return "uint64_t";
+  }
+  else if(std::is_same<T, float>::value)
   {
     return "float";
   }
-  if(typeid(value) == typeid(double))
+  else if(std::is_same<T, double>::value)
   {
     return "double";
   }
-
-  if(typeid(value) == typeid(int8_t))
-  {
-    return "int8_t";
-  }
-  if(typeid(value) == typeid(uint8_t))
-  {
-    return "uint8_t";
-  }
-#if CMP_TYPE_CHAR_IS_SIGNED
-  if(typeid(value) == typeid(char))
-  {
-    return "int8_t";
-  }
-#else
-  if(typeid(value) == typeid(char))
-  {
-    return "int8_t";
-  }
-#endif
-  if(typeid(value) == typeid(signed char))
-  {
-    return "int8_t";
-  }
-  if(typeid(value) == typeid(unsigned char))
-  {
-    return "uint8_t";
-  }
-
-  if(typeid(value) == typeid(int16_t))
-  {
-    return "int16_t";
-  }
-  if(typeid(value) == typeid(short))
-  {
-    return "int16_t";
-  }
-  if(typeid(value) == typeid(signed short))
-  {
-    return "int16_t";
-  }
-  if(typeid(value) == typeid(uint16_t))
-  {
-    return "uint16_t";
-  }
-  if(typeid(value) == typeid(unsigned short))
-  {
-    return "uint16_t";
-  }
-
-  if(typeid(value) == typeid(int32_t))
-  {
-    return "int32_t";
-  }
-  if(typeid(value) == typeid(uint32_t))
-  {
-    return "uint32_t";
-  }
-#if(CMP_SIZEOF_INT == 4)
-  if(typeid(value) == typeid(int))
-  {
-    return "int32_t";
-  }
-  if(typeid(value) == typeid(signed int))
-  {
-    return "int32_t";
-  }
-  if(typeid(value) == typeid(unsigned int))
-  {
-    return "uint32_t";
-  }
-#endif
-
-  if(typeid(value) == typeid(int64_t))
-  {
-    return "int64_t";
-  }
-  if(typeid(value) == typeid(uint64_t))
-  {
-    return "uint64_t";
-  }
-
-#if(CMP_SIZEOF_LONG == 4)
-  if(typeid(value) == typeid(long int))
-  {
-    return "long int";
-  }
-  if(typeid(value) == typeid(signed long int))
-  {
-    return "signed long int";
-  }
-  if(typeid(value) == typeid(unsigned long int))
-  {
-    return "unsigned long int";
-  }
-#elif(CMP_SIZEOF_LONG == 8)
-  if(typeid(value) == typeid(long int))
-  {
-    return "int64_t";
-  }
-  if(typeid(value) == typeid(signed long int))
-  {
-    return "int64_t";
-  }
-  if(typeid(value) == typeid(unsigned long int))
-  {
-    return "uint64_t";
-  }
-#endif
-
-#if(CMP_SIZEOF_LONG_LONG == 8)
-  if(typeid(value) == typeid(long long int))
-  {
-    return "int64_t";
-  }
-  if(typeid(value) == typeid(signed long long int))
-  {
-    return "int64_t";
-  }
-  if(typeid(value) == typeid(unsigned long long int))
-  {
-    return "uint64_t";
-  }
-#endif
-
-  if(typeid(value) == typeid(bool))
+  else if(std::is_same<T, bool>::value)
   {
     return "bool";
   }
 
-  // qDebug()  << "Error: HDFTypeForPrimitive - Unknown Type: " << (typeid(value).name()) ;
-  const char* name = typeid(value).name();
-  if(nullptr != name && name[0] == 'l')
-  {
-    qDebug() << "You are using 'long int' as a type which is not 32/64 bit safe. Suggest you use one of the H5SupportTypes defined in <Common/H5SupportTypes.h> such as int32_t or uint32_t.";
-  }
   return "UnknownType";
 }
 
