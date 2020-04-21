@@ -104,19 +104,19 @@
 template <typename T>
 typename DataArray<T>::Pointer DataArray<T>::NullPointer()
 {
-  return Pointer(static_cast<Self*>(nullptr));
+  return nullptr;
 }
 
 template <typename T>
 QString DataArray<T>::getNameOfClass() const
 {
-  return QString("DataArray<T>");
+  return ClassName();
 }
 
 template <typename T>
 QString DataArray<T>::ClassName()
 {
-  return QString("DataArray<T>");
+  return "DataArray<T>";
 }
 
 template <typename T>
@@ -157,9 +157,9 @@ DataArray<T>::DataArray(size_t numTuples, const QString& name, comp_dims_type co
 : IDataArray(name)
 , m_NumTuples(numTuples)
 , m_CompDims(std::move(compDims))
+, m_InitValue(initValue)
 {
-  m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), static_cast<size_t>(1), std::multiplies<>());
-  m_InitValue = initValue;
+  m_NumComponents = std::accumulate(m_CompDims.cbegin(), m_CompDims.cend(), static_cast<size_t>(1), std::multiplies<>());
   m_Array = resizeAndExtend(m_NumTuples * m_NumComponents);
 }
 
@@ -176,9 +176,9 @@ DataArray<T>::DataArray(size_t numTuples, const QString& name, comp_dims_type co
 : IDataArray(name)
 , m_NumTuples(numTuples)
 , m_CompDims(std::move(compDims))
+, m_InitValue(initValue)
 {
-  m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), static_cast<size_t>(1), std::multiplies<>());
-  m_InitValue = initValue;
+  m_NumComponents = std::accumulate(m_CompDims.cbegin(), m_CompDims.cend(), static_cast<size_t>(1), std::multiplies<>());
   if(allocate)
   {
     resizeTuples(numTuples);
@@ -204,48 +204,44 @@ typename DataArray<T>::Pointer DataArray<T>::CreateArray(size_t numTuples, const
 {
   if(name.isEmpty())
   {
-    return NullPointer();
+    return nullptr;
   }
   comp_dims_type cDims = {1};
-  auto d = new DataArray<T>(numTuples, name, cDims, static_cast<T>(0), allocate);
+  auto d = std::make_shared<DataArray<T>>(numTuples, name, cDims, static_cast<T>(0), allocate);
   if(allocate)
   {
     if(d->allocate() < 0)
     {
       // Could not allocate enough memory, reset the pointer to null and return
-      delete d;
-      return DataArray<T>::NullPointer();
+      return nullptr;
     }
   }
-  Pointer ptr(d);
-  return ptr;
+  return d;
 }
 
 // -----------------------------------------------------------------------------
 template <typename T>
-typename DataArray<T>::Pointer DataArray<T>::CreateArray(size_t numTuples, int rank, const size_t* dims, const QString& name, bool allocate)
+typename DataArray<T>::Pointer DataArray<T>::CreateArray(size_t numTuples, int32_t rank, const size_t* dims, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {
-    return NullPointer();
+    return nullptr;
   }
   comp_dims_type cDims(static_cast<size_t>(rank));
   for(size_t i = 0; i < static_cast<size_t>(rank); i++)
   {
     cDims[i] = dims[i];
   }
-  auto d = new DataArray<T>(numTuples, name, cDims, static_cast<T>(0), allocate);
+  auto d = std::make_shared<DataArray<T>>(numTuples, name, cDims, static_cast<T>(0), allocate);
   if(allocate)
   {
     if(d->allocate() < 0)
     {
       // Could not allocate enough memory, reset the pointer to null and return
-      delete d;
-      return DataArray<T>::NullPointer();
+      return nullptr;
     }
   }
-  Pointer ptr(d);
-  return ptr;
+  return d;
 }
 
 // -----------------------------------------------------------------------------
@@ -254,20 +250,18 @@ typename DataArray<T>::Pointer DataArray<T>::CreateArray(size_t numTuples, const
 {
   if(name.isEmpty())
   {
-    return NullPointer();
+    return nullptr;
   }
-  DataArray<T>* d = new DataArray<T>(numTuples, name, compDims, static_cast<T>(0), allocate);
+  auto d = std::make_shared<DataArray<T>>(numTuples, name, compDims, static_cast<T>(0), allocate);
   if(allocate)
   {
     if(d->allocate() < 0)
     {
       // Could not allocate enough memory, reset the pointer to null and return
-      delete d;
-      return DataArray<T>::NullPointer();
+      return nullptr;
     }
   }
-  Pointer ptr(d);
-  return ptr;
+  return d;
 }
 
 // -----------------------------------------------------------------------------
@@ -276,37 +270,33 @@ typename DataArray<T>::Pointer DataArray<T>::CreateArray(const comp_dims_type& t
 {
   if(name.isEmpty())
   {
-    return NullPointer();
+    return nullptr;
   }
 
   size_t numTuples = std::accumulate(tupleDims.begin(), tupleDims.end(), static_cast<size_t>(1), std::multiplies<>());
 
-  auto d = new DataArray<T>(numTuples, name, compDims, static_cast<T>(0), allocate);
+  auto d = std::make_shared<DataArray<T>>(numTuples, name, compDims, static_cast<T>(0), allocate);
   if(allocate)
   {
     if(d->allocate() < 0)
     {
       // Could not allocate enough memory, reset the pointer to null and return
-      delete d;
-      return DataArray<T>::NullPointer();
+      return nullptr;
     }
   }
-  Pointer ptr(d);
-  return ptr;
+  return d;
 }
 
 template <typename T>
-IDataArray::Pointer DataArray<T>::createNewArray(size_t numTuples, int rank, const size_t* compDims, const QString& name, bool allocate) const
+IDataArray::Pointer DataArray<T>::createNewArray(size_t numTuples, int32_t rank, const size_t* compDims, const QString& name, bool allocate) const
 {
-  IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, rank, compDims, name, allocate);
-  return p;
+  return DataArray<T>::CreateArray(numTuples, rank, compDims, name, allocate);
 }
 
 template <typename T>
 IDataArray::Pointer DataArray<T>::createNewArray(size_t numTuples, const comp_dims_type& compDims, const QString& name, bool allocate) const
 {
-  IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, compDims, name, allocate);
-  return p;
+  return DataArray<T>::CreateArray(numTuples, compDims, name, allocate);
 }
 
 // -----------------------------------------------------------------------------
@@ -315,7 +305,7 @@ typename DataArray<T>::Pointer DataArray<T>::FromQVector(const QVector<T>& vec, 
 {
 
   Pointer p = CreateArray(static_cast<size_t>(vec.size()), name, true);
-  if(nullptr != p.get())
+  if(nullptr != p)
   {
     std::memcpy(p->getPointer(0), vec.data(), static_cast<size_t>(vec.size()) * sizeof(T));
   }
@@ -328,7 +318,7 @@ typename DataArray<bool>::Pointer DataArray<bool>::FromStdVector(const std::vect
 {
   comp_dims_type cDims = {1};
   Pointer p = CreateArray(vec.size(), cDims, name, true);
-  if(nullptr != p.get())
+  if(nullptr != p)
   {
     size_t i = 0;
     for(const auto value : vec)
@@ -346,7 +336,7 @@ typename DataArray<T>::Pointer DataArray<T>::FromStdVector(const std::vector<T>&
 {
   comp_dims_type cDims = {1};
   Pointer p = CreateArray(vec.size(), cDims, name, true);
-  if(nullptr != p.get())
+  if(nullptr != p)
   {
     std::memcpy(p->getPointer(0), &(vec.front()), vec.size() * sizeof(T));
   }
@@ -358,7 +348,7 @@ template <typename T>
 typename DataArray<T>::Pointer DataArray<T>::CopyFromPointer(const T* data, size_t size, const QString& name)
 {
   Pointer p = CreateArray(size, name, true);
-  if(nullptr != p.get())
+  if(nullptr != p)
   {
     std::memcpy(p->getPointer(0), data, size * sizeof(T));
   }
@@ -380,18 +370,16 @@ template <typename T>
 typename DataArray<T>::Pointer DataArray<T>::WrapPointer(T* data, size_t numTuples, const comp_dims_type& compDims, const QString& name, bool ownsData)
 {
   // Allocate on the heap
-  auto d = new DataArray(numTuples, name, compDims, static_cast<T>(0), false);
-  // Wrap that heap pointer with a shared_pointer to make it reference counted
-  Pointer p(d);
+  auto d = std::make_shared<DataArray<T>>(numTuples, name, compDims, static_cast<T>(0), false);
 
-  p->m_Array = data;        // Now set the internal array to the raw pointer
-  p->m_OwnsData = ownsData; // Set who owns the data, i.e., who is going to "free" the memory
+  d->m_Array = data;        // Now set the internal array to the raw pointer
+  d->m_OwnsData = ownsData; // Set who owns the data, i.e., who is going to "free" the memory
   if(nullptr != data)
   {
-    p->m_IsAllocated = true;
+    d->m_IsAllocated = true;
   }
 
-  return p;
+  return d;
 }
 
 //========================================= Begin API =================================
@@ -694,9 +682,9 @@ void DataArray<T>::initializeWithValue(T initValue, size_t offset)
 
 // -----------------------------------------------------------------------------
 template <typename T>
-int DataArray<T>::eraseTuples(const comp_dims_type& idxs)
+int32_t DataArray<T>::eraseTuples(const comp_dims_type& idxs)
 {
-  int err = 0;
+  int32_t err = 0;
 
   // If nothing is to be erased just return
   if(idxs.empty())
@@ -807,7 +795,7 @@ int DataArray<T>::eraseTuples(const comp_dims_type& idxs)
 
 // -----------------------------------------------------------------------------
 template <typename T>
-int DataArray<T>::copyTuple(size_t currentPos, size_t newPos)
+int32_t DataArray<T>::copyTuple(size_t currentPos, size_t newPos)
 {
   size_t max = ((m_MaxId + 1) / m_NumComponents);
   if(currentPos >= max || newPos >= max)
@@ -1030,7 +1018,7 @@ void DataArray<T>::resizeTuples(size_t numTuples)
 template <typename T>
 void DataArray<T>::printTuple(QTextStream& out, size_t i, char delimiter) const
 {
-  int precision = out.realNumberPrecision();
+  int32_t precision = out.realNumberPrecision();
   T value = static_cast<T>(0x00);
   if(typeid(value) == typeid(float))
   {
@@ -1222,7 +1210,7 @@ QString DataArray<T>::getTypeAsString() const
 
 // -----------------------------------------------------------------------------
 template <typename T>
-int DataArray<T>::writeH5Data(hid_t parentId, const comp_dims_type& tDims) const
+int32_t DataArray<T>::writeH5Data(hid_t parentId, const comp_dims_type& tDims) const
 {
   if(m_Array == nullptr)
   {
@@ -1233,14 +1221,14 @@ int DataArray<T>::writeH5Data(hid_t parentId, const comp_dims_type& tDims) const
 
 // -----------------------------------------------------------------------------
 template <typename T>
-int DataArray<T>::writeXdmfAttribute(QTextStream& out, const int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& label) const
+int32_t DataArray<T>::writeXdmfAttribute(QTextStream& out, const int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& label) const
 {
   if(m_Array == nullptr)
   {
     return -85648;
   }
   QString dimStr;
-  int precision = 0;
+  int32_t precision = 0;
   QString xdmfTypeName;
   getXdmfTypeAndSize(xdmfTypeName, precision);
   if(0 == precision)
@@ -1251,7 +1239,7 @@ int DataArray<T>::writeXdmfAttribute(QTextStream& out, const int64_t* volDims, c
     return -100;
   }
 
-  int numComp = getNumberOfComponents();
+  int32_t numComp = getNumberOfComponents();
   out << "    <Attribute Name=\"" << getName() << label << "\" ";
   if(numComp == 1)
   {
@@ -1291,7 +1279,6 @@ int DataArray<T>::writeXdmfAttribute(QTextStream& out, const int64_t* volDims, c
 template <typename T>
 QString DataArray<T>::getInfoString(SIMPL::InfoStringFormat format) const
 {
-
   QLocale usa(QLocale::English, QLocale::UnitedStates);
 
   QString info;
@@ -1352,13 +1339,13 @@ QString DataArray<T>::getInfoString(SIMPL::InfoStringFormat format) const
 
 // -----------------------------------------------------------------------------
 template <typename T>
-int DataArray<T>::readH5Data(hid_t parentId)
+int32_t DataArray<T>::readH5Data(hid_t parentId)
 {
-  int err = 0;
+  int32_t err = 0;
 
   resizeTuples(0);
   IDataArray::Pointer p = H5DataArrayReader::ReadIDataArray(parentId, getName());
-  if(p.get() == nullptr)
+  if(p == nullptr)
   {
     return -1;
   }
