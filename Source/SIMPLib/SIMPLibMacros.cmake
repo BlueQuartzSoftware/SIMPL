@@ -98,17 +98,15 @@ function(SIMPL_GenerateUnitTestFile)
   endforeach()
   file(APPEND ${UnitTestAnalysisFile} "| TotalFilters: ${totalFilters} | Num Tested: ${numTests} |\n")
 
-  file(APPEND ${UnitTestAnalysisFile} "\n### Non-Matching Unit Test Names ###\n")
-  foreach(ut ${P_SOURCES})
-    file(APPEND ${UnitTestAnalysisFile} "+ ${ut}\n")
-  endforeach()
-
-
+  list(LENGTH P_SOURCES list_size)
+  if(NOT ${list_size} EQUAL 0)
+    file(APPEND ${UnitTestAnalysisFile} "\n### Non-Matching Unit Test Names (${P_PLUGIN_NAME}) ###\n\n")
+    foreach(ut ${P_SOURCES})
+      file(APPEND ${UnitTestAnalysisFile} "+ ${ut}\n")
+    endforeach()
+  endif()
 
 endfunction()
-
-
-
 
 #-------------------------------------------------------------------------------
 # SIMPL_ADD_UNIT_TEST
