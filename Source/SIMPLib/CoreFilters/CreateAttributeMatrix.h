@@ -51,6 +51,7 @@ class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(CreateAttributeMatrix SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(CreateAttributeMatrix)
     PYB11_FILTER_NEW_MACRO(CreateAttributeMatrix)
     PYB11_PROPERTY(DataArrayPath CreatedAttributeMatrix READ getCreatedAttributeMatrix WRITE setCreatedAttributeMatrix)

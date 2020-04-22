@@ -55,6 +55,7 @@ class SIMPLib_EXPORT ExtractComponentAsArray : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(ExtractComponentAsArray SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(ExtractComponentAsArray)
     PYB11_FILTER_NEW_MACRO(ExtractComponentAsArray)
     PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)

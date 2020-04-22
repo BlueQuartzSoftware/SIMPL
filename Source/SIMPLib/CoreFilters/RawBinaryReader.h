@@ -54,6 +54,7 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(RawBinaryReader SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(RawBinaryReader)
     PYB11_FILTER_NEW_MACRO(RawBinaryReader)
     PYB11_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)

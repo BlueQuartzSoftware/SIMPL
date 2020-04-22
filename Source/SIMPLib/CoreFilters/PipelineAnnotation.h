@@ -47,6 +47,7 @@ class SIMPLib_EXPORT PipelineAnnotation : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(PipelineAnnotation SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(PipelineAnnotation)
   PYB11_FILTER_NEW_MACRO(PipelineAnnotation)
   PYB11_PROPERTY(QString Summary READ getSummary WRITE setSummary)

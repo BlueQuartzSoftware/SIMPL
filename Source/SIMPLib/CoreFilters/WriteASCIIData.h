@@ -54,6 +54,7 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(WriteASCIIData SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(WriteASCIIData)
     PYB11_FILTER_NEW_MACRO(WriteASCIIData)
     PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)

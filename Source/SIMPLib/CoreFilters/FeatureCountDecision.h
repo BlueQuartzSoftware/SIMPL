@@ -53,6 +53,7 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(FeatureCountDecision SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(FeatureCountDecision)
     PYB11_STATIC_NEW_MACRO(FeatureCountDecision)
     PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)

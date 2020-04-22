@@ -51,6 +51,7 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(SetOriginResolutionImageGeom SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(SetOriginResolutionImageGeom)
     PYB11_FILTER_NEW_MACRO(SetOriginResolutionImageGeom)
     PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)

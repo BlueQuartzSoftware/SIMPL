@@ -50,6 +50,7 @@ class SIMPLib_EXPORT RenameAttributeArray : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(RenameAttributeArray SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(RenameAttributeArray)
     PYB11_FILTER_NEW_MACRO(RenameAttributeArray)
     PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)

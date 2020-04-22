@@ -52,6 +52,7 @@ class SIMPLib_EXPORT ExtractVertexGeometry : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(ExtractVertexGeometry SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(ExtractVertexGeometry)
   PYB11_FILTER_NEW_MACRO(ExtractVertexGeometry)
   PYB11_PROPERTY(int ArrayHandling READ getArrayHandling WRITE setArrayHandling)

@@ -50,6 +50,7 @@ class SIMPLib_EXPORT CreateGeometry : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(CreateGeometry SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(CreateGeometry)
   PYB11_FILTER_NEW_MACRO(CreateGeometry)
   PYB11_PROPERTY(int GeometryType READ getGeometryType WRITE setGeometryType)

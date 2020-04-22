@@ -28,3 +28,5 @@ Support/Scripts/GMT/gmt.history
 .vscode
 /ExternalProjects
 .DS_Store
+**/.mypy_cache/**
+**/__pycache__/**

@@ -49,6 +49,7 @@ class SIMPLib_EXPORT CopyObject : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(CopyObject SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(CopyObject)
   PYB11_FILTER_NEW_MACRO(CopyObject)
   PYB11_PROPERTY(int ObjectToCopy READ getObjectToCopy WRITE setObjectToCopy)

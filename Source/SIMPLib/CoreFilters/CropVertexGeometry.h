@@ -49,6 +49,7 @@ class SIMPLib_EXPORT CropVertexGeometry : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(CropVertexGeometry SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(CropVertexGeometry)
   PYB11_FILTER_NEW_MACRO(CropVertexGeometry)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)

@@ -280,7 +280,7 @@ public:
      * @param idxs The indices to remove
      * @return error code.
      */
-    int eraseTuples(std::vector<size_t>& idxs) override
+    int eraseTuples(const std::vector<size_t>& idxs) override
     {
 
       int err = 0;
@@ -435,7 +435,7 @@ public:
      * @param sourceArray
      * @return
      */
-    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override
+    bool copyFromArray(size_t destTupleOffset, IDataArray::ConstPointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override
     {
       if(!m_IsAllocated)
       {
@@ -453,7 +453,11 @@ public:
       {
         return false;
       }
-      Self* source = dynamic_cast<Self*>(sourceArray.get());
+      const Self* source = dynamic_cast<const Self*>(sourceArray.get());
+      if(source == nullptr)
+      {
+        return false;
+      }
       if(nullptr == source->getPointer(0))
       {
         return false;
@@ -579,7 +583,7 @@ public:
      * @param i The index of the Tuple
      * @param c The value to splat across all components in the tuple
      */
-    void initializeTuple(size_t i, void* p) override
+    void initializeTuple(size_t i, const void* p) override
     {
 #ifndef NDEBUG
       if (m_Size > 0) { Q_ASSERT(i < m_Size);}
@@ -667,7 +671,7 @@ public:
      * @param parentId
      * @return
      */
-    int writeH5Data(hid_t parentId, std::vector<size_t> tDims) const override
+    int writeH5Data(hid_t parentId, const std::vector<size_t>& tDims) const override
     {
       Q_ASSERT(false);
       return -1;
@@ -682,7 +686,7 @@ public:
      * @param groupPath
      * @return
      */
-    int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName,
+    int writeXdmfAttribute(QTextStream& out, const int64_t* volDims, const QString& hdfFileName,
                                    const QString& groupPath, const QString& labelb) const override
     {
       out << "<!-- Xdmf is not supported for " << getNameOfClass() << " with type " << getTypeAsString() << " --> ";

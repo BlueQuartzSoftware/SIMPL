@@ -47,14 +47,14 @@
 
 class ASCIIWizardData
 {
-#ifdef SIMPL_ENABLE_PYTHON
   // clang-format off
   PYB11_BEGIN_BINDINGS(ASCIIWizardData) 
-  PYB11_CREATION(ASCIIWizardData ARGS QString int int)
+  PYB11_CREATION()
   PYB11_METHOD(void updateDataArrayPath ARGS DataArrayPath::RenameType,renamePath)
   PYB11_METHOD(bool isEmpty)
+  PYB11_END_BINDINGS()
   // clang-format on
-#endif
+
 public:
   ASCIIWizardData() = default;
 

@@ -49,6 +49,7 @@ class SIMPLib_EXPORT ConvertColorToGrayScale : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(ConvertColorToGrayScale SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(ConvertColorToGrayScale)
   PYB11_FILTER_NEW_MACRO(ConvertColorToGrayScale)
   PYB11_PROPERTY(int ConversionAlgorithm READ getConversionAlgorithm WRITE setConversionAlgorithm)

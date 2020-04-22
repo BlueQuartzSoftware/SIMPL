@@ -35,57 +35,62 @@
 
 #include "DataArray.hpp"
 
-//  Allow user to force SIMPL_ENDIAN_NO_INTRINSICS in case they aren't available for a
-//  particular platform/compiler combination.
-#ifndef SIMPL_ENDIAN_NO_INTRINSICS
+namespace
+{
+uint16_t byteSwap16(uint16_t value)
+{
+  return ((value & 0x00FF) << 8) | ((value & 0xFF00) >> 8);
+}
 
-#ifndef __has_builtin      // Optional of course
-#define __has_builtin(x) 0 // Compatibility with non-clang compilers
+uint32_t byteSwap32(uint32_t value)
+{
+  return ((value & 0x000000FF) << 24) | ((value & 0x0000FF00) << 8) | ((value & 0x00FF0000) >> 8) | ((value & 0xFF000000) >> 24);
+}
+
+uint64_t byteSwap64(uint64_t value)
+{
+  return ((value & 0x00000000000000FFULL) << 56) | ((value & 0x000000000000FF00ULL) << 40) | ((value & 0x0000000000FF0000ULL) << 24) | ((value & 0x00000000FF000000ULL) << 8) |
+         ((value & 0x000000FF00000000ULL) >> 8) | ((value & 0x0000FF0000000000ULL) >> 24) | ((value & 0x00FF000000000000ULL) >> 40) | ((value & 0xFF00000000000000ULL) >> 56);
+}
+
+}
+
+#ifndef SIMPL_BYTE_SWAP_NO_INTRINSICS
+
+#ifndef __has_builtin
+#define __has_builtin(x) 0
 #endif
 
 #if defined(_MSC_VER)
-//  Microsoft documents these as being compatible since Windows 95 and specifically
-//  lists runtime library support since Visual Studio 2003 (aka 7.1).
-//  Clang/c2 uses the Microsoft rather than GCC intrinsics, so we check for
-//  defined(_MSC_VER) before defined(__clang__)
-#define SIMPL_ENDIAN_INTRINSIC_MSG "cstdlib _byteswap_ushort, etc."
 #include <cstdlib>
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(x) _byteswap_ushort(x)
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_4(x) _byteswap_ulong(x)
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_8(x) _byteswap_uint64(x)
+#define SIMPL_BYTE_SWAP_16(x) _byteswap_ushort(x)
+#define SIMPL_BYTE_SWAP_32(x) _byteswap_ulong(x)
+#define SIMPL_BYTE_SWAP_64(x) _byteswap_uint64(x)
 
-//  GCC and Clang recent versions provide intrinsic byte swaps via builtins
 #elif(defined(__clang__) && __has_builtin(__builtin_bswap32) && __has_builtin(__builtin_bswap64)) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)))
-#define SIMPL_ENDIAN_INTRINSIC_MSG "__builtin_bswap16, etc."
-// prior to 4.8, gcc did not provide __builtin_bswap16 on some platforms so we emulate it
-// see http://gcc.gnu.org/bugzilla/show_bug.cgi?id=52624
-// Clang has a similar problem, but their feature test macros make it easier to detect
 #if(defined(__clang__) && __has_builtin(__builtin_bswap16)) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)))
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(x) __builtin_bswap16(x)
+#define SIMPL_BYTE_SWAP_16(x) __builtin_bswap16(x)
 #else
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(x) __builtin_bswap32((x) << 16)
+#define SIMPL_BYTE_SWAP_16(x) __builtin_bswap32((x) << 16)
 #endif
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_4(x) __builtin_bswap32(x)
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_8(x) __builtin_bswap64(x)
-
-//  Linux systems provide the byteswap.h header, with
+#define SIMPL_BYTE_SWAP_32(x) __builtin_bswap32(x)
+#define SIMPL_BYTE_SWAP_64(x) __builtin_bswap64(x)
 #elif defined(__linux__)
-//  don't check for obsolete forms defined(linux) and defined(__linux) on the theory that
-//  compilers that predefine only these are so old that byteswap.h probably isn't present.
-#define SIMPL_ENDIAN_INTRINSIC_MSG "byteswap.h bswap_16, etc."
 #include <byteswap.h>
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(x) bswap_16(x)
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_4(x) bswap_32(x)
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_8(x) bswap_64(x)
-
+#define SIMPL_BYTE_SWAP_16(x) bswap_16(x)
+#define SIMPL_BYTE_SWAP_32(x) bswap_32(x)
+#define SIMPL_BYTE_SWAP_64(x) bswap_64(x)
 #else
-#define SIMPL_ENDIAN_NO_INTRINSICS
-#define SIMPL_ENDIAN_INTRINSIC_MSG "no byte swap intrinsics"
+#define SIMPL_BYTE_SWAP_16(x) byteSwap16(x)
+#define SIMPL_BYTE_SWAP_32(x) byteSwap32(x)
+#define SIMPL_BYTE_SWAP_64(x) byteSwap64(x)
 #endif
 
-#elif !defined(SIMPL_ENDIAN_INTRINSIC_MSG)
-#define SIMPL_ENDIAN_INTRINSIC_MSG "no byte swap intrinsics"
-#endif // SIMPL_ENDIAN_NO_INTRINSICS
+#else
+#define SIMPL_BYTE_SWAP_16(x) byteSwap16(x)
+#define SIMPL_BYTE_SWAP_32(x) byteSwap32(x)
+#define SIMPL_BYTE_SWAP_64(x) byteSwap64(x)
+#endif // SIMPL_BYTE_SWAP_NO_INTRINSICS
 
 #include <string>
 #include <cstring>
@@ -96,27 +101,51 @@
 #include "SIMPLib/HDF5/H5DataArrayReader.h"
 #include "SIMPLib/HDF5/H5DataArrayWriter.hpp"
 
-#define DA_BYTE_SWAP(s, d, t)                                                                                                                                                                          \
-  t[0] = ptr[s];                                                                                                                                                                                       \
-  ptr[s] = ptr[d];                                                                                                                                                                                     \
-  ptr[d] = t[0];
+namespace
+{
+template <class T>
+T byteSwap(T value)
+{
+  static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
+  static_assert(sizeof(T) == 1 || sizeof(T) == 2 || sizeof(T) == 4 || sizeof(T) == 8, "sizeof(T) must be 1, 2, 4, or 8");
+
+  if(sizeof(T) == 2)
+  {
+    return SIMPL_BYTE_SWAP_16(value);
+  }
+  else if(sizeof(T) == 4)
+  {
+    uint32_t* ptr = reinterpret_cast<uint32_t*>(&value);
+    uint32_t result = SIMPL_BYTE_SWAP_32(*ptr);
+    return *reinterpret_cast<T*>(&result);
+  }
+  else if(sizeof(T) == 8)
+  {
+    uint64_t* ptr = reinterpret_cast<uint64_t*>(&value);
+    uint64_t result = SIMPL_BYTE_SWAP_64(*ptr);
+    return *reinterpret_cast<T*>(&result);
+  }
+
+  return value;
+}
+} // namespace
 
 template <typename T>
 typename DataArray<T>::Pointer DataArray<T>::NullPointer()
 {
-  return Pointer(static_cast<Self*>(nullptr));
+  return nullptr;
 }
 
 template <typename T>
 QString DataArray<T>::getNameOfClass() const
 {
-  return QString("DataArray<T>");
+  return ClassName();
 }
 
 template <typename T>
 QString DataArray<T>::ClassName()
 {
-  return QString("DataArray<T>");
+  return "DataArray<T>";
 }
 
 template <typename T>
@@ -153,13 +182,13 @@ DataArray<T>::DataArray(size_t numTuples, const QString& name, T initValue)
  * For example if you have a 2D image dimensions of 80(w) x 60(h) then the "cdims" would be [80][60]
  */
 template <typename T>
-DataArray<T>::DataArray(size_t numTuples, const QString& name, comp_dims_type compDims, T initValue)
+DataArray<T>::DataArray(size_t numTuples, const QString& name, const comp_dims_type& compDims, T initValue)
 : IDataArray(name)
 , m_NumTuples(numTuples)
-, m_CompDims(std::move(compDims))
+, m_CompDims(compDims)
+, m_InitValue(initValue)
 {
-  m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), static_cast<size_t>(1), std::multiplies<>());
-  m_InitValue = initValue;
+  m_NumComponents = std::accumulate(m_CompDims.cbegin(), m_CompDims.cend(), static_cast<size_t>(1), std::multiplies<>());
   m_Array = resizeAndExtend(m_NumTuples * m_NumComponents);
 }
 
@@ -172,13 +201,13 @@ DataArray<T>::DataArray(size_t numTuples, const QString& name, comp_dims_type co
  * @param allocate Will all the memory be allocated at time of construction
  */
 template <typename T>
-DataArray<T>::DataArray(size_t numTuples, const QString& name, comp_dims_type compDims, T initValue, bool allocate)
+DataArray<T>::DataArray(size_t numTuples, const QString& name, const comp_dims_type& compDims, T initValue, bool allocate)
 : IDataArray(name)
 , m_NumTuples(numTuples)
-, m_CompDims(std::move(compDims))
+, m_CompDims(compDims)
+, m_InitValue(initValue)
 {
-  m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), static_cast<size_t>(1), std::multiplies<>());
-  m_InitValue = initValue;
+  m_NumComponents = std::accumulate(m_CompDims.cbegin(), m_CompDims.cend(), static_cast<size_t>(1), std::multiplies<>());
   if(allocate)
   {
     resizeTuples(numTuples);
@@ -204,48 +233,44 @@ typename DataArray<T>::Pointer DataArray<T>::CreateArray(size_t numTuples, const
 {
   if(name.isEmpty())
   {
-    return NullPointer();
+    return nullptr;
   }
   comp_dims_type cDims = {1};
-  auto d = new DataArray<T>(numTuples, name, cDims, static_cast<T>(0), allocate);
+  auto d = std::make_shared<DataArray<T>>(numTuples, name, cDims, static_cast<T>(0), allocate);
   if(allocate)
   {
     if(d->allocate() < 0)
     {
       // Could not allocate enough memory, reset the pointer to null and return
-      delete d;
-      return DataArray<T>::NullPointer();
+      return nullptr;
     }
   }
-  Pointer ptr(d);
-  return ptr;
+  return d;
 }
 
 // -----------------------------------------------------------------------------
 template <typename T>
-typename DataArray<T>::Pointer DataArray<T>::CreateArray(size_t numTuples, int rank, const size_t* dims, const QString& name, bool allocate)
+typename DataArray<T>::Pointer DataArray<T>::CreateArray(size_t numTuples, int32_t rank, const size_t* dims, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {
-    return NullPointer();
+    return nullptr;
   }
   comp_dims_type cDims(static_cast<size_t>(rank));
   for(size_t i = 0; i < static_cast<size_t>(rank); i++)
   {
     cDims[i] = dims[i];
   }
-  auto d = new DataArray<T>(numTuples, name, cDims, static_cast<T>(0), allocate);
+  auto d = std::make_shared<DataArray<T>>(numTuples, name, cDims, static_cast<T>(0), allocate);
   if(allocate)
   {
     if(d->allocate() < 0)
     {
       // Could not allocate enough memory, reset the pointer to null and return
-      delete d;
-      return DataArray<T>::NullPointer();
+      return nullptr;
     }
   }
-  Pointer ptr(d);
-  return ptr;
+  return d;
 }
 
 // -----------------------------------------------------------------------------
@@ -254,20 +279,18 @@ typename DataArray<T>::Pointer DataArray<T>::CreateArray(size_t numTuples, const
 {
   if(name.isEmpty())
   {
-    return NullPointer();
+    return nullptr;
   }
-  DataArray<T>* d = new DataArray<T>(numTuples, name, compDims, static_cast<T>(0), allocate);
+  auto d = std::make_shared<DataArray<T>>(numTuples, name, compDims, static_cast<T>(0), allocate);
   if(allocate)
   {
     if(d->allocate() < 0)
     {
       // Could not allocate enough memory, reset the pointer to null and return
-      delete d;
-      return DataArray<T>::NullPointer();
+      return nullptr;
     }
   }
-  Pointer ptr(d);
-  return ptr;
+  return d;
 }
 
 // -----------------------------------------------------------------------------
@@ -276,46 +299,42 @@ typename DataArray<T>::Pointer DataArray<T>::CreateArray(const comp_dims_type& t
 {
   if(name.isEmpty())
   {
-    return NullPointer();
+    return nullptr;
   }
 
-  size_t numTuples = std::accumulate(tupleDims.begin(), tupleDims.end(), static_cast<size_t>(1), std::multiplies<>());
+  size_t numTuples = std::accumulate(tupleDims.cbegin(), tupleDims.cend(), static_cast<size_t>(1), std::multiplies<>());
 
-  auto d = new DataArray<T>(numTuples, name, compDims, static_cast<T>(0), allocate);
+  auto d = std::make_shared<DataArray<T>>(numTuples, name, compDims, static_cast<T>(0), allocate);
   if(allocate)
   {
     if(d->allocate() < 0)
     {
       // Could not allocate enough memory, reset the pointer to null and return
-      delete d;
-      return DataArray<T>::NullPointer();
+      return nullptr;
     }
   }
-  Pointer ptr(d);
-  return ptr;
+  return d;
 }
 
 template <typename T>
-IDataArray::Pointer DataArray<T>::createNewArray(size_t numTuples, int rank, const size_t* compDims, const QString& name, bool allocate) const
+IDataArray::Pointer DataArray<T>::createNewArray(size_t numTuples, int32_t rank, const size_t* compDims, const QString& name, bool allocate) const
 {
-  IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, rank, compDims, name, allocate);
-  return p;
+  return DataArray<T>::CreateArray(numTuples, rank, compDims, name, allocate);
 }
 
 template <typename T>
 IDataArray::Pointer DataArray<T>::createNewArray(size_t numTuples, const comp_dims_type& compDims, const QString& name, bool allocate) const
 {
-  IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, compDims, name, allocate);
-  return p;
+  return DataArray<T>::CreateArray(numTuples, compDims, name, allocate);
 }
 
 // -----------------------------------------------------------------------------
 template <typename T>
-typename DataArray<T>::Pointer DataArray<T>::FromQVector(QVector<T>& vec, const QString& name)
+typename DataArray<T>::Pointer DataArray<T>::FromQVector(const QVector<T>& vec, const QString& name)
 {
 
   Pointer p = CreateArray(static_cast<size_t>(vec.size()), name, true);
-  if(nullptr != p.get())
+  if(nullptr != p)
   {
     std::memcpy(p->getPointer(0), vec.data(), static_cast<size_t>(vec.size()) * sizeof(T));
   }
@@ -324,11 +343,11 @@ typename DataArray<T>::Pointer DataArray<T>::FromQVector(QVector<T>& vec, const 
 
 // -----------------------------------------------------------------------------
 template <>
-typename DataArray<bool>::Pointer DataArray<bool>::FromStdVector(std::vector<bool>& vec, const QString& name)
+typename DataArray<bool>::Pointer DataArray<bool>::FromStdVector(const std::vector<bool>& vec, const QString& name)
 {
   comp_dims_type cDims = {1};
   Pointer p = CreateArray(vec.size(), cDims, name, true);
-  if(nullptr != p.get())
+  if(nullptr != p)
   {
     size_t i = 0;
     for(const auto value : vec)
@@ -342,11 +361,11 @@ typename DataArray<bool>::Pointer DataArray<bool>::FromStdVector(std::vector<boo
 
 // -----------------------------------------------------------------------------
 template <typename T>
-typename DataArray<T>::Pointer DataArray<T>::FromStdVector(std::vector<T>& vec, const QString& name)
+typename DataArray<T>::Pointer DataArray<T>::FromStdVector(const std::vector<T>& vec, const QString& name)
 {
   comp_dims_type cDims = {1};
   Pointer p = CreateArray(vec.size(), cDims, name, true);
-  if(nullptr != p.get())
+  if(nullptr != p)
   {
     std::memcpy(p->getPointer(0), &(vec.front()), vec.size() * sizeof(T));
   }
@@ -355,10 +374,10 @@ typename DataArray<T>::Pointer DataArray<T>::FromStdVector(std::vector<T>& vec, 
 
 // -----------------------------------------------------------------------------
 template <typename T>
-typename DataArray<T>::Pointer DataArray<T>::CopyFromPointer(T* data, size_t size, const QString& name)
+typename DataArray<T>::Pointer DataArray<T>::CopyFromPointer(const T* data, size_t size, const QString& name)
 {
   Pointer p = CreateArray(size, name, true);
-  if(nullptr != p.get())
+  if(nullptr != p)
   {
     std::memcpy(p->getPointer(0), data, size * sizeof(T));
   }
@@ -380,18 +399,16 @@ template <typename T>
 typename DataArray<T>::Pointer DataArray<T>::WrapPointer(T* data, size_t numTuples, const comp_dims_type& compDims, const QString& name, bool ownsData)
 {
   // Allocate on the heap
-  auto d = new DataArray(numTuples, name, compDims, static_cast<T>(0), false);
-  // Wrap that heap pointer with a shared_pointer to make it reference counted
-  Pointer p(d);
+  auto d = std::make_shared<DataArray<T>>(numTuples, name, compDims, static_cast<T>(0), false);
 
-  p->m_Array = data;        // Now set the internal array to the raw pointer
-  p->m_OwnsData = ownsData; // Set who owns the data, i.e., who is going to "free" the memory
+  d->m_Array = data;        // Now set the internal array to the raw pointer
+  d->m_OwnsData = ownsData; // Set who owns the data, i.e., who is going to "free" the memory
   if(nullptr != data)
   {
-    p->m_IsAllocated = true;
+    d->m_IsAllocated = true;
   }
 
-  return p;
+  return d;
 }
 
 //========================================= Begin API =================================
@@ -422,53 +439,47 @@ IDataArray::Pointer DataArray<T>::deepCopy(bool forceNoAllocate) const
 template <typename T>
 SIMPL::NumericTypes::Type DataArray<T>::getType() const
 {
-  T value = static_cast<T>(0x00);
-  if(typeid(value) == typeid(int8_t))
+  if(std::is_same<T, int8_t>::value)
   {
     return SIMPL::NumericTypes::Type::Int8;
   }
-  if(typeid(value) == typeid(uint8_t))
+  else if(std::is_same<T, uint8_t>::value)
   {
     return SIMPL::NumericTypes::Type::UInt8;
   }
-
-  if(typeid(value) == typeid(int16_t))
+  else if(std::is_same<T, int16_t>::value)
   {
     return SIMPL::NumericTypes::Type::Int16;
   }
-  if(typeid(value) == typeid(uint16_t))
+  else if(std::is_same<T, uint16_t>::value)
   {
     return SIMPL::NumericTypes::Type::UInt16;
   }
-
-  if(typeid(value) == typeid(int32_t))
+  else if(std::is_same<T, int32_t>::value)
   {
     return SIMPL::NumericTypes::Type::Int32;
   }
-  if(typeid(value) == typeid(uint32_t))
+  else if(std::is_same<T, uint32_t>::value)
   {
     return SIMPL::NumericTypes::Type::UInt32;
   }
-
-  if(typeid(value) == typeid(int64_t))
+  else if(std::is_same<T, int64_t>::value)
   {
     return SIMPL::NumericTypes::Type::Int64;
   }
-  if(typeid(value) == typeid(uint64_t))
+  else if(std::is_same<T, uint64_t>::value)
   {
     return SIMPL::NumericTypes::Type::UInt64;
   }
-
-  if(typeid(value) == typeid(float))
+  else if(std::is_same<T, float>::value)
   {
     return SIMPL::NumericTypes::Type::Float;
   }
-  if(typeid(value) == typeid(double))
+  else if(std::is_same<T, double>::value)
   {
     return SIMPL::NumericTypes::Type::Double;
   }
-
-  if(typeid(value) == typeid(bool))
+  else if(std::is_same<T, bool>::value)
   {
     return SIMPL::NumericTypes::Type::Bool;
   }
@@ -478,69 +489,64 @@ SIMPL::NumericTypes::Type DataArray<T>::getType() const
 
 // -----------------------------------------------------------------------------
 template <typename T>
-void DataArray<T>::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const
+void DataArray<T>::getXdmfTypeAndSize(QString& xdmfTypeName, int32_t& precision) const
 {
-  T value = static_cast<T>(0x00);
   xdmfTypeName = "UNKNOWN";
   precision = 0;
-  if(typeid(value) == typeid(int8_t))
+
+  if(std::is_same<T, int8_t>::value)
   {
     xdmfTypeName = "Char";
     precision = 1;
   }
-  if(typeid(value) == typeid(uint8_t))
+  else if(std::is_same<T, uint8_t>::value)
   {
     xdmfTypeName = "UChar";
     precision = 1;
   }
-
-  if(typeid(value) == typeid(int16_t))
+  else if(std::is_same<T, int16_t>::value)
   {
     xdmfTypeName = "Int";
     precision = 2;
   }
-  if(typeid(value) == typeid(uint16_t))
+  else if(std::is_same<T, uint16_t>::value)
   {
     xdmfTypeName = "UInt";
     precision = 2;
   }
-
-  if(typeid(value) == typeid(int32_t))
+  else if(std::is_same<T, int32_t>::value)
   {
     xdmfTypeName = "Int";
     precision = 4;
   }
-  if(typeid(value) == typeid(uint32_t))
+  else if(std::is_same<T, uint32_t>::value)
   {
     xdmfTypeName = "UInt";
     precision = 4;
   }
-
-  if(typeid(value) == typeid(int64_t))
+  else if(std::is_same<T, int64_t>::value)
   {
     xdmfTypeName = "Int";
     precision = 8;
   }
-  if(typeid(value) == typeid(uint64_t))
+  else if(std::is_same<T, uint64_t>::value)
   {
     xdmfTypeName = "UInt";
     precision = 8;
   }
-
-  if(typeid(value) == typeid(float))
+  else if(std::is_same<T, float>::value)
   {
     xdmfTypeName = "Float";
     precision = 4;
   }
-  if(typeid(value) == typeid(double))
+  else if(std::is_same<T, double>::value)
   {
     xdmfTypeName = "Float";
     precision = 8;
   }
-
-  if(typeid(value) == typeid(bool))
+  else if(std::is_same<T, bool>::value)
   {
-    xdmfTypeName = "uchar";
+    xdmfTypeName = "UChar";
     precision = 1;
   }
 }
@@ -550,7 +556,7 @@ void DataArray<T>::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) con
 
 // -----------------------------------------------------------------------------
 template <typename T>
-bool DataArray<T>::copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
+bool DataArray<T>::copyFromArray(size_t destTupleOffset, IDataArray::ConstPointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
 {
   if(!m_IsAllocated)
   {
@@ -568,7 +574,11 @@ bool DataArray<T>::copyFromArray(size_t destTupleOffset, IDataArray::Pointer sou
   {
     return false;
   }
-  Self* source = dynamic_cast<Self*>(sourceArray.get());
+  const Self* source = dynamic_cast<const Self*>(sourceArray.get());
+  if(source == nullptr)
+  {
+    return false;
+  }
   if(nullptr == source->getPointer(0))
   {
     return false;
@@ -694,9 +704,9 @@ void DataArray<T>::initializeWithValue(T initValue, size_t offset)
 
 // -----------------------------------------------------------------------------
 template <typename T>
-int DataArray<T>::eraseTuples(comp_dims_type& idxs)
+int32_t DataArray<T>::eraseTuples(const comp_dims_type& idxs)
 {
-  int err = 0;
+  int32_t err = 0;
 
   // If nothing is to be erased just return
   if(idxs.empty())
@@ -712,7 +722,7 @@ int DataArray<T>::eraseTuples(comp_dims_type& idxs)
 
   // Sanity Check the Indices in the vector to make sure we are not trying to remove any indices that are
   // off the end of the array and return an error code.
-  for(size_t& idx : idxs)
+  for(const size_t& idx : idxs)
   {
     if(idx * m_NumComponents > m_MaxId)
     {
@@ -807,7 +817,7 @@ int DataArray<T>::eraseTuples(comp_dims_type& idxs)
 
 // -----------------------------------------------------------------------------
 template <typename T>
-int DataArray<T>::copyTuple(size_t currentPos, size_t newPos)
+int32_t DataArray<T>::copyTuple(size_t currentPos, size_t newPos)
 {
   size_t max = ((m_MaxId + 1) / m_NumComponents);
   if(currentPos >= max || newPos >= max)
@@ -866,28 +876,6 @@ void* DataArray<T>::getVoidPointer(size_t i)
   }
 
   return reinterpret_cast<void*>(&(m_Array[i]));
-}
-
-// -----------------------------------------------------------------------------
-template <typename T>
-std::list<T> DataArray<T>::getArray() const
-{
-  return std::list<T>(m_Array, m_Array + (m_Size * sizeof(T)) / sizeof(T));
-}
-
-// -----------------------------------------------------------------------------
-template <typename T>
-void DataArray<T>::setArray(std::list<T> newArray)
-{
-  if(newArray.size() != m_Size)
-  {
-    return;
-  }
-  int i = 0;
-  for(auto elem : newArray)
-  {
-    m_Array[i++] = elem;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -957,7 +945,7 @@ void DataArray<T>::setComponent(size_t i, int32_t j, T c)
 
 // -----------------------------------------------------------------------------
 template <typename T>
-void DataArray<T>::setTuple(size_t tupleIndex, T* data)
+void DataArray<T>::setTuple(size_t tupleIndex, const T* data)
 {
 #ifndef NDEBUG
   if(m_Size > 0)
@@ -1001,7 +989,7 @@ void DataArray<bool>::setTuple(size_t tupleIndex, const std::vector<bool>& data)
 
 // -----------------------------------------------------------------------------
 template <typename T>
-void DataArray<T>::initializeTuple(size_t i, void* p)
+void DataArray<T>::initializeTuple(size_t i, const void* p)
 {
   if(!m_IsAllocated)
   {
@@ -1017,7 +1005,7 @@ void DataArray<T>::initializeTuple(size_t i, void* p)
   {
     return;
   }
-  T* c = reinterpret_cast<T*>(p);
+  const T* c = reinterpret_cast<const T*>(p);
   for(size_t j = 0; j < m_NumComponents; ++j)
   {
     m_Array[i * m_NumComponents + j] = *c;
@@ -1052,13 +1040,13 @@ void DataArray<T>::resizeTuples(size_t numTuples)
 template <typename T>
 void DataArray<T>::printTuple(QTextStream& out, size_t i, char delimiter) const
 {
-  int precision = out.realNumberPrecision();
+  int32_t precision = out.realNumberPrecision();
   T value = static_cast<T>(0x00);
-  if(typeid(value) == typeid(float))
+  if(std::is_same<T, float>::value)
   {
     out.setRealNumberPrecision(8);
   }
-  if(typeid(value) == typeid(double))
+  else if(std::is_same<T, double>::value)
   {
     out.setRealNumberPrecision(16);
   }
@@ -1094,157 +1082,57 @@ QString DataArray<T>::getFullNameOfClass() const
 template <typename T>
 QString DataArray<T>::getTypeAsString() const
 {
-  T value = static_cast<T>(0);
-  if(typeid(value) == typeid(float))
+  if(std::is_same<T, int8_t>::value)
+  {
+    return "int8_t";
+  }
+  else if(std::is_same<T, uint8_t>::value)
+  {
+    return "uint8_t";
+  }
+  else if(std::is_same<T, int16_t>::value)
+  {
+    return "int16_t";
+  }
+  else if(std::is_same<T, uint16_t>::value)
+  {
+    return "uint16_t";
+  }
+  else if(std::is_same<T, int32_t>::value)
+  {
+    return "int32_t";
+  }
+  else if(std::is_same<T, uint32_t>::value)
+  {
+    return "uint32_t";
+  }
+  else if(std::is_same<T, int64_t>::value)
+  {
+    return "int64_t";
+  }
+  else if(std::is_same<T, uint64_t>::value)
+  {
+    return "uint64_t";
+  }
+  else if(std::is_same<T, float>::value)
   {
     return "float";
   }
-  if(typeid(value) == typeid(double))
+  else if(std::is_same<T, double>::value)
   {
     return "double";
   }
-
-  if(typeid(value) == typeid(int8_t))
-  {
-    return "int8_t";
-  }
-  if(typeid(value) == typeid(uint8_t))
-  {
-    return "uint8_t";
-  }
-#if CMP_TYPE_CHAR_IS_SIGNED
-  if(typeid(value) == typeid(char))
-  {
-    return "int8_t";
-  }
-#else
-  if(typeid(value) == typeid(char))
-  {
-    return "int8_t";
-  }
-#endif
-  if(typeid(value) == typeid(signed char))
-  {
-    return "int8_t";
-  }
-  if(typeid(value) == typeid(unsigned char))
-  {
-    return "uint8_t";
-  }
-
-  if(typeid(value) == typeid(int16_t))
-  {
-    return "int16_t";
-  }
-  if(typeid(value) == typeid(short))
-  {
-    return "int16_t";
-  }
-  if(typeid(value) == typeid(signed short))
-  {
-    return "int16_t";
-  }
-  if(typeid(value) == typeid(uint16_t))
-  {
-    return "uint16_t";
-  }
-  if(typeid(value) == typeid(unsigned short))
-  {
-    return "uint16_t";
-  }
-
-  if(typeid(value) == typeid(int32_t))
-  {
-    return "int32_t";
-  }
-  if(typeid(value) == typeid(uint32_t))
-  {
-    return "uint32_t";
-  }
-#if(CMP_SIZEOF_INT == 4)
-  if(typeid(value) == typeid(int))
-  {
-    return "int32_t";
-  }
-  if(typeid(value) == typeid(signed int))
-  {
-    return "int32_t";
-  }
-  if(typeid(value) == typeid(unsigned int))
-  {
-    return "uint32_t";
-  }
-#endif
-
-  if(typeid(value) == typeid(int64_t))
-  {
-    return "int64_t";
-  }
-  if(typeid(value) == typeid(uint64_t))
-  {
-    return "uint64_t";
-  }
-
-#if(CMP_SIZEOF_LONG == 4)
-  if(typeid(value) == typeid(long int))
-  {
-    return "long int";
-  }
-  if(typeid(value) == typeid(signed long int))
-  {
-    return "signed long int";
-  }
-  if(typeid(value) == typeid(unsigned long int))
-  {
-    return "unsigned long int";
-  }
-#elif(CMP_SIZEOF_LONG == 8)
-  if(typeid(value) == typeid(long int))
-  {
-    return "int64_t";
-  }
-  if(typeid(value) == typeid(signed long int))
-  {
-    return "int64_t";
-  }
-  if(typeid(value) == typeid(unsigned long int))
-  {
-    return "uint64_t";
-  }
-#endif
-
-#if(CMP_SIZEOF_LONG_LONG == 8)
-  if(typeid(value) == typeid(long long int))
-  {
-    return "int64_t";
-  }
-  if(typeid(value) == typeid(signed long long int))
-  {
-    return "int64_t";
-  }
-  if(typeid(value) == typeid(unsigned long long int))
-  {
-    return "uint64_t";
-  }
-#endif
-
-  if(typeid(value) == typeid(bool))
+  else if(std::is_same<T, bool>::value)
   {
     return "bool";
   }
 
-  // qDebug()  << "Error: HDFTypeForPrimitive - Unknown Type: " << (typeid(value).name()) ;
-  const char* name = typeid(value).name();
-  if(nullptr != name && name[0] == 'l')
-  {
-    qDebug() << "You are using 'long int' as a type which is not 32/64 bit safe. Suggest you use one of the H5SupportTypes defined in <Common/H5SupportTypes.h> such as int32_t or uint32_t.";
-  }
   return "UnknownType";
 }
 
 // -----------------------------------------------------------------------------
 template <typename T>
-int DataArray<T>::writeH5Data(hid_t parentId, comp_dims_type tDims) const
+int32_t DataArray<T>::writeH5Data(hid_t parentId, const comp_dims_type& tDims) const
 {
   if(m_Array == nullptr)
   {
@@ -1255,14 +1143,14 @@ int DataArray<T>::writeH5Data(hid_t parentId, comp_dims_type tDims) const
 
 // -----------------------------------------------------------------------------
 template <typename T>
-int DataArray<T>::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& label) const
+int32_t DataArray<T>::writeXdmfAttribute(QTextStream& out, const int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& label) const
 {
   if(m_Array == nullptr)
   {
     return -85648;
   }
   QString dimStr;
-  int precision = 0;
+  int32_t precision = 0;
   QString xdmfTypeName;
   getXdmfTypeAndSize(xdmfTypeName, precision);
   if(0 == precision)
@@ -1273,7 +1161,7 @@ int DataArray<T>::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const Q
     return -100;
   }
 
-  int numComp = getNumberOfComponents();
+  int32_t numComp = getNumberOfComponents();
   out << "    <Attribute Name=\"" << getName() << label << "\" ";
   if(numComp == 1)
   {
@@ -1313,7 +1201,6 @@ int DataArray<T>::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const Q
 template <typename T>
 QString DataArray<T>::getInfoString(SIMPL::InfoStringFormat format) const
 {
-
   QLocale usa(QLocale::English, QLocale::UnitedStates);
 
   QString info;
@@ -1374,13 +1261,13 @@ QString DataArray<T>::getInfoString(SIMPL::InfoStringFormat format) const
 
 // -----------------------------------------------------------------------------
 template <typename T>
-int DataArray<T>::readH5Data(hid_t parentId)
+int32_t DataArray<T>::readH5Data(hid_t parentId)
 {
-  int err = 0;
+  int32_t err = 0;
 
   resizeTuples(0);
   IDataArray::Pointer p = H5DataArrayReader::ReadIDataArray(parentId, getName());
-  if(p.get() == nullptr)
+  if(p == nullptr)
   {
     return -1;
   }
@@ -1400,57 +1287,15 @@ int DataArray<T>::readH5Data(hid_t parentId)
   return err;
 }
 
-#if 0
 // -----------------------------------------------------------------------------
 template <typename T>
 void DataArray<T>::byteSwapElements()
 {
-  char* ptr = reinterpret_cast<char*>(m_Array);
-  char t[8];
-  size_t size = getTypeSize();
-  for(uint64_t var = 0; var < m_Size; ++var)
+  for(auto& value : *this)
   {
-    if(sizeof(T) == 2)
-    {
-      DA_BYTE_SWAP(0, 1, t)
-    }
-    else if(sizeof(T) == 4)
-    {
-      DA_BYTE_SWAP(0, 3, t) DA_BYTE_SWAP(1, 2, t)
-    }
-    else if(sizeof(T) == 8)
-    {
-      DA_BYTE_SWAP(0, 7, t) DA_BYTE_SWAP(1, 6, t) DA_BYTE_SWAP(2, 5, t) DA_BYTE_SWAP(3, 4, t)
-    }
-    ptr += size; // increment the pointer
+    value = byteSwap(value);
   }
 }
-
-#else
-// -----------------------------------------------------------------------------
-template <typename T>
-void DataArray<T>::byteSwapElements()
-{
-  for(size_t i = 0; i < m_Size; ++i)
-  {
-    if(sizeof(T) == 2)
-    {
-      m_Array[i] = SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(m_Array[i]);
-    }
-    else if(sizeof(T) == 4)
-    {
-      uint32_t* ptr = reinterpret_cast<uint32_t*>(m_Array + i);
-      *ptr = SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_4(*ptr);
-    }
-    else if(sizeof(T) == 8)
-    {
-      uint64_t* ptr = reinterpret_cast<uint64_t*>(m_Array + i);
-      *ptr = SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_8(*ptr);
-    }
-  }
-}
-
-#endif
 
 template <typename T>
 typename DataArray<T>::iterator DataArray<T>::begin()

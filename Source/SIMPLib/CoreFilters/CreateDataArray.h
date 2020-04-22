@@ -55,6 +55,7 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(CreateDataArray SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(CreateDataArray)
     PYB11_FILTER_NEW_MACRO(CreateDataArray)
     PYB11_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)

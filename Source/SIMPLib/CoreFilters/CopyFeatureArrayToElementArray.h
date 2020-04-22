@@ -54,6 +54,7 @@ class SIMPLib_EXPORT CopyFeatureArrayToElementArray : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(CopyFeatureArrayToElementArray SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(CopyFeatureArrayToElementArray)
     PYB11_FILTER_NEW_MACRO(CopyFeatureArrayToElementArray)
     PYB11_PROPERTY(DataArrayPath SelectedFeatureArrayPath READ getSelectedFeatureArrayPath WRITE setSelectedFeatureArrayPath)

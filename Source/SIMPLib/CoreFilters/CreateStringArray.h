@@ -51,6 +51,7 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(CreateStringArray SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(CreateStringArray)
     PYB11_FILTER_NEW_MACRO(CreateStringArray)
     PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)

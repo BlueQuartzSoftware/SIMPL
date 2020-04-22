@@ -55,6 +55,7 @@ class SIMPLib_EXPORT SplitAttributeArray : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(SplitAttributeArray SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(SplitAttributeArray)
   PYB11_FILTER_NEW_MACRO(SplitAttributeArray)
   PYB11_PROPERTY(DataArrayPath InputArrayPath READ getInputArrayPath WRITE setInputArrayPath)

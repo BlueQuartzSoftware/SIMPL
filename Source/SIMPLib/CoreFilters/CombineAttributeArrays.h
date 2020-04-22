@@ -52,6 +52,7 @@ class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(CombineAttributeArrays SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(CombineAttributeArrays)
   PYB11_FILTER_NEW_MACRO(CombineAttributeArrays)
   PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)

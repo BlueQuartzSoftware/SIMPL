@@ -51,6 +51,7 @@ class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(LinkFeatureMapToElementArray SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(LinkFeatureMapToElementArray)
     PYB11_FILTER_NEW_MACRO(LinkFeatureMapToElementArray)
     PYB11_PROPERTY(QString CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)

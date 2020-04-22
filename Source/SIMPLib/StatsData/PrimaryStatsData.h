@@ -85,7 +85,7 @@ class SIMPLib_EXPORT PrimaryStatsData : public StatsData
 {
 
   // Start Python bindings declarations
-  PYB11_BEGIN_BINDINGS(PrimaryStatsData SUPER StatsData)
+  PYB11_BEGIN_BINDINGS(PrimaryStatsData SUPERCLASS StatsData)
   PYB11_SHARED_POINTERS(PrimaryStatsData)
   PYB11_STATIC_NEW_MACRO(PrimaryStatsData)
   PYB11_PROPERTY(float BinStepSize READ getBinStepSize WRITE setBinStepSize)

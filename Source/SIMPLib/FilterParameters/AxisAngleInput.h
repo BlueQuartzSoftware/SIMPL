@@ -27,22 +27,23 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 #pragma once
 
 #include <QtCore/QJsonObject>
 #include <QtCore/QMetaType>
 
 /**
-* @brief
-*/
-typedef struct
+ * @brief
+ */
+struct AxisAngleInput_t
 {
-  float angle;
-  float h;
-  float k;
-  float l;
+  float angle = 0.0f;
+  float h = 0.0f;
+  float k = 0.0f;
+  float l = 0.0f;
 
-  void writeJson(QJsonObject& json)
+  void writeJson(QJsonObject& json) const
   {
     json["angle"] = angle;
     json["h"] = h;
@@ -50,9 +51,9 @@ typedef struct
     json["l"] = l;
   }
 
-  bool readJson(QJsonObject& json)
+  bool readJson(const QJsonObject& json)
   {
-    if (json["angle"].isDouble() && json["h"].isDouble() && json["k"].isDouble() && json["l"].isDouble())
+    if(json["angle"].isDouble() && json["h"].isDouble() && json["k"].isDouble() && json["l"].isDouble())
     {
       angle = static_cast<float>(json["angle"].toDouble());
       h = static_cast<float>(json["h"].toDouble());
@@ -62,11 +63,6 @@ typedef struct
     }
     return false;
   }
-
-} AxisAngleInput_t;
+};
 
 Q_DECLARE_METATYPE(AxisAngleInput_t)
-
-
-
-

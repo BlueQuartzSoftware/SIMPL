@@ -52,6 +52,7 @@ class SIMPLib_EXPORT RotateSampleRefFrame : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(RotateSampleRefFrame SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(RotateSampleRefFrame)
   PYB11_FILTER_NEW_MACRO(RotateSampleRefFrame)
   PYB11_ENUMERATION(RotationRepresentation)

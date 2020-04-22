@@ -26,7 +26,7 @@ IDataArray::~IDataArray() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool IDataArray::copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray)
+bool IDataArray::copyFromArray(size_t destTupleOffset, IDataArray::ConstPointer sourceArray)
 {
   return copyFromArray(destTupleOffset, sourceArray, 0, sourceArray->getNumberOfTuples());
 }

@@ -248,7 +248,7 @@ size_t StatsDataArray::getTypeSize() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::eraseTuples(std::vector<size_t>& idxs)
+int StatsDataArray::eraseTuples(const std::vector<size_t>& idxs)
 {
   int err = 0;
 
@@ -310,7 +310,7 @@ int StatsDataArray::copyTuple(size_t currentPos, size_t newPos)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool StatsDataArray::copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
+bool StatsDataArray::copyFromArray(size_t destTupleOffset, IDataArray::ConstPointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
 {
   if(!m_IsAllocated)
   {
@@ -328,7 +328,12 @@ bool StatsDataArray::copyFromArray(size_t destTupleOffset, IDataArray::Pointer s
   {
     return false;
   }
-  Self* source = dynamic_cast<Self*>(sourceArray.get());
+  const Self* source = dynamic_cast<const Self*>(sourceArray.get());
+
+  if(source == nullptr)
+  {
+    return false;
+  }
 
   if(sourceArray->getNumberOfComponents() != getNumberOfComponents())
   {
@@ -356,7 +361,7 @@ bool StatsDataArray::copyFromArray(size_t destTupleOffset, IDataArray::Pointer s
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StatsDataArray::initializeTuple(size_t i, void* p)
+void StatsDataArray::initializeTuple(size_t i, const void* p)
 {
   Q_ASSERT(false);
 }
@@ -428,7 +433,7 @@ void StatsDataArray::printComponent(QTextStream& out, size_t i, int j) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::writeH5Data(hid_t parentId, std::vector<size_t> tDims) const
+int StatsDataArray::writeH5Data(hid_t parentId, const std::vector<size_t>& tDims) const
 {
   herr_t err = 0;
   hid_t gid = QH5Utilities::createGroup(parentId, getName());
@@ -635,7 +640,7 @@ int StatsDataArray::readFromJson(const QJsonObject& jsonRoot)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) const
+int StatsDataArray::writeXdmfAttribute(QTextStream& out, const int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) const
 {
   out << "<!-- Xdmf is not supported for " << getNameOfClass() << " with type " << getTypeAsString() << " --> ";
   return -1;
@@ -824,7 +829,7 @@ StatsData::Pointer StatsDataArray::getStatsData(int idx) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StatsData::Pointer StatsDataArray::operator[](int idx)
+StatsData::Pointer StatsDataArray::operator[](int idx) const
 {
 #ifndef NDEBUG
   if(!m_StatsDataArray.empty())

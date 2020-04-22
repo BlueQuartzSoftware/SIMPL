@@ -59,6 +59,7 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
 
     // Start Python bindings declarations
     PYB11_BEGIN_BINDINGS(ImportAsciDataArray SUPERCLASS AbstractFilter)
+    PYB11_FILTER()
     PYB11_SHARED_POINTERS(ImportAsciDataArray)
     PYB11_FILTER_NEW_MACRO(ImportAsciDataArray)
     PYB11_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)

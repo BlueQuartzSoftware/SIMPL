@@ -53,10 +53,10 @@ class SIMPLib_EXPORT ImportHDF5Dataset : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(ImportHDF5Dataset SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(ImportHDF5Dataset)
   PYB11_FILTER_NEW_MACRO(ImportHDF5Dataset)
   PYB11_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
-  PYB11_PROPERTY(QString HDF5Dimensions READ getHDF5Dimensions)
   PYB11_PROPERTY(QList<ImportHDF5Dataset::DatasetImportInfo> DatasetImportInfoList READ getDatasetImportInfoList WRITE setDatasetImportInfoList)
   PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
   PYB11_END_BINDINGS()
@@ -133,9 +133,6 @@ public:
   QList<ImportHDF5Dataset::DatasetImportInfo> getDatasetImportInfoList() const;
 
   Q_PROPERTY(QList<DatasetImportInfo> DatasetImportInfoList READ getDatasetImportInfoList WRITE setDatasetImportInfoList)
-
-  QString getHDF5Dimensions();
-  Q_PROPERTY(QString HDF5Dimensions READ getHDF5Dimensions)
 
   /**
    * @brief Setter property for SelectedAttributeMatrix
@@ -233,8 +230,6 @@ private:
   QList<ImportHDF5Dataset::DatasetImportInfo> m_DatasetImportInfoList = {};
   DataArrayPath m_SelectedAttributeMatrix = {};
   QStringList m_DatasetPathsWithErrors = {};
-
-  QString m_HDF5Dimensions = "";
 
   IDataArrayShPtrType readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, const std::vector<size_t>& cDims, bool metaDataOnly);
 

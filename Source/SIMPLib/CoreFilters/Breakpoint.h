@@ -52,6 +52,7 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
 
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(Breakpoint SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(Breakpoint)
   PYB11_FILTER_NEW_MACRO(Breakpoint)
   PYB11_END_BINDINGS()

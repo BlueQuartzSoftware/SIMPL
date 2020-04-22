@@ -50,6 +50,7 @@ class SIMPLib_EXPORT GenerateTiltSeries : public AbstractFilter
   // Start Python bindings declarations
   // clang-format off
   PYB11_BEGIN_BINDINGS(GenerateTiltSeries SUPERCLASS AbstractFilter)
+  PYB11_FILTER()
   PYB11_SHARED_POINTERS(GenerateTiltSeries)
   PYB11_STATIC_NEW_MACRO(GenerateTiltSeries)
   PYB11_PROPERTY(int RotationAxis READ getRotationAxis WRITE setRotationAxis)

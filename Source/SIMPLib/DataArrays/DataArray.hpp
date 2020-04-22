@@ -118,7 +118,7 @@ public:
    *
    * For example if you have a 2D image dimensions of 80(w) x 60(h) then the "cdims" would be [80][60]
    */
-  DataArray(size_t numTuples, const QString& name, comp_dims_type compDims, T initValue);
+  DataArray(size_t numTuples, const QString& name, const comp_dims_type& compDims, T initValue);
 
   /**
    * @brief Protected Constructor
@@ -128,7 +128,7 @@ public:
    * @param initValue The value to use when initializing each element of the array
    * @param allocate Will all the memory be allocated at time of construction
    */
-  DataArray(size_t numTuples, const QString& name, comp_dims_type compDims, T initValue, bool allocate);
+  DataArray(size_t numTuples, const QString& name, const comp_dims_type& compDims, T initValue, bool allocate);
 
   ~DataArray() override;
 
@@ -151,7 +151,7 @@ public:
    * @param allocate Will all the memory be allocated at time of construction
    * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
    */
-  static Pointer CreateArray(size_t numTuples, int rank, const size_t* dims, const QString& name, bool allocate);
+  static Pointer CreateArray(size_t numTuples, int32_t rank, const size_t* dims, const QString& name, bool allocate);
 
   /**
    * @brief Static constructor
@@ -184,7 +184,7 @@ public:
    * @param allocate Will all the memory be allocated at time of construction
    * @return
    */
-  IDataArray::Pointer createNewArray(size_t numTuples, int rank, const size_t* compDims, const QString& name, bool allocate) const override;
+  IDataArray::Pointer createNewArray(size_t numTuples, int32_t rank, const size_t* compDims, const QString& name, bool allocate) const override;
 
   /**
    * @brief createNewArray
@@ -203,7 +203,7 @@ public:
    * @param name The name of the array
    * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
    */
-  static Pointer FromQVector(QVector<T>& vec, const QString& name);
+  static Pointer FromQVector(const QVector<T>& vec, const QString& name);
 
   /**
    * @brief Static Method to create a DataArray from a std::vector through a deep copy of the data
@@ -212,7 +212,7 @@ public:
    * @param name The name of the array
    * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
    */
-  static Pointer FromStdVector(std::vector<T>& vec, const QString& name);
+  static Pointer FromStdVector(const std::vector<T>& vec, const QString& name);
 
   /**
    * @brief FromPointer Creates a DataArray<T> object with a <b>DEEP COPY</b> of the data
@@ -221,7 +221,7 @@ public:
    * @param name
    * @return
    */
-  static Pointer CopyFromPointer(T* data, size_t size, const QString& name);
+  static Pointer CopyFromPointer(const T* data, size_t size, const QString& name);
 
   /**
    * @brief WrapPointer Creates a DataArray<T> object that references the pointer. The original caller can
@@ -258,7 +258,7 @@ public:
    * can be a primitive like char, float, int or the name of a class.
    * @return
    */
-  void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const override;
+  void getXdmfTypeAndSize(QString& xdmfTypeName, int32_t& precision) const override;
   // This line must be here, because we are overloading the copyData pure virtual function in IDataArray.
   // This is required so that other classes can call this version of copyData from the subclasses.
   using IDataArray::copyFromArray;
@@ -282,7 +282,7 @@ public:
    * @param sourceArray
    * @return
    */
-  bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
+  bool copyFromArray(size_t destTupleOffset, IDataArray::ConstPointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
 
   /**
    * @brief copyIntoArray
@@ -299,13 +299,13 @@ public:
    * @brief Gives this array a human readable name
    * @param name The name of this array
    */
-  virtual void setInitValue(T initValue);
+  void setInitValue(T initValue);
 
   /**
    * @brief Returns the initial value for the array.
    * @return
    */
-  virtual T getInitValue() const
+  T getInitValue() const
   {
     return m_InitValue;
   }
@@ -326,7 +326,7 @@ public:
    * @brief Allocates the memory needed for this class
    * @return 1 on success, -1 on failure
    */
-  virtual int32_t allocate();
+  int32_t allocate();
 
   /**
    * @brief Sets all the values to zero.
@@ -336,7 +336,7 @@ public:
   /**
    * @brief Sets all the values to value.
    */
-  virtual void initializeWithValue(T initValue, size_t offset = 0);
+  void initializeWithValue(T initValue, size_t offset = 0);
 
   /**
    * @brief Removes Tuples from the m_Array. If the size of the vector is Zero nothing is done. If the size of the
@@ -346,7 +346,7 @@ public:
    * @param idxs The indices to remove
    * @return error code.
    */
-  int eraseTuples(comp_dims_type& idxs) override;
+  int32_t eraseTuples(const comp_dims_type& idxs) override;
 
   /**
    * @brief
@@ -354,7 +354,7 @@ public:
    * @param newPos
    * @return
    */
-  int copyTuple(size_t currentPos, size_t newPos) override;
+  int32_t copyTuple(size_t currentPos, size_t newPos) override;
 
   /**
    * @brief Returns the number of bytes that make up the data type.
@@ -387,7 +387,7 @@ public:
    * 3 element component (vector) then this will be 3. If you are storing a small image of size 80x60
    * at each Tuple (like EBSD Kikuchi patterns) then the result would be 4800.
    */
-  int getNumberOfComponents() const override;
+  int32_t getNumberOfComponents() const override;
 
   /**
    * @brief Returns a void pointer pointing to the index of the array. nullptr
@@ -399,32 +399,20 @@ public:
   void* getVoidPointer(size_t i) override;
 
   /**
-   * @brief Returns a list of the contents of DataArray (For Python Binding)
-   * @return std::list. Possibly empty
-   */
-  std::list<T> getArray() const;
-
-  /**
-   * @brief Sets the contents of the array to the list (For Python Binding)
-   * @param std::list. New array contents
-   */
-  void setArray(std::list<T> newArray);
-
-  /**
    * @brief Returns the pointer to a specific index into the array. No checks are made
    * as to the correctness of the index being passed in. If you ask for an index off
    * then end of the array they you will likely cause your program to abort.
    * @param i The index to return the pointer to.
    * @return The pointer to the index
    */
-  virtual T* getPointer(size_t i) const;
+  T* getPointer(size_t i) const;
 
   /**
    * @brief Returns the value for a given index
    * @param i The index to return the value at
    * @return The value at index i
    */
-  virtual T getValue(size_t i) const;
+  T getValue(size_t i) const;
 
   /**
    * @brief Sets a specific value in the array
@@ -435,7 +423,7 @@ public:
 
   //----------------------------------------------------------------------------
   // These can be overridden for more efficiency
-  T getComponent(size_t i, int j) const;
+  T getComponent(size_t i, int32_t j) const;
 
   /**
    * @brief Sets a specific component of the Tuple located at i
@@ -443,14 +431,14 @@ public:
    * @param j The Component index into the Tuple
    * @param c The value to set
    */
-  void setComponent(size_t i, int j, T c);
+  void setComponent(size_t i, int32_t j, T c);
 
   /**
    * @brief setTuple
    * @param tupleIndex
    * @param data
    */
-  void setTuple(size_t tupleIndex, T* data);
+  void setTuple(size_t tupleIndex, const T* data);
 
   /**
    * @brief setTuple
@@ -464,7 +452,7 @@ public:
    * @param i The index of the Tuple
    * @param c The value to splat across all components in the tuple
    */
-  void initializeTuple(size_t i, void* p) override;
+  void initializeTuple(size_t i, const void* p) override;
 
   /**
    * @brief getTuplePointer Returns the pointer to a specific tuple
@@ -493,7 +481,7 @@ public:
    * @param i
    * @param j
    */
-  void printComponent(QTextStream& out, size_t i, int j) const override;
+  void printComponent(QTextStream& out, size_t i, int32_t j) const override;
 
   /**
    * @brief Returns the HDF Type for a given primitive value.
@@ -514,7 +502,7 @@ public:
    * @param parentId
    * @return
    */
-  int writeH5Data(hid_t parentId, comp_dims_type tDims) const override;
+  int32_t writeH5Data(hid_t parentId, const comp_dims_type& tDims) const override;
 
   /**
    * @brief writeXdmfAttribute
@@ -522,7 +510,7 @@ public:
    * @param volDims
    * @return
    */
-  int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& label) const override;
+  int32_t writeXdmfAttribute(QTextStream& out, const int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& label) const override;
 
   /**
    * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
@@ -540,7 +528,7 @@ public:
     toolTipGen.addValue("Number of Tuples", usa.toString(static_cast<qlonglong>(getNumberOfTuples())));
 
     QString compDimStr = "(";
-    for(int i = 0; i < m_CompDims.size(); i++)
+    for(size_t i = 0; i < m_CompDims.size(); i++)
     {
       compDimStr = compDimStr + QString::number(m_CompDims[i]);
       if(i < m_CompDims.size() - 1)
@@ -568,12 +556,12 @@ public:
    * @param parentId
    * @return
    */
-  int readH5Data(hid_t parentId) override;
+  int32_t readH5Data(hid_t parentId) override;
 
   /**
    * @brief
    */
-  virtual void byteSwapElements();
+  void byteSwapElements();
 
   //========================================= STL INTERFACE COMPATIBILITY =================================
 
@@ -597,7 +585,7 @@ public:
       ptr_ = ptr_ + num_comps_;
       return *this;
     } // PREFIX
-    self_type operator++(int ununsed)
+    self_type operator++(int32_t ununsed)
     {
       std::ignore = ununsed;
       self_type i = *this;
@@ -650,7 +638,7 @@ public:
       ptr_ = ptr_ + num_comps_;
       return *this;
     } // PREFIX
-    self_type operator++(int ununsed)
+    self_type operator++(int32_t ununsed)
     {
       std::ignore = ununsed;
       self_type i = *this;
@@ -708,14 +696,14 @@ public:
       ptr_++;
       return *this;
     } // PREFIX
-    self_type operator++(int ununsed)
+    self_type operator++(int32_t ununsed)
     {
       std::ignore = ununsed;
       self_type i = *this;
       ptr_++;
       return i;
     } // POSTFIX
-    self_type operator+(int amt)
+    self_type operator+(int32_t amt)
     {
       ptr_ += amt;
       return *this;
@@ -764,13 +752,13 @@ public:
       ptr_++;
       return *this;
     } // PREFIX
-    self_type operator++(int amt)
+    self_type operator++(int32_t amt)
     {
       self_type i = *this;
       ptr_ += amt;
       return i;
     } // POSTFIX
-    self_type operator+(int amt)
+    self_type operator+(int32_t amt)
     {
       ptr_ += amt;
       return *this;
@@ -1010,7 +998,7 @@ protected:
    * @param size
    * @return Pointer to the internal array
    */
-  virtual T* resizeAndExtend(size_t size);
+  T* resizeAndExtend(size_t size);
 
 private:
   T* m_Array = nullptr;
@@ -1027,7 +1015,7 @@ private:
 // -----------------------------------------------------------------------------
 // These are specialized for bool type as std::vector<bool> uses bits instead of bytes
 template <>
-typename DataArray<bool>::Pointer DataArray<bool>::FromStdVector(std::vector<bool>& vec, const QString& name);
+typename DataArray<bool>::Pointer DataArray<bool>::FromStdVector(const std::vector<bool>& vec, const QString& name);
 
 template <>
 void DataArray<bool>::setTuple(size_t tupleIndex, const std::vector<bool>& data);
