@@ -35,57 +35,62 @@
 
 #include "DataArray.hpp"
 
-//  Allow user to force SIMPL_ENDIAN_NO_INTRINSICS in case they aren't available for a
-//  particular platform/compiler combination.
-#ifndef SIMPL_ENDIAN_NO_INTRINSICS
+namespace
+{
+uint16_t byteSwap16(uint16_t value)
+{
+  return ((value & 0x00FF) << 8) | ((value & 0xFF00) >> 8);
+}
 
-#ifndef __has_builtin      // Optional of course
-#define __has_builtin(x) 0 // Compatibility with non-clang compilers
+uint32_t byteSwap32(uint32_t value)
+{
+  return ((value & 0x000000FF) << 24) | ((value & 0x0000FF00) << 8) | ((value & 0x00FF0000) >> 8) | ((value & 0xFF000000) >> 24);
+}
+
+uint64_t byteSwap64(uint64_t value)
+{
+  return ((value & 0x00000000000000FFULL) << 56) | ((value & 0x000000000000FF00ULL) << 40) | ((value & 0x0000000000FF0000ULL) << 24) | ((value & 0x00000000FF000000ULL) << 8) |
+         ((value & 0x000000FF00000000ULL) >> 8) | ((value & 0x0000FF0000000000ULL) >> 24) | ((value & 0x00FF000000000000ULL) >> 40) | ((value & 0xFF00000000000000ULL) >> 56);
+}
+
+}
+
+#ifndef SIMPL_BYTE_SWAP_NO_INTRINSICS
+
+#ifndef __has_builtin
+#define __has_builtin(x) 0
 #endif
 
 #if defined(_MSC_VER)
-//  Microsoft documents these as being compatible since Windows 95 and specifically
-//  lists runtime library support since Visual Studio 2003 (aka 7.1).
-//  Clang/c2 uses the Microsoft rather than GCC intrinsics, so we check for
-//  defined(_MSC_VER) before defined(__clang__)
-#define SIMPL_ENDIAN_INTRINSIC_MSG "cstdlib _byteswap_ushort, etc."
 #include <cstdlib>
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(x) _byteswap_ushort(x)
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_4(x) _byteswap_ulong(x)
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_8(x) _byteswap_uint64(x)
+#define SIMPL_BYTE_SWAP_16(x) _byteswap_ushort(x)
+#define SIMPL_BYTE_SWAP_32(x) _byteswap_ulong(x)
+#define SIMPL_BYTE_SWAP_64(x) _byteswap_uint64(x)
 
-//  GCC and Clang recent versions provide intrinsic byte swaps via builtins
 #elif(defined(__clang__) && __has_builtin(__builtin_bswap32) && __has_builtin(__builtin_bswap64)) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)))
-#define SIMPL_ENDIAN_INTRINSIC_MSG "__builtin_bswap16, etc."
-// prior to 4.8, gcc did not provide __builtin_bswap16 on some platforms so we emulate it
-// see http://gcc.gnu.org/bugzilla/show_bug.cgi?id=52624
-// Clang has a similar problem, but their feature test macros make it easier to detect
 #if(defined(__clang__) && __has_builtin(__builtin_bswap16)) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)))
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(x) __builtin_bswap16(x)
+#define SIMPL_BYTE_SWAP_16(x) __builtin_bswap16(x)
 #else
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(x) __builtin_bswap32((x) << 16)
+#define SIMPL_BYTE_SWAP_16(x) __builtin_bswap32((x) << 16)
 #endif
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_4(x) __builtin_bswap32(x)
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_8(x) __builtin_bswap64(x)
-
-//  Linux systems provide the byteswap.h header, with
+#define SIMPL_BYTE_SWAP_32(x) __builtin_bswap32(x)
+#define SIMPL_BYTE_SWAP_64(x) __builtin_bswap64(x)
 #elif defined(__linux__)
-//  don't check for obsolete forms defined(linux) and defined(__linux) on the theory that
-//  compilers that predefine only these are so old that byteswap.h probably isn't present.
-#define SIMPL_ENDIAN_INTRINSIC_MSG "byteswap.h bswap_16, etc."
 #include <byteswap.h>
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(x) bswap_16(x)
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_4(x) bswap_32(x)
-#define SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_8(x) bswap_64(x)
-
+#define SIMPL_BYTE_SWAP_16(x) bswap_16(x)
+#define SIMPL_BYTE_SWAP_32(x) bswap_32(x)
+#define SIMPL_BYTE_SWAP_64(x) bswap_64(x)
 #else
-#define SIMPL_ENDIAN_NO_INTRINSICS
-#define SIMPL_ENDIAN_INTRINSIC_MSG "no byte swap intrinsics"
+#define SIMPL_BYTE_SWAP_16(x) byteSwap16(x)
+#define SIMPL_BYTE_SWAP_32(x) byteSwap32(x)
+#define SIMPL_BYTE_SWAP_64(x) byteSwap64(x)
 #endif
 
-#elif !defined(SIMPL_ENDIAN_INTRINSIC_MSG)
-#define SIMPL_ENDIAN_INTRINSIC_MSG "no byte swap intrinsics"
-#endif // SIMPL_ENDIAN_NO_INTRINSICS
+#else
+#define SIMPL_BYTE_SWAP_16(x) byteSwap16(x)
+#define SIMPL_BYTE_SWAP_32(x) byteSwap32(x)
+#define SIMPL_BYTE_SWAP_64(x) byteSwap64(x)
+#endif // SIMPL_BYTE_SWAP_NO_INTRINSICS
 
 #include <string>
 #include <cstring>
@@ -96,10 +101,34 @@
 #include "SIMPLib/HDF5/H5DataArrayReader.h"
 #include "SIMPLib/HDF5/H5DataArrayWriter.hpp"
 
-#define DA_BYTE_SWAP(s, d, t)                                                                                                                                                                          \
-  t[0] = ptr[s];                                                                                                                                                                                       \
-  ptr[s] = ptr[d];                                                                                                                                                                                     \
-  ptr[d] = t[0];
+namespace
+{
+template <class T>
+T byteSwap(T value)
+{
+  static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
+  static_assert(sizeof(T) == 1 || sizeof(T) == 2 || sizeof(T) == 4 || sizeof(T) == 8, "sizeof(T) must be 1, 2, 4, or 8");
+
+  if(sizeof(T) == 2)
+  {
+    return SIMPL_BYTE_SWAP_16(value);
+  }
+  else if(sizeof(T) == 4)
+  {
+    uint32_t* ptr = reinterpret_cast<uint32_t*>(&value);
+    uint32_t result = SIMPL_BYTE_SWAP_32(*ptr);
+    return *reinterpret_cast<T*>(&result);
+  }
+  else if(sizeof(T) == 8)
+  {
+    uint64_t* ptr = reinterpret_cast<uint64_t*>(&value);
+    uint64_t result = SIMPL_BYTE_SWAP_64(*ptr);
+    return *reinterpret_cast<T*>(&result);
+  }
+
+  return value;
+}
+} // namespace
 
 template <typename T>
 typename DataArray<T>::Pointer DataArray<T>::NullPointer()
@@ -1258,57 +1287,15 @@ int32_t DataArray<T>::readH5Data(hid_t parentId)
   return err;
 }
 
-#if 0
 // -----------------------------------------------------------------------------
 template <typename T>
 void DataArray<T>::byteSwapElements()
 {
-  char* ptr = reinterpret_cast<char*>(m_Array);
-  char t[8];
-  size_t size = getTypeSize();
-  for(uint64_t var = 0; var < m_Size; ++var)
+  for(auto& value : *this)
   {
-    if(sizeof(T) == 2)
-    {
-      DA_BYTE_SWAP(0, 1, t)
-    }
-    else if(sizeof(T) == 4)
-    {
-      DA_BYTE_SWAP(0, 3, t) DA_BYTE_SWAP(1, 2, t)
-    }
-    else if(sizeof(T) == 8)
-    {
-      DA_BYTE_SWAP(0, 7, t) DA_BYTE_SWAP(1, 6, t) DA_BYTE_SWAP(2, 5, t) DA_BYTE_SWAP(3, 4, t)
-    }
-    ptr += size; // increment the pointer
+    value = byteSwap(value);
   }
 }
-
-#else
-// -----------------------------------------------------------------------------
-template <typename T>
-void DataArray<T>::byteSwapElements()
-{
-  for(size_t i = 0; i < m_Size; ++i)
-  {
-    if(sizeof(T) == 2)
-    {
-      m_Array[i] = SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_2(m_Array[i]);
-    }
-    else if(sizeof(T) == 4)
-    {
-      uint32_t* ptr = reinterpret_cast<uint32_t*>(m_Array + i);
-      *ptr = SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_4(*ptr);
-    }
-    else if(sizeof(T) == 8)
-    {
-      uint64_t* ptr = reinterpret_cast<uint64_t*>(m_Array + i);
-      *ptr = SIMPL_ENDIAN_INTRINSIC_BYTE_SWAP_8(*ptr);
-    }
-  }
-}
-
-#endif
 
 template <typename T>
 typename DataArray<T>::iterator DataArray<T>::begin()
