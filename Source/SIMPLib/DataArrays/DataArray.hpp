@@ -258,7 +258,7 @@ public:
    * can be a primitive like char, float, int or the name of a class.
    * @return
    */
-  void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const override;
+  void getXdmfTypeAndSize(QString& xdmfTypeName, int32_t& precision) const override;
   // This line must be here, because we are overloading the copyData pure virtual function in IDataArray.
   // This is required so that other classes can call this version of copyData from the subclasses.
   using IDataArray::copyFromArray;

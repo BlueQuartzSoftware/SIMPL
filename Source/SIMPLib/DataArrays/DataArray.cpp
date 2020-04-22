@@ -489,7 +489,7 @@ SIMPL::NumericTypes::Type DataArray<T>::getType() const
 
 // -----------------------------------------------------------------------------
 template <typename T>
-void DataArray<T>::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const
+void DataArray<T>::getXdmfTypeAndSize(QString& xdmfTypeName, int32_t& precision) const
 {
   xdmfTypeName = "UNKNOWN";
   precision = 0;

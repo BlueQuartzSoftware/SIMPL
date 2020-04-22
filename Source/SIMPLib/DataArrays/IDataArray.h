@@ -140,7 +140,7 @@ public:
      * can be a primitive like char, float, int or the name of a class.
      * @return
      */
-    virtual void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const = 0;
+    virtual void getXdmfTypeAndSize(QString& xdmfTypeName, int32_t& precision) const = 0;
 
     /**
      * @brief Erases tuples based on a list of specific Tuple indices
