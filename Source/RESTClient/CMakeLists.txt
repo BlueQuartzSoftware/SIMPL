@@ -52,7 +52,7 @@ set(RESTClient_HDRS
   ${RESTClient_SOURCE_DIR}/mrestrequestmanager.h
   ${RESTClient_SOURCE_DIR}/mrestrequestptr.h
   ${RESTClient_SOURCE_DIR}/mrestrequestqueue.h
-  ${RESTClient_SOURCE_DIR}/RESTClientDLLExport
+  ${RESTClient_SOURCE_DIR}/RESTClientDLLExport.h
   ${RESTClient_SOURCE_DIR}/SIMPLClientRequest.h
   ${RESTClient_SOURCE_DIR}/SIMPLRestClient.h
   ${RESTClient_SOURCE_DIR}/userptr.h
