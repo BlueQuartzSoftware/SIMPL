@@ -37,18 +37,17 @@
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QTimer>
 #include <QtCore/QFileInfo>
+#include <QtCore/QTextStream>
+#include <QtCore/QDebug>
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QGraphicsOpacityEffect>
 #include <QtWidgets/QMenu>
 
-#include <QtCore/QTextStream>
-
-#include <QtCore/QDebug>
+#include <QtGui/QScreen>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -230,17 +229,15 @@ void FilterParameterWidget::changeStyleSheet(Style style)
 QPoint FilterParameterWidget::adjustedMenuPosition(QToolButton* pushButton)
 {
   // Calculate the actual virtual desktop QRect.
-  int screenCount = QApplication::desktop()->screenCount();
+  QList<QScreen*> screens = QGuiApplication::screens();
   int xMin = std::numeric_limits<int>::max();
   int yMin = std::numeric_limits<int>::max();
   int xMax = std::numeric_limits<int>::min();
   int yMax = std::numeric_limits<int>::min();
   QRect virtDesktopRect;
-  for(int i = 0; i < screenCount; i++)
+  for(const auto& screen : screens)
   {
-    QRect rect = QApplication::desktop()->availableGeometry(i);
-    // qDebug() << i << "\t" << rect;
-
+    QRect rect = screen->availableGeometry();
     if(rect.x() < xMin)
     {
       xMin = rect.x();
@@ -290,7 +287,7 @@ QPoint FilterParameterWidget::adjustedMenuPosition(QToolButton* pushButton)
   point.setY(globalButtonCoords.y());
 
   int screenNum = QApplication::desktop()->screenNumber(pushButton);
-  int desktopHeight = QApplication::desktop()->availableGeometry(screenNum).height();
+  int desktopHeight = screens.at(screenNum)->availableGeometry().height();
 
   if(point.y() > desktopHeight)
   {

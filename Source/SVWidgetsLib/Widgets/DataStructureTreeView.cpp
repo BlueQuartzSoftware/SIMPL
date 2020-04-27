@@ -845,11 +845,11 @@ QStandardItem* DataStructureTreeView::getOrCreateItem(QStandardItem* parentItem,
 void DataStructureTreeView::rowsInserted(const QModelIndex& parent, int start, int end)
 {
   QTreeView::rowsInserted(parent, start, end);
-
   // Expand if the specified parent did not have children previously
-  if(0 == start && !parent.child(end + 1, 0).isValid())
+  if(this->model())
   {
-    expand(parent);
+    if(0 == start && !model()->index(end + 1, 0, parent).isValid())
+      expand(parent);
   }
 }
 

@@ -164,7 +164,7 @@ file(APPEND ${FILTER_PARAMETER_CODEGEN_FILE} "else {\n")
 file(APPEND ${FILTER_PARAMETER_CODEGEN_FILE} "  return  {FPCodeGenerator::New(humanLabel, propertyName, fpCategory, initValue)};\n}\n")
 #file(APPEND ${FILTER_PARAMETER_CODEGEN_FILE} "  return ptr;\n}\n\n")
 
-file(APPEND  ${FILTER_PARAMETER_TYPELIST_FILE} "qSort(list.begin(), list.end());\nreturn list;\n")
+file(APPEND  ${FILTER_PARAMETER_TYPELIST_FILE} "std::sort(list.begin(), list.end());\nreturn list;\n")
 
 cmpReplaceFileIfDifferent(OLD_FILE_PATH ${SVWidgetsLib_BINARY_DIR}/FilterWidgetManager_RegisterWidgets.cpp
                           NEW_FILE_PATH ${SVWidgetsLib_BINARY_DIR}/FilterWidgetManager_RegisterWidgets_tmp.cpp)

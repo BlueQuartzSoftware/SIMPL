@@ -36,14 +36,13 @@
 #include "DataFormatPage.h"
 
 #include <QtCore/QSignalMapper>
+#include <QtCore/QDebug>
 
+#include <QtGui/QScreen>
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QMenu>
 
-#include <QtCore/QDebug>
-
 #include "SIMPLib/Common/Constants.h"
-
 #include "SIMPLib/Utilities/StringOperations.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
@@ -600,17 +599,15 @@ bool DataFormatPage::eventFilter(QObject* obj, QEvent* event)
 QPoint DataFormatPage::adjustedMenuPosition(QPushButton* pushButton)
 {
   // Calculate the actual virtual desktop QRect.
-  int screenCount = QApplication::desktop()->screenCount();
+  QList<QScreen*> screens = QGuiApplication::screens();
   int xMin = std::numeric_limits<int>::max();
   int yMin = std::numeric_limits<int>::max();
   int xMax = std::numeric_limits<int>::min();
   int yMax = std::numeric_limits<int>::min();
   QRect virtDesktopRect;
-  for(int i = 0; i < screenCount; i++)
+  for(const auto& screen : screens)
   {
-    QRect rect = QApplication::desktop()->availableGeometry(i);
-    // qDebug() << i << "\t" << rect;
-
+    QRect rect = screen->availableGeometry();
     if(rect.x() < xMin)
     {
       xMin = rect.x();
@@ -659,7 +656,7 @@ QPoint DataFormatPage::adjustedMenuPosition(QPushButton* pushButton)
   //point.setY(globalButtonCoords.y());
 
   int screenNum = QApplication::desktop()->screenNumber(pushButton);
-  int desktopHeight = QApplication::desktop()->availableGeometry(screenNum).height();
+  int desktopHeight = screens.at(screenNum)->availableGeometry().height();
 
   if(point.y() > desktopHeight)
   {
