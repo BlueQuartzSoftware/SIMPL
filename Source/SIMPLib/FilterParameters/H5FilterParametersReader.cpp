@@ -1237,7 +1237,7 @@ DynamicTableData H5FilterParametersReader::readDynamicTableData(const QString& n
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QPair<double, double> H5FilterParametersReader::readPairOfDoubles(const QString& name, QPair<double, double> v)
+FPRangePair H5FilterParametersReader::readPairOfDoubles(const QString& name, const FPRangePair& v)
 {
   /*int err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, "Min", v.first);
   if (err < 0) { return err; }
@@ -1258,7 +1258,7 @@ QPair<double, double> H5FilterParametersReader::readPairOfDoubles(const QString&
     return v;
   }
 
-  QPair<double, double> value;
+  FPRangePair value;
   value.first = min;
   value.second = max;
   return value;

@@ -122,7 +122,7 @@ void RangeWidget::on_maxValue_textChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void RangeWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  QPair<double, double> pair;
+  FPRangePair pair;
   pair.first = minValue->text().toDouble();
   pair.second = maxValue->text().toDouble();
 

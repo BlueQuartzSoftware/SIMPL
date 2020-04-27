@@ -94,6 +94,8 @@ public:
 #endif
   }
 };
+
+#if 0
 /* Create a TypeCaster for auto python tuple <--> QPair conversion */
 template <>
 struct type_caster<FPRangePair>
@@ -145,6 +147,7 @@ public:
     return py::tuple((src.first, src.second));
   }
 };
+#endif
 
 /* Create a TypeCaster for auto python dict <--> ASCIIWizardData conversion */
 template <>

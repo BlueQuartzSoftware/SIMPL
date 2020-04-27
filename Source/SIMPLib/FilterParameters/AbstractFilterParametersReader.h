@@ -49,6 +49,7 @@
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
+#include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/Filtering/ComparisonInputs.h"
 #include "SIMPLib/Filtering/ComparisonInputsAdvanced.h"
 #include "SIMPLib/SIMPLib.h"
@@ -132,7 +133,7 @@ class SIMPLib_EXPORT AbstractFilterParametersReader
 
     virtual DynamicTableData readDynamicTableData(const QString& name, DynamicTableData v);
 
-    virtual QPair<double, double> readPairOfDoubles(const QString& name, QPair<double, double> v);
+    virtual FPRangePair readPairOfDoubles(const QString& name, const FPRangePair& v);
 
   protected:
     AbstractFilterParametersReader();

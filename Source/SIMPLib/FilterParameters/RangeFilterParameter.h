@@ -36,13 +36,13 @@
 #pragma once
 
 #include <memory>
+#include <utility>
 
 #include <QtCore/QJsonObject>
-#include <QtCore/QPair>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
-typedef QPair<double, double> FPRangePair;
+typedef std::pair<double, double> FPRangePair;
 
 /**
  * @brief SIMPL_NEW_RANGE_FP This macro is a short-form way of instantiating an instance of
@@ -75,8 +75,8 @@ public:
 
   static Pointer New();
 
-  typedef std::function<void(QPair<double, double>)> SetterCallbackType;
-  typedef std::function<QPair<double, double>(void)> GetterCallbackType;
+  typedef std::function<void(FPRangePair)> SetterCallbackType;
+  typedef std::function<FPRangePair(void)> GetterCallbackType;
 
   /**
    * @brief New This function instantiates an instance of the RangeFilterParameter. Although this function is available to be used,
@@ -94,7 +94,7 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const QPair<double, double>& defaultPair, Category category, const SetterCallbackType& setterCallback,
+  static Pointer New(const QString& humanLabel, const QString& propertyName, const FPRangePair& defaultPair, Category category, const SetterCallbackType& setterCallback,
                      const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   /**

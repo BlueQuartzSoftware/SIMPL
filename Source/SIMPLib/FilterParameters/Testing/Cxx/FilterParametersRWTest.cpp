@@ -78,6 +78,7 @@
 #include "SIMPLib/FilterParameters/ShapeTypeSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
+#include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/FilterParameters/UnknownFilterParameter.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
@@ -748,34 +749,32 @@ public:
   //  SIMPL_INSTANCE_PROPERTY(UInt32Vector_t, UInt32Vector_2)
   //  Q_PROPERTY(UInt32Vector_t UInt32Vector_2 READ getUInt32Vector_2 WRITE setUInt32Vector_2)
 
-  typedef QPair<double, double> DoublesPair;
-
   // -----------------------------------------------------------------------------
-  void setPair1(const DoublesPair& value)
+  void setPair1(const FPRangePair& value)
   {
     m_Pair1 = value;
   }
 
   // -----------------------------------------------------------------------------
-  DoublesPair getPair1() const
+  FPRangePair getPair1() const
   {
     return m_Pair1;
   }
 
-  Q_PROPERTY(DoublesPair Pair1 READ getPair1 WRITE setPair1)
+  Q_PROPERTY(FPRangePair Pair1 READ getPair1 WRITE setPair1)
   // -----------------------------------------------------------------------------
-  void setPair2(const DoublesPair& value)
+  void setPair2(const FPRangePair& value)
   {
     m_Pair2 = value;
   }
 
   // -----------------------------------------------------------------------------
-  DoublesPair getPair2() const
+  FPRangePair getPair2() const
   {
     return m_Pair2;
   }
 
-  Q_PROPERTY(DoublesPair Pair2 READ getPair2 WRITE setPair2)
+  Q_PROPERTY(FPRangePair Pair2 READ getPair2 WRITE setPair2)
 
   // -----------------------------------------------------------------------------
   //
@@ -1267,7 +1266,7 @@ This Filter Parameter is NOT tesed since nothing is read or written for the filt
       DREAM3D_REQUIRE_EQUAL(m_Pair1.first, m_Pair2.first)
       DREAM3D_REQUIRE_EQUAL(m_Pair1.second, m_Pair2.second)
 
-      m_Pair2 = DoublesPair();
+      m_Pair2 = FPRangePair();
     }
 
     {
@@ -1451,8 +1450,8 @@ private:
   ShapeType::Types m_ShapeTypeVector_2 = {};
   PhaseType::Types m_PhaseTypeVector_1 = {};
   PhaseType::Types m_PhaseTypeVector_2 = {};
-  DoublesPair m_Pair1 = {};
-  DoublesPair m_Pair2 = {};
+  FPRangePair m_Pair1 = {};
+  FPRangePair m_Pair2 = {};
 
   FilterParametersRWTest(const FilterParametersRWTest&); // Copy Constructor Not Implemented
   void operator=(const FilterParametersRWTest&);         // Move assignment Not Implemented

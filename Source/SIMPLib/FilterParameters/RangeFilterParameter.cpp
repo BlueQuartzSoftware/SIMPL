@@ -48,7 +48,7 @@ RangeFilterParameter::~RangeFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RangeFilterParameter::Pointer RangeFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QPair<double, double>& defaultPair, Category category,
+RangeFilterParameter::Pointer RangeFilterParameter::New(const QString& humanLabel, const QString& propertyName, const FPRangePair& defaultPair, Category category,
                                                         const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
@@ -85,12 +85,12 @@ void RangeFilterParameter::readJson(const QJsonObject& json)
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject obj = jsonValue.toObject();
-    QPair<double, double> pair;
+    FPRangePair dataPair;
 
-    pair.first = obj["Min"].toDouble();
-    pair.second = obj["Max"].toDouble();
+    dataPair.first = obj["Min"].toDouble();
+    dataPair.second = obj["Max"].toDouble();
 
-    m_SetterCallback(pair);
+    m_SetterCallback(dataPair);
   }
 }
 
@@ -101,11 +101,11 @@ void RangeFilterParameter::writeJson(QJsonObject& json)
 {
   if (m_GetterCallback)
   {
-    QPair<double, double> pair = m_GetterCallback();
+    FPRangePair dataPair = m_GetterCallback();
     QJsonObject obj;
 
-    obj["Min"] = pair.first;
-    obj["Max"] = pair.second;
+    obj["Min"] = dataPair.first;
+    obj["Max"] = dataPair.second;
 
     json[getPropertyName()] = obj;
   }

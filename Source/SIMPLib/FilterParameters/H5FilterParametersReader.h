@@ -169,7 +169,7 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
     QVector<DataArrayPath> readDataArrayPathVector(const QString& name, QVector<DataArrayPath> def) override;
     DynamicTableData readDynamicTableData(const QString& name, DynamicTableData def) override;
 
-    QPair<double, double> readPairOfDoubles(const QString& name, QPair<double, double> v) override;
+    FPRangePair readPairOfDoubles(const QString& name, const FPRangePair& v) override;
 
   protected:
     H5FilterParametersReader();

@@ -544,13 +544,13 @@ DynamicTableData AbstractFilterParametersReader::readDynamicTableData(const QStr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QPair<double, double> AbstractFilterParametersReader::readPairOfDoubles(const QString& name, QPair<double, double> v)
+FPRangePair AbstractFilterParametersReader::readPairOfDoubles(const QString& name, const FPRangePair& v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
 
   // This should never be executed
-  return QPair<double, double>();
+  return {};
 }
 
 // -----------------------------------------------------------------------------

@@ -51,6 +51,7 @@
 #include "SIMPLib/FilterParameters/MontageSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
+#include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/ComparisonInputs.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
@@ -266,7 +267,6 @@ public:
 
   Q_PROPERTY(int PhaseCount READ getPhaseCount WRITE setPhaseCount)
 
-  typedef QPair<double, double> FPRangePair;
   /**
    * @brief Setter property for InitRange
    */
