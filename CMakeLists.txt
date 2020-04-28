@@ -477,6 +477,26 @@ endif()
 # Find the Pybind11 installation
 option(SIMPL_ENABLE_PYTHON "Generate and Compile Python wrapping codes" OFF)
 if(SIMPL_ENABLE_PYTHON)
+  option(SIMPL_ANACONDA_PYTHON "Whether the selected Python executable is part of an Anaconda environment" OFF)
+
+  if(SIMPL_ANACONDA_PYTHON)
+    if(NOT ANACONDA_DIR)
+      message(FATAL_ERROR "ANACONDA_DIR is not set.")
+    endif()
+
+    if(NOT ANACONDA_ENVIRONMENT_NAME)
+      message(FATAL_ERROR "ANACONDA_ENVIRONMENT_NAME is not set.")
+    endif()
+
+    find_program(SIMPL_CONDA_EXECUTABLE
+      NAMES
+        "conda"
+        "conda.bat"
+      PATHS
+        ${ANACONDA_DIR}/condabin
+    )
+  endif()
+
   include(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/CreatePybind11Module.cmake)
 
   get_target_property(SIMPL_PY_SOURCES SIMPLib SOURCES)

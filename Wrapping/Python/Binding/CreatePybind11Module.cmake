@@ -1,3 +1,46 @@
+function(AddPythonTest)
+  set(options )
+  set(oneValueArgs NAME FILE)
+  set(multiValueArgs PYTHONPATH)
+  cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+  if(SIMPL_ANACONDA_PYTHON)
+    if(WIN32)
+      add_test(NAME ${ARGS_NAME}
+        COMMAND ${SIMPL_CONDA_EXECUTABLE} "activate" ${ANACONDA_ENVIRONMENT_NAME} "&&" "python" ${ARGS_FILE}
+      )
+    else()
+      add_test(NAME ${ARGS_NAME}
+        COMMAND ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/anaconda_setup.sh "&&" "python" ${ARGS_FILE}
+      )
+
+      set_property(TEST ${ARGS_NAME}
+        PROPERTY
+          ENVIRONMENT
+            "SIMPL_ANACONDA_DIR=${ANACONDA_DIR}"
+            "SIMPL_CONDA_ENV=${ANACONDA_ENVIRONMENT_NAME}"
+      )
+    endif()
+  else()
+    add_test(NAME ${ARGS_NAME}
+      COMMAND ${PYTHON_EXECUTABLE} ${ARGS_FILE}
+    )
+  endif()
+
+  if(WIN32)
+    string(REPLACE ";" "\\;" ARGS_PYTHONPATH "${ARGS_PYTHONPATH}")
+  else()
+    string(REPLACE ";" ":" ARGS_PYTHONPATH "${ARGS_PYTHONPATH}")
+  endif()
+
+  set_property(TEST ${ARGS_NAME}
+    APPEND
+    PROPERTY
+      ENVIRONMENT
+      "PYTHONPATH=${ARGS_PYTHONPATH}"
+  )
+endfunction()
+
 function(CreatePybind11Module)
   set(options PLUGIN)
   set(oneValueArgs MODULE_NAME OUTPUT_DIR FILE_LIST_PATH SOURCE_DIR HEADER_PATH BODY_PATH INCLUDE_DIR PYTHON_OUTPUT_DIR)
@@ -64,21 +107,9 @@ function(CreatePybind11Module)
     "$<TARGET_FILE_DIR:simpl>"
   )
 
-  if(WIN32)
-    string(REPLACE ";" "\\;" TESTS_PYTHONPATH "${TESTS_PYTHONPATH}")
-  else()
-    string(REPLACE ";" ":" TESTS_PYTHONPATH "${TESTS_PYTHONPATH}")
-  endif()
-
-  set(PYTHON_UNIT_TEST_NAME PY_${ARGS_MODULE_NAME}_UnitTest)
-
-  add_test(NAME ${PYTHON_UNIT_TEST_NAME}
-    COMMAND ${PYTHON_EXECUTABLE} ${PYTHON_UNIT_TEST_FILE}
-  )
-
-  set_tests_properties(${PYTHON_UNIT_TEST_NAME}
-    PROPERTIES
-      ENVIRONMENT "PYTHONPATH=${TESTS_PYTHONPATH}"
+  AddPythonTest(NAME PY_${ARGS_MODULE_NAME}_UnitTest
+    FILE ${PYTHON_UNIT_TEST_FILE}
+    PYTHONPATH ${TESTS_PYTHONPATH}
   )
 endfunction()
 
@@ -117,21 +148,13 @@ function(CreatePythonTests)
     "${SIMPLProj_BINARY_DIR}/Wrapping/dream3d/$<CONFIG>"
   )
 
-  if(WIN32)
-    string(REPLACE ";" "\\;" TESTS_PYTHONPATH "${TESTS_PYTHONPATH}")
-  else()
-    string(REPLACE ";" ":" TESTS_PYTHONPATH "${TESTS_PYTHONPATH}")
-  endif()
-
   foreach(test ${ARGS_TEST_NAMES})
     string(REPLACE "/" "_" test_name ${test})
     set(PY_TEST_NAME ${ARGS_PREFIX}_${test_name})
-    add_test(NAME ${PY_TEST_NAME}
-      COMMAND ${PYTHON_EXECUTABLE} "${ARGS_INPUT_DIR}/${test}.py"
-    )
-    set_tests_properties(${PY_TEST_NAME}
-      PROPERTIES
-        ENVIRONMENT "PYTHONPATH=${TESTS_PYTHONPATH}"
+
+    AddPythonTest(NAME ${PY_TEST_NAME}
+      FILE ${ARGS_INPUT_DIR}/${test}.py
+      PYTHONPATH ${TESTS_PYTHONPATH}
     )
   endforeach()
 endfunction()
