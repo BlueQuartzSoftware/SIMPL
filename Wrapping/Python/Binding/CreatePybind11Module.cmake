@@ -4,7 +4,7 @@ function(AddPythonTest)
   set(multiValueArgs PYTHONPATH)
   cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
-  if(SIMPL_ANACONDA_PYTHON)
+  if(SIMPL_USE_ANACONDA_PYTHON)
     if(WIN32)
       add_test(NAME ${ARGS_NAME}
         COMMAND ${SIMPL_CONDA_EXECUTABLE} "activate" ${ANACONDA_ENVIRONMENT_NAME} "&&" "python" ${ARGS_FILE}

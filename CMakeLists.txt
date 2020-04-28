@@ -477,9 +477,9 @@ endif()
 # Find the Pybind11 installation
 option(SIMPL_ENABLE_PYTHON "Generate and Compile Python wrapping codes" OFF)
 if(SIMPL_ENABLE_PYTHON)
-  option(SIMPL_ANACONDA_PYTHON "Whether the selected Python executable is part of an Anaconda environment" OFF)
+  option(SIMPL_USE_ANACONDA_PYTHON "Whether the selected Python executable is part of an Anaconda environment" OFF)
 
-  if(SIMPL_ANACONDA_PYTHON)
+  if(SIMPL_USE_ANACONDA_PYTHON)
     if(NOT ANACONDA_DIR)
       message(FATAL_ERROR "ANACONDA_DIR is not set.")
     endif()
