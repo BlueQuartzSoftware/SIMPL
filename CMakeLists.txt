@@ -479,13 +479,18 @@ if(SIMPL_ENABLE_PYTHON)
       message(FATAL_ERROR "ANACONDA_ENVIRONMENT_NAME is not set.")
     endif()
 
-    find_program(SIMPL_CONDA_EXECUTABLE
+    if(WIN32)
+      find_program(SIMPL_CONDA_EXECUTABLE
       NAMES
-        "conda"
         "conda.bat"
       PATHS
         ${ANACONDA_DIR}/condabin
-    )
+      )
+    
+      if(NOT SIMPL_CONDA_EXECUTABLE)
+        message(FATAL_ERROR "Unable to find conda.bat")
+      endif()
+    endif()
   endif()
 
   include(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/CreatePybind11Module.cmake)
