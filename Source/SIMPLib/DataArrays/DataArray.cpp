@@ -35,28 +35,6 @@
 
 #include "DataArray.hpp"
 
-namespace
-{
-uint16_t byteSwap16(uint16_t value)
-{
-  return ((value & 0x00FF) << 8) | ((value & 0xFF00) >> 8);
-}
-
-uint32_t byteSwap32(uint32_t value)
-{
-  return ((value & 0x000000FF) << 24) | ((value & 0x0000FF00) << 8) | ((value & 0x00FF0000) >> 8) | ((value & 0xFF000000) >> 24);
-}
-
-uint64_t byteSwap64(uint64_t value)
-{
-  return ((value & 0x00000000000000FFULL) << 56) | ((value & 0x000000000000FF00ULL) << 40) | ((value & 0x0000000000FF0000ULL) << 24) | ((value & 0x00000000FF000000ULL) << 8) |
-         ((value & 0x000000FF00000000ULL) >> 8) | ((value & 0x0000FF0000000000ULL) >> 24) | ((value & 0x00FF000000000000ULL) >> 40) | ((value & 0xFF00000000000000ULL) >> 56);
-}
-
-}
-
-#ifndef SIMPL_BYTE_SWAP_NO_INTRINSICS
-
 #ifndef __has_builtin
 #define __has_builtin(x) 0
 #endif
@@ -80,17 +58,7 @@ uint64_t byteSwap64(uint64_t value)
 #define SIMPL_BYTE_SWAP_16(x) bswap_16(x)
 #define SIMPL_BYTE_SWAP_32(x) bswap_32(x)
 #define SIMPL_BYTE_SWAP_64(x) bswap_64(x)
-#else
-#define SIMPL_BYTE_SWAP_16(x) byteSwap16(x)
-#define SIMPL_BYTE_SWAP_32(x) byteSwap32(x)
-#define SIMPL_BYTE_SWAP_64(x) byteSwap64(x)
 #endif
-
-#else
-#define SIMPL_BYTE_SWAP_16(x) byteSwap16(x)
-#define SIMPL_BYTE_SWAP_32(x) byteSwap32(x)
-#define SIMPL_BYTE_SWAP_64(x) byteSwap64(x)
-#endif // SIMPL_BYTE_SWAP_NO_INTRINSICS
 
 #include <string>
 #include <cstring>
@@ -103,31 +71,54 @@ uint64_t byteSwap64(uint64_t value)
 
 namespace
 {
-template <class T>
+// Can be replaced with std::bit_cast in C++ 20
+
+template <class To, class From, class = std::enable_if_t<(sizeof(To) == sizeof(From)) && std::is_trivially_copyable<From>::value && std::is_trivial<To>::value>>
+To bit_cast(const From& src) noexcept
+{
+  To dst;
+  std::memcpy(&dst, &src, sizeof(To));
+  return dst;
+}
+
+// SFINAE can be replaced with if constexpr in C++ 17
+
+template <class T, std::enable_if_t<sizeof(T) == sizeof(uint8_t)>* = nullptr>
 T byteSwap(T value)
 {
-  static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
-  static_assert(sizeof(T) == 1 || sizeof(T) == 2 || sizeof(T) == 4 || sizeof(T) == 8, "sizeof(T) must be 1, 2, 4, or 8");
-
-  if(sizeof(T) == 2)
-  {
-    return SIMPL_BYTE_SWAP_16(value);
-  }
-  else if(sizeof(T) == 4)
-  {
-    uint32_t* ptr = reinterpret_cast<uint32_t*>(&value);
-    uint32_t result = SIMPL_BYTE_SWAP_32(*ptr);
-    return *reinterpret_cast<T*>(&result);
-  }
-  else if(sizeof(T) == 8)
-  {
-    uint64_t* ptr = reinterpret_cast<uint64_t*>(&value);
-    uint64_t result = SIMPL_BYTE_SWAP_64(*ptr);
-    return *reinterpret_cast<T*>(&result);
-  }
-
   return value;
 }
+
+template <class T, std::enable_if_t<sizeof(T) == sizeof(uint16_t)>* = nullptr>
+T byteSwap(T value)
+{
+  return SIMPL_BYTE_SWAP_16(value);
+}
+
+template <class T, std::enable_if_t<sizeof(T) == sizeof(uint32_t) && !std::is_floating_point<T>::value>* = nullptr>
+T byteSwap(T value)
+{
+  return SIMPL_BYTE_SWAP_32(value);
+}
+
+template <class T, std::enable_if_t<sizeof(T) == sizeof(uint32_t) && std::is_floating_point<T>::value>* = nullptr>
+T byteSwap(T value)
+{
+  return bit_cast<T>(SIMPL_BYTE_SWAP_32(bit_cast<uint32_t>(value)));
+}
+
+template <class T, std::enable_if_t<sizeof(T) == sizeof(uint64_t) && !std::is_floating_point<T>::value>* = nullptr>
+T byteSwap(T value)
+{
+  return SIMPL_BYTE_SWAP_64(value);
+}
+
+template <class T, std::enable_if_t<sizeof(T) == sizeof(uint64_t) && std::is_floating_point<T>::value>* = nullptr>
+T byteSwap(T value)
+{
+  return bit_cast<T>(SIMPL_BYTE_SWAP_64(bit_cast<uint64_t>(value)));
+}
+
 } // namespace
 
 template <typename T>
@@ -1041,7 +1032,6 @@ template <typename T>
 void DataArray<T>::printTuple(QTextStream& out, size_t i, char delimiter) const
 {
   int32_t precision = out.realNumberPrecision();
-  T value = static_cast<T>(0x00);
   if(std::is_same<T, float>::value)
   {
     out.setRealNumberPrecision(8);

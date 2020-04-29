@@ -464,15 +464,6 @@ include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)
 # Include any Support related CMake codes
 include(${SIMPLProj_SOURCE_DIR}/Support/Support.cmake)
 
-option(SIMPL_BYTE_SWAP_NO_INTRINSICS "Disable use of compiler intrinsics for byte swapping" OFF)
-
-if(SIMPL_BYTE_SWAP_NO_INTRINSICS)
-  target_compile_definitions(SIMPLib
-    PRIVATE
-      SIMPL_BYTE_SWAP_NO_INTRINSICS
-  )
-endif()
-
 # --------------------------------------------------------------------------
 # Find the Pybind11 installation
 option(SIMPL_ENABLE_PYTHON "Generate and Compile Python wrapping codes" OFF)
