@@ -176,8 +176,8 @@ template <typename T>
 DataArray<T>::DataArray(size_t numTuples, const QString& name, const comp_dims_type& compDims, T initValue)
 : IDataArray(name)
 , m_NumTuples(numTuples)
-, m_CompDims(compDims)
 , m_InitValue(initValue)
+, m_CompDims(compDims)
 {
   m_NumComponents = std::accumulate(m_CompDims.cbegin(), m_CompDims.cend(), static_cast<size_t>(1), std::multiplies<>());
   m_Array = resizeAndExtend(m_NumTuples * m_NumComponents);
@@ -195,8 +195,8 @@ template <typename T>
 DataArray<T>::DataArray(size_t numTuples, const QString& name, const comp_dims_type& compDims, T initValue, bool allocate)
 : IDataArray(name)
 , m_NumTuples(numTuples)
-, m_CompDims(compDims)
 , m_InitValue(initValue)
+, m_CompDims(compDims)
 {
   m_NumComponents = std::accumulate(m_CompDims.cbegin(), m_CompDims.cend(), static_cast<size_t>(1), std::multiplies<>());
   if(allocate)
