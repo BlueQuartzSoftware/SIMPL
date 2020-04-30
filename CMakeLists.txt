@@ -480,16 +480,9 @@ if(SIMPL_ENABLE_PYTHON)
     endif()
 
     if(WIN32)
-      find_program(SIMPL_CONDA_EXECUTABLE
-      NAMES
-        "conda.bat"
-      PATHS
-        ${ANACONDA_DIR}/condabin
-      )
-    
-      if(NOT SIMPL_CONDA_EXECUTABLE)
-        message(FATAL_ERROR "Unable to find conda.bat")
-      endif()
+      set(SIMPL_CONDA_EXECUTABLE ${ANACONDA_DIR}/condabin/conda.bat)
+    else()
+      set(SIMPL_CONDA_EXECUTABLE ${ANACONDA_DIR}/condabin/conda)
     endif()
   endif()
 
