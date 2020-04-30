@@ -35,61 +35,52 @@
 
 #include "DataArray.hpp"
 
-namespace
-{
-uint16_t byteSwap16(uint16_t value)
-{
-  return ((value & 0x00FF) << 8) | ((value & 0xFF00) >> 8);
-}
-
-uint32_t byteSwap32(uint32_t value)
-{
-  return ((value & 0x000000FF) << 24) | ((value & 0x0000FF00) << 8) | ((value & 0x00FF0000) >> 8) | ((value & 0xFF000000) >> 24);
-}
-
-uint64_t byteSwap64(uint64_t value)
-{
-  return ((value & 0x00000000000000FFULL) << 56) | ((value & 0x000000000000FF00ULL) << 40) | ((value & 0x0000000000FF0000ULL) << 24) | ((value & 0x00000000FF000000ULL) << 8) |
-         ((value & 0x000000FF00000000ULL) >> 8) | ((value & 0x0000FF0000000000ULL) >> 24) | ((value & 0x00FF000000000000ULL) >> 40) | ((value & 0xFF00000000000000ULL) >> 56);
-}
-
-}
+#define DATA_ARRAY_BYTE_SWAP_FUNCTIONS\
+namespace {\
+uint16_t byteSwap16(uint16_t value) {  return ((value & 0x00FF) << 8) | ((value & 0xFF00) >> 8);}\
+uint32_t byteSwap32(uint32_t value){  return ((value & 0x000000FF) << 24) | ((value & 0x0000FF00) << 8) | ((value & 0x00FF0000) >> 8) | ((value & 0xFF000000) >> 24);}\
+uint64_t byteSwap64(uint64_t value){\
+  return ((value & 0x00000000000000FFULL) << 56) | ((value & 0x000000000000FF00ULL) << 40) | ((value & 0x0000000000FF0000ULL) << 24) | ((value & 0x00000000FF000000ULL) << 8) |\
+         ((value & 0x000000FF00000000ULL) >> 8) | ((value & 0x0000FF0000000000ULL) >> 24) | ((value & 0x00FF000000000000ULL) >> 40) | ((value & 0xFF00000000000000ULL) >> 56);\
+}}
 
 #ifndef SIMPL_BYTE_SWAP_NO_INTRINSICS
 
-#ifndef __has_builtin
-#define __has_builtin(x) 0
-#endif
+  #ifndef __has_builtin
+  #define __has_builtin(x) 0
+  #endif
 
-#if defined(_MSC_VER)
-#include <cstdlib>
-#define SIMPL_BYTE_SWAP_16(x) _byteswap_ushort(x)
-#define SIMPL_BYTE_SWAP_32(x) _byteswap_ulong(x)
-#define SIMPL_BYTE_SWAP_64(x) _byteswap_uint64(x)
+  #if defined(_MSC_VER)
+    #include <cstdlib>
+    #define SIMPL_BYTE_SWAP_16(x) _byteswap_ushort(x)
+    #define SIMPL_BYTE_SWAP_32(x) _byteswap_ulong(x)
+    #define SIMPL_BYTE_SWAP_64(x) _byteswap_uint64(x)
 
-#elif(defined(__clang__) && __has_builtin(__builtin_bswap32) && __has_builtin(__builtin_bswap64)) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)))
-#if(defined(__clang__) && __has_builtin(__builtin_bswap16)) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)))
-#define SIMPL_BYTE_SWAP_16(x) __builtin_bswap16(x)
-#else
-#define SIMPL_BYTE_SWAP_16(x) __builtin_bswap32((x) << 16)
-#endif
-#define SIMPL_BYTE_SWAP_32(x) __builtin_bswap32(x)
-#define SIMPL_BYTE_SWAP_64(x) __builtin_bswap64(x)
-#elif defined(__linux__)
-#include <byteswap.h>
-#define SIMPL_BYTE_SWAP_16(x) bswap_16(x)
-#define SIMPL_BYTE_SWAP_32(x) bswap_32(x)
-#define SIMPL_BYTE_SWAP_64(x) bswap_64(x)
-#else
-#define SIMPL_BYTE_SWAP_16(x) byteSwap16(x)
-#define SIMPL_BYTE_SWAP_32(x) byteSwap32(x)
-#define SIMPL_BYTE_SWAP_64(x) byteSwap64(x)
-#endif
+  #elif(defined(__clang__) && __has_builtin(__builtin_bswap32) && __has_builtin(__builtin_bswap64)) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)))
+    #if(defined(__clang__) && __has_builtin(__builtin_bswap16)) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)))
+    #define SIMPL_BYTE_SWAP_16(x) __builtin_bswap16(x)
+    #else
+    #define SIMPL_BYTE_SWAP_16(x) __builtin_bswap32((x) << 16)
+    #endif
+    #define SIMPL_BYTE_SWAP_32(x) __builtin_bswap32(x)
+    #define SIMPL_BYTE_SWAP_64(x) __builtin_bswap64(x)
+  #elif defined(__linux__)
+    #include <byteswap.h>
+    #define SIMPL_BYTE_SWAP_16(x) bswap_16(x)
+    #define SIMPL_BYTE_SWAP_32(x) bswap_32(x)
+    #define SIMPL_BYTE_SWAP_64(x) bswap_64(x)
+  #else
+    DATA_ARRAY_BYTE_SWAP_FUNCTIONS
+    #define SIMPL_BYTE_SWAP_16(x) byteSwap16(x)
+    #define SIMPL_BYTE_SWAP_32(x) byteSwap32(x)
+    #define SIMPL_BYTE_SWAP_64(x) byteSwap64(x)
+  #endif
 
 #else
-#define SIMPL_BYTE_SWAP_16(x) byteSwap16(x)
-#define SIMPL_BYTE_SWAP_32(x) byteSwap32(x)
-#define SIMPL_BYTE_SWAP_64(x) byteSwap64(x)
+  DATA_ARRAY_BYTE_SWAP_FUNCTIONS
+  #define SIMPL_BYTE_SWAP_16(x) byteSwap16(x)
+  #define SIMPL_BYTE_SWAP_32(x) byteSwap32(x)
+  #define SIMPL_BYTE_SWAP_64(x) byteSwap64(x)
 #endif // SIMPL_BYTE_SWAP_NO_INTRINSICS
 
 #include <string>
@@ -185,8 +176,8 @@ template <typename T>
 DataArray<T>::DataArray(size_t numTuples, const QString& name, const comp_dims_type& compDims, T initValue)
 : IDataArray(name)
 , m_NumTuples(numTuples)
-, m_CompDims(compDims)
 , m_InitValue(initValue)
+, m_CompDims(compDims)
 {
   m_NumComponents = std::accumulate(m_CompDims.cbegin(), m_CompDims.cend(), static_cast<size_t>(1), std::multiplies<>());
   m_Array = resizeAndExtend(m_NumTuples * m_NumComponents);
@@ -204,8 +195,8 @@ template <typename T>
 DataArray<T>::DataArray(size_t numTuples, const QString& name, const comp_dims_type& compDims, T initValue, bool allocate)
 : IDataArray(name)
 , m_NumTuples(numTuples)
-, m_CompDims(compDims)
 , m_InitValue(initValue)
+, m_CompDims(compDims)
 {
   m_NumComponents = std::accumulate(m_CompDims.cbegin(), m_CompDims.cend(), static_cast<size_t>(1), std::multiplies<>());
   if(allocate)
@@ -1041,7 +1032,6 @@ template <typename T>
 void DataArray<T>::printTuple(QTextStream& out, size_t i, char delimiter) const
 {
   int32_t precision = out.realNumberPrecision();
-  T value = static_cast<T>(0x00);
   if(std::is_same<T, float>::value)
   {
     out.setRealNumberPrecision(8);
