@@ -1310,12 +1310,53 @@ typename DataArray<T>::const_iterator DataArray<T>::end() const
   return const_iterator(m_Array + m_Size);
 }
 
-// rbegin
-// rend
-// cbegin
-// cend
-// crbegin
-// crend
+template <typename T>
+typename DataArray<T>::const_iterator DataArray<T>::cbegin() const
+{
+  return begin();
+}
+
+template <typename T>
+typename DataArray<T>::const_iterator DataArray<T>::cend() const
+{
+  return end();
+}
+
+template <typename T>
+typename DataArray<T>::reverse_iterator DataArray<T>::rbegin()
+{
+  return std::make_reverse_iterator(end());
+}
+
+template <typename T>
+typename DataArray<T>::reverse_iterator DataArray<T>::rend()
+{
+  return std::make_reverse_iterator(begin());
+}
+
+template <typename T>
+typename DataArray<T>::const_reverse_iterator DataArray<T>::rbegin() const
+{
+  return std::make_reverse_iterator(end());
+}
+
+template <typename T>
+typename DataArray<T>::const_reverse_iterator DataArray<T>::rend() const
+{
+  return std::make_reverse_iterator(begin());
+}
+
+template <typename T>
+typename DataArray<T>::const_reverse_iterator DataArray<T>::crbegin() const
+{
+  return rbegin();
+}
+
+template <typename T>
+typename DataArray<T>::const_reverse_iterator DataArray<T>::crend() const
+{
+  return rend();
+}
 
 // ######### Capacity #########
 template <typename T>
