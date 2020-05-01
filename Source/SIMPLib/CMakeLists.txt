@@ -40,6 +40,10 @@ set(SIMPLib_FILTER_DOC_DIR ${SIMPLib_SOURCE_DIR}/Documentation/${PROJECT_NAME}Fi
 
 include(${CMP_SOURCE_DIR}/cmpProject.cmake)
 
+if(BIGENDIAN)
+  message(FATAL_ERROR "Big endian architecture not supported")
+endif()
+
 #-- Configure Target Specific configuration file
 cmpConfigureFileWithMD5Check(CONFIGURED_TEMPLATE_PATH ${SIMPLib_SOURCE_DIR}/SIMPLibConfiguration.h.in
                              GENERATED_FILE_PATH ${SIMPLib_BINARY_DIR}/${CMP_TOP_HEADER_FILE})
