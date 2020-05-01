@@ -480,9 +480,9 @@ if(SIMPL_ENABLE_PYTHON)
     endif()
 
     if(WIN32)
-      set(SIMPL_CONDA_EXECUTABLE ${ANACONDA_DIR}/condabin/conda.bat)
+      set(SIMPL_CONDA_EXECUTABLE ${ANACONDA_DIR}/condabin/conda.bat CACHE FILEPATH "")
     else()
-      set(SIMPL_CONDA_EXECUTABLE ${ANACONDA_DIR}/condabin/conda)
+      set(SIMPL_CONDA_EXECUTABLE ${ANACONDA_DIR}/condabin/conda CACHE FILEPATH "")
     endif()
   endif()
 
