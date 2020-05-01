@@ -1020,7 +1020,7 @@ void DataArray<T>::initializeTuple(size_t i, void* p)
   T* c = reinterpret_cast<T*>(p);
   for(size_t j = 0; j < m_NumComponents; ++j)
   {
-    m_Array[i * m_NumComponents + j] = *c;
+    m_Array[i * m_NumComponents + j] = c[j];
   }
 }
 
