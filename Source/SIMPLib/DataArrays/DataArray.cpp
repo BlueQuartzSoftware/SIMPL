@@ -1367,7 +1367,7 @@ typename DataArray<T>::size_type DataArray<T>::size() const
 template <typename T>
 typename DataArray<T>::size_type DataArray<T>::max_size() const
 {
-  return m_Size;
+  return std::min(static_cast<size_type>(std::numeric_limits<difference_type>::max()), static_cast<size_t>(-1) / sizeof(value_type));
 }
 //  void resize(size_type n)
 //  {

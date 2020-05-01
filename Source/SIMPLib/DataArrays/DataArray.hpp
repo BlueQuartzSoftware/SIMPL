@@ -92,9 +92,8 @@ public:
   using size_type = size_t;
   using value_type = T;
   using reference = T&;
-  using iterator_category = std::input_iterator_tag;
   using pointer = T*;
-  using difference_type = value_type;
+  using difference_type = ptrdiff_t;
 
   //========================================= SIMPL INTERFACE COMPATIBILITY =================================
   using ContainterType = std::vector<Pointer>;
