@@ -128,6 +128,18 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
      */
     PreflightUpdatedValueFilterParameter::GetterCallbackType getGetterCallback() const;
 
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject& json) override;
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject& json) override;
+
   protected:
       /**
        * @brief PreflightUpdatedValueFilterParameter The default constructor.  It is protected because this

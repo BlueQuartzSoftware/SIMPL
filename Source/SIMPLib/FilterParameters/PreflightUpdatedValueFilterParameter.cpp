@@ -35,6 +35,8 @@
 
 #include "PreflightUpdatedValueFilterParameter.h"
 
+#include <tuple>
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -68,6 +70,20 @@ PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParamet
 QString PreflightUpdatedValueFilterParameter::getWidgetType() const
 {
   return QString("PreflightUpdatedValueWidget");
+}
+
+// -----------------------------------------------------------------------------
+void PreflightUpdatedValueFilterParameter::readJson(const QJsonObject& json)
+{
+  // We don't want to read this value. Reading does no good since it is a calculated value
+  std::ignore = json;
+}
+
+// -----------------------------------------------------------------------------
+void PreflightUpdatedValueFilterParameter::writeJson(QJsonObject& json)
+{
+  // We don't want to write this value. It serves no purpose saving the value
+  std::ignore = json;
 }
 
 // -----------------------------------------------------------------------------
