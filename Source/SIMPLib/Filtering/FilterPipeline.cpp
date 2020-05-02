@@ -863,6 +863,11 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
 
   m_Dca = dca;
 
+  QDateTime now = QDateTime::currentDateTime();
+  QString msg;
+  QTextStream out(&msg);
+  out << "Pipline Start: " << now.toString(Qt::ISODate);
+  notifyStatusMessage(msg);
   // Start looping through the Pipeline
   for(const auto& filt : m_Pipeline)
   {
@@ -911,6 +916,10 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
 
     notifyProgressMessage(static_cast<int>(static_cast<float>(filtIndex + 1) / (m_Pipeline.size()) * 100.0f), "");
   }
+  now = QDateTime::currentDateTime();
+  msg.clear();
+  out << "Pipline End: " << now.toString(Qt::ISODate);
+  notifyStatusMessage(msg);
 
   disconnectSignalsSlots();
 
