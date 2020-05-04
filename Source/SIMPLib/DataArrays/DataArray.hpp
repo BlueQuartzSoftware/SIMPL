@@ -1266,14 +1266,6 @@ private:
 };
 
 // -----------------------------------------------------------------------------
-// These are specialized for bool type as std::vector<bool> uses bits instead of bytes
-template <>
-typename DataArray<bool>::Pointer DataArray<bool>::FromStdVector(const std::vector<bool>& vec, const QString& name);
-
-template <>
-void DataArray<bool>::setTuple(size_t tupleIndex, const std::vector<bool>& data);
-
-// -----------------------------------------------------------------------------
 // Declare our extern templates
 extern template class DataArray<bool>;
 
