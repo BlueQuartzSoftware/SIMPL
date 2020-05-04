@@ -993,7 +993,7 @@ public:
     {
       return self_type(lhs + rhs.ptr_);
     }
-    const reference operator[](difference_type amt) const
+    reference operator[](difference_type amt) const
     {
       return ptr_[amt];
     }
