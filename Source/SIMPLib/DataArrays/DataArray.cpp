@@ -317,7 +317,6 @@ IDataArray::Pointer DataArray<T>::createNewArray(size_t numTuples, const comp_di
 template <typename T>
 typename DataArray<T>::Pointer DataArray<T>::FromQVector(const QVector<T>& vec, const QString& name)
 {
-
   Pointer p = CreateArray(static_cast<size_t>(vec.size()), name, true);
   if(nullptr != p)
   {
@@ -614,7 +613,7 @@ void DataArray<T>::releaseOwnership()
 template <typename T>
 int32_t DataArray<T>::allocate()
 {
-  if((nullptr != m_Array) && (true == m_OwnsData))
+  if((nullptr != m_Array) && m_OwnsData)
   {
     deallocate();
   }
