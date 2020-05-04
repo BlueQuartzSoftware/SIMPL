@@ -1358,6 +1358,42 @@ typename DataArray<T>::const_reverse_iterator DataArray<T>::crend() const
   return rend();
 }
 
+template <typename T>
+typename DataArray<T>::tuple_iterator DataArray<T>::tupleBegin()
+{
+  return tuple_iterator(m_Array, m_NumComponents);
+}
+
+template <typename T>
+typename DataArray<T>::tuple_iterator DataArray<T>::tupleEnd()
+{
+  return tuple_iterator(m_Array + m_Size, m_NumComponents);
+}
+
+template <typename T>
+typename DataArray<T>::const_tuple_iterator DataArray<T>::tupleBegin() const
+{
+  return const_tuple_iterator(m_Array, m_NumComponents);
+}
+
+template <typename T>
+typename DataArray<T>::const_tuple_iterator DataArray<T>::tupleEnd() const
+{
+  return const_tuple_iterator(m_Array + m_Size, m_NumComponents);
+}
+
+template <typename T>
+typename DataArray<T>::const_tuple_iterator DataArray<T>::constTupleBegin() const
+{
+  return tupleBegin();
+}
+
+template <typename T>
+typename DataArray<T>::const_tuple_iterator DataArray<T>::constTupleEnd() const
+{
+  return tupleEnd();
+}
+
 // ######### Capacity #########
 template <typename T>
 typename DataArray<T>::size_type DataArray<T>::size() const

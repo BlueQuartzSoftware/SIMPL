@@ -571,46 +571,113 @@ public:
     using value_type = T;
     using reference = T&;
     using pointer = T*;
-    using difference_type = value_type;
-    using iterator_category = std::forward_iterator_tag;
+    using difference_type = ptrdiff_t;
+    using iterator_category = std::random_access_iterator_tag;
 
+    tuple_iterator() = delete;
+
+    self_type& operator++()
+    {
+      ptr_ += num_comps_;
+      return *this;
+    } // PREFIX
+    self_type operator++(int32_t unused)
+    {
+      // Replace with [[maybe_unused]] in C++ 17
+      (void)unused;
+      self_type i = *this;
+      ptr_ += num_comps_;
+      return i;
+    } // POSTFIX
+    self_type& operator--()
+    {
+      ptr_ -= num_comps_;
+      return *this;
+    } // PREFIX
+    self_type operator--(int32_t unused)
+    {
+      // Replace with [[maybe_unused]] in C++ 17
+      (void)unused;
+      self_type i = *this;
+      ptr_ -= num_comps_;
+      return i;
+    } // POSTFIX
+    self_type& operator+=(difference_type amt)
+    {
+      ptr_ += amt * num_comps_;
+      return *this;
+    }
+    self_type operator+(difference_type amt) const
+    {
+      return self_type(ptr_ + amt * num_comps_, num_comps_);
+    }
+    self_type& operator-=(difference_type amt)
+    {
+      ptr_ -= amt * num_comps_;
+      return *this;
+    }
+    self_type operator-(difference_type amt) const
+    {
+      return self_type(ptr_ - amt * num_comps_, num_comps_);
+    }
+    difference_type operator-(const self_type& rhs) const
+    {
+      return (ptr_ - rhs.ptr_) / static_cast<difference_type>(num_comps_);
+    }
+    friend self_type operator+(difference_type lhs, const self_type& rhs)
+    {
+      return self_type(lhs * rhs.num_comps_ + rhs.ptr_, rhs.num_comps_);
+    }
+    reference operator[](difference_type amt) const
+    {
+      return ptr_[amt * num_comps_];
+    }
+    reference operator*() const
+    {
+      return *ptr_;
+    }
+    pointer operator->() const
+    {
+      return ptr_;
+    }
+    bool operator==(const self_type& rhs) const
+    {
+      return ptr_ == rhs.ptr_;
+    }
+    bool operator!=(const self_type& rhs) const
+    {
+      return ptr_ != rhs.ptr_;
+    }
+    bool operator>(const self_type& rhs) const
+    {
+      return ptr_ > rhs.ptr_;
+    }
+    bool operator<(const self_type& rhs) const
+    {
+      return ptr_ < rhs.ptr_;
+    }
+    bool operator>=(const self_type& rhs) const
+    {
+      return ptr_ >= rhs.ptr_;
+    }
+    bool operator<=(const self_type& rhs) const
+    {
+      return ptr_ <= rhs.ptr_;
+    }
+
+    reference comp_value(size_type comp)
+    {
+      return *(ptr_ + comp);
+    }
+
+  protected:
     tuple_iterator(pointer ptr, size_type numComps)
     : ptr_(ptr)
     , num_comps_(numComps)
     {
     }
-    self_type operator++()
-    {
-      ptr_ = ptr_ + num_comps_;
-      return *this;
-    } // PREFIX
-    self_type operator++(int32_t ununsed)
-    {
-      std::ignore = ununsed;
-      self_type i = *this;
-      ptr_ = ptr_ + num_comps_;
-      return i;
-    } // POSTFIX
-    reference operator*()
-    {
-      return *ptr_;
-    }
-    pointer operator->()
-    {
-      return ptr_;
-    }
-    bool operator==(const self_type& rhs)
-    {
-      return ptr_ == rhs.ptr_;
-    }
-    bool operator!=(const self_type& rhs)
-    {
-      return ptr_ != rhs.ptr_;
-    }
-    reference comp_value(size_type comp)
-    {
-      return *(ptr_ + comp);
-    }
+
+    friend class DataArray;
 
   private:
     pointer ptr_;
@@ -622,48 +689,115 @@ public:
   public:
     using self_type = const_tuple_iterator;
     using value_type = T;
-    using reference = T&;
-    using pointer = T*;
-    using difference_type = value_type;
-    using iterator_category = std::forward_iterator_tag;
+    using reference = const T&;
+    using pointer = const T*;
+    using difference_type = ptrdiff_t;
+    using iterator_category = std::random_access_iterator_tag;
 
+    const_tuple_iterator() = delete;
+
+    self_type& operator++()
+    {
+      ptr_ += num_comps_;
+      return *this;
+    } // PREFIX
+    self_type operator++(int32_t unused)
+    {
+      // Replace with [[maybe_unused]] in C++ 17
+      (void)unused;
+      self_type i = *this;
+      ptr_ += num_comps_;
+      return i;
+    } // POSTFIX
+    self_type& operator--()
+    {
+      ptr_ -= num_comps_;
+      return *this;
+    } // PREFIX
+    self_type operator--(int32_t unused)
+    {
+      // Replace with [[maybe_unused]] in C++ 17
+      (void)unused;
+      self_type i = *this;
+      ptr_ -= num_comps_;
+      return i;
+    } // POSTFIX
+    self_type& operator+=(difference_type amt)
+    {
+      ptr_ += amt * num_comps_;
+      return *this;
+    }
+    self_type operator+(difference_type amt) const
+    {
+      return self_type(ptr_ + amt * num_comps_, num_comps_);
+    }
+    self_type& operator-=(difference_type amt)
+    {
+      ptr_ -= amt * num_comps_;
+      return *this;
+    }
+    self_type operator-(difference_type amt) const
+    {
+      return self_type(ptr_ - amt * num_comps_, num_comps_);
+    }
+    difference_type operator-(const self_type& rhs) const
+    {
+      return (ptr_ - rhs.ptr_) / static_cast<difference_type>(num_comps_);
+    }
+    friend self_type operator+(difference_type lhs, const self_type& rhs)
+    {
+      return self_type(lhs * rhs.num_comps_ + rhs.ptr_, rhs.num_comps_);
+    }
+    reference operator[](difference_type amt) const
+    {
+      return ptr_[amt * num_comps_];
+    }
+    reference operator*() const
+    {
+      return *ptr_;
+    }
+    pointer operator->() const
+    {
+      return ptr_;
+    }
+    bool operator==(const self_type& rhs) const
+    {
+      return ptr_ == rhs.ptr_;
+    }
+    bool operator!=(const self_type& rhs) const
+    {
+      return ptr_ != rhs.ptr_;
+    }
+    bool operator>(const self_type& rhs) const
+    {
+      return ptr_ > rhs.ptr_;
+    }
+    bool operator<(const self_type& rhs) const
+    {
+      return ptr_ < rhs.ptr_;
+    }
+    bool operator>=(const self_type& rhs) const
+    {
+      return ptr_ >= rhs.ptr_;
+    }
+    bool operator<=(const self_type& rhs) const
+    {
+      return ptr_ <= rhs.ptr_;
+    }
+
+    reference comp_value(size_type comp) const
+    {
+      return *(ptr_ + comp);
+    }
+
+  protected:
     const_tuple_iterator(pointer ptr, size_type numComps)
     : ptr_(ptr)
     , num_comps_(numComps)
     {
     }
-    self_type operator++()
-    {
-      ptr_ = ptr_ + num_comps_;
-      return *this;
-    } // PREFIX
-    self_type operator++(int32_t ununsed)
-    {
-      std::ignore = ununsed;
-      self_type i = *this;
-      ptr_ = ptr_ + num_comps_;
-      return i;
-    } // POSTFIX
-    const value_type& operator*()
-    {
-      return *ptr_;
-    }
-    const pointer operator->()
-    {
-      return ptr_;
-    }
-    bool operator==(const self_type& rhs)
-    {
-      return ptr_ == rhs.ptr_;
-    }
-    bool operator!=(const self_type& rhs)
-    {
-      return ptr_ != rhs.ptr_;
-    }
-    const value_type& comp_value(size_type comp)
-    {
-      return *(ptr_ + comp);
-    }
+
+    friend class DataArray;
 
   private:
     pointer ptr_;
@@ -912,15 +1046,17 @@ public:
 
   // ######### Iterators #########
 
-  tuple_iterator tupleBegin()
-  {
-    return tuple_iterator(m_Array, m_NumComponents);
-  }
+  tuple_iterator tupleBegin();
 
-  tuple_iterator tupleEnd()
-  {
-    return tuple_iterator(m_Array + m_Size, m_NumComponents);
-  }
+  tuple_iterator tupleEnd();
+
+  const_tuple_iterator tupleBegin() const;
+
+  const_tuple_iterator tupleEnd() const;
+
+  const_tuple_iterator constTupleBegin() const;
+
+  const_tuple_iterator constTupleEnd() const;
 
   iterator begin();
 
