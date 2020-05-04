@@ -1,4 +1,4 @@
-# Rotate Sample Reference Frame  #
+# Rotate Sample Reference Frame #
 
 ## Group (Subgroup) ##
 
@@ -15,6 +15,12 @@ The equivalent rotation matrix for the above rotation would be the following:
 | 0 | -1 | 0 |
 | 1 | 0 | 0 |
 | 0 | 0 | 1 |
+
+## Example ##
+
+When importing EBSD data from EDAX typically the user will need to rotate the sample reference frame about the <010> (Y) axis. This results in the image comparison below. Note that in the original image the origin of the data is at (0, 0) microns but after rotation the origin now becomes (-189, 0) microns. If you need to reset the origin back to (0,0) then the filter "Set Origin & Spacing" can be run.
+
+![Imported EBSD Data Rotated about the <010> axis](Images/RotateSampleREfFrame_1.png)
 
 ## Parameters ##
 
