@@ -367,8 +367,10 @@ typename DataArray<T>::Pointer DataArray<T>::WrapPointer(T* data, size_t numTupl
   // Allocate on the heap
   auto d = std::make_shared<DataArray<T>>(numTuples, name, compDims, static_cast<T>(0), false);
 
-  d->m_Array = data;        // Now set the internal array to the raw pointer
-  d->m_OwnsData = ownsData; // Set who owns the data, i.e., who is going to "free" the memory
+  // Now set the internal array to the raw pointer
+  d->m_Array = data;
+  // Set who owns the data, i.e., who is going to "free" the memory
+  d->m_OwnsData = ownsData;
   if(nullptr != data)
   {
     d->m_IsAllocated = true;
