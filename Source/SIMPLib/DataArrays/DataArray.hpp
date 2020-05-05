@@ -1086,16 +1086,8 @@ public:
 
   size_type size() const;
 
-  size_type max_size() const;
-  //  void resize(size_type n) override
-  //  {
-  //    resizeAndExtend(n);
-  //  }
-  // void resize (size_type n, const value_type& val);
   size_type capacity() const noexcept;
   bool empty() const noexcept;
-  // reserve()
-  // shrink_to_fit()
 
   // ######### Element Access #########
 
@@ -1201,17 +1193,11 @@ public:
    * @brief pop_back
    */
   void pop_back();
-  // insert
-  // iterator erase (const_iterator position)
-  // iterator erase (const_iterator first, const_iterator last);
-  // swap
 
   /**
    * @brief Removes all elements from the array (which are destroyed), leaving the container with a size of 0.
    */
   void clear();
-  // emplace
-  // emplace_back
 
   /**
    * @brief equal

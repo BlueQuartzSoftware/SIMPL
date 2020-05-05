@@ -513,9 +513,6 @@ void DataArray<T>::getXdmfTypeAndSize(QString& xdmfTypeName, int32_t& precision)
     precision = 1;
   }
 }
-// This line must be here, because we are overloading the copyData pure  function in IDataArray.
-// This is required so that other classes can call this version of copyData from the subclasses.
-// using IDataArray::copyFromArray;
 
 // -----------------------------------------------------------------------------
 template <typename T>
@@ -716,12 +713,14 @@ int32_t DataArray<T>::eraseTuples(const comp_dims_type& idxs)
     }
   }
 
-  if(k == idxs.size()) // Only front elements are being dropped
+  // Only front elements are being dropped
+  if(k == idxs.size())
   {
     auto srcBegin = begin() + (j * m_NumComponents);
     auto srcEnd = srcBegin + (getNumberOfTuples() - idxs.size()) * m_NumComponents;
     std::copy(srcBegin, srcEnd, newArray);
-    deallocate(); // We are done copying - delete the current m_Array
+    // We are done copying - delete the current m_Array
+    deallocate();
     m_Size = newSize;
     m_Array = newArray;
     m_OwnsData = true;
@@ -1350,16 +1349,7 @@ typename DataArray<T>::size_type DataArray<T>::size() const
 {
   return m_Size;
 }
-template <typename T>
-typename DataArray<T>::size_type DataArray<T>::max_size() const
-{
-  return std::min(static_cast<size_type>(std::numeric_limits<difference_type>::max()), static_cast<size_t>(-1) / sizeof(value_type));
-}
-//  void resize(size_type n)
-//  {
-//    resizeAndExtend(n);
-//  }
-// void resize (size_type n, const value_type& val);
+
 template <typename T>
 typename DataArray<T>::size_type DataArray<T>::capacity() const noexcept
 {
@@ -1371,8 +1361,6 @@ bool DataArray<T>::empty() const noexcept
 {
   return (m_Size == 0);
 }
-// reserve()
-// shrink_to_fit()
 
 // ######### Element Access #########
 
@@ -1400,6 +1388,7 @@ void DataArray<T>::push_back(const value_type& val)
   resizeAndExtend(m_Size + 1);
   m_Array[m_MaxId] = val;
 }
+
 // -----------------------------------------------------------------------------
 template <typename T>
 void DataArray<T>::push_back(value_type&& val)
@@ -1414,10 +1403,6 @@ void DataArray<T>::pop_back()
 {
   resizeAndExtend(m_Size - 1);
 }
-// insert
-// iterator erase (const_iterator position)
-// iterator erase (const_iterator first, const_iterator last);
-// swap
 
 // -----------------------------------------------------------------------------
 template <typename T>
@@ -1434,8 +1419,6 @@ void DataArray<T>::clear()
   m_IsAllocated = false;
   m_NumTuples = 0;
 }
-// emplace
-// emplace_back
 
 // =================================== END STL COMPATIBLE INTERFACe ===================================================
 
@@ -1506,7 +1489,8 @@ T* DataArray<T>::resizeAndExtend(size_t size)
   size_t newSize = 0;
   size_t oldSize = 0;
 
-  if(size == m_Size) // Requested size is equal to current size.  Do nothing.
+  // Requested size is equal to current size.  Do nothing.
+  if(size == m_Size)
   {
     return m_Array;
   }
