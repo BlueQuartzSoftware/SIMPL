@@ -559,8 +559,8 @@ bool DataArray<T>::copyFromArray(size_t destTupleOffset, IDataArray::ConstPointe
     return false;
   }
 
-  auto srcBegin = source->cbegin() + (srcTupleOffset * m_NumComponents);
-  auto srcEnd = srcBegin + (totalSrcTuples * m_NumComponents);
+  auto srcBegin = source->cbegin() + (srcTupleOffset * source->m_NumComponents);
+  auto srcEnd = srcBegin + (totalSrcTuples * source->m_NumComponents);
   auto dstBegin = begin() + (destTupleOffset * m_NumComponents);
   std::copy(srcBegin, srcEnd, dstBegin);
   return true;
