@@ -208,6 +208,9 @@ DataArray<T>::DataArray(size_t numTuples, const QString& name, const comp_dims_t
     m_Size = m_NumTuples * m_NumComponents;
     m_MaxId = (m_Size > 0) ? m_Size - 1 : m_Size;
   }
+#if 0
+      MUD_FLAP_0 = MUD_FLAP_1 = MUD_FLAP_2 = MUD_FLAP_3 = MUD_FLAP_4 = MUD_FLAP_5 = 0xABABABABABABABABul;
+#endif
 }
 
 template <typename T>
@@ -1457,6 +1460,17 @@ void DataArray<T>::deallocate()
       }
     }
   }
+#endif
+#if 0
+      if (MUD_FLAP_0 != 0xABABABABABABABABul
+          || MUD_FLAP_1 != 0xABABABABABABABABul
+          || MUD_FLAP_2 != 0xABABABABABABABABul
+          || MUD_FLAP_3 != 0xABABABABABABABABul
+          || MUD_FLAP_4 != 0xABABABABABABABABul
+          || MUD_FLAP_5 != 0xABABABABABABABABul)
+      {
+        Q_ASSERT(false);
+      }
 #endif
 
   delete[](m_Array);
