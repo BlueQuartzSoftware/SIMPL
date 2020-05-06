@@ -111,65 +111,20 @@ public:
   //
   // -----------------------------------------------------------------------------
   template <typename T>
-  void TestScalarType(CreateDataArray::Pointer filter, SIMPL::ScalarTypes::Type scalarType)
+  void TestBasicParsing(SIMPL::ScalarTypes::Type scalarType)
   {
-    using DataArrayType = DataArray<T>;
+    CreateDataArray::Pointer filter = CreateDataArray::New();
+    int32_t err = 0;
+    DataContainerArray::Pointer dca = DataContainerArray::NullPointer();
+
     QString dsName = QString("TestArray-%1").arg(static_cast<int>(scalarType));
+    std::cout << "    Testing Basic Parsing" << dsName.toStdString() << std::endl;
     DataArrayPath path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, dsName);
 
-    DataContainerArray::Pointer dca = CreateDataContainerArray();
-    filter->setDataContainerArray(dca);
     filter->setScalarType(scalarType);
-    filter->setNumberOfComponents(1);
     filter->setNewArray(path);
     filter->setInitializationType(0);
-    /* ==== Test The Maximum Value for the primitive type ===== */
-    T max = std::numeric_limits<T>::max();
-    filter->setInitializationValue(QString::number(max));
-
-    filter->preflight();
-    int32_t err = filter->getErrorCode();
-    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
-
-    dca = CreateDataContainerArray();
-    filter->setDataContainerArray(dca);
-    filter->execute();
-    err = filter->getErrorCode();
-    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
-
-    {
-      IDataArray::Pointer testArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
-      typename DataArrayType::Pointer inputArray = std::dynamic_pointer_cast<DataArrayType>(testArrayPtr);
-      DREAM3D_REQUIRE_VALID_POINTER(inputArray.get());
-      T* inputArrayPtr = inputArray->getPointer(0); // pointer to the int array created from the filter
-      DREAM3D_REQUIRE_EQUAL(inputArrayPtr[0], max)
-    }
-
-    dca = CreateDataContainerArray();
-    filter->setDataContainerArray(dca);
-
-    /* ==== Test The Minmum Value for the primitive type ===== */
-    T min = std::numeric_limits<T>::min();
-    filter->setInitializationValue(QString::number(min));
-
-    filter->preflight();
-    err = filter->getErrorCode();
-    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
-
-    dca = CreateDataContainerArray();
-    filter->setDataContainerArray(dca);
-
-    filter->execute();
-    err = filter->getErrorCode();
-    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
-
-    {
-      IDataArray::Pointer testArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
-      typename DataArrayType::Pointer inputArray = std::dynamic_pointer_cast<DataArrayType>(testArrayPtr);
-      DREAM3D_REQUIRE_VALID_POINTER(inputArray.get());
-      T* inputArrayPtr = inputArray->getPointer(0); // pointer to the int array created from the filter
-      DREAM3D_REQUIRE_EQUAL(inputArrayPtr[0], min)
-    }
+    filter->setNumberOfComponents(k_NumComponents);
 
     // test multiple components with multiple init values
     dca = CreateDataContainerArray();
@@ -213,11 +168,45 @@ public:
     filter->setInitializationValue("[2;3;hfi4]");
     filter->preflight();
     err = filter->getErrorCode();
-    DREAM3D_REQUIRE_EQUAL(err, -5452);
+    DREAM3D_REQUIRE_EQUAL(err, -5400);
+  }
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  template <typename T>
+  void TestUnsignedIntegers(SIMPL::ScalarTypes::Type scalarType)
+  {
+    CreateDataArray::Pointer filter = CreateDataArray::New();
+    int32_t err = 0;
+    using DataArrayType = DataArray<T>;
+    DataContainerArray::Pointer dca = DataContainerArray::NullPointer();
+
+    QString dsName = QString("TestArray-%1").arg(static_cast<int>(scalarType));
+    std::cout << "    Testing Unsigned Integer" << dsName.toStdString() << std::endl;
+    DataArrayPath path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, dsName);
+
+    filter->setScalarType(scalarType);
+    filter->setNewArray(path);
+    filter->setInitializationType(0);
+    filter->setNumberOfComponents(k_NumComponents);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[65;78;88]"); // we chose these values so the int8 and uint8 could print something if needed.
+    filter->setInitializationValue("[65.333;78.666;88.432347]");
+    filter->preflight();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, -5400);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->setInitializationValue("[-65;78;88]");
+    filter->preflight();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, -5400);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->setInitializationValue("[65;78;88]");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
@@ -255,7 +244,14 @@ public:
     // Now try with muliple components but a single value in the string
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[65]"); // we chose these values so the int8 and uint8 could print something if needed.
+    filter->setInitializationValue("[-65]");
+    filter->preflight();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, -5400);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->setInitializationValue("[65]");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
@@ -293,7 +289,301 @@ public:
     // Now try with muliple components but a single value in the string
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("65"); // we chose these values so the int8 and uint8 could print something if needed.
+    filter->setInitializationValue("-65");
+    filter->preflight();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, -5457);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->setInitializationValue("[-65]");
+    filter->preflight();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, -5400);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->setInitializationValue("65");
+    filter->preflight();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, 0);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->execute();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
+
+    // Now verify the data was correctly written to the data array
+    exemplar = {static_cast<T>(65), static_cast<T>(65), static_cast<T>(65)};
+    output = dca->getPrereqArrayFromPath<DataArrayType>(nullptr, path, {3});
+    outNumTuples = output->getNumberOfTuples();
+    for(size_t t = 0; t < outNumTuples; t++)
+    {
+      T* tPtr = output->getTuplePointer(t);
+      int32_t cmp = std::memcmp(tPtr, exemplar.data(), sizeof(T) * k_NumComponents);
+      if(cmp != 0)
+      {
+        std::cout << "##################################################################################################" << std::endl;
+        std::cout << "CreateDataArrayTest Failure:(" << __LINE__ << ")" << std::endl;
+        std::cout << output->getInfoString(SIMPL::MarkDown).toStdString() << std::endl;
+        QString str;
+        QTextStream out(&str);
+        output->printTuple(out, t);
+        std::cout << "Data:    " << str.toStdString() << std::endl;
+        std::cout << "Exemplar:" << exemplar[0] << ", " << exemplar[1] << ", " << exemplar[2] << std::endl;
+        std::cout << "##################################################################################################" << std::endl;
+      }
+      DREAM3D_REQUIRE_EQUAL(cmp, 0)
+    }
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  template <typename T>
+  void TestSignedIntegers(SIMPL::ScalarTypes::Type scalarType)
+  {
+    CreateDataArray::Pointer filter = CreateDataArray::New();
+    int32_t err = 0;
+    using DataArrayType = DataArray<T>;
+    DataContainerArray::Pointer dca = DataContainerArray::NullPointer();
+
+    QString dsName = QString("TestArray-%1").arg(static_cast<int>(scalarType));
+    std::cout << "    Testing Signed Integer" << dsName.toStdString() << std::endl;
+    DataArrayPath path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, dsName);
+
+    filter->setScalarType(scalarType);
+    filter->setNewArray(path);
+    filter->setInitializationType(0);
+    filter->setNumberOfComponents(k_NumComponents);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->setInitializationValue("[65.333;78.666;88.432347]");
+    filter->preflight();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, -5400);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->setInitializationValue("[-65;78;88]");
+    filter->preflight();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, 0);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->execute();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
+
+    // Now verify the data was correctly written to the data array
+    std::vector<T> exemplar = {static_cast<T>(-65), static_cast<T>(78), static_cast<T>(88)};
+    typename DataArrayType::Pointer output = dca->getPrereqArrayFromPath<DataArrayType>(nullptr, path, {3});
+    size_t outNumTuples = output->getNumberOfTuples();
+    for(size_t t = 0; t < outNumTuples; t++)
+    {
+      T* tPtr = output->getTuplePointer(t);
+      int32_t cmp = std::memcmp(tPtr, exemplar.data(), sizeof(T) * k_NumComponents);
+      if(cmp != 0)
+      {
+        std::cout << "##################################################################################################" << std::endl;
+        std::cout << "CreateDataArrayTest Failure:(" << __LINE__ << ")" << std::endl;
+        std::cout << output->getInfoString(SIMPL::MarkDown).toStdString() << std::endl;
+        QString str;
+        QTextStream out(&str);
+        output->printTuple(out, t);
+        std::cout << "Data:    " << str.toStdString() << std::endl;
+        std::cout << "Exemplar:" << exemplar[0] << ", " << exemplar[1] << ", " << exemplar[2] << std::endl;
+        std::cout << "##################################################################################################" << std::endl;
+      }
+      DREAM3D_REQUIRE_EQUAL(cmp, 0)
+    }
+
+    //-------------------------------------------------------------------------
+    // Now try with muliple components but a single value in the string
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->setInitializationValue("[-65]");
+    filter->preflight();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, 0);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->execute();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
+
+    // Now verify the data was correctly written to the data array
+    exemplar = {static_cast<T>(-65), static_cast<T>(-65), static_cast<T>(-65)};
+    output = dca->getPrereqArrayFromPath<DataArrayType>(nullptr, path, {3});
+    outNumTuples = output->getNumberOfTuples();
+    for(size_t t = 0; t < outNumTuples; t++)
+    {
+      T* tPtr = output->getTuplePointer(t);
+      int32_t cmp = std::memcmp(tPtr, exemplar.data(), sizeof(T) * k_NumComponents);
+      if(cmp != 0)
+      {
+        std::cout << "##################################################################################################" << std::endl;
+        std::cout << "CreateDataArrayTest Failure:(" << __LINE__ << ")" << std::endl;
+        std::cout << output->getInfoString(SIMPL::MarkDown).toStdString() << std::endl;
+        QString str;
+        QTextStream out(&str);
+        output->printTuple(out, t);
+        std::cout << "Data:    " << str.toStdString() << std::endl;
+        std::cout << "Exemplar:" << exemplar[0] << ", " << exemplar[1] << ", " << exemplar[2] << std::endl;
+        std::cout << "##################################################################################################" << std::endl;
+      }
+      DREAM3D_REQUIRE_EQUAL(cmp, 0)
+    }
+
+    //-------------------------------------------------------------------------
+    // Now try with muliple components but a single value in the string
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->setInitializationValue("65");
+    filter->preflight();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, 0);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->execute();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
+
+    // Now verify the data was correctly written to the data array
+    exemplar = {static_cast<T>(65), static_cast<T>(65), static_cast<T>(65)};
+    output = dca->getPrereqArrayFromPath<DataArrayType>(nullptr, path, {3});
+    outNumTuples = output->getNumberOfTuples();
+    for(size_t t = 0; t < outNumTuples; t++)
+    {
+      T* tPtr = output->getTuplePointer(t);
+      int32_t cmp = std::memcmp(tPtr, exemplar.data(), sizeof(T) * k_NumComponents);
+      if(cmp != 0)
+      {
+        std::cout << "##################################################################################################" << std::endl;
+        std::cout << "CreateDataArrayTest Failure:(" << __LINE__ << ")" << std::endl;
+        std::cout << output->getInfoString(SIMPL::MarkDown).toStdString() << std::endl;
+        QString str;
+        QTextStream out(&str);
+        output->printTuple(out, t);
+        std::cout << "Data:    " << str.toStdString() << std::endl;
+        std::cout << "Exemplar:" << exemplar[0] << ", " << exemplar[1] << ", " << exemplar[2] << std::endl;
+        std::cout << "##################################################################################################" << std::endl;
+      }
+      DREAM3D_REQUIRE_EQUAL(cmp, 0)
+    }
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  template <typename T>
+  void TestReals(SIMPL::ScalarTypes::Type scalarType)
+  {
+    CreateDataArray::Pointer filter = CreateDataArray::New();
+    int32_t err = 0;
+    using DataArrayType = DataArray<T>;
+    DataContainerArray::Pointer dca = DataContainerArray::NullPointer();
+
+    QString dsName = QString("TestArray-%1").arg(static_cast<int>(scalarType));
+    std::cout << "    Testing Reals" << dsName.toStdString() << std::endl;
+    DataArrayPath path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, dsName);
+
+    filter->setScalarType(scalarType);
+    filter->setNewArray(path);
+    filter->setInitializationType(0);
+    filter->setNumberOfComponents(k_NumComponents);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->setInitializationValue("[65.333;78.666;88.432347]");
+    filter->preflight();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, 0);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->setInitializationValue("[65;78;88]");
+    filter->preflight();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, 0);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->execute();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
+
+    // Now verify the data was correctly written to the data array
+    std::vector<T> exemplar = {static_cast<T>(65), static_cast<T>(78), static_cast<T>(88)};
+    typename DataArrayType::Pointer output = dca->getPrereqArrayFromPath<DataArrayType>(nullptr, path, {3});
+    size_t outNumTuples = output->getNumberOfTuples();
+    for(size_t t = 0; t < outNumTuples; t++)
+    {
+      T* tPtr = output->getTuplePointer(t);
+      int32_t cmp = std::memcmp(tPtr, exemplar.data(), sizeof(T) * k_NumComponents);
+      if(cmp != 0)
+      {
+        std::cout << "##################################################################################################" << std::endl;
+        std::cout << "CreateDataArrayTest Failure:(" << __LINE__ << ")" << std::endl;
+        std::cout << output->getInfoString(SIMPL::MarkDown).toStdString() << std::endl;
+        QString str;
+        QTextStream out(&str);
+        output->printTuple(out, t);
+        std::cout << "Data:    " << str.toStdString() << std::endl;
+        std::cout << "Exemplar:" << exemplar[0] << ", " << exemplar[1] << ", " << exemplar[2] << std::endl;
+        std::cout << "##################################################################################################" << std::endl;
+      }
+      DREAM3D_REQUIRE_EQUAL(cmp, 0)
+    }
+
+    //-------------------------------------------------------------------------
+    // Now try with muliple components but a single value in the string
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->setInitializationValue("[65]");
+    filter->preflight();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, 0);
+
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->execute();
+    err = filter->getErrorCode();
+    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
+
+    // Now verify the data was correctly written to the data array
+    exemplar = {static_cast<T>(65), static_cast<T>(65), static_cast<T>(65)};
+    output = dca->getPrereqArrayFromPath<DataArrayType>(nullptr, path, {3});
+    outNumTuples = output->getNumberOfTuples();
+    for(size_t t = 0; t < outNumTuples; t++)
+    {
+      T* tPtr = output->getTuplePointer(t);
+      int32_t cmp = std::memcmp(tPtr, exemplar.data(), sizeof(T) * k_NumComponents);
+      if(cmp != 0)
+      {
+        std::cout << "##################################################################################################" << std::endl;
+        std::cout << "CreateDataArrayTest Failure:(" << __LINE__ << ")" << std::endl;
+        std::cout << output->getInfoString(SIMPL::MarkDown).toStdString() << std::endl;
+        QString str;
+        QTextStream out(&str);
+        output->printTuple(out, t);
+        std::cout << "Data:    " << str.toStdString() << std::endl;
+        std::cout << "Exemplar:" << exemplar[0] << ", " << exemplar[1] << ", " << exemplar[2] << std::endl;
+        std::cout << "##################################################################################################" << std::endl;
+      }
+      DREAM3D_REQUIRE_EQUAL(cmp, 0)
+    }
+
+    //-------------------------------------------------------------------------
+    // Now try with muliple components but a single value in the string
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->setInitializationValue("65");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
@@ -333,60 +623,32 @@ public:
   // -----------------------------------------------------------------------------
   int TestCreateDataArray()
   {
+    TestBasicParsing<int8_t>(SIMPL::ScalarTypes::Type::Int8);
+    TestBasicParsing<uint8_t>(SIMPL::ScalarTypes::Type::UInt8);
+    TestBasicParsing<int16_t>(SIMPL::ScalarTypes::Type::Int16);
+    TestBasicParsing<uint16_t>(SIMPL::ScalarTypes::Type::UInt16);
+    TestBasicParsing<int32_t>(SIMPL::ScalarTypes::Type::Int32);
+    TestBasicParsing<uint32_t>(SIMPL::ScalarTypes::Type::UInt32);
+    TestBasicParsing<int64_t>(SIMPL::ScalarTypes::Type::Int64);
+    TestBasicParsing<uint64_t>(SIMPL::ScalarTypes::Type::UInt64);
+    TestBasicParsing<float>(SIMPL::ScalarTypes::Type::Float);
+    TestBasicParsing<double>(SIMPL::ScalarTypes::Type::Double);
 
-    CreateDataArray::Pointer filter = CreateDataArray::New();
+    TestSignedIntegers<int8_t>(SIMPL::ScalarTypes::Type::Int8);
+    TestSignedIntegers<int16_t>(SIMPL::ScalarTypes::Type::Int16);
+    TestSignedIntegers<int32_t>(SIMPL::ScalarTypes::Type::Int32);
+    TestSignedIntegers<int64_t>(SIMPL::ScalarTypes::Type::Int64);
 
-    TestScalarType<int8_t>(filter, SIMPL::ScalarTypes::Type::Int8);
-    TestScalarType<uint8_t>(filter, SIMPL::ScalarTypes::Type::UInt8);
-    TestScalarType<int16_t>(filter, SIMPL::ScalarTypes::Type::Int16);
-    TestScalarType<uint16_t>(filter, SIMPL::ScalarTypes::Type::UInt16);
-    TestScalarType<int32_t>(filter, SIMPL::ScalarTypes::Type::Int32);
-    TestScalarType<uint32_t>(filter, SIMPL::ScalarTypes::Type::UInt32);
-    TestScalarType<int64_t>(filter, SIMPL::ScalarTypes::Type::Int64);
-    TestScalarType<uint64_t>(filter, SIMPL::ScalarTypes::Type::UInt64);
+    TestUnsignedIntegers<uint8_t>(SIMPL::ScalarTypes::Type::UInt8);
+    TestUnsignedIntegers<uint16_t>(SIMPL::ScalarTypes::Type::UInt16);
+    TestUnsignedIntegers<uint32_t>(SIMPL::ScalarTypes::Type::UInt32);
+    TestUnsignedIntegers<uint64_t>(SIMPL::ScalarTypes::Type::UInt64);
 
-#if 0
-        // Test 2 set a bool array with a non-zero value and compare to 1
-        filter->setDataContainerArray(dca);
-        filter->getDataContainerArray()->getAttributeMatrix(path1)->removeAttributeArray(path1.getDataArrayName());
-        QVariant var;
-        var.setValue(10);
-        propWasSet = filter->setProperty("ScalarType", var); // bool
-        DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    TestReals<float>(SIMPL::ScalarTypes::Type::Float);
+    TestReals<double>(SIMPL::ScalarTypes::Type::Double);
 
-            double d = QString("0.000001").toDouble(&ok);
-        var.setValue(d);
-        propWasSet = filter->setProperty("InitializationValue", var); // initialize with d (9.9999999999999995e-007 Visual Studio)
-        DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-            filter->execute();
-        err = filter->getErrorCode();
-        DREAM3D_REQUIRE_EQUAL(err, k_NoError);
-
-        IDataArray::Pointer boolArray = m->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
-        DataArray<bool>::Pointer inputArrayBool = std::dynamic_pointer_cast<DataArray<bool>>(boolArray);
-        bool* inputArrayPtrBool = inputArrayBool->getPointer(0); // pointer to the bool array created from the filter
-        if (*inputArrayPtrBool != 1) // check the initialization value from the bool array
-        {
-          DREAM3D_REQUIRE_EQUAL(0, 1)
-        }
-
-        // Test 3 set int8 array with an initialization of 128 for out of range error
-        filter->setDataContainerArray(dca);
-        var.setValue(0);
-        propWasSet = filter->setProperty("ScalarType", var); // int8
-        DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-            var.setValue(128);
-        propWasSet = filter->setProperty("InitializationValue", var); // initialize with 128
-        DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-            filter->execute();
-        err = filter->getErrorCode();
-        DREAM3D_REQUIRE_EQUAL(err, k_Int8Error);
-
-#endif
-
+    //    //   TestIntegers<bool>(filter, SIMPL::ScalarTypes::Type::Bool);
+    //    TestIntegers<size_t>(SIMPL::ScalarTypes::Type::SizeT);
     return EXIT_SUCCESS;
   }
 
