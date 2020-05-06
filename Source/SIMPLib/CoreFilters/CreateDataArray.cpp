@@ -56,89 +56,97 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-enum createdPathID : RenameDataPath::DataID_t {
+enum createdPathID : RenameDataPath::DataID_t
+{
   DataArrayID = 1
 };
 
-/**
-* @brief initializeArrayWithInts Initializes the array p with integers, either from the
-* manual value entered in the filter, or with a random number.  This function does not
-* check that the template type actually is an integer, so it will most likely cause
-* unexpected results when passing anything other than an integer as a template parameter.
-* @param p The array that will be initialized
-*/
-template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArrayPtr, int initializationType, FPRangePair initializationRange, const QString& initializationValue, SIMPL::ScalarTypes::Type scalarType)
-{
+#define CDA_CREATE_CONVERTOR(type, func)                                                                                                                                                               \
+  struct From_##type                                                                                                                                                                                   \
+  {                                                                                                                                                                                                    \
+    type convert(const QString& input)                                                                                                                                                                 \
+    {                                                                                                                                                                                                  \
+      bool ok = false;                                                                                                                                                                                 \
+      type value = static_cast<type>(input.func(&ok));                                                                                                                                                 \
+      if(!ok)                                                                                                                                                                                          \
+      {                                                                                                                                                                                                \
+        return 0;                                                                                                                                                                                      \
+      }                                                                                                                                                                                                \
+      return value;                                                                                                                                                                                    \
+    }                                                                                                                                                                                                  \
+  };
 
+CDA_CREATE_CONVERTOR(uint8_t, toUInt)
+CDA_CREATE_CONVERTOR(int8_t, toInt)
+CDA_CREATE_CONVERTOR(uint16_t, toUShort)
+CDA_CREATE_CONVERTOR(int16_t, toShort)
+CDA_CREATE_CONVERTOR(uint32_t, toUInt)
+CDA_CREATE_CONVERTOR(int32_t, toInt)
+CDA_CREATE_CONVERTOR(uint64_t, toULongLong)
+CDA_CREATE_CONVERTOR(int64_t, toLongLong)
+CDA_CREATE_CONVERTOR(bool, toInt)
+
+CDA_CREATE_CONVERTOR(float, toDouble)
+CDA_CREATE_CONVERTOR(double, toDouble)
+
+#define CDA_SEP ";"
+#define CDA_LB "["
+#define CDA_RB "]"
+/**
+ *
+ */
+template <typename T, typename Conversion>
+std::vector<T> createInitVector(const QString& initializationValue, int32_t numComponents)
+{
+  std::vector<T> values(numComponents);
+  Conversion convert;
+  if(initializationValue.startsWith("[") && initializationValue.endsWith("]"))
+  {
+    QString input = initializationValue;
+    input = input.replace('[', "");
+    input = input.replace(']', "");
+    QStringList tokens = input.split(CDA_SEP, QString::SplitBehavior::KeepEmptyParts);
+    if(tokens.size() == 1)
+    {
+      for(int32_t i = 0; i < numComponents; i++)
+      {
+        values[i] = convert.convert(tokens[0]);
+      }
+    }
+    else
+    {
+      for(int32_t i = 0; i < numComponents; i++)
+      {
+        values[i] = convert.convert(tokens[i]);
+      }
+    }
+  }
+  else
+  {
+    T value = convert.convert(initializationValue);
+    values.assign(numComponents, value);
+  }
+  return values;
+}
+
+/**
+ * @brief initializeArrayWithInts Initializes the array p with integers, either from the
+ * manual value entered in the filter, or with a random number.  This function does not
+ * check that the template type actually is an integer, so it will most likely cause
+ * unexpected results when passing anything other than an integer as a template parameter.
+ * @param p The array that will be initialized
+ */
+template <typename T>
+void initializeArrayWithInts(IDataArray::Pointer outputArrayPtr, int initializationType, FPRangePair initializationRange, const std::vector<T>& initValues)
+{
   typename DataArray<T>::Pointer array = std::dynamic_pointer_cast<DataArray<T>>(outputArrayPtr);
-  size_t count = array->getSize();
-  T* rawPointer = array->getPointer(0);
+  size_t numTuples = array->getNumberOfTuples();
 
   if(initializationType == CreateDataArray::Manual)
   {
-
-    qint8 i8 = static_cast<qint8>(initializationValue.toInt());
-    quint8 ui8 = static_cast<quint8>(initializationValue.toUInt());
-    qint16 i16 = static_cast<qint16>(initializationValue.toShort());
-    quint16 ui16 = static_cast<quint16>(initializationValue.toUShort());
-    qint32 i32 = static_cast<qint32>(initializationValue.toInt());
-    quint32 ui32 = static_cast<quint32>(initializationValue.toUInt());
-    qint64 i64 = static_cast<qint64>(initializationValue.toLongLong());
-    quint64 ui64 = static_cast<quint64>(initializationValue.toULongLong());
-
-    switch(scalarType)
+    for(size_t t = 0; t < numTuples; t++)
     {
-    case SIMPL::ScalarTypes::Type::Int8:
-      for(size_t i = 0; i < count; i++)
-      {
-        rawPointer[i] = static_cast<T>(i8);
-      }
-      break;
-    case SIMPL::ScalarTypes::Type::UInt8:
-      for(size_t i = 0; i < count; i++)
-      {
-        rawPointer[i] = static_cast<T>(ui8);
-      }
-      break;
-    case SIMPL::ScalarTypes::Type::Int16:
-      for(size_t i = 0; i < count; i++)
-      {
-        rawPointer[i] = static_cast<T>(i16);
-      }
-      break;
-    case SIMPL::ScalarTypes::Type::UInt16:
-      for(size_t i = 0; i < count; i++)
-      {
-        rawPointer[i] = static_cast<T>(ui16);
-      }
-      break;
-    case SIMPL::ScalarTypes::Type::Int32:
-      for(size_t i = 0; i < count; i++)
-      {
-        rawPointer[i] = static_cast<T>(i32);
-      }
-      break;
-    case SIMPL::ScalarTypes::Type::UInt32:
-      for(size_t i = 0; i < count; i++)
-      {
-        rawPointer[i] = static_cast<T>(ui32);
-      }
-      break;
-    case SIMPL::ScalarTypes::Type::Int64:
-      for(size_t i = 0; i < count; i++)
-      {
-        rawPointer[i] = static_cast<T>(i64);
-      }
-      break;
-    case SIMPL::ScalarTypes::Type::UInt64:
-      for(size_t i = 0; i < count; i++)
-      {
-        rawPointer[i] = static_cast<T>(ui64);
-      }
-      break;
-    default:
-      Q_ASSERT_X(false, __FILE__, "Incorrent use of CreateDataArray::initializeArrayWithInts when using a non-integer type");
-      break;
+      array->setTuple(t, initValues);
     }
   }
   else
@@ -148,8 +156,10 @@ template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArr
 
     std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
     std::mt19937_64 generator(seed); // Standard mersenne_twister_engine seeded with milliseconds
-    std::uniform_int_distribution<> distribution(rangeMin , rangeMax);
+    std::uniform_int_distribution<> distribution(rangeMin, rangeMax);
 
+    size_t count = array->size();
+    T* rawPointer = array->getPointer(0);
     for(size_t i = 0; i < count; i++)
     {
       T value = static_cast<T>(distribution(generator));
@@ -165,20 +175,19 @@ template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArr
 * unexpected results when passing anything other than an integer as a template parameter.
 * @param p The array that will be initialized
 */
-template <> void initializeArrayWithInts<bool>(IDataArray::Pointer outputArrayPtr, int initializationType, FPRangePair initializationRange, const QString& initializationValue, SIMPL::ScalarTypes::Type scalarType)
+void initializeArrayWithBool(IDataArray::Pointer outputArrayPtr, int initializationType, const std::vector<bool>& initValues)
 {
   DataArray<bool>::Pointer array = std::dynamic_pointer_cast<DataArray<bool>>(outputArrayPtr);
-  size_t count = array->getSize();
-  bool* rawPointer = array->getPointer(0);
-
+  size_t numTuples = array->getNumberOfTuples();
+  int32_t numComp = array->getNumberOfComponents();
   if(initializationType == CreateDataArray::Manual)
   {
-    bool result;
-    result = initializationValue.toInt() != 0;
-
-    for(size_t i = 0; i < count; i++)
+    for(size_t t = 0; t < numTuples; t++)
     {
-      rawPointer[i] = result;
+      for(int32_t c = 0; c < numComp; c++)
+      {
+        array->setComponent(t, c, initValues[c]);
+      }
     }
   }
   else
@@ -186,6 +195,8 @@ template <> void initializeArrayWithInts<bool>(IDataArray::Pointer outputArrayPt
     std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
     std::mt19937_64 generator(seed); // Standard mersenne_twister_engine seeded with milliseconds
     std::uniform_int_distribution<int32_t> distribution(0, 1);
+    size_t count = array->getSize();
+    bool* rawPointer = array->getPointer(0);
 
     for(size_t i = 0; i < count; i++)
     {
@@ -210,22 +221,23 @@ template <> void initializeArrayWithInts<bool>(IDataArray::Pointer outputArrayPt
 * parameter.
 * @param p The array that will be initialized
 */
-template <typename T> void initializeArrayWithReals(IDataArray::Pointer outputArrayPtr, int initializationType, FPRangePair initializationRange, const QString& initializationValue)
+template <typename T>
+void initializeArrayWithReals(IDataArray::Pointer outputArrayPtr, int initializationType, FPRangePair initializationRange, const std::vector<T>& initValues)
 {
   typename DataArray<T>::Pointer array = std::dynamic_pointer_cast<DataArray<T>>(outputArrayPtr);
-  size_t count = array->getSize();
-  T* rawPointer = array->getPointer(0);
+  size_t numTuples = array->getNumberOfTuples();
 
   if(initializationType == CreateDataArray::Manual)
   {
-    T value = static_cast<T>(initializationValue.toDouble());
-    for(size_t i = 0; i < count; i++)
+    for(size_t t = 0; t < numTuples; t++)
     {
-      rawPointer[i] = value;
+      array->setTuple(t, initValues);
     }
   }
   else
   {
+    size_t count = array->getSize();
+    T* rawPointer = array->getPointer(0);
     T rangeMin = static_cast<T>(initializationRange.first);
     T rangeMax = static_cast<T>(initializationRange.second);
 
@@ -233,7 +245,6 @@ template <typename T> void initializeArrayWithReals(IDataArray::Pointer outputAr
     std::mt19937_64 generator(seed); // Standard mersenne_twister_engine seeded with milliseconds
     std::uniform_real_distribution<> distribution(rangeMin, rangeMax);
 
-    size_t count = array->getSize();
     for(size_t i = 0; i < count; i++)
     {
       T value = distribution(generator);
@@ -413,7 +424,6 @@ void CreateDataArray::dataCheck()
   }
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -429,71 +439,139 @@ void CreateDataArray::execute()
 
   if(m_ScalarType == SIMPL::ScalarTypes::Type::Int8)
   {
-    initializeArrayWithInts<int8_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
+    std::vector<int8_t> values = createInitVector<int8_t, From_int8_t>(m_InitializationValue, m_NumberOfComponents);
+    initializeArrayWithInts<int8_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, values);
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int16)
   {
-    initializeArrayWithInts<int16_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
+    std::vector<int16_t> values = createInitVector<int16_t, From_int16_t>(m_InitializationValue, m_NumberOfComponents);
+    initializeArrayWithInts<int16_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, values);
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int32)
   {
-    initializeArrayWithInts<int32_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
+    std::vector<int32_t> values = createInitVector<int32_t, From_int32_t>(m_InitializationValue, m_NumberOfComponents);
+    initializeArrayWithInts<int32_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, values);
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int64)
   {
-    initializeArrayWithInts<int64_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
+    std::vector<int64_t> values = createInitVector<int64_t, From_int64_t>(m_InitializationValue, m_NumberOfComponents);
+    initializeArrayWithInts<int64_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, values);
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt8)
   {
-    initializeArrayWithInts<uint8_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
+    std::vector<uint8_t> values = createInitVector<uint8_t, From_uint8_t>(m_InitializationValue, m_NumberOfComponents);
+    initializeArrayWithInts<uint8_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, values);
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt16)
   {
-    initializeArrayWithInts<uint16_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
+    std::vector<uint16_t> values = createInitVector<uint16_t, From_uint16_t>(m_InitializationValue, m_NumberOfComponents);
+    initializeArrayWithInts<uint16_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, values);
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt32)
   {
-    initializeArrayWithInts<uint32_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
+    std::vector<uint32_t> values = createInitVector<uint32_t, From_uint32_t>(m_InitializationValue, m_NumberOfComponents);
+    initializeArrayWithInts<uint32_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, values);
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt64)
   {
-    initializeArrayWithInts<uint64_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
+    std::vector<uint64_t> values = createInitVector<uint64_t, From_uint64_t>(m_InitializationValue, m_NumberOfComponents);
+    initializeArrayWithInts<uint64_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, values);
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Float)
   {
-    initializeArrayWithReals<float>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue);
+    std::vector<float> values = createInitVector<float, From_float>(m_InitializationValue, m_NumberOfComponents);
+    initializeArrayWithReals<float>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, values);
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Double)
   {
-    initializeArrayWithReals<double>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue);
+    std::vector<double> values = createInitVector<double, From_double>(m_InitializationValue, m_NumberOfComponents);
+    initializeArrayWithReals<double>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, values);
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Bool)
   {
-    initializeArrayWithInts<bool>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
+    std::vector<bool> values = createInitVector<bool, From_bool>(m_InitializationValue, m_NumberOfComponents);
+    initializeArrayWithBool(m_OutputArrayPtr.lock(), m_InitializationType, values);
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> void CreateDataArray::checkInitialization(QString dataArrayName)
+template <typename T>
+void CreateDataArray::checkInitialization(QString dataArrayName)
 {
   if(m_InitializationType == Manual)
   {
     bool ok;
-    double input = m_InitializationValue.toDouble(&ok);
-    if(!ok)
+
+    // Check to see if we have multiple values
+    bool startsWithSqBracket = m_InitializationValue.trimmed().startsWith("[");
+    bool endsWithSqBracket = m_InitializationValue.trimmed().endsWith("]");
+    // If only 1 bracket appears that is bad.
+    if((!startsWithSqBracket && endsWithSqBracket) || (startsWithSqBracket && !endsWithSqBracket))
     {
-      QString ss = "Could not convert initialization value to a double.";
-      setErrorCondition(-5559, ss);
+      QString ss = QString("Init string is not valid. Starting or ending square brackets are missing.");
+      setErrorCondition(-5458, ss);
       return;
     }
 
-    if(input < static_cast<double>(std::numeric_limits<T>().lowest()) || input > static_cast<double>(std::numeric_limits<T>().max()))
+    // If there are no brackets then the string should be able to be converted to a number.
+    // double is the easiest to sanity check because whether the value has a decimal point or not
+    // it would convert to a double. If we tried an int and the string had a decimal point
+    // the conversion would fail.
+    if(!startsWithSqBracket && !endsWithSqBracket)
     {
-      QString ss = QObject::tr("%1: Invalid initialization value. The valid range is %2 to %3").arg(dataArrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-      setErrorCondition(-4000, ss);
-      return;
+      QString input = m_InitializationValue.trimmed();
+      std::ignore = input.toDouble(&ok);
+      if(!ok)
+      {
+        QString ss = QString("Init string cannot be converted to a number. If this is a multicomponent surround the string with square brackets [ ]");
+        setErrorCondition(-5457, ss);
+        return;
+      }
+    }
+
+    // Just validate the number of components are valid and each token can be converted to a double
+    if(startsWithSqBracket && endsWithSqBracket)
+    {
+      QString input = m_InitializationValue.trimmed();
+      input = input.replace('[', "");
+      input = input.replace(']', "");
+      QStringList tokens = input.split(CDA_SEP, QString::SplitBehavior::KeepEmptyParts);
+      if(m_NumberOfComponents != tokens.size() && tokens.size() != 1)
+      {
+        QString ss = QString("Number of initialization components does not match number of components.%1 vs %2").arg(tokens.size()).arg(m_NumberOfComponents);
+        setErrorCondition(-5459, ss);
+        return;
+      }
+      for(const auto& token : tokens)
+      {
+        std::ignore = token.toDouble(&ok);
+        if(!ok)
+        {
+          QString ss = QString("Token cannot be converted to a number. %1").arg(token);
+          setErrorCondition(-5452, ss);
+          return;
+        }
+      }
+    }
+
+    if(m_ScalarType == SIMPL::ScalarTypes::Type::Double || m_ScalarType == SIMPL::ScalarTypes::Type::Float)
+    {
+      double input = m_InitializationValue.toDouble(&ok);
+      if(!ok)
+      {
+        QString ss = "Could not convert initialization value to a double.";
+        setErrorCondition(-5559, ss);
+        return;
+      }
+
+      if(input < static_cast<double>(std::numeric_limits<T>().lowest()) || input > static_cast<double>(std::numeric_limits<T>().max()))
+      {
+        QString ss = QObject::tr("%1: Invalid initialization value. The valid range is %2 to %3").arg(dataArrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
+        setErrorCondition(-4000, ss);
+        return;
+      }
     }
   }
   else if(m_InitializationType == RandomWithRange)
