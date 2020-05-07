@@ -34,7 +34,6 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "DataContainerWriter.h"
 
-#include <memory>
 
 #include <QtCore/QTextStream>
 #include <QtCore/QDebug>

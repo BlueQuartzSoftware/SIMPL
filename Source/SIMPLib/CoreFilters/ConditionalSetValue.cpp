@@ -34,7 +34,6 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "ConditionalSetValue.h"
 
-#include <memory>
 #include <tuple>
 
 #include <QtCore/QTextStream>

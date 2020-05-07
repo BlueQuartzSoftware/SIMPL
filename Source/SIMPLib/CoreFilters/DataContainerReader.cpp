@@ -34,7 +34,6 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "DataContainerReader.h"
 
-#include <memory>
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
