@@ -243,11 +243,11 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
   private:
     IDataArrayWkPtrType m_OutputArrayPtr;
 
-    SIMPL::ScalarTypes::Type m_ScalarType = {};
-    int m_NumberOfComponents = {};
-    DataArrayPath m_NewArray = {};
-    int m_InitializationType = {};
-    QString m_InitializationValue = {};
+    SIMPL::ScalarTypes::Type m_ScalarType = {SIMPL::ScalarTypes::Type::Int8};
+    int m_NumberOfComponents = {0};
+    DataArrayPath m_NewArray = {"", "", ""};
+    int m_InitializationType = {Manual};
+    QString m_InitializationValue = {"0"};
     FPRangePair m_InitializationRange = {};
 
     /**

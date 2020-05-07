@@ -1,16 +1,24 @@
-# Create Data Array  #
-
+# Create Data Array #
 
 ## Group (Subgroup) ##
 
 Core (Generation)
 
-
 ## Description ##
 
-This **Filter** creates an **Attribute Array** of any primitive type with any number of components along a _single component dimension_. For example, a scalar as (1) or a 3-vector as (3), but _not_ a matrix as (3, 3). The array is initialized to a user define value. The primitive type of the array to create is set using an integer constant. Code listing 1 shows the values:
+This **Filter** creates an **Attribute Array** of any primitive type with any number of components along a _single component dimension_. For example, a scalar as (1) or a 3-vector as (3), but _not_ a matrix as (3, 3). The array is initialized to a user define value or with random values within a specified range.
 
-### Primitive Type Enumeration ###
+When initializing a multicomponent array square bracket notation can be used to specify different initialization values for each component. For example say that I want to intialize a 2 component array where the first component is 0 and the second component is 1 we would use the following input string for the *Initialization Value*
+
+    [0;1]
+
+We are using semicolons instead of commas or decimal points due to different international standards (European versus United States?).
+
+Another example is if you want to create a floating point array where each tuple has 10 components but you just want the value of 2.5 to be used for each, then simply use:
+
+    [2.5] or 2.5
+
+### Scalar Type Values ###
 
     static const int Int8 = 0;
     static const int UInt8 = 1;
@@ -23,9 +31,8 @@ This **Filter** creates an **Attribute Array** of any primitive type with any nu
     static const int Float = 8;
     static const int Double = 9;
     static const int Bool = 10;
-    
 
-### Primitive Data Types ##
+### Primitive Data Type Valid Ranges ##
 
 | Type             | Size |        Range       |
 |------------------|------|--------------------|
@@ -49,7 +56,7 @@ must have a user entry or the default value _0_ will be used.
 | Name             | Type | Description |
 |------------------|------|-------------|
 | Scalar Type | Enumeration | Primitive data type for created array |
-| Number of Components | int32_t | Component size |
+| Number of Components | int32_t | The number of components that each tuple contains. Matrix are row major form within SIMPL|
 | Initialization Value | float | Initialization value for array |
 
 ## Required Geometry ##
@@ -66,10 +73,7 @@ None
 |------|--------------|-------------|---------|----------------|
 | Any **Attribute Array** | None | Any | Any | Created **Attribute Array** location and name |
 
-
 ## Example Pipelines ##
-
-
 
 ## License & Copyright ##
 
@@ -78,4 +82,3 @@ Please see the description file distributed with this **Plugin**
 ## DREAM.3D Mailing Lists ##
 
 If you need more help with a **Filter**, please consider asking your question on the [DREAM.3D Users Google group!](https://groups.google.com/forum/?hl=en#!forum/dream3d-users)
-
