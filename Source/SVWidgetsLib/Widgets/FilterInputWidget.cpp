@@ -43,11 +43,9 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include <QtCore/QTextStream>
-
 #include <QtCore/QDebug>
 
 #include "SIMPLib/Common/DocRequestManager.h"
-
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputPathFilterParameter.h"

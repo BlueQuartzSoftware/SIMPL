@@ -47,7 +47,6 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
-
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
 #include "SIMPLib/Geometry/GeometryHelpers.h"
 #include "SIMPLib/Utilities/ParallelDataAlgorithm.h"

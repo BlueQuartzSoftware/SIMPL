@@ -38,7 +38,6 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
-
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"

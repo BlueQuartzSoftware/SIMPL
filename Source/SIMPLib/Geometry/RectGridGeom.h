@@ -40,7 +40,6 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/Geometry/IGeometryGrid.h"
-
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 

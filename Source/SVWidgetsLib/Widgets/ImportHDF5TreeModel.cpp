@@ -29,8 +29,6 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
 #include "H5Support/H5Utilities.h"
 
 #include "ImportHDF5TreeModel.h"

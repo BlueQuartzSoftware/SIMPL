@@ -36,23 +36,19 @@
 #pragma once
 
 #include <QtCore/QFile>
-
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/DataArrays/DataArray.hpp"
-
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
-
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
-
 #include "SIMPLib/Geometry/TriangleGeom.h"
 
 #include "SIMPLib/Common/Constants.h"

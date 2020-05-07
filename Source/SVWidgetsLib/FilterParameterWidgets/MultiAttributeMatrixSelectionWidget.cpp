@@ -43,7 +43,6 @@
 #include <QtCore/QDebug>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
-
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiAttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"

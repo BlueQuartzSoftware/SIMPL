@@ -34,7 +34,6 @@
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/SIMPLib.h"
-
 #include "SIMPLib/CoreFilters/util/ParserFunctors.hpp"
 
 class AbstractDataParser

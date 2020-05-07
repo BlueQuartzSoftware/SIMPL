@@ -35,11 +35,9 @@
 #include "FilterLibraryToolboxWidget.h"
 
 #include <QtCore/QFileInfo>
-
 #include <QtCore/QDebug>
 
 #include "SIMPLib/Common/DocRequestManager.h"
-
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Common/Constants.h"
 

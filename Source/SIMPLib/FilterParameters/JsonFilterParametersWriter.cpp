@@ -42,7 +42,6 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
-
 #include "SIMPLib/Filtering/BadFilter.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/Messages/PipelineErrorMessage.h"

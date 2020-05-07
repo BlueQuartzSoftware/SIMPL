@@ -53,11 +53,9 @@
 #include "QtWebApp/httpserver/httpsessionstore.h"
 
 #include <QtCore/QTextStream>
-
 #include <QtCore/QDebug>
 
 #include "SIMPLib/CoreFilters/CreateAttributeMatrix.h"
-
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
@@ -74,7 +72,6 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
-
 #include "SIMPLib/CoreFilters/CreateAttributeMatrix.h"
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/CoreFilters/CreateDataContainer.h"

@@ -42,11 +42,9 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 #include <QtCore/QVector>
-
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/SIMPLib.h"
-
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/DataContainers/DataArrayPath.h"

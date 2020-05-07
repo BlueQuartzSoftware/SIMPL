@@ -39,7 +39,6 @@
 #include "SIMPLib/Messages/FilterProgressMessage.h"
 #include "SIMPLib/Messages/FilterStatusMessage.h"
 #include "SIMPLib/Messages/FilterWarningMessage.h"
-
 #include "SIMPLib/Filtering/BadFilter.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"

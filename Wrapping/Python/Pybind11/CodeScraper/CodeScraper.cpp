@@ -8,7 +8,6 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDebug>
-
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>

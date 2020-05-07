@@ -36,7 +36,6 @@
 #include "ShapeOps.h"
 
 #include "SIMPLib/Math/SIMPLibMath.h"
-
 #include "SIMPLib/Geometry/ShapeOps/CubeOctohedronOps.h"
 #include "SIMPLib/Geometry/ShapeOps/CylinderAOps.h"
 #include "SIMPLib/Geometry/ShapeOps/CylinderBOps.h"

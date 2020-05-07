@@ -12,7 +12,6 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/Geometry/HexahedralGeom.h"
-
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
 #include "SIMPLib/Geometry/GeometryHelpers.h"
 #include "SIMPLib/Utilities/ParallelDataAlgorithm.h"

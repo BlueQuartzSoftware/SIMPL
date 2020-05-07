@@ -37,11 +37,9 @@
 #include <memory>
 
 #include <QtCore/QJsonObject>
-
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/StatsData/StatsData.h"
-
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 

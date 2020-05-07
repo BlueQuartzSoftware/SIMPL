@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include "SIMPLib/Math/MatrixMath.h"
-
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 

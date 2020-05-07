@@ -47,7 +47,6 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/Geometry/EdgeGeom.h"
-
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
 #include "SIMPLib/Geometry/GeometryHelpers.h"
 #include "SIMPLib/Utilities/ParallelDataAlgorithm.h"

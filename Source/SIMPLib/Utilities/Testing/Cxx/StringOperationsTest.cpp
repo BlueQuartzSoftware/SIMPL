@@ -41,7 +41,6 @@
 #include <QtCore/QDebug>
 
 #include "SIMPLib/Utilities/StringOperations.h"
-
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 

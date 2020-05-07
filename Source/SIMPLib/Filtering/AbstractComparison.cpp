@@ -36,7 +36,6 @@
 #include "AbstractComparison.h"
 
 #include "SIMPLib/Common/Constants.h"
-
 #include "SIMPLib/Filtering/ComparisonSet.h"
 #include "SIMPLib/Filtering/ComparisonValue.h"
 

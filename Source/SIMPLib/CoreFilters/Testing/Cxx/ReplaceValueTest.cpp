@@ -36,7 +36,6 @@
 #include <QtCore/QDebug>
 
 #include "SIMPLib/DataArrays/DataArray.hpp"
-
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"

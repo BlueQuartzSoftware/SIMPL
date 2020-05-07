@@ -50,7 +50,6 @@
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
-
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 
 class RotateSampleRefFrameTest

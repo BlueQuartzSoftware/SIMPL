@@ -20,7 +20,6 @@
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
-
 #include "SIMPLib/CoreFilters/ExtractVertexGeometry.h"
 
 // This header is auto-generated during cmake time

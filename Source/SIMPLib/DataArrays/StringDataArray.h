@@ -41,13 +41,11 @@
 #include <vector>
 
 #include <QtCore/QString>
+#include <QtCore/QTextStream>
 
 #include "H5Support/H5Lite.h"
 
-#include <QtCore/QTextStream>
-
 #include "SIMPLib/SIMPLib.h"
-
 #include "SIMPLib/DataArrays/IDataArray.h"
 
 /**

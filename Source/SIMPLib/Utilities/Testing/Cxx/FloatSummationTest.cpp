@@ -47,7 +47,6 @@
 #endif
 
 #include "SIMPLib/Utilities/FloatSummation.h"
-
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 

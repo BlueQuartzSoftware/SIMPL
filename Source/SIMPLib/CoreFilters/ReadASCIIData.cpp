@@ -6,18 +6,15 @@
 #include "ReadASCIIData.h"
 
 #include <QtCore/QFileInfo>
-
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
-
 #include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/ReadASCIIDataFilterParameter.h"
 #include "SIMPLib/Utilities/StringOperations.h"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
-
 #include "SIMPLib/SIMPLibVersion.h"
 
 #include "SIMPLib/CoreFilters/util/AbstractDataParser.hpp"

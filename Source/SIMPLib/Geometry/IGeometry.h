@@ -40,7 +40,6 @@
 #include <QMutex>
 #include <QtCore/QMap>
 #include <QtCore/QString>
-
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/SIMPLib.h"

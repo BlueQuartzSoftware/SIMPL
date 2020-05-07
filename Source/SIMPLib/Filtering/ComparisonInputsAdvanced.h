@@ -43,7 +43,6 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
-
 #include "SIMPLib/Filtering/AbstractComparison.h"
 
 /**

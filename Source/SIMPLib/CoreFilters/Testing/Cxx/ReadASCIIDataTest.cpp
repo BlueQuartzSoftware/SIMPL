@@ -48,7 +48,6 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
-
 #include "SIMPLib/CoreFilters/ReadASCIIData.h"
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
 #include "SIMPLib/DataContainers/DataContainerArray.h"

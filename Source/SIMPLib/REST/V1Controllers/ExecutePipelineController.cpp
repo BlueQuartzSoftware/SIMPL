@@ -36,11 +36,9 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
-
 #include <QtCore/QDebug>
 
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
-
 #include "SIMPLib/FilterParameters/InputPathFilterParameter.h"
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/OutputPathFilterParameter.h"

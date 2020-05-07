@@ -38,7 +38,6 @@
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/Constants.h"
-
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"

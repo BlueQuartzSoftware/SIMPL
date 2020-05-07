@@ -56,7 +56,6 @@
 
 #include "SIMPLib/Math/GeometryMath.h"
 #include "SIMPLib/Math/MatrixMath.h"
-
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/HexahedralGeom.h"
 #include "SIMPLib/Geometry/QuadGeom.h"

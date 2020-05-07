@@ -49,7 +49,6 @@
 #include <Eigen/Dense>
 
 #include "SIMPLib/Common/Constants.h"
-
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"

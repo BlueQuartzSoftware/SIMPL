@@ -37,11 +37,9 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QJsonDocument>
-
 #include <QtCore/QDebug>
 
 #include "SIMPLib/Common/Constants.h"
-
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/StatsData/BoundaryStatsData.h"

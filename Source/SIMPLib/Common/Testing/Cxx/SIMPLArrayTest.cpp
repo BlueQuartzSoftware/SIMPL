@@ -40,7 +40,6 @@
 
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/SIMPLib.h"
-
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 

@@ -39,7 +39,6 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/SIMPLib.h"
-
 #include "SIMPLib/Geometry/IGeometry2D.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"

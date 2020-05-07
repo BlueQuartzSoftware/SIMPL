@@ -39,7 +39,6 @@
 #include <QtCore/QDebug>
 
 #include "SIMPLib/Filtering/FilterManager.h"
-
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
 
 #include "QtWebApp/httpserver/httplistener.h"

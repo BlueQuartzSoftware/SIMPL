@@ -45,7 +45,6 @@
 
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
-
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersConstants.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"

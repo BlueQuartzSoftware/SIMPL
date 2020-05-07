@@ -36,13 +36,11 @@
 
 #include <QTextStream>
 #include <QtCore/QFile>
-
 #include <QtCore/QTextStream>
 
 #include <QtCore/QDebug>
 
 #include "SIMPLib/DataArrays/DataArray.hpp"
-
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"

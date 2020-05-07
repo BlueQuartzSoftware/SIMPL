@@ -40,7 +40,6 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/DataArrays/IDataArray.h"
-
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainer.h"

@@ -39,10 +39,9 @@
 
 #include <QtCore/QJsonArray>
 #include <QtCore/QString>
+#include <QtCore/QDebug>
 
 #include "H5Support/H5Utilities.h"
-
-#include <QtCore/QDebug>
 
 #include "SIMPLib/HDF5/H5PrimaryStatsDataDelegate.h"
 

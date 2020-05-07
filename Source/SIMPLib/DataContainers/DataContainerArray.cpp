@@ -38,7 +38,6 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"

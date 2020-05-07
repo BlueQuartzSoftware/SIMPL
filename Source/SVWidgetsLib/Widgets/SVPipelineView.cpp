@@ -61,7 +61,6 @@
 #include <QtCore/QDebug>
 
 #include "SIMPLib/Common/DocRequestManager.h"
-
 #include "SIMPLib/CoreFilters/Breakpoint.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"

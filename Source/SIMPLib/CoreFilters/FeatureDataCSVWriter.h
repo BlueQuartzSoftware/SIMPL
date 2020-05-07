@@ -40,7 +40,6 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-
 #include "SIMPLib/Common/Constants.h"
 
 /**

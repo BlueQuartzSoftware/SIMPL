@@ -32,8 +32,6 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
 #include <cassert>
 
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -44,7 +42,6 @@
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
-
 #include "SIMPLib/CoreFilters/CreateAttributeMatrix.h"
 
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"

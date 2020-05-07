@@ -45,7 +45,6 @@
 
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-
 #include "SIMPLib/SIMPLib.h"
 
 /**
