@@ -1370,14 +1370,14 @@ true);
     CompDimsType cDims = {4};
     RgbaType rgba(10, QString("RGBA Array"), cDims, 0);
 
-    RgbaIterator begin = rgba.begin<RgbaIterator>();
+    RgbaIterator begin = rgba.tupleBegin();
     rgba.initializeWithValue(0xFF);
     rgba[0] = 0x65;
     rgba[1] = 0x66;
     rgba[2] = 0x67;
     rgba[3] = 0x68;
 
-    for(RgbaIterator rgbaIter = begin; rgbaIter != rgba.end<RgbaIterator>(); rgbaIter++)
+    for(RgbaIterator rgbaIter = begin; rgbaIter != rgba.tupleEnd(); rgbaIter++)
     {
       std::cout << "rgba: " << static_cast<int>(*rgbaIter) << std::endl;
       std::cout << " rgba[0] " << static_cast<int>(rgbaIter.comp_value(0)) << " rgba[1] " << static_cast<int>(rgbaIter.comp_value(1)) << " rgba[2] " << static_cast<int>(rgbaIter.comp_value(2))

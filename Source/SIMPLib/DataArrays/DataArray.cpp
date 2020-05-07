@@ -248,10 +248,7 @@ typename DataArray<T>::Pointer DataArray<T>::CreateArray(size_t numTuples, int32
     return nullptr;
   }
   comp_dims_type cDims(static_cast<size_t>(rank));
-  for(size_t i = 0; i < static_cast<size_t>(rank); i++)
-  {
-    cDims[i] = dims[i];
-  }
+  std::copy(dims, dims + rank, cDims.begin());
   auto d = std::make_shared<DataArray<T>>(numTuples, name, cDims, static_cast<T>(0), allocate);
   if(allocate)
   {
@@ -323,29 +320,10 @@ IDataArray::Pointer DataArray<T>::createNewArray(size_t numTuples, const comp_di
 template <typename T>
 typename DataArray<T>::Pointer DataArray<T>::FromQVector(const QVector<T>& vec, const QString& name)
 {
-
   Pointer p = CreateArray(static_cast<size_t>(vec.size()), name, true);
   if(nullptr != p)
   {
-    std::memcpy(p->getPointer(0), vec.data(), static_cast<size_t>(vec.size()) * sizeof(T));
-  }
-  return p;
-}
-
-// -----------------------------------------------------------------------------
-template <>
-typename DataArray<bool>::Pointer DataArray<bool>::FromStdVector(const std::vector<bool>& vec, const QString& name)
-{
-  comp_dims_type cDims = {1};
-  Pointer p = CreateArray(vec.size(), cDims, name, true);
-  if(nullptr != p)
-  {
-    size_t i = 0;
-    for(const auto value : vec)
-    {
-      p->setValue(i, value);
-      i++;
-    }
+    std::copy(vec.cbegin(), vec.cend(), p->begin());
   }
   return p;
 }
@@ -358,7 +336,7 @@ typename DataArray<T>::Pointer DataArray<T>::FromStdVector(const std::vector<T>&
   Pointer p = CreateArray(vec.size(), cDims, name, true);
   if(nullptr != p)
   {
-    std::memcpy(p->getPointer(0), &(vec.front()), vec.size() * sizeof(T));
+    std::copy(vec.cbegin(), vec.cend(), p->begin());
   }
   return p;
 }
@@ -370,7 +348,7 @@ typename DataArray<T>::Pointer DataArray<T>::CopyFromPointer(const T* data, size
   Pointer p = CreateArray(size, name, true);
   if(nullptr != p)
   {
-    std::memcpy(p->getPointer(0), data, size * sizeof(T));
+    std::copy(data, data + size, p->begin());
   }
   return p;
 }
@@ -392,8 +370,10 @@ typename DataArray<T>::Pointer DataArray<T>::WrapPointer(T* data, size_t numTupl
   // Allocate on the heap
   auto d = std::make_shared<DataArray<T>>(numTuples, name, compDims, static_cast<T>(0), false);
 
-  d->m_Array = data;        // Now set the internal array to the raw pointer
-  d->m_OwnsData = ownsData; // Set who owns the data, i.e., who is going to "free" the memory
+  // Now set the internal array to the raw pointer
+  d->m_Array = data;
+  // Set who owns the data, i.e., who is going to "free" the memory
+  d->m_OwnsData = ownsData;
   if(nullptr != data)
   {
     d->m_IsAllocated = true;
@@ -411,13 +391,10 @@ IDataArray::Pointer DataArray<T>::deepCopy(bool forceNoAllocate) const
   {
     allocate = false;
   }
-  IDataArray::Pointer daCopy = createNewArray(getNumberOfTuples(), getComponentDimensions(), getName(), allocate);
+  auto daCopy = CreateArray(getNumberOfTuples(), getComponentDimensions(), getName(), allocate);
   if(m_IsAllocated && !forceNoAllocate)
   {
-    T* src = getPointer(0);
-    void* dest = daCopy->getVoidPointer(0);
-    size_t totalBytes = (getNumberOfTuples() * static_cast<size_t>(getNumberOfComponents()) * sizeof(T));
-    std::memcpy(dest, src, totalBytes);
+    std::copy(begin(), end(), daCopy->begin());
   }
   return daCopy;
 }
@@ -541,9 +518,6 @@ void DataArray<T>::getXdmfTypeAndSize(QString& xdmfTypeName, int32_t& precision)
     precision = 1;
   }
 }
-// This line must be here, because we are overloading the copyData pure  function in IDataArray.
-// This is required so that other classes can call this version of copyData from the subclasses.
-// using IDataArray::copyFromArray;
 
 // -----------------------------------------------------------------------------
 template <typename T>
@@ -590,9 +564,10 @@ bool DataArray<T>::copyFromArray(size_t destTupleOffset, IDataArray::ConstPointe
     return false;
   }
 
-  size_t elementStart = destTupleOffset * static_cast<size_t>(getNumberOfComponents());
-  size_t totalBytes = (totalSrcTuples * static_cast<size_t>(sourceArray->getNumberOfComponents())) * sizeof(T);
-  std::memcpy(m_Array + elementStart, source->getPointer(srcTupleOffset * static_cast<size_t>(sourceArray->getNumberOfComponents())), totalBytes);
+  auto srcBegin = source->cbegin() + (srcTupleOffset * source->m_NumComponents);
+  auto srcEnd = srcBegin + (totalSrcTuples * source->m_NumComponents);
+  auto dstBegin = begin() + (destTupleOffset * m_NumComponents);
+  std::copy(srcBegin, srcEnd, dstBegin);
   return true;
 }
 
@@ -602,8 +577,7 @@ bool DataArray<T>::copyIntoArray(Pointer dest) const
 {
   if(m_IsAllocated && dest->isAllocated() && m_Array && dest->getPointer(0))
   {
-    size_t totalBytes = m_Size * sizeof(T);
-    std::memcpy(dest->getPointer(0), m_Array, totalBytes);
+    std::copy(cbegin(), cend(), dest->begin());
     return true;
   }
   return false;
@@ -641,7 +615,7 @@ void DataArray<T>::releaseOwnership()
 template <typename T>
 int32_t DataArray<T>::allocate()
 {
-  if((nullptr != m_Array) && (true == m_OwnsData))
+  if((nullptr != m_Array) && m_OwnsData)
   {
     deallocate();
   }
@@ -675,8 +649,7 @@ void DataArray<T>::initializeWithZeros()
   {
     return;
   }
-  size_t typeSize = sizeof(T);
-  ::memset(m_Array, 0, m_Size * typeSize);
+  std::fill_n(m_Array, m_Size, 0);
 }
 
 // -----------------------------------------------------------------------------
@@ -687,10 +660,7 @@ void DataArray<T>::initializeWithValue(T initValue, size_t offset)
   {
     return;
   }
-  for(size_t i = offset; i < m_Size; i++)
-  {
-    m_Array[i] = initValue;
-  }
+  std::fill(begin() + offset, end(), initValue);
 }
 
 // -----------------------------------------------------------------------------
@@ -727,11 +697,11 @@ int32_t DataArray<T>::eraseTuples(const comp_dims_type& idxs)
   // Create a new m_Array to copy into
   T* newArray = new T[newSize]();
 
+#ifndef NDEBUG
   // Splat AB across the array so we know if we are copying the values or not
-  ::memset(newArray, 0xAB, newSize * sizeof(T));
+  std::memset(newArray, 0xAB, newSize * sizeof(T));
+#endif
 
-  // Keep the current Destination Pointer
-  T* currentDest = newArray;
   size_t j = 0;
   size_t k = 0;
   // Find the first chunk to copy by walking the idxs array until we get an
@@ -748,11 +718,14 @@ int32_t DataArray<T>::eraseTuples(const comp_dims_type& idxs)
     }
   }
 
-  if(k == idxs.size()) // Only front elements are being dropped
+  // Only front elements are being dropped
+  if(k == idxs.size())
   {
-    T* currentSrc = m_Array + (j * m_NumComponents);
-    std::memcpy(currentDest, currentSrc, (getNumberOfTuples() - idxs.size()) * m_NumComponents * sizeof(T));
-    deallocate(); // We are done copying - delete the current m_Array
+    auto srcBegin = begin() + (j * m_NumComponents);
+    auto srcEnd = srcBegin + (getNumberOfTuples() - idxs.size()) * m_NumComponents;
+    std::copy(srcBegin, srcEnd, newArray);
+    // We are done copying - delete the current m_Array
+    deallocate();
     m_Size = newSize;
     m_Array = newArray;
     m_OwnsData = true;
@@ -786,10 +759,10 @@ int32_t DataArray<T>::eraseTuples(const comp_dims_type& idxs)
   // Copy the data
   for(size_t i = 0; i < srcIdx.size(); ++i)
   {
-    currentDest = newArray + destIdx[i];
-    T* currentSrc = m_Array + srcIdx[i];
-    size_t bytes = copyElements[i] * sizeof(T);
-    std::memcpy(currentDest, currentSrc, bytes);
+    auto srcBegin = begin() + srcIdx[i];
+    auto srcEnd = srcBegin + copyElements[i];
+    auto dstBegin = newArray + destIdx[i];
+    std::copy(srcBegin, srcEnd, dstBegin);
   }
 
   // We are done copying - delete the current m_Array
@@ -815,10 +788,10 @@ int32_t DataArray<T>::copyTuple(size_t currentPos, size_t newPos)
   {
     return -1;
   }
-  T* src = m_Array + (currentPos * m_NumComponents);
-  T* dest = m_Array + (newPos * m_NumComponents);
-  size_t bytes = sizeof(T) * m_NumComponents;
-  std::memcpy(dest, src, bytes);
+  auto srcBegin = begin() + (currentPos * m_NumComponents);
+  auto srcEnd = srcBegin + m_NumComponents;
+  auto dstBegin = begin() + (newPos * m_NumComponents);
+  std::copy(srcBegin, srcEnd, dstBegin);
   return 0;
 }
 
@@ -944,7 +917,7 @@ void DataArray<T>::setTuple(size_t tupleIndex, const T* data)
     Q_ASSERT(tupleIndex * m_NumComponents + (m_NumComponents - 1) < m_Size);
   }
 #endif
-  std::memcpy(getTuplePointer(tupleIndex), data, m_NumComponents * sizeof(T));
+  std::copy(data, data + m_NumComponents, begin() + (tupleIndex * m_NumComponents));
 }
 
 // -----------------------------------------------------------------------------
@@ -957,25 +930,9 @@ void DataArray<T>::setTuple(size_t tupleIndex, const std::vector<T>& data)
     Q_ASSERT(tupleIndex * m_NumComponents + (m_NumComponents - 1) < m_Size);
   }
 #endif
-  std::memcpy(getTuplePointer(tupleIndex), data.data(), m_NumComponents * sizeof(T));
-}
-// -----------------------------------------------------------------------------
-template <>
-void DataArray<bool>::setTuple(size_t tupleIndex, const std::vector<bool>& data)
-{
-#ifndef NDEBUG
-  if(m_Size > 0)
-  {
-    Q_ASSERT(tupleIndex * m_NumComponents + (m_NumComponents - 1) < m_Size);
-  }
-#endif
-  bool* ptr = getTuplePointer(tupleIndex);
-  size_t i = 0;
-  for(const auto value : data)
-  {
-    ptr[i] = value;
-    i++;
-  }
+  auto srcBegin = data.cbegin();
+  auto srcEnd = srcBegin + m_NumComponents;
+  std::copy(srcBegin, srcEnd, begin() + (tupleIndex * m_NumComponents));
 }
 
 // -----------------------------------------------------------------------------
@@ -997,10 +954,7 @@ void DataArray<T>::initializeTuple(size_t i, const void* p)
     return;
   }
   const T* c = reinterpret_cast<const T*>(p);
-  for(size_t j = 0; j < m_NumComponents; ++j)
-  {
-    m_Array[i * m_NumComponents + j] = *c;
-  }
+  std::fill_n(begin() + (i * m_NumComponents), m_NumComponents, *c);
 }
 
 // -----------------------------------------------------------------------------
@@ -1212,10 +1166,10 @@ QString DataArray<T>::getInfoString(SIMPL::InfoStringFormat format) const
     QString compDimStr = "(";
     for(size_t i = 0; i < m_CompDims.size(); i++)
     {
-      compDimStr = compDimStr + QString::number(m_CompDims[i]);
+      compDimStr += QString::number(m_CompDims[i]);
       if(i < m_CompDims.size() - 1)
       {
-        compDimStr = compDimStr + QString(", ");
+        compDimStr += ", ";
       }
     }
     compDimStr = compDimStr + ")";
@@ -1235,10 +1189,10 @@ QString DataArray<T>::getInfoString(SIMPL::InfoStringFormat format) const
     QString compDimStr = "(";
     for(size_t i = 0; i < m_CompDims.size(); i++)
     {
-      compDimStr = compDimStr + QString::number(m_CompDims[i]);
+      compDimStr += QString::number(m_CompDims[i]);
       if(i < m_CompDims.size() - 1)
       {
-        compDimStr = compDimStr + QString(", ");
+        compDimStr += ", ";
       }
     }
     compDimStr = compDimStr + ")";
@@ -1310,12 +1264,89 @@ typename DataArray<T>::const_iterator DataArray<T>::end() const
   return const_iterator(m_Array + m_Size);
 }
 
-// rbegin
-// rend
-// cbegin
-// cend
-// crbegin
-// crend
+template <typename T>
+typename DataArray<T>::const_iterator DataArray<T>::cbegin() const
+{
+  return begin();
+}
+
+template <typename T>
+typename DataArray<T>::const_iterator DataArray<T>::cend() const
+{
+  return end();
+}
+
+template <typename T>
+typename DataArray<T>::reverse_iterator DataArray<T>::rbegin()
+{
+  return std::make_reverse_iterator(end());
+}
+
+template <typename T>
+typename DataArray<T>::reverse_iterator DataArray<T>::rend()
+{
+  return std::make_reverse_iterator(begin());
+}
+
+template <typename T>
+typename DataArray<T>::const_reverse_iterator DataArray<T>::rbegin() const
+{
+  return std::make_reverse_iterator(end());
+}
+
+template <typename T>
+typename DataArray<T>::const_reverse_iterator DataArray<T>::rend() const
+{
+  return std::make_reverse_iterator(begin());
+}
+
+template <typename T>
+typename DataArray<T>::const_reverse_iterator DataArray<T>::crbegin() const
+{
+  return rbegin();
+}
+
+template <typename T>
+typename DataArray<T>::const_reverse_iterator DataArray<T>::crend() const
+{
+  return rend();
+}
+
+template <typename T>
+typename DataArray<T>::tuple_iterator DataArray<T>::tupleBegin()
+{
+  return tuple_iterator(m_Array, m_NumComponents);
+}
+
+template <typename T>
+typename DataArray<T>::tuple_iterator DataArray<T>::tupleEnd()
+{
+  return tuple_iterator(m_Array + m_Size, m_NumComponents);
+}
+
+template <typename T>
+typename DataArray<T>::const_tuple_iterator DataArray<T>::tupleBegin() const
+{
+  return const_tuple_iterator(m_Array, m_NumComponents);
+}
+
+template <typename T>
+typename DataArray<T>::const_tuple_iterator DataArray<T>::tupleEnd() const
+{
+  return const_tuple_iterator(m_Array + m_Size, m_NumComponents);
+}
+
+template <typename T>
+typename DataArray<T>::const_tuple_iterator DataArray<T>::constTupleBegin() const
+{
+  return tupleBegin();
+}
+
+template <typename T>
+typename DataArray<T>::const_tuple_iterator DataArray<T>::constTupleEnd() const
+{
+  return tupleEnd();
+}
 
 // ######### Capacity #########
 template <typename T>
@@ -1323,16 +1354,7 @@ typename DataArray<T>::size_type DataArray<T>::size() const
 {
   return m_Size;
 }
-template <typename T>
-typename DataArray<T>::size_type DataArray<T>::max_size() const
-{
-  return m_Size;
-}
-//  void resize(size_type n)
-//  {
-//    resizeAndExtend(n);
-//  }
-// void resize (size_type n, const value_type& val);
+
 template <typename T>
 typename DataArray<T>::size_type DataArray<T>::capacity() const noexcept
 {
@@ -1344,8 +1366,6 @@ bool DataArray<T>::empty() const noexcept
 {
   return (m_Size == 0);
 }
-// reserve()
-// shrink_to_fit()
 
 // ######### Element Access #########
 
@@ -1356,10 +1376,7 @@ template <typename T>
 void DataArray<T>::assign(size_type n, const value_type& val) // fill (2)
 {
   resizeAndExtend(n);
-  for(size_t i = 0; i < n; i++)
-  {
-    m_Array[i] = val;
-  }
+  std::fill(begin(), end(), val);
 }
 
 // -----------------------------------------------------------------------------
@@ -1376,6 +1393,7 @@ void DataArray<T>::push_back(const value_type& val)
   resizeAndExtend(m_Size + 1);
   m_Array[m_MaxId] = val;
 }
+
 // -----------------------------------------------------------------------------
 template <typename T>
 void DataArray<T>::push_back(value_type&& val)
@@ -1390,10 +1408,6 @@ void DataArray<T>::pop_back()
 {
   resizeAndExtend(m_Size - 1);
 }
-// insert
-// iterator erase (const_iterator position)
-// iterator erase (const_iterator first, const_iterator last);
-// swap
 
 // -----------------------------------------------------------------------------
 template <typename T>
@@ -1410,8 +1424,6 @@ void DataArray<T>::clear()
   m_IsAllocated = false;
   m_NumTuples = 0;
 }
-// emplace
-// emplace_back
 
 // =================================== END STL COMPATIBLE INTERFACe ===================================================
 
@@ -1419,6 +1431,7 @@ void DataArray<T>::clear()
 template <typename T>
 void DataArray<T>::deallocate()
 {
+#ifndef NDEBUG
   // We are going to splat 0xABABAB across the first value of the array as a debugging aid
   auto cptr = reinterpret_cast<unsigned char*>(m_Array);
   if(nullptr != cptr)
@@ -1447,6 +1460,7 @@ void DataArray<T>::deallocate()
       }
     }
   }
+#endif
 #if 0
       if (MUD_FLAP_0 != 0xABABABABABABABABul
           || MUD_FLAP_1 != 0xABABABABABABABABul
@@ -1458,6 +1472,7 @@ void DataArray<T>::deallocate()
         Q_ASSERT(false);
       }
 #endif
+
   delete[](m_Array);
 
   m_Array = nullptr;
@@ -1490,7 +1505,8 @@ T* DataArray<T>::resizeAndExtend(size_t size)
   size_t newSize = 0;
   size_t oldSize = 0;
 
-  if(size == m_Size) // Requested size is equal to current size.  Do nothing.
+  // Requested size is equal to current size.  Do nothing.
+  if(size == m_Size)
   {
     return m_Array;
   }
@@ -1514,7 +1530,9 @@ T* DataArray<T>::resizeAndExtend(size_t size)
   // Copy the data from the old array.
   if(m_Array != nullptr)
   {
-    std::memcpy(newArray, m_Array, (newSize < m_Size ? newSize : m_Size) * sizeof(T));
+    auto srcBegin = begin();
+    auto srcEnd = srcBegin + (newSize < m_Size ? newSize : m_Size);
+    std::copy(srcBegin, srcEnd, newArray);
   }
 
   // Allocate a new array if we DO NOT own the current array
