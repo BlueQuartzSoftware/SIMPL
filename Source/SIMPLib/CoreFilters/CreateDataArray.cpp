@@ -104,7 +104,6 @@ std::vector<T> createInitVector(AbstractFilter* filter, const QString& initializ
 {
   using ConvertOutputType = std::pair<T, bool>;
   ConvertOutputType conversionResult;
-  convert_from<T> convert;
   std::vector<T> values(numComponents);
 
   if(initializationValue.startsWith(CDA_LB) && initializationValue.endsWith(CDA_RB))
@@ -113,52 +112,30 @@ std::vector<T> createInitVector(AbstractFilter* filter, const QString& initializ
     input = input.replace('[', "");
     input = input.replace(']', "");
     QStringList tokens = input.split(CDA_SEP, QString::SplitBehavior::KeepEmptyParts);
-    if(tokens.size() == 1)
+
+    for(int32_t i = 0; i < numComponents; i++)
     {
-      for(int32_t i = 0; i < numComponents; i++)
+      int32_t idx = (tokens.size() == 1 ? 0 : i);
+      conversionResult = convert_from<T>::convert(tokens[idx]);
+      if(conversionResult.second)
       {
-        conversionResult = convert.convert(tokens[0]);
-        if(conversionResult.second)
-        {
-          values[i] = conversionResult.first;
-        }
-        else
-        {
-          if(filter)
-          {
-            QString msg = QString("Input String '%1' could not be converted to a numeric value. ").arg(tokens[0]);
-            filter->setErrorCondition(-5400, msg);
-            values.clear();
-            return values;
-          }
-        }
+        values[i] = conversionResult.first;
       }
-    }
-    else
-    {
-      for(int32_t i = 0; i < numComponents; i++)
+      else
       {
-        conversionResult = convert.convert(tokens[i]);
-        if(conversionResult.second)
+        if(filter)
         {
-          values[i] = conversionResult.first;
-        }
-        else
-        {
-          if(filter)
-          {
-            QString msg = QString("Input String '%1' could not be converted to a numeric value.").arg(tokens[i]);
-            filter->setErrorCondition(-5400, msg);
-            values.clear();
-            return values;
-          }
+          QString msg = QString("Input String '%1' could not be converted to a numeric value. ").arg(tokens[0]);
+          filter->setErrorCondition(-5400, msg);
+          values.clear();
+          return values;
         }
       }
     }
   }
   else
   {
-    conversionResult = convert.convert(initializationValue);
+    conversionResult = convert_from<T>::convert(initializationValue);
     if(conversionResult.second)
     {
       values.assign(numComponents, conversionResult.first);
@@ -296,14 +273,7 @@ void initializeArrayWithReals(IDataArray::Pointer outputArrayPtr, int initializa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreateDataArray::CreateDataArray()
-: m_ScalarType(SIMPL::ScalarTypes::Type::Int8)
-, m_NumberOfComponents(0)
-, m_NewArray("", "", "")
-, m_InitializationType(Manual)
-, m_InitializationValue("0")
-{
-}
+CreateDataArray::CreateDataArray() = default;
 
 // -----------------------------------------------------------------------------
 //
