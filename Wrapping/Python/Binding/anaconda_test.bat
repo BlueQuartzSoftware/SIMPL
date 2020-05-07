@@ -1,0 +1,5 @@
+@echo off
+
+CALL "%SIMPL_CONDA_EXECUTABLE%" activate "%SIMPL_CONDA_ENV%"
+
+python "%PYTHON_TEST_FILE%"

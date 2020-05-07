@@ -7,11 +7,19 @@ function(AddPythonTest)
   if(SIMPL_USE_ANACONDA_PYTHON)
     if(WIN32)
       add_test(NAME ${ARGS_NAME}
-        COMMAND ${SIMPL_CONDA_EXECUTABLE} "activate" ${ANACONDA_ENVIRONMENT_NAME} "&&" "python" ${ARGS_FILE}
+        COMMAND ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/anaconda_test.bat
+      )
+
+      set_property(TEST ${ARGS_NAME}
+        PROPERTY
+          ENVIRONMENT
+            "SIMPL_CONDA_EXECUTABLE=${SIMPL_CONDA_EXECUTABLE}"
+            "SIMPL_CONDA_ENV=${ANACONDA_ENVIRONMENT_NAME}"
+            "PYTHON_TEST_FILE=${ARGS_FILE}"
       )
     else()
       add_test(NAME ${ARGS_NAME}
-        COMMAND ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/anaconda_setup.sh "&&" "python" ${ARGS_FILE}
+        COMMAND ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/anaconda_test.sh
       )
 
       set_property(TEST ${ARGS_NAME}
@@ -19,6 +27,7 @@ function(AddPythonTest)
           ENVIRONMENT
             "SIMPL_ANACONDA_DIR=${ANACONDA_DIR}"
             "SIMPL_CONDA_ENV=${ANACONDA_ENVIRONMENT_NAME}"
+            "PYTHON_TEST_FILE=${ARGS_FILE}"
       )
     endif()
   else()
