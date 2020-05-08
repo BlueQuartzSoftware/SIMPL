@@ -59,9 +59,9 @@
      Microsoft doesn't define M_2PI ever, other compilers may lack some of these
      too, hence the sequence as it is: load math.h, then see what's lacking still.
   */
-//  #ifndef _USE_MATH_DEFINES
-//   #define _USE_MATH_DEFINES 1
-//  #endif
+  #ifndef _USE_MATH_DEFINES
+   #define _USE_MATH_DEFINES 1
+  #endif
 
 /*
 "It's a known, long-standing bug in the compiler system's headers.  For
@@ -76,10 +76,8 @@ standard C++ library."
 
 #endif
 
-#include <cmath>
-
 #include <cstddef>
-
+#include <cmath>
 #include <vector>
 #include <limits>
 
@@ -139,6 +137,11 @@ standard C++ library."
 
 #ifndef M_2PI
 #define M_2PI           6.283185307179586232    /* 2*pi  */
+#endif
+
+// This next bit is for MSVC compilers. We need to tell it that we already defined some math constants
+#ifndef _MATH_DEFINES_DEFINED
+#define _MATH_DEFINES_DEFINED
 #endif
 
 namespace SIMPLib
