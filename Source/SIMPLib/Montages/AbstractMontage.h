@@ -61,13 +61,12 @@ using DataContainerArrayShPtr = std::shared_ptr<DataContainerArray>;
 class SIMPLib_EXPORT AbstractMontage : public INamedObject
 {
 public:
-    using Self = AbstractMontage;
-    using Pointer = std::shared_ptr<Self>;
-    using ConstPointer = std::shared_ptr<const Self>;
-    using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<const Self>;
-    static Pointer NullPointer();
-
+  using Self = AbstractMontage;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<const Self>;
+  static Pointer NullPointer();
 
   using CollectionType = std::vector<DataContainerShPtr>;
   using Iterator = CollectionType::iterator;
@@ -167,8 +166,7 @@ protected:
    */
   AbstractMontage(const QString& name);
 
-  private:
-
+private:
 };
 
 using AbstractMontageShPtr = std::shared_ptr<AbstractMontage>;

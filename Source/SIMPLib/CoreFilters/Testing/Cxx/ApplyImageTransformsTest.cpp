@@ -18,22 +18,22 @@
 class ApplyImageTransformsTest
 {
 
-  public:
-    ApplyImageTransformsTest() = default;
-    ~ApplyImageTransformsTest() = default;
-    ApplyImageTransformsTest(const ApplyImageTransformsTest&) = delete;            // Copy Constructor
-    ApplyImageTransformsTest(ApplyImageTransformsTest&&) = delete;                 // Move Constructor
-    ApplyImageTransformsTest& operator=(const ApplyImageTransformsTest&) = delete; // Copy Assignment
-    ApplyImageTransformsTest& operator=(ApplyImageTransformsTest&&) = delete;      // Move Assignment
+public:
+  ApplyImageTransformsTest() = default;
+  ~ApplyImageTransformsTest() = default;
+  ApplyImageTransformsTest(const ApplyImageTransformsTest&) = delete;            // Copy Constructor
+  ApplyImageTransformsTest(ApplyImageTransformsTest&&) = delete;                 // Move Constructor
+  ApplyImageTransformsTest& operator=(const ApplyImageTransformsTest&) = delete; // Copy Assignment
+  ApplyImageTransformsTest& operator=(ApplyImageTransformsTest&&) = delete;      // Move Assignment
 
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-    void TestFilterAvailability()
-    {
-      ApplyImageTransforms::Pointer filter = ApplyImageTransforms::New();
-      filter->preflight();
-    }
+  void TestFilterAvailability()
+  {
+    ApplyImageTransforms::Pointer filter = ApplyImageTransforms::New();
+    filter->preflight();
+  }
 
   // -----------------------------------------------------------------------------
   //
@@ -53,13 +53,10 @@ class ApplyImageTransformsTest
   {
     int err = EXIT_SUCCESS;
 
-    DREAM3D_REGISTER_TEST( TestFilterAvailability() );
+    DREAM3D_REGISTER_TEST(TestFilterAvailability());
 
-    DREAM3D_REGISTER_TEST( TestApplyImageTransformsTest() )
+    DREAM3D_REGISTER_TEST(TestApplyImageTransformsTest())
   }
 
-  private:
-
-
+private:
 };
-

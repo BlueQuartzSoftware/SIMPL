@@ -112,4 +112,3 @@ private:
   bool httpOnly;
   int version;
 };
-

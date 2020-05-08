@@ -27,9 +27,9 @@ class QtWebAppLib_EXPORT HttpRequestHandler : public QObject
   Q_DISABLE_COPY(HttpRequestHandler)
 public:
   /**
- * Constructor.
- * @param parent Parent object.
- */
+   * Constructor.
+   * @param parent Parent object.
+   */
   HttpRequestHandler(QObject* parent = NULL);
 
   /** Destructor */
@@ -44,25 +44,24 @@ public:
   virtual void service(HttpRequest& request, HttpResponse& response);
 
   /**
- * @brief setListenHost
- * @param hostAddress
- */
+   * @brief setListenHost
+   * @param hostAddress
+   */
   void setListenHost(const QHostAddress& hostAddress, const int port);
 
   /**
- * @brief getListenHost
- * @return
- */
+   * @brief getListenHost
+   * @return
+   */
   QHostAddress getListenHost() const;
 
   /**
-  * @brief getListenPort
-  * @return
-  */
+   * @brief getListenPort
+   * @return
+   */
   int getListenPort() const;
 
 private:
   QHostAddress m_HostAddress;
   int m_Port;
 };
-

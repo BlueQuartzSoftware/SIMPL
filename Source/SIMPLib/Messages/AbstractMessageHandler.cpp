@@ -53,7 +53,7 @@ AbstractMessageHandler::AbstractMessageHandler() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractMessageHandler::processMessage(const GenericErrorMessage *msg) const
+void AbstractMessageHandler::processMessage(const GenericErrorMessage* msg) const
 {
   /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
    * should reimplement this method if they care about processing generic error messages. */

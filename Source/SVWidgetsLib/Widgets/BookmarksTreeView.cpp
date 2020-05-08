@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "BookmarksTreeView.h"
 
@@ -72,9 +72,9 @@ BookmarksTreeView::BookmarksTreeView(QWidget* parent)
 
   BookmarksItemDelegate* dlg = new BookmarksItemDelegate(this);
   setItemDelegate(dlg);
-  
+
   setAttribute(Qt::WA_MacShowFocusRect, false);
-  
+
 #if defined(Q_OS_WIN)
   m_ActionShowBookmarkInFileSystem->setText("Show in Windows Explorer");
 #elif defined(Q_OS_MAC)
@@ -82,7 +82,7 @@ BookmarksTreeView::BookmarksTreeView(QWidget* parent)
 #else
   m_ActionShowBookmarkInFileSystem->setText("Show in File System");
 #endif
-  
+
   m_ActionAddBookmark->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
   m_ActionAddBookmarkFolder->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
 
@@ -300,14 +300,14 @@ void BookmarksTreeView::listenOpenBookmarkTriggered()
     return; // The user double clicked a folder, so don't do anything
   }
 
-    QFileInfo fi(pipelinePath);
-    if(fi.exists())
-    {
-      emit newSIMPLViewInstanceTriggered(pipelinePath);
+  QFileInfo fi(pipelinePath);
+  if(fi.exists())
+  {
+    emit newSIMPLViewInstanceTriggered(pipelinePath);
 
-      // Cache the last directory on old instance
-      m_OpenDialogLastFilePath = pipelinePath;
-    }
+    // Cache the last directory on old instance
+    m_OpenDialogLastFilePath = pipelinePath;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -328,14 +328,14 @@ void BookmarksTreeView::listenExecuteBookmarkTriggered()
     return; // The user double clicked a folder, so don't do anything
   }
 
-    QFileInfo fi(pipelinePath);
-    if(fi.exists())
-    {
-      emit newSIMPLViewInstanceTriggered(pipelinePath, true);
+  QFileInfo fi(pipelinePath);
+  if(fi.exists())
+  {
+    emit newSIMPLViewInstanceTriggered(pipelinePath, true);
 
-      // Cache the last directory on old instance
-      m_OpenDialogLastFilePath = pipelinePath;
-    }
+    // Cache the last directory on old instance
+    m_OpenDialogLastFilePath = pipelinePath;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -598,10 +598,10 @@ void BookmarksTreeView::performDrag()
   mimeData->setData(SIMPLView::DragAndDrop::BookmarkItem, jsonArray);
 
   QString dragText = "";
-  if (m_IndexesBeingDragged.size() == 1)
+  if(m_IndexesBeingDragged.size() == 1)
   {
     BookmarksItem::ItemType type = static_cast<BookmarksItem::ItemType>(model->data(m_IndexesBeingDragged[0], static_cast<int>(BookmarksModel::Roles::ItemTypeRole)).toInt());
-    if (type == BookmarksItem::ItemType::Bookmark)
+    if(type == BookmarksItem::ItemType::Bookmark)
     {
       dragText = model->data(m_IndexesBeingDragged[0], Qt::DisplayRole).toString();
     }
@@ -763,9 +763,9 @@ void BookmarksTreeView::dropEvent(QDropEvent* event)
             {
               QString newParentName = model->data(newParent, Qt::DisplayRole).toString();
               QString draggedIndexName = model->data(m_IndexesBeingDragged[i], Qt::DisplayRole).toString();
-              QMessageBox::critical(this, "Bookmarks Error", "Cannot move bookmarks.\nThe destination folder \"" + newParentName +
-                                                                 "\" is a subfolder of the source folder \"" + draggedIndexName + "\".",
-                                    QMessageBox::Ok, QMessageBox::Ok);
+              QMessageBox::critical(this, "Bookmarks Error",
+                                    "Cannot move bookmarks.\nThe destination folder \"" + newParentName + "\" is a subfolder of the source folder \"" + draggedIndexName + "\".", QMessageBox::Ok,
+                                    QMessageBox::Ok);
               return;
             }
           }

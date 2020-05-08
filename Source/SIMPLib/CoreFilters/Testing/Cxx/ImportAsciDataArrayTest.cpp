@@ -52,7 +52,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> int RunTest(char sep, int delimiter, int scalarType)
+  template <typename T>
+  int RunTest(char sep, int delimiter, int scalarType)
   {
     writeFile(sep);
 
@@ -140,7 +141,7 @@ public:
         else // Bool type
         {
           bool value = (index != 0);
-		  //DREAM3D_REQUIRE_EQUAL(value, (ptr[index]))
+          // DREAM3D_REQUIRE_EQUAL(value, (ptr[index]))
           DREAM3D_REQUIRE_EQUAL(value, static_cast<bool>(ptr[index]))
           index++;
         }

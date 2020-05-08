@@ -48,7 +48,6 @@
 #include "SVWidgetsLib/Widgets/SVPipelineView.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -75,7 +74,8 @@ AddFilterCommand::AddFilterCommand(const AbstractFilter::Pointer& filter, SVPipe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(const std::vector<AbstractFilter::Pointer>& filters, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(const std::vector<AbstractFilter::Pointer>& filters, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun,
+                                   QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_Filters(filters)
 , m_ActionText(actionText)
@@ -149,7 +149,7 @@ void AddFilterCommand::undo()
   emit m_PipelineView->pipelineChanged();
 
   emit m_PipelineView->statusMessage(statusMessage);
-  emit m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage,false));
+  emit m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage, false));
 }
 
 // -----------------------------------------------------------------------------
@@ -193,13 +193,13 @@ void AddFilterCommand::redo()
   }
 
   emit model->statusMessageGenerated(statusMessage);
-  emit model->standardOutputMessageGenerated(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage,false));
+  emit model->standardOutputMessageGenerated(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage, false));
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AddFilterCommand::addFilter(const AbstractFilter::Pointer &filter, int insertionIndex)
+void AddFilterCommand::addFilter(const AbstractFilter::Pointer& filter, int insertionIndex)
 {
   // Reset the filter's Removing property
   filter->setRemoving(false);
@@ -279,7 +279,7 @@ void AddFilterCommand::connectFilterSignalsSlots(const AbstractFilter::Pointer& 
   FilterInputWidget* fiw = model->filterInputWidget(index);
 
   QMetaObject::Connection connection = QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, [=](bool preflight) {
-    if (preflight)
+    if(preflight)
     {
       m_PipelineView->preflightPipeline();
     }

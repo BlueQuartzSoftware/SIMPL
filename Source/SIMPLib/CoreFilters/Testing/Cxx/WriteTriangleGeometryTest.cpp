@@ -121,16 +121,16 @@ public:
     // Create Triangle Data Arrays
 
     FloatArrayType::Pointer daTriVert = FloatArrayType::CreateArray(k_NumNodes, k_Dims3, k_TriVertexListDAName, true);
-    for (size_t i = 0; i < daTriVert->getNumberOfTuples(); i++)
+    for(size_t i = 0; i < daTriVert->getNumberOfTuples(); i++)
     {
-      for (int j = 0; j < daTriVert->getNumberOfComponents(); j++)
+      for(int j = 0; j < daTriVert->getNumberOfComponents(); j++)
       {
         float value(static_cast<float>(i + j));
-        if (i % 2 != 0)
+        if(i % 2 != 0)
         {
           value *= -1.0f;
         }
-        if (j > 0)
+        if(j > 0)
         {
           value += (j + 1) * 0.111f;
         }
@@ -139,9 +139,9 @@ public:
     }
 
     SharedTriList::Pointer daTriList = SharedTriList::CreateArray(k_NumTriangles, k_Dims3, k_TriListDAName, true);
-    for (size_t i = 0; i < daTriList->getNumberOfTuples(); i++)
+    for(size_t i = 0; i < daTriList->getNumberOfTuples(); i++)
     {
-      for (int j = 0; j < daTriList->getNumberOfComponents(); j++)
+      for(int j = 0; j < daTriList->getNumberOfComponents(); j++)
       {
         daTriList->setComponent(i, j, i + j);
       }

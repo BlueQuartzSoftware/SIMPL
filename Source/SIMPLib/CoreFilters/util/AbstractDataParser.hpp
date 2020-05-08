@@ -87,7 +87,7 @@ public:
   {
     m_DataArray = value;
   }
-  
+
   IDataArray::Pointer getDataArray()
   {
     return m_DataArray;
@@ -189,12 +189,11 @@ protected:
 private:
   typename ArrayType::Pointer m_Ptr;
 
-  public:
-  Parser(const Parser&) = delete; // Copy Constructor Not Implemented
-  Parser(Parser&&) = delete;      // Move Constructor Not Implemented
+public:
+  Parser(const Parser&) = delete;            // Copy Constructor Not Implemented
+  Parser(Parser&&) = delete;                 // Move Constructor Not Implemented
   Parser& operator=(const Parser&) = delete; // Copy Assignment Not Implemented
   Parser& operator=(Parser&&) = delete;      // Move Assignment
-  
 };
 
 using Int8ParserType = Parser<Int8ArrayType, Int8Functor>;

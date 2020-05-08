@@ -107,8 +107,7 @@ void ReadASCIIDataWidget::setupGui()
   connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &ReadASCIIDataWidget::filterNeedsInputParameters);
 
   // If the DataArrayPath is updated in the filter, update the widget
-  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
-    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
   // If the filter was loaded from a pipeline file, fill in the information in the widget
   if(!m_Filter->getWizardData().isEmpty())
@@ -322,8 +321,9 @@ void ReadASCIIDataWidget::on_importFileBtn_clicked()
       if(!hasNewLines && !hasCarriageReturns && !hasTabs)
       {
         // This might be a binary file, so throw up a warning dialog
-        QString warningStr = "The file \"" + m_FilePath + "\" might be a binary file, because line-feed, tab, or carriage return characters have not been detected.\nWarning: Using this file may "
-                                                          "crash the program or cause unexpected results.\n\nWould you still like to continue importing the file?";
+        QString warningStr = "The file \"" + m_FilePath +
+                             "\" might be a binary file, because line-feed, tab, or carriage return characters have not been detected.\nWarning: Using this file may "
+                             "crash the program or cause unexpected results.\n\nWould you still like to continue importing the file?";
         int ret = QMessageBox::warning(this, tr("ASCII Data Import Warning"), tr(warningStr.toStdString().c_str()), QMessageBox::No | QMessageBox::Yes, QMessageBox::Yes);
 
         if(ret == QMessageBox::No)
@@ -473,7 +473,7 @@ void ReadASCIIDataWidget::filterNeedsInputParameters(AbstractFilter* filter)
     data.dataHeaders = m_ImportWizard->getHeaders();
     data.headerIsCustom = !data.dataHeaders.empty();
     data.headerLine = data.headerIsCustom ? -1 : m_ImportWizard->getBeginningLineNum() - 1;
-//        data.headerUsesDefaults =
+    //        data.headerUsesDefaults =
     data.numberOfLines = numOfLines;
     data.beginIndex = m_ImportWizard->getBeginningLineNum();
     data.dataTypes = m_ImportWizard->getDataTypes();

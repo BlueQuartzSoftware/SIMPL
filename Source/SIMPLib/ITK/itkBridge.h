@@ -52,7 +52,8 @@
 // Our Plugin Includes next
 #include "SIMPLib/ITK/itkSupportConstants.h"
 
-template <typename T, typename K, typename ItkOutPixelType> class Dream3DToItkImageConversion
+template <typename T, typename K, typename ItkOutPixelType>
+class Dream3DToItkImageConversion
 {
 public:
   Dream3DToItkImageConversion() = default;
@@ -205,7 +206,8 @@ class ItkBridge2
 };
 #endif
 
-template <typename ComponentType> class CreateItkWrapperForDataPointer
+template <typename ComponentType>
+class CreateItkWrapperForDataPointer
 {
 public:
   CreateItkWrapperForDataPointer() = default;
@@ -275,8 +277,8 @@ public:
   }
 
 public:
-  CreateItkWrapperForDataPointer(const CreateItkWrapperForDataPointer&) = delete; // Copy Constructor Not Implemented
-  CreateItkWrapperForDataPointer(CreateItkWrapperForDataPointer&&) = delete;      // Move Constructor Not Implemented
+  CreateItkWrapperForDataPointer(const CreateItkWrapperForDataPointer&) = delete;            // Copy Constructor Not Implemented
+  CreateItkWrapperForDataPointer(CreateItkWrapperForDataPointer&&) = delete;                 // Move Constructor Not Implemented
   CreateItkWrapperForDataPointer& operator=(const CreateItkWrapperForDataPointer&) = delete; // Copy Assignment Not Implemented
   CreateItkWrapperForDataPointer& operator=(CreateItkWrapperForDataPointer&&) = delete;      // Move Assignment Not Implemented
 };
@@ -467,7 +469,8 @@ public:
    * @return
    */
 #if 1
-  template <typename TImage> static typename TImage::Pointer CreateItkWrapperForDataPointer(DataContainer::Pointer m, QString attrMatName, ComponentType* data)
+  template <typename TImage>
+  static typename TImage::Pointer CreateItkWrapperForDataPointer(DataContainer::Pointer m, QString attrMatName, ComponentType* data)
   {
     return Dream3DtoITKImportFilter<typename TImage::PixelType>(m, attrMatName, data)->GetOutput();
   }
@@ -579,4 +582,3 @@ public:
 
 //// Create some typedefs for our convenience
 typedef ItkBridge<ImageProcessingConstants::DefaultPixelType> ITKUtilitiesType;
-

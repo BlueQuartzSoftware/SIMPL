@@ -97,11 +97,11 @@ void PreflightPipelineController::service(HttpRequest& request, HttpResponse& re
     return;
   }
 
-//  QString linkAddress = "http://" + getListenHost().toString() + ":" + QString::number(getListenPort()) + QDir::separator() + QString(session.getId()) + QDir::separator();
-//  SIMPLStaticFileController* staticFileController = SIMPLStaticFileController::Instance();
-//  QString docRoot = staticFileController->getDocRoot();
-//  QString newFilePath = docRoot + QDir::separator() + QString(session.getId()) + QDir::separator();
-//  QJsonArray outputLinks;
+  //  QString linkAddress = "http://" + getListenHost().toString() + ":" + QString::number(getListenPort()) + QDir::separator() + QString(session.getId()) + QDir::separator();
+  //  SIMPLStaticFileController* staticFileController = SIMPLStaticFileController::Instance();
+  //  QString docRoot = staticFileController->getDocRoot();
+  //  QString newFilePath = docRoot + QDir::separator() + QString(session.getId()) + QDir::separator();
+  //  QJsonArray outputLinks;
 
   QJsonObject requestObj = requestDoc.object();
   if(!requestObj.contains(SIMPL::JSON::Pipeline))
@@ -128,43 +128,43 @@ void PreflightPipelineController::service(HttpRequest& request, HttpResponse& re
   PipelineListener listener(nullptr);
   pipeline->addMessageReceiver(&listener);
 
-//  // Log Files
-//  bool createErrorLog = requestObj[SIMPL::JSON::ErrorLog].toBool(false);
-//  bool createWarningLog = requestObj[SIMPL::JSON::WarningLog].toBool(false);
-//  bool createStatusLog = requestObj[SIMPL::JSON::StatusLog].toBool(false);
+  //  // Log Files
+  //  bool createErrorLog = requestObj[SIMPL::JSON::ErrorLog].toBool(false);
+  //  bool createWarningLog = requestObj[SIMPL::JSON::WarningLog].toBool(false);
+  //  bool createStatusLog = requestObj[SIMPL::JSON::StatusLog].toBool(false);
 
-//  QDir docRootDir(docRoot);
-//  docRootDir.mkpath(newFilePath);
+  //  QDir docRootDir(docRoot);
+  //  docRootDir.mkpath(newFilePath);
 
-//  if(createErrorLog)
-//  {
-//    QString filename = pipeline->getName() + "-err.log";
-//    QString filepath = newFilePath + QDir::separator() + filename;
-//    listener.createErrorLogFile(filepath);
+  //  if(createErrorLog)
+  //  {
+  //    QString filename = pipeline->getName() + "-err.log";
+  //    QString filepath = newFilePath + QDir::separator() + filename;
+  //    listener.createErrorLogFile(filepath);
 
-//    outputLinks.append(linkAddress + filename);
-//  }
+  //    outputLinks.append(linkAddress + filename);
+  //  }
 
-//  if(createWarningLog)
-//  {
-//    QString filename = pipeline->getName() + "-warning.log";
-//    QString filepath = newFilePath + QDir::separator() + filename;
-//    listener.createWarningLogFile(filepath);
+  //  if(createWarningLog)
+  //  {
+  //    QString filename = pipeline->getName() + "-warning.log";
+  //    QString filepath = newFilePath + QDir::separator() + filename;
+  //    listener.createWarningLogFile(filepath);
 
-//    outputLinks.append(linkAddress + filename);
-//  }
+  //    outputLinks.append(linkAddress + filename);
+  //  }
 
-//  if(createStatusLog)
-//  {
-//    QString filename = pipeline->getName() + "-status.log";
-//    QString filepath = newFilePath + QDir::separator() + filename;
-//    listener.createStatusLogFile(filepath);
+  //  if(createStatusLog)
+  //  {
+  //    QString filename = pipeline->getName() + "-status.log";
+  //    QString filepath = newFilePath + QDir::separator() + filename;
+  //    listener.createStatusLogFile(filepath);
 
-//    outputLinks.append(linkAddress + filename);
-//  }
+  //    outputLinks.append(linkAddress + filename);
+  //  }
 
-//  // Append to the json response payload all the output links
-//  rootObj[SIMPL::JSON::OutputLinks] = outputLinks;
+  //  // Append to the json response payload all the output links
+  //  rootObj[SIMPL::JSON::OutputLinks] = outputLinks;
 
   // Preflight
   pipeline->preflightPipeline();

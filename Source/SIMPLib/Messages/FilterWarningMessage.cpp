@@ -69,7 +69,7 @@ FilterWarningMessage::~FilterWarningMessage() = default;
 // -----------------------------------------------------------------------------
 FilterWarningMessage::Pointer FilterWarningMessage::New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code)
 {
-  FilterWarningMessage::Pointer shared_ptr (new FilterWarningMessage(className, humanLabel, pipelineIndex, msgText, code));
+  FilterWarningMessage::Pointer shared_ptr(new FilterWarningMessage(className, humanLabel, pipelineIndex, msgText, code));
   return shared_ptr;
 }
 

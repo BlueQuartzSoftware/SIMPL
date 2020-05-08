@@ -62,14 +62,14 @@
 
 #ifdef CMP_WORDS_BIGENDIAN
 #define SWAP_ARRAY(array)                                                                                                                                                                              \
-  if(filter->getEndian() == 0)                                                                                                                                                                                    \
+  if(filter->getEndian() == 0)                                                                                                                                                                         \
   {                                                                                                                                                                                                    \
     array->byteSwapElements();                                                                                                                                                                         \
   }
 
 #else
 #define SWAP_ARRAY(array)                                                                                                                                                                              \
-  if(filter->getEndian() == 1)                                                                                                                                                                                    \
+  if(filter->getEndian() == 1)                                                                                                                                                                         \
   {                                                                                                                                                                                                    \
     array->byteSwapElements();                                                                                                                                                                         \
   }
@@ -96,7 +96,8 @@ int32_t SanityCheckFileSizeVersusAllocatedSize(size_t allocatedBytes, size_t fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> int32_t readBinaryFile(RawBinaryReader* filter, const std::vector<size_t>& cDims)
+template <typename T>
+int32_t readBinaryFile(RawBinaryReader* filter, const std::vector<size_t>& cDims)
 {
   typename DataArray<T>::Pointer p = filter->getDataContainerArray()->getPrereqArrayFromPath<DataArray<T>>(filter, filter->getCreatedAttributeArrayPath(), cDims);
   QString filename = filter->getInputFile();
@@ -128,11 +129,11 @@ template <typename T> int32_t readBinaryFile(RawBinaryReader* filter, const std:
   // Skip some header bytes if the user asked for it.
   if(skipHeaderBytes > 0)
   {
-    #if defined (_MSC_VER)
-      _fseeki64(f, skipHeaderBytes, SEEK_SET);
-    #else
-      fseek(f, skipHeaderBytes, SEEK_SET);
-    #endif
+#if defined(_MSC_VER)
+    _fseeki64(f, skipHeaderBytes, SEEK_SET);
+#else
+    fseek(f, skipHeaderBytes, SEEK_SET);
+#endif
   }
   numRead = 0;
   // Now start reading the data in chunks if needed.
@@ -160,7 +161,6 @@ template <typename T> int32_t readBinaryFile(RawBinaryReader* filter, const std:
       break;
     }
   }
-
 
   SWAP_ARRAY(p)
 
@@ -350,7 +350,6 @@ void RawBinaryReader::dataCheck()
     setWarningCondition(RBR_FILE_TOO_BIG, ss);
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //

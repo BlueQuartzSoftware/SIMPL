@@ -421,6 +421,3 @@ public:
   EdgeGeom& operator=(const EdgeGeom&) = delete; // Copy Assignment Not Implemented
   EdgeGeom& operator=(EdgeGeom&&) = delete;      // Move Assignment Not Implemented
 };
-
-
-

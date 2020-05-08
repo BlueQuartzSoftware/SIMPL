@@ -1,24 +1,22 @@
 #pragma once
 
-
 #include <QtCore/QString>
 #include <QtCore/QRegularExpression>
-
 
 namespace SIMPL
 {
 namespace Python
 {
 
-static QString fromCamelCase(const QString &s)
+static QString fromCamelCase(const QString& s)
 {
-  static QRegularExpression regExp1 {"(.)([A-Z][a-z]+)"};
-  static QRegularExpression regExp2 {"([a-z0-9])([A-Z])"};
-  
+  static QRegularExpression regExp1{"(.)([A-Z][a-z]+)"};
+  static QRegularExpression regExp2{"([a-z0-9])([A-Z])"};
+
   QString result = s;
   result.replace(regExp1, "\\1_\\2");
   result.replace(regExp2, "\\1_\\2");
-  
+
   return result.toLower();
 }
 
@@ -34,5 +32,5 @@ static QString toCamelCase(const QString& s)
 }
 #endif
 
-}
-}
+} // namespace Python
+} // namespace SIMPL

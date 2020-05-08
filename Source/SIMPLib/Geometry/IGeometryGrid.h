@@ -42,7 +42,6 @@
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Geometry/IGeometry.h"
 
-
 /**
  * @brief The IGeometryGrid class extends IGeometry for grid type geometries
  */
@@ -81,11 +80,11 @@ public:
   virtual size_t getXPoints() const = 0;
   virtual size_t getYPoints() const = 0;
   virtual size_t getZPoints() const = 0;
-  
+
   virtual void getPlaneCoords(size_t idx[3], float coords[3]) const = 0;
   virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) const = 0;
   virtual void getPlaneCoords(size_t idx, float coords[3]) const = 0;
-  
+
   virtual void getPlaneCoords(size_t idx[3], double coords[3]) const = 0;
   virtual void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) const = 0;
   virtual void getPlaneCoords(size_t idx, double coords[3]) const = 0;
@@ -93,7 +92,7 @@ public:
   virtual void getCoords(size_t idx[3], float coords[3]) const = 0;
   virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]) const = 0;
   virtual void getCoords(size_t idx, float coords[3]) const = 0;
-  
+
   virtual void getCoords(size_t idx[3], double coords[3]) const = 0;
   virtual void getCoords(size_t x, size_t y, size_t z, double coords[3]) const = 0;
   virtual void getCoords(size_t idx, double coords[3]) const = 0;
@@ -104,5 +103,3 @@ public:
   IGeometryGrid& operator=(const IGeometryGrid&) = delete; // Copy Assignment Not Implemented
   IGeometryGrid& operator=(IGeometryGrid&&) = delete;      // Move Assignment Not Implemented
 };
-
-

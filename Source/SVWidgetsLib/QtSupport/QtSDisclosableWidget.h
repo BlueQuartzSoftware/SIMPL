@@ -68,24 +68,24 @@ public:
 
   void setContentLayout(QLayout* contentLayout);
 
-  void setTitle(const QString &title);
+  void setTitle(const QString& title);
 
 signals:
   void dragStarted(QtSDisclosableWidget* widget);
 
 public slots:
-//  void disclose(bool on);
+  //  void disclose(bool on);
 
   /**
-      * @brief Sets the style of the Widget to indicate a selected or non-selected
-      * state
-      * @param selected Is the widget selected or not.
-      */
+   * @brief Sets the style of the Widget to indicate a selected or non-selected
+   * state
+   * @param selected Is the widget selected or not.
+   */
   void changeStyle();
 
   /**
-      *@brief
-      */
+   *@brief
+   */
   void updateWidgetStyle();
 
 private:
@@ -97,9 +97,8 @@ private:
   int animationDuration = 300;
 
 public:
-  QtSDisclosableWidget(const QtSDisclosableWidget&) = delete; // Copy Constructor Not Implemented
-  QtSDisclosableWidget(QtSDisclosableWidget&&) = delete;      // Move Constructor Not Implemented
+  QtSDisclosableWidget(const QtSDisclosableWidget&) = delete;            // Copy Constructor Not Implemented
+  QtSDisclosableWidget(QtSDisclosableWidget&&) = delete;                 // Move Constructor Not Implemented
   QtSDisclosableWidget& operator=(const QtSDisclosableWidget&) = delete; // Copy Assignment Not Implemented
   QtSDisclosableWidget& operator=(QtSDisclosableWidget&&) = delete;      // Move Assignment Not Implemented
 };
-

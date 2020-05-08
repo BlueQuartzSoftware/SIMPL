@@ -85,4 +85,3 @@ private:
   /** Line number where the message was generated */
   int line;
 };
-

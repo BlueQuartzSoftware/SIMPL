@@ -58,12 +58,11 @@ public slots:
   }
 
 public:
-  RemoveArraysObserver(const RemoveArraysObserver&) = delete; // Copy Constructor Not Implemented
-  RemoveArraysObserver(RemoveArraysObserver&&) = delete;      // Move Constructor Not Implemented
+  RemoveArraysObserver(const RemoveArraysObserver&) = delete;            // Copy Constructor Not Implemented
+  RemoveArraysObserver(RemoveArraysObserver&&) = delete;                 // Move Constructor Not Implemented
   RemoveArraysObserver& operator=(const RemoveArraysObserver&) = delete; // Copy Assignment Not Implemented
   RemoveArraysObserver& operator=(RemoveArraysObserver&&) = delete;      // Move Assignment Not Implemented
 
 private:
   QList<PipelineMessage> m_ErrorList = {};
 };
-

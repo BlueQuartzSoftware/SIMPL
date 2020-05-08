@@ -43,20 +43,19 @@
 
 namespace Ui
 {
-  class DataArrayPathDisplay;
+class DataArrayPathDisplay;
 }
 
 /**
-* @class DataArrayPathDisplay DataArrayPathDisplay.h
-* SVWidgetsLib/Widgets/DataArrayPathDisplay.h
-* @brief This class handles DataArrayPath selection and mouse over signals for filter parameter widgets.
-*/
+ * @class DataArrayPathDisplay DataArrayPathDisplay.h
+ * SVWidgetsLib/Widgets/DataArrayPathDisplay.h
+ * @brief This class handles DataArrayPath selection and mouse over signals for filter parameter widgets.
+ */
 class DataArrayPathDisplay : public QWidget
 {
   Q_OBJECT
 
 public:
-
   static const QColor GetActiveColor(DataArrayPathHelper::DataType type);
   static const QColor GetCheckedColor(DataArrayPathHelper::DataType type);
 
@@ -90,9 +89,9 @@ public:
   DataArrayPathHelper::DataType getDataType() const;
 
   /**
-  * @brief Sets the filter the selection widget operates on
-  * @param filter
-  */
+   * @brief Sets the filter the selection widget operates on
+   * @param filter
+   */
   void setFilter(AbstractFilter* filter);
 
   /**
@@ -101,13 +100,13 @@ public:
   void beforePreflight();
 
   /**
-  * @brief Checks path validity
-  */
+   * @brief Checks path validity
+   */
   void afterPreflight();
 
   /**
-  * @brief Override the minimumSizeHint for extending the widget enough to paint the active color
-  */
+   * @brief Override the minimumSizeHint for extending the widget enough to paint the active color
+   */
   QSize minimumSizeHint() const override;
 
   /**
@@ -116,15 +115,15 @@ public:
   QSize sizeHint() const override;
 
   /**
-  * @brief Returns the property name set for this widget
-  * @return
-  */
+   * @brief Returns the property name set for this widget
+   * @return
+   */
   QString getPropertyName();
 
   /**
-  * @brief Sets the property name
-  * @param propName
-  */
+   * @brief Sets the property name
+   * @param propName
+   */
   void setPropertyName(QString propName);
 
 protected:

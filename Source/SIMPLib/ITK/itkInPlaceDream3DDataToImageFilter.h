@@ -39,7 +39,7 @@ public:
   using ValueType = typename itk::NumericTraits<PixelType>::ValueType;
   using DataArrayPixelType = typename ::DataArray<ValueType>;
   using Superclass = typename itk::ImageSource<ImageType>;
-  //using SizeValueType = typename itk::SizeValueType;
+  // using SizeValueType = typename itk::SizeValueType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -89,4 +89,3 @@ public:
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkInPlaceDream3DDataToImageFilter.hxx"
 #endif
-

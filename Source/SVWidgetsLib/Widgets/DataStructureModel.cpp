@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include <QtCore/QVector>
 
@@ -53,8 +53,7 @@ DataStructureModel::DataStructureModel(QObject* parent)
   vector.push_back("Type");
   rootItem = new DataStructureItem(vector, DataStructureItem::ItemType::RootItem);
 
-  connect(this, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)),
-          this, SLOT(updateModel(const QModelIndex&, const QModelIndex&)));
+  connect(this, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(updateModel(const QModelIndex&, const QModelIndex&)));
 }
 
 // -----------------------------------------------------------------------------
@@ -83,7 +82,7 @@ QModelIndex DataStructureModel::index(int row, int column, const QModelIndex& pa
     return createIndex(row, column, childItem);
   }
 
-    return QModelIndex();
+  return QModelIndex();
 }
 
 // -----------------------------------------------------------------------------
@@ -143,16 +142,16 @@ QVariant DataStructureModel::data(const QModelIndex& index, int role) const
   }
   if(role == Qt::UserRole)
   {
-    //return item->getItemHasErrors();
+    // return item->getItemHasErrors();
   }
   else if(role == Qt::BackgroundRole)
   {
-//    return item->backgroundColor();
+    //    return item->backgroundColor();
     return QVariant();
   }
   else if(role == Qt::ForegroundRole)
   {
-//    return item->foregroundColor();
+    //    return item->foregroundColor();
     return QVariant();
   }
   else if(role == Qt::ToolTipRole)
@@ -169,7 +168,7 @@ QVariant DataStructureModel::data(const QModelIndex& index, int role) const
       return item->getIcon();
     }
 
-      return QVariant();
+    return QVariant();
   }
 
   return QVariant();
@@ -198,7 +197,7 @@ bool DataStructureModel::setData(const QModelIndex& index, const QVariant& value
 
   if(role == Qt::UserRole)
   {
-   // result = item->setItemHasErrors(value.value<bool>());
+    // result = item->setItemHasErrors(value.value<bool>());
   }
   else if(role == Qt::DecorationRole)
   {
@@ -241,10 +240,9 @@ Qt::ItemFlags DataStructureModel::flags(const QModelIndex& index) const
     return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
   }
 
-    // This is a leaf
-    return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled);
+  // This is a leaf
+  return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled);
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -268,7 +266,6 @@ void DataStructureModel::setNeedsToBeExpanded(const QModelIndex& index, bool val
 {
   DataStructureItem* item = getItem(index);
   item->setNeedsToBeExpanded(value);
-
 }
 
 // -----------------------------------------------------------------------------
@@ -504,7 +501,6 @@ QModelIndex DataStructureModel::sibling(int row, int column, const QModelIndex& 
     return index(currentIndex.row(), DataStructureItem::Name, currentIndex.parent());
   }
 }
-
 
 #endif
 

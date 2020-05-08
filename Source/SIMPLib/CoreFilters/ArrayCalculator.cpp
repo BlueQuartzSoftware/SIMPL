@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2015 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2015 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "ArrayCalculator.h"
 
 #include <QtCore/QRegularExpression>
@@ -130,7 +130,8 @@
     itemPtr = CalculatorArray<bool>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                       \
   }
 
-enum createdPathID : RenameDataPath::DataID_t {
+enum createdPathID : RenameDataPath::DataID_t
+{
   DataArrayID = 1
 };
 
@@ -270,13 +271,13 @@ void ArrayCalculator::dataCheck()
   ICalculatorArray::ValueType resultType = ICalculatorArray::ValueType::Unknown;
 
   for(const auto& item1 : parsedInfix)
-  //for(int32_t i = 0; i < parsedInfix.size(); i++)
+  // for(int32_t i = 0; i < parsedInfix.size(); i++)
   {
-    //CalculatorItem::Pointer item1 = parsedInfix[i];
+    // CalculatorItem::Pointer item1 = parsedInfix[i];
     if(item1->isICalculatorArray())
     {
       ICalculatorArray::Pointer array1 = std::dynamic_pointer_cast<ICalculatorArray>(item1);
-      if (item1->isArray())
+      if(item1->isArray())
       {
         if(!cDims.empty() && resultType == ICalculatorArray::ValueType::Array && cDims != array1->getArray()->getComponentDimensions())
         {
@@ -288,7 +289,7 @@ void ArrayCalculator::dataCheck()
         resultType = ICalculatorArray::ValueType::Array;
         cDims = array1->getArray()->getComponentDimensions();
       }
-      else if (resultType == ICalculatorArray::ValueType::Unknown)
+      else if(resultType == ICalculatorArray::ValueType::Unknown)
       {
         resultType = ICalculatorArray::ValueType::Number;
         cDims = array1->getArray()->getComponentDimensions();
@@ -307,12 +308,10 @@ void ArrayCalculator::dataCheck()
   AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
   if(nullptr == calculatedAM.get())
   {
-    QString ss = QObject::tr("The AttributeMatrix at %1/%2 was not found")
-                     .arg(calculatedAMPath.getDataContainerName(), calculatedAMPath.getAttributeMatrixName());
+    QString ss = QObject::tr("The AttributeMatrix at %1/%2 was not found").arg(calculatedAMPath.getDataContainerName(), calculatedAMPath.getAttributeMatrixName());
     setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::LOST_ATTR_MATRIX), ss);
     return;
   }
-
 
   if(resultType == ICalculatorArray::ValueType::Number)
   {
@@ -384,7 +383,6 @@ void ArrayCalculator::dataCheck()
     return;
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -476,13 +474,13 @@ void ArrayCalculator::execute()
     setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::UNEXPECTED_OUTPUT), ss);
     return;
   }
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T> IDataArray::Pointer convertArray(const DoubleArrayType::Pointer& inputArray)
+template <typename T>
+IDataArray::Pointer convertArray(const DoubleArrayType::Pointer& inputArray)
 {
   if(nullptr == inputArray)
   {
@@ -1016,7 +1014,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
     rpnEquation.push_back(item);
   }
 
-    delete oneComponent;
+  delete oneComponent;
 
   return rpnEquation;
 }

@@ -117,4 +117,3 @@ private slots:
   /** Received from the socket when a connection has been closed */
   void disconnected();
 };
-

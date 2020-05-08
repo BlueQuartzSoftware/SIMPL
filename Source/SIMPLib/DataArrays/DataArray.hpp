@@ -829,7 +829,7 @@ public:
     self_type operator++(int32_t unused)
     {
       // Replace with [[maybe_unused]] in C++ 17
-      (void) unused;
+      (void)unused;
       self_type i = *this;
       ptr_++;
       return i;
@@ -1219,7 +1219,6 @@ public:
   // =================================== END STL COMPATIBLE INTERFACe ===================================================
 
 protected:
-
   /**
    * @brief deallocates the memory block
    */

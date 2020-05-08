@@ -89,13 +89,13 @@ void DataContainerGridSelectionFilterParameter::readJson(const QJsonObject& json
     DataArrayPath dap;
     if(dap.readJson(obj))
     {
-      //m_SetterCallback(dap);
+      // m_SetterCallback(dap);
     }
     else // this is in here for historical where we used to save the value as a string
     {
       QString dcName = jsonValue.toString("");
       DataArrayPath dap(dcName, "", "");
-      //m_SetterCallback(dap);
+      // m_SetterCallback(dap);
     }
   }
 }

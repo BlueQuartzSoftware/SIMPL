@@ -113,7 +113,6 @@ void ApplyImageTransforms::dataCheck()
   }
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -137,10 +136,10 @@ void ApplyImageTransforms::execute()
     FloatVec3Type origin = imageGeom->getOrigin();
 
     ::ITransformContainer::Pointer iTransformContainer = imageGeom->getTransformContainer();
-    if (iTransformContainer)
+    if(iTransformContainer)
     {
       TransformContainer::Pointer transformContainer = std::dynamic_pointer_cast<TransformContainer>(iTransformContainer);
-      if (transformContainer)
+      if(transformContainer)
       {
         TransformContainer::TransformParametersType parameters = transformContainer->getParameters();
 

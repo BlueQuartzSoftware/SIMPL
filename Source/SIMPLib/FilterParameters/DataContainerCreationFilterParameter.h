@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
@@ -54,10 +54,8 @@
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
  * SIMPL_NEW_DC_CREATION_FP("Created Data Container", CreatedDataContainer, FilterParameter::CreatedArray, GenericExample);
  */
-#define SIMPL_NEW_DC_CREATION_FP(...) \
-  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
-  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (DataContainerCreationFilterParameter, __VA_ARGS__))
+#define SIMPL_NEW_DC_CREATION_FP(...)                                                                                                                                                                  \
+  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(DataContainerCreationFilterParameter, __VA_ARGS__))
 
 /**
  * @brief The DataContainerCreationFilterParameter class is used by filters to instantiate an DataContainerCreationWidget.  By instantiating an instance of
@@ -103,8 +101,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                     int groupIndex = -1);
+  static Pointer New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                     const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~DataContainerCreationFilterParameter() override;
 
@@ -113,67 +111,67 @@ public:
    * this FilterParameter subclass
    * @return
    */
-    QString getWidgetType() const override;
+  QString getWidgetType() const override;
 
-    /**
-     * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
-     * @param json The QJsonObject that the filter parameter reads from.
-     */
-    void readJson(const QJsonObject& json) override;
+  /**
+   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
+   * @param json The QJsonObject that the filter parameter reads from.
+   */
+  void readJson(const QJsonObject& json) override;
 
-    /**
-     * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
-     * @param json The QJsonObject that the filter parameter writes to.
-     */
-    void writeJson(QJsonObject& json) override;
+  /**
+   * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
+   * @param json The QJsonObject that the filter parameter writes to.
+   */
+  void writeJson(QJsonObject& json) override;
 
-    /**
-    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-    * that this FilterParameter subclass represents.
-    * @return The SetterCallback
-    */
-    /**
-     * @brief Setter property for SetterCallback
-     */
-    void setSetterCallback(const DataContainerCreationFilterParameter::SetterCallbackType& value);
-    /**
-     * @brief Getter property for SetterCallback
-     * @return Value of SetterCallback
-     */
-    DataContainerCreationFilterParameter::SetterCallbackType getSetterCallback() const;
+  /**
+   * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+   * that this FilterParameter subclass represents.
+   * @return The SetterCallback
+   */
+  /**
+   * @brief Setter property for SetterCallback
+   */
+  void setSetterCallback(const DataContainerCreationFilterParameter::SetterCallbackType& value);
+  /**
+   * @brief Getter property for SetterCallback
+   * @return Value of SetterCallback
+   */
+  DataContainerCreationFilterParameter::SetterCallbackType getSetterCallback() const;
 
-    /**
-    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-    * that this FilterParameter subclass represents.
-    * @return The GetterCallback
-    */
-    /**
-     * @brief Setter property for GetterCallback
-     */
-    void setGetterCallback(const DataContainerCreationFilterParameter::GetterCallbackType& value);
-    /**
-     * @brief Getter property for GetterCallback
-     * @return Value of GetterCallback
-     */
-    DataContainerCreationFilterParameter::GetterCallbackType getGetterCallback() const;
+  /**
+   * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+   * that this FilterParameter subclass represents.
+   * @return The GetterCallback
+   */
+  /**
+   * @brief Setter property for GetterCallback
+   */
+  void setGetterCallback(const DataContainerCreationFilterParameter::GetterCallbackType& value);
+  /**
+   * @brief Getter property for GetterCallback
+   * @return Value of GetterCallback
+   */
+  DataContainerCreationFilterParameter::GetterCallbackType getGetterCallback() const;
 
-    /**
-     * @brief Handles changes to the DataArrayPath
-     * @param filter
-     * @param renamePath
-     */
-    void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath) override;
+  /**
+   * @brief Handles changes to the DataArrayPath
+   * @param filter
+   * @param renamePath
+   */
+  void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath) override;
 
-  protected:
-    /**
-     * @brief DataContainerCreationFilterParameter The default constructor.  It is protected because this
-     * filter parameter should only be instantiated using its New(...) function or short-form macro.
-     */
+protected:
+  /**
+   * @brief DataContainerCreationFilterParameter The default constructor.  It is protected because this
+   * filter parameter should only be instantiated using its New(...) function or short-form macro.
+   */
   DataContainerCreationFilterParameter();
 
 public:
-  DataContainerCreationFilterParameter(const DataContainerCreationFilterParameter&) = delete; // Copy Constructor Not Implemented
-  DataContainerCreationFilterParameter(DataContainerCreationFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  DataContainerCreationFilterParameter(const DataContainerCreationFilterParameter&) = delete;            // Copy Constructor Not Implemented
+  DataContainerCreationFilterParameter(DataContainerCreationFilterParameter&&) = delete;                 // Move Constructor Not Implemented
   DataContainerCreationFilterParameter& operator=(const DataContainerCreationFilterParameter&) = delete; // Copy Assignment Not Implemented
   DataContainerCreationFilterParameter& operator=(DataContainerCreationFilterParameter&&) = delete;      // Move Assignment Not Implemented
 
@@ -181,4 +179,3 @@ private:
   DataContainerCreationFilterParameter::SetterCallbackType m_SetterCallback = {};
   DataContainerCreationFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
-

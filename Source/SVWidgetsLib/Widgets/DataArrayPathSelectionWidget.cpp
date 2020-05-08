@@ -1120,8 +1120,7 @@ void DataArrayPathSelectionWidget::afterPreflight()
       found = true;
     }
     break;
-  case DataArrayPathHelper::DataType::DataArray:
-  {
+  case DataArrayPathHelper::DataType::DataArray: {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(getDataArrayPath());
     if(am && am->getAttributeArray(getDataArrayPath().getDataArrayName()))
     {

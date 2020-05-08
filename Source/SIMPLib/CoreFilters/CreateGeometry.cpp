@@ -563,7 +563,7 @@ void CreateGeometry::dataCheck()
     FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getSharedVertexListArrayPath5(), cDims);
     cDims[0] = 8;
     m_HexesPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedHexList>(this, getSharedHexListArrayPath(), cDims);
-    if (m_HexesPtr.lock())
+    if(m_HexesPtr.lock())
     {
       m_Hexes = m_HexesPtr.lock()->getPointer(0);
     }
@@ -572,7 +572,6 @@ void CreateGeometry::dataCheck()
     {
       return;
     }
-
 
     HexahedralGeom::Pointer hexahedral = HexahedralGeom::NullPointer();
     if(static_cast<int>(getArrayHandling()) == k_CopyArrays)
@@ -599,15 +598,13 @@ void CreateGeometry::dataCheck()
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }
-  default:
-  {
+  default: {
     QString ss = QObject::tr("Invalid selection for Geometry type");
     setErrorCondition(-701, ss);
     break;
   }
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -840,22 +837,22 @@ void CreateGeometry::execute()
   case 7: // HexahedralGeom
   {
     size_t idx = 0;
-    for (size_t i = 0; i < m_HexesPtr.lock()->getSize(); i++)
+    for(size_t i = 0; i < m_HexesPtr.lock()->getSize(); i++)
     {
-      if (m_Hexes[i] > idx)
+      if(m_Hexes[i] > idx)
       {
         idx = m_Hexes[i];
       }
     }
 
-    if ((idx + 1) > m_NumVerts)
+    if((idx + 1) > m_NumVerts)
     {
       QString ss = QObject::tr("Supplied hexahedra list contains a vertex index larger than the total length of the supplied shared vertex list\n"
-        "Index Value: %1\n"
-        "Number of Vertices: %2")
-        .arg(idx)
-        .arg(m_NumVerts);
-      if (m_TreatWarningsAsErrors)
+                               "Index Value: %1\n"
+                               "Number of Vertices: %2")
+                       .arg(idx)
+                       .arg(m_NumVerts);
+      if(m_TreatWarningsAsErrors)
       {
         setErrorCondition(-1, ss);
       }
@@ -868,12 +865,10 @@ void CreateGeometry::execute()
 
     break;
   }
-  default:
-  {
+  default: {
     break;
   }
   }
-
 }
 
 // -----------------------------------------------------------------------------

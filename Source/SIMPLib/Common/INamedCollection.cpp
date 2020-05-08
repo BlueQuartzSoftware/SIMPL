@@ -59,5 +59,3 @@ INamedCollection::Pointer INamedCollection::NullPointer()
 {
   return Pointer(static_cast<Self*>(nullptr));
 }
-
-

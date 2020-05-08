@@ -44,10 +44,10 @@ using AbstractMontageShPtr = std::shared_ptr<AbstractMontage>;
 
 namespace MontageSupport
 {
-  namespace IO
-  {
-    AbstractMontageShPtr ReadMontageFromHDF5(hid_t parentId, const DataContainerArrayShPtr& dca, int& err);
+namespace IO
+{
+AbstractMontageShPtr ReadMontageFromHDF5(hid_t parentId, const DataContainerArrayShPtr& dca, int& err);
 
-    DataContainerArray::MontageCollection ReadMontagesFromHDF5(hid_t parentId, const DataContainerArrayShPtr& dca, int& err);
-  }
-}
+DataContainerArray::MontageCollection ReadMontagesFromHDF5(hid_t parentId, const DataContainerArrayShPtr& dca, int& err);
+} // namespace IO
+} // namespace MontageSupport

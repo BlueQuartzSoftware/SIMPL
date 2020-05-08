@@ -72,6 +72,7 @@ public:
   {
     compute(range.min(), range.max());
   }
+
 private:
   HexahedralGeom* m_Hexas;
   DoubleArrayType::Pointer m_Field;
@@ -185,7 +186,7 @@ void HexahedralGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeM
   {
     return;
   }
-  //if(data->getName().compare(name) != 0)
+  // if(data->getName().compare(name) != 0)
   //{
   //  data->setName(name);
   //}
@@ -367,7 +368,6 @@ void HexahedralGeom::deleteElementCentroids()
 {
   m_HexCentroids = FloatArrayType::NullPointer();
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -723,7 +723,7 @@ QString HexahedralGeom::getInfoString(SIMPL::InfoStringFormat format) const
   {
     return getToolTipGenerator().generateHTML();
   }
-  
+
   return QString();
 }
 

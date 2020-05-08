@@ -52,7 +52,8 @@ public:
   // -----------------------------------------------------------------------------
   //  Uses Raw Pointers to save data to the data file
   // -----------------------------------------------------------------------------
-  template <typename T> herr_t writePointer1DArrayDataset(hid_t loc_id)
+  template <typename T>
+  herr_t writePointer1DArrayDataset(hid_t loc_id)
   {
 
     T value = 0x0;
@@ -82,7 +83,8 @@ public:
   // -----------------------------------------------------------------------------
   //  Uses Raw Pointers to save data to the data file
   // -----------------------------------------------------------------------------
-  template <typename T> herr_t writePointer2DArrayDataset(hid_t loc_id)
+  template <typename T>
+  herr_t writePointer2DArrayDataset(hid_t loc_id)
   {
 
     T value = 0x0;
@@ -113,7 +115,8 @@ public:
   // -----------------------------------------------------------------------------
   //  Uses Raw Pointers to save data to the data file
   // -----------------------------------------------------------------------------
-  template <typename T> herr_t writePointer3DArrayDataset(hid_t loc_id)
+  template <typename T>
+  herr_t writePointer3DArrayDataset(hid_t loc_id)
   {
 
     T value = 0x0;
@@ -145,7 +148,8 @@ public:
   // -----------------------------------------------------------------------------
   //  Uses Raw Pointers to save data to the data file
   // -----------------------------------------------------------------------------
-  template <typename T> herr_t writePointer4DArrayDataset(hid_t loc_id)
+  template <typename T>
+  herr_t writePointer4DArrayDataset(hid_t loc_id)
   {
 
     T value = 0x0;
@@ -358,7 +362,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void DatasetTest(ImportHDF5Dataset::Pointer filter, QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList, std::vector<size_t> amDims, int errCode)
+  template <typename T>
+  void DatasetTest(ImportHDF5Dataset::Pointer filter, QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList, std::vector<size_t> amDims, int errCode)
   {
     if(importInfoList.empty())
     {
@@ -399,13 +404,14 @@ public:
       statusMessage.append("tDims = " + tDimsStr + "\n");
       statusMessage.append("cDims = \n" + cDimsVectorStr);
 
-      //std::cout << statusMessage.toStdString() << std::endl;
+      // std::cout << statusMessage.toStdString() << std::endl;
     }
     else
     {
       ImportHDF5Dataset::DatasetImportInfo info = dsetInfoList[0];
-//      std::cout << QObject::tr("Starting %1 Dataset Test: Dataset Path = %2, tDims = %3, cDims = %4").arg(typeStr).arg(info.dataSetPath).arg(tDimsStr).arg(info.componentDimensions).toStdString()
-//                << std::endl;
+      //      std::cout << QObject::tr("Starting %1 Dataset Test: Dataset Path = %2, tDims = %3, cDims =
+      //      %4").arg(typeStr).arg(info.dataSetPath).arg(tDimsStr).arg(info.componentDimensions).toStdString()
+      //                << std::endl;
     }
 
     filter->execute();

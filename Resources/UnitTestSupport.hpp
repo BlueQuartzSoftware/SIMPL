@@ -428,8 +428,8 @@ bool AlmostEqualUlpsFinal(float* A, float* B, int maxUlps)
     QString buf;                                                                                                                                                                                       \
     QTextStream ss(&buf);                                                                                                                                                                              \
     ss << "Your test required the following\n            '";                                                                                                                                           \
-    ss << "AlmostEqualUlpsFinal(" << #L << ", " << #R << ", " << #Ulps << ")'\n             but this condition was not met with MaxUlps=" << Ulps << "\n";                                              \
-    ss << "             " << *L << "==" << *R;                                                                                                                                                           \
+    ss << "AlmostEqualUlpsFinal(" << #L << ", " << #R << ", " << #Ulps << ")'\n             but this condition was not met with MaxUlps=" << Ulps << "\n";                                             \
+    ss << "             " << *L << "==" << *R;                                                                                                                                                         \
     DREAM3D_TEST_THROW_EXCEPTION(buf.toStdString())                                                                                                                                                    \
   }
 
@@ -533,7 +533,8 @@ bool AlmostEqualUlpsFinal(float* A, float* B, int maxUlps)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T, typename K> void require_equal(T l, const QString& L, K r, const QString& R, const QString file = "", int line = 0)
+template <typename T, typename K>
+void require_equal(T l, const QString& L, K r, const QString& R, const QString file = "", int line = 0)
 {
   if(l != r)
   {
@@ -550,7 +551,8 @@ template <typename T, typename K> void require_equal(T l, const QString& L, K r,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T, typename K> void require_less_than(T l, const QString& L, K r, const QString& R, const QString file = "", int line = 0)
+template <typename T, typename K>
+void require_less_than(T l, const QString& L, K r, const QString& R, const QString file = "", int line = 0)
 {
   if(l >= r)
   {
@@ -566,7 +568,8 @@ template <typename T, typename K> void require_less_than(T l, const QString& L, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T, typename K> void require_greater_than(T l, const QString& L, K r, const QString& R, const QString file = "", int line = 0)
+template <typename T, typename K>
+void require_greater_than(T l, const QString& L, K r, const QString& R, const QString file = "", int line = 0)
 {
   if(l <= r)
   {

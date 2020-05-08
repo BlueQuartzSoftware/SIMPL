@@ -68,8 +68,8 @@ public:
   int attrMatType = 999;
   DataArrayPath selectedPath;
 
-  int headerLine = 0; // -1 means this selection is not used
-  bool headerIsCustom = false; // The user has set their own header names
+  int headerLine = 0;              // -1 means this selection is not used
+  bool headerIsCustom = false;     // The user has set their own header names
   bool headerUsesDefaults = false; // The user just wants to use the automatically generated headers
   bool consecutiveDelimiters = false;
   bool automaticAM = false;
@@ -127,4 +127,3 @@ public:
 };
 
 Q_DECLARE_METATYPE(ASCIIWizardData)
-

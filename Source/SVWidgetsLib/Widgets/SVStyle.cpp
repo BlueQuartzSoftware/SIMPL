@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2018 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2018 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "SVStyle.h"
 
@@ -53,10 +53,11 @@ static QMap<QString, QImage> s_NameToImage;
 
 SVStyle* SVStyle::self = nullptr;
 
-namespace  {
+namespace
+{
 const QString kNormalColor("#8f8f91");
 const QString kErrorColor("#BC0000");
-}
+} // namespace
 
 // -----------------------------------------------------------------------------
 //
@@ -67,10 +68,10 @@ SVStyle::SVStyle()
   SVStyle::self = this;
 
   const QMetaObject* metaObj = metaObject();
-  for (int i = metaObj->propertyOffset(); i < metaObj->propertyCount(); ++i)
+  for(int i = metaObj->propertyOffset(); i < metaObj->propertyCount(); ++i)
   {
     QMetaProperty property = metaObj->property(i);
-    if (property.type() == QVariant::Color)
+    if(property.type() == QVariant::Color)
     {
       m_ColorProperties.push_back(property.name());
     }
@@ -99,7 +100,7 @@ SVStyle* SVStyle::Instance()
 // -----------------------------------------------------------------------------
 void SVStyle::invalidateColorProperties()
 {
-  for (int i = 0; i < m_ColorProperties.size(); i++)
+  for(int i = 0; i < m_ColorProperties.size(); i++)
   {
     QString colorPropertyName = m_ColorProperties[i];
     setProperty(colorPropertyName.toStdString().c_str(), QColor());
@@ -109,22 +110,22 @@ void SVStyle::invalidateColorProperties()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
+bool SVStyle::loadStyleSheet(const QString& jsonFilePath)
 {
-//  qDebug() << "SVStyle::loadStyleSheet() " << jsonFilePath;
+  //  qDebug() << "SVStyle::loadStyleSheet() " << jsonFilePath;
   invalidateColorProperties();
 
   bool success = true;
-  
+
   QFileInfo jsonFileInfo(jsonFilePath);
-  
+
   QFile jsonFile(jsonFilePath);
   if(!jsonFile.open(QFile::ReadOnly))
   {
     qDebug() << "Could not open JSON File " << jsonFilePath;
-    return false; 
+    return false;
   }
-  
+
   QByteArray jsonContent = jsonFile.readAll();
   QJsonParseError parseError;
   QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonContent, &parseError);
@@ -135,32 +136,32 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
     return false;
   }
   QJsonObject rootObj = jsonDoc.object();
-  
+
   // Create the CSS File Path and try to read the CSS template file
   QString cssFileName = rootObj["CSS_File_Name"].toString();
   cssFileName = QString("%1/%2").arg(jsonFileInfo.absolutePath(), 1).arg(cssFileName, 2);
-  
+
   QFile cssFile(cssFileName);
   if(!cssFile.open(QFile::ReadOnly))
   {
     qDebug() << "Could not open CSS File " << cssFileName;
-    return false; 
+    return false;
   }
   QString cssContent = QString::fromLatin1(cssFile.readAll());
-  
+
   // Read the variable mapping from the JSON file
   QJsonObject varMapping = rootObj["Named_Variables"].toObject();
-  
+
   // Get the CSS Replacements that need to be made
   QJsonObject cssRepl = rootObj["CSS_Replacements"].toObject();
   QStringList keys = cssRepl.keys();
   QStringList::const_iterator constIterator;
-  for (constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
+  for(constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
   {
     const QString key = *constIterator;
 
     QString value = loadStringProperty(key, cssRepl, varMapping);
-    if (!value.isNull())
+    if(!value.isNull())
     {
       // Do the replacement
       cssContent = cssContent.replace(key, value);
@@ -187,16 +188,18 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
       }
       else
       {
-        this->setProperty( key.toLocal8Bit().constData(), QColor(value));
+        this->setProperty(key.toLocal8Bit().constData(), QColor(value));
       }
     }
   }
-  
+
   //
   //
   keys.clear();
-  keys << "FilterBackgroundColor"  << "FilterSelectionColor" << "FilterFontColor";
-  for (constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
+  keys << "FilterBackgroundColor"
+       << "FilterSelectionColor"
+       << "FilterFontColor";
+  for(constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
   {
     const QString key = *constIterator;
     QString value = rootObj[key].toString();
@@ -206,10 +209,10 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
     {
       value = varMapping[value].toString();
     }
-    
+
     if(value.startsWith("#"))
     {
-      this->setProperty( key.toLocal8Bit().constData(), QColor(value));
+      this->setProperty(key.toLocal8Bit().constData(), QColor(value));
     }
     else
     {
@@ -223,7 +226,7 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
         int r = tokens[0].toInt(&ok);
         int g = tokens[1].toInt(&ok);
         int b = tokens[2].toInt(&ok);
-        bool didSet = this->setProperty( key.toLocal8Bit().constData(), QColor(r, g, b));
+        bool didSet = this->setProperty(key.toLocal8Bit().constData(), QColor(r, g, b));
         if(!didSet)
         {
           qDebug() << "Property: " << key << " was not set correctly";
@@ -231,31 +234,31 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
       }
     }
   }
-  
+
   keys.clear();
 
   // Get the CSS Font replacements that need to be made
   QJsonObject fontRepl = rootObj["Font_Replacements"].toObject();
   keys = fontRepl.keys();
-  #if defined(Q_OS_MAC)
+#if defined(Q_OS_MAC)
   QString os("macOS");
 #elif defined(Q_OS_WIN)
   QString os("Windows");
 #else
   QString os("Linux");
 #endif
-  
+
   QJsonObject osFontRepl = fontRepl[os].toObject();
   keys = osFontRepl.keys();
-  for (constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
+  for(constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
   {
     const QString key = *constIterator;
     QString value = osFontRepl[key].toString();
     cssContent = cssContent.replace(key, value);
   }
-  
+
   m_CurrentThemeFilePath = jsonFilePath;
-  
+
   // FINALLY, Set the style sheet into the app object
   qApp->setStyleSheet(cssContent);
   emit styleSheetLoaded(jsonFilePath);
@@ -265,14 +268,14 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString SVStyle::loadStringProperty(const QString &key, QJsonObject cssRepl, QJsonObject varMapping)
+QString SVStyle::loadStringProperty(const QString& key, QJsonObject cssRepl, QJsonObject varMapping)
 {
   QString value = cssRepl[key].toString();
-  if (!value.isNull())
+  if(!value.isNull())
   {
     // See if it is a variable and if it is, then get the real value from
     // the Named_Variables section
-    for (QJsonObject::iterator iter = varMapping.begin(); iter != varMapping.end(); iter++)
+    for(QJsonObject::iterator iter = varMapping.begin(); iter != varMapping.end(); iter++)
     {
       QString mapKey = iter.key();
       QString mapValue = iter.value().toString();
@@ -288,14 +291,14 @@ QString SVStyle::loadStringProperty(const QString &key, QJsonObject cssRepl, QJs
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int SVStyle::loadIntegerProperty(const QString &key, QJsonObject cssRepl, QJsonObject varMapping)
+int SVStyle::loadIntegerProperty(const QString& key, QJsonObject cssRepl, QJsonObject varMapping)
 {
   QString value = cssRepl[key].toString();
-  if (!value.isNull())
+  if(!value.isNull())
   {
     // See if it is a variable and if it is, then get the real value from
     // the Named_Variables section
-    if (varMapping.contains(value))
+    if(varMapping.contains(value))
     {
       int intValue = varMapping[value].toInt();
       return intValue;
@@ -425,11 +428,8 @@ void SVStyle::LineEditErrorStyle(QLineEdit* lineEdit)
   QString str;
   QTextStream ss(&str);
   ss << "QLineEdit#" << lineEdit->objectName() << "{";
-  ss << "border: 1px solid rgb("
-  << m_Widget_Error_color.red() << ", "
-  << m_Widget_Error_color.green() << ", "
-  << m_Widget_Error_color.blue() << ");"
-  << "}";
+  ss << "border: 1px solid rgb(" << m_Widget_Error_color.red() << ", " << m_Widget_Error_color.green() << ", " << m_Widget_Error_color.blue() << ");"
+     << "}";
   lineEdit->setStyleSheet(str);
 }
 
@@ -450,30 +450,24 @@ void SVStyle::LineEditBackgroundErrorStyle(QLineEdit* lineEdit)
   QTextStream ss(&str);
   ss << "QLineEdit#" << lineEdit->objectName() << "{";
   //  ss << "border: 1px solid rgb(180, 0, 0);";
-  ss << "background-color: rgb("
-  << m_QLineEditError_background_color.red() << ", "
-  << m_QLineEditError_background_color.green() << ", "
-  << m_QLineEditError_background_color.blue() << ");"
-  << "}";
-  
+  ss << "background-color: rgb(" << m_QLineEditError_background_color.red() << ", " << m_QLineEditError_background_color.green() << ", " << m_QLineEditError_background_color.blue() << ");"
+     << "}";
+
   lineEdit->setStyleSheet(str);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVStyle::SetErrorColor(const QString &widgetType, QWidget* widget)
+void SVStyle::SetErrorColor(const QString& widgetType, QWidget* widget)
 {
   QString str;
   QTextStream ss(&str);
   ss << widgetType << "#" << widget->objectName() << "{";
   //  ss << "border: 1px solid rgb(180, 0, 0);";
-  ss << "color: rgb("
-  << m_Text_Error_color.red() << ", "
-  << m_Text_Error_color.green() << ", "
-  << m_Text_Error_color.blue() << ");"
-  << "}";
-  
+  ss << "color: rgb(" << m_Text_Error_color.red() << ", " << m_Text_Error_color.green() << ", " << m_Text_Error_color.blue() << ");"
+     << "}";
+
   widget->setStyleSheet(str);
 }
 
@@ -483,7 +477,7 @@ void SVStyle::SetErrorColor(const QString &widgetType, QWidget* widget)
 QString SVStyle::QToolSelectionButtonStyle(bool exists)
 {
   QString str;
-  #if 0
+#if 0
   QTextStream ss(&str);
 
   QFont font;
@@ -558,7 +552,7 @@ QString SVStyle::QToolSelectionButtonStyle(bool exists)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QColor SVStyle::ColorForFilterGroup(const QString &grpName)
+QColor SVStyle::ColorForFilterGroup(const QString& grpName)
 {
   QColor color(102, 96, 255);
 
@@ -647,7 +641,6 @@ QColor SVStyle::ColorForFilterGroup(const QString &grpName)
     }
   }
 
-
   return color;
 }
 
@@ -678,12 +671,12 @@ QColor SVStyle::GetFilterFontColor()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QIcon SVStyle::IconForGroup(const QString &grpName)
+QIcon SVStyle::IconForGroup(const QString& grpName)
 {
-  
+
   QColor color = ColorForFilterGroup(grpName);
   QImage grpImage;
-  
+
   if(s_NameToImage.contains(grpName))
   {
     return QIcon(QPixmap::fromImage(s_NameToImage[grpName]));
@@ -707,7 +700,7 @@ QIcon SVStyle::IconForGroup(const QString &grpName)
           pixel.setGreenF((pixel.greenF() * 1.50 > 1.0) ? 1.0 : pixel.greenF() * 1.50);
           pixel.setBlueF((pixel.blueF() * 1.50 > 1.0) ? 1.0 : pixel.blueF() * 1.50);
 
-          if (pixel.isValid())
+          if(pixel.isValid())
           {
             grpImage.setPixelColor(w, h, pixel);
           }
@@ -719,7 +712,7 @@ QIcon SVStyle::IconForGroup(const QString &grpName)
           //          pixel.setRedF(pixel.redF() * 1.50);
           //          pixel.setGreenF(pixel.greenF() * 1.50);
           //          pixel.setBlueF(pixel.blueF() * 1.50);
-          if (pixel.isValid())
+          if(pixel.isValid())
           {
             grpImage.setPixelColor(w, h, pixel);
           }
@@ -732,7 +725,7 @@ QIcon SVStyle::IconForGroup(const QString &grpName)
           pixel.setGreenF(pixel.greenF() * .50);
           pixel.setBlueF(pixel.blueF() * .50);
 
-          if (pixel.isValid())
+          if(pixel.isValid())
           {
             grpImage.setPixelColor(w, h, pixel);
           }
@@ -758,7 +751,8 @@ QString SVStyle::WrapTextWithHtmlStyle(const QString& msg, bool bold) const
   {
     out << "<b ";
   }
-  else {
+  else
+  {
     out << "<span ";
   }
   out << "style=\"color: " << getQLabel_color().name(QColor::HexRgb) << ";\">";
@@ -767,7 +761,8 @@ QString SVStyle::WrapTextWithHtmlStyle(const QString& msg, bool bold) const
   {
     out << " </b>";
   }
-  else {
+  else
+  {
     out << "</span>";
   }
   return formattedMessage;

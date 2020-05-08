@@ -340,6 +340,7 @@ template <typename T>
 class IVec3 : public SIMPLArray<T, 3>
 {
   using ParentType = SIMPLArray<T, 3>;
+
 public:
   IVec3(const IVec3&) = default;
   IVec3(IVec3&&) noexcept = default;
@@ -464,9 +465,11 @@ public:
 };
 
 // -----------------------------------------------------------------------------
-template <typename T> class IVec4 : public SIMPLArray<T, 4>
+template <typename T>
+class IVec4 : public SIMPLArray<T, 4>
 {
   using ParentType = SIMPLArray<T, 4>;
+
 public:
   IVec4(const IVec4&) = default;
   IVec4(IVec4&&) noexcept = default;

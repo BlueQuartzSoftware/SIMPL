@@ -31,7 +31,6 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "V1RequestMapper.h"
 
-
 #include "QtWebApp/logging/filelogger.h"
 
 #include "ApiNotFoundController.h"

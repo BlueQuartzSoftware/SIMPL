@@ -12,8 +12,8 @@ public:
   ~ServerSettings();
   ServerSettings();
 
-  ServerSettings(const ServerSettings&) = delete; // Copy Constructor Not Implemented
-  ServerSettings(ServerSettings&&) = delete;      // Move Constructor Not Implemented
+  ServerSettings(const ServerSettings&) = delete;            // Copy Constructor Not Implemented
+  ServerSettings(ServerSettings&&) = delete;                 // Move Constructor Not Implemented
   ServerSettings& operator=(const ServerSettings&) = delete; // Copy Assignment Not Implemented
   ServerSettings& operator=(ServerSettings&&) = delete;      // Move Assignment Not Implemented
 

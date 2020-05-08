@@ -59,7 +59,6 @@
 PipelineListenerMessageHandler::PipelineListenerMessageHandler(PipelineListener* listener)
 : m_Listener(listener)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -153,7 +152,7 @@ void PipelineListenerMessageHandler::processMessage(const FilterProgressMessage*
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListenerMessageHandler::streamToLog(const QString &msgString, QFile* log) const
+void PipelineListenerMessageHandler::streamToLog(const QString& msgString, QFile* log) const
 {
   if(log && log->open(QIODevice::ReadWrite))
   {

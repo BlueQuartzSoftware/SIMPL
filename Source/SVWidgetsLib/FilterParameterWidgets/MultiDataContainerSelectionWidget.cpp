@@ -1,42 +1,41 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "MultiDataContainerSelectionWidget.h"
 
 #include <QtCore/QList>
 #include <QtCore/QModelIndex>
-
 
 #include <QtWidgets/QListWidgetItem>
 
@@ -111,7 +110,7 @@ void MultiDataContainerSelectionWidget::setupGui()
   availableDataContainersListWidget->installEventFilter(this);
 
   // Generate the text for the QLabel
-  //label->setText(getFilterParameter()->getHumanLabel());
+  // label->setText(getFilterParameter()->getHumanLabel());
 
   // Lastly, hook up the filter's signals and slots to our own signals and slots
   // Catch when the filter is about to execute the preflight
@@ -124,11 +123,10 @@ void MultiDataContainerSelectionWidget::setupGui()
   connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &MultiDataContainerSelectionWidget::filterNeedsInputParameters);
 
   // If the DataArrayPath is updated in the filter, update the widget
-  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
-    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
   QStringList dcNames = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QStringList>();
-  for (int i=0; i<dcNames.size(); i++)
+  for(int i = 0; i < dcNames.size(); i++)
   {
     QString dcName = dcNames[i];
     QListWidgetItem* item = new QListWidgetItem(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"), dcName);
@@ -201,7 +199,7 @@ void MultiDataContainerSelectionWidget::on_selectBtn_clicked()
   if(!indexList.empty())
   {
     int offset = 0;
-    for (int i=0; i<indexList.size(); i++)
+    for(int i = 0; i < indexList.size(); i++)
     {
       int row = indexList[i].row() - offset;
       QListWidgetItem* item = availableDataContainersListWidget->takeItem(row);
@@ -283,7 +281,7 @@ void MultiDataContainerSelectionWidget::on_removeBtn_clicked()
   if(!indexList.empty())
   {
     int offset = 0;
-    for (int i=0; i<indexList.size(); i++)
+    for(int i = 0; i < indexList.size(); i++)
     {
       int row = indexList[i].row() - offset;
       QListWidgetItem* item = selectedDataContainersListWidget->item(row);
@@ -312,23 +310,23 @@ void MultiDataContainerSelectionWidget::selectionChanged()
   int selectSize = availableDataContainersListWidget->selectionModel()->selectedRows().size();
   int orderSize = selectedDataContainersListWidget->selectionModel()->selectedRows().size();
 
-  if (selectSize > 0)
+  if(selectSize > 0)
   {
     selectBtn->setEnabled(true);
   }
 
-  if (orderSize > 0)
+  if(orderSize > 0)
   {
     deselectBtn->setEnabled(true);
 
-    if (orderSize == 1)
+    if(orderSize == 1)
     {
       upBtn->setEnabled(true);
       downBtn->setEnabled(true);
     }
 
     bool allErrorRows = true;
-    for (int i=0; i<orderSize; i++)
+    for(int i = 0; i < orderSize; i++)
     {
       int row = selectedDataContainersListWidget->selectionModel()->selectedRows()[i].row();
       if(selectedDataContainersListWidget->item(row)->background() != QColor(235, 110, 110))
@@ -373,9 +371,9 @@ void MultiDataContainerSelectionWidget::clearNonexistantDataContainers()
 
   QList<QString> dcNames = dca->getDataContainerNames();
 
-  for (int i = 0; i < availableDataContainersListWidget->count(); i++)
+  for(int i = 0; i < availableDataContainersListWidget->count(); i++)
   {
-    if (!dcNames.contains(availableDataContainersListWidget->item(i)->text()))
+    if(!dcNames.contains(availableDataContainersListWidget->item(i)->text()))
     {
       QListWidgetItem* item = availableDataContainersListWidget->takeItem(i);
       delete item;
@@ -383,9 +381,9 @@ void MultiDataContainerSelectionWidget::clearNonexistantDataContainers()
     }
   }
 
-  for (int i = 0; i < selectedDataContainersListWidget->count(); i++)
+  for(int i = 0; i < selectedDataContainersListWidget->count(); i++)
   {
-    if (!dcNames.contains(selectedDataContainersListWidget->item(i)->text()))
+    if(!dcNames.contains(selectedDataContainersListWidget->item(i)->text()))
     {
       QListWidgetItem* item = selectedDataContainersListWidget->takeItem(i);
       delete item;
@@ -416,37 +414,37 @@ void MultiDataContainerSelectionWidget::beforePreflight()
   QList<QString> dcNames = dca->getDataContainerNames();
 
   QList<QString> selectListNames;
-  for (int i = 0; i < availableDataContainersListWidget->count(); i++)
+  for(int i = 0; i < availableDataContainersListWidget->count(); i++)
   {
-	  selectListNames.append(availableDataContainersListWidget->item(i)->text());
+    selectListNames.append(availableDataContainersListWidget->item(i)->text());
   }
 
   QList<QString> orderListNames;
-  for (int i = 0; i < selectedDataContainersListWidget->count(); i++)
+  for(int i = 0; i < selectedDataContainersListWidget->count(); i++)
   {
-	  QListWidgetItem* item = selectedDataContainersListWidget->item(i);
-	  QString name = item->text();
-	  orderListNames.append(name);
-	  if (!dcNames.contains(name))
-	  {
-		  //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
-		  // item->setBackgroundColor(QColor(235, 110, 110));
-		  item->setIcon(QIcon(":/SIMPL/icons/images/bullet_ball_red.png"));
-	  }
-	  else
-	  {
-		  // item->setBackgroundColor(QColor(255, 255, 255));
-		  item->setIcon(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"));
-	  }
+    QListWidgetItem* item = selectedDataContainersListWidget->item(i);
+    QString name = item->text();
+    orderListNames.append(name);
+    if(!dcNames.contains(name))
+    {
+      // item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
+      // item->setBackgroundColor(QColor(235, 110, 110));
+      item->setIcon(QIcon(":/SIMPL/icons/images/bullet_ball_red.png"));
+    }
+    else
+    {
+      // item->setBackgroundColor(QColor(255, 255, 255));
+      item->setIcon(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"));
+    }
   }
 
-  for (int i = 0; i < dcNames.size(); i++)
+  for(int i = 0; i < dcNames.size(); i++)
   {
-	  if (!selectListNames.contains(dcNames[i]) && !orderListNames.contains(dcNames[i]))
-	  {
-		  QListWidgetItem* item = new QListWidgetItem(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"), dcNames[i]);
-		  availableDataContainersListWidget->addItem(item);
-	  }
+    if(!selectListNames.contains(dcNames[i]) && !orderListNames.contains(dcNames[i]))
+    {
+      QListWidgetItem* item = new QListWidgetItem(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"), dcNames[i]);
+      availableDataContainersListWidget->addItem(item);
+    }
   }
 }
 
@@ -463,10 +461,10 @@ void MultiDataContainerSelectionWidget::afterPreflight()
 void MultiDataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   QStringList dcNames;
-	for (int i = 0; i < selectedDataContainersListWidget->count(); i++)
-	{
+  for(int i = 0; i < selectedDataContainersListWidget->count(); i++)
+  {
     dcNames.push_back(selectedDataContainersListWidget->item(i)->text());
-	}
+  }
   Q_UNUSED(filter)
   MultiDataContainerSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
   if(setter)

@@ -39,7 +39,7 @@ public:
   SIMPL_INSTANCE_PROPERTY(MapperType2, PythonicCodes)
   void addPythonicCodes(const QString& className, const QVector<QString>& pyCode);
   void clearPythonicCodes();
-    
+
   /**
    * @brief addDependency
    * @param superClassName
@@ -61,23 +61,21 @@ public:
    * @param isSIMPLib
    */
   void generateModuleFile(const QString& outputPath, const QString& isSIMPLib);
-  
+
   /**
    * @brief generatePythonTestFile
    * @param outputPath
    * @param isSIMPLib
    */
   void generatePythonTestFile(const QString& outputPath, const QString& isSIMPLib);
-  
-  
+
   /**
    * @brief generatePythonicInterface
    * @param outputPath
    * @param isSIMPLib
    */
   void generatePythonicInterface(const QString& outputPath, const QString& isSIMPLib);
-  
-  
+
 protected:
   /**
    * @brief dumpRecursivePythonCode
@@ -106,9 +104,9 @@ protected:
   /**
    * @brief md5FileContents
    * @param filename
-   * @return 
+   * @return
    */
-  QByteArray md5FileContents(const QString &filename);
+  QByteArray md5FileContents(const QString& filename);
 
 private:
   std::vector<QObject*> m_ClassVector;

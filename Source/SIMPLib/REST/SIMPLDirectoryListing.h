@@ -70,4 +70,3 @@ public:
    */
   static QString ParseDirForTable(QDir directory);
 };
-

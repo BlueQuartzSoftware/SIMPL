@@ -102,7 +102,8 @@ struct Sum
   int sum;
 };
 
-template <typename T> void print(const T& v)
+template <typename T>
+void print(const T& v)
 {
   std::cout << v << " ";
 }
@@ -129,7 +130,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void TestcopyTuplesForType()
+  template <typename T>
+  void TestcopyTuplesForType()
   {
     int err = 0;
     std::vector<size_t> dims(1, NUM_COMPONENTS_2);
@@ -183,7 +185,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void TestEraseElementsForType()
+  template <typename T>
+  void TestEraseElementsForType()
   {
     // Test dropping of front elements only
     {
@@ -373,7 +376,8 @@ public:
     TestEraseElementsForType<double>();
   }
 
-  template <typename T> QString TypeToString(T v)
+  template <typename T>
+  QString TypeToString(T v)
   {
 
     if(typeid(v) == typeid(long))
@@ -445,7 +449,7 @@ public:
     TEST_TYPE_STRING(uint64_t)
     TEST_TYPE_STRING(float)
     TEST_TYPE_STRING(double)
-}
+  }
 
   // -----------------------------------------------------------------------------
   //
@@ -528,7 +532,8 @@ public:
   // -----------------------------------------------------------------------------
   //  Test the NeighborList Class
   // -----------------------------------------------------------------------------
-  template <typename T> void TestNeighborListForType()
+  template <typename T>
+  void TestNeighborListForType()
   {
     typename NeighborList<T>::Pointer n = NeighborList<T>::New();
     n->setName("Test");
@@ -624,7 +629,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void TestNeighborListDeepCopyForType()
+  template <typename T>
+  void TestNeighborListDeepCopyForType()
   {
 
     std::vector<size_t> tDims(10);
@@ -675,7 +681,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> int ValidateArrayForType(typename DataArray<T>::Pointer array, size_t numTuples, int numComp)
+  template <typename T>
+  int ValidateArrayForType(typename DataArray<T>::Pointer array, size_t numTuples, int numComp)
   {
     int err = 0;
     DREAM3D_REQUIRED(true, ==, array->isAllocated());
@@ -799,7 +806,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void TestArrayCreationForType()
+  template <typename T>
+  void TestArrayCreationForType()
   {
     int err = 0;
     size_t numTuples = NUM_TUPLES;
@@ -942,7 +950,8 @@ true);
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void TestDeepCopyDataArrayForType()
+  template <typename T>
+  void TestDeepCopyDataArrayForType()
   {
     size_t numTuples = 10;
     std::vector<size_t> cDims(1, 5);
@@ -998,7 +1007,8 @@ true);
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void TestCopyDataForType()
+  template <typename T>
+  void TestCopyDataForType()
   {
     size_t numTuples = 10;
     std::vector<size_t> cDims(1, 5);
@@ -1120,7 +1130,8 @@ true);
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void TestWrapPointerForType()
+  template <typename T>
+  void TestWrapPointerForType()
   {
     std::vector<size_t> cDims = {1};
     T* ptr = new T[TEST_SIZE]; // Allocate on the heap
@@ -1185,7 +1196,8 @@ true);
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void TestSetTupleForType()
+  template <typename T>
+  void TestSetTupleForType()
   {
     size_t numTuples = 10;
     std::vector<size_t> cDims = {5};

@@ -93,4 +93,3 @@ signals:
 
   void handleConnection(tSocketDescriptor socketDescriptor);
 };
-

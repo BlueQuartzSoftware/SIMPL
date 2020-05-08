@@ -51,7 +51,7 @@ PipelineProgressMessage::PipelineProgressMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineProgressMessage::PipelineProgressMessage(const QString &pipelineName, const QString& msgText, int progress)
+PipelineProgressMessage::PipelineProgressMessage(const QString& pipelineName, const QString& msgText, int progress)
 : AbstractProgressMessage(msgText, progress)
 , m_PipelineName(pipelineName)
 {
@@ -65,9 +65,9 @@ PipelineProgressMessage::~PipelineProgressMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineProgressMessage::Pointer PipelineProgressMessage::New(const QString &pipelineName, const QString& msgText, int progress)
+PipelineProgressMessage::Pointer PipelineProgressMessage::New(const QString& pipelineName, const QString& msgText, int progress)
 {
-  PipelineProgressMessage::Pointer shared_ptr (new PipelineProgressMessage(pipelineName, msgText, progress));
+  PipelineProgressMessage::Pointer shared_ptr(new PipelineProgressMessage(pipelineName, msgText, progress));
   return shared_ptr;
 }
 

@@ -25,4 +25,3 @@ enum SeedEnum
 } // end namespace itk
 
 // end of Copied from sitkKernel.h (SimpleITK)
-

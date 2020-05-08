@@ -38,8 +38,8 @@
 #include "SIMPLib/Common/Constants.h"
 
 /**
-* @brief The FloatSummation class contains helper methods for summation of floating point numbers
-*/
+ * @brief The FloatSummation class contains helper methods for summation of floating point numbers
+ */
 class SIMPLib_EXPORT FloatSummation
 {
 public:
@@ -47,35 +47,34 @@ public:
   virtual ~FloatSummation();
 
   /**
-  * @brief Performs a Kahan summation over a vector of floating point numbers and returns the result
-  * @param values The vector of floats used for the summation
-  * @returns Kahan summation of floating point numbers
-  */
+   * @brief Performs a Kahan summation over a vector of floating point numbers and returns the result
+   * @param values The vector of floats used for the summation
+   * @returns Kahan summation of floating point numbers
+   */
   static float Kahanf(std::vector<float> values);
   /**
-  * @brief Performs a Kahan summation over a vector of floating point numbers and returns the result
-  * @param values The vector of doubles used for the summation
-  * @returns Kahan summation of floating point numbers
-  */
+   * @brief Performs a Kahan summation over a vector of floating point numbers and returns the result
+   * @param values The vector of doubles used for the summation
+   * @returns Kahan summation of floating point numbers
+   */
   static double Kahan(std::vector<double> values);
 
   /**
-  * @brief Performs a Kahan summation over a list of floating point numbers and returns the result
-  * @param values The initializer_list of floats used for the summation
-  * @returns Kahan summation of floating point numbers
-  */
+   * @brief Performs a Kahan summation over a list of floating point numbers and returns the result
+   * @param values The initializer_list of floats used for the summation
+   * @returns Kahan summation of floating point numbers
+   */
   static float Kahanf(std::initializer_list<float> values);
   /**
-  * @brief Performs a Kahan summation over a list of floating point numbers and returns the result
-  * @param values The initializer_list of doubles used for the summation
-  * @returns Kahan summation of floating point numbers
-  */
+   * @brief Performs a Kahan summation over a list of floating point numbers and returns the result
+   * @param values The initializer_list of doubles used for the summation
+   * @returns Kahan summation of floating point numbers
+   */
   static double Kahan(std::initializer_list<double> values);
 
 public:
-  FloatSummation(const FloatSummation&) = delete; // Copy Constructor Not Implemented
-  FloatSummation(FloatSummation&&) = delete;      // Move Constructor Not Implemented
+  FloatSummation(const FloatSummation&) = delete;            // Copy Constructor Not Implemented
+  FloatSummation(FloatSummation&&) = delete;                 // Move Constructor Not Implemented
   FloatSummation& operator=(const FloatSummation&) = delete; // Copy Assignment Not Implemented
   FloatSummation& operator=(FloatSummation&&) = delete;      // Move Assignment Not Implemented
 };
-

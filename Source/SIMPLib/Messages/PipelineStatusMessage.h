@@ -109,5 +109,3 @@ private:
   QString m_PipelineName = {};
 };
 Q_DECLARE_METATYPE(PipelineStatusMessage::Pointer)
-
-

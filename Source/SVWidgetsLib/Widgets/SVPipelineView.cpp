@@ -335,7 +335,7 @@ void SVPipelineView::preflightPipeline()
   // Create a Pipeline Object and fill it with the filters from this View
   FilterPipeline::Pointer pipeline = getFilterPipeline();
 
-  //qDebug() << "Prepping Filters for preflight... ";
+  // qDebug() << "Prepping Filters for preflight... ";
 
   FilterPipeline::FilterContainerType filters = pipeline->getFilterContainer();
   for(int i = 0; i < filters.size(); i++)
@@ -578,7 +578,7 @@ FilterPipeline::Pointer SVPipelineView::getFilterPipeline()
         connect(pipeline.get(), SIGNAL(pipelineCanceled()), breakpoint.get(), SLOT(resumePipeline()));
       }
 
-      pipeline->pushBack(filter); 
+      pipeline->pushBack(filter);
     }
   }
 
@@ -659,7 +659,7 @@ int SVPipelineView::writePipeline(const QString& outputPath)
     return -1;
   }
 
-    emit statusMessage(tr("The pipeline has been saved successfully to '%1'.").arg(fi.fileName()));
+  emit statusMessage(tr("The pipeline has been saved successfully to '%1'.").arg(fi.fileName()));
 
   return 0;
 }
@@ -1192,7 +1192,7 @@ int SVPipelineView::findPreviousRow(const QPoint& pos)
     return index.row();
   }
 
-    return 0;
+  return 0;
 }
 
 // -----------------------------------------------------------------------------
@@ -1694,7 +1694,6 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QMode
   menu.addAction(actionPasteBelow);
   menu.addSeparator();
 
-
   int count = selectedIndexes.size();
   bool widgetEnabled = true;
 
@@ -1930,7 +1929,7 @@ void SVPipelineView::setModel(QAbstractItemModel* model)
 {
   QAbstractItemModel* oldModel = this->model();
 
-    delete oldModel;
+  delete oldModel;
 
   QListView::setModel(model);
 
@@ -1992,7 +1991,7 @@ QPixmap SVPipelineView::getDisableBtnPixmap(bool highlighted)
     return m_DisableHighlightedPixmap;
   }
 
-    return m_DisableBtnPixmap;
+  return m_DisableBtnPixmap;
 }
 
 // -----------------------------------------------------------------------------
@@ -2018,7 +2017,7 @@ QPixmap SVPipelineView::getHighDPIDisableBtnPixmap(bool highlighted)
     return m_DisableBtnHighlightedPixmap2x;
   }
 
-    return m_DisableBtnPixmap2x;
+  return m_DisableBtnPixmap2x;
 }
 
 // -----------------------------------------------------------------------------
@@ -2074,7 +2073,7 @@ QPixmap SVPipelineView::getDisableBtnHoveredPixmap(bool highlighted)
     return m_DisableBtnHoveredHighlightedPixmap;
   }
 
-    return m_DisableBtnHoveredPixmap;
+  return m_DisableBtnHoveredPixmap;
 }
 
 // -----------------------------------------------------------------------------
@@ -2100,7 +2099,7 @@ QPixmap SVPipelineView::getHighDPIDisableBtnHoveredPixmap(bool highlighted)
     return m_DisableBtnHoveredHighlightedPixmap2x;
   }
 
-    return m_DisableBtnHoveredPixmap2x;
+  return m_DisableBtnHoveredPixmap2x;
 }
 
 // -----------------------------------------------------------------------------
@@ -2126,7 +2125,7 @@ QPixmap SVPipelineView::getDeleteBtnPixmap(bool highlighted)
     return m_DeleteBtnHighlightedPixmap;
   }
 
-    return m_DeleteBtnPixmap;
+  return m_DeleteBtnPixmap;
 }
 
 // -----------------------------------------------------------------------------
@@ -2152,7 +2151,7 @@ QPixmap SVPipelineView::getHighDPIDeleteBtnPixmap(bool highlighted)
     return m_DeleteBtnHighlightedPixmap2x;
   }
 
-    return m_DeleteBtnPixmap2x;
+  return m_DeleteBtnPixmap2x;
 }
 
 // -----------------------------------------------------------------------------
@@ -2178,7 +2177,7 @@ QPixmap SVPipelineView::getDeleteBtnHoveredPixmap(bool highlighted)
     return m_DeleteBtnHoveredHighlightedPixmap;
   }
 
-    return m_DeleteBtnHoveredPixmap;
+  return m_DeleteBtnHoveredPixmap;
 }
 
 // -----------------------------------------------------------------------------
@@ -2204,7 +2203,7 @@ QPixmap SVPipelineView::getHighDPIDeleteBtnHoveredPixmap(bool highlighted)
     return m_DeleteBtnHoveredHighlightedPixmap2x;
   }
 
-    return m_DeleteBtnHoveredPixmap2x;
+  return m_DeleteBtnHoveredPixmap2x;
 }
 
 // -----------------------------------------------------------------------------
@@ -2223,7 +2222,7 @@ QPixmap SVPipelineView::setPixmapColor(const QPixmap& pixmap, const QColor& pixm
 
       color.setAlpha(alpha);
 
-      if (color.isValid())
+      if(color.isValid())
       {
         image.setPixelColor(x, y, color);
       }

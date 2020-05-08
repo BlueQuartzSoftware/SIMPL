@@ -1,6 +1,5 @@
 #include "StatusBarIssuesButton.h"
 
-
 #include <QtCore/QDebug>
 #include <QtGui/QPainter>
 #include <QtWidgets/QStyleOption>
@@ -107,7 +106,7 @@ void StatusBarIssuesButton::paintEvent(QPaintEvent* event)
     badgeBgColor = QColor(200, 200, 200);
     badgeFontColor = QColor(96, 96, 96);
   }
-  
+
   QRect rect = this->rect();
 
   int btnCenterY = rect.height() / 2;
@@ -120,10 +119,10 @@ void StatusBarIssuesButton::paintEvent(QPaintEvent* event)
 
     QPainterPath badgePath;
     badgePath.addRoundedRect(rect.width() - m_BadgeWidth - getTextMargin(), // X
-                             4,                                          // Y
-                             m_BadgeWidth,                               // Width
-                             minimumHeight() - 8,                        // Height
-                             7.0, 7.0);                                  // X & Y Radius
+                             4,                                             // Y
+                             m_BadgeWidth,                                  // Width
+                             minimumHeight() - 8,                           // Height
+                             7.0, 7.0);                                     // X & Y Radius
 
     QPen pen(badgeBgColor, 2);
     painter.setPen(pen);

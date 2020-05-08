@@ -38,7 +38,6 @@
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 
-
 class IObserver;
 class DataContainerArrayProxy;
 class SIMPLH5DataReaderRequirements;
@@ -50,93 +49,91 @@ using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
  */
 class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
 {
-    Q_OBJECT
+  Q_OBJECT
 
-    // Start Python bindings declarations
-    PYB11_BEGIN_BINDINGS(SIMPLH5DataReader)
-    PYB11_SHARED_POINTERS(SIMPLH5DataReader)
-    PYB11_STATIC_NEW_MACRO(SIMPLH5DataReader)
-    PYB11_METHOD(bool openFile ARGS filePath)
-    PYB11_METHOD(bool closeFile)
-    PYB11_METHOD(DataContainerArrayProxy readDataContainerArrayStructure ARGS SIMPLH5DataReaderRequirements err)
-    PYB11_END_BINDINGS()
-    // End Python bindings declarations
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(SIMPLH5DataReader)
+  PYB11_SHARED_POINTERS(SIMPLH5DataReader)
+  PYB11_STATIC_NEW_MACRO(SIMPLH5DataReader)
+  PYB11_METHOD(bool openFile ARGS filePath)
+  PYB11_METHOD(bool closeFile)
+  PYB11_METHOD(DataContainerArrayProxy readDataContainerArrayStructure ARGS SIMPLH5DataReaderRequirements err)
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 
-  public:
-    using Self = SIMPLH5DataReader;
-    using Pointer = std::shared_ptr<Self>;
-    using ConstPointer = std::shared_ptr<const Self>;
-    using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<const Self>;
-    static Pointer NullPointer();
+public:
+  using Self = SIMPLH5DataReader;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<const Self>;
+  static Pointer NullPointer();
 
-    static Pointer New();
+  static Pointer New();
 
-    SIMPLH5DataReader();
-    ~SIMPLH5DataReader() override;
+  SIMPLH5DataReader();
+  ~SIMPLH5DataReader() override;
 
-    /**
-     * @brief openFile
-     * @param filePath
-     * @return
-     */
-    bool openFile(const QString &filePath);
+  /**
+   * @brief openFile
+   * @param filePath
+   * @return
+   */
+  bool openFile(const QString& filePath);
 
-    /**
-     * @brief closeFile
-     * @return
-     */
-    bool closeFile();
+  /**
+   * @brief closeFile
+   * @return
+   */
+  bool closeFile();
 
-    /**
-     * @brief readDataContainerArrayStructure
-     * @param err
-     * @return
-     */
-    DataContainerArrayProxy readDataContainerArrayStructure(SIMPLH5DataReaderRequirements *req, int &err);
+  /**
+   * @brief readDataContainerArrayStructure
+   * @param err
+   * @return
+   */
+  DataContainerArrayProxy readDataContainerArrayStructure(SIMPLH5DataReaderRequirements* req, int& err);
 
-    /**
-     * @brief readSIMPLDataUsingProxy
-     * @param proxy
-     * @param preflight
-     * @return
-     */
-    DataContainerArrayShPtrType readSIMPLDataUsingProxy(DataContainerArrayProxy& proxy, bool preflight);
+  /**
+   * @brief readSIMPLDataUsingProxy
+   * @param proxy
+   * @param preflight
+   * @return
+   */
+  DataContainerArrayShPtrType readSIMPLDataUsingProxy(DataContainerArrayProxy& proxy, bool preflight);
 
-    /**
-     * @brief readPipelineJson
-     * @param json
-     * @return
-     */
-    bool readPipelineJson(QString &json);
+  /**
+   * @brief readPipelineJson
+   * @param json
+   * @return
+   */
+  bool readPipelineJson(QString& json);
 
-    /**
-     * @brief setErrorCondition
-     * @param code
-     * @param str
-     */
-    void setErrorCondition(int code, const QString& str) override;
+  /**
+   * @brief setErrorCondition
+   * @param code
+   * @param str
+   */
+  void setErrorCondition(int code, const QString& str) override;
 
-  signals:
-    void errorGenerated(const QString &title, const QString &msg, const int &code);
+signals:
+  void errorGenerated(const QString& title, const QString& msg, const int& code);
 
-  private:
-    QString                           m_CurrentFilePath = "";
-    hid_t                             m_FileId = -1;
+private:
+  QString m_CurrentFilePath = "";
+  hid_t m_FileId = -1;
 
-    /**
-     * @brief readDataContainerBundles
-     * @param fileId
-     * @param dca
-     * @return
-     */
-    bool readDataContainerBundles(hid_t fileId, const DataContainerArrayShPtrType& dca);
+  /**
+   * @brief readDataContainerBundles
+   * @param fileId
+   * @param dca
+   * @return
+   */
+  bool readDataContainerBundles(hid_t fileId, const DataContainerArrayShPtrType& dca);
 
-  public:
-    SIMPLH5DataReader(const SIMPLH5DataReader&) = delete; // Copy Constructor Not Implemented
-    SIMPLH5DataReader(SIMPLH5DataReader&&) = delete;      // Move Constructor Not Implemented
-    SIMPLH5DataReader& operator=(const SIMPLH5DataReader&) = delete; // Copy Assignment Not Implemented
-    SIMPLH5DataReader& operator=(SIMPLH5DataReader&&) = delete;      // Move Assignment Not Implemented
+public:
+  SIMPLH5DataReader(const SIMPLH5DataReader&) = delete;            // Copy Constructor Not Implemented
+  SIMPLH5DataReader(SIMPLH5DataReader&&) = delete;                 // Move Constructor Not Implemented
+  SIMPLH5DataReader& operator=(const SIMPLH5DataReader&) = delete; // Copy Assignment Not Implemented
+  SIMPLH5DataReader& operator=(SIMPLH5DataReader&&) = delete;      // Move Assignment Not Implemented
 };
-
-

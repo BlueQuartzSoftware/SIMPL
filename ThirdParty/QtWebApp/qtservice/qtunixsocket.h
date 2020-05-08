@@ -50,4 +50,3 @@ public:
 
   bool connectTo(const QString& path);
 };
-

@@ -81,4 +81,3 @@ public:
   void sysCleanup();
   class QtServiceSysPrivate* sysd;
 };
-

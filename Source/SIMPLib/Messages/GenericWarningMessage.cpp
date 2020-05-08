@@ -66,7 +66,7 @@ GenericWarningMessage::~GenericWarningMessage() = default;
 // -----------------------------------------------------------------------------
 GenericWarningMessage::Pointer GenericWarningMessage::New(const QString& msgText, int code)
 {
-  GenericWarningMessage::Pointer shared_ptr (new GenericWarningMessage(msgText, code));
+  GenericWarningMessage::Pointer shared_ptr(new GenericWarningMessage(msgText, code));
   return shared_ptr;
 }
 

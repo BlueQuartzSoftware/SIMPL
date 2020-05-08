@@ -69,4 +69,3 @@ public:
    */
   static QString EndPoint();
 };
-

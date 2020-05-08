@@ -64,7 +64,7 @@ public:
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
   using ConstWeakPointer = std::weak_ptr<const Self>;
-  
+
   /**
    * @brief Returns a NullPointer wrapped by a shared_ptr<>
    * @return
@@ -111,9 +111,9 @@ public:
     INVALID_ARRAY_TYPE = -106
   };
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
   QString getCompiledLibraryName() const override;
 
   /**
@@ -167,52 +167,49 @@ public:
   void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
-  * @brief readFilterParametersFromJson Reads the filter parameters from a file
-  * @param reader Reader that is used to read the parameters from a file
-  */
+   * @brief readFilterParametersFromJson Reads the filter parameters from a file
+   * @param reader Reader that is used to read the parameters from a file
+   */
   void readFilterParameters(QJsonObject& obj) override;
 
   /**
-  * @brief writeFilterParametersToJson Writes the filter parameters to a file
-  * @param root The root json object
-  */
+   * @brief writeFilterParametersToJson Writes the filter parameters to a file
+   * @param root The root json object
+   */
   void writeFilterParameters(QJsonObject& obj) const override;
 
-   /**
-    * @brief execute Reimplemented from @see AbstractFilter class
-    */
-    void execute() override;
+  /**
+   * @brief execute Reimplemented from @see AbstractFilter class
+   */
+  void execute() override;
 
+  /**
+   * @brief Updates any DataArrayPath properties from the old path to a new path
+   * For DataArrayPaths longer than the given path, only the specified values are modified
+   * @param renamePath
+   */
+  void renameDataArrayPath(const DataArrayPath::RenameType& renamePath) override;
 
-    /**
-    * @brief Updates any DataArrayPath properties from the old path to a new path
-    * For DataArrayPaths longer than the given path, only the specified values are modified
-    * @param renamePath
-    */
-    void renameDataArrayPath(const DataArrayPath::RenameType& renamePath) override;
+protected:
+  ReadASCIIData();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck() override;
 
-  protected:
-    ReadASCIIData();
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck() override;
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+private:
+  ASCIIWizardData m_WizardData = {};
 
+  QMap<int, IDataArrayShPtrType> m_ASCIIArrayMap;
 
-  private:
-    ASCIIWizardData m_WizardData = {};
-
-    QMap<int, IDataArrayShPtrType> m_ASCIIArrayMap;
-
-  public:
-    ReadASCIIData(const ReadASCIIData&) = delete;  // Copy Constructor Not Implemented
-    ReadASCIIData(ReadASCIIData&&) = delete;       // Move Constructor Not Implemented
-    ReadASCIIData& operator=(const ReadASCIIData&) = delete; // Copy Assignment Not Implemented
-    ReadASCIIData& operator=(ReadASCIIData&&) = delete;      // Move Assignment Not Implemented
+public:
+  ReadASCIIData(const ReadASCIIData&) = delete;            // Copy Constructor Not Implemented
+  ReadASCIIData(ReadASCIIData&&) = delete;                 // Move Constructor Not Implemented
+  ReadASCIIData& operator=(const ReadASCIIData&) = delete; // Copy Assignment Not Implemented
+  ReadASCIIData& operator=(ReadASCIIData&&) = delete;      // Move Assignment Not Implemented
 };
-

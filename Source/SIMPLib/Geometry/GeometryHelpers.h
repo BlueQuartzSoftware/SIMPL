@@ -53,8 +53,8 @@ class IDataArray;
 using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
 
 /**
-* @brief This file contains a namespace with classes for manipulating IGeometry objects
-*/
+ * @brief This file contains a namespace with classes for manipulating IGeometry objects
+ */
 namespace GeometryHelpers
 {
 
@@ -408,7 +408,8 @@ public:
    * @param elemList
    * @param edgeList
    */
-  template <typename T> static void Find2DElementEdges(typename DataArray<T>::Pointer elemList, typename DataArray<T>::Pointer edgeList)
+  template <typename T>
+  static void Find2DElementEdges(typename DataArray<T>::Pointer elemList, typename DataArray<T>::Pointer edgeList)
   {
     size_t numElems = elemList->getNumberOfTuples();
     size_t numVertsPerElem = elemList->getNumberOfComponents();
@@ -473,7 +474,8 @@ public:
    * @param tetList
    * @param edgeList
    */
-  template <typename T> static void FindTetEdges(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer edgeList)
+  template <typename T>
+  static void FindTetEdges(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer edgeList)
   {
     size_t numElems = tetList->getNumberOfTuples();
 
@@ -514,11 +516,12 @@ public:
   }
 
   /**
-  * @brief FindHexEdges
-  * @param hexList
-  * @param edgeList
-  */
-  template <typename T> static void FindHexEdges(typename DataArray<T>::Pointer hexList, typename DataArray<T>::Pointer edge_List)
+   * @brief FindHexEdges
+   * @param hexList
+   * @param edgeList
+   */
+  template <typename T>
+  static void FindHexEdges(typename DataArray<T>::Pointer hexList, typename DataArray<T>::Pointer edge_List)
   {
     size_t numElems = hexList->getNumberOfTuples();
 
@@ -539,13 +542,12 @@ public:
       std::vector<T> edge6 = {verts[2], verts[6]};
       std::vector<T> edge7 = {verts[3], verts[7]};
 
-      std::vector<T> edge8 =  {verts[4], verts[5]};
-      std::vector<T> edge9 =  {verts[5], verts[6]};
+      std::vector<T> edge8 = {verts[4], verts[5]};
+      std::vector<T> edge9 = {verts[5], verts[6]};
       std::vector<T> edge10 = {verts[6], verts[7]};
       std::vector<T> edge11 = {verts[7], verts[4]};
 
-      std::list<std::vector<T>> edgeList = {edge0, edge1, edge2, edge3, edge4, edge5,
-                                            edge6, edge7, edge8, edge9, edge10, edge11};
+      std::list<std::vector<T>> edgeList = {edge0, edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8, edge9, edge10, edge11};
 
       for(auto&& uEdge : edgeList)
       {
@@ -573,7 +575,8 @@ public:
    * @param tetList
    * @param edgeList
    */
-  template <typename T> static void FindTetFaces(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer faceList)
+  template <typename T>
+  static void FindTetFaces(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer faceList)
   {
     size_t numElems = tetList->getNumberOfTuples();
 
@@ -613,11 +616,12 @@ public:
   }
 
   /**
-  * @brief FindHexFaces
-  * @param hexList
-  * @param edgeList
-  */
-  template <typename T> static void FindHexFaces(typename DataArray<T>::Pointer hexList, typename DataArray<T>::Pointer faceList)
+   * @brief FindHexFaces
+   * @param hexList
+   * @param edgeList
+   */
+  template <typename T>
+  static void FindHexFaces(typename DataArray<T>::Pointer hexList, typename DataArray<T>::Pointer faceList)
   {
     size_t numElems = hexList->getNumberOfTuples();
 
@@ -665,7 +669,8 @@ public:
    * @param elemList
    * @param edgeList
    */
-  template <typename T> static void Find2DUnsharedEdges(typename DataArray<T>::Pointer elemList, typename DataArray<T>::Pointer edgeList)
+  template <typename T>
+  static void Find2DUnsharedEdges(typename DataArray<T>::Pointer elemList, typename DataArray<T>::Pointer edgeList)
   {
     size_t numElems = elemList->getNumberOfTuples();
     size_t numVertsPerElem = elemList->getNumberOfComponents();
@@ -739,11 +744,12 @@ public:
   }
 
   /**
-  * @brief FindUnsharedTetEdges
-  * @param tetList
-  * @param edgeList
-  */
-  template <typename T> static void FindUnsharedTetEdges(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer edgeList)
+   * @brief FindUnsharedTetEdges
+   * @param tetList
+   * @param edgeList
+   */
+  template <typename T>
+  static void FindUnsharedTetEdges(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer edgeList)
   {
     size_t numElems = tetList->getNumberOfTuples();
 
@@ -797,11 +803,12 @@ public:
   }
 
   /**
-  * @brief FindUnsharedHexEdges
-  * @param hexList
-  * @param edgeList
-  */
-  template <typename T> static void FindUnsharedHexEdges(typename DataArray<T>::Pointer& hexList, typename DataArray<T>::Pointer& edge_List)
+   * @brief FindUnsharedHexEdges
+   * @param hexList
+   * @param edgeList
+   */
+  template <typename T>
+  static void FindUnsharedHexEdges(typename DataArray<T>::Pointer& hexList, typename DataArray<T>::Pointer& edge_List)
   {
     size_t numElems = hexList->getNumberOfTuples();
 
@@ -868,7 +875,8 @@ public:
    * @param tetList
    * @param edgeList
    */
-  template <typename T> static void FindUnsharedTetFaces(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer faceList)
+  template <typename T>
+  static void FindUnsharedTetFaces(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer faceList)
   {
     size_t numElems = tetList->getNumberOfTuples();
 
@@ -921,11 +929,12 @@ public:
   }
 
   /**
-  * @brief FindUnsharedHexFaces
-  * @param hexList
-  * @param edgeList
-  */
-  template <typename T> static void FindUnsharedHexFaces(typename DataArray<T>::Pointer hexList, typename DataArray<T>::Pointer faceList)
+   * @brief FindUnsharedHexFaces
+   * @param hexList
+   * @param edgeList
+   */
+  template <typename T>
+  static void FindUnsharedHexFaces(typename DataArray<T>::Pointer hexList, typename DataArray<T>::Pointer faceList)
   {
     size_t numElems = hexList->getNumberOfTuples();
 
@@ -997,7 +1006,8 @@ public:
    * @param vertices
    * @param elementCentroids
    */
-  template <typename T> static void FindElementCentroids(typename DataArray<T>::Pointer elemList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer centroids)
+  template <typename T>
+  static void FindElementCentroids(typename DataArray<T>::Pointer elemList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer centroids)
   {
     size_t numElems = elemList->getNumberOfTuples();
     size_t numVertsPerElem = elemList->getNumberOfComponents();
@@ -1027,7 +1037,8 @@ public:
    * @param vertices
    * @param areas
    */
-  template <typename T> static void Find2DElementAreas(typename DataArray<T>::Pointer elemList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer areas)
+  template <typename T>
+  static void Find2DElementAreas(typename DataArray<T>::Pointer elemList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer areas)
   {
     float nx, ny, nz;
     int32_t projection;
@@ -1075,18 +1086,15 @@ public:
 
         switch(projection)
         {
-        case 0:
-        {
+        case 0: {
           area += coordinates[3 * ((j + 1) % numVertsPerElem) + 1] * (coordinates[3 * ((j + 2) % numVertsPerElem) + 2] - coordinates[3 * j + 2]);
           continue;
         }
-        case 1:
-        {
+        case 1: {
           area += coordinates[3 * ((j + 1) % numVertsPerElem) + 0] * (coordinates[3 * ((j + 2) % numVertsPerElem) + 2] - coordinates[3 * j + 2]);
           continue;
         }
-        case 2:
-        {
+        case 2: {
           area += coordinates[3 * ((j + 1) % numVertsPerElem) + 0] * (coordinates[3 * ((j + 2) % numVertsPerElem) + 1] - coordinates[3 * j + 1]);
           continue;
         }
@@ -1095,18 +1103,15 @@ public:
 
       switch(projection)
       {
-      case 0:
-      {
+      case 0: {
         area /= (2.0f * nx);
         break;
       }
-      case 1:
-      {
+      case 1: {
         area /= (2.0f * ny);
         break;
       }
-      case 2:
-      {
+      case 2: {
         area /= (2.0f * nz);
       }
       }
@@ -1120,7 +1125,8 @@ public:
    * @param vertices
    * @param volumes
    */
-  template <typename T> static void FindTetVolumes(typename DataArray<T>::Pointer tetList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer volumes)
+  template <typename T>
+  static void FindTetVolumes(typename DataArray<T>::Pointer tetList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer volumes)
   {
     size_t numTets = tetList->getNumberOfTuples();
     float* vertex = vertices->getPointer(0);
@@ -1143,12 +1149,13 @@ public:
   }
 
   /**
-  * @brief FindHexVolumes
-  * @param hexList
-  * @param vertices
-  * @param volumes
-  */
-  template <typename T> static void FindHexVolumes(typename DataArray<T>::Pointer hexList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer volumes)
+   * @brief FindHexVolumes
+   * @param hexList
+   * @param vertices
+   * @param volumes
+   */
+  template <typename T>
+  static void FindHexVolumes(typename DataArray<T>::Pointer hexList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer volumes)
   {
     size_t numHexas = hexList->getNumberOfTuples();
     float* vertex = vertices->getPointer(0);
@@ -1201,7 +1208,7 @@ public:
 
         float vertMatrix[3][3] = {{vert1[0] - vert0[0], vert2[0] - vert0[0], vert3[0] - vert0[0]},
                                   {vert1[1] - vert0[1], vert2[1] - vert0[1], vert3[1] - vert0[1]},
-                                   {vert1[2] - vert0[2], vert2[2] - vert0[2], vert3[2] - vert0[2]}};
+                                  {vert1[2] - vert0[2], vert2[2] - vert0[2], vert3[2] - vert0[2]}};
 
         volume += (MatrixMath::Determinant3x3(vertMatrix) / 6.0f);
       }
@@ -1211,87 +1218,104 @@ public:
   }
 
   /**
-  * @brief FindTetJacobians
-  * @param tetList
-  * @param vertices
-  * @param jacobians
-  */
-  template <typename T> static void FindTetJacobians(typename DataArray<T>::Pointer tetList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer jacobians)
+   * @brief FindTetJacobians
+   * @param tetList
+   * @param vertices
+   * @param jacobians
+   */
+  template <typename T>
+  static void FindTetJacobians(typename DataArray<T>::Pointer tetList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer jacobians)
   {
-	  size_t numTets = tetList->getNumberOfTuples();
-	  float* vertex = vertices->getPointer(0);
-	  float* jacobianPtr = jacobians->getPointer(0);
+    size_t numTets = tetList->getNumberOfTuples();
+    float* vertex = vertices->getPointer(0);
+    float* jacobianPtr = jacobians->getPointer(0);
 
-	  for (size_t i = 0; i < numTets; i++)
-	  {
-		  T* tet = tetList->getTuplePointer(i);
-		  //get vert positions
-		  float vert0[3] = { vertex[3 * tet[0] + 0], vertex[3 * tet[0] + 1], vertex[3 * tet[0] + 2] };
-		  float vert1[3] = { vertex[3 * tet[1] + 0], vertex[3 * tet[1] + 1], vertex[3 * tet[1] + 2] };
-		  float vert2[3] = { vertex[3 * tet[2] + 0], vertex[3 * tet[2] + 1], vertex[3 * tet[2] + 2] };
-		  float vert3[3] = { vertex[3 * tet[3] + 0], vertex[3 * tet[3] + 1], vertex[3 * tet[3] + 2] };
-		  //build jacobian matrix
-		  float vertMatrix[3][3] = { { vert1[0] - vert0[0], vert2[0] - vert0[0], vert3[0] - vert0[0] },
-		  { vert1[1] - vert0[1], vert2[1] - vert0[1], vert3[1] - vert0[1] },
-		  { vert1[2] - vert0[2], vert2[2] - vert0[2], vert3[2] - vert0[2] } };
-		  //find jacobian, which is determinant of the jacobian matrix
-		  jacobianPtr[i] = MatrixMath::Determinant3x3(vertMatrix);
-	  }
+    for(size_t i = 0; i < numTets; i++)
+    {
+      T* tet = tetList->getTuplePointer(i);
+      // get vert positions
+      float vert0[3] = {vertex[3 * tet[0] + 0], vertex[3 * tet[0] + 1], vertex[3 * tet[0] + 2]};
+      float vert1[3] = {vertex[3 * tet[1] + 0], vertex[3 * tet[1] + 1], vertex[3 * tet[1] + 2]};
+      float vert2[3] = {vertex[3 * tet[2] + 0], vertex[3 * tet[2] + 1], vertex[3 * tet[2] + 2]};
+      float vert3[3] = {vertex[3 * tet[3] + 0], vertex[3 * tet[3] + 1], vertex[3 * tet[3] + 2]};
+      // build jacobian matrix
+      float vertMatrix[3][3] = {{vert1[0] - vert0[0], vert2[0] - vert0[0], vert3[0] - vert0[0]},
+                                {vert1[1] - vert0[1], vert2[1] - vert0[1], vert3[1] - vert0[1]},
+                                {vert1[2] - vert0[2], vert2[2] - vert0[2], vert3[2] - vert0[2]}};
+      // find jacobian, which is determinant of the jacobian matrix
+      jacobianPtr[i] = MatrixMath::Determinant3x3(vertMatrix);
+    }
   }
 
   /**
-  * @brief FindTetMinDihedralAngles
-  * @param tetList
-  * @param vertices
-  * @param minAngles
-  */
-  template <typename T> static void FindTetMinDihedralAngles(typename DataArray<T>::Pointer tetList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer minAngles)
+   * @brief FindTetMinDihedralAngles
+   * @param tetList
+   * @param vertices
+   * @param minAngles
+   */
+  template <typename T>
+  static void FindTetMinDihedralAngles(typename DataArray<T>::Pointer tetList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer minAngles)
   {
-	  size_t numTets = tetList->getNumberOfTuples();
-	  float* vertex = vertices->getPointer(0);
-	  float* minAnglesPtr = minAngles->getPointer(0);
+    size_t numTets = tetList->getNumberOfTuples();
+    float* vertex = vertices->getPointer(0);
+    float* minAnglesPtr = minAngles->getPointer(0);
 
-	  for (size_t i = 0; i < numTets; i++)
-	  {
-		  T* tet = tetList->getTuplePointer(i);
-		  //get vert positions
-		  float vert0[3] = { vertex[3 * tet[0] + 0], vertex[3 * tet[0] + 1], vertex[3 * tet[0] + 2] };
-		  float vert1[3] = { vertex[3 * tet[1] + 0], vertex[3 * tet[1] + 1], vertex[3 * tet[1] + 2] };
-		  float vert2[3] = { vertex[3 * tet[2] + 0], vertex[3 * tet[2] + 1], vertex[3 * tet[2] + 2] };
-		  float vert3[3] = { vertex[3 * tet[3] + 0], vertex[3 * tet[3] + 1], vertex[3 * tet[3] + 2] };
-		  //find 5 edges needed to find 4 face normals
-		  float v10[3] = { (vert1[0] - vert0[0]), (vert1[1] - vert0[1]), (vert1[2] - vert0[2]) };
-		  float v20[3] = { (vert2[0] - vert0[0]), (vert2[1] - vert0[1]), (vert2[2] - vert0[2]) };
-		  float v30[3] = { (vert3[0] - vert0[0]), (vert3[1] - vert0[1]), (vert3[2] - vert0[2]) };
-		  float v21[3] = { (vert2[0] - vert1[0]), (vert2[1] - vert1[1]), (vert2[2] - vert1[2]) };
-		  float v31[3] = { (vert3[0] - vert1[0]), (vert3[1] - vert1[1]), (vert3[2] - vert1[2]) };
-		  //find 4 face-to-face normals
-		  float norm1[3] = { (v10[1] * v20[2] - v10[2] * v20[1]), (v10[2] * v20[0] - v10[0] * v20[2]), (v10[0] * v20[1] - v10[1] * v20[0]) };
-		  float norm2[3] = { (v30[1] * v10[2] - v30[2] * v10[1]), (v30[2] * v10[0] - v30[0] * v10[2]), (v30[0] * v10[1] - v30[1] * v10[0]) };
-		  float norm3[3] = { (v20[1] * v30[2] - v20[2] * v30[1]), (v20[2] * v30[0] - v20[0] * v30[2]), (v20[0] * v30[1] - v20[1] * v30[0]) };
-		  float norm4[3] = { (v31[1] * v21[2] - v31[2] * v21[1]), (v31[2] * v21[0] - v31[0] * v21[2]), (v31[0] * v21[1] - v31[1] * v21[0]) };
-		  //find the magnitudes of each normal
-		  float norm1mag = sqrtf(norm1[0] * norm1[0] + norm1[1] * norm1[1] + norm1[2] * norm1[2]);
-		  float norm2mag = sqrtf(norm2[0] * norm2[0] + norm2[1] * norm2[1] + norm2[2] * norm2[2]);
-		  float norm3mag = sqrtf(norm3[0] * norm3[0] + norm3[1] * norm3[1] + norm3[2] * norm3[2]);
-		  float norm4mag = sqrtf(norm4[0] * norm4[0] + norm4[1] * norm4[1] + norm4[2] * norm4[2]);
-		  //find angles between faces
-		  float ang1 = (norm1[0] * norm2[0] + norm1[1] * norm2[1] + norm1[2] * norm2[2]) / (norm1mag * norm2mag);
-		  float ang2 = (norm1[0] * norm3[0] + norm1[1] * norm3[1] + norm1[2] * norm3[2]) / (norm1mag * norm3mag);
-		  float ang3 = (norm1[0] * norm4[0] + norm1[1] * norm4[1] + norm1[2] * norm4[2]) / (norm1mag * norm4mag);
-		  float ang4 = (norm2[0] * norm3[0] + norm2[1] * norm3[1] + norm2[2] * norm3[2]) / (norm2mag * norm3mag);
-		  float ang5 = (norm2[0] * norm4[0] + norm2[1] * norm4[1] + norm2[2] * norm4[2]) / (norm2mag * norm4mag);
-		  float ang6 = (norm3[0] * norm4[0] + norm3[1] * norm4[1] + norm3[2] * norm4[2]) / (norm3mag * norm4mag);
-		  //find the maximum ang value, which will be the minimum angle after the acos
-		  float minAng = ang1;
-		  if (ang2 > minAng) { minAng = ang2; }
-		  if (ang3 > minAng) { minAng = ang3; }
-		  if (ang4 > minAng) { minAng = ang4; }
-		  if (ang5 > minAng) { minAng = ang5; }
-		  if (ang6 > minAng) { minAng = ang6; }
+    for(size_t i = 0; i < numTets; i++)
+    {
+      T* tet = tetList->getTuplePointer(i);
+      // get vert positions
+      float vert0[3] = {vertex[3 * tet[0] + 0], vertex[3 * tet[0] + 1], vertex[3 * tet[0] + 2]};
+      float vert1[3] = {vertex[3 * tet[1] + 0], vertex[3 * tet[1] + 1], vertex[3 * tet[1] + 2]};
+      float vert2[3] = {vertex[3 * tet[2] + 0], vertex[3 * tet[2] + 1], vertex[3 * tet[2] + 2]};
+      float vert3[3] = {vertex[3 * tet[3] + 0], vertex[3 * tet[3] + 1], vertex[3 * tet[3] + 2]};
+      // find 5 edges needed to find 4 face normals
+      float v10[3] = {(vert1[0] - vert0[0]), (vert1[1] - vert0[1]), (vert1[2] - vert0[2])};
+      float v20[3] = {(vert2[0] - vert0[0]), (vert2[1] - vert0[1]), (vert2[2] - vert0[2])};
+      float v30[3] = {(vert3[0] - vert0[0]), (vert3[1] - vert0[1]), (vert3[2] - vert0[2])};
+      float v21[3] = {(vert2[0] - vert1[0]), (vert2[1] - vert1[1]), (vert2[2] - vert1[2])};
+      float v31[3] = {(vert3[0] - vert1[0]), (vert3[1] - vert1[1]), (vert3[2] - vert1[2])};
+      // find 4 face-to-face normals
+      float norm1[3] = {(v10[1] * v20[2] - v10[2] * v20[1]), (v10[2] * v20[0] - v10[0] * v20[2]), (v10[0] * v20[1] - v10[1] * v20[0])};
+      float norm2[3] = {(v30[1] * v10[2] - v30[2] * v10[1]), (v30[2] * v10[0] - v30[0] * v10[2]), (v30[0] * v10[1] - v30[1] * v10[0])};
+      float norm3[3] = {(v20[1] * v30[2] - v20[2] * v30[1]), (v20[2] * v30[0] - v20[0] * v30[2]), (v20[0] * v30[1] - v20[1] * v30[0])};
+      float norm4[3] = {(v31[1] * v21[2] - v31[2] * v21[1]), (v31[2] * v21[0] - v31[0] * v21[2]), (v31[0] * v21[1] - v31[1] * v21[0])};
+      // find the magnitudes of each normal
+      float norm1mag = sqrtf(norm1[0] * norm1[0] + norm1[1] * norm1[1] + norm1[2] * norm1[2]);
+      float norm2mag = sqrtf(norm2[0] * norm2[0] + norm2[1] * norm2[1] + norm2[2] * norm2[2]);
+      float norm3mag = sqrtf(norm3[0] * norm3[0] + norm3[1] * norm3[1] + norm3[2] * norm3[2]);
+      float norm4mag = sqrtf(norm4[0] * norm4[0] + norm4[1] * norm4[1] + norm4[2] * norm4[2]);
+      // find angles between faces
+      float ang1 = (norm1[0] * norm2[0] + norm1[1] * norm2[1] + norm1[2] * norm2[2]) / (norm1mag * norm2mag);
+      float ang2 = (norm1[0] * norm3[0] + norm1[1] * norm3[1] + norm1[2] * norm3[2]) / (norm1mag * norm3mag);
+      float ang3 = (norm1[0] * norm4[0] + norm1[1] * norm4[1] + norm1[2] * norm4[2]) / (norm1mag * norm4mag);
+      float ang4 = (norm2[0] * norm3[0] + norm2[1] * norm3[1] + norm2[2] * norm3[2]) / (norm2mag * norm3mag);
+      float ang5 = (norm2[0] * norm4[0] + norm2[1] * norm4[1] + norm2[2] * norm4[2]) / (norm2mag * norm4mag);
+      float ang6 = (norm3[0] * norm4[0] + norm3[1] * norm4[1] + norm3[2] * norm4[2]) / (norm3mag * norm4mag);
+      // find the maximum ang value, which will be the minimum angle after the acos
+      float minAng = ang1;
+      if(ang2 > minAng)
+      {
+        minAng = ang2;
+      }
+      if(ang3 > minAng)
+      {
+        minAng = ang3;
+      }
+      if(ang4 > minAng)
+      {
+        minAng = ang4;
+      }
+      if(ang5 > minAng)
+      {
+        minAng = ang5;
+      }
+      if(ang6 > minAng)
+      {
+        minAng = ang6;
+      }
 
-		  minAnglesPtr[i] = SIMPLib::Constants::k_180OverPi * acosf(minAng);
-	  }
+      minAnglesPtr[i] = SIMPLib::Constants::k_180OverPi * acosf(minAng);
+    }
   }
 };
 
@@ -1310,7 +1334,8 @@ public:
    * @param inVertexArray
    * @param outElemArray
    */
-  template <typename T, typename K> static void AverageVertexArrayValues(typename DataArray<T>::Pointer elemList, typename DataArray<K>::Pointer inVertexArray, DataArray<float>::Pointer outElemArray)
+  template <typename T, typename K>
+  static void AverageVertexArrayValues(typename DataArray<T>::Pointer elemList, typename DataArray<K>::Pointer inVertexArray, DataArray<float>::Pointer outElemArray)
   {
     Q_ASSERT(outElemArray->getComponentDimensions() == inVertexArray->getComponentDimensions());
     Q_ASSERT(elemList->getNumberOfTuples() == outElemArray->getNumberOfTuples());
@@ -1427,5 +1452,4 @@ public:
     }
   }
 };
-}
-
+} // namespace GeometryHelpers

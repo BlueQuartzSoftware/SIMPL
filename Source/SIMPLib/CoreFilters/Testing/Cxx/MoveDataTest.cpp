@@ -100,7 +100,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void checkDataArray(IDataArray::Pointer originalData, IDataArray::Pointer newData, bool isRenamed)
+  template <typename T>
+  void checkDataArray(IDataArray::Pointer originalData, IDataArray::Pointer newData, bool isRenamed)
   {
     if(originalData == IDataArray::NullPointer() || newData == IDataArray::NullPointer())
     {

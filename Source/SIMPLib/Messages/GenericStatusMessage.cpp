@@ -64,7 +64,7 @@ GenericStatusMessage::~GenericStatusMessage() = default;
 // -----------------------------------------------------------------------------
 GenericStatusMessage::Pointer GenericStatusMessage::New(const QString& msgText)
 {
-  GenericStatusMessage::Pointer shared_ptr (new GenericStatusMessage(msgText));
+  GenericStatusMessage::Pointer shared_ptr(new GenericStatusMessage(msgText));
   return shared_ptr;
 }
 

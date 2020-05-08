@@ -138,7 +138,7 @@ public:
   /**
    * @brief AttributeMatrixMap_t
    */
-  //using AttributeMatrixMap_t = QMap<QString, AttributeMatrixShPtr>;
+  // using AttributeMatrixMap_t = QMap<QString, AttributeMatrixShPtr>;
 
   /**
    * @brief Creates a new shared pointer instance of this class
@@ -177,7 +177,7 @@ public:
    * @brief Sets the geometry of the data container
    * @param geometry
    */
-  virtual void setGeometry(const IGeometry::Pointer &geometry);
+  virtual void setGeometry(const IGeometry::Pointer& geometry);
 
   /**
    * @brief Returns the geometry of the data container
@@ -207,7 +207,7 @@ public:
   {
     return insertOrAssign(matrix);
   }
-  
+
   /**
    * @brief Returns the array for a given named array or the equivelant to a
    * null pointer if the name does not exist.
@@ -341,7 +341,8 @@ public:
    * @brief Returns the geometry as the templated type
    * @return
    */
-  template <typename GeometryType> typename GeometryType::Pointer getGeometryAs() const
+  template <typename GeometryType>
+  typename GeometryType::Pointer getGeometryAs() const
   {
     typename GeometryType::Pointer geom = std::dynamic_pointer_cast<GeometryType>(getGeometry());
     return geom;
@@ -352,7 +353,8 @@ public:
    * @param filter
    * @return
    */
-  template <typename GeometryType> typename GeometryType::Pointer getPrereqGeometry(AbstractFilter* filter) const
+  template <typename GeometryType>
+  typename GeometryType::Pointer getPrereqGeometry(AbstractFilter* filter) const
   {
     typename GeometryType::Pointer geom = GeometryType::NullPointer();
     IGeometry::Pointer igeom = getGeometry();
@@ -420,7 +422,7 @@ public:
    * @param hdfFileName
    * @return
    */
-  virtual int writeXdmf(QTextStream& out, const QString &hdfFileName) const;
+  virtual int writeXdmf(QTextStream& out, const QString& hdfFileName) const;
 
   /**
    * @brief readMeshDataFromHDF5

@@ -133,5 +133,3 @@ private:
   int m_PipelineIndex = {};
 };
 Q_DECLARE_METATYPE(FilterWarningMessage::Pointer)
-
-

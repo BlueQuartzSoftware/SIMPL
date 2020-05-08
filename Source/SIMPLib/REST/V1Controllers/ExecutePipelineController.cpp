@@ -77,11 +77,11 @@ void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
 
   qDebug() << "Number of Filters in Pipeline: " << pipeline->size();
 
-//  QByteArray sessionId = m_ResponseObj[SIMPL::JSON::SessionID].toVariant().toByteArray();
+  //  QByteArray sessionId = m_ResponseObj[SIMPL::JSON::SessionID].toVariant().toByteArray();
 
-//  QString linkAddress = "http://" + getListenHost().toString() + ":" + QString::number(getListenPort()) + QDir::separator() + QString(sessionId) + QDir::separator();
-//  SIMPLStaticFileController* staticFileController = SIMPLStaticFileController::Instance();
-//  QString docRoot = staticFileController->getDocRoot();
+  //  QString linkAddress = "http://" + getListenHost().toString() + ":" + QString::number(getListenPort()) + QDir::separator() + QString(sessionId) + QDir::separator();
+  //  SIMPLStaticFileController* staticFileController = SIMPLStaticFileController::Instance();
+  //  QString docRoot = staticFileController->getDocRoot();
 
   //  QString newFilePath = docRoot + QDir::separator() + QString(sessionId) + QDir::separator();
   //  QJsonArray outputLinks;
@@ -128,47 +128,47 @@ void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
   //    }
   //  }
 
-//  // Log Files
+  //  // Log Files
   PipelineListener listener(nullptr);
-//  bool createErrorLog = pipelineObj[SIMPL::JSON::ErrorLog].toBool(false);
-//  bool createWarningLog = pipelineObj[SIMPL::JSON::WarningLog].toBool(false);
-//  bool createStatusLog = pipelineObj[SIMPL::JSON::StatusLog].toBool(false);
+  //  bool createErrorLog = pipelineObj[SIMPL::JSON::ErrorLog].toBool(false);
+  //  bool createWarningLog = pipelineObj[SIMPL::JSON::WarningLog].toBool(false);
+  //  bool createStatusLog = pipelineObj[SIMPL::JSON::StatusLog].toBool(false);
 
-//  QDir docRootDir(docRoot);
-//  docRootDir.mkpath(newFilePath);
+  //  QDir docRootDir(docRoot);
+  //  docRootDir.mkpath(newFilePath);
 
-//  if(createErrorLog)
-//  {
-//    QString filename = pipeline->getName() + "-err.log";
-//    QString filepath = newFilePath + QDir::separator() + filename;
-//    listener.createErrorLogFile(filepath);
+  //  if(createErrorLog)
+  //  {
+  //    QString filename = pipeline->getName() + "-err.log";
+  //    QString filepath = newFilePath + QDir::separator() + filename;
+  //    listener.createErrorLogFile(filepath);
 
-//    outputLinks.append(linkAddress + filename);
-//  }
+  //    outputLinks.append(linkAddress + filename);
+  //  }
 
-//  if(createWarningLog)
-//  {
-//    QString filename = pipeline->getName() + "-warning.log";
-//    QString filepath = newFilePath + QDir::separator() + filename;
-//    listener.createWarningLogFile(filepath);
+  //  if(createWarningLog)
+  //  {
+  //    QString filename = pipeline->getName() + "-warning.log";
+  //    QString filepath = newFilePath + QDir::separator() + filename;
+  //    listener.createWarningLogFile(filepath);
 
-//    outputLinks.append(linkAddress + filename);
-//  }
+  //    outputLinks.append(linkAddress + filename);
+  //  }
 
-//  if(createStatusLog)
-//  {
-//    QString filename = pipeline->getName() + "-status.log";
-//    QString filepath = newFilePath + QDir::separator() + filename;
-//    listener.createStatusLogFile(filepath);
+  //  if(createStatusLog)
+  //  {
+  //    QString filename = pipeline->getName() + "-status.log";
+  //    QString filepath = newFilePath + QDir::separator() + filename;
+  //    listener.createStatusLogFile(filepath);
 
-//    outputLinks.append(linkAddress + filename);
-//  }
+  //    outputLinks.append(linkAddress + filename);
+  //  }
 
-//  // Append to the json response payload all the output links
-//  if(outputLinks.isEmpty() == false)
-//  {
-//    m_ResponseObj[SIMPL::JSON::OutputLinks] = outputLinks;
-//  }
+  //  // Append to the json response payload all the output links
+  //  if(outputLinks.isEmpty() == false)
+  //  {
+  //    m_ResponseObj[SIMPL::JSON::OutputLinks] = outputLinks;
+  //  }
 
   // Execute the pipeline
   Observer obs; // Create an Observer to report errors/progress from the executing pipeline
@@ -185,7 +185,6 @@ void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
 
     qDebug() << "Pipeline Done Executing...." << pipeline->getErrorCode();
   }
-
 
   // Return messages
   QJsonArray errors;
@@ -417,7 +416,10 @@ QJsonObject ExecutePipelineController::replaceFilterValuesUsingMetadata(const QS
     // Get the IO_Type value - This will tell us whether the property is an input or an output
     if(!propertyMetadataObj.contains("IO_Type"))
     {
-      m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline metadata is not in the right format: the metadata for property '%2' from filter %3 does not contain 'IO_Type' value.").arg(EndPoint()).arg(propertyName).arg(filterKey.toInt() + 1);
+      m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline metadata is not in the right format: the metadata for property '%2' from filter %3 does not contain 'IO_Type' value.")
+                                                     .arg(EndPoint())
+                                                     .arg(propertyName)
+                                                     .arg(filterKey.toInt() + 1);
       m_ResponseObj[SIMPL::JSON::ErrorCode] = -70;
       QJsonDocument jdoc(m_ResponseObj);
 
@@ -426,7 +428,10 @@ QJsonObject ExecutePipelineController::replaceFilterValuesUsingMetadata(const QS
     }
     else if(!propertyMetadataObj["IO_Type"].isString())
     {
-      m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline metadata is not in the right format: the metadata for property '%2' from filter %3 does not have an 'IO_Type' string value.").arg(EndPoint()).arg(propertyName).arg(filterKey.toInt() + 1);
+      m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline metadata is not in the right format: the metadata for property '%2' from filter %3 does not have an 'IO_Type' string value.")
+                                                     .arg(EndPoint())
+                                                     .arg(propertyName)
+                                                     .arg(filterKey.toInt() + 1);
 
       m_ResponseObj[SIMPL::JSON::ErrorCode] = -70;
       QJsonDocument jdoc(m_ResponseObj);

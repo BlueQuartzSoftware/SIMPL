@@ -68,7 +68,7 @@ public:
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
   using ConstWeakPointer = std::weak_ptr<const Self>;
-  
+
   /**
    * @brief Returns a NullPointer wrapped by a shared_ptr<>
    * @return
@@ -140,9 +140,9 @@ public:
 
   Q_PROPERTY(bool WarningsAsError READ getWarningsAsError WRITE setWarningsAsError)
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
   QString getCompiledLibraryName() const override;
 
   /**
@@ -195,18 +195,17 @@ public:
    */
   void execute() override;
 
-
 protected:
   PostSlackMessage();
 
   /**
-  * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-  */
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
   void dataCheck() override;
 
   /**
-  * @brief Initializes all the private instance variables.
-  */
+   * @brief Initializes all the private instance variables.
+   */
   void initialize();
 
 private:
@@ -219,10 +218,9 @@ private:
   QMutex m_Mutex;
   QNetworkAccessManager* m_NetworkManager;
 
-  public:
-    PostSlackMessage(const PostSlackMessage&) = delete; // Copy Constructor Not Implemented
-    PostSlackMessage(PostSlackMessage&&) = delete;      // Move Constructor Not Implemented
-    PostSlackMessage& operator=(const PostSlackMessage&) = delete; // Copy Assignment Not Implemented
-    PostSlackMessage& operator=(PostSlackMessage&&) = delete;      // Move Assignment Not Implemented
+public:
+  PostSlackMessage(const PostSlackMessage&) = delete;            // Copy Constructor Not Implemented
+  PostSlackMessage(PostSlackMessage&&) = delete;                 // Move Constructor Not Implemented
+  PostSlackMessage& operator=(const PostSlackMessage&) = delete; // Copy Assignment Not Implemented
+  PostSlackMessage& operator=(PostSlackMessage&&) = delete;      // Move Assignment Not Implemented
 };
-

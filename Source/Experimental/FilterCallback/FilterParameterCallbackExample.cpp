@@ -26,7 +26,6 @@
 //#define ADD_DATAARRAYPATH_PARAMETER(Params, Desc, Prop) \
 //  ADD_NEW_FILTER_PARAMETER(Params, DataArrayPathParameter, Desc, Prop, DataArrayPath)
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -34,7 +33,6 @@ namespace Detail
 {
 const QString FilterName("FilterName");
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -62,12 +60,14 @@ int main(int argc, char* argv[])
   {
     dblParam->getSetterCallback()(6.66666);
   }
-  
+
   DataArrayPathParameter::Pointer dapParam = std::dynamic_pointer_cast<DataArrayPathParameter>(params.at(3));
-  if(dapParam) {
+  if(dapParam)
+  {
     std::function<void(DataArrayPath)> dapCallback = dapParam->getSetterCallback();
-    if(dapCallback) {
-      dapCallback(DataArrayPath("Image","CellAM","FeatureIds"));
+    if(dapCallback)
+    {
+      dapCallback(DataArrayPath("Image", "CellAM", "FeatureIds"));
     }
   }
 
@@ -80,7 +80,6 @@ int main(int argc, char* argv[])
   IntFilterParameterWidget int32Widget_B(&filter, dblParam.get());
   int32Widget_B.parametersUpdated();
   filter.printValues(std::cout);
-
 
   QJsonObject root;
   filter.writeParameters(root);

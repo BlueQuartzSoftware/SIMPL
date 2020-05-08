@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
@@ -51,10 +51,10 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 /**
-* @class DataArrayPathSelectionWidget DataArrayPathSelectionWidget.h 
-* SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h
-* @brief This class handles DataArrayPath selection and mouse over signals for filter parameter widgets.
-*/
+ * @class DataArrayPathSelectionWidget DataArrayPathSelectionWidget.h
+ * SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h
+ * @brief This class handles DataArrayPath selection and mouse over signals for filter parameter widgets.
+ */
 class DataArrayPathSelectionWidget : public QToolButton
 {
   Q_OBJECT
@@ -86,72 +86,72 @@ public:
   Q_PROPERTY(State State READ getState)
 
   /**
-  * @brief Returns the type of DataArrayPath this widget can handle
-  * @return
-  */
+   * @brief Returns the type of DataArrayPath this widget can handle
+   * @return
+   */
   DataArrayPathHelper::DataType getDataType() const;
 
   /**
-  * @brief Sets the DataContainer requirements and sets the DataType to DataContainer
-  * @param dcReqs
-  */
+   * @brief Sets the DataContainer requirements and sets the DataType to DataContainer
+   * @param dcReqs
+   */
   void setDataContainerRequirements(const DataContainerSelectionFilterParameter::RequirementType& dcReqs);
 
   /**
-  * @brief Sets the AttributeMatrix requirements and sets the DataType to AttributeMatrix
-  * @param amReqs
-  */
+   * @brief Sets the AttributeMatrix requirements and sets the DataType to AttributeMatrix
+   * @param amReqs
+   */
   void setAttrMatrixRequirements(const AttributeMatrixSelectionFilterParameter::RequirementType& amReqs);
 
   /**
-  * @brief Sets the DataArray requirements and sets the DataType to DataArray
-  * @param daReqs
-  */
+   * @brief Sets the DataArray requirements and sets the DataType to DataArray
+   * @param daReqs
+   */
   void setDataArrayRequirements(const DataArraySelectionFilterParameter::RequirementType& daReqs);
 
   /**
-  * @brief Returns the DataContainer requirements
-  * @return
-  */
+   * @brief Returns the DataContainer requirements
+   * @return
+   */
   DataContainerSelectionFilterParameter::RequirementType getDataContainerRequirements() const;
 
   /**
-  * @brief Returns the AttributeMatrix requirements
-  * @return
-  */
+   * @brief Returns the AttributeMatrix requirements
+   * @return
+   */
   AttributeMatrixSelectionFilterParameter::RequirementType getAttrMatrixRequirements() const;
 
   /**
-  * @brief Returns the DataArray requirements
-  * @return
-  */
+   * @brief Returns the DataArray requirements
+   * @return
+   */
   DataArraySelectionFilterParameter::RequirementType getDataArrayRequirements() const;
 
   /**
-  * @brief Checks the requirements for the current path
-  * @return
-  */
+   * @brief Checks the requirements for the current path
+   * @return
+   */
   bool checkCurrentPath() const;
 
   /**
-  * @brief Checks requirements against the given DataArrayPath
-  * @param path
-  * @return
-  */
+   * @brief Checks requirements against the given DataArrayPath
+   * @param path
+   * @return
+   */
   bool checkPathReqs(const DataArrayPath& path) const;
 
   /**
-  * @brief Checks DataContainer requirements against the given DataArrayPath
-  * @param path
-  * @return
-  */
+   * @brief Checks DataContainer requirements against the given DataArrayPath
+   * @param path
+   * @return
+   */
   bool checkDataContainerReqs(const DataArrayPath& path) const;
 
   /**
-  * @brief Checks AttributeMatrix requirements against the given DataArrayPath
-  * @param path
-  * @return
-  */
+   * @brief Checks AttributeMatrix requirements against the given DataArrayPath
+   * @param path
+   * @return
+   */
   bool checkAttributeMatrixReqs(const DataArrayPath& path) const;
 
   /**
@@ -161,15 +161,15 @@ public:
   void setDataArrayPath(const DataArrayPath& dap);
 
   /**
-  * @brief Returns the DataArrayPath
-  * @return
-  */
+   * @brief Returns the DataArrayPath
+   * @return
+   */
   DataArrayPath getDataArrayPath() const;
 
   /**
-  * @brief Sets the filter the selection widget operates on
-  * @param filter
-  */
+   * @brief Sets the filter the selection widget operates on
+   * @param filter
+   */
   void setFilter(AbstractFilter* filter);
 
   /**
@@ -178,13 +178,13 @@ public:
   void beforePreflight();
 
   /**
-  * @brief Checks path validity
-  */
+   * @brief Checks path validity
+   */
   void afterPreflight();
 
   /**
-  * @brief Override the minimumSizeHint for extending the widget enough to paint the active color
-  */
+   * @brief Override the minimumSizeHint for extending the widget enough to paint the active color
+   */
   QSize minimumSizeHint() const override;
 
   /**
@@ -193,27 +193,27 @@ public:
   QSize sizeHint() const override;
 
   /**
-  * @brief Returns the property name set for this widget
-  * @return
-  */
+   * @brief Returns the property name set for this widget
+   * @return
+   */
   QString getPropertyName() const;
 
   /**
-  * @brief Sets the property name
-  * @param propName
-  */
+   * @brief Sets the property name
+   * @param propName
+   */
   void setPropertyName(QString propName);
 
 public slots:
   /**
-  * @brief Sets whether or not filtering is forced active or not
-  * @param active
-  */
+   * @brief Sets whether or not filtering is forced active or not
+   * @param active
+   */
   void setPathFiltering(bool active);
 
   /**
-  * @brief Resets the styling and clears the check state
-  */
+   * @brief Resets the styling and clears the check state
+   */
   void resetStyle();
 
   /**
@@ -228,8 +228,8 @@ public slots:
   void clearPathFiltering();
 
   /**
-  * @brief Clears the enable / disable state but leaves the checked state.  This is used for filtering from the DataStructure.
-  */
+   * @brief Clears the enable / disable state but leaves the checked state.  This is used for filtering from the DataStructure.
+   */
   void endExternalFiltering();
 
   /**
@@ -245,9 +245,9 @@ public slots:
   void selectionWidgetLocked(QToolButton* selection);
 
   /**
-    * @brief Enables filtering the DataStructure due to the current locking DataArrayPathSelectionWidget is unchecked
-    * @param selection
-    */
+   * @brief Enables filtering the DataStructure due to the current locking DataArrayPathSelectionWidget is unchecked
+   * @param selection
+   */
   void selectionWidgetUnlocked(QToolButton* selection);
 
 signals:
@@ -273,9 +273,9 @@ protected:
   State getState() const;
 
   /**
-  * @brief Change the stylesheet based on the widget state
-  * @param styleType
-  */
+   * @brief Change the stylesheet based on the widget state
+   * @param styleType
+   */
   void setState(State styleType);
 
   /**
@@ -313,40 +313,40 @@ protected:
   QSize updatedSizeHint(QSize sizeHint) const;
 
   /**
-  * @brief Handles the mouse-enter event and emits the appropriate viewPaths signal
-  * @param event
-  */
+   * @brief Handles the mouse-enter event and emits the appropriate viewPaths signal
+   * @param event
+   */
   void enterEvent(QEvent* event) override;
 
   /**
-  * @brief Handles the mouse-leave event and emits the endViewPaths signal
-  * @param event
-  */
+   * @brief Handles the mouse-leave event and emits the endViewPaths signal
+   * @param event
+   */
   void leaveEvent(QEvent* event) override;
 
   /**
-  * @brief Checks DataArray requirements against the given DataArrayPath
-  * @param path
-  * @return
-  */
+   * @brief Checks DataArray requirements against the given DataArrayPath
+   * @param path
+   * @return
+   */
   bool checkDataArrayReqs(const DataArrayPath& path) const;
 
   /**
-  * @brief dragEnterEvent
-  * @param event
-  */
+   * @brief dragEnterEvent
+   * @param event
+   */
   void dragEnterEvent(QDragEnterEvent* event) override;
 
   /**
-  * @brief dragLeaveEvent
-  * @param event
-  */
+   * @brief dragLeaveEvent
+   * @param event
+   */
   void dragLeaveEvent(QDragLeaveEvent* event) override;
 
   /**
-  * @brief dropEvent
-  * @param event
-  */
+   * @brief dropEvent
+   * @param event
+   */
   void dropEvent(QDropEvent* event) override;
 
   /**
@@ -362,82 +362,82 @@ protected:
   QString createTooltipFooter() const;
 
   /**
-  * @brief Create the IGeometry::Type requirements part of the tooltip
-  * @param geomTypes
-  * @return
-  */
+   * @brief Create the IGeometry::Type requirements part of the tooltip
+   * @param geomTypes
+   * @return
+   */
   QString createGeomReqString(QVector<IGeometry::Type> geomTypes) const;
 
   /**
-  * @brief Create the AttributeMatrix::Type requirements part of the tooltip
-  * @param amTypes
-  * @return
-  */
+   * @brief Create the AttributeMatrix::Type requirements part of the tooltip
+   * @param amTypes
+   * @return
+   */
   QString createAttrMatrixReqString(QVector<AttributeMatrix::Type> amTypes) const;
 
   /**
-  * @brief Create the DataArray type requirements part of the tooltip
-  * @param daTypes
-  * @return
-  */
+   * @brief Create the DataArray type requirements part of the tooltip
+   * @param daTypes
+   * @return
+   */
   QString createDataArrayTypeString(QVector<QString> daTypes) const;
 
   /**
-  * @brief Create the component requirements part of the tooltip
-  * @param compDims
-  * @return
-  */
+   * @brief Create the component requirements part of the tooltip
+   * @param compDims
+   * @return
+   */
   QString createComponentReqString(std::vector<std::vector<size_t>> compDims) const;
 
   /**
-  * @brief mouseMoveEvent
-  * @param event
-  */
+   * @brief mouseMoveEvent
+   * @param event
+   */
   void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
   /**
-  * @brief Returns the color code for the given State
-  * @param state
-  */
+   * @brief Returns the color code for the given State
+   * @param state
+   */
   const QColor getBorderColor(State state) const;
 
   /**
-  * @brief Override the paint event to mark the DataType required
-  * @param event
-  */
+   * @brief Override the paint event to mark the DataType required
+   * @param event
+   */
   void paintEvent(QPaintEvent* event) override;
 
   /**
-  * @brief Creates the legacy selection menu
-  * @return
-  */
+   * @brief Creates the legacy selection menu
+   * @return
+   */
   QMenu* createSelectionMenu();
 
   /**
-  * @brief Returns true if the given path is created by this filter. Returns false otherwise.
-  * @param path
-  * @return
-  */
+   * @brief Returns true if the given path is created by this filter. Returns false otherwise.
+   * @param path
+   * @return
+   */
   bool isCreatedPath(const DataArrayPath& path) const;
 
 protected slots:
   /**
-  * @brief Show the legacy menu when right-clicking
-  * @param pos
-  */
+   * @brief Show the legacy menu when right-clicking
+   * @param pos
+   */
   void showContextMenu(const QPoint& pos);
 
   /**
-  * @brief Emits the appropriate signal when the check state is changed
-  * @param checked
-  */
+   * @brief Emits the appropriate signal when the check state is changed
+   * @param checked
+   */
   void updateCheckState(bool checked);
 
 private slots:
   /**
-  * @brief mousePressEvent
-  * @param event
-  */
+   * @brief mousePressEvent
+   * @param event
+   */
   void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
 private:

@@ -329,7 +329,7 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
   out << "\"\"\"\n"
       << "This is a basic unit test file to ensure that the filters can be instantiated\n"
       << "This file is AUTO GENERATED as part of the 'CodeScraper' program that is executed\n"
-      << "during the compilation phase. PythonBindingsModule.cpp at line " << __LINE__  << "\n"
+      << "during the compilation phase. PythonBindingsModule.cpp at line " << __LINE__ << "\n"
       << "m_LibName=" << m_LibName << "\n"
       << "isSIMPLib:" << isSIMPLib << "\n"
       << "\"\"\"\n";
@@ -392,13 +392,13 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
 
   out << QStringLiteral("\"\"\"") << "\n";
   out << "\n";
-  out  << "from .dream3d import simpl\n";
+  out << "from .dream3d import simpl\n";
 
   QString shortLibName = m_LibName;
   shortLibName.replace("_py", "");
   if(isSIMPLib != "TRUE")
   {
-    out  << "from .dream3d import " << shortLibName << "\n\n\n";
+    out << "from .dream3d import " << shortLibName << "\n\n\n";
   }
 
   iter.toFront();
@@ -421,13 +421,13 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
     {
       docCodes = pythonicCodes[2];
     }
-    
+
     if(shortLibName == "dream3d")
     {
       shortLibName = "simpl";
     }
     bodyCodes = bodyCodes.replace("@shortLibName@", shortLibName);
-    
+
     if(aClass.compare("AbstractFilter") == 0 && isSIMPLib.compare("FALSE") == 0)
     {
       continue;

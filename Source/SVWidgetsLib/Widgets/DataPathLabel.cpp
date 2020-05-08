@@ -65,8 +65,8 @@ DataPathLabel::DataPathLabel(QWidget* parent)
 : QLabel(parent)
 {
   setAttribute(Qt::WA_MacShowFocusRect, false);
-  //setAutoFillBackground(true);
-  //setFrameShape(QFrame::StyledPanel);
+  // setAutoFillBackground(true);
+  // setFrameShape(QFrame::StyledPanel);
 }
 
 // -----------------------------------------------------------------------------
@@ -160,7 +160,7 @@ QRect DataPathLabel::getStyledBorderRect() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-//void DataPathLabel::paintEvent(QPaintEvent* event)
+// void DataPathLabel::paintEvent(QPaintEvent* event)
 //{
 //  const int radius = 4;
 //  const int rectWidth = getStyledBorderRect().width() - margin() * 2;

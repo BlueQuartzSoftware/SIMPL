@@ -100,12 +100,12 @@ public:
    */
   void setPartitioner(const tbb::auto_partitioner& partitioner);
 #endif
-  
+
   /**
    * @brief Runs the data algorithm.  Parallelization is used if appropriate.
    * @param body
    */
-  template<typename Body>
+  template <typename Body>
   void execute(const Body& body)
   {
     bool doParallel = false;

@@ -42,7 +42,8 @@
 
 #include "IDataStructureNode.h"
 
-template <class DerivedChild_t> class IDataStructureContainerNode : public AbstractDataStructureContainer
+template <class DerivedChild_t>
+class IDataStructureContainerNode : public AbstractDataStructureContainer
 {
 public:
   using Self = IDataStructureContainerNode<DerivedChild_t>;
@@ -61,7 +62,6 @@ private:
   ChildCollection m_ChildrenNodes;
 
 protected:
-  
 public:
   IDataStructureContainerNode(const QString& name = "")
   : AbstractDataStructureContainer(name)
@@ -432,7 +432,7 @@ public:
     m_ChildrenNodes.erase(iter);
     destroyParentConnection(child.get());
   }
-  
+
   /**
    * @brief Removes the given child from the children collection and returns its shared_ptr.
    * @param child
@@ -457,5 +457,4 @@ public:
 
     return NullPointer();
   }
-
 };

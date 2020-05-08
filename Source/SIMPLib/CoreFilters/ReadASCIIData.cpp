@@ -2,7 +2,6 @@
  * Your License or Copyright can go here
  */
 
-
 #include "ReadASCIIData.h"
 
 #include <QtCore/QFileInfo>
@@ -21,16 +20,15 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 
-namespace {
-   const QString k_Skip("Skip");
+namespace
+{
+const QString k_Skip("Skip");
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 ReadASCIIData::ReadASCIIData() = default;
-
 
 // -----------------------------------------------------------------------------
 //
@@ -62,7 +60,7 @@ void ReadASCIIData::readFilterParameters(AbstractFilterParametersReader* reader,
 
   QString delimitersStr = reader->readString(prefix + "Delimiters", "");
   QList<char> delimiters;
-  for(auto && i : delimitersStr)
+  for(auto&& i : delimitersStr)
   {
     delimiters.push_back(i.toLatin1());
   }
@@ -337,7 +335,7 @@ void ReadASCIIData::dataCheck()
   for(int i = 0; i < dataTypes.size(); i++)
   {
     QString dataType = dataTypes[i];
-    if(dataType == ::k_Skip) 
+    if(dataType == ::k_Skip)
     {
       continue;
     }
@@ -409,7 +407,6 @@ void ReadASCIIData::dataCheck()
     }
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -577,7 +574,6 @@ void ReadASCIIData::execute()
     }
     inputFile.close();
   }
-
 }
 
 // -----------------------------------------------------------------------------

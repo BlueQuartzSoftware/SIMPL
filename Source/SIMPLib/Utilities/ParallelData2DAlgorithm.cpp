@@ -34,9 +34,9 @@
 
 #include "ParallelData2DAlgorithm.h"
 
- // -----------------------------------------------------------------------------
- //
- // -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 ParallelData2DAlgorithm::ParallelData2DAlgorithm()
 : m_Range(SIMPLRange2D())
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
@@ -88,7 +88,7 @@ void ParallelData2DAlgorithm::setRange(const SIMPLRange2D& range)
 // -----------------------------------------------------------------------------
 void ParallelData2DAlgorithm::setRange(size_t minRows, size_t minCols, size_t maxRows, size_t maxCols)
 {
-  m_Range = { minRows, minCols, maxRows, maxCols };
+  m_Range = {minRows, minCols, maxRows, maxCols};
 }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS

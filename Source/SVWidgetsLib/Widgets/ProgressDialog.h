@@ -31,15 +31,14 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-
 #include "SIMPLib/Messages/AbstractMessage.h"
 
 #include <QtWidgets/QDialog>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-
-namespace Ui {
+namespace Ui
+{
 class ProgressDialog;
 }
 
@@ -50,23 +49,20 @@ class ProgressDialogMessageHandler;
  */
 class SVWidgetsLib_EXPORT ProgressDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    ProgressDialog(QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
-    ~ProgressDialog() override;
+public:
+  ProgressDialog(QWidget* parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
+  ~ProgressDialog() override;
 
-    friend ProgressDialogMessageHandler;
+  friend ProgressDialogMessageHandler;
 
-  public slots:
+public slots:
 
-    void setLabelText(const QString& text);
-    void processPipelineMessage(const AbstractMessage::Pointer& msg);
+  void setLabelText(const QString& text);
+  void processPipelineMessage(const AbstractMessage::Pointer& msg);
 
-  protected:
-
-
-  private:
-    QSharedPointer<Ui::ProgressDialog>  m_Ui;
+protected:
+private:
+  QSharedPointer<Ui::ProgressDialog> m_Ui;
 };
-

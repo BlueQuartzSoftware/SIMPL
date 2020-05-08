@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "MultiThresholdObjects2.h"
 
 #include <QtCore/QTextStream>
@@ -47,7 +47,8 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 
-enum createdPathID : RenameDataPath::DataID_t {
+enum createdPathID : RenameDataPath::DataID_t
+{
   ThresholdArrayID = 1
 };
 
@@ -119,7 +120,7 @@ void MultiThresholdObjects2::dataCheck()
   }
   else
   {
-    //int32_t count = comparisonValues.size();
+    // int32_t count = comparisonValues.size();
     QString dcName = m_SelectedThresholds.getDataContainerName();
     QString amName = m_SelectedThresholds.getAttributeMatrixName();
 
@@ -135,7 +136,7 @@ void MultiThresholdObjects2::dataCheck()
       setErrorCondition(-13091, ss);
     }
 
-    //AbstractComparison::Pointer comp = m_SelectedThresholds[0];
+    // AbstractComparison::Pointer comp = m_SelectedThresholds[0];
     std::vector<size_t> cDims(1, 1);
     DataArrayPath tempPath(dcName, amName, getDestinationArrayName());
     m_DestinationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>>(this, tempPath, true, cDims, "", ThresholdArrayID);
@@ -149,7 +150,7 @@ void MultiThresholdObjects2::dataCheck()
     {
       ComparisonValue::Pointer comp = std::dynamic_pointer_cast<ComparisonValue>(comparisonValues[i]);
 
-      if (nullptr != comp)
+      if(nullptr != comp)
       {
         tempPath.update(dcName, amName, comp->getAttributeArrayName());
         IDataArray::Pointer inputData = getDataContainerArray()->getPrereqIDataArrayFromPath(this, tempPath);
@@ -157,11 +158,11 @@ void MultiThresholdObjects2::dataCheck()
         {
           cDims = inputData->getComponentDimensions();
           int32_t numComp = static_cast<int32_t>(cDims[0]);
-          for (int32_t d = 1; d < cDims.size(); d++)
+          for(int32_t d = 1; d < cDims.size(); d++)
           {
             numComp *= cDims[d];
           }
-          if (numComp > 1)
+          if(numComp > 1)
           {
             QString ss = QObject::tr("Selected array '%1' is not a scalar array").arg(comp->getAttributeArrayName());
             setErrorCondition(-11003, ss);
@@ -171,7 +172,6 @@ void MultiThresholdObjects2::dataCheck()
     }
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -196,50 +196,50 @@ void MultiThresholdObjects2::execute()
   DataContainer::Pointer m = dca->getDataContainer(dcName);
 
   // At least one threshold value is required
-  if (!m_SelectedThresholds.hasComparisonValue())
+  if(!m_SelectedThresholds.hasComparisonValue())
   {
     QString ss = QObject::tr("Error Executing threshold filter. There are no specified values to threshold against");
     setErrorCondition(-13001, ss);
     return;
   }
 
-    bool invert = m_SelectedThresholds.shouldInvert();
+  bool invert = m_SelectedThresholds.shouldInvert();
 
-    int64_t thresholdSize;
-    BoolArrayType::Pointer thresholdArray;
+  int64_t thresholdSize;
+  BoolArrayType::Pointer thresholdArray;
 
-    createBoolArray(thresholdSize, thresholdArray);
-    bool firstValueFound = false;
+  createBoolArray(thresholdSize, thresholdArray);
+  bool firstValueFound = false;
 
-    int32_t err = 0;
+  int32_t err = 0;
 
-    // Loop on the remaining Comparison objects updating our final result array as we go
-    for(int32_t i = 0; i < m_SelectedThresholds.size() && err >= 0; ++i)
+  // Loop on the remaining Comparison objects updating our final result array as we go
+  for(int32_t i = 0; i < m_SelectedThresholds.size() && err >= 0; ++i)
+  {
+    if(std::dynamic_pointer_cast<ComparisonSet>(m_SelectedThresholds[i]))
     {
-      if (std::dynamic_pointer_cast<ComparisonSet>(m_SelectedThresholds[i]))
-      {
-        ComparisonSet::Pointer comparisonSet = std::dynamic_pointer_cast<ComparisonSet>(m_SelectedThresholds[i]);
-        thresholdSet(comparisonSet, thresholdArray, err, !firstValueFound, false);
-        firstValueFound = true;
-      }
-      else if(std::dynamic_pointer_cast<ComparisonValue>(m_SelectedThresholds[i]))
-      {
-        ComparisonValue::Pointer comparisonValue = std::dynamic_pointer_cast<ComparisonValue>(m_SelectedThresholds[i]);
-        thresholdValue(comparisonValue, thresholdArray, err, !firstValueFound, false);
-        firstValueFound = true;
-      }
+      ComparisonSet::Pointer comparisonSet = std::dynamic_pointer_cast<ComparisonSet>(m_SelectedThresholds[i]);
+      thresholdSet(comparisonSet, thresholdArray, err, !firstValueFound, false);
+      firstValueFound = true;
     }
-
-    if (invert)
+    else if(std::dynamic_pointer_cast<ComparisonValue>(m_SelectedThresholds[i]))
     {
-      invertThreshold(thresholdSize, thresholdArray);
+      ComparisonValue::Pointer comparisonValue = std::dynamic_pointer_cast<ComparisonValue>(m_SelectedThresholds[i]);
+      thresholdValue(comparisonValue, thresholdArray, err, !firstValueFound, false);
+      firstValueFound = true;
     }
+  }
 
-    bool* threshold = thresholdArray->getPointer(0);
-    for (int64_t p = 0; p < thresholdSize; p++)
-    {
-      m_Destination[p] = threshold[p];
-    }
+  if(invert)
+  {
+    invertThreshold(thresholdSize, thresholdArray);
+  }
+
+  bool* threshold = thresholdArray->getPointer(0);
+  for(int64_t p = 0; p < thresholdSize; p++)
+  {
+    m_Destination[p] = threshold[p];
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -270,15 +270,15 @@ void MultiThresholdObjects2::insertThreshold(int64_t numItems, BoolArrayType::Po
   bool* newArray = newArrayPtr->getPointer(0);
   bool* currentArray = currentArrayPtr->getPointer(0);
 
-  for (int64_t i = 0; i < numItems; i++)
+  for(int64_t i = 0; i < numItems; i++)
   {
     // invert the current comparison if necessary
-    if (inverse)
+    if(inverse)
     {
       newArray[i] = !newArray[i];
     }
 
-    if (SIMPL::Union::Operator_Or == unionOperator)
+    if(SIMPL::Union::Operator_Or == unionOperator)
     {
       currentArray[i] = currentArray[i] || newArray[i];
     }
@@ -296,7 +296,7 @@ void MultiThresholdObjects2::invertThreshold(int64_t numItems, BoolArrayType::Po
 {
   bool* threshold = thresholdArray->getPointer(0);
 
-  for (int64_t i = 0; i < numItems; i++)
+  for(int64_t i = 0; i < numItems; i++)
   {
     threshold[i] = !threshold[i];
   }
@@ -305,14 +305,14 @@ void MultiThresholdObjects2::invertThreshold(int64_t numItems, BoolArrayType::Po
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiThresholdObjects2::thresholdSet(ComparisonSet::Pointer comparisonSet, BoolArrayType::Pointer& currentThreshold, int32_t &err, bool replaceInput, bool inverse)
+void MultiThresholdObjects2::thresholdSet(ComparisonSet::Pointer comparisonSet, BoolArrayType::Pointer& currentThreshold, int32_t& err, bool replaceInput, bool inverse)
 {
-  if (nullptr == comparisonSet)
+  if(nullptr == comparisonSet)
   {
     return;
   }
 
-  if (inverse)
+  if(inverse)
   {
     inverse = !comparisonSet->getInvertComparison();
   }
@@ -328,32 +328,32 @@ void MultiThresholdObjects2::thresholdSet(ComparisonSet::Pointer comparisonSet, 
   bool firstValueFound = false;
 
   QVector<AbstractComparison::Pointer> comparisons = comparisonSet->getComparisons();
-  for (int i = 0; i < comparisons.size(); i++)
+  for(int i = 0; i < comparisons.size(); i++)
   {
     // Check all contents of child Comparison Sets
-    if (std::dynamic_pointer_cast<ComparisonSet>(comparisons.at(i)))
-    { 
+    if(std::dynamic_pointer_cast<ComparisonSet>(comparisons.at(i)))
+    {
       ComparisonSet::Pointer childSet = std::dynamic_pointer_cast<ComparisonSet>(comparisons.at(i));
       thresholdSet(childSet, setThresholdArray, err, !firstValueFound, false);
       firstValueFound = true;
     }
     // Check Comparison Values
-    if (std::dynamic_pointer_cast<ComparisonValue>(comparisons.at(i)))
+    if(std::dynamic_pointer_cast<ComparisonValue>(comparisons.at(i)))
     {
       ComparisonValue::Pointer childValue = std::dynamic_pointer_cast<ComparisonValue>(comparisons.at(i));
       thresholdValue(childValue, setThresholdArray, err, !firstValueFound, false);
       firstValueFound = true;
     }
 
-    if (err < 0)
+    if(err < 0)
     {
       return;
     }
   }
 
-  if (replaceInput)
+  if(replaceInput)
   {
-    if (inverse)
+    if(inverse)
     {
       invertThreshold(setArraySize, setThresholdArray);
     }
@@ -369,9 +369,9 @@ void MultiThresholdObjects2::thresholdSet(ComparisonSet::Pointer comparisonSet, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiThresholdObjects2::thresholdValue(ComparisonValue::Pointer comparisonValue, BoolArrayType::Pointer& inputThreshold, int32_t &err, bool replaceInput, bool inverse)
+void MultiThresholdObjects2::thresholdValue(ComparisonValue::Pointer comparisonValue, BoolArrayType::Pointer& inputThreshold, int32_t& err, bool replaceInput, bool inverse)
 {
-  if (nullptr == comparisonValue)
+  if(nullptr == comparisonValue)
   {
     return;
   }
@@ -390,30 +390,30 @@ void MultiThresholdObjects2::thresholdValue(ComparisonValue::Pointer comparisonV
   // Initialize the array to false
   currentArrayPtr->initializeWithZeros();
 
-  //bool* currentArray = currentArrayPtr->getPointer(0);
+  // bool* currentArray = currentArrayPtr->getPointer(0);
   int compOperator = comparisonValue->getCompOperator();
   double compValue = comparisonValue->getCompValue();
 
   ThresholdFilterHelper filter(static_cast<SIMPL::Comparison::Enumeration>(compOperator), compValue, currentArrayPtr.get());
 
   err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(comparisonValue->getAttributeArrayName()), currentArrayPtr.get());
-  if (err < 0)
+  if(err < 0)
   {
     DataArrayPath tempPath(m_SelectedThresholds.getDataContainerName(), m_SelectedThresholds.getAttributeMatrixName(), comparisonValue->getAttributeArrayName());
     QString ss = QObject::tr("Error Executing threshold filter on array. The path is %1").arg(tempPath.serialize());
     setErrorCondition(-13002, ss);
     return;
   }
-  
-  if (replaceInput)
+
+  if(replaceInput)
   {
-    if (inverse)
+    if(inverse)
     {
       invertThreshold(totalTuples, currentArrayPtr);
     }
     inputThreshold.swap(currentArrayPtr);
   }
-  else 
+  else
   {
     // insert into current threshold
     insertThreshold(totalTuples, inputThreshold, comparisonValue->getUnionOperator(), currentArrayPtr, inverse);

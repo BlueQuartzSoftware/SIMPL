@@ -21,11 +21,10 @@
 class SVWidgetsLib_EXPORT SVPushButton : public QPushButton
 {
   Q_OBJECT
-  
-  public:
+
+public:
   SVPushButton(QWidget* parent = nullptr);
   ~SVPushButton() override;
-  
 };
 
 /**
@@ -35,13 +34,11 @@ class SVWidgetsLib_EXPORT SVPushButton : public QPushButton
 class SVWidgetsLib_EXPORT SVIconPushButton : public QPushButton
 {
   Q_OBJECT
-  
-  public:
+
+public:
   SVIconPushButton(QWidget* parent = nullptr);
   ~SVIconPushButton() override;
-  
 };
-
 
 /**
  * @brief The SVToolButton class
@@ -49,11 +46,10 @@ class SVWidgetsLib_EXPORT SVIconPushButton : public QPushButton
 class SVWidgetsLib_EXPORT SVToolButton : public QToolButton
 {
   Q_OBJECT
-  
-  public:
+
+public:
   SVToolButton(QWidget* parent = nullptr);
   ~SVToolButton() override;
-  
 };
 
 /**
@@ -64,10 +60,9 @@ class SVWidgetsLib_EXPORT SVSpinBox : public QSpinBox
 {
   Q_OBJECT
 
-  public:
+public:
   SVSpinBox(QWidget* parent = nullptr);
   ~SVSpinBox() override;
-
 };
 
 /**
@@ -78,12 +73,10 @@ class SVWidgetsLib_EXPORT SVDoubleSpinBox : public QDoubleSpinBox
 {
   Q_OBJECT
 
-  public:
+public:
   SVDoubleSpinBox(QWidget* parent = nullptr);
   ~SVDoubleSpinBox() override;
-
 };
-
 
 /**
  * @brief The SVLineEdit class
@@ -91,11 +84,10 @@ class SVWidgetsLib_EXPORT SVDoubleSpinBox : public QDoubleSpinBox
 class SVWidgetsLib_EXPORT SVLineEdit : public QLineEdit
 {
   Q_OBJECT
-  
-  public:
+
+public:
   SVLineEdit(QWidget* parent = nullptr);
   ~SVLineEdit() override;
-  
 };
 
 /**
@@ -104,15 +96,11 @@ class SVWidgetsLib_EXPORT SVLineEdit : public QLineEdit
 class SVWidgetsLib_EXPORT SVSmallLabel : public QLabel
 {
   Q_OBJECT
-  
-  public:
+
+public:
   SVSmallLabel(QWidget* parent = nullptr);
   ~SVSmallLabel() override;
-  
 };
-
-
-
 
 /**
  * @brief The SVTreeView class
@@ -120,15 +108,11 @@ class SVWidgetsLib_EXPORT SVSmallLabel : public QLabel
 class SVWidgetsLib_EXPORT SVTreeView : public QTreeView
 {
   Q_OBJECT
-  
-  public:
+
+public:
   SVTreeView(QWidget* parent = nullptr);
   ~SVTreeView() override;
-  
 };
-
-
-
 
 /**
  * @brief The SVListView class
@@ -136,13 +120,11 @@ class SVWidgetsLib_EXPORT SVTreeView : public QTreeView
 class SVWidgetsLib_EXPORT SVListView : public QListView
 {
   Q_OBJECT
-  
-  public:
+
+public:
   SVListView(QWidget* parent = nullptr);
   ~SVListView() override;
-  
 };
-
 
 /**
  * @brief The SVListWidget class
@@ -150,11 +132,10 @@ class SVWidgetsLib_EXPORT SVListView : public QListView
 class SVWidgetsLib_EXPORT SVListWidget : public QListWidget
 {
   Q_OBJECT
-  
-  public:
+
+public:
   SVListWidget(QWidget* parent = nullptr);
   ~SVListWidget() override;
-  
 };
 
 /**
@@ -164,15 +145,14 @@ class SVWidgetsLib_EXPORT SVTreeWidget : public QTreeWidget
 {
   Q_OBJECT
 
-  public:
+public:
   SVTreeWidget(QWidget* parent = nullptr);
   ~SVTreeWidget() override;
-
 };
 
 /**
-* @brief The SVTabWidget class
-*/
+ * @brief The SVTabWidget class
+ */
 class SVWidgetsLib_EXPORT SVTabWidget : public QTabWidget
 {
   Q_OBJECT
@@ -180,13 +160,11 @@ class SVWidgetsLib_EXPORT SVTabWidget : public QTabWidget
 public:
   SVTabWidget(QWidget* parent = nullptr);
   ~SVTabWidget() override;
-
 };
 
-
 /**
-* @brief The SVDialog class
-*/
+ * @brief The SVDialog class
+ */
 class SVWidgetsLib_EXPORT SVDialog : public QDialog
 {
   Q_OBJECT
@@ -194,7 +172,6 @@ class SVWidgetsLib_EXPORT SVDialog : public QDialog
 public:
   SVDialog(QWidget* parent = nullptr);
   ~SVDialog() override;
-
 };
 
 /**

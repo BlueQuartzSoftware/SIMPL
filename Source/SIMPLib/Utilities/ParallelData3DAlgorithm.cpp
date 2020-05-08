@@ -34,9 +34,9 @@
 
 #include "ParallelData3DAlgorithm.h"
 
- // -----------------------------------------------------------------------------
- //
- // -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 ParallelData3DAlgorithm::ParallelData3DAlgorithm()
 : m_Range(SIMPLRange3D())
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
@@ -88,7 +88,7 @@ void ParallelData3DAlgorithm::setRange(const SIMPLRange3D& range)
 // -----------------------------------------------------------------------------
 void ParallelData3DAlgorithm::setRange(size_t xMax, size_t yMax, size_t zMax)
 {
-  m_Range = { 0, xMax, 0, yMax, 0, zMax };
+  m_Range = {0, xMax, 0, yMax, 0, zMax};
 }
 
 // -----------------------------------------------------------------------------

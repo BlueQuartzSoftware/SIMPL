@@ -208,5 +208,4 @@ public:
 
 private:
   QString m_FilterName = QString("CreateStringArray");
-
 };

@@ -67,7 +67,7 @@ FilterStatusMessage::~FilterStatusMessage() = default;
 // -----------------------------------------------------------------------------
 FilterStatusMessage::Pointer FilterStatusMessage::New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText)
 {
-  FilterStatusMessage::Pointer shared_ptr (new FilterStatusMessage(className, humanLabel, pipelineIndex, msgText));
+  FilterStatusMessage::Pointer shared_ptr(new FilterStatusMessage(className, humanLabel, pipelineIndex, msgText));
   return shared_ptr;
 }
 

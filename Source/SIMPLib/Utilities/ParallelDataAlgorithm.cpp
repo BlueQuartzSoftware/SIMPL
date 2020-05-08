@@ -34,9 +34,9 @@
 
 #include "ParallelDataAlgorithm.h"
 
- // -----------------------------------------------------------------------------
- //
- // -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 ParallelDataAlgorithm::ParallelDataAlgorithm()
 : m_Range(SIMPLRange())
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
@@ -88,7 +88,7 @@ void ParallelDataAlgorithm::setRange(const SIMPLRange& range)
 // -----------------------------------------------------------------------------
 void ParallelDataAlgorithm::setRange(size_t min, size_t max)
 {
-  m_Range = { min, max };
+  m_Range = {min, max};
 }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS

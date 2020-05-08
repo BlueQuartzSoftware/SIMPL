@@ -653,5 +653,3 @@ GridMontage::Pointer GridMontage::NullPointer()
 {
   return Pointer(static_cast<Self*>(nullptr));
 }
-
-

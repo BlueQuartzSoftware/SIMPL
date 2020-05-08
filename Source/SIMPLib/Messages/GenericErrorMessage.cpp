@@ -66,7 +66,7 @@ GenericErrorMessage::~GenericErrorMessage() = default;
 // -----------------------------------------------------------------------------
 GenericErrorMessage::Pointer GenericErrorMessage::New(const QString& msgText, int code)
 {
-  GenericErrorMessage::Pointer shared_ptr (new GenericErrorMessage(msgText, code));
+  GenericErrorMessage::Pointer shared_ptr(new GenericErrorMessage(msgText, code));
   return shared_ptr;
 }
 

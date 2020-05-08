@@ -45,7 +45,8 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-template <typename TElementIdentifier, typename TElement> class ImportDream3DImageContainer : public ImportImageContainer<TElementIdentifier, TElement>
+template <typename TElementIdentifier, typename TElement>
+class ImportDream3DImageContainer : public ImportImageContainer<TElementIdentifier, TElement>
 {
 public:
   /** Standard class typedefs. */
@@ -91,4 +92,3 @@ private:
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImportDream3DImageContainer.hxx"
 #endif
-

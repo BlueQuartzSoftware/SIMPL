@@ -265,7 +265,6 @@ public:
    */
   void execute() override;
 
-
 protected:
   RotateSampleRefFrame();
 

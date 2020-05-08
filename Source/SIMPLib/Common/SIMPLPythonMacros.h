@@ -194,9 +194,9 @@
 #define PYB11_METHOD(...)
 
 /**
-* @brief PYB11_FILTER This macro is used to flag the class as being a filter class.
-* This will make the generator create a Pythonic interface for this filter.
-*/
+ * @brief PYB11_FILTER This macro is used to flag the class as being a filter class.
+ * This will make the generator create a Pythonic interface for this filter.
+ */
 #define PYB11_FILTER(...)
 
 // End of PYBIND11 Macro Definitions

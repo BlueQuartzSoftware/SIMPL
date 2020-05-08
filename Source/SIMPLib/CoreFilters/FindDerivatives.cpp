@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "FindDerivatives.h"
 
 #include <QtCore/QTextStream>
@@ -64,48 +64,52 @@
  */
 class FilterMessageHandler : public AbstractMessageHandler
 {
-  public:
-    explicit FilterMessageHandler(FindDerivatives* filter) : m_Filter(filter) {}
+public:
+  explicit FilterMessageHandler(FindDerivatives* filter)
+  : m_Filter(filter)
+  {
+  }
 
-    /**
-     * @brief Re-emits incoming GenericProgressMessages as FilterProgressMessages.
-     */
-    void processMessage(const GenericProgressMessage* msg) const override
-    {
-      emit m_Filter->notifyProgressMessage(msg->getProgressValue(), msg->getMessageText());
-    }
+  /**
+   * @brief Re-emits incoming GenericProgressMessages as FilterProgressMessages.
+   */
+  void processMessage(const GenericProgressMessage* msg) const override
+  {
+    emit m_Filter->notifyProgressMessage(msg->getProgressValue(), msg->getMessageText());
+  }
 
-    /**
-     * @brief Re-emits incoming GenericStatusMessages as FilterStatusMessages.  Prepends text to the
-     * message text that explains that we are computing the derivatives
-     */
-    void processMessage(const GenericStatusMessage* msg) const override
-    {
-      QString messageText = QObject::tr("Computing Derivatives || %1").arg(msg->getMessageText());
-      emit m_Filter->notifyStatusMessage(messageText);
-    }
+  /**
+   * @brief Re-emits incoming GenericStatusMessages as FilterStatusMessages.  Prepends text to the
+   * message text that explains that we are computing the derivatives
+   */
+  void processMessage(const GenericStatusMessage* msg) const override
+  {
+    QString messageText = QObject::tr("Computing Derivatives || %1").arg(msg->getMessageText());
+    emit m_Filter->notifyStatusMessage(messageText);
+  }
 
-    /**
-     * @brief Re-emits incoming GenericErrorMessages as FilterErrorMessages.
-     */
-    void processMessage(const GenericErrorMessage* msg) const override
-    {
-      emit m_Filter->setErrorCondition(msg->getCode(), msg->getMessageText());
-    }
+  /**
+   * @brief Re-emits incoming GenericErrorMessages as FilterErrorMessages.
+   */
+  void processMessage(const GenericErrorMessage* msg) const override
+  {
+    emit m_Filter->setErrorCondition(msg->getCode(), msg->getMessageText());
+  }
 
-    /**
-     * @brief Re-emits incoming GenericWarningMessages as FilterWarningMessages.
-     */
-    void processMessage(const GenericWarningMessage* msg) const override
-    {
-      emit m_Filter->setWarningCondition(msg->getCode(), msg->getMessageText());
-    }
+  /**
+   * @brief Re-emits incoming GenericWarningMessages as FilterWarningMessages.
+   */
+  void processMessage(const GenericWarningMessage* msg) const override
+  {
+    emit m_Filter->setWarningCondition(msg->getCode(), msg->getMessageText());
+  }
 
-  private:
-    FindDerivatives* m_Filter = nullptr;
+private:
+  FindDerivatives* m_Filter = nullptr;
 };
 
-enum createdPathID : RenameDataPath::DataID_t {
+enum createdPathID : RenameDataPath::DataID_t
+{
   DerivativesArrayID = 1
 };
 
@@ -168,7 +172,8 @@ void FindDerivatives::readFilterParameters(AbstractFilterParametersReader* reade
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename DataType> void findDerivs(IDataArray::Pointer inDataPtr, DoubleArrayType::Pointer derivs, DataContainer::Pointer m, Observable* observable)
+template <typename DataType>
+void findDerivs(IDataArray::Pointer inDataPtr, DoubleArrayType::Pointer derivs, DataContainer::Pointer m, Observable* observable)
 {
   typename DataArray<DataType>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<DataType>>(inDataPtr);
   IGeometry::Pointer geom = m->getGeometry();
@@ -187,7 +192,8 @@ template <typename DataType> void findDerivs(IDataArray::Pointer inDataPtr, Doub
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDataPtr, DoubleArrayType::Pointer outDataPtr, DataContainer::Pointer m)
+template <typename DataType>
+void interpolateCellValues(IDataArray::Pointer inDataPtr, DoubleArrayType::Pointer outDataPtr, DataContainer::Pointer m)
 {
   typename DataArray<DataType>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<DataType>>(inDataPtr);
   IGeometry::Pointer geom = m->getGeometry();
@@ -207,48 +213,42 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
 
   switch(geomType)
   {
-  case IGeometry::Type::Edge:
-  {
+  case IGeometry::Type::Edge: {
     EdgeGeom::Pointer edgeGeom = m->getGeometryAs<EdgeGeom>();
     SharedVertexList::Pointer verts = edgeGeom->getVertices();
     outDataPtr->resizeTuples(edgeGeom->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<size_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
-  case IGeometry::Type::Triangle:
-  {
+  case IGeometry::Type::Triangle: {
     TriangleGeom::Pointer triGeom = m->getGeometryAs<TriangleGeom>();
     SharedVertexList::Pointer verts = triGeom->getVertices();
     outDataPtr->resizeTuples(triGeom->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<size_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
-  case IGeometry::Type::Quad:
-  {
+  case IGeometry::Type::Quad: {
     QuadGeom::Pointer quadGeom = m->getGeometryAs<QuadGeom>();
     SharedVertexList::Pointer verts = quadGeom->getVertices();
     outDataPtr->resizeTuples(quadGeom->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<size_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
-  case IGeometry::Type::Tetrahedral:
-  {
+  case IGeometry::Type::Tetrahedral: {
     TetrahedralGeom::Pointer tets = m->getGeometryAs<TetrahedralGeom>();
     SharedVertexList::Pointer verts = tets->getVertices();
     outDataPtr->resizeTuples(tets->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<size_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
-  case IGeometry::Type::Hexahedral:
-  {
+  case IGeometry::Type::Hexahedral: {
     HexahedralGeom::Pointer hexas = m->getGeometryAs<HexahedralGeom>();
     SharedVertexList::Pointer verts = hexas->getVertices();
     outDataPtr->resizeTuples(hexas->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<size_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
-  default:
-  {
+  default: {
     break;
   }
   }
@@ -329,8 +329,7 @@ void FindDerivatives::dataCheck()
     {
       m_Interpolate = true;
     }
-    if(inAttrMatType != AttributeMatrix::Type::Vertex && inAttrMatType != AttributeMatrix::Type::Edge && inAttrMatType != AttributeMatrix::Type::Face &&
-       inAttrMatType != AttributeMatrix::Type::Cell)
+    if(inAttrMatType != AttributeMatrix::Type::Vertex && inAttrMatType != AttributeMatrix::Type::Edge && inAttrMatType != AttributeMatrix::Type::Face && inAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a Cell, Face, Edge or Vertex AttributeMatrix").arg(geomName);
       setErrorCondition(-11002, ss);
@@ -371,14 +370,13 @@ void FindDerivatives::dataCheck()
   cDims *= 3;
   std::vector<size_t> dims(1, cDims);
 
-  m_DerivativesArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>>(
-      this, getDerivativesArrayPath(), 0, dims, "", DerivativesArrayID);    /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_DerivativesArrayPtr.lock())       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_DerivativesArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>>(this, getDerivativesArrayPath(), 0, dims, "",
+                                                                                                   DerivativesArrayID); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_DerivativesArrayPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_DerivativesArray = m_DerivativesArrayPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
 }
-
 
 // -----------------------------------------------------------------------------
 //

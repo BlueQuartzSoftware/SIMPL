@@ -31,39 +31,49 @@ class QTimer;
 
 class SVWidgetsLib_EXPORT QtSFaderWidget : public QWidget
 {
-    Q_OBJECT
-    Q_PROPERTY(QColor fadeColor READ fadeColor WRITE setFadeColor)
-    Q_PROPERTY(int fadeDuration READ fadeDuration WRITE setFadeDuration)
-  public:
+  Q_OBJECT
+  Q_PROPERTY(QColor fadeColor READ fadeColor WRITE setFadeColor)
+  Q_PROPERTY(int fadeDuration READ fadeDuration WRITE setFadeDuration)
+public:
+  QtSFaderWidget(QWidget* parent);
+  ~QtSFaderWidget() override;
 
-    QtSFaderWidget(QWidget* parent);
-    ~QtSFaderWidget() override;
+  QColor fadeColor() const
+  {
+    return startColor;
+  }
+  void setFadeColor(const QColor& newColor)
+  {
+    startColor = newColor;
+  }
 
-    QColor fadeColor() const { return startColor; }
-    void setFadeColor(const QColor& newColor) { startColor = newColor; }
+  void setFadeIn();
+  void setFadeOut();
 
-    void setFadeIn();
-    void setFadeOut();
+  void setStartColor(QColor color);
+  QColor getStartColor();
 
-    void setStartColor(QColor color);
-    QColor getStartColor();
+  int fadeDuration() const
+  {
+    return duration;
+  }
+  void setFadeDuration(int milliseconds)
+  {
+    duration = milliseconds;
+  }
 
-    int fadeDuration() const { return duration; }
-    void setFadeDuration(int milliseconds) { duration = milliseconds; }
+  void start();
 
-    void start();
+signals:
+  void animationComplete();
 
-  signals:
-    void animationComplete();
+protected:
+  void paintEvent(QPaintEvent* event) override;
 
-  protected:
-    void paintEvent(QPaintEvent* event) override;
-
-  private:
-    QTimer* timer;
-    QColor startColor;
-    int currentAlpha;
-    int duration;
-    bool fadeIn;
+private:
+  QTimer* timer;
+  QColor startColor;
+  int currentAlpha;
+  int duration;
+  bool fadeIn;
 };
-

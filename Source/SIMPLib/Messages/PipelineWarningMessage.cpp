@@ -65,9 +65,9 @@ PipelineWarningMessage::~PipelineWarningMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineWarningMessage::Pointer PipelineWarningMessage::New(const QString &pipelineName, const QString& msgText, int code)
+PipelineWarningMessage::Pointer PipelineWarningMessage::New(const QString& pipelineName, const QString& msgText, int code)
 {
-  PipelineWarningMessage::Pointer shared_ptr (new PipelineWarningMessage(pipelineName, msgText, code));
+  PipelineWarningMessage::Pointer shared_ptr(new PipelineWarningMessage(pipelineName, msgText, code));
   return shared_ptr;
 }
 

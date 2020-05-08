@@ -87,5 +87,5 @@ private:
   QMutex mutex;
 
   /** Set a content-type header in the response depending on the ending of the filename */
-  void setContentType(const QString &file, HttpResponse& response) const;
+  void setContentType(const QString& file, HttpResponse& response) const;
 };

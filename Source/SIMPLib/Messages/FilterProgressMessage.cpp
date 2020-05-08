@@ -69,7 +69,7 @@ FilterProgressMessage::~FilterProgressMessage() = default;
 // -----------------------------------------------------------------------------
 FilterProgressMessage::Pointer FilterProgressMessage::New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int progress)
 {
-  FilterProgressMessage::Pointer shared_ptr (new FilterProgressMessage(className, humanLabel, pipelineIndex, msgText, progress));
+  FilterProgressMessage::Pointer shared_ptr(new FilterProgressMessage(className, humanLabel, pipelineIndex, msgText, progress));
   return shared_ptr;
 }
 

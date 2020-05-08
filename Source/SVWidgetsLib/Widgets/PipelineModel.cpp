@@ -1,33 +1,33 @@
 /* ============================================================================
-* Copyright (c) 2017 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2017 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "PipelineModel.h"
 
@@ -64,7 +64,7 @@ PipelineModel::~PipelineModel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineModel::updateActivePipeline(const QModelIndex &pipelineIdx)
+void PipelineModel::updateActivePipeline(const QModelIndex& pipelineIdx)
 {
   emit clearIssuesTriggered();
 
@@ -99,7 +99,7 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
 
   PipelineItem* item = getItem(index);
 
-  if (role == PipelineModel::Roles::WidgetStateRole)
+  if(role == PipelineModel::Roles::WidgetStateRole)
   {
     return static_cast<int>(item->getWidgetState());
   }
@@ -115,31 +115,31 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
   {
     return static_cast<int>(item->getItemType());
   }
-  else if (role == PipelineModel::Roles::BorderSizeRole)
+  else if(role == PipelineModel::Roles::BorderSizeRole)
   {
     return item->getBorderSize();
   }
-  else if (role == PipelineModel::Roles::HeightRole)
+  else if(role == PipelineModel::Roles::HeightRole)
   {
     return item->getHeight();
   }
-  else if (role == PipelineModel::Roles::WidthRole)
+  else if(role == PipelineModel::Roles::WidthRole)
   {
     return item->getWidth();
   }
-  else if (role == PipelineModel::Roles::XOffsetRole)
+  else if(role == PipelineModel::Roles::XOffsetRole)
   {
     return item->getXOffset();
   }
-  else if (role == PipelineModel::Roles::YOffsetRole)
+  else if(role == PipelineModel::Roles::YOffsetRole)
   {
     return item->getYOffset();
   }
-  else if (role == PipelineModel::Roles::ExpandedRole)
+  else if(role == PipelineModel::Roles::ExpandedRole)
   {
     return item->getExpanded();
   }
-  else if (role == PipelineModel::Roles::AnimationTypeRole)
+  else if(role == PipelineModel::Roles::AnimationTypeRole)
   {
     return item->getCurrentAnimationType();
   }
@@ -151,16 +151,16 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
   {
     return item->getSize();
   }
-  else if (role == Qt::FontRole)
+  else if(role == Qt::FontRole)
   {
-    if (item->isActivePipeline())
+    if(item->isActivePipeline())
     {
       QFont font;
       font.setBold(true);
       return font;
     }
 
-      return QVariant();
+    return QVariant();
   }
   else if(role == Qt::ForegroundRole)
   {
@@ -180,7 +180,7 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
       return item->getIcon();
     }
 
-      return QVariant();
+    return QVariant();
   }
 
   return QVariant();
@@ -189,7 +189,7 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer PipelineModel::filter(const QModelIndex &index) const
+AbstractFilter::Pointer PipelineModel::filter(const QModelIndex& index) const
 {
   if(!index.isValid())
   {
@@ -197,7 +197,7 @@ AbstractFilter::Pointer PipelineModel::filter(const QModelIndex &index) const
   }
 
   PipelineItem* item = getItem(index);
-  if (item == nullptr)
+  if(item == nullptr)
   {
     return AbstractFilter::NullPointer();
   }
@@ -208,7 +208,7 @@ AbstractFilter::Pointer PipelineModel::filter(const QModelIndex &index) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineModel::setFilter(const QModelIndex &index, AbstractFilter::Pointer filter)
+void PipelineModel::setFilter(const QModelIndex& index, AbstractFilter::Pointer filter)
 {
   if(!index.isValid())
   {
@@ -216,7 +216,7 @@ void PipelineModel::setFilter(const QModelIndex &index, AbstractFilter::Pointer 
   }
 
   PipelineItem* item = getItem(index);
-  if (item == nullptr)
+  if(item == nullptr)
   {
     return;
   }
@@ -229,7 +229,7 @@ void PipelineModel::setFilter(const QModelIndex &index, AbstractFilter::Pointer 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineModel::dropIndicatorText(const QModelIndex &index) const
+QString PipelineModel::dropIndicatorText(const QModelIndex& index) const
 {
   if(!index.isValid())
   {
@@ -237,7 +237,7 @@ QString PipelineModel::dropIndicatorText(const QModelIndex &index) const
   }
 
   PipelineItem* item = getItem(index);
-  if (item == nullptr)
+  if(item == nullptr)
   {
     return QString();
   }
@@ -248,7 +248,7 @@ QString PipelineModel::dropIndicatorText(const QModelIndex &index) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineModel::setDropIndicatorText(const QModelIndex &index, const QString &text)
+void PipelineModel::setDropIndicatorText(const QModelIndex& index, const QString& text)
 {
   if(!index.isValid())
   {
@@ -256,7 +256,7 @@ void PipelineModel::setDropIndicatorText(const QModelIndex &index, const QString
   }
 
   PipelineItem* item = getItem(index);
-  if (item == nullptr)
+  if(item == nullptr)
   {
     return;
   }
@@ -269,12 +269,12 @@ void PipelineModel::setDropIndicatorText(const QModelIndex &index, const QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex PipelineModel::indexOfFilter(AbstractFilter* filter, const QModelIndex &parent)
+QModelIndex PipelineModel::indexOfFilter(AbstractFilter* filter, const QModelIndex& parent)
 {
-  for (int i = 0; i < rowCount(parent); i++)
+  for(int i = 0; i < rowCount(parent); i++)
   {
     QModelIndex childIndex = index(i, PipelineItem::Contents, parent);
-    if (this->filter(childIndex).get() == filter)
+    if(this->filter(childIndex).get() == filter)
     {
       return childIndex;
     }
@@ -294,12 +294,12 @@ QModelIndex PipelineModel::getActivePipeline()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineModel::setActivePipeline(const QModelIndex &index, bool value)
+void PipelineModel::setActivePipeline(const QModelIndex& index, bool value)
 {
   PipelineItem* item = getItem(index);
   item->setActivePipeline(value);
-  
-  if (value)
+
+  if(value)
   {
     m_ActivePipelineIndex = index;
   }
@@ -323,7 +323,7 @@ void PipelineModel::clearActivePipeline()
 // -----------------------------------------------------------------------------
 Qt::ItemFlags PipelineModel::flags(const QModelIndex& index) const
 {
-  if (!index.isValid() || index.model() != this)
+  if(!index.isValid() || index.model() != this)
   {
     return Qt::ItemIsDropEnabled;
   }
@@ -347,25 +347,23 @@ QStringList PipelineModel::mimeTypes() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineModel::canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) const
+bool PipelineModel::canDropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent) const
 {
   Q_UNUSED(row);
   Q_UNUSED(parent);
 
-  if (action == Qt::IgnoreAction)
+  if(action == Qt::IgnoreAction)
   {
     return false;
   }
 
-  if (!data->hasFormat(SIMPLView::DragAndDrop::FilterPipelineItem)
-      && !data->hasFormat(SIMPLView::DragAndDrop::FilterListItem)
-      && !data->hasFormat(SIMPLView::DragAndDrop::BookmarkItem)
-      && !data->hasFormat(SIMPLView::DragAndDrop::Url))
+  if(!data->hasFormat(SIMPLView::DragAndDrop::FilterPipelineItem) && !data->hasFormat(SIMPLView::DragAndDrop::FilterListItem) && !data->hasFormat(SIMPLView::DragAndDrop::BookmarkItem) &&
+     !data->hasFormat(SIMPLView::DragAndDrop::Url))
   {
     return false;
   }
 
-  if (column > 0)
+  if(column > 0)
   {
     return false;
   }
@@ -392,7 +390,7 @@ PipelineItem* PipelineModel::getItem(const QModelIndex& index) const
 //// -----------------------------------------------------------------------------
 ////
 //// -----------------------------------------------------------------------------
-//QVariant PipelineModel::headerData(int section, Qt::Orientation orientation, int role) const
+// QVariant PipelineModel::headerData(int section, Qt::Orientation orientation, int role) const
 //{
 //  if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
 //  {
@@ -420,7 +418,7 @@ QModelIndex PipelineModel::index(int row, int column, const QModelIndex& parent)
     return createIndex(row, column, childItem);
   }
 
-    return QModelIndex();
+  return QModelIndex();
 }
 
 // -----------------------------------------------------------------------------
@@ -521,7 +519,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
 {
   PipelineItem* item = getItem(index);
 
-  if (role == PipelineModel::Roles::WidgetStateRole)
+  if(role == PipelineModel::Roles::WidgetStateRole)
   {
     bool ok = false;
     int intValue = value.toInt(&ok);
@@ -533,7 +531,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
     PipelineItem::WidgetState value = static_cast<PipelineItem::WidgetState>(intValue);
     item->setWidgetState(value);
   }
-  else if (role == PipelineModel::Roles::ErrorStateRole)
+  else if(role == PipelineModel::Roles::ErrorStateRole)
   {
     bool ok = false;
     int intValue = value.toInt(&ok);
@@ -545,7 +543,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
     PipelineItem::ErrorState value = static_cast<PipelineItem::ErrorState>(intValue);
     item->setErrorState(value);
   }
-  else if (role == PipelineModel::Roles::PipelineStateRole)
+  else if(role == PipelineModel::Roles::PipelineStateRole)
   {
     bool ok = false;
     int intValue = value.toInt(&ok);
@@ -557,7 +555,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
     PipelineItem::PipelineState value = static_cast<PipelineItem::PipelineState>(intValue);
     item->setPipelineState(value);
   }
-  else if (role == PipelineModel::Roles::ItemTypeRole)
+  else if(role == PipelineModel::Roles::ItemTypeRole)
   {
     bool ok = false;
     int intValue = value.toInt(&ok);
@@ -569,7 +567,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
     PipelineItem::ItemType value = static_cast<PipelineItem::ItemType>(intValue);
     item->setItemType(value);
   }
-  else if (role == PipelineModel::Roles::BorderSizeRole)
+  else if(role == PipelineModel::Roles::BorderSizeRole)
   {
     bool ok = false;
     int borderSize = value.toInt(&ok);
@@ -580,7 +578,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
 
     item->setBorderSize(borderSize);
   }
-  else if (role == PipelineModel::Roles::HeightRole)
+  else if(role == PipelineModel::Roles::HeightRole)
   {
     bool ok = false;
     int height = value.toInt(&ok);
@@ -591,7 +589,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
 
     item->setHeight(height);
   }
-  else if (role == PipelineModel::Roles::WidthRole)
+  else if(role == PipelineModel::Roles::WidthRole)
   {
     bool ok = false;
     int width = value.toInt(&ok);
@@ -602,7 +600,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
 
     item->setWidth(width);
   }
-  else if (role == PipelineModel::Roles::XOffsetRole)
+  else if(role == PipelineModel::Roles::XOffsetRole)
   {
     bool ok = false;
     int offset = value.toInt(&ok);
@@ -613,7 +611,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
 
     item->setXOffset(offset);
   }
-  else if (role == PipelineModel::Roles::YOffsetRole)
+  else if(role == PipelineModel::Roles::YOffsetRole)
   {
     bool ok = false;
     int offset = value.toInt(&ok);
@@ -624,7 +622,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
 
     item->setYOffset(offset);
   }
-  else if (role == PipelineModel::Roles::AnimationTypeRole)
+  else if(role == PipelineModel::Roles::AnimationTypeRole)
   {
     bool ok = false;
     int animationInt = value.toInt(&ok);
@@ -636,7 +634,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
     PipelineItem::AnimationType animationType = static_cast<PipelineItem::AnimationType>(animationInt);
     item->setCurrentAnimationType(animationType);
   }
-  else if (role == PipelineModel::Roles::ExpandedRole)
+  else if(role == PipelineModel::Roles::ExpandedRole)
   {
     int expanded = static_cast<int>(value.toBool());
     item->setExpanded(expanded != 0);
@@ -649,11 +647,11 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   {
     item->setItemTooltip(value.toString());
   }
-  else if (role == Qt::DisplayRole)
+  else if(role == Qt::DisplayRole)
   {
     item->setData(index.column(), value);
   }
-  else if (role == Qt::SizeHintRole)
+  else if(role == Qt::SizeHintRole)
   {
     item->setSize(value.toSize());
   }
@@ -708,7 +706,7 @@ int PipelineModel::getMaxFilterCount() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineModel::pipelineSaved(const QModelIndex &index)
+bool PipelineModel::pipelineSaved(const QModelIndex& index)
 {
   PipelineItem* item = getItem(index);
   return item->isPipelineSaved();
@@ -717,7 +715,7 @@ bool PipelineModel::pipelineSaved(const QModelIndex &index)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineModel::setPipelineSaved(const QModelIndex &index, bool saved)
+void PipelineModel::setPipelineSaved(const QModelIndex& index, bool saved)
 {
   PipelineItem* item = getItem(index);
   item->setPipelineSaved(saved);
@@ -728,7 +726,7 @@ void PipelineModel::setPipelineSaved(const QModelIndex &index, bool saved)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterInputWidget* PipelineModel::filterInputWidget(const QModelIndex &index)
+FilterInputWidget* PipelineModel::filterInputWidget(const QModelIndex& index)
 {
   PipelineItem* item = getItem(index);
   return item->getFilterInputWidget();
@@ -753,7 +751,7 @@ bool PipelineModel::isEmpty()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QColor PipelineModel::getForegroundColor(const QModelIndex &index) const
+QColor PipelineModel::getForegroundColor(const QModelIndex& index) const
 {
   if(!index.isValid())
   {

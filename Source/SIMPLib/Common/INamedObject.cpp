@@ -138,5 +138,3 @@ INamedObject::Pointer INamedObject::NullPointer()
 {
   return Pointer(static_cast<Self*>(nullptr));
 }
-
-

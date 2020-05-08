@@ -1,42 +1,41 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "MultiDataArraySelectionWidget.h"
 
 #include <QtCore/QList>
 #include <QtCore/QModelIndex>
-
 
 #include <QtWidgets/QListWidgetItem>
 
@@ -128,15 +127,15 @@ void MultiDataArraySelectionWidget::setupGui()
   connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &MultiDataArraySelectionWidget::filterNeedsInputParameters);
 
   // If the DataArrayPath is updated in the filter, update the widget
-  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
-    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
   connect(this, SIGNAL(filterPathInput(DataArrayPath)), m_SelectedAttributeMatrixPath, SLOT(checkDragPath(DataArrayPath)));
   connect(this, SIGNAL(endViewPathRequirements()), m_SelectedAttributeMatrixPath, SLOT(clearPathFiltering()));
   connect(this, SIGNAL(endDataStructureRequirements()), m_SelectedAttributeMatrixPath, SLOT(endExternalFiltering()));
   connect(this, SIGNAL(applyPathToFilteringParameter(DataArrayPath)), m_SelectedAttributeMatrixPath, SLOT(setFilteredDataArrayPath(DataArrayPath)));
 
-  connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this,
+          SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SLOT(attributeMatrixPathUpdated()));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
@@ -150,7 +149,7 @@ void MultiDataArraySelectionWidget::setupGui()
   DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(selectedPaths);
   m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
   m_SelectedAttributeMatrixPath->setPropertyName(getFilterParameter()->getHumanLabel());
-  for (int i=0; i<selectedPaths.size(); i++)
+  for(int i = 0; i < selectedPaths.size(); i++)
   {
     DataArrayPath selectedPath = selectedPaths[i];
     QListWidgetItem* item = new QListWidgetItem(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"), selectedPath.getDataArrayName());
@@ -252,7 +251,7 @@ void MultiDataArraySelectionWidget::on_selectBtn_clicked()
   if(!indexList.empty())
   {
     int offset = 0;
-    for (int i=0; i<indexList.size(); i++)
+    for(int i = 0; i < indexList.size(); i++)
     {
       int row = indexList[i].row() - offset;
       QListWidgetItem* item = availableArraysListWidget->takeItem(row);
@@ -333,7 +332,7 @@ void MultiDataArraySelectionWidget::on_removeBtn_clicked()
   if(!indexList.empty())
   {
     int offset = 0;
-    for (int i=0; i<indexList.size(); i++)
+    for(int i = 0; i < indexList.size(); i++)
     {
       int row = indexList[i].row() - offset;
       QListWidgetItem* item = selectedArraysListWidget->item(row);
@@ -413,23 +412,23 @@ void MultiDataArraySelectionWidget::selectionChanged()
   int selectSize = availableArraysListWidget->selectionModel()->selectedRows().size();
   int orderSize = selectedArraysListWidget->selectionModel()->selectedRows().size();
 
-  if (selectSize > 0)
+  if(selectSize > 0)
   {
     selectBtn->setEnabled(true);
   }
 
-  if (orderSize > 0)
+  if(orderSize > 0)
   {
     deselectBtn->setEnabled(true);
 
-    if (orderSize == 1)
+    if(orderSize == 1)
     {
       upBtn->setEnabled(true);
       downBtn->setEnabled(true);
     }
 
     bool allErrorRows = true;
-    for (int i=0; i<orderSize; i++)
+    for(int i = 0; i < orderSize; i++)
     {
       int row = selectedArraysListWidget->selectionModel()->selectedRows()[i].row();
       if(selectedArraysListWidget->item(row)->background() != QColor(235, 110, 110))
@@ -481,7 +480,7 @@ void MultiDataArraySelectionWidget::beforePreflight()
   if(dca->doesAttributeMatrixExist(m_SelectedAttributeMatrixPath->getDataArrayPath()))
   {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(m_SelectedAttributeMatrixPath->getDataArrayPath());
-    if(nullptr != am.get()) 
+    if(nullptr != am.get())
     {
       QList<QString> arrayNames = am->getAttributeArrayNames();
 
@@ -499,7 +498,7 @@ void MultiDataArraySelectionWidget::beforePreflight()
         orderListNames.append(name);
         if(!arrayNames.contains(name))
         {
-          //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
+          // item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
           // item->setBackgroundColor(QColor(235, 110, 110));
           item->setIcon(QIcon(":/SIMPL/icons/images/bullet_ball_red.png"));
         }
@@ -510,7 +509,7 @@ void MultiDataArraySelectionWidget::beforePreflight()
         }
       }
 
-      for(int i = 0; i<arrayNames.size(); i++)
+      for(int i = 0; i < arrayNames.size(); i++)
       {
         if(!selectListNames.contains(arrayNames[i]) && !orderListNames.contains(arrayNames[i]))
         {
@@ -593,7 +592,7 @@ void MultiDataArraySelectionWidget::updateDataArrayPath(QString propertyName, co
           for(int i = 0; i < renamedCount; i++)
           {
             QListWidgetItem* item = renamedItems[i];
-            //availableArraysListWidget->removeItemWidget(item);
+            // availableArraysListWidget->removeItemWidget(item);
             item->setText(newPath.getDataArrayName());
           }
         }
@@ -612,7 +611,7 @@ void MultiDataArraySelectionWidget::updateDataArrayPath(QString propertyName, co
             }
           }
         }
-      }// End DataArray section
+      } // End DataArray section
 
       // Update the AttributeMatrix Selection widget
       if(!hasDA)

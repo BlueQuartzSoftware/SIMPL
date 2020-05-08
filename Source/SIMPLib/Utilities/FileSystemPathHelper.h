@@ -39,22 +39,18 @@ class AbstractFilter;
 
 class SIMPLib_EXPORT FileSystemPathHelper
 {
-  public:
-    FileSystemPathHelper();
-    ~FileSystemPathHelper();
+public:
+  FileSystemPathHelper();
+  ~FileSystemPathHelper();
 
-    /**
-     * @brief CheckOutputFile This will check a file path to see if it is not empty, exists,
-     * is NOT a directory, has proper permissions and optionally require a file extension.
-     * and
-     * @param obs Abstract Filter
-     * @param parameterName The human readable name of the parameter for use in error and warning messages.
-     * @param filePath The proposed path to the output file.
-     * @param requireExtension Should be output file have a file extension set.
-     */
-    static void CheckOutputFile(AbstractFilter *obs,
-                                const QString &parameterName,
-                                const QString& filePath,
-                                bool requireExtension);
-
+  /**
+   * @brief CheckOutputFile This will check a file path to see if it is not empty, exists,
+   * is NOT a directory, has proper permissions and optionally require a file extension.
+   * and
+   * @param obs Abstract Filter
+   * @param parameterName The human readable name of the parameter for use in error and warning messages.
+   * @param filePath The proposed path to the output file.
+   * @param requireExtension Should be output file have a file extension set.
+   */
+  static void CheckOutputFile(AbstractFilter* obs, const QString& parameterName, const QString& filePath, bool requireExtension);
 };

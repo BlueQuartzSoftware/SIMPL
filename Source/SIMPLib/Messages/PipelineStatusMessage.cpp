@@ -49,7 +49,7 @@ PipelineStatusMessage::PipelineStatusMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineStatusMessage::PipelineStatusMessage(const QString &pipelineName, const QString& msgText)
+PipelineStatusMessage::PipelineStatusMessage(const QString& pipelineName, const QString& msgText)
 : AbstractStatusMessage(msgText)
 , m_PipelineName(pipelineName)
 {
@@ -63,9 +63,9 @@ PipelineStatusMessage::~PipelineStatusMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineStatusMessage::Pointer PipelineStatusMessage::New(const QString &pipelineName, const QString& msgText)
+PipelineStatusMessage::Pointer PipelineStatusMessage::New(const QString& pipelineName, const QString& msgText)
 {
-  PipelineStatusMessage::Pointer shared_ptr (new PipelineStatusMessage(pipelineName, msgText));
+  PipelineStatusMessage::Pointer shared_ptr(new PipelineStatusMessage(pipelineName, msgText));
   return shared_ptr;
 }
 

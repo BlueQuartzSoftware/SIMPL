@@ -34,7 +34,7 @@
 
 AbstractProgressMessage::AbstractProgressMessage() = default;
 
-AbstractProgressMessage::  AbstractProgressMessage(const QString& msgText, int progress)
+AbstractProgressMessage::AbstractProgressMessage(const QString& msgText, int progress)
 : AbstractMessage(msgText)
 , m_ProgressValue(progress)
 {

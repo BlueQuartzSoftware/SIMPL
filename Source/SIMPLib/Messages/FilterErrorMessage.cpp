@@ -69,7 +69,7 @@ FilterErrorMessage::~FilterErrorMessage() = default;
 // -----------------------------------------------------------------------------
 FilterErrorMessage::Pointer FilterErrorMessage::New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code)
 {
-  FilterErrorMessage::Pointer shared_ptr (new FilterErrorMessage(className, humanLabel, pipelineIndex, msgText, code));
+  FilterErrorMessage::Pointer shared_ptr(new FilterErrorMessage(className, humanLabel, pipelineIndex, msgText, code));
   return shared_ptr;
 }
 

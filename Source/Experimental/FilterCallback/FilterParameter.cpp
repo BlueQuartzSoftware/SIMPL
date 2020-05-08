@@ -1,36 +1,24 @@
 #include "FilterParameter.h"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 IFilterParameter::IFilterParameter(const std::string& humanLabel, const std::string& propertyName, IFilterParameter::Category category, int groupIndex)
-  : m_HumanLabel(humanLabel)
-  , m_PropertyName(propertyName)
-  , m_Category(category)
-  , m_GroupIndex(groupIndex)
+: m_HumanLabel(humanLabel)
+, m_PropertyName(propertyName)
+, m_Category(category)
+, m_GroupIndex(groupIndex)
 {
 }
 
 IFilterParameter::~IFilterParameter() = default;
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 
-
-
-
-Int32Parameter::Pointer Int32Parameter::New(const std::string& humanLabel,
-                                                            const std::string& propertyName,
-                                                            int defaultValue,
-                                                            Category category,
-                                                            Int32Parameter::SetterCallbackType setterCallback,
-                                                            Int32Parameter::GetterCallbackType getterCallback,
-                                                            int groupIndex)
+Int32Parameter::Pointer Int32Parameter::New(const std::string& humanLabel, const std::string& propertyName, int defaultValue, Category category, Int32Parameter::SetterCallbackType setterCallback,
+                                            Int32Parameter::GetterCallbackType getterCallback, int groupIndex)
 {
   Pointer sharedPtr(new Int32Parameter(humanLabel, propertyName, defaultValue, category, setterCallback, getterCallback, groupIndex));
   return sharedPtr;
@@ -61,24 +49,20 @@ void Int32Parameter::writeJson(QJsonObject& json) const
   json[QString::fromStdString(getPropertyName())] = m_GetterCallback();
 }
 
-Int32Parameter::Int32Parameter(const std::string& humanLabel, const std::string& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
-  : IFilterParameter(humanLabel, propertyName, category, groupIndex)
-  , m_DefaultValue(defaultValue)
-  , m_SetterCallback(setterCallback)
-  , m_GetterCallback(getterCallback)
+Int32Parameter::Int32Parameter(const std::string& humanLabel, const std::string& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback,
+                               const GetterCallbackType& getterCallback, int groupIndex)
+: IFilterParameter(humanLabel, propertyName, category, groupIndex)
+, m_DefaultValue(defaultValue)
+, m_SetterCallback(setterCallback)
+, m_GetterCallback(getterCallback)
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DoubleParameter::Pointer DoubleParameter::New(const std::string& humanLabel,
-                                              const std::string& propertyName,
-                                              double defaultValue,
-                                              Category category,
-                                              DoubleParameter::SetterCallbackType setterCallback,
-                                              DoubleParameter::GetterCallbackType getterCallback,
-                                              int groupIndex)
+DoubleParameter::Pointer DoubleParameter::New(const std::string& humanLabel, const std::string& propertyName, double defaultValue, Category category,
+                                              DoubleParameter::SetterCallbackType setterCallback, DoubleParameter::GetterCallbackType getterCallback, int groupIndex)
 {
   Pointer sharedPtr(new DoubleParameter(humanLabel, propertyName, defaultValue, category, setterCallback, getterCallback, groupIndex));
   return sharedPtr;
@@ -109,27 +93,20 @@ void DoubleParameter::writeJson(QJsonObject& json) const
   json[QString::fromStdString(getPropertyName())] = m_GetterCallback();
 }
 
-
-DoubleParameter::DoubleParameter(const std::string& humanLabel, const std::string& propertyName, double defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
-  : IFilterParameter(humanLabel, propertyName, category, groupIndex)
-  , m_DefaultValue(defaultValue)
-  , m_SetterCallback(setterCallback)
-  , m_GetterCallback(getterCallback)
+DoubleParameter::DoubleParameter(const std::string& humanLabel, const std::string& propertyName, double defaultValue, Category category, const SetterCallbackType& setterCallback,
+                                 const GetterCallbackType& getterCallback, int groupIndex)
+: IFilterParameter(humanLabel, propertyName, category, groupIndex)
+, m_DefaultValue(defaultValue)
+, m_SetterCallback(setterCallback)
+, m_GetterCallback(getterCallback)
 {
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPathParameter::Pointer DataArrayPathParameter::New(const std::string& humanLabel,
-                                                            const std::string& propertyName,
-                                                            const DataArrayPath& defaultValue,
-                                                            Category category,
-                                                            SetterCallbackType setterCallback,
-                                                            GetterCallbackType getterCallback,
-                                                            int groupIndex)
+DataArrayPathParameter::Pointer DataArrayPathParameter::New(const std::string& humanLabel, const std::string& propertyName, const DataArrayPath& defaultValue, Category category,
+                                                            SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
   DataArrayPathParameter::Pointer sharedPtr(new DataArrayPathParameter(humanLabel, propertyName, defaultValue, category, setterCallback, getterCallback, groupIndex));
   return sharedPtr;
@@ -154,7 +131,7 @@ void DataArrayPathParameter::readJson(const QJsonObject& json)
     DataArrayPath dap;
     QJsonObject obj = jsonValue.toObject();
     dap.readJson(obj);
-    if( m_SetterCallback)
+    if(m_SetterCallback)
     {
       m_SetterCallback(dap);
     }
@@ -169,11 +146,12 @@ void DataArrayPathParameter::writeJson(QJsonObject& json) const
   }
 }
 
-DataArrayPathParameter::DataArrayPathParameter(const std::string& humanLabel, const std::string& propertyName, const DataArrayPath &defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
-  : IFilterParameter(humanLabel, propertyName, category, groupIndex)
-  , m_DefaultValue(defaultValue)
-  , m_SetterCallback(setterCallback)
-  , m_GetterCallback(getterCallback)
+DataArrayPathParameter::DataArrayPathParameter(const std::string& humanLabel, const std::string& propertyName, const DataArrayPath& defaultValue, Category category,
+                                               const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+: IFilterParameter(humanLabel, propertyName, category, groupIndex)
+, m_DefaultValue(defaultValue)
+, m_SetterCallback(setterCallback)
+, m_GetterCallback(getterCallback)
 {
 }
 

@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "DataContainerProxy.h"
 
@@ -47,7 +47,8 @@ DataContainerProxy::DataContainerProxy(const QString& dc_name, const uint8_t& re
 : m_Flag(read_dc)
 , m_Name(dc_name)
 , m_DCType(static_cast<unsigned int>(dc_type))
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -111,14 +112,14 @@ void DataContainerProxy::writeJson(QJsonObject& json) const
 // -----------------------------------------------------------------------------
 bool DataContainerProxy::readJson(QJsonObject& json)
 {
-  if (json["Flag"].isDouble() && json["Name"].isString() && json["Type"].isDouble() && json["Attribute Matricies"].isArray())
+  if(json["Flag"].isDouble() && json["Name"].isString() && json["Type"].isDouble() && json["Attribute Matricies"].isArray())
   {
-    if (json["Flag"].toDouble() >= std::numeric_limits<uint8_t>::min() && json["Flag"].toDouble() <= std::numeric_limits<uint8_t>::max())
+    if(json["Flag"].toDouble() >= std::numeric_limits<uint8_t>::min() && json["Flag"].toDouble() <= std::numeric_limits<uint8_t>::max())
     {
       m_Flag = static_cast<uint8_t>(json["Flag"].toDouble());
     }
     m_Name = json["Name"].toString();
-    if (json["Type"].toDouble() >= std::numeric_limits<unsigned int>::min() && json["Type"].toDouble() <= std::numeric_limits<unsigned int>::max())
+    if(json["Type"].toDouble() >= std::numeric_limits<unsigned int>::min() && json["Type"].toDouble() <= std::numeric_limits<unsigned int>::max())
     {
       m_DCType = static_cast<unsigned int>(json["Type"].toDouble());
     }
@@ -151,7 +152,7 @@ QMap<QString, AttributeMatrixProxy> DataContainerProxy::readMap(QJsonArray jsonA
   QMap<QString, AttributeMatrixProxy> map;
   foreach(QJsonValue val, jsonArray)
   {
-    if (val.isObject())
+    if(val.isObject())
     {
       AttributeMatrixProxy am;
       QJsonObject obj = val.toObject();
@@ -167,48 +168,38 @@ QMap<QString, AttributeMatrixProxy> DataContainerProxy::readMap(QJsonArray jsonA
 // -----------------------------------------------------------------------------
 DataContainerProxy::DCGeometryTypeFlag DataContainerProxy::GeometryTypeToFlag(IGeometry::Type geoType)
 {
-  switch (geoType)
+  switch(geoType)
   {
-    case IGeometry::Type::Any:
-    {
-      return Any_DCGeomType;
-    }
-    case IGeometry::Type::Edge:
-    {
-      return Edge_DCGeomType;
-    }
-    case IGeometry::Type::Image:
-    {
-      return Image_DCGeomType;
-    }
-    case IGeometry::Type::Quad:
-    {
-      return Quad_DCGeomType;
-    }
-    case IGeometry::Type::RectGrid:
-    {
-      return RectGrid_DCGeomType;
-    }
-    case IGeometry::Type::Tetrahedral:
-    {
-      return Tetrahedral_DCGeomType;
-    }
-    case IGeometry::Type::Triangle:
-    {
-      return Triangle_DCGeomType;
-    }
-    case IGeometry::Type::Vertex:
-    {
-      return Vertex_DCGeomType;
-    }
-    case IGeometry::Type::Hexahedral:
-    {
-      return Hexahedral_DCGeomType;
-    }
-    case IGeometry::Type::Unknown:
-    {
-      return Unknown_DCGeomType;
-    }
+  case IGeometry::Type::Any: {
+    return Any_DCGeomType;
+  }
+  case IGeometry::Type::Edge: {
+    return Edge_DCGeomType;
+  }
+  case IGeometry::Type::Image: {
+    return Image_DCGeomType;
+  }
+  case IGeometry::Type::Quad: {
+    return Quad_DCGeomType;
+  }
+  case IGeometry::Type::RectGrid: {
+    return RectGrid_DCGeomType;
+  }
+  case IGeometry::Type::Tetrahedral: {
+    return Tetrahedral_DCGeomType;
+  }
+  case IGeometry::Type::Triangle: {
+    return Triangle_DCGeomType;
+  }
+  case IGeometry::Type::Vertex: {
+    return Vertex_DCGeomType;
+  }
+  case IGeometry::Type::Hexahedral: {
+    return Hexahedral_DCGeomType;
+  }
+  case IGeometry::Type::Unknown: {
+    return Unknown_DCGeomType;
+  }
   }
 
   return Unknown_DCGeomType;
@@ -225,7 +216,7 @@ void DataContainerProxy::setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlag
   {
     AttributeMatrixProxy& amProxy = amIter.value();
     AttributeMatrixProxy::AMTypeFlag amTypeFlag = AttributeMatrixProxy::AttributeMatrixTypeToFlag(static_cast<AttributeMatrix::Type>(amProxy.getAMType()));
-    if ((amTypes & amTypeFlag) > 0 || amTypes == AttributeMatrixProxy::AMTypeFlag::Any_AMType)
+    if((amTypes & amTypeFlag) > 0 || amTypes == AttributeMatrixProxy::AMTypeFlag::Any_AMType)
     {
       amProxy.setFlags(flag, primitiveTypes, compDimsVector);
     }

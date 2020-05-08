@@ -70,7 +70,7 @@ public:
 
   QString getNameOfClass() const override;
   static QString ClassName();
-  //static int CreateGridMontage::IsTypeOf(const char* type);
+  // static int CreateGridMontage::IsTypeOf(const char* type);
 
   ~CreateGridMontage() override;
 
@@ -79,7 +79,7 @@ public:
    * @return
    */
   QString getMontageName() const;
-  
+
   /**
    * @brief Setter for the MontageName property
    * @param value
@@ -103,9 +103,9 @@ public:
   Q_PROPERTY(DataContainerGrid GridSelection READ getGridSelection WRITE setGridSelection)
 
   /**
-    * @brief Getter for the DataContainerNameList property
-    * @return
-    */
+   * @brief Getter for the DataContainerNameList property
+   * @return
+   */
   QStringList getDataContainerNameList() const;
 
   /**

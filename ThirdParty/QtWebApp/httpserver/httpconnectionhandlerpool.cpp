@@ -134,7 +134,10 @@ void HttpConnectionHandlerPool::loadSslConfig()
     sslConfiguration->setPeerVerifyMode(QSslSocket::VerifyNone);
     sslConfiguration->setProtocol(QSsl::TlsV1SslV3);
 
-   if(verbose) { qDebug("HttpConnectionHandlerPool: SSL settings loaded"); }
+    if(verbose)
+    {
+      qDebug("HttpConnectionHandlerPool: SSL settings loaded");
+    }
 #endif
   }
 }

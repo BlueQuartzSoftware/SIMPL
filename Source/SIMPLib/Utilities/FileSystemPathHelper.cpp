@@ -46,10 +46,7 @@ FileSystemPathHelper::~FileSystemPathHelper() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FileSystemPathHelper::CheckOutputFile(AbstractFilter* filter,
-                                           const QString &parameterName,
-                                           const QString &filePath,
-                                           bool requireExtension)
+void FileSystemPathHelper::CheckOutputFile(AbstractFilter* filter, const QString& parameterName, const QString& filePath, bool requireExtension)
 {
   if(filePath.isEmpty())
   {
@@ -77,7 +74,6 @@ void FileSystemPathHelper::CheckOutputFile(AbstractFilter* filter,
       QString ss = QObject::tr("The file path for input parameter '%1' does not have a file extension. Please use a file extension to denote the type of file being written.").arg(parameterName);
       filter->setErrorCondition(-903, ss);
     }
-
   }
 
 #ifdef _WIN32

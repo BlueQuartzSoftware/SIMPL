@@ -88,8 +88,7 @@ QVariant DataContainerGridModel::data(const QModelIndex& index, int role) const
   {
   case Qt::TextAlignmentRole:
     return int(Qt::AlignRight | Qt::AlignVCenter);
-  case Qt::DisplayRole:
-  {
+  case Qt::DisplayRole: {
     int col = index.column();
     int row = index.row();
     SizeVec3Type pos(row, col, m_CurrentDepth);
@@ -142,7 +141,7 @@ void DataContainerGridModel::setCurrentDepth(int depth)
     return;
   }
   m_CurrentDepth = depth;
-  
+
   QModelIndex index;
   emit dataChanged(index, index);
 }
@@ -164,7 +163,7 @@ bool DataContainerGridModel::setData(const QModelIndex& index, const QVariant& v
   {
     return false;
   }
-  
+
   if(role == Qt::DisplayRole)
   {
     SizeVec3Type pos(index.row(), index.column(), m_CurrentDepth);
@@ -242,7 +241,7 @@ Qt::DropActions DataContainerGridModel::supportedDropActions() const
 // -----------------------------------------------------------------------------
 bool DataContainerGridModel::canDropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent) const
 {
-  //QModelIndex targetIndex = index(row, column, parent);
+  // QModelIndex targetIndex = index(row, column, parent);
   if(!parent.isValid())
   {
     return false;
@@ -257,7 +256,7 @@ bool DataContainerGridModel::canDropMimeData(const QMimeData* data, Qt::DropActi
 // -----------------------------------------------------------------------------
 bool DataContainerGridModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent)
 {
-  //QModelIndex targetIndex = index(row, column, parent);
+  // QModelIndex targetIndex = index(row, column, parent);
   if(!parent.isValid())
   {
     return false;

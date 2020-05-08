@@ -33,14 +33,13 @@
 
 #include <QtGui/QPainter>
 
-
 #include "moc_PopUpWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PopUpWidget::PopUpWidget(QWidget *parent)
-  : QWidget (parent)
+PopUpWidget::PopUpWidget(QWidget* parent)
+: QWidget(parent)
 {
   setupUi(this);
 
@@ -72,34 +71,33 @@ void PopUpWidget::paintEvent(QPaintEvent* event)
   QPainterPath painterPath;
   QPolygonF polygon;
 
-  if (m_ArrowOrientation == PopUpWidget::ArrowOrientation::Left)
+  if(m_ArrowOrientation == PopUpWidget::ArrowOrientation::Left)
   {
     setContentsMargins(m_ArrowHeight, 0, 0, 0);
-    polygon << QPointF(m_ArrowHeight, m_ArrowOffset) << QPointF(0, m_ArrowOffset + m_ArrowWidth / 2)
-            << QPointF(m_ArrowHeight, m_ArrowOffset + m_ArrowWidth) << QPointF(m_ArrowHeight, m_ArrowOffset);
+    polygon << QPointF(m_ArrowHeight, m_ArrowOffset) << QPointF(0, m_ArrowOffset + m_ArrowWidth / 2) << QPointF(m_ArrowHeight, m_ArrowOffset + m_ArrowWidth) << QPointF(m_ArrowHeight, m_ArrowOffset);
     painterPath.addPolygon(polygon);
   }
-  else if (m_ArrowOrientation == PopUpWidget::ArrowOrientation::Right)
+  else if(m_ArrowOrientation == PopUpWidget::ArrowOrientation::Right)
   {
     setContentsMargins(0, 0, m_ArrowHeight, 0);
     polygon << QPointF(size().width() - m_ArrowHeight, m_ArrowOffset) << QPointF(size().width(), m_ArrowOffset + m_ArrowWidth / 2)
             << QPointF(size().width() - m_ArrowHeight, m_ArrowOffset + m_ArrowWidth) << QPointF(size().width() - m_ArrowHeight, m_ArrowOffset);
     painterPath.addPolygon(polygon);
   }
-//  else if (m_ArrowOrientation == PopUpWidget::ArrowOrientation::Top)
-//  {
-//    setContentsMargins(0, m_ArrowHeight, 0, 0);
-//    polygon << QPointF(m_ArrowOffset, m_ArrowHeight) << QPointF(m_ArrowOffset + m_ArrowWidth / 2, 0)
-//            << QPointF(m_ArrowOffset + m_ArrowWidth, m_ArrowHeight) << QPointF(m_ArrowOffset, m_ArrowHeight);
-//    painterPath.addPolygon(polygon);
-//  }
-//  else if (m_ArrowOrientation == PopUpWidget::ArrowOrientation::Bottom)
-//  {
-//    setContentsMargins(0, 0, 0, m_ArrowHeight);
-//    polygon << QPointF(m_ArrowOffset, size().height()) << QPointF(m_ArrowOffset + m_ArrowWidth / 2, size().height() + m_ArrowHeight)
-//            << QPointF(m_ArrowOffset + m_ArrowWidth, size().height()) << QPointF(m_ArrowOffset, size().height());
-//    painterPath.addPolygon(polygon);
-//  }
+  //  else if (m_ArrowOrientation == PopUpWidget::ArrowOrientation::Top)
+  //  {
+  //    setContentsMargins(0, m_ArrowHeight, 0, 0);
+  //    polygon << QPointF(m_ArrowOffset, m_ArrowHeight) << QPointF(m_ArrowOffset + m_ArrowWidth / 2, 0)
+  //            << QPointF(m_ArrowOffset + m_ArrowWidth, m_ArrowHeight) << QPointF(m_ArrowOffset, m_ArrowHeight);
+  //    painterPath.addPolygon(polygon);
+  //  }
+  //  else if (m_ArrowOrientation == PopUpWidget::ArrowOrientation::Bottom)
+  //  {
+  //    setContentsMargins(0, 0, 0, m_ArrowHeight);
+  //    polygon << QPointF(m_ArrowOffset, size().height()) << QPointF(m_ArrowOffset + m_ArrowWidth / 2, size().height() + m_ArrowHeight)
+  //            << QPointF(m_ArrowOffset + m_ArrowWidth, size().height()) << QPointF(m_ArrowOffset, size().height());
+  //    painterPath.addPolygon(polygon);
+  //  }
   else if(m_ArrowOrientation == PopUpWidget::ArrowOrientation::None)
   {
     setContentsMargins(0, 0, 0, 0);
@@ -129,17 +127,17 @@ void PopUpWidget::setWidget(QWidget* widget)
     return;
   }
 
-//  // Clear the existing widget
-//  QLayoutItem* item = gridLayout->takeAt(0);
-//  if(item)
-//  {
-//    QWidget* w = item->widget();
-//    if(w)
-//    {
-//      w->hide();
-//      w->setParent(nullptr);
-//    }
-//  }
+  //  // Clear the existing widget
+  //  QLayoutItem* item = gridLayout->takeAt(0);
+  //  if(item)
+  //  {
+  //    QWidget* w = item->widget();
+  //    if(w)
+  //    {
+  //      w->hide();
+  //      w->setParent(nullptr);
+  //    }
+  //  }
 
   // Set the widget into the frame
   scrollArea->setWidget(widget);

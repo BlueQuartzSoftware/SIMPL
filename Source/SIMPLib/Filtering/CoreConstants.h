@@ -35,24 +35,22 @@
 #include <QtCore/QString>
 
 /**
-* @brief This namespace is used to define some Constants for the plugin itself.
-*/
+ * @brief This namespace is used to define some Constants for the plugin itself.
+ */
 namespace CoreConstants
 {
-  const QString CorePluginFile("CorePlugin");
-  const QString CorePluginDisplayName("Core");
-  const QString CoreBaseName("Core");
-}
+const QString CorePluginFile("CorePlugin");
+const QString CorePluginDisplayName("Core");
+const QString CoreBaseName("Core");
+} // namespace CoreConstants
 
 /**
-* @brief Use this namespace to define any custom GUI widgets that collect FilterParameters
-* for a filter. Do NOT define general reusable widgets here.
-*/
+ * @brief Use this namespace to define any custom GUI widgets that collect FilterParameters
+ * for a filter. Do NOT define general reusable widgets here.
+ */
 namespace FilterParameterWidgetType
 {
 
-  /*  const QString SomeCustomWidget("SomeCustomWidget"); */
+/*  const QString SomeCustomWidget("SomeCustomWidget"); */
 
 }
-
-

@@ -20,8 +20,6 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/ITK/itkSupportConstants.h"
 
-
-
 namespace itk
 {
 template <typename PixelType, unsigned int VDimension>

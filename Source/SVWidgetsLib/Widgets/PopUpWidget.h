@@ -33,7 +33,6 @@
 
 #include <QtWidgets/QWidget>
 
-
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "SVWidgetsLib/ui_PopUpWidget.h"
@@ -43,84 +42,83 @@
  */
 class SVWidgetsLib_EXPORT PopUpWidget : public QWidget, private Ui::PopUpWidget
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    PopUpWidget(QWidget *parent = Q_NULLPTR);
-    ~PopUpWidget() override;
+public:
+  PopUpWidget(QWidget* parent = Q_NULLPTR);
+  ~PopUpWidget() override;
 
-    using EnumType = unsigned int;
+  using EnumType = unsigned int;
 
-    enum class ArrowOrientation : EnumType
-    {
-      Top,
-      Bottom,
-      Left,
-      Right,
-      None
-    };
+  enum class ArrowOrientation : EnumType
+  {
+    Top,
+    Bottom,
+    Left,
+    Right,
+    None
+  };
 
-    /**
-     * @brief Setter property for ArrowHeight
-     */
-    void setArrowHeight(int value);
-    /**
-     * @brief Getter property for ArrowHeight
-     * @return Value of ArrowHeight
-     */
-    int getArrowHeight() const;
+  /**
+   * @brief Setter property for ArrowHeight
+   */
+  void setArrowHeight(int value);
+  /**
+   * @brief Getter property for ArrowHeight
+   * @return Value of ArrowHeight
+   */
+  int getArrowHeight() const;
 
-    /**
-     * @brief Setter property for ArrowWidth
-     */
-    void setArrowWidth(int value);
-    /**
-     * @brief Getter property for ArrowWidth
-     * @return Value of ArrowWidth
-     */
-    int getArrowWidth() const;
+  /**
+   * @brief Setter property for ArrowWidth
+   */
+  void setArrowWidth(int value);
+  /**
+   * @brief Getter property for ArrowWidth
+   * @return Value of ArrowWidth
+   */
+  int getArrowWidth() const;
 
-    /**
-     * @brief Setter property for ArrowOffset
-     */
-    void setArrowOffset(int value);
-    /**
-     * @brief Getter property for ArrowOffset
-     * @return Value of ArrowOffset
-     */
-    int getArrowOffset() const;
+  /**
+   * @brief Setter property for ArrowOffset
+   */
+  void setArrowOffset(int value);
+  /**
+   * @brief Getter property for ArrowOffset
+   * @return Value of ArrowOffset
+   */
+  int getArrowOffset() const;
 
-    /**
-     * @brief setupGui
-     */
-    void setupGui();
+  /**
+   * @brief setupGui
+   */
+  void setupGui();
 
-    /**
-     * @brief setWidget
-     * @param widget
-     */
-    void setWidget(QWidget* widget);
+  /**
+   * @brief setWidget
+   * @param widget
+   */
+  void setWidget(QWidget* widget);
 
-    /**
-     * @brief setArrowOrientation
-     * @param orientation
-     */
-    void setArrowOrientation(ArrowOrientation orientation);
+  /**
+   * @brief setArrowOrientation
+   * @param orientation
+   */
+  void setArrowOrientation(ArrowOrientation orientation);
 
-  protected:
-    void paintEvent(QPaintEvent* event) override;
+protected:
+  void paintEvent(QPaintEvent* event) override;
 
-  private:
-    int m_ArrowHeight = {};
-    int m_ArrowWidth = {};
-    int m_ArrowOffset = {};
+private:
+  int m_ArrowHeight = {};
+  int m_ArrowWidth = {};
+  int m_ArrowOffset = {};
 
-    ArrowOrientation                    m_ArrowOrientation;
+  ArrowOrientation m_ArrowOrientation;
 
-  public:
-    PopUpWidget(const PopUpWidget&) = delete;            // Copy Constructor Not Implemented
-    PopUpWidget(PopUpWidget&&) = delete;                 // Move Constructor Not Implemented
-    PopUpWidget& operator=(const PopUpWidget&) = delete; // Copy Assignment Not Implemented
-    PopUpWidget& operator=(PopUpWidget&&) = delete;      // Move Assignment Not Implemented
+public:
+  PopUpWidget(const PopUpWidget&) = delete;            // Copy Constructor Not Implemented
+  PopUpWidget(PopUpWidget&&) = delete;                 // Move Constructor Not Implemented
+  PopUpWidget& operator=(const PopUpWidget&) = delete; // Copy Assignment Not Implemented
+  PopUpWidget& operator=(PopUpWidget&&) = delete;      // Move Assignment Not Implemented
 };
-

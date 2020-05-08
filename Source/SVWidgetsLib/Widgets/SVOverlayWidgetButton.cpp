@@ -461,15 +461,15 @@ double SVOverlayWidgetButton::getEndValue() const
       return m_Target->size().width();
     }
 
-      return m_Target->size().height();
+    return m_Target->size().height();
   }
 
-    if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
-    {
-      return m_Source->sizeHint().width() + m_Layout->margin() * 2;
-    }
+  if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
+  {
+    return m_Source->sizeHint().width() + m_Layout->margin() * 2;
+  }
 
-      return m_Source->sizeHint().height() + m_Layout->margin() * 2;
+  return m_Source->sizeHint().height() + m_Layout->margin() * 2;
 }
 
 // -----------------------------------------------------------------------------

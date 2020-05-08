@@ -132,7 +132,7 @@ void FileListInfoWidget::setupGui()
     emit parametersChanged();
   });
 
-//  validateInputFile();
+  //  validateInputFile();
   getGuiParametersFromFilter();
 }
 
@@ -363,7 +363,7 @@ void FileListInfoWidget::inputDir_textChanged(const QString& text)
   QString inputPath = validator->convertToAbsolutePath(text);
 
   QFileInfo fi(text);
-  if (fi.isRelative())
+  if(fi.isRelative())
   {
     m_Ui->absPathLabel->setText(inputPath);
     m_Ui->absPathLabel->show();

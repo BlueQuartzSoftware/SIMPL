@@ -4,8 +4,8 @@
 */
 
 /**
-* @brief Small changes to add support for json text files
-*/
+ * @brief Small changes to add support for json text files
+ */
 #include "QtSStaticFileController.h"
 
 #include <QtCore/QDateTime>
@@ -21,7 +21,7 @@ QtSStaticFileController::QtSStaticFileController(ServerSettings* settings, QObje
   docroot = settings->docRootPath;
   if(!(docroot.startsWith(":/") || docroot.startsWith("qrc://")))
   {
-// Convert relative path to absolute, based on the directory of the config file.
+    // Convert relative path to absolute, based on the directory of the config file.
     if(QDir::isRelativePath(docroot))
     {
       QFileInfo configFile(settings->configFileName);

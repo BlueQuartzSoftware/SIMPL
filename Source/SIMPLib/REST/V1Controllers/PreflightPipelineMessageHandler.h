@@ -43,45 +43,44 @@
  */
 class SIMPLib_EXPORT PreflightPipelineMessageHandler : public AbstractMessageHandler
 {
-  public:
-    PreflightPipelineMessageHandler(QJsonArray* errors, QJsonArray* warnings);
+public:
+  PreflightPipelineMessageHandler(QJsonArray* errors, QJsonArray* warnings);
 
-    /**
-     * @brief Stores pipeline index, human label, message text, and error code
-     *  of incoming FilterErrorMessages into a json object and stores the json
-     * object in the errors json array.
-     */
-    void processMessage(const FilterErrorMessage* msg) const override;
+  /**
+   * @brief Stores pipeline index, human label, message text, and error code
+   *  of incoming FilterErrorMessages into a json object and stores the json
+   * object in the errors json array.
+   */
+  void processMessage(const FilterErrorMessage* msg) const override;
 
-    /**
-     * @brief Stores pipeline index, human label, message text, and warning code
-     *  of incoming FilterWarningMessages into a json object and stores the json
-     * object in the warnings json array.
-     */
-    void processMessage(const FilterWarningMessage* msg) const override;
+  /**
+   * @brief Stores pipeline index, human label, message text, and warning code
+   *  of incoming FilterWarningMessages into a json object and stores the json
+   * object in the warnings json array.
+   */
+  void processMessage(const FilterWarningMessage* msg) const override;
 
-    /**
-     * @brief Stores message text and warning code of incoming PipelineErrorMessages
-     * into a json object and stores the json object in the errors json array.
-     */
-    void processMessage(const PipelineErrorMessage* msg) const override;
+  /**
+   * @brief Stores message text and warning code of incoming PipelineErrorMessages
+   * into a json object and stores the json object in the errors json array.
+   */
+  void processMessage(const PipelineErrorMessage* msg) const override;
 
-    /**
-     * @brief Stores message text and warning code of incoming PipelineWarningMessages
-     * into a json object and stores the json object in the warnings json array.
-     */
-    void processMessage(const PipelineWarningMessage* msg) const override;
+  /**
+   * @brief Stores message text and warning code of incoming PipelineWarningMessages
+   * into a json object and stores the json object in the warnings json array.
+   */
+  void processMessage(const PipelineWarningMessage* msg) const override;
 
-  private:
-    QJsonArray* m_Errors = nullptr;
-    QJsonArray* m_Warnings = nullptr;
+private:
+  QJsonArray* m_Errors = nullptr;
+  QJsonArray* m_Warnings = nullptr;
 
-    /**
-     * @brief writeToJson
-     * @param code
-     * @param text
-     * @param humanLabel
-     */
-    QJsonObject writeToJson(int code, const QString &text) const;
+  /**
+   * @brief writeToJson
+   * @param code
+   * @param text
+   * @param humanLabel
+   */
+  QJsonObject writeToJson(int code, const QString& text) const;
 };
-

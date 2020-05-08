@@ -34,9 +34,9 @@
 
 #include <algorithm>
 
- // -----------------------------------------------------------------------------
- //
- // -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 DataContainerGrid::DataContainerGrid(SizeVec3Type dims)
 : m_Dims(dims)
 , m_DataContainerNames(dims[0] * dims[1] * dims[2])
@@ -189,7 +189,7 @@ DataContainerGrid& DataContainerGrid::operator=(const DataContainerGrid& other)
 {
   m_Dims = other.m_Dims;
   m_DataContainerNames = other.m_DataContainerNames;
-  
+
   emit dimensionsChanged(m_Dims);
   return *this;
 }

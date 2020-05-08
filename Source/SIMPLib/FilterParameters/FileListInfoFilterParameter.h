@@ -164,8 +164,8 @@ protected:
   FileListInfoFilterParameter();
 
 public:
-  FileListInfoFilterParameter(const FileListInfoFilterParameter&) = delete; // Copy Constructor Not Implemented
-  FileListInfoFilterParameter(FileListInfoFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  FileListInfoFilterParameter(const FileListInfoFilterParameter&) = delete;            // Copy Constructor Not Implemented
+  FileListInfoFilterParameter(FileListInfoFilterParameter&&) = delete;                 // Move Constructor Not Implemented
   FileListInfoFilterParameter& operator=(const FileListInfoFilterParameter&) = delete; // Copy Assignment Not Implemented
   FileListInfoFilterParameter& operator=(FileListInfoFilterParameter&&) = delete;      // Move Assignment Not Implemented
 
@@ -173,4 +173,3 @@ private:
   FileListInfoFilterParameter::SetterCallbackType m_SetterCallback = {};
   FileListInfoFilterParameter::GetterCallbackType m_GetterCallback = {};
 };
-

@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include <QtCore/QDebug>
 
@@ -77,12 +77,11 @@ BookmarksModel* BookmarksModel::Instance()
   {
     self = new BookmarksModel();
     self->loadModel();
-    self->writeBookmarksToPrefsFile();  // Write out any "sanity check" changes that were made while loading the model
+    self->writeBookmarksToPrefsFile(); // Write out any "sanity check" changes that were made while loading the model
   }
 
   return self;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -179,7 +178,7 @@ QVariant BookmarksModel::data(const QModelIndex& index, int role) const
       return styles->getQTreeViewItem_error_color();
     }
 
-      return styles->getQTreeViewItem_color();
+    return styles->getQTreeViewItem_color();
   }
   else if(role == Qt::ToolTipRole && item->getItemType() == BookmarksItem::ItemType::Bookmark)
   {
@@ -229,8 +228,8 @@ Qt::ItemFlags BookmarksModel::flags(const QModelIndex& index) const
     return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
   }
 
-    // This is a leaf
-    return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled);
+  // This is a leaf
+  return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled);
 }
 
 // -----------------------------------------------------------------------------
@@ -267,7 +266,7 @@ QModelIndex BookmarksModel::index(int row, int column, const QModelIndex& parent
     return createIndex(row, column, childItem);
   }
 
-    return QModelIndex();
+  return QModelIndex();
 }
 
 // -----------------------------------------------------------------------------
@@ -577,11 +576,11 @@ void BookmarksModel::unwrapModel(QString objectName, QJsonObject object, QModelI
   QFileInfo fi(path);
 
   // Sanity check to make sure that all bookmark items that are read in have the proper type
-  if (fi.isFile() && fi.completeSuffix() == "json" && itemType == BookmarksItem::ItemType::Folder)
+  if(fi.isFile() && fi.completeSuffix() == "json" && itemType == BookmarksItem::ItemType::Folder)
   {
     itemType = BookmarksItem::ItemType::Bookmark;
   }
-  else if (path.isEmpty() && itemType == BookmarksItem::ItemType::Bookmark)
+  else if(path.isEmpty() && itemType == BookmarksItem::ItemType::Bookmark)
   {
     itemType = BookmarksItem::ItemType::Folder;
   }
@@ -839,13 +838,13 @@ QDir BookmarksModel::findPipelinesDirectory()
     pipelinesDir.cdUp();
     // Can we change directory into the "PrebuiltPipeliines" directory at this level.
     QString pbpDir = QString("Resources/%1").arg(PREBUILT_PIPELINES_DIR);
-    if (pipelinesDir.cd(pbpDir))
+    if(pipelinesDir.cd(pbpDir))
     {
       return pipelinesDir;
     }
     pipelinesDir.cdUp();
     pipelinesDir.cdUp();
-    if (pipelinesDir.cd(PREBUILT_PIPELINES_DIR) )
+    if(pipelinesDir.cd(PREBUILT_PIPELINES_DIR))
     {
       return pipelinesDir;
     }
@@ -870,7 +869,8 @@ QDir BookmarksModel::findPipelinesDirectory()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void BookmarksModel::addPipelinesRecursively(QDir currentDir, QModelIndex parent, QJsonObject prebuiltsObj, QString iconFileName, bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType)
+void BookmarksModel::addPipelinesRecursively(QDir currentDir, QModelIndex parent, QJsonObject prebuiltsObj, QString iconFileName, bool allowEditing, QStringList filters,
+                                             FilterLibraryTreeWidget::ItemType itemType)
 {
   QModelIndex nextIndex;
 
@@ -921,8 +921,8 @@ void BookmarksModel::addPipelinesRecursively(QDir currentDir, QModelIndex parent
     addTreeItem(parent, itemName, QIcon(iconFileName), itemInfo.absoluteFilePath(), row, BookmarksItem::ItemType::Bookmark, false);
     nextIndex = index(row, BookmarksItem::Contents, parent);
 
-//    QString htmlFormattedString = generateHtmlFilterListFromPipelineFile(itemInfo.absoluteFilePath());
-//    model->setData(nextIndex, htmlFormattedString, Qt::ToolTipRole);
+    //    QString htmlFormattedString = generateHtmlFilterListFromPipelineFile(itemInfo.absoluteFilePath());
+    //    model->setData(nextIndex, htmlFormattedString, Qt::ToolTipRole);
   }
 }
 

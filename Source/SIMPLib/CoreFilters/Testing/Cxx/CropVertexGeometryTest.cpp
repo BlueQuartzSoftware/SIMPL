@@ -99,7 +99,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void checkDataArray(std::shared_ptr<DataArray<T>> originalData, std::shared_ptr<DataArray<T>> newData)
+  template <typename T>
+  void checkDataArray(std::shared_ptr<DataArray<T>> originalData, std::shared_ptr<DataArray<T>> newData)
   {
     DREAM3D_REQUIRE_EQUAL(originalData->getSize(), newData->getSize())
 

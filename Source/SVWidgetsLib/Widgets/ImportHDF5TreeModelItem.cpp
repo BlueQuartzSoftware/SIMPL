@@ -32,7 +32,6 @@
 
 #include "ImportHDF5TreeModelItem.h"
 
-
 #include "H5Support/H5Utilities.h"
 
 ImportHDF5TreeModelItem::ImportHDF5TreeModelItem(hid_t fileId, const QString& data, ImportHDF5TreeModelItem* parent)

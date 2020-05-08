@@ -60,7 +60,6 @@
 
 #include <tbb/parallel_for.h>
 
-
 class ConvertColorToGrayScaleTest
 {
   const FloatVec3Type m_defaultWeights{0.2125f, 0.7154f, 0.0721f};

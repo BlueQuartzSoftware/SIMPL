@@ -40,7 +40,6 @@
 #include <stack>
 #include <vector>
 
-
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListView>
 
@@ -581,8 +580,8 @@ private:
   QPixmap setPixmapColor(const QPixmap& pixmap, const QColor& pixmapColor);
 
 public:
-  SVPipelineView(const SVPipelineView&) = delete; // Copy Constructor Not Implemented
-  SVPipelineView(SVPipelineView&&) = delete;      // Move Constructor Not Implemented
+  SVPipelineView(const SVPipelineView&) = delete;            // Copy Constructor Not Implemented
+  SVPipelineView(SVPipelineView&&) = delete;                 // Move Constructor Not Implemented
   SVPipelineView& operator=(const SVPipelineView&) = delete; // Copy Assignment Not Implemented
   SVPipelineView& operator=(SVPipelineView&&) = delete;      // Move Assignment Not Implemented
 };

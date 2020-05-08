@@ -66,7 +66,7 @@ GenericProgressMessage::~GenericProgressMessage() = default;
 // -----------------------------------------------------------------------------
 GenericProgressMessage::Pointer GenericProgressMessage::New(const QString& msgText, int progress)
 {
-  GenericProgressMessage::Pointer shared_ptr (new GenericProgressMessage(msgText, progress));
+  GenericProgressMessage::Pointer shared_ptr(new GenericProgressMessage(msgText, progress));
   return shared_ptr;
 }
 

@@ -48,7 +48,8 @@ public:
   /**
    * @brief This struct is used for generating Row/Column Indexes
    */
-  template <unsigned Dimension, typename T, class String> struct Tile
+  template <unsigned Dimension, typename T, class String>
+  struct Tile
   {
     std::array<int32_t, Dimension> data; // r, c index
     String FileName;
@@ -118,9 +119,8 @@ protected:
   FilePathGenerator();
 
 public:
-  FilePathGenerator(const FilePathGenerator&) = delete; // Copy Constructor Not Implemented
-  FilePathGenerator(FilePathGenerator&&) = delete;      // Move Constructor Not Implemented
+  FilePathGenerator(const FilePathGenerator&) = delete;            // Copy Constructor Not Implemented
+  FilePathGenerator(FilePathGenerator&&) = delete;                 // Move Constructor Not Implemented
   FilePathGenerator& operator=(const FilePathGenerator&) = delete; // Copy Assignment Not Implemented
   FilePathGenerator& operator=(FilePathGenerator&&) = delete;      // Move Assignment Not Implemented
 };
-

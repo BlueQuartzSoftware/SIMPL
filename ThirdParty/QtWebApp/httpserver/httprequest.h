@@ -236,4 +236,3 @@ private:
   /** Buffer for collecting characters of request and header lines */
   QByteArray lineBuffer;
 };
-

@@ -460,9 +460,9 @@ void HttpRequest::parseMultiPartFile()
           // last field was a form field
           fieldValue.remove(fieldValue.size() - 2, 2);
           parameters.insert(fieldName, fieldValue);
-          #ifdef SUPERVERBOSE
+#ifdef SUPERVERBOSE
           qDebug("HttpRequest: set parameter %s=%s", fieldName.data(), fieldValue.data());
-          #endif
+#endif
         }
         else if(!fileName.isEmpty() && !fieldName.isEmpty())
         {
@@ -485,26 +485,26 @@ void HttpRequest::parseMultiPartFile()
         break;
       }
 
-        if(fileName.isEmpty() && !fieldName.isEmpty())
+      if(fileName.isEmpty() && !fieldName.isEmpty())
+      {
+        // this is a form field.
+        currentSize += line.size();
+        fieldValue.append(line);
+      }
+      else if(!fileName.isEmpty() && !fieldName.isEmpty())
+      {
+        // this is a file
+        if(uploadedFile == nullptr)
         {
-          // this is a form field.
-          currentSize += line.size();
-          fieldValue.append(line);
+          uploadedFile = new QTemporaryFile();
+          uploadedFile->open();
         }
-        else if(!fileName.isEmpty() && !fieldName.isEmpty())
+        uploadedFile->write(line);
+        if(uploadedFile->error() != 0u)
         {
-          // this is a file
-          if(uploadedFile == nullptr)
-          {
-            uploadedFile = new QTemporaryFile();
-            uploadedFile->open();
-          }
-          uploadedFile->write(line);
-          if(uploadedFile->error() != 0u)
-          {
-            qCritical("HttpRequest: error writing temp file, %s", qPrintable(uploadedFile->errorString()));
-          }
+          qCritical("HttpRequest: error writing temp file, %s", qPrintable(uploadedFile->errorString()));
         }
+      }
     }
   }
   if(tempFile->error() != 0u)

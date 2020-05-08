@@ -37,7 +37,6 @@
 
 #include "SIMPLib/SIMPLib.h"
 
-
 /**
  * @brief The DocRequestManager class is the moderator between low level libraries
  * that request the documentation for a filter be shown to the user in some capacity.
@@ -49,33 +48,31 @@
 class SIMPLib_EXPORT DocRequestManager : public QObject
 {
 
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    DocRequestManager();
-    ~DocRequestManager() override;
+public:
+  DocRequestManager();
+  ~DocRequestManager() override;
 
-    static DocRequestManager* Instance();
+  static DocRequestManager* Instance();
 
-  public Q_SLOTS:
-    void requestFilterDocs(const QString &filter);
+public Q_SLOTS:
+  void requestFilterDocs(const QString& filter);
 
-    void requestFilterDocUrl(const QUrl &filter);
+  void requestFilterDocUrl(const QUrl& filter);
 
-  Q_SIGNALS:
+Q_SIGNALS:
 
-    void showFilterDocs(const QString &filter);
+  void showFilterDocs(const QString& filter);
 
-    void showFilterDocUrl(const QUrl &url);
+  void showFilterDocUrl(const QUrl& url);
 
-  private:
+private:
+  static DocRequestManager* self;
 
-     static DocRequestManager *self;
-
-   public:
-     DocRequestManager(const DocRequestManager&) = delete; // Copy Constructor Not Implemented
-     DocRequestManager(DocRequestManager&&) = delete;      // Move Constructor Not Implemented
-     DocRequestManager& operator=(const DocRequestManager&) = delete; // Copy Assignment Not Implemented
-     DocRequestManager& operator=(DocRequestManager&&) = delete;      // Move Assignment Not Implemented
+public:
+  DocRequestManager(const DocRequestManager&) = delete;            // Copy Constructor Not Implemented
+  DocRequestManager(DocRequestManager&&) = delete;                 // Move Constructor Not Implemented
+  DocRequestManager& operator=(const DocRequestManager&) = delete; // Copy Assignment Not Implemented
+  DocRequestManager& operator=(DocRequestManager&&) = delete;      // Move Assignment Not Implemented
 };
-

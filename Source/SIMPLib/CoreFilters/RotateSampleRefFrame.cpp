@@ -156,7 +156,7 @@ RotateArgs createRotateParams(const ImageGeom& imageGeom, const Matrix3fR& rotat
 {
   const SizeVec3Type origDims = imageGeom.getDimensions();
   const FloatVec3Type spacing = imageGeom.getSpacing();
-  //const FloatVec3Type origin = imageGeom.getOrigin();
+  // const FloatVec3Type origin = imageGeom.getOrigin();
 
   float xMin = std::numeric_limits<float>::max();
   float xMax = std::numeric_limits<float>::min();
@@ -450,8 +450,7 @@ void RotateSampleRefFrame::dataCheck()
 
   switch(representation)
   {
-  case RotationRepresentation::AxisAngle:
-  {
+  case RotationRepresentation::AxisAngle: {
     const Eigen::Vector3f rotationAxis(m_RotationAxis.data());
     float norm = rotationAxis.norm();
     if(!SIMPLibMath::closeEnough(rotationAxis.norm(), 1.0f, k_Threshold))
@@ -467,8 +466,7 @@ void RotateSampleRefFrame::dataCheck()
     p_Impl->m_RotationMatrix = axisAngle.toRotationMatrix();
   }
   break;
-  case RotationRepresentation::RotationMatrix:
-  {
+  case RotationRepresentation::RotationMatrix: {
     auto rotationMatrixTable = m_RotationTable.getTableData();
 
     if(rotationMatrixTable.size() != 3)
@@ -512,8 +510,7 @@ void RotateSampleRefFrame::dataCheck()
     p_Impl->m_RotationMatrix = rotationMatrix;
   }
   break;
-  default:
-  {
+  default: {
     QString ss = QObject::tr("Invalid rotation representation");
     setErrorCondition(-45008, ss);
     return;
@@ -533,7 +530,6 @@ void RotateSampleRefFrame::dataCheck()
   QString attrMatName = getCellAttributeMatrixPath().getAttributeMatrixName();
   m->getAttributeMatrix(attrMatName)->resizeAttributeArrays(tDims);
 }
-
 
 // -----------------------------------------------------------------------------
 //

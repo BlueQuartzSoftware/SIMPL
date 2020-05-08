@@ -33,7 +33,6 @@
 
 #include "IntVec2Widget.h"
 
-
 #include "SIMPLib/FilterParameters/IntVec2FilterParameter.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"

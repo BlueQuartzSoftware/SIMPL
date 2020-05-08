@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "H5FilterParametersReader.h"
 
@@ -367,7 +367,7 @@ QString H5FilterParametersReader::readString(const QString& name, QString value)
     return value;
   }
 
-    return defaultStr;
+  return defaultStr;
 }
 
 // -----------------------------------------------------------------------------
@@ -511,7 +511,6 @@ bool H5FilterParametersReader::readValue(const QString& name, bool value)
   return value;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -536,7 +535,7 @@ QVector<int8_t> H5FilterParametersReader::readArray(const QString& name, QVector
     return value;
   }
 
-    value.clear();
+  value.clear();
 
   for(int i = 0; i < vectorSize; i++)
   {
@@ -561,7 +560,7 @@ QVector<int16_t> H5FilterParametersReader::readArray(const QString& name, QVecto
     return value;
   }
 
-    value.clear();
+  value.clear();
 
   for(int i = 0; i < vectorSize; i++)
   {
@@ -586,7 +585,7 @@ QVector<int32_t> H5FilterParametersReader::readArray(const QString& name, QVecto
     return value;
   }
 
-    value.clear();
+  value.clear();
 
   for(int i = 0; i < vectorSize; i++)
   {
@@ -612,7 +611,7 @@ QVector<int64_t> H5FilterParametersReader::readArray(const QString& name, QVecto
     return value;
   }
 
-    value.clear();
+  value.clear();
 
   for(int i = 0; i < vectorSize; i++)
   {
@@ -637,7 +636,7 @@ QVector<uint8_t> H5FilterParametersReader::readArray(const QString& name, QVecto
     return value;
   }
 
-    value.clear();
+  value.clear();
 
   for(int i = 0; i < vectorSize; i++)
   {
@@ -662,7 +661,7 @@ QVector<uint16_t> H5FilterParametersReader::readArray(const QString& name, QVect
     return value;
   }
 
-    value.clear();
+  value.clear();
 
   for(int i = 0; i < vectorSize; i++)
   {
@@ -687,7 +686,7 @@ QVector<uint32_t> H5FilterParametersReader::readArray(const QString& name, QVect
     return value;
   }
 
-    value.clear();
+  value.clear();
 
   for(int i = 0; i < vectorSize; i++)
   {
@@ -712,7 +711,7 @@ QVector<uint64_t> H5FilterParametersReader::readArray(const QString& name, QVect
     return value;
   }
 
-    value.clear();
+  value.clear();
 
   for(int i = 0; i < vectorSize; i++)
   {
@@ -737,7 +736,7 @@ QVector<float> H5FilterParametersReader::readArray(const QString& name, QVector<
     return value;
   }
 
-    value.clear();
+  value.clear();
 
   for(int i = 0; i < vectorSize; i++)
   {
@@ -762,7 +761,7 @@ QVector<double> H5FilterParametersReader::readArray(const QString& name, QVector
     return value;
   }
 
-    value.clear();
+  value.clear();
 
   for(int i = 0; i < vectorSize; i++)
   {
@@ -986,38 +985,38 @@ ComparisonInputs H5FilterParametersReader::readComparisonInputs(const QString& n
 // -----------------------------------------------------------------------------
 ComparisonInputsAdvanced H5FilterParametersReader::readComparisonInputsAdvanced(const QString& name, ComparisonInputsAdvanced defValue)
 {
-    /*
-    int size = 0;
-    QString strData = "";
-    bool ok = false;
-    // See if the data set actually exists, if it does NOT just return what the user passed in as a default value
-    if(false == QH5Lite::datasetExists(m_CurrentGroupId, name))
-    {
-      return defValue;
-    }
+  /*
+  int size = 0;
+  QString strData = "";
+  bool ok = false;
+  // See if the data set actually exists, if it does NOT just return what the user passed in as a default value
+  if(false == QH5Lite::datasetExists(m_CurrentGroupId, name))
+  {
+    return defValue;
+  }
 
-    herr_t err = QH5Lite::readStringDataset(m_CurrentGroupId, name, strData);
-    if(err < 0)
-    {
-      return defValue; // If the data set does not exist no point in going any further
-    }
+  herr_t err = QH5Lite::readStringDataset(m_CurrentGroupId, name, strData);
+  if(err < 0)
+  {
+    return defValue; // If the data set does not exist no point in going any further
+  }
 
-    // Now read the the attribute that says how many arrays are in the data set.
-    err = QH5Lite::readScalarAttribute(m_CurrentGroupId, name, "NumInputs", size);
+  // Now read the the attribute that says how many arrays are in the data set.
+  err = QH5Lite::readScalarAttribute(m_CurrentGroupId, name, "NumInputs", size);
 
-    QStringList strVector = strData.split('\n', QString::SkipEmptyParts);
-    qint32 strVecSize = strVector.size();
-    if(strVecSize != size)
-    {
-      // Something has gone wrong in the tokenization and the number of tokens does not match what
-      // was written to the HDF5 file.
-      return defValue;
-    }
-    */
+  QStringList strVector = strData.split('\n', QString::SkipEmptyParts);
+  qint32 strVecSize = strVector.size();
+  if(strVecSize != size)
+  {
+    // Something has gone wrong in the tokenization and the number of tokens does not match what
+    // was written to the HDF5 file.
+    return defValue;
+  }
+  */
 
-    ComparisonInputsAdvanced inputs;
+  ComparisonInputsAdvanced inputs;
 
-    return inputs;
+  return inputs;
 }
 
 // -----------------------------------------------------------------------------
@@ -1174,7 +1173,7 @@ DataArrayPath H5FilterParametersReader::readDataArrayPath(const QString& name, D
     return path;
   }
 
-    return def;
+  return def;
 }
 
 // -----------------------------------------------------------------------------
@@ -1230,7 +1229,7 @@ DynamicTableData H5FilterParametersReader::readDynamicTableData(const QString& n
     return tableData;
   }
 
-    return def;
+  return def;
 }
 
 // -----------------------------------------------------------------------------

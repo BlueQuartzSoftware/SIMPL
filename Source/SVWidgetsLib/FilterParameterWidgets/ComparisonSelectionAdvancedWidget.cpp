@@ -1,40 +1,39 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "ComparisonSelectionAdvancedWidget.h"
-
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
@@ -49,8 +48,8 @@
 //
 // -----------------------------------------------------------------------------
 ComparisonSelectionAdvancedWidget::ComparisonSelectionAdvancedWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
-  : FilterParameterWidget(parameter, filter, parent)
-  , m_DidCausePreflight(false)
+: FilterParameterWidget(parameter, filter, parent)
+, m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<ComparisonSelectionAdvancedFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ComparisonSelectionAdvancedWidget can ONLY be used with a ComparisonSelectionAdvancedFilterParameter object");
@@ -72,7 +71,7 @@ ComparisonSelectionAdvancedWidget::~ComparisonSelectionAdvancedWidget() = defaul
 ComparisonInputsAdvanced ComparisonSelectionAdvancedWidget::getComparisonInputs()
 {
   ComparisonInputsAdvanced comps;
-  if (comparisonSetWidget == nullptr)
+  if(comparisonSetWidget == nullptr)
   {
     return comps;
   }
@@ -88,7 +87,7 @@ ComparisonInputsAdvanced ComparisonSelectionAdvancedWidget::getComparisonInputs(
 
   QVector<AbstractComparison::Pointer> comparisons = comparisonSetWidget->getComparisons();
 
-  for (int i = 0; i < comparisons.size(); ++i)
+  for(int i = 0; i < comparisons.size(); ++i)
   {
     comps.addInput(comparisons[i]);
   }
@@ -100,11 +99,11 @@ ComparisonInputsAdvanced ComparisonSelectionAdvancedWidget::getComparisonInputs(
 // -----------------------------------------------------------------------------
 void ComparisonSelectionAdvancedWidget::setupGui()
 {
-  if (getFilter() == nullptr)
+  if(getFilter() == nullptr)
   {
     return;
   }
-  if (getFilterParameter() == nullptr)
+  if(getFilterParameter() == nullptr)
   {
     return;
   }
@@ -123,17 +122,17 @@ void ComparisonSelectionAdvancedWidget::setupGui()
   connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &ComparisonSelectionAdvancedWidget::filterNeedsInputParameters);
 
   // If the DataArrayPath is updated in the filter, update the widget
-  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
-    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
   connect(this, SIGNAL(filterPathInput(DataArrayPath)), m_SelectedAttributeMatrixPath, SLOT(checkDragPath(DataArrayPath)));
   connect(this, SIGNAL(endViewPathRequirements()), m_SelectedAttributeMatrixPath, SLOT(clearPathFiltering()));
   connect(this, SIGNAL(endDataStructureRequirements()), m_SelectedAttributeMatrixPath, SLOT(endExternalFiltering()));
   connect(this, SIGNAL(applyPathToFilteringParameter(DataArrayPath)), m_SelectedAttributeMatrixPath, SLOT(setFilteredDataArrayPath(DataArrayPath)));
 
-  connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this,
+          SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
-  //connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+  // connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SLOT(attributeMatrixUpdated()));
 
@@ -159,7 +158,7 @@ void ComparisonSelectionAdvancedWidget::setupGui()
   DataArrayPath currentPath;
   currentPath.setDataContainerName(comps.getDataContainerName());
   currentPath.setAttributeMatrixName(comps.getAttributeMatrixName());
-  if (!currentPath.isEmpty())
+  if(!currentPath.isEmpty())
   {
     QStringList names = generateAttributeArrayList(currentPath.getDataContainerName(), currentPath.getAttributeMatrixName());
     presetAttributeMatrix(currentPath);
@@ -220,12 +219,12 @@ QStringList ComparisonSelectionAdvancedWidget::generateAttributeArrayList(const 
 {
   DataArrayPath path(currentDCName, currentAttrMatName, "");
   AttributeMatrix::Pointer am = getFilter()->getDataContainerArray()->getAttributeMatrix(path);
-  
+
   if(nullptr == am)
   {
     return QStringList();
   }
-  
+
   return am->getAttributeArrayNames();
 }
 
@@ -234,7 +233,7 @@ QStringList ComparisonSelectionAdvancedWidget::generateAttributeArrayList(const 
 // -----------------------------------------------------------------------------
 QString ComparisonSelectionAdvancedWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
-  if (curDcName.isEmpty() && !filtDcName.isEmpty())
+  if(curDcName.isEmpty() && !filtDcName.isEmpty())
   {
     return filtDcName;
   }
@@ -256,7 +255,7 @@ QString ComparisonSelectionAdvancedWidget::checkStringValues(QString curDcName, 
 void ComparisonSelectionAdvancedWidget::widgetChanged(const QString& text)
 {
   Q_UNUSED(text)
-    m_DidCausePreflight = true;
+  m_DidCausePreflight = true;
   emit parametersChanged();
   m_DidCausePreflight = false;
 }
@@ -268,7 +267,7 @@ void ComparisonSelectionAdvancedWidget::setComparisons(QVector<AbstractCompariso
 {
   qint32 count = comparisons.size();
 
-  for (int i = 0; i < count; ++i)
+  for(int i = 0; i < count; ++i)
   {
     comparisonSetWidget->addComparison(comparisons[i]);
   }
@@ -296,17 +295,17 @@ void ComparisonSelectionAdvancedWidget::filterNeedsInputParameters(AbstractFilte
 // -----------------------------------------------------------------------------
 void ComparisonSelectionAdvancedWidget::beforePreflight()
 {
-  if (nullptr == getFilter())
+  if(nullptr == getFilter())
   {
     return;
   }
-  if (m_DidCausePreflight)
+  if(m_DidCausePreflight)
   {
     // std::cout << "***  ComparisonSelectionAdvancedWidget already caused a preflight, just returning" << std::endl;
     return;
   }
 
-  if (m_SelectedAttributeMatrixPath->text().isEmpty())
+  if(m_SelectedAttributeMatrixPath->text().isEmpty())
   {
     populateButtonText();
   }
@@ -320,19 +319,22 @@ void ComparisonSelectionAdvancedWidget::beforePreflight()
 void ComparisonSelectionAdvancedWidget::afterPreflight()
 {
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (nullptr == dca) { return; }
+  if(nullptr == dca)
+  {
+    return;
+  }
 
-  if (dca->doesAttributeMatrixExist(m_SelectedAttributeMatrixPath->getDataArrayPath()))
+  if(dca->doesAttributeMatrixExist(m_SelectedAttributeMatrixPath->getDataArrayPath()))
   {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(m_SelectedAttributeMatrixPath->getDataArrayPath());
-    if (nullptr != am.get()) 
+    if(nullptr != am.get())
     {
       DataArrayPath path = m_SelectedAttributeMatrixPath->getDataArrayPath();
       QStringList arrayNames = generateAttributeArrayList(path.getDataContainerName(), path.getAttributeMatrixName());
-      
+
       comparisonSetWidget->setArrayNames(arrayNames);
 
-      if (nullptr == comparisonSetWidget->getAttributeMatrix())
+      if(nullptr == comparisonSetWidget->getAttributeMatrix())
       {
         ComparisonInputsAdvanced comps = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<ComparisonInputsAdvanced>();
         comparisonSetWidget->setAttributeMatrix(am);
@@ -354,13 +356,13 @@ void ComparisonSelectionAdvancedWidget::populateButtonText()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (nullptr == dca)
+  if(nullptr == dca)
   {
     return;
   }
 
   // Check to see if we have any DataContainers to actually populate drop downs with.
-  if (dca->getDataContainers().empty())
+  if(dca->getDataContainers().empty())
   {
     return;
   }
@@ -389,7 +391,7 @@ void ComparisonSelectionAdvancedWidget::populateButtonText()
 // -----------------------------------------------------------------------------
 bool ComparisonSelectionAdvancedWidget::eventFilter(QObject* obj, QEvent* event)
 {
-  if (event->type() == QEvent::Show && obj == m_SelectedAttributeMatrixPath->menu())
+  if(event->type() == QEvent::Show && obj == m_SelectedAttributeMatrixPath->menu())
   {
     QPoint pos = adjustedMenuPosition(m_SelectedAttributeMatrixPath);
     m_SelectedAttributeMatrixPath->menu()->move(pos);
@@ -433,19 +435,22 @@ void ComparisonSelectionAdvancedWidget::setSelectedPath(QString path)
 // -----------------------------------------------------------------------------
 void ComparisonSelectionAdvancedWidget::setSelectedPath(DataArrayPath amPath)
 {
-  if (amPath.isEmpty()) { return; }
-
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (nullptr == dca)
+  if(amPath.isEmpty())
   {
     return;
   }
 
-  if (dca->doesAttributeMatrixExist(amPath))
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if(nullptr == dca)
+  {
+    return;
+  }
+
+  if(dca->doesAttributeMatrixExist(amPath))
   {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
 
-    if (nullptr != comparisonSetWidget->getComparisonSet())
+    if(nullptr != comparisonSetWidget->getComparisonSet())
     {
       comparisonSetWidget->setAttributeMatrix(am);
       comparisonSetWidget->setComparisonSet(ComparisonSet::New());

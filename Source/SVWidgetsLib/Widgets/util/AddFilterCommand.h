@@ -37,7 +37,6 @@
 
 #include <vector>
 
-
 #include <QtWidgets/QUndoCommand>
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -95,12 +94,11 @@ private:
    * @brief disconnectFilterSignalsSlots
    * @param filter
    */
-  void disconnectFilterSignalsSlots(const AbstractFilter::Pointer &filter);
+  void disconnectFilterSignalsSlots(const AbstractFilter::Pointer& filter);
 
 public:
-  AddFilterCommand(const AddFilterCommand&) = delete; // Copy Constructor Not Implemented
-  AddFilterCommand(AddFilterCommand&&) = delete;      // Move Constructor Not Implemented
+  AddFilterCommand(const AddFilterCommand&) = delete;            // Copy Constructor Not Implemented
+  AddFilterCommand(AddFilterCommand&&) = delete;                 // Move Constructor Not Implemented
   AddFilterCommand& operator=(const AddFilterCommand&) = delete; // Copy Assignment Not Implemented
   AddFilterCommand& operator=(AddFilterCommand&&) = delete;      // Move Assignment Not Implemented
 };
-

@@ -110,4 +110,3 @@ private:
   /** Pointer to the shared data. */
   HttpSessionData* dataPtr;
 };
-

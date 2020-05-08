@@ -64,4 +64,3 @@ private:
   QFile* m_StatusLog;
   QFile* m_StandardOutputLog;
 };
-

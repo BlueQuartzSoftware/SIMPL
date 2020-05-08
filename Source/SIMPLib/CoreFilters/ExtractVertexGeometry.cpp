@@ -48,7 +48,8 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 
-enum createdPathID : RenameDataPath::DataID_t {
+enum createdPathID : RenameDataPath::DataID_t
+{
   DataContainerID = 1,
   AttributeMatrixID
 };
@@ -244,13 +245,13 @@ void ExtractVertexGeometry::dataCheck()
     AttributeMatrix::Pointer vertexCellAttrMat = vertexDataContainer->getAttributeMatrix(newDap);
     if(vertexCellAttrMat == nullptr)
     {
-      vertexCellAttrMat = vertexDataContainer->createNonPrereqAttributeMatrix(this, sourceCellAttrMat->getName(), sourceCellAttrMat->getTupleDimensions(), AttributeMatrix::Type::Vertex, AttributeMatrixID);
+      vertexCellAttrMat =
+          vertexDataContainer->createNonPrereqAttributeMatrix(this, sourceCellAttrMat->getName(), sourceCellAttrMat->getTupleDimensions(), AttributeMatrix::Type::Vertex, AttributeMatrixID);
     }
 
     vertexCellAttrMat->insertOrAssign(newArrayPtr);
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //

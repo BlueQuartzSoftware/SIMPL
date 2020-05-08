@@ -227,7 +227,7 @@ void DataContainerGridSelectionWidget::increaseDepth()
 {
   int depth = m_GridModel->getCurrentDepth() + 1;
   m_GridModel->setCurrentDepth(depth);
-  
+
   checkDepth();
 }
 
@@ -238,7 +238,7 @@ void DataContainerGridSelectionWidget::decreaseDepth()
 {
   int depth = m_GridModel->getCurrentDepth() - 1;
   m_GridModel->setCurrentDepth(depth);
- 
+
   checkDepth();
 }
 

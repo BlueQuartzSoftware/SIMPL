@@ -79,7 +79,7 @@ public:
     std::vector<int32_t> iv3 = {4, 5};
     i3 = iv3.data();
 
-    std::vector<int32_t> iv2 = {6,5};
+    std::vector<int32_t> iv2 = {6, 5};
     i3 = IntVec2Type(iv2);
 
     int32_t x = i3.getX();

@@ -175,4 +175,3 @@ private:
   /** Thread local backtrace buffers */
   QThreadStorage<QList<LogMessage*>*> buffers;
 };
-

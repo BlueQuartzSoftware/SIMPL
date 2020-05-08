@@ -157,7 +157,8 @@ private:
   QtServiceBasePrivate* d_ptr;
 };
 
-template <typename Application> class QtService : public QtServiceBase
+template <typename Application>
+class QtService : public QtServiceBase
 {
 public:
   QtService(int argc, char** argv, const QString& name)
@@ -192,4 +193,3 @@ private:
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(QtServiceBase::ServiceFlags)
-

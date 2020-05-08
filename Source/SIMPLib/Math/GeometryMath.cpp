@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "GeometryMath.h"
 
@@ -657,7 +657,10 @@ void GeometryMath::FindBoundingBoxOfRotatedFace(TriangleGeom* faces, int faceId,
 void GeometryMath::FindPolygonNormal(const float* vertices, const int64_t numVerts, float n[3])
 {
   // Return immediately if the  number of vertices cannot form a polygon
-  if(numVerts < 3) { return; }
+  if(numVerts < 3)
+  {
+    return;
+  }
 
   // If the polygon is a triangle, then just compute its normal using simple cross product
   if(numVerts == 3)
@@ -877,28 +880,28 @@ char GeometryMath::RayIntersectsPlane(const float* a, const float* b, const floa
       return 'p';
     }
 
-      return '0';
+    return '0';
   }
 
-    t = num / denom;
-    for(int i = 0; i < 3; i++)
-    {
-      p[i] = q[i] + (t * (r[i] - q[i]));
-    }
-    if(t > 0.0 && t < 1.0)
-    {
-      return '1';
-    }
-    if(num == 0.0)
-    {
-      return 'q';
-    }
-    if(num == denom)
-    {
-      return 'r';
-    }
+  t = num / denom;
+  for(int i = 0; i < 3; i++)
+  {
+    p[i] = q[i] + (t * (r[i] - q[i]));
+  }
+  if(t > 0.0 && t < 1.0)
+  {
+    return '1';
+  }
+  if(num == 0.0)
+  {
+    return 'q';
+  }
+  if(num == denom)
+  {
+    return 'r';
+  }
 
-      return '0';
+  return '0';
 }
 
 // -----------------------------------------------------------------------------
@@ -922,28 +925,28 @@ char GeometryMath::RayIntersectsPlane(const float* n, const float d, const float
       return 'p';
     }
 
-      return '0';
+    return '0';
   }
 
-    t = num / denom;
-    for(int i = 0; i < 3; i++)
-    {
-      p[i] = q[i] + (t * (r[i] - q[i]));
-    }
-    if(t > 0.0 && t < 1.0)
-    {
-      return '1';
-    }
-    if(num == 0.0)
-    {
-      return 'q';
-    }
-    if(num == denom)
-    {
-      return 'r';
-    }
+  t = num / denom;
+  for(int i = 0; i < 3; i++)
+  {
+    p[i] = q[i] + (t * (r[i] - q[i]));
+  }
+  if(t > 0.0 && t < 1.0)
+  {
+    return '1';
+  }
+  if(num == 0.0)
+  {
+    return 'q';
+  }
+  if(num == denom)
+  {
+    return 'r';
+  }
 
-      return '0';
+  return '0';
 }
 
 // -----------------------------------------------------------------------------
@@ -1045,8 +1048,7 @@ char GeometryMath::RayCrossesTriangle(const float* a, const float* b, const floa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-char GeometryMath::PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* faceBBs, const float* q, const float* ll,
-                                     const float* ur, float radius)
+char GeometryMath::PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* faceBBs, const float* q, const float* ll, const float* ur, float radius)
 {
   float ray[3]; /* Ray */
   float r[3];   /* Ray endpoint. */
@@ -1128,14 +1130,14 @@ LOOP:
     return 'i';
   }
 
-    return 'o';
+  return 'o';
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-char GeometryMath::PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* faceBBs, const float* q, const float* ll,
-                                     const float* ur, float radius, float& distToBoundary)
+char GeometryMath::PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* faceBBs, const float* q, const float* ll, const float* ur, float radius,
+                                     float& distToBoundary)
 {
   float ray[3] = {0.0f, 0.0f, 0.0f}; /* Ray */
   float r[3] = {0.0f, 0.0f, 0.0f};   /* Ray endpoint. */
@@ -1229,7 +1231,7 @@ LOOP:
     return 'i';
   }
 
-    return 'o';
+  return 'o';
 }
 
 // -----------------------------------------------------------------------------

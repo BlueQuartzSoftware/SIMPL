@@ -38,7 +38,6 @@
 
 #include <hdf5.h>
 
-
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class SVWidgetsLib_EXPORT ImportHDF5TreeModelItem
@@ -103,4 +102,3 @@ private:
   std::string m_DataType = "";
   Qt::CheckState m_CheckState = Qt::Unchecked;
 };
-

@@ -65,4 +65,3 @@ public:
    */
   void createFilterParametersJson(const QString& filterName, QJsonObject& rootObject);
 };
-

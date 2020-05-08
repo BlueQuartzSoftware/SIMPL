@@ -14,31 +14,31 @@ class PyBind11Generator
 
 public:
   /**
- * @brief PyBind11Generator
- * @param topLevelDir
- * @param charsToStrip
- * @param libName
- */
-  PyBind11Generator(const QDir& topLevelDir, const QString& charsToStrip, const QString& libName, 
-                   const QString& genDir, const QString& moduleTemplatePath, const QString& isSIMPLib, const QString& cfgIntDir);
+   * @brief PyBind11Generator
+   * @param topLevelDir
+   * @param charsToStrip
+   * @param libName
+   */
+  PyBind11Generator(const QDir& topLevelDir, const QString& charsToStrip, const QString& libName, const QString& genDir, const QString& moduleTemplatePath, const QString& isSIMPLib,
+                    const QString& cfgIntDir);
 
   ~PyBind11Generator();
 
   /**
- * @brief execute
- */
+   * @brief execute
+   */
   void execute();
 
   /**
- * @brief recursiveSearch
- * @param currentDir
- */
+   * @brief recursiveSearch
+   * @param currentDir
+   */
   void recursiveSearch(const QDir& currentDir);
 
   /**
- * @brief generatePybind11Header
- * @param hFile
- */
+   * @brief generatePybind11Header
+   * @param hFile
+   */
   void generatePybind11Header(const QString& hFile);
 
   /**
@@ -47,15 +47,15 @@ public:
   void copyPyInitFiles();
 
   /**
-   * 
+   *
    */
   void generateModuleInitPy();
 
   /**
-  *
-  */
+   *
+   */
   void readFilterList();
-  
+
 private:
   QDir m_TopLevelDir;
   QDir m_SourceDir;

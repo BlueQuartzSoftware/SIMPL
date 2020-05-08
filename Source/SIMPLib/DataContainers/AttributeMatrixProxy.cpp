@@ -153,68 +153,52 @@ AttributeMatrixProxy::AMTypeFlag AttributeMatrixProxy::AttributeMatrixTypeToFlag
 {
   switch(amType)
   {
-  case AttributeMatrix::Type::Any:
-  {
+  case AttributeMatrix::Type::Any: {
     return Any_AMType;
   }
-  case AttributeMatrix::Type::Cell:
-  {
+  case AttributeMatrix::Type::Cell: {
     return Cell_AMType;
   }
-  case AttributeMatrix::Type::CellEnsemble:
-  {
+  case AttributeMatrix::Type::CellEnsemble: {
     return CellEnsemble_AMType;
   }
-  case AttributeMatrix::Type::CellFeature:
-  {
+  case AttributeMatrix::Type::CellFeature: {
     return CellFeature_AMType;
   }
-  case AttributeMatrix::Type::Edge:
-  {
+  case AttributeMatrix::Type::Edge: {
     return Edge_AMType;
   }
-  case AttributeMatrix::Type::EdgeEnsemble:
-  {
+  case AttributeMatrix::Type::EdgeEnsemble: {
     return EdgeEnsemble_AMType;
   }
-  case AttributeMatrix::Type::EdgeFeature:
-  {
+  case AttributeMatrix::Type::EdgeFeature: {
     return EdgeFeature_AMType;
   }
-  case AttributeMatrix::Type::Face:
-  {
+  case AttributeMatrix::Type::Face: {
     return Face_AMType;
   }
-  case AttributeMatrix::Type::FaceEnsemble:
-  {
+  case AttributeMatrix::Type::FaceEnsemble: {
     return FaceEnsemble_AMType;
   }
-  case AttributeMatrix::Type::FaceFeature:
-  {
+  case AttributeMatrix::Type::FaceFeature: {
     return FaceFeature_AMType;
   }
-  case AttributeMatrix::Type::Generic:
-  {
+  case AttributeMatrix::Type::Generic: {
     return Generic_AMType;
   }
-  case AttributeMatrix::Type::MetaData:
-  {
+  case AttributeMatrix::Type::MetaData: {
     return MetaData_AMType;
   }
-  case AttributeMatrix::Type::Vertex:
-  {
+  case AttributeMatrix::Type::Vertex: {
     return Vertex_AMType;
   }
-  case AttributeMatrix::Type::VertexEnsemble:
-  {
+  case AttributeMatrix::Type::VertexEnsemble: {
     return VertexEnsemble_AMType;
   }
-  case AttributeMatrix::Type::VertexFeature:
-  {
+  case AttributeMatrix::Type::VertexFeature: {
     return VertexFeature_AMType;
   }
-  case AttributeMatrix::Type::Unknown:
-  {
+  case AttributeMatrix::Type::Unknown: {
     return Unknown_AMType;
   }
   }

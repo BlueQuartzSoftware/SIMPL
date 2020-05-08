@@ -119,7 +119,7 @@ bool GridTileIndex::isValid() const
   {
     sizeCheck &= m_TilePos[i] <= gridSize[i];
   }
-  
+
   return AbstractTileIndex::isValid() && sizeCheck;
 }
 

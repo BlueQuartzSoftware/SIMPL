@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <QtWidgets/QWidget>
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -11,54 +10,46 @@
 
 #include "ui_DataContainerArrayWidget.h"
 
-
 class QStandardItem;
 class AbstractFilter;
 class DataContainerArray;
 
 class SVWidgetsLib_EXPORT DataContainerArrayWidget : public QWidget, private Ui::DataContainerArrayWidget
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    DataContainerArrayWidget(QWidget* parent = nullptr);
-    DataContainerArrayWidget(AbstractFilter* filter, QWidget* parent = nullptr);
+public:
+  DataContainerArrayWidget(QWidget* parent = nullptr);
+  DataContainerArrayWidget(AbstractFilter* filter, QWidget* parent = nullptr);
 
-    ~DataContainerArrayWidget() override;
+  ~DataContainerArrayWidget() override;
 
+  /**
+   * @brief This method does additional GUI widget connections
+   */
+  void setupGui();
 
-    /**
-    * @brief This method does additional GUI widget connections
-    */
-    void setupGui();
+  void initializeWithFilter(AbstractFilter* filter);
 
-    void initializeWithFilter(AbstractFilter* filter);
+protected slots:
 
+  void updateView();
 
+  void preflightCompleted();
 
-  protected slots:
+  void dcaProxyView_indexChanged(const QModelIndex& current, const QModelIndex& previous);
 
-    void updateView();
+  void on_dcaProxyView_updatePreviewWidget(const QModelIndex& index);
 
-    void preflightCompleted();
+protected:
+  void clearStandardItemModel();
 
-    void dcaProxyView_indexChanged(const QModelIndex& current, const QModelIndex& previous);
+private:
+  AbstractFilter* m_Filter;
 
-    void on_dcaProxyView_updatePreviewWidget(const QModelIndex& index);
-
-
-
-  protected:
-
-    void clearStandardItemModel();
-
-  private:
-    AbstractFilter*     m_Filter;
-
-  public:
-    DataContainerArrayWidget(const DataContainerArrayWidget&) = delete; // Copy Constructor Not Implemented
-    DataContainerArrayWidget(DataContainerArrayWidget&&) = delete;      // Move Constructor Not Implemented
-    DataContainerArrayWidget& operator=(const DataContainerArrayWidget&) = delete; // Copy Assignment Not Implemented
-    DataContainerArrayWidget& operator=(DataContainerArrayWidget&&) = delete;      // Move Assignment Not Implemented
+public:
+  DataContainerArrayWidget(const DataContainerArrayWidget&) = delete;            // Copy Constructor Not Implemented
+  DataContainerArrayWidget(DataContainerArrayWidget&&) = delete;                 // Move Constructor Not Implemented
+  DataContainerArrayWidget& operator=(const DataContainerArrayWidget&) = delete; // Copy Assignment Not Implemented
+  DataContainerArrayWidget& operator=(DataContainerArrayWidget&&) = delete;      // Move Assignment Not Implemented
 };
-

@@ -427,6 +427,3 @@ public:
   ImageGeom& operator=(const ImageGeom&) = delete; // Copy Assignment Not Implemented
   ImageGeom& operator=(ImageGeom&&) = delete;      // Move Assignment Not Implemented
 };
-
-
-

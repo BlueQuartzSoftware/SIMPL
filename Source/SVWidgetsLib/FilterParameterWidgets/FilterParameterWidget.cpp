@@ -58,7 +58,7 @@ namespace detail
 {
 static const float Max = 1.0;
 static const int Duration = 400;
-}
+} // namespace detail
 
 // -----------------------------------------------------------------------------
 //
@@ -156,10 +156,10 @@ void FilterParameterWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString FilterParameterWidget::wrapStringInHtml(const QString &message)
+QString FilterParameterWidget::wrapStringInHtml(const QString& message)
 {
   QString html;
-  QTextStream ss (&html);
+  QTextStream ss(&html);
   ss << "<html><head></head>\n";
   ss << "<body>\n";
   ss << "<b>" << message << "</b>\n";
@@ -200,7 +200,7 @@ void FilterParameterWidget::changeStyleSheet(Style style)
     ss << "color: rgb(200, 50, 50); font: bold;";
     ss << "font: bold;";
 
-    //ss << "background-color: rgb(230, 150, 150);";
+    // ss << "background-color: rgb(230, 150, 150);";
   }
   else if(style == Style::FS_WARNING_STYLE)
   {
@@ -435,7 +435,7 @@ void FilterParameterWidget::showFileInFileSystem()
 {
   QFileInfo fi(m_CurrentlyValidPath);
   QString path;
-  if (fi.isFile())
+  if(fi.isFile())
   {
     path = fi.absoluteFilePath();
   }

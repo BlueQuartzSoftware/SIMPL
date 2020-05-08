@@ -48,11 +48,10 @@ PipelineErrorMessage::PipelineErrorMessage()
 {
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineErrorMessage::PipelineErrorMessage(const QString &pipelineName, const QString& msgText, int code)
+PipelineErrorMessage::PipelineErrorMessage(const QString& pipelineName, const QString& msgText, int code)
 : AbstractErrorMessage(msgText, code)
 , m_PipelineName(pipelineName)
 {
@@ -66,9 +65,9 @@ PipelineErrorMessage::~PipelineErrorMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineErrorMessage::Pointer PipelineErrorMessage::New(const QString &pipelineName, const QString& msgText, int code)
+PipelineErrorMessage::Pointer PipelineErrorMessage::New(const QString& pipelineName, const QString& msgText, int code)
 {
-  PipelineErrorMessage::Pointer shared_ptr (new PipelineErrorMessage(pipelineName, msgText, code));
+  PipelineErrorMessage::Pointer shared_ptr(new PipelineErrorMessage(pipelineName, msgText, code));
   return shared_ptr;
 }
 

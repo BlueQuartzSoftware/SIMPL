@@ -55,9 +55,9 @@
 
 namespace
 {
-  const int InfoStringRole = Qt::UserRole + 1;
-  const int MontageRole = Qt::UserRole + 2;
-}
+const int InfoStringRole = Qt::UserRole + 1;
+const int MontageRole = Qt::UserRole + 2;
+} // namespace
 
 // -----------------------------------------------------------------------------
 //

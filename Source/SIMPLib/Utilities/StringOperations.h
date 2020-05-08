@@ -37,48 +37,46 @@
 
 class SIMPLib_EXPORT StringOperations
 {
-  public:
-    StringOperations();
-    virtual ~StringOperations();
+public:
+  StringOperations();
+  virtual ~StringOperations();
 
-    /**
-    * @brief Static function that will split the strings argument into a list of tokens based on a list of delimiters
-    * @param strings The strings to tokenize
-    * @param delimiters List of delimiters
-    * @param consecutiveDelimiters Boolean that determines if consecutive delimiters should be treated as one delimiter
-    */
-    static QList<QStringList> TokenizeStrings(QStringList strings, QList<char> delimiters, bool consecutiveDelimiters);
+  /**
+   * @brief Static function that will split the strings argument into a list of tokens based on a list of delimiters
+   * @param strings The strings to tokenize
+   * @param delimiters List of delimiters
+   * @param consecutiveDelimiters Boolean that determines if consecutive delimiters should be treated as one delimiter
+   */
+  static QList<QStringList> TokenizeStrings(QStringList strings, QList<char> delimiters, bool consecutiveDelimiters);
 
-    /**
-    * @brief Static function that will split the string argument into a list of tokens based on a list of delimiters
-    * @param string The string to tokenize
-    * @param delimiters List of delimiters
-    * @param consecutiveDelimiters Boolean that determines if consecutive delimiters should be treated as one delimiter
-    */
-    static QStringList TokenizeString(QString string, QList<char> delimiters, bool consecutiveDelimiters);
+  /**
+   * @brief Static function that will split the string argument into a list of tokens based on a list of delimiters
+   * @param string The string to tokenize
+   * @param delimiters List of delimiters
+   * @param consecutiveDelimiters Boolean that determines if consecutive delimiters should be treated as one delimiter
+   */
+  static QStringList TokenizeString(QString string, QList<char> delimiters, bool consecutiveDelimiters);
 
-    /**
-     * @brief This function will createa string with the proper amount of padding for the maximum value.
-     * @param index
-     * @param maxIndex
-     * @return
-     */
-    static QString GenerateIndexString(int index, int maxIndex);
+  /**
+   * @brief This function will createa string with the proper amount of padding for the maximum value.
+   * @param index
+   * @param maxIndex
+   * @return
+   */
+  static QString GenerateIndexString(int index, int maxIndex);
 
-    /**
-     * @brief This function will generate a string with the prescribed number of padding digits
-     * @param value The integer value
-     * @param totalDigits The total number of digits to appear in the string
-     * @param padChar The character to use for the padding.
-     * @return
-     */
-    static QString GeneratePaddedString(int value, int totalDigits, char padChar);
+  /**
+   * @brief This function will generate a string with the prescribed number of padding digits
+   * @param value The integer value
+   * @param totalDigits The total number of digits to appear in the string
+   * @param padChar The character to use for the padding.
+   * @return
+   */
+  static QString GeneratePaddedString(int value, int totalDigits, char padChar);
 
-  public:
-    StringOperations(const StringOperations&) = delete; // Copy Constructor Not Implemented
-    StringOperations(StringOperations&&) = delete;      // Move Constructor Not Implemented
-    StringOperations& operator=(const StringOperations&) = delete; // Copy Assignment Not Implemented
-    StringOperations& operator=(StringOperations&&) = delete;      // Move Assignment Not Implemented
+public:
+  StringOperations(const StringOperations&) = delete;            // Copy Constructor Not Implemented
+  StringOperations(StringOperations&&) = delete;                 // Move Constructor Not Implemented
+  StringOperations& operator=(const StringOperations&) = delete; // Copy Assignment Not Implemented
+  StringOperations& operator=(StringOperations&&) = delete;      // Move Assignment Not Implemented
 };
-
-

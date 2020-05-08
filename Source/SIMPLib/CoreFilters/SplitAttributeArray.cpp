@@ -45,7 +45,8 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 
-enum createdPathID : RenameDataPath::DataID_t {
+enum createdPathID : RenameDataPath::DataID_t
+{
   SplitArrayID = 1
 };
 
@@ -148,11 +149,11 @@ void SplitAttributeArray::dataCheck()
   }
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> void splitMulticomponentArray(IDataArray::Pointer inputArray, std::vector<IDataArray::Pointer>& splitArrays)
+template <typename T>
+void splitMulticomponentArray(IDataArray::Pointer inputArray, std::vector<IDataArray::Pointer>& splitArrays)
 {
   typename DataArray<T>::Pointer inputPtr = std::dynamic_pointer_cast<DataArray<T>>(inputArray);
   T* iPtr = inputPtr->getPointer(0);
@@ -191,7 +192,6 @@ void SplitAttributeArray::execute()
   }
 
   EXECUTE_FUNCTION_TEMPLATE(this, splitMulticomponentArray, m_InputArrayPtr.lock(), m_InputArrayPtr.lock(), m_SplitArraysPtrVector)
-
 }
 
 // -----------------------------------------------------------------------------

@@ -39,7 +39,7 @@ namespace ParserErrorMessages
 {
 const QString ValueOutOfRange = "Value is out of range for the specified data type.";
 const QString CouldNotConvert = "Value could not be converted to the specified data type.";
-}
+} // namespace ParserErrorMessages
 
 // -----------------------------------------------------------------------------
 //
@@ -429,4 +429,3 @@ public:
     return token;
   }
 };
-

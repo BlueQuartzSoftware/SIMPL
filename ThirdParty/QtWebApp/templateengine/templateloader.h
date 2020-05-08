@@ -77,4 +77,3 @@ protected:
   /** Codec for decoding the files */
   QTextCodec* textCodec;
 };
-

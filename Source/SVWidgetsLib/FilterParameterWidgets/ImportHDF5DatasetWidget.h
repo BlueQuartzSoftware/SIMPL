@@ -123,10 +123,10 @@ protected:
   bool initWithFile(const QString& hdf5File);
 
   /**
-  * @brief Returns the best guess at component dimensions for the given path.  This requires a valid AttributeMatrix, ImageGeometry, and HDF5 path
-  * @param path
-  * @return
-  */
+   * @brief Returns the best guess at component dimensions for the given path.  This requires a valid AttributeMatrix, ImageGeometry, and HDF5 path
+   * @param path
+   * @return
+   */
   std::tuple<herr_t, QString> bestGuessCDims(const QString& path);
 
   /**
@@ -230,8 +230,8 @@ private:
   ~ImportHDF5DatasetWidget() override;
 
 public:
-  ImportHDF5DatasetWidget(const ImportHDF5DatasetWidget&) = delete; // Copy Constructor Not Implemented
-  ImportHDF5DatasetWidget(ImportHDF5DatasetWidget&&) = delete;      // Move Constructor Not Implemented
+  ImportHDF5DatasetWidget(const ImportHDF5DatasetWidget&) = delete;            // Copy Constructor Not Implemented
+  ImportHDF5DatasetWidget(ImportHDF5DatasetWidget&&) = delete;                 // Move Constructor Not Implemented
   ImportHDF5DatasetWidget& operator=(const ImportHDF5DatasetWidget&) = delete; // Copy Assignment Not Implemented
   ImportHDF5DatasetWidget& operator=(ImportHDF5DatasetWidget&&) = delete;      // Move Assignment Not Implemented
 };

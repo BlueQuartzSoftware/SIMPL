@@ -39,11 +39,10 @@
 // -----------------------------------------------------------------------------
 SIMPLH5DataReaderRequirements::SIMPLH5DataReaderRequirements() = default;
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLH5DataReaderRequirements::SIMPLH5DataReaderRequirements(const QString &primitiveType, size_t allowedCompDim, AttributeMatrix::Type attributeMatrixType, IGeometry::Type geometryType)
+SIMPLH5DataReaderRequirements::SIMPLH5DataReaderRequirements(const QString& primitiveType, size_t allowedCompDim, AttributeMatrix::Type attributeMatrixType, IGeometry::Type geometryType)
 {
   if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {

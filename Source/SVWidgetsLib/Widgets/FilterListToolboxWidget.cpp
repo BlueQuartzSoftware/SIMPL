@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "FilterListToolboxWidget.h"
 
 #include <QtCore/QBitArray>
@@ -73,7 +73,7 @@ void FilterListToolboxWidget::setupGui()
 {
   setupSearchField();
 
-//  QString css(" QToolTip {\
+  //  QString css(" QToolTip {\
 //              border: 2px solid #434343;\
 //              padding: 2px;\
 //              border-radius: 3px;\
@@ -81,7 +81,7 @@ void FilterListToolboxWidget::setupGui()
 //              background-color: #FFFFFF;\
 //              color: #000000;\
 //              }");
-  //filterListView->setStyleSheet(css);
+  // filterListView->setStyleSheet(css);
 
   filterListView->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -213,7 +213,7 @@ void FilterListToolboxWidget::searchFilters(QString text)
   matchFiltersToSearchGroup(filters, addedFiltersSet, searchTokens, FilterListView::SearchGroup::SubgroupName);
   matchFiltersToSearchGroup(filters, addedFiltersSet, searchTokens, FilterListView::SearchGroup::BrandingName);
   matchFiltersToSearchGroup(filters, addedFiltersSet, searchTokens, FilterListView::SearchGroup::CompiledLibraryName);
-//  matchFiltersToSearchGroup(filters, addedFiltersSet, searchTokens, FilterListView::SearchGroup::Keywords);
+  //  matchFiltersToSearchGroup(filters, addedFiltersSet, searchTokens, FilterListView::SearchGroup::Keywords);
 
   QString countText = QObject::tr("Unique Filter Count: %1").arg(addedFiltersSet.size());
   filterCountLabel->setText(countText);
@@ -297,36 +297,30 @@ int FilterListToolboxWidget::getMatchingWordCountForFilter(QStringList searchTok
   QString searchGroupTerm = "";
   switch(searchGroup)
   {
-    case FilterListView::SearchGroup::HumanLabel:
-    {
-      searchGroupTerm = factory->getFilterHumanLabel();
-      break;
-    }
-    case FilterListView::SearchGroup::GroupName:
-    {
-      searchGroupTerm = factory->getFilterGroup();
-      break;
-    }
-    case FilterListView::SearchGroup::SubgroupName:
-    {
-      searchGroupTerm = factory->getFilterSubGroup();
-      break;
-    }
-    case FilterListView::SearchGroup::BrandingName:
-    {
-      searchGroupTerm = factory->getBrandingString();
-      break;
-    }
-    case FilterListView::SearchGroup::CompiledLibraryName:
-    {
-      searchGroupTerm = factory->getCompiledLibraryName();
-      break;
-    }
-    case FilterListView::SearchGroup::Keywords:
-    {
-      // Implement Keywords
-      break;
-    }
+  case FilterListView::SearchGroup::HumanLabel: {
+    searchGroupTerm = factory->getFilterHumanLabel();
+    break;
+  }
+  case FilterListView::SearchGroup::GroupName: {
+    searchGroupTerm = factory->getFilterGroup();
+    break;
+  }
+  case FilterListView::SearchGroup::SubgroupName: {
+    searchGroupTerm = factory->getFilterSubGroup();
+    break;
+  }
+  case FilterListView::SearchGroup::BrandingName: {
+    searchGroupTerm = factory->getBrandingString();
+    break;
+  }
+  case FilterListView::SearchGroup::CompiledLibraryName: {
+    searchGroupTerm = factory->getCompiledLibraryName();
+    break;
+  }
+  case FilterListView::SearchGroup::Keywords: {
+    // Implement Keywords
+    break;
+  }
   }
 
   QBitArray bitArray(searchTokens.size(), false);
@@ -352,36 +346,30 @@ int FilterListToolboxWidget::getMatchingRelevanceForFilter(QStringList searchTok
   QString searchGroupTerm = "";
   switch(searchGroup)
   {
-    case FilterListView::SearchGroup::HumanLabel:
-    {
-      searchGroupTerm = factory->getFilterHumanLabel();
-      break;
-    }
-    case FilterListView::SearchGroup::GroupName:
-    {
-      searchGroupTerm = factory->getFilterGroup();
-      break;
-    }
-    case FilterListView::SearchGroup::SubgroupName:
-    {
-      searchGroupTerm = factory->getFilterSubGroup();
-      break;
-    }
-    case FilterListView::SearchGroup::BrandingName:
-    {
-      searchGroupTerm = factory->getBrandingString();
-      break;
-    }
-    case FilterListView::SearchGroup::CompiledLibraryName:
-    {
-      searchGroupTerm = factory->getCompiledLibraryName();
-      break;
-    }
-    case FilterListView::SearchGroup::Keywords:
-    {
-      // Implement Keywords
-      break;
-    }
+  case FilterListView::SearchGroup::HumanLabel: {
+    searchGroupTerm = factory->getFilterHumanLabel();
+    break;
+  }
+  case FilterListView::SearchGroup::GroupName: {
+    searchGroupTerm = factory->getFilterGroup();
+    break;
+  }
+  case FilterListView::SearchGroup::SubgroupName: {
+    searchGroupTerm = factory->getFilterSubGroup();
+    break;
+  }
+  case FilterListView::SearchGroup::BrandingName: {
+    searchGroupTerm = factory->getBrandingString();
+    break;
+  }
+  case FilterListView::SearchGroup::CompiledLibraryName: {
+    searchGroupTerm = factory->getCompiledLibraryName();
+    break;
+  }
+  case FilterListView::SearchGroup::Keywords: {
+    // Implement Keywords
+    break;
+  }
   }
 
   QBitArray bitArray(searchTokens.size(), false);
@@ -472,7 +460,7 @@ QAction* FilterListToolboxWidget::getActiveSearchAction()
     return m_ActionAnyWords;
   }
 
-    return m_ActionAllWords;
+  return m_ActionAllWords;
 }
 
 // -----------------------------------------------------------------------------

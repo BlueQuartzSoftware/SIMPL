@@ -529,6 +529,3 @@ public:
   QuadGeom& operator=(const QuadGeom&) = delete; // Copy Assignment Not Implemented
   QuadGeom& operator=(QuadGeom&&) = delete;      // Move Assignment Not Implemented
 };
-
-
-

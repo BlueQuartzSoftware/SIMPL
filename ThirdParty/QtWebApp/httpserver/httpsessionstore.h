@@ -120,4 +120,3 @@ private slots:
 private:
   static HttpSessionStore* self;
 };
-

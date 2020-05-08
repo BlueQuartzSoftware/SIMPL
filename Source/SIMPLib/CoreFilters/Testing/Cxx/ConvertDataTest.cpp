@@ -173,7 +173,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> std::shared_ptr<DataArray<T>> getDataArray(AttributeMatrix::Pointer am, QString dataArray)
+  template <typename T>
+  std::shared_ptr<DataArray<T>> getDataArray(AttributeMatrix::Pointer am, QString dataArray)
   {
     typename DataArray<T>::Pointer da = std::dynamic_pointer_cast<DataArray<T>>(am->getAttributeArray(dataArray));
 
@@ -183,7 +184,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T, typename U> void checkConvertedArray(std::shared_ptr<DataArray<T>> originalDataArray, std::shared_ptr<DataArray<U>> convertedDataArray)
+  template <typename T, typename U>
+  void checkConvertedArray(std::shared_ptr<DataArray<T>> originalDataArray, std::shared_ptr<DataArray<U>> convertedDataArray)
   {
     DREAM3D_ASSERT(nullptr != originalDataArray.get());
     DREAM3D_ASSERT(nullptr != convertedDataArray.get());

@@ -12,7 +12,6 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -25,7 +24,7 @@ public:
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
   using ConstWeakPointer = std::weak_ptr<const Self>;
-  
+
   /**
    * @brief Returns a NullPointer wrapped by a shared_ptr<>
    * @return
@@ -79,50 +78,49 @@ public:
   int32_t getFilt1_Integer() const;
 
   /**
-  * @brief This returns the group that the filter belonds to. You can select
-  * a different group if you want. The string returned here will be displayed
-  * in the GUI for the filter
-  */
+   * @brief This returns the group that the filter belonds to. You can select
+   * a different group if you want. The string returned here will be displayed
+   * in the GUI for the filter
+   */
   QString getGroupName() const override
   {
     return "TestFilters";
   }
 
   /**
-  * @brief This returns a string that is displayed in the GUI. It should be readable
-  * and understandable by humans.
-  */
+   * @brief This returns a string that is displayed in the GUI. It should be readable
+   * and understandable by humans.
+   */
   QString getHumanLabel() const override
   {
     return "Filt1";
   }
 
   /**
-  * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
-  * a subgroup. It should be readable and understandable by humans.
-  */
+   * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
+   * a subgroup. It should be readable and understandable by humans.
+   */
   QString getSubGroupName() const override
   {
     return "Test";
   }
 
   /**
-  * @brief This method will instantiate all the end user settable options/parameters
-  * for this filter
-  */
+   * @brief This method will instantiate all the end user settable options/parameters
+   * for this filter
+   */
   void setupFilterParameters() override;
 
   /**
-  * @brief This method will read the options from a file
-  * @param reader The reader that is used to read the options from a file
-  */
+   * @brief This method will read the options from a file
+   * @param reader The reader that is used to read the options from a file
+   */
   void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
    * @brief Reimplemented from @see AbstractFilter class
    */
   void execute() override;
-
 
 protected:
   Filt1();
@@ -145,4 +143,3 @@ private:
   Filt1(const Filt1&) = delete;          // Copy Constructor Not Implemented
   void operator=(const Filt1&) = delete; // Move assignment Not Implemented
 };
-

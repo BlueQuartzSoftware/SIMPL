@@ -67,29 +67,29 @@ SIMPLDataPathValidator* SIMPLDataPathValidator::Instance()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString SIMPLDataPathValidator::convertToAbsolutePath(const QString &path)
+QString SIMPLDataPathValidator::convertToAbsolutePath(const QString& path)
 {
   QString absolutePath = path;
   QFileInfo fi(absolutePath);
-  if (fi.isRelative())
+  if(fi.isRelative())
   {
     QDir dir = QDir(qApp->applicationDirPath());
 
-	  QString parentPath;
+    QString parentPath;
 
 #if defined(SIMPL_RELATIVE_PATH_CHECK)
-	  parentPath = m_SIMPLDataDirectory;
+    parentPath = m_SIMPLDataDirectory;
 #else
-  #if defined (Q_OS_MAC)
+#if defined(Q_OS_MAC)
     if(dir.dirName() == "MacOS")
     {
       dir.cdUp();
       dir.cdUp();
       dir.cdUp();
     }
-  #elif defined(Q_OS_LINUX)
+#elif defined(Q_OS_LINUX)
     dir.cdUp();
-  #endif
+#endif
 
     parentPath = dir.absolutePath();
 #endif
@@ -100,10 +100,10 @@ QString SIMPLDataPathValidator::convertToAbsolutePath(const QString &path)
     }
     absolutePath.prepend(parentPath);
     absolutePath = QDir::toNativeSeparators(absolutePath);
-    //macOS and Linux do not like to have a ":" character in the path names
-    #if !defined (Q_OS_WIN)
+// macOS and Linux do not like to have a ":" character in the path names
+#if !defined(Q_OS_WIN)
     absolutePath.replace(":", "");
-    #endif
+#endif
   }
 
   return absolutePath;
@@ -112,7 +112,7 @@ QString SIMPLDataPathValidator::convertToAbsolutePath(const QString &path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SIMPLDataPathValidator::setSIMPLDataDirectory(const QString &path)
+void SIMPLDataPathValidator::setSIMPLDataDirectory(const QString& path)
 {
   m_SIMPLDataDirectory = path;
 

@@ -5,7 +5,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonValueWidget::ComparisonValueWidget(QWidget* parent, ComparisonValue::Pointer comparisonValue) : IComparisonWidget(parent)
+ComparisonValueWidget::ComparisonValueWidget(QWidget* parent, ComparisonValue::Pointer comparisonValue)
+: IComparisonWidget(parent)
 {
   setupUi(this);
 
@@ -30,9 +31,9 @@ ComparisonValue::Pointer ComparisonValueWidget::getComparisonValue()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonValueWidget::setComparisonValue(const ComparisonValue::Pointer &value)
+void ComparisonValueWidget::setComparisonValue(const ComparisonValue::Pointer& value)
 {
-  if (nullptr == value)
+  if(nullptr == value)
   {
     m_comparisonValue = ComparisonValue::New();
   }
@@ -66,7 +67,7 @@ void ComparisonValueWidget::setupDataArrayComboBox()
   arrayNameComboBox->clear();
 
   AttributeMatrix::Pointer am = getAttributeMatrix();
-  if (nullptr != am)
+  if(nullptr != am)
   {
     arrayNameComboBox->addItems(am->getAttributeArrayNames());
   }
@@ -113,7 +114,7 @@ void ComparisonValueWidget::comparisonOperatorChanged(int index)
 // -----------------------------------------------------------------------------
 void ComparisonValueWidget::comparisonValueChanged()
 {
-  
+
   bool ok = false;
   double d = valueSpinBox->text().toDouble(&ok);
   m_comparisonValue->setCompValue(d);
@@ -126,12 +127,9 @@ void ComparisonValueWidget::comparisonValueChanged()
 // -----------------------------------------------------------------------------
 void ComparisonValueWidget::setupGui()
 {
-  connect(arrayNameComboBox, SIGNAL(currentIndexChanged(int)),
-    this, SLOT(dataArrayChanged(int)));
-  connect(operatorComboBox, SIGNAL(currentIndexChanged(int)),
-    this, SLOT(comparisonOperatorChanged(int)));
-  connect(valueSpinBox, SIGNAL(editingFinished()),
-    this, SLOT(comparisonValueChanged()));
+  connect(arrayNameComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(dataArrayChanged(int)));
+  connect(operatorComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(comparisonOperatorChanged(int)));
+  connect(valueSpinBox, SIGNAL(editingFinished()), this, SLOT(comparisonValueChanged()));
 }
 
 // -----------------------------------------------------------------------------

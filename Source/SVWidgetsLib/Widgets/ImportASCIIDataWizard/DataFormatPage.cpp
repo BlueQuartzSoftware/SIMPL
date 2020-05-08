@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "DataFormatPage.h"
 
@@ -56,7 +56,7 @@
 
 namespace Detail
 {
-  const QString Delimiter(" / ");
+const QString Delimiter(" / ");
 }
 
 // -----------------------------------------------------------------------------
@@ -112,11 +112,11 @@ void DataFormatPage::setupGui()
   dataTypeCB->addItems(dataTypes);
   dataTypeCB->setCurrentIndex(0);
 
-  //int beginIndex = startRowSpin->value();
+  // int beginIndex = startRowSpin->value();
   int numOfDataLines = m_NumLines;
   linesImportedLabel->setText(QString::number(numOfDataLines));
   linesInFileLabel->setText(QString::number(m_NumLines));
-//  amTuplesLabel->setText(QString::number(numOfDataLines));
+  //  amTuplesLabel->setText(QString::number(numOfDataLines));
 
   tupleDimsTable->blockSignals(true);
   tupleDimsTable->addTupleDimensions(std::vector<size_t>(1, numOfDataLines));
@@ -126,12 +126,10 @@ void DataFormatPage::setupGui()
   selectedAMBtn->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
 
   m_AMMenuMapper = new QSignalMapper(this);
-  connect(m_AMMenuMapper, SIGNAL(mapped(QString)),
-            this, SLOT(amItemSelected(QString)));
+  connect(m_AMMenuMapper, SIGNAL(mapped(QString)), this, SLOT(amItemSelected(QString)));
 
   m_DCMenuMapper = new QSignalMapper(this);
-  connect(m_DCMenuMapper, SIGNAL(mapped(QString)),
-            this, SLOT(dcItemSelected(QString)));
+  connect(m_DCMenuMapper, SIGNAL(mapped(QString)), this, SLOT(dcItemSelected(QString)));
 
   editHeadersBtn->setDisabled(true);
   columnDataGroupBox->setDisabled(true);
@@ -156,7 +154,6 @@ void DataFormatPage::setupGui()
 
   createDCSelectionMenu();
   createAMSelectionMenu();
-
 }
 
 // -----------------------------------------------------------------------------
@@ -188,12 +185,12 @@ void DataFormatPage::setUseCustomHeaders(bool value)
 // -----------------------------------------------------------------------------
 void DataFormatPage::setHeaderLine(int line)
 {
-  if(line >= 0) {
+  if(line >= 0)
+  {
     hasHeadersRadio->setChecked(true);
     headersIndexLineEdit->setText(QString::number(line));
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -230,14 +227,14 @@ void DataFormatPage::showEvent(QShowEvent* event)
     }
   }
 
-//  if (amAutomatically->isChecked())
-//  {
-//    tupleDimsGB->hide();
-//  }
-//  else
-//  {
-//    tupleDimsGB->show();
-//  }
+  //  if (amAutomatically->isChecked())
+  //  {
+  //    tupleDimsGB->hide();
+  //  }
+  //  else
+  //  {
+  //    tupleDimsGB->show();
+  //  }
 
   if(isComplete())
   {
@@ -258,7 +255,7 @@ void DataFormatPage::amItemSelected(QString path)
 
   DataArrayPath dap = DataArrayPath::Deserialize(path, Detail::Delimiter);
 
-  AttributeMatrix::Pointer am = m_Dca->getAttributeMatrix(dap);   // This will always be valid, because we create the selection options
+  AttributeMatrix::Pointer am = m_Dca->getAttributeMatrix(dap); // This will always be valid, because we create the selection options
 
   if(nullptr == am.get())
   {
@@ -267,24 +264,27 @@ void DataFormatPage::amItemSelected(QString path)
   }
   else
   {
-    //amSelectionError->hide();
+    // amSelectionError->hide();
     amSelectionError->setText("The tuple dimensions of the selected Attribute Matrix will be used for the Attribute Arrays.");
     selectedAMBtn->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(true));
   }
 
   ImportASCIIDataWizard* importWizard = dynamic_cast<ImportASCIIDataWizard*>(wizard());
-  if (importWizard == nullptr) { return; }
+  if(importWizard == nullptr)
+  {
+    return;
+  }
 
   QStringList headers = importWizard->getHeaders();
 
   QStringList amArrays = am->getAttributeArrayNames();
-  for (int i = 0; i < amArrays.size(); i++)
+  for(int i = 0; i < amArrays.size(); i++)
   {
     QString amArrayName = amArrays[i];
-    for (int j = 0; j < headers.size(); j++)
+    for(int j = 0; j < headers.size(); j++)
     {
       QString headerName = headers[j];
-      if (amArrayName == headerName)
+      if(amArrayName == headerName)
       {
         QString ss = "The header name \"" + headerName + "\" matches an array name that already exists in the selected attribute matrix.";
         amSelectionError->setText(ss);
@@ -363,10 +363,8 @@ void DataFormatPage::on_useAMRadio_toggled(bool b)
     {
       emit completeChanged();
     }
-
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -393,14 +391,13 @@ void DataFormatPage::on_applyChangesBtn_clicked()
   QPointer<QtSFaderWidget> faderWidget = new QtSFaderWidget(applyChangesBtn);
   m_FaderWidget = faderWidget;
 
-  if (m_FaderWidget != nullptr)
+  if(m_FaderWidget != nullptr)
   {
     m_FaderWidget->close();
   }
   m_FaderWidget = new QtSFaderWidget(applyChangesBtn);
   m_FaderWidget->setFadeOut();
-  connect(m_FaderWidget, SIGNAL(animationComplete()),
-    this, SLOT(hideButton()));
+  connect(m_FaderWidget, SIGNAL(animationComplete()), this, SLOT(hideButton()));
   m_FaderWidget->start();
 
   dcItemSelected(selectedDCBtn->text());
@@ -455,10 +452,10 @@ void DataFormatPage::createAMSelectionMenu()
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
   DataContainerArray::Container containers = dca->getDataContainers();
-  QVector<QString> daTypes;// = m_FilterParameter->getDefaultAttributeArrayTypes();
-  QVector<std::vector<size_t>> cDims;// = m_FilterParameter->getDefaultComponentDimensions();
-  QVector<AttributeMatrix::Type> amTypes;// = m_FilterParameter->getDefaultAttributeMatrixTypes();
-  IGeometry::Types geomTypes;// = m_FilterParameter->getDefaultGeometryTypes();
+  QVector<QString> daTypes;               // = m_FilterParameter->getDefaultAttributeArrayTypes();
+  QVector<std::vector<size_t>> cDims;     // = m_FilterParameter->getDefaultComponentDimensions();
+  QVector<AttributeMatrix::Type> amTypes; // = m_FilterParameter->getDefaultAttributeMatrixTypes();
+  IGeometry::Types geomTypes;             // = m_FilterParameter->getDefaultGeometryTypes();
 
   for(DataContainer::Pointer dc : containers)
   {
@@ -511,7 +508,7 @@ void DataFormatPage::createAMSelectionMenu()
 // -----------------------------------------------------------------------------
 void DataFormatPage::createDCSelectionMenu()
 {
-   // Now get the DataContainerArray from the Filter instance
+  // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = m_Dca;
   if(nullptr == dca.get())
@@ -575,9 +572,9 @@ void DataFormatPage::createDCSelectionMenu()
 // -----------------------------------------------------------------------------
 bool DataFormatPage::eventFilter(QObject* obj, QEvent* event)
 {
-  if (event->type() == QEvent::Show)
+  if(event->type() == QEvent::Show)
   {
-    if (obj == selectedAMBtn->menu())
+    if(obj == selectedAMBtn->menu())
     {
       QPoint pos = adjustedMenuPosition(selectedAMBtn);
       selectedAMBtn->menu()->move(pos);
@@ -653,7 +650,7 @@ QPoint DataFormatPage::adjustedMenuPosition(QPushButton* pushButton)
   QPoint localButtonCoords = pushButton->geometry().bottomLeft();
   QPoint globalButtonCoords = mapToGlobal(localButtonCoords);
 
-  //point.setY(globalButtonCoords.y());
+  // point.setY(globalButtonCoords.y());
 
   int screenNum = QApplication::desktop()->screenNumber(pushButton);
   int desktopHeight = screens.at(screenNum)->availableGeometry().height();
@@ -676,7 +673,7 @@ void DataFormatPage::on_startRowSpin_valueChanged(int value)
   if(value > m_NumLines)
   {
     wizard()->button(QWizard::FinishButton)->setDisabled(true);
-//    amTuplesLabel->setText("ERR");
+    //    amTuplesLabel->setText("ERR");
     return;
   }
 
@@ -735,15 +732,13 @@ bool DataFormatPage::isComplete() const
 
   bool stage2 = true;
 
-  if (useAMRadio->isChecked()
-      && selectedAMBtn->text().isEmpty())
+  if(useAMRadio->isChecked() && selectedAMBtn->text().isEmpty())
   {
     stage2 = false;
   }
 
   bool stage3 = true;
-  if (createAMRadio->isChecked()
-      && ( selectedDCBtn->text().isEmpty() || amName->text().isEmpty() ) )
+  if(createAMRadio->isChecked() && (selectedDCBtn->text().isEmpty() || amName->text().isEmpty()))
   {
     stage3 = false;
   }
@@ -787,14 +782,14 @@ void DataFormatPage::on_doesNotHaveHeadersRadio_toggled(bool checked)
     headersIndexLineEdit->setDisabled(true);
 
     QVector<QString> headers;
-    if (m_EditHeadersDialog != nullptr)
+    if(m_EditHeadersDialog != nullptr)
     {
       headers = m_EditHeadersDialog->getHeaders();
     }
 
     for(int i = 0; i < m_ASCIIDataModel->columnCount(); i++)
     {
-      if (i < headers.size())
+      if(i < headers.size())
       {
         m_ASCIIDataModel->setHeaderData(i, Qt::Horizontal, headers[i], Qt::DisplayRole);
       }
@@ -822,7 +817,7 @@ void DataFormatPage::on_useDefaultHeaders_toggled(bool checked)
 
     for(int i = 0; i < m_ASCIIDataModel->columnCount(); i++)
     {
-      QString arrayName = "Array " + QString::number(i+1);
+      QString arrayName = "Array " + QString::number(i + 1);
       m_ASCIIDataModel->setHeaderData(i, Qt::Horizontal, arrayName, Qt::DisplayRole);
     }
 
@@ -969,11 +964,11 @@ bool DataFormatPage::checkTupleDimensions(std::vector<size_t> tupleDims)
     return false;
   }
 
-    tupleTableErrLabel->setText("");
-    tupleTableErrLabel->hide();
-    m_TupleDimsHasErrors = false;
-    emit completeChanged();
-    return true;
+  tupleTableErrLabel->setText("");
+  tupleTableErrLabel->hide();
+  m_TupleDimsHasErrors = false;
+  emit completeChanged();
+  return true;
 }
 
 // -----------------------------------------------------------------------------
@@ -987,7 +982,7 @@ bool DataFormatPage::validateTupleDimensions(std::vector<size_t> tupleDims)
   {
     tupleTotal = tupleTotal * tupleDims[i];
   }
-//  amTuplesLabel->setText(QString::number(tupleTotal));
+  //  amTuplesLabel->setText(QString::number(tupleTotal));
   size_t beginIndex = static_cast<size_t>(startRowSpin->value());
   size_t numOfDataLines = m_NumLines - beginIndex + 1;
   return tupleTotal == numOfDataLines;
@@ -1235,9 +1230,9 @@ bool DataFormatPage::validateHeaders(QVector<QString> headers)
     return false;
   }
 
-    arrayErrLabel->setText("");
-    arrayErrLabel->hide();
-    return true;
+  arrayErrLabel->setText("");
+  arrayErrLabel->hide();
+  return true;
 }
 
 // -----------------------------------------------------------------------------
@@ -1269,18 +1264,18 @@ bool DataFormatPage::getAutomaticAM()
 // -----------------------------------------------------------------------------
 DataArrayPath DataFormatPage::getSelectedPath()
 {
-  if (createAMRadio->isChecked())
+  if(createAMRadio->isChecked())
   {
     return DataArrayPath::Deserialize(selectedDCBtn->text(), Detail::Delimiter);
   }
 
-    return DataArrayPath::Deserialize(selectedAMBtn->text(), Detail::Delimiter);
+  return DataArrayPath::Deserialize(selectedAMBtn->text(), Detail::Delimiter);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataFormatPage::setAutomaticAttrMatrixName(const QString &name)
+void DataFormatPage::setAutomaticAttrMatrixName(const QString& name)
 {
   amName->setText(name);
 }
@@ -1288,7 +1283,7 @@ void DataFormatPage::setAutomaticAttrMatrixName(const QString &name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataFormatPage::setAutomaticAttrMatrixName(const DataArrayPath &path)
+void DataFormatPage::setAutomaticAttrMatrixName(const DataArrayPath& path)
 {
   amName->setText(path.getAttributeMatrixName());
   selectedDCBtn->setText(path.getDataContainerName());

@@ -49,25 +49,20 @@ protected:
 //
 // -----------------------------------------------------------------------------
 template <typename TComponent>
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
+void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
 {
   const uint32_t dimensions = imageIO->GetNumberOfDimensions();
   switch(dimensions)
   {
-  case 1:
-  {
+  case 1: {
     readImage<TComponent, 1>(dataArrayPath, imageIO, filename, dataCheck);
     break;
   }
-  case 2:
-  {
+  case 2: {
     readImage<TComponent, 2>(dataArrayPath, imageIO, filename, dataCheck);
     break;
   }
-  default:
-  {
+  default: {
     readImage<TComponent, 3>(dataArrayPath, imageIO, filename, dataCheck);
     break;
   }
@@ -169,9 +164,7 @@ void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImage(const DataArrayPath& dataArrayPath, bool dataCheck)
+void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath, bool dataCheck)
 {
   try
   {

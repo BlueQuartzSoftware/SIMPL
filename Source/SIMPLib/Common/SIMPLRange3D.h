@@ -64,7 +64,7 @@ public:
 
   SIMPLRange3D();
   SIMPLRange3D(size_t x, size_t y, size_t z);
-  SIMPLRange3D(size_t xMin, size_t xMax, size_t yMin, size_t yMax, size_t zMin, size_t zMax); 
+  SIMPLRange3D(size_t xMin, size_t xMax, size_t yMin, size_t yMax, size_t zMin, size_t zMax);
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   SIMPLRange3D(const tbb::blocked_range3d<size_t>& r);
 #endif

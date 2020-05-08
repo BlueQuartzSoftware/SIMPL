@@ -82,5 +82,3 @@ AbstractMontage::Pointer AbstractMontage::NullPointer()
 {
   return Pointer(static_cast<Self*>(nullptr));
 }
-
-

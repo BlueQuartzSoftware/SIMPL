@@ -100,7 +100,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void checkDataArray(IDataArray::Pointer originalData, IDataArray::Pointer newData, bool isRenamed)
+  template <typename T>
+  void checkDataArray(IDataArray::Pointer originalData, IDataArray::Pointer newData, bool isRenamed)
   {
     if(originalData == IDataArray::NullPointer() || newData == IDataArray::NullPointer())
     {
@@ -484,9 +485,9 @@ public:
 
     TestCase(dcaTest, sources, dst, 1, 0);
 
-    sources = { DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_int32ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_uint64ArrayName),
-           DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_int64ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_floatArrayName),
-           DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_doubleArrayName) };
+    sources = {DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_int32ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_uint64ArrayName),
+               DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_int64ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_floatArrayName),
+               DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_doubleArrayName)};
 
     dst = DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, "");
 
@@ -506,9 +507,9 @@ public:
 
     dcaTest->getDataContainer(k_DataContainerDstName)->addOrReplaceAttributeMatrix(dcaTest->getDataContainer(k_DataContainerName)->removeAttributeMatrix(k_AttributeMatrixDstName));
 
-    sources = { DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_uint8ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_int8ArrayName),
-           DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_uint16ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_int16ArrayName),
-           DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_uint32ArrayName) };
+    sources = {DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_uint8ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_int8ArrayName),
+               DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_uint16ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_int16ArrayName),
+               DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_uint32ArrayName)};
 
     dst = DataArrayPath(k_DataContainerDstName, k_AttributeMatrixDstName, "");
 

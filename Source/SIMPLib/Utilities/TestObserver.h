@@ -39,31 +39,29 @@
 
 class SIMPLib_EXPORT TestObserver : public QObject, public IObserver
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    TestObserver();
-    /**
-     * @brief Returns the name of the class for TestObserver
-     */
-    QString getNameOfClass() const override;
-    /**
-     * @brief Returns the name of the class for TestObserver
-     */
-    static QString ClassName();
+public:
+  TestObserver();
+  /**
+   * @brief Returns the name of the class for TestObserver
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for TestObserver
+   */
+  static QString ClassName();
 
-    ~TestObserver() override;
+  ~TestObserver() override;
 
- public slots:
-   void processPipelineMessage(const AbstractMessage::Pointer& pm) override;
+public slots:
+  void processPipelineMessage(const AbstractMessage::Pointer& pm) override;
 
- public:
-   TestObserver(const TestObserver&) = delete;            // Copy Constructor Not Implemented
-   TestObserver(TestObserver&&) = delete;                 // Move Constructor Not Implemented
-   TestObserver& operator=(const TestObserver&) = delete; // Copy Assignment Not Implemented
-   TestObserver& operator=(TestObserver&&) = delete;      // Move Assignment Not Implemented
+public:
+  TestObserver(const TestObserver&) = delete;            // Copy Constructor Not Implemented
+  TestObserver(TestObserver&&) = delete;                 // Move Constructor Not Implemented
+  TestObserver& operator=(const TestObserver&) = delete; // Copy Assignment Not Implemented
+  TestObserver& operator=(TestObserver&&) = delete;      // Move Assignment Not Implemented
 
- private:
+private:
 };
-
-

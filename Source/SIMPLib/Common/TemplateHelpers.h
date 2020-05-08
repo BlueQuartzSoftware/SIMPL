@@ -109,7 +109,7 @@ namespace TemplateHelpers
   }                                                                                                                                                                                                    \
   else                                                                                                                                                                                                 \
   {                                                                                                                                                                                                    \
-    observableObj->setErrorConditionWithPrefix(TemplateHelpers::Errors::UnsupportedDataType, #templateName, "The input array was of unsupported type");                                                    \
+    observableObj->setErrorConditionWithPrefix(TemplateHelpers::Errors::UnsupportedDataType, #templateName, "The input array was of unsupported type");                                                \
   }
 
 #define EXECUTE_TEMPLATE(observableObj, templateName, inputData, ...)                                                                                                                                  \
@@ -175,7 +175,7 @@ namespace TemplateHelpers
   }                                                                                                                                                                                                    \
   else                                                                                                                                                                                                 \
   {                                                                                                                                                                                                    \
-    observableObj->setErrorConditionWithPrefix(TemplateHelpers::Errors::UnsupportedDataType, #templateName, "The input array was of unsupported type");                                                    \
+    observableObj->setErrorConditionWithPrefix(TemplateHelpers::Errors::UnsupportedDataType, #templateName, "The input array was of unsupported type");                                                \
   }
 
 /**
@@ -194,7 +194,8 @@ const int MissingArray(-405);
  * @brief This class (functor) simply returns true or false if the IDataArray can be downcast to a certain DataArray type
  * parameterized by the template parameter T.
  */
-template <typename T> class CanDynamicCast
+template <typename T>
+class CanDynamicCast
 {
 public:
   CanDynamicCast() = default;

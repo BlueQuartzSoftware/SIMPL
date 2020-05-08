@@ -97,5 +97,3 @@ protected:
 private:
 };
 Q_DECLARE_METATYPE(GenericProgressMessage::Pointer)
-
-

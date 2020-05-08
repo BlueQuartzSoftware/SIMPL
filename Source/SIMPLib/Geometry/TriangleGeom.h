@@ -524,6 +524,3 @@ public:
   TriangleGeom& operator=(const TriangleGeom&) = delete; // Copy Assignment Not Implemented
   TriangleGeom& operator=(TriangleGeom&&) = delete;      // Move Assignment Not Implemented
 };
-
-
-

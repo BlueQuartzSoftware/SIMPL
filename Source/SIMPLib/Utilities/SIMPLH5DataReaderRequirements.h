@@ -34,7 +34,6 @@
 
 #include <vector>
 
-
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/IGeometry.h"
@@ -104,5 +103,3 @@ private:
   QVector<QString> m_DATypes = {};
   SIMPLH5DataReaderRequirements::QVectorSizeT m_ComponentDimensions = {};
 };
-
-

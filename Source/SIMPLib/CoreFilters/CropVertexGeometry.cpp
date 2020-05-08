@@ -50,7 +50,8 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 
-enum createdPathID : RenameDataPath::DataID_t {
+enum createdPathID : RenameDataPath::DataID_t
+{
   DataContainerID = 1
 };
 
@@ -201,11 +202,11 @@ void CropVertexGeometry::dataCheck()
   }
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> void copyDataToCroppedGeometry(IDataArray::Pointer inDataPtr, IDataArray::Pointer outDataPtr, std::vector<int64_t>& croppedPoints)
+template <typename T>
+void copyDataToCroppedGeometry(IDataArray::Pointer inDataPtr, IDataArray::Pointer outDataPtr, std::vector<int64_t>& croppedPoints)
 {
   typename DataArray<T>::Pointer inputDataPtr = std::dynamic_pointer_cast<DataArray<T>>(inDataPtr);
   T* inputData = static_cast<T*>(inputDataPtr->getPointer(0));
@@ -306,7 +307,6 @@ void CropVertexGeometry::execute()
       }
     }
   }
-
 }
 
 // -----------------------------------------------------------------------------

@@ -49,7 +49,12 @@ class SIMPLib_EXPORT ToolTipGenerator
 {
   struct SIMPLib_EXPORT RowItem
   {
-    enum class Type { Title, Value, Spacer };
+    enum class Type
+    {
+      Title,
+      Value,
+      Spacer
+    };
     Type type = Type::Spacer;
     QString name;
     QString value;

@@ -36,7 +36,6 @@
 
 #include "DataStructureWidget.h"
 
-
 #include <QtGui/QStandardItemModel>
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -70,7 +69,7 @@ void DataStructureWidget::setupGui()
   connect(m_Ui->dataBrowserTreeView, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
   connect(m_Ui->dataBrowserTreeView, SIGNAL(endDataStructureFiltering()), this, SIGNAL(endDataStructureFiltering()));
   connect(m_Ui->dataBrowserTreeView, SIGNAL(applyPathToFilteringParameter(DataArrayPath)), this, SIGNAL(applyPathToFilteringParameter(DataArrayPath)));
-  
+
   connect(m_Ui->collapseAllBtn, &QPushButton::clicked, m_Ui->dataBrowserTreeView, &DataStructureTreeView::collapseAll);
   connect(m_Ui->expandAllBtn, &QPushButton::clicked, m_Ui->dataBrowserTreeView, &DataStructureTreeView::expandAll);
 
@@ -218,7 +217,7 @@ void DataStructureWidget::setHexahedralGeomIcon(const QIcon& path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataStructureWidget::setRectilinearGeomIcon(const QIcon &path)
+void DataStructureWidget::setRectilinearGeomIcon(const QIcon& path)
 {
   m_Ui->dataBrowserTreeView->setRectilinearGeomIcon(path);
 }

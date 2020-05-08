@@ -52,7 +52,8 @@
  * @brief This is a private implementation for the filter that handles the actual algorithm implementation details
  * for us like figuring out if we can use this private implementation with the data array that is assigned.
  */
-template <typename PixelType, typename AbstractFilter> class ItkReadImagePrivate
+template <typename PixelType, typename AbstractFilter>
+class ItkReadImagePrivate
 {
 public:
   typedef DataArray<PixelType> DataArrayType;
@@ -94,8 +95,7 @@ public:
     // read based on pixel type
     switch(pixelType)
     {
-    case itk::ImageIOBase::SCALAR:
-    {
+    case itk::ImageIOBase::SCALAR: {
       typedef itk::Image<PixelType, ImageProcessingConstants::ImageDimension> ImageType;
       typedef itk::ImageFileReader<ImageType> ReaderType;
       typename ReaderType::Pointer reader = ReaderType::New();
@@ -105,8 +105,7 @@ public:
     }
     break;
 
-    case itk::ImageIOBase::RGB:
-    {
+    case itk::ImageIOBase::RGB: {
       typedef itk::Image<itk::RGBPixel<PixelType>, ImageProcessingConstants::ImageDimension> ImageType;
       typedef itk::ImageFileReader<ImageType> ReaderType;
       typename ReaderType::Pointer reader = ReaderType::New();
@@ -116,8 +115,7 @@ public:
     }
     break;
 
-    case itk::ImageIOBase::RGBA:
-    {
+    case itk::ImageIOBase::RGBA: {
       typedef itk::Image<itk::RGBAPixel<PixelType>, ImageProcessingConstants::ImageDimension> ImageType;
       typedef itk::ImageFileReader<ImageType> ReaderType;
       typename ReaderType::Pointer reader = ReaderType::New();
@@ -168,4 +166,3 @@ private:
   ItkReadImagePrivate(const ItkReadImagePrivate&); // Copy Constructor Not Implemented
   void operator=(const ItkReadImagePrivate&);      // Move assignment Not Implemented
 };
-

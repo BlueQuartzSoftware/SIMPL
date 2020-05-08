@@ -1,35 +1,35 @@
 /* ============================================================================
-* Copyright (c) 2017 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the following contracts:
-*    United States Air Force Prime Contract FA8650-15-D-5231
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2017 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the following contracts:
+ *    United States Air Force Prime Contract FA8650-15-D-5231
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
@@ -98,16 +98,16 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, bool allowPreflight = true,
-                     int groupIndex = -1);
+  static Pointer New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                     const GetterCallbackType& getterCallback, bool allowPreflight = true, int groupIndex = -1);
 
   ~ParagraphFilterParameter() override;
 
   /**
- * @brief getWidgetType Returns the type of widget that displays and controls
- * this FilterParameter subclass
- * @return
- */
+   * @brief getWidgetType Returns the type of widget that displays and controls
+   * this FilterParameter subclass
+   * @return
+   */
   QString getWidgetType() const override;
 
   /**
@@ -123,10 +123,10 @@ public:
   void writeJson(QJsonObject& json) override;
 
   /**
-  * @brief SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-  * that this FilterParameter subclass represents.
-  * from the filter parameter.
-  */
+   * @brief SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+   * that this FilterParameter subclass represents.
+   * from the filter parameter.
+   */
   /**
    * @brief Setter property for SetterCallback
    */
@@ -138,10 +138,10 @@ public:
   ParagraphFilterParameter::SetterCallbackType getSetterCallback() const;
 
   /**
-  * @brief GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-  * that this FilterParameter subclass represents.
-  * @return The GetterCallback
-  */
+   * @brief GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+   * that this FilterParameter subclass represents.
+   * @return The GetterCallback
+   */
   /**
    * @brief Setter property for GetterCallback
    */
@@ -170,8 +170,8 @@ protected:
   ParagraphFilterParameter();
 
 public:
-  ParagraphFilterParameter(const ParagraphFilterParameter&) = delete; // Copy Constructor Not Implemented
-  ParagraphFilterParameter(ParagraphFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  ParagraphFilterParameter(const ParagraphFilterParameter&) = delete;            // Copy Constructor Not Implemented
+  ParagraphFilterParameter(ParagraphFilterParameter&&) = delete;                 // Move Constructor Not Implemented
   ParagraphFilterParameter& operator=(const ParagraphFilterParameter&) = delete; // Copy Assignment Not Implemented
   ParagraphFilterParameter& operator=(ParagraphFilterParameter&&) = delete;      // Move Assignment Not Implemented
 
@@ -180,4 +180,3 @@ private:
   ParagraphFilterParameter::GetterCallbackType m_GetterCallback = {};
   bool m_AllowPreflight = {};
 };
-

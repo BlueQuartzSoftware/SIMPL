@@ -58,7 +58,7 @@ SIMPLH5DataReader::SIMPLH5DataReader() = default;
 // -----------------------------------------------------------------------------
 SIMPLH5DataReader::~SIMPLH5DataReader()
 {
-  if (m_FileId >= 0)
+  if(m_FileId >= 0)
   {
     closeFile();
   }
@@ -67,9 +67,9 @@ SIMPLH5DataReader::~SIMPLH5DataReader()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool SIMPLH5DataReader::openFile(const QString &filePath)
+bool SIMPLH5DataReader::openFile(const QString& filePath)
 {
-  if (m_FileId >= 0)
+  if(m_FileId >= 0)
   {
     QString ss = QObject::tr("Error opening input file '%1' - A file is already open with this reader.").arg(filePath);
     emit errorGenerated(Title, ss, -148);
@@ -112,7 +112,7 @@ bool SIMPLH5DataReader::closeFile()
 // -----------------------------------------------------------------------------
 DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(DataContainerArrayProxy& proxy, bool preflight)
 {
-  if (m_FileId < 0)
+  if(m_FileId < 0)
   {
     QString ss = QObject::tr("File data unable to be read - file was not properly opened");
     emit errorGenerated(Title, ss, -249);
@@ -184,11 +184,11 @@ DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(DataConta
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArrayProxy SIMPLH5DataReader::readDataContainerArrayStructure(SIMPLH5DataReaderRequirements* req, int &err)
+DataContainerArrayProxy SIMPLH5DataReader::readDataContainerArrayStructure(SIMPLH5DataReaderRequirements* req, int& err)
 {
   DataContainerArrayProxy proxy;
 
-  if (m_FileId < 0)
+  if(m_FileId < 0)
   {
     return DataContainerArrayProxy();
   }
@@ -239,7 +239,7 @@ DataContainerArrayProxy SIMPLH5DataReader::readDataContainerArrayStructure(SIMPL
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool SIMPLH5DataReader::readPipelineJson(QString &json)
+bool SIMPLH5DataReader::readPipelineJson(QString& json)
 {
   herr_t err = 0;
 
@@ -265,7 +265,7 @@ bool SIMPLH5DataReader::readPipelineJson(QString &json)
   hid_t pipelineGroupId = H5Gopen(m_FileId, SIMPL::StringConstants::PipelineGroupName.toLatin1().data(), H5P_DEFAULT);
 
   err = QH5Lite::readStringDataset(pipelineGroupId, "Pipeline", json);
-  if (err < 0)
+  if(err < 0)
   {
     QString ss = QObject::tr("Pipeline unable to be read - JSON dataset could not be read.");
     emit errorGenerated(Title, ss, -254);

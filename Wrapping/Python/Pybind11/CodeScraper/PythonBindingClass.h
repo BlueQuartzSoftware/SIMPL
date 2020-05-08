@@ -46,7 +46,7 @@ public:
   SIMPL_INSTANCE_PROPERTY(QVector<QString>, StaticNewMethods)
   void addStaticCreation(const QString& method);
   void clearStaticCreation();
- 
+
   SIMPL_INSTANCE_PROPERTY(QVector<QString>, Constructors)
   void addConstructor(const QString& constructor);
   void clearConstructors();
@@ -59,18 +59,18 @@ public:
   bool writeBindingFile(const QString& outputFilePath);
 
   /**
-  *@brief quote
-  *@param str
-  *@return
-  */
+   *@brief quote
+   *@param str
+   *@return
+   */
   QString quote(const QString& str);
 
   /**
-  *@brief writeOutput
-  *@param didReplace
-  *@param outLines
-  *@param filename
-  */
+   *@brief writeOutput
+   *@param didReplace
+   *@param outLines
+   *@param filename
+   */
   bool writeOutput(bool didReplace, const QString& outLines, const QString& filename);
 
 protected:
@@ -87,12 +87,12 @@ protected:
   QString generatePropertiesCode();
 
   QString generateMethodCode();
-  
+
   QString generateEnumerationCode();
 
   QString generateFooterCode();
 
-  QByteArray md5FileContents(const QString &filename);
+  QByteArray md5FileContents(const QString& filename);
 
   QString generatePythonTestCode();
 

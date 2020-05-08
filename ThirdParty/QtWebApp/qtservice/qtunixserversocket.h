@@ -55,4 +55,3 @@ public:
 private:
   QString path_;
 };
-

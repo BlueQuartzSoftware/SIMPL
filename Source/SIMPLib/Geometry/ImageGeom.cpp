@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 /* ============================================================================
  * ImageGeom re-implements code from the following vtk modules:
@@ -238,8 +238,7 @@ public:
 
     switch(directionType)
     {
-    case XDirection:
-    {
+    case XDirection: {
       if(differenceType == LeftSide)
       {
         index1 = (z * dims[1] * dims[0]) + (y * dims[0]) + (x + 1);
@@ -267,8 +266,7 @@ public:
       }
       break;
     }
-    case YDirection:
-    {
+    case YDirection: {
       if(differenceType == LeftSide)
       {
         index1 = (z * dims[1] * dims[0]) + ((y + 1) * dims[0]) + x;
@@ -296,8 +294,7 @@ public:
       }
       break;
     }
-    case ZDirection:
-    {
+    case ZDirection: {
       if(differenceType == LeftSide)
       {
         index1 = ((z + 1) * dims[1] * dims[0]) + (y * dims[0]) + x;
@@ -325,8 +322,7 @@ public:
       }
       break;
     }
-    default:
-    {
+    default: {
       break;
     }
     }
@@ -502,12 +498,12 @@ void ImageGeom::setDimensions(size_t x, size_t y, size_t z)
 // -----------------------------------------------------------------------------
 void ImageGeom::getBoundingBox(float* boundingBox)
 {
-    boundingBox[0] = m_Origin[0];
-    boundingBox[1] = m_Origin[0] + (m_Dimensions[0] * m_Spacing[0]);
-    boundingBox[2] = m_Origin[1];
-    boundingBox[3] = m_Origin[1] + (m_Dimensions[1] * m_Spacing[1]);
-    boundingBox[4] = m_Origin[2];
-    boundingBox[5] = m_Origin[2] + (m_Dimensions[2] * m_Spacing[2]);
+  boundingBox[0] = m_Origin[0];
+  boundingBox[1] = m_Origin[0] + (m_Dimensions[0] * m_Spacing[0]);
+  boundingBox[2] = m_Origin[1];
+  boundingBox[3] = m_Origin[1] + (m_Dimensions[1] * m_Spacing[1]);
+  boundingBox[4] = m_Origin[2];
+  boundingBox[5] = m_Origin[2] + (m_Dimensions[2] * m_Spacing[2]);
 }
 
 // -----------------------------------------------------------------------------
@@ -531,7 +527,7 @@ size_t ImageGeom::getXPoints() const
 //
 // -----------------------------------------------------------------------------
 size_t ImageGeom::getYPoints() const
-{ 
+{
   return m_Dimensions[1];
 }
 
@@ -706,7 +702,7 @@ void ImageGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix
   {
     return;
   }
-  //if(data->getName().compare(name) != 0)
+  // if(data->getName().compare(name) != 0)
   //{
   //  data->setName(name);
   //}
@@ -924,7 +920,7 @@ void ImageGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType:
   {
     grain = 1;
   }
-  
+
   ParallelData3DAlgorithm dataAlg;
   dataAlg.setRange(dims[2], dims[1], dims[0]);
   dataAlg.setGrain(grain);
@@ -1019,7 +1015,7 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format) const
   {
     return getToolTipGenerator().generateHTML();
   }
-  
+
   QString info;
   QTextStream ss(&info);
   ss << "Requested InfoStringFormat is not supported. " << format;
@@ -1035,11 +1031,11 @@ ToolTipGenerator ImageGeom::getToolTipGenerator() const
   ToolTipGenerator toolTipGen;
 
   QString lengthUnit = IGeometry::LengthUnitToString(static_cast<IGeometry::LengthUnit>(getUnits()));
-  int64_t volDims[3] = { static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints()) };
+  int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
   FloatVec3Type spacing = getSpacing();
   FloatVec3Type origin = getOrigin();
 
-  float halfRes[3] = { spacing[0] / 2.0f, spacing[1] / 2.0f, spacing[2] / 2.0f };
+  float halfRes[3] = {spacing[0] / 2.0f, spacing[1] / 2.0f, spacing[2] / 2.0f};
   float vol = (volDims[0] * spacing[0]) * (volDims[1] * spacing[1]) * (volDims[2] * spacing[2]);
   QLocale usa(QLocale::English, QLocale::UnitedStates);
 
@@ -1054,9 +1050,12 @@ ToolTipGenerator ImageGeom::getToolTipGenerator() const
   toolTipGen.addValue("Spacing", QString::number(spacing[0]) + ", " + QString::number(spacing[1]) + ", " + QString::number(spacing[2]));
   toolTipGen.addValue("Volume", usa.toString(vol) + " " + lengthUnit + "s ^3");
   toolTipGen.addTitle("Bounds (Cell Centered)");
-  toolTipGen.addValue("X Range", QString::number(origin[0] - halfRes[0]) + " to " + QString::number(origin[0] - halfRes[0] + volDims[0] * spacing[0]) + " (delta: " + QString::number(volDims[0] * spacing[0]) + ")");
-  toolTipGen.addValue("Y Range", QString::number(origin[1] - halfRes[1]) + " to " + QString::number(origin[1] - halfRes[1] + volDims[1] * spacing[1]) + " (delta: " + QString::number(volDims[1] * spacing[1]) + ")");
-  toolTipGen.addValue("Z Range", QString::number(origin[2] - halfRes[2]) + " to " + QString::number(origin[2] - halfRes[2] + volDims[2] * spacing[2]) + " (delta: " + QString::number(volDims[2] * spacing[2]) + ")");
+  toolTipGen.addValue("X Range", QString::number(origin[0] - halfRes[0]) + " to " + QString::number(origin[0] - halfRes[0] + volDims[0] * spacing[0]) +
+                                     " (delta: " + QString::number(volDims[0] * spacing[0]) + ")");
+  toolTipGen.addValue("Y Range", QString::number(origin[1] - halfRes[1]) + " to " + QString::number(origin[1] - halfRes[1] + volDims[1] * spacing[1]) +
+                                     " (delta: " + QString::number(volDims[1] * spacing[1]) + ")");
+  toolTipGen.addValue("Z Range", QString::number(origin[2] - halfRes[2]) + " to " + QString::number(origin[2] - halfRes[2] + volDims[2] * spacing[2]) +
+                                     " (delta: " + QString::number(volDims[2] * spacing[2]) + ")");
 
   return toolTipGen;
 }

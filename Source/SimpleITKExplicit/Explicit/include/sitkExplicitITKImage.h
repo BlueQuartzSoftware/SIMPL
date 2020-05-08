@@ -1,20 +1,20 @@
 /*=========================================================================
-*
-*  Copyright Insight Software Consortium
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*         http://www.apache.org/licenses/LICENSE-2.0.txt
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-*
-*=========================================================================*/
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 #ifndef sitkExplicitITKImage_h__
 #define sitkExplicitITKImage_h__
 #include "sitkExplicit.h"
@@ -61,8 +61,8 @@ extern template class SITKExplicit_EXPORT_EXPLICIT itk::Image<std::complex<doubl
 extern template class SITKExplicit_EXPORT_EXPLICIT itk::Image<std::complex<double>, 3u>;
 extern template class SITKExplicit_EXPORT_EXPLICIT itk::Image<std::complex<float>, 2u>;
 extern template class SITKExplicit_EXPORT_EXPLICIT itk::Image<std::complex<float>, 3u>;
-extern template class SITKExplicit_EXPORT_EXPLICIT itk::Image<std::deque<itk::LabelObjectLine<2u>, std::allocator<itk::LabelObjectLine<2u> > >, 1u>;
-extern template class SITKExplicit_EXPORT_EXPLICIT itk::Image<std::deque<itk::LabelObjectLine<3u>, std::allocator<itk::LabelObjectLine<3u> > >, 2u>;
+extern template class SITKExplicit_EXPORT_EXPLICIT itk::Image<std::deque<itk::LabelObjectLine<2u>, std::allocator<itk::LabelObjectLine<2u>>>, 1u>;
+extern template class SITKExplicit_EXPORT_EXPLICIT itk::Image<std::deque<itk::LabelObjectLine<3u>, std::allocator<itk::LabelObjectLine<3u>>>, 2u>;
 extern template class SITKExplicit_EXPORT_EXPLICIT itk::Image<unsigned char, 1u>;
 extern template class SITKExplicit_EXPORT_EXPLICIT itk::Image<unsigned char, 2u>;
 extern template class SITKExplicit_EXPORT_EXPLICIT itk::Image<unsigned char, 3u>;

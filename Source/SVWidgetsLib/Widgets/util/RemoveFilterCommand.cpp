@@ -134,7 +134,7 @@ void RemoveFilterCommand::undo()
   }
 
   emit m_PipelineView->statusMessage(statusMessage);
-  emit m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage,false));
+  emit m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage, false));
 }
 
 // -----------------------------------------------------------------------------
@@ -187,7 +187,7 @@ void RemoveFilterCommand::redo()
   emit m_PipelineView->pipelineChanged();
 
   emit m_PipelineView->statusMessage(statusMessage);
-  emit m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage,false));
+  emit m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage, false));
 }
 
 // -----------------------------------------------------------------------------
@@ -273,7 +273,7 @@ void RemoveFilterCommand::connectFilterSignalsSlots(const AbstractFilter::Pointe
   FilterInputWidget* fiw = model->filterInputWidget(index);
 
   QMetaObject::Connection connection = QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, [=](bool preflight) {
-    if (preflight)
+    if(preflight)
     {
       m_PipelineView->preflightPipeline();
     }
@@ -285,13 +285,13 @@ void RemoveFilterCommand::connectFilterSignalsSlots(const AbstractFilter::Pointe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RemoveFilterCommand::disconnectFilterSignalsSlots(const AbstractFilter::Pointer &filter)
+void RemoveFilterCommand::disconnectFilterSignalsSlots(const AbstractFilter::Pointer& filter)
 {
   if(filter.get() == nullptr)
   {
     return;
   }
-  //PipelineModel* model = m_PipelineView->getPipelineModel();
+  // PipelineModel* model = m_PipelineView->getPipelineModel();
 
   QObject::disconnect(filter.get(), &AbstractFilter::filterCompleted, nullptr, nullptr);
 

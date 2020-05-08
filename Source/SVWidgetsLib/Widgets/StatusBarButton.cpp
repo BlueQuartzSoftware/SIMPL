@@ -1,6 +1,5 @@
 #include "StatusBarButton.h"
 
-
 #include <QtCore/QDebug>
 #include <QtGui/QPainter>
 #include <QtGui/QMouseEvent>
@@ -13,7 +12,7 @@
 //
 // -----------------------------------------------------------------------------
 StatusBarButton::StatusBarButton(QWidget* parent)
-: QToolButton (parent)
+: QToolButton(parent)
 {
   //  QFont font = SVStyle::Instance()->GetHumanLabelFont();
 
@@ -100,13 +99,12 @@ void StatusBarButton::paintEvent(QPaintEvent* event)
     borderColor = QColor(200, 200, 200);
     fontColor = QColor(240, 240, 240);
   }
-  
+
   if(m_Pressed && isChecked())
   {
     backgroundColor = QColor(200, 200, 200);
     fontColor = QColor(50, 50, 50);
     borderColor = QColor(120, 120, 120);
-
   }
   if(m_Pressed && !isChecked())
   {

@@ -51,10 +51,8 @@
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), with optional GroupIndex parameter):
  * SIMPL_NEW_INTEGER_FP("Max Iterations", MaxIterations, FilterParameter::Parameter, GenericExample, 0);
  */
-#define SIMPL_NEW_UINT64_FP(...) \
-  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
-  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (UInt64FilterParameter, __VA_ARGS__))
+#define SIMPL_NEW_UINT64_FP(...)                                                                                                                                                                       \
+  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(UInt64FilterParameter, __VA_ARGS__))
 
 /**
  * @brief The UInt64FilterParameter class is used by filters to instantiate an IntWidget.  By instantiating an instance of
@@ -62,113 +60,112 @@
  */
 class SIMPLib_EXPORT UInt64FilterParameter : public FilterParameter
 {
-  public:
-    using Self = UInt64FilterParameter;
-    using Pointer = std::shared_ptr<Self>;
-    using ConstPointer = std::shared_ptr<const Self>;
-    using WeakPointer = std::weak_ptr<Self>;
-    using ConstWeakPointer = std::weak_ptr<const Self>;
-    static Pointer NullPointer();
+public:
+  using Self = UInt64FilterParameter;
+  using Pointer = std::shared_ptr<Self>;
+  using ConstPointer = std::shared_ptr<const Self>;
+  using WeakPointer = std::weak_ptr<Self>;
+  using ConstWeakPointer = std::weak_ptr<const Self>;
+  static Pointer NullPointer();
 
-    static Pointer New();
+  static Pointer New();
 
-    /**
-     * @brief Returns the name of the class for UInt64FilterParameter
-     */
-    QString getNameOfClass() const override;
-    /**
-     * @brief Returns the name of the class for UInt64FilterParameter
-     */
-    static QString ClassName();
+  /**
+   * @brief Returns the name of the class for UInt64FilterParameter
+   */
+  QString getNameOfClass() const override;
+  /**
+   * @brief Returns the name of the class for UInt64FilterParameter
+   */
+  static QString ClassName();
 
-    using SetterCallbackType = std::function<void(uint64_t)>;
-    using GetterCallbackType = std::function<uint64_t(void)>;
+  using SetterCallbackType = std::function<void(uint64_t)>;
+  using GetterCallbackType = std::function<uint64_t(void)>;
 
-    /**
-     * @brief New This function instantiates an instance of the UInt64FilterParameter. Although this function is available to be used,
-     * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_INTEGER_FP(...) macro at the top of this file.
+  /**
+   * @brief New This function instantiates an instance of the UInt64FilterParameter. Although this function is available to be used,
+   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_INTEGER_FP(...) macro at the top of this file.
 
-     * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
-     * @param propertyName The internal property name for this filter parameter.
-     * @param defaultValue The value that this filter parameter will be initialized to by default.
-     * @param category The category for the filter parameter in the DREAM.3D user interface.  There
-     * are three categories: Parameter, Required Arrays, and Created Arrays.
-     * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
-     * @return
-     */
-    static Pointer New(const QString& humanLabel, const QString& propertyName, uint64_t defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                       int groupIndex = -1);
+   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+   * @param propertyName The internal property name for this filter parameter.
+   * @param defaultValue The value that this filter parameter will be initialized to by default.
+   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+   * are three categories: Parameter, Required Arrays, and Created Arrays.
+   * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+   * @return
+   */
+  static Pointer New(const QString& humanLabel, const QString& propertyName, uint64_t defaultValue, Category category, const SetterCallbackType& setterCallback,
+                     const GetterCallbackType& getterCallback, int groupIndex = -1);
 
-    ~UInt64FilterParameter() override;
+  ~UInt64FilterParameter() override;
 
-    /**
+  /**
    * @brief getWidgetType Returns the type of widget that displays and controls
    * this FilterParameter subclass
    * @return
    */
-    QString getWidgetType() const override;
+  QString getWidgetType() const override;
 
-    /**
-     * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
-     * @param json The QJsonObject that the filter parameter reads from.
-     */
-    void readJson(const QJsonObject& json) override;
+  /**
+   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
+   * @param json The QJsonObject that the filter parameter reads from.
+   */
+  void readJson(const QJsonObject& json) override;
 
-    /**
-     * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
-     * @param json The QJsonObject that the filter parameter writes to.
-     */
-    void writeJson(QJsonObject& json) override;
+  /**
+   * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
+   * @param json The QJsonObject that the filter parameter writes to.
+   */
+  void writeJson(QJsonObject& json) override;
 
-    /**
-    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-    * that this FilterParameter subclass represents.
-    * from the filter parameter.
-    */
-    /**
-     * @brief Setter property for SetterCallback
-     */
-    void setSetterCallback(const UInt64FilterParameter::SetterCallbackType& value);
-    /**
-     * @brief Getter property for SetterCallback
-     * @return Value of SetterCallback
-     */
-    UInt64FilterParameter::SetterCallbackType getSetterCallback() const;
+  /**
+   * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+   * that this FilterParameter subclass represents.
+   * from the filter parameter.
+   */
+  /**
+   * @brief Setter property for SetterCallback
+   */
+  void setSetterCallback(const UInt64FilterParameter::SetterCallbackType& value);
+  /**
+   * @brief Getter property for SetterCallback
+   * @return Value of SetterCallback
+   */
+  UInt64FilterParameter::SetterCallbackType getSetterCallback() const;
 
-    /**
-    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-    * that this FilterParameter subclass represents.
-    * @return The GetterCallback
-    */
-    /**
-     * @brief Setter property for GetterCallback
-     */
-    void setGetterCallback(const UInt64FilterParameter::GetterCallbackType& value);
-    /**
-     * @brief Getter property for GetterCallback
-     * @return Value of GetterCallback
-     */
-    UInt64FilterParameter::GetterCallbackType getGetterCallback() const;
+  /**
+   * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+   * that this FilterParameter subclass represents.
+   * @return The GetterCallback
+   */
+  /**
+   * @brief Setter property for GetterCallback
+   */
+  void setGetterCallback(const UInt64FilterParameter::GetterCallbackType& value);
+  /**
+   * @brief Getter property for GetterCallback
+   * @return Value of GetterCallback
+   */
+  UInt64FilterParameter::GetterCallbackType getGetterCallback() const;
 
-  protected:
-    /**
-     * @brief UInt64FilterParameter The default constructor.  It is protected because this
-     * filter parameter should only be instantiated using its New(...) function or short-form macro.
-     */
-    UInt64FilterParameter();
+protected:
+  /**
+   * @brief UInt64FilterParameter The default constructor.  It is protected because this
+   * filter parameter should only be instantiated using its New(...) function or short-form macro.
+   */
+  UInt64FilterParameter();
 
-  public:
-    UInt64FilterParameter(const UInt64FilterParameter&) = delete;            // Copy Constructor Not Implemented
-    UInt64FilterParameter(UInt64FilterParameter&&) = delete;                 // Move Constructor Not Implemented
-    UInt64FilterParameter& operator=(const UInt64FilterParameter&) = delete; // Copy Assignment Not Implemented
-    UInt64FilterParameter& operator=(UInt64FilterParameter&&) = delete;      // Move Assignment Not Implemented
+public:
+  UInt64FilterParameter(const UInt64FilterParameter&) = delete;            // Copy Constructor Not Implemented
+  UInt64FilterParameter(UInt64FilterParameter&&) = delete;                 // Move Constructor Not Implemented
+  UInt64FilterParameter& operator=(const UInt64FilterParameter&) = delete; // Copy Assignment Not Implemented
+  UInt64FilterParameter& operator=(UInt64FilterParameter&&) = delete;      // Move Assignment Not Implemented
 
-  private:
-    UInt64FilterParameter::SetterCallbackType m_SetterCallback = {};
-    UInt64FilterParameter::GetterCallbackType m_GetterCallback = {};
+private:
+  UInt64FilterParameter::SetterCallbackType m_SetterCallback = {};
+  UInt64FilterParameter::GetterCallbackType m_GetterCallback = {};
 };
-

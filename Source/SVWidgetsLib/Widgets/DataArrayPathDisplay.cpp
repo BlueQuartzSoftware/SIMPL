@@ -200,7 +200,7 @@ DataArrayPath DataArrayPathDisplay::getDataArrayPath() const
   case DataArrayPathHelper::DataType::None:
     break;
   }
-  
+
   return DataArrayPath(dcName, amName, daName);
 }
 
@@ -250,8 +250,7 @@ void DataArrayPathDisplay::afterPreflight()
       found = true;
     }
     break;
-  case DataArrayPathHelper::DataType::DataArray:
-  {
+  case DataArrayPathHelper::DataType::DataArray: {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(getDataArrayPath());
     if(am && am->getAttributeArray(getDataArrayPath().getDataArrayName()))
     {

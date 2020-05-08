@@ -60,7 +60,6 @@ void IntFilterParameterWidget::parametersUpdated()
   }
   else
   {
-    std::cout << "Filter Parameter is NOT Int32Parameter"  << std::endl;
+    std::cout << "Filter Parameter is NOT Int32Parameter" << std::endl;
   }
 }
-

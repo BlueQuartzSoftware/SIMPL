@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "ImportAsciDataArray.h"
 
 #include <locale>
@@ -56,7 +56,8 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 
-enum createdPathID : RenameDataPath::DataID_t {
+enum createdPathID : RenameDataPath::DataID_t
+{
   AsciiArrayID = 1
 };
 
@@ -83,7 +84,7 @@ int32_t readLine(std::istream& in, char* result, size_t length)
     {
       return 0;
     }
-    if(in.gcount() == static_cast<std::streamsize>(length) )
+    if(in.gcount() == static_cast<std::streamsize>(length))
     {
       // Read kBufferSize chars; ignoring the rest of the line.
       in.clear();
@@ -93,21 +94,20 @@ int32_t readLine(std::istream& in, char* result, size_t length)
   return 1;
 }
 
-
 class DelimiterType : public std::ctype<char>
 {
-    mask my_table[table_size];
-  public:
-    DelimiterType(char delimiter, size_t refs = 0)
-      : std::ctype<char>(&my_table[0], false, refs)
-    {
-      std::copy_n(classic_table(), table_size, my_table);
-      my_table[static_cast<mask>(delimiter)] = (mask)space;
-    }
+  mask my_table[table_size];
+
+public:
+  DelimiterType(char delimiter, size_t refs = 0)
+  : std::ctype<char>(&my_table[0], false, refs)
+  {
+    std::copy_n(classic_table(), table_size, my_table);
+    my_table[static_cast<mask>(delimiter)] = (mask)space;
+  }
 };
 
-
-}
+} // namespace Detail
 
 // -----------------------------------------------------------------------------
 //
@@ -117,17 +117,17 @@ int check_error_bits(std::ifstream* f)
   int stop = RBR_NO_ERROR;
   if(f->eof())
   {
-    //std::perror("stream eofbit. error state");
+    // std::perror("stream eofbit. error state");
     stop = RBR_READ_EOF;
   }
   else if(f->fail())
   {
-    //std::perror("stream failbit (or badbit). error state");
+    // std::perror("stream failbit (or badbit). error state");
     stop = RBR_READ_ERROR;
   }
   else if(f->bad())
   {
-    //std::perror("stream badbit. error state");
+    // std::perror("stream badbit. error state");
     stop = RBR_READ_ERROR;
   }
   return stop;
@@ -136,7 +136,8 @@ int check_error_bits(std::ifstream* f)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Pointer data, const QString& filename, int32_t skipHeaderLines, char delimiter, bool inputIsBool = false)
+template <typename T, typename K>
+int32_t readAsciFile(typename DataArray<T>::Pointer data, const QString& filename, int32_t skipHeaderLines, char delimiter, bool inputIsBool = false)
 {
   int32_t err = 0;
   QFileInfo fi(filename);
@@ -160,7 +161,7 @@ template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Po
   // thing we are going to do it over write those bytes with the real data that we are after.
   for(int i = 0; i < skipHeaderLines; i++)
   {
-    buf.fill(0x00); // Splat Null Chars across the line
+    buf.fill(0x00);                                  // Splat Null Chars across the line
     err = Detail::readLine(in, buffer, kBufferSize); // Read Line 1 - VTK Version Info
     if(err < 0)
     {
@@ -206,7 +207,7 @@ template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Po
     for(size_t i = 0; i < totalSize; ++i)
     {
       in >> value;
-      data->setValue(i, static_cast<T>(value) );
+      data->setValue(i, static_cast<T>(value));
       err = check_error_bits(&in);
       if(err == RBR_READ_EOF && i < totalSize - 1)
       {
@@ -220,8 +221,6 @@ template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Po
   }
   return RBR_NO_ERROR;
 }
-
-
 
 /* ############## Start Private Implementation ############################### */
 // -----------------------------------------------------------------------------
@@ -250,7 +249,6 @@ ImportAsciDataArrayPrivate::ImportAsciDataArrayPrivate(ImportAsciDataArray* ptr)
 {
 }
 /* ############## End Private Implementation ############################### */
-
 
 // -----------------------------------------------------------------------------
 //
@@ -334,21 +332,18 @@ void ImportAsciDataArray::readHeaderPortion()
 {
   int32_t err = 0;
   QString filename = getInputFile();
-  
+
   QFileInfo fi(getInputFile());
-  
+
   QDateTime lastModified(fi.lastModified());
-  if(getInputFile() == getInputFile_Cache() 
-      && getLastRead().isValid() 
-      && lastModified.msecsTo(getLastRead()) >= 0
-      && getSkipHeaderLines() == getHeaderLines() )
+  if(getInputFile() == getInputFile_Cache() && getLastRead().isValid() && lastModified.msecsTo(getLastRead()) >= 0 && getSkipHeaderLines() == getHeaderLines())
   {
     // We are reading from the cache, so set the FileWasRead flag to false
   }
   else
   {
     // We are reading from the file
-    
+
     std::ifstream in(filename.toLatin1().constData(), std::ios_base::in | std::ios_base::binary);
     if(!in.is_open())
     {
@@ -356,17 +351,17 @@ void ImportAsciDataArray::readHeaderPortion()
       setErrorCondition(RBR_FILE_NOT_OPEN, errorMessage);
       return;
     }
-    
+
     in.imbue(std::locale(std::locale(), new Detail::DelimiterType(getDelimiter())));
-    
+
     QByteArray buf(kBufferSize, '\0');
     char* buffer = buf.data();
-    
+
     int skipHeaderLines = getSkipHeaderLines();
     for(int i = 0; i < skipHeaderLines; i++)
     {
       buf.fill(0x00); // Splat Null Chars across the line
-      err = Detail::readLine(in, buffer, kBufferSize); 
+      err = Detail::readLine(in, buffer, kBufferSize);
       if(err < 0)
       {
         QString errorMessage = QString("Error reading the input file at line %1 of the file").arg(i);
@@ -374,23 +369,20 @@ void ImportAsciDataArray::readHeaderPortion()
         return;
       }
     }
-    
+
     err = Detail::readLine(in, buffer, kBufferSize);
     if(err < 0)
     {
       setErrorCondition(err, "Error reading the first line of data from the input file");
     }
-    
+
     setFirstLine(buf);
-    
-    
+
     // Set the file path and time stamp into the cache
     setLastRead(QDateTime::currentDateTime());
     setInputFile_Cache(getInputFile());
   }
-  
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -422,17 +414,14 @@ void ImportAsciDataArray::setupFilterParameters()
     parameters.push_back(parameter);
   }
 
-
   {
     DataArrayCreationFilterParameter::RequirementType req;
     parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Output Attribute Array", CreatedAttributeArrayPath, FilterParameter::CreatedArray, ImportAsciDataArray, req));
   }
-  
-  PreflightUpdatedValueFilterParameter::Pointer param =
-      SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("First Line of Data:", FirstLine, FilterParameter::Parameter, ImportAsciDataArray);
+
+  PreflightUpdatedValueFilterParameter::Pointer param = SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("First Line of Data:", FirstLine, FilterParameter::Parameter, ImportAsciDataArray);
   param->setReadOnly(true);
   parameters.push_back(param);
-
 
   setFilterParameters(parameters);
 }
@@ -533,10 +522,7 @@ void ImportAsciDataArray::dataCheck()
     getDataContainerArray()->createNonPrereqArrayFromPath<SizeTArrayType>(this, getCreatedAttributeArrayPath(), false, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
   }
   readHeaderPortion();
-  
-  
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -579,7 +565,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Int16)
   {
     Int16ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<Int16ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
-    err = readAsciFile<int16_t,int16_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
+    err = readAsciFile<int16_t, int16_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -588,7 +574,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt16)
   {
     UInt16ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<UInt16ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
-    err = readAsciFile<uint16_t,uint16_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
+    err = readAsciFile<uint16_t, uint16_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -597,7 +583,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Int32)
   {
     Int32ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<Int32ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
-    err = readAsciFile<int32_t,int32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
+    err = readAsciFile<int32_t, int32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -606,7 +592,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt32)
   {
     UInt32ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<UInt32ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
-    err = readAsciFile<uint32_t,uint32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
+    err = readAsciFile<uint32_t, uint32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -615,7 +601,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Int64)
   {
     Int64ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<Int64ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
-    err = readAsciFile<int64_t,int64_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
+    err = readAsciFile<int64_t, int64_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -624,7 +610,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt64)
   {
     UInt64ArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<UInt64ArrayType>(this, getCreatedAttributeArrayPath(), cDims);
-    err = readAsciFile<uint64_t,uint64_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
+    err = readAsciFile<uint64_t, uint64_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -633,7 +619,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Float)
   {
     FloatArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType>(this, getCreatedAttributeArrayPath(), cDims);
-    err = readAsciFile<float,float>(p, m_InputFile, m_SkipHeaderLines, delimiter);
+    err = readAsciFile<float, float>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -642,7 +628,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Double)
   {
     DoubleArrayType::Pointer p = getDataContainerArray()->getPrereqArrayFromPath<DoubleArrayType>(this, getCreatedAttributeArrayPath(), cDims);
-    err = readAsciFile<double,double>(p, m_InputFile, m_SkipHeaderLines, delimiter);
+    err = readAsciFile<double, double>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;

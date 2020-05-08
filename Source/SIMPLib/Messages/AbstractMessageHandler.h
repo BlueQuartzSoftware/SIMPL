@@ -58,24 +58,22 @@ class FilterWarningMessage;
  */
 class SIMPLib_EXPORT AbstractMessageHandler
 {
-  public:
-    virtual void processMessage(const GenericErrorMessage* msg) const;
-    virtual void processMessage(const GenericProgressMessage* msg) const;
-    virtual void processMessage(const GenericStatusMessage* msg) const;
-    virtual void processMessage(const GenericWarningMessage* msg) const;
+public:
+  virtual void processMessage(const GenericErrorMessage* msg) const;
+  virtual void processMessage(const GenericProgressMessage* msg) const;
+  virtual void processMessage(const GenericStatusMessage* msg) const;
+  virtual void processMessage(const GenericWarningMessage* msg) const;
 
-    virtual void processMessage(const PipelineErrorMessage* msg) const;
-    virtual void processMessage(const PipelineProgressMessage* msg) const;
-    virtual void processMessage(const PipelineStatusMessage* msg) const;
-    virtual void processMessage(const PipelineWarningMessage* msg) const;
+  virtual void processMessage(const PipelineErrorMessage* msg) const;
+  virtual void processMessage(const PipelineProgressMessage* msg) const;
+  virtual void processMessage(const PipelineStatusMessage* msg) const;
+  virtual void processMessage(const PipelineWarningMessage* msg) const;
 
-    virtual void processMessage(const FilterErrorMessage* msg) const;
-    virtual void processMessage(const FilterProgressMessage* msg) const;
-    virtual void processMessage(const FilterStatusMessage* msg) const;
-    virtual void processMessage(const FilterWarningMessage* msg) const;
+  virtual void processMessage(const FilterErrorMessage* msg) const;
+  virtual void processMessage(const FilterProgressMessage* msg) const;
+  virtual void processMessage(const FilterStatusMessage* msg) const;
+  virtual void processMessage(const FilterWarningMessage* msg) const;
 
-  protected:
-    AbstractMessageHandler();
+protected:
+  AbstractMessageHandler();
 };
-
-

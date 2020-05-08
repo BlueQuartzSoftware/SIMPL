@@ -520,7 +520,7 @@ AbstractMontageShPtr DataContainerArray::getPrereqMontage(AbstractFilter* filter
 //
 // -----------------------------------------------------------------------------
 GridMontageShPtr DataContainerArray::createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, SizeVec3Type size, const QStringList& dcNames,
-                                                                    GridMontage::CollectionMethod collectionMethod)
+                                                                GridMontage::CollectionMethod collectionMethod)
 {
   GridMontage::Pointer montage = GridMontage::New(montageName, size[0], size[1], size[2]);
 
@@ -888,7 +888,9 @@ IDataArray::Pointer DataContainerArray::getPrereqIDataArrayFromPath(AbstractFilt
   {
     if(filter)
     {
-      ss = QObject::tr("DataContainerArray::getPrereqIDataArrayFromPath Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(path.serialize());
+      ss = QObject::tr("DataContainerArray::getPrereqIDataArrayFromPath Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2")
+               .arg(__LINE__)
+               .arg(path.serialize());
       filter->setErrorCondition(-90001, ss);
     }
     return dataArray;
@@ -897,7 +899,6 @@ IDataArray::Pointer DataContainerArray::getPrereqIDataArrayFromPath(AbstractFilt
   QString dcName = path.getDataContainerName();
   QString amName = path.getAttributeMatrixName();
   QString daName = path.getDataArrayName();
-
 
   DataContainerShPtr dc = getDataContainer(dcName);
   if(nullptr == dc.get())

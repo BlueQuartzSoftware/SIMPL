@@ -66,4 +66,3 @@ public:
   */
   void service(HttpRequest& request, HttpResponse& response);
 };
-

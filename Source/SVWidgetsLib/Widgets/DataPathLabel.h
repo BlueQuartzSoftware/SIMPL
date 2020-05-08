@@ -65,7 +65,7 @@ protected:
   int getYMargin() const;
   QRect getStyledContentsRect() const;
   QRect getStyledBorderRect() const;
-  //void paintEvent(QPaintEvent* event) override;
+  // void paintEvent(QPaintEvent* event) override;
 
 private:
   DataArrayPathHelper::DataType m_DataType = DataArrayPathHelper::DataType::None;

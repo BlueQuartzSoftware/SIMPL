@@ -74,7 +74,7 @@ void HttpListener::listen()
   }
   else
   {
-//    qDebug() << "HttpListener: Listening on " << hostAddress.toString() << ":" << port;
+    //    qDebug() << "HttpListener: Listening on " << hostAddress.toString() << ":" << port;
   }
 
   // Pass the IPv4 address into the request handler so it has this proper information

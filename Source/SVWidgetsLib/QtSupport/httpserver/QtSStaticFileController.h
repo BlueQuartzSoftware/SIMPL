@@ -88,4 +88,3 @@ private:
 
   bool verbose = false;
 };
-

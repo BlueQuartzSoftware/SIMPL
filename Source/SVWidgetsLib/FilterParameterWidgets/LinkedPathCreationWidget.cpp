@@ -33,8 +33,6 @@
 
 #include "LinkedPathCreationWidget.h"
 
-
-
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 #include "FilterParameterWidgetsDialogs.h"

@@ -19,7 +19,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void print3x3(T matrix[3][3], const std::string& name)
+  template <typename T>
+  void print3x3(T matrix[3][3], const std::string& name)
   {
     std::cout << "Matrix: " << name << std::endl;
     std::cout << "[" << matrix[0][0] << " " << matrix[0][1] << " " << matrix[0][2] << "]" << std::endl;

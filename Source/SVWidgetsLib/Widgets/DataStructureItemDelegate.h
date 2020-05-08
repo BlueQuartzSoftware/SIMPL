@@ -119,13 +119,13 @@ protected:
   DataArrayPath getDataArrayPath(const QModelIndex& index) const;
 
   /**
-  * @brief Create colored icons for new DataArrayPath from the base image
-  */
+   * @brief Create colored icons for new DataArrayPath from the base image
+   */
   void createNewPathIcons();
 
 public:
-  DataStructureItemDelegate(const DataStructureItemDelegate&) = delete; // Copy Constructor Not Implemented
-  DataStructureItemDelegate(DataStructureItemDelegate&&) = delete;      // Move Constructor Not Implemented
+  DataStructureItemDelegate(const DataStructureItemDelegate&) = delete;            // Copy Constructor Not Implemented
+  DataStructureItemDelegate(DataStructureItemDelegate&&) = delete;                 // Move Constructor Not Implemented
   DataStructureItemDelegate& operator=(const DataStructureItemDelegate&) = delete; // Copy Assignment Not Implemented
   DataStructureItemDelegate& operator=(DataStructureItemDelegate&&) = delete;      // Move Assignment Not Implemented
 
@@ -140,4 +140,3 @@ public:
   QIcon m_CreatedDaIcon;
   QIcon m_CreatedInvalidIcon;
 };
-

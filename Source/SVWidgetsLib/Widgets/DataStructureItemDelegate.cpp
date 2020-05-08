@@ -45,12 +45,12 @@
 
 namespace Detail
 {
-  const QString Delimiter(" / ");
+const QString Delimiter(" / ");
 }
 
 namespace
 {
-  QColor InvalidColor(100, 100, 100);
+QColor InvalidColor(100, 100, 100);
 }
 
 // -----------------------------------------------------------------------------
@@ -103,22 +103,22 @@ void DataStructureItemDelegate::createNewPathIcons()
       daPixel.setAlphaF(alpha);
       invalidPixel.setAlphaF(alpha);
 
-      if (dcPixel.isValid())
+      if(dcPixel.isValid())
       {
         dcImage.setPixelColor(x, y, dcPixel);
       }
 
-      if (amPixel.isValid())
+      if(amPixel.isValid())
       {
         amImage.setPixelColor(x, y, amPixel);
       }
 
-      if (daPixel.isValid())
+      if(daPixel.isValid())
       {
         daImage.setPixelColor(x, y, daPixel);
       }
 
-      if (invalidPixel.isValid())
+      if(invalidPixel.isValid())
       {
         invalidImage.setPixelColor(x, y, invalidPixel);
       }
@@ -250,11 +250,11 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
   SVStyle* styles = SVStyle::Instance();
 
   QColor bgColor;
-  if (option.state & QStyle::State_Selected)
+  if(option.state & QStyle::State_Selected)
   {
     bgColor = styles->getQTreeViewItemSelectedActive_background_color();
   }
-  else if (option.state & QStyle::State_MouseOver)
+  else if(option.state & QStyle::State_MouseOver)
   {
     bgColor = styles->getQTreeViewItemHover_background_color();
   }
@@ -263,13 +263,13 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     bgColor = styles->getQTreeViewItem_background_color();
   }
 
-  if (!bgColor.isValid())
+  if(!bgColor.isValid())
   {
-    if (option.state & QStyle::State_Selected)
+    if(option.state & QStyle::State_Selected)
     {
       bgColor = option.palette.color(QPalette::Highlight);
     }
-    else if (option.features & QStyleOptionViewItem::Alternate)
+    else if(option.features & QStyleOptionViewItem::Alternate)
     {
       bgColor = option.palette.color(QPalette::AlternateBase);
     }
@@ -336,10 +336,10 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
       QColor color = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
       op.palette.setColor(QPalette::Normal, QPalette::WindowText, color);
     }
-    else if (option.state & QStyle::State_Selected)
+    else if(option.state & QStyle::State_Selected)
     {
       QColor color;
-      if (option.state & QStyle::State_Active)
+      if(option.state & QStyle::State_Active)
       {
         color = styles->getQTreeViewItemSelectedActive_color();
       }
@@ -375,7 +375,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     int radius = 1;
     int rounded = 2;
     int xPadding = 4;
-    
+
     // Rect dimensions
     int xPos = op.rect.x() + textOffset - xPadding;
     int yPos = op.rect.y() - (radius / 2);
@@ -386,7 +386,6 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     QColor penColor = QColor(0, 0, 0, 0);
     QColor bgColor = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
     op.palette.setColor(QPalette::ColorRole::WindowText, QColor(255, 255, 255));
-
 
     painter->setPen(penColor);
     painter->setBrush(bgColor);

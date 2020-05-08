@@ -98,7 +98,7 @@ DataContainerArrayProxy::DataContainerArrayProxy(DataContainerArray* dca)
       {
         QString aaName = attrArray->getName();
         QString daPath = dataContainer->getName() + "/" + amName + "/";
-        
+
         DataArrayProxy daProxy(daPath, aaName, Qt::Checked, attrArray->getTypeAsString(), attrArray->getClassVersion());
         daProxy.setCompDims(attrArray->getComponentDimensions());
         daProxy.setTupleDims(attrMat->getTupleDimensions());

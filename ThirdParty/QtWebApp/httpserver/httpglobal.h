@@ -28,12 +28,10 @@ building the DLL on windows.
 #endif
 #endif
 
-
 /* If QtWebAppLib_EXPORT was never defined, define it here */
 #ifndef QtWebAppLib_EXPORT
 #define QtWebAppLib_EXPORT
 #endif
-
 
 /** Get the library version number */
 QtWebAppLib_EXPORT const char* getQtWebAppLibVersion();

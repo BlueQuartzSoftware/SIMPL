@@ -94,7 +94,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> T convertQByteArray(const QByteArray& value)
+  template <typename T>
+  T convertQByteArray(const QByteArray& value)
   {
     if(typeid(T) == typeid(float))
     {
@@ -130,7 +131,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void checkDataList(AttributeMatrix::Pointer am, const QString& daName, const QList<QByteArray>& tokens, int featureID, int column)
+  template <typename T>
+  void checkDataList(AttributeMatrix::Pointer am, const QString& daName, const QList<QByteArray>& tokens, int featureID, int column)
   {
     typename DataArray<T>::Pointer dataPtr = am->getAttributeArrayAs<DataArray<T>>(daName);
 

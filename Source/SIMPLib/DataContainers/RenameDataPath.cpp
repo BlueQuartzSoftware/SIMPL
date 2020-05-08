@@ -119,7 +119,8 @@ bool RenameDataPath::CheckRenamePath(const DataContainerArrayShPtr& oldDca, cons
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath::RenameContainer RenameDataPath::CheckForRenamedPaths(const DataContainerArrayShPtr& oldDca, const DataContainerArrayShPtr& newDca, const std::list<DataArrayPath>& oldPaths, const std::list<DataArrayPath>& newPaths)
+DataArrayPath::RenameContainer RenameDataPath::CheckForRenamedPaths(const DataContainerArrayShPtr& oldDca, const DataContainerArrayShPtr& newDca, const std::list<DataArrayPath>& oldPaths,
+                                                                    const std::list<DataArrayPath>& newPaths)
 {
   DataArrayPath::RenameContainer container;
   std::list<DataArrayPath> duplicatedPaths;
@@ -167,7 +168,7 @@ DataArrayPath::RenameContainer RenameDataPath::CheckForRenamedPaths(const DataCo
   }
 
   // Remove items with duplicated paths
-  for(auto iter = container.begin(); iter != container.end(); )
+  for(auto iter = container.begin(); iter != container.end();)
   {
     const DataArrayPath& checkPath = std::get<1>(*iter);
     if(duplicatedPaths.end() != std::find(duplicatedPaths.begin(), duplicatedPaths.end(), checkPath))

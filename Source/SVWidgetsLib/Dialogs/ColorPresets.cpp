@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "ColorPresets.h"
 
@@ -119,7 +119,7 @@ private:
 //
 // -----------------------------------------------------------------------------
 ColorPresets::ColorPresets()
-  : Internals(new ColorPresets::vtkInternals())
+: Internals(new ColorPresets::vtkInternals())
 {
 }
 
@@ -137,9 +137,8 @@ ColorPresets::~ColorPresets()
 // -----------------------------------------------------------------------------
 QString ColorPresets::GetPresetAsString(unsigned int index)
 {
-  const QJsonArray &presets = this->Internals->GetPresets();
-  return index < static_cast<unsigned int>(presets.size())?
-        presets[index].toString() : QString();
+  const QJsonArray& presets = this->Internals->GetPresets();
+  return index < static_cast<unsigned int>(presets.size()) ? presets[index].toString() : QString();
 }
 
 // -----------------------------------------------------------------------------
@@ -147,9 +146,8 @@ QString ColorPresets::GetPresetAsString(unsigned int index)
 // -----------------------------------------------------------------------------
 QJsonObject ColorPresets::GetPreset(unsigned int index)
 {
-  const QJsonArray &presets = this->Internals->GetPresets();
-  return index < static_cast<unsigned int>(presets.size())?
-        presets[index].toObject() : QJsonObject();
+  const QJsonArray& presets = this->Internals->GetPresets();
+  return index < static_cast<unsigned int>(presets.size()) ? presets[index].toObject() : QJsonObject();
 }
 
 // -----------------------------------------------------------------------------
@@ -163,9 +161,9 @@ QJsonObject ColorPresets::GetFirstPresetWithName(const char* name)
   }
 
   QJsonArray presets = this->Internals->GetPresets();
-  for (int i=0; i<presets.size(); i++)
+  for(int i = 0; i < presets.size(); i++)
   {
-    if (presets[i].isObject() && presets[i].toObject().value("Name").toString() == name)
+    if(presets[i].isObject() && presets[i].toObject().value("Name").toString() == name)
     {
       return presets[i].toObject();
     }
@@ -179,9 +177,8 @@ QJsonObject ColorPresets::GetFirstPresetWithName(const char* name)
 // -----------------------------------------------------------------------------
 QString ColorPresets::GetPresetName(unsigned int index)
 {
-  const QJsonArray &presets = this->Internals->GetPresets();
-  return index < static_cast<unsigned int>(presets.size())?
-        presets[index].toObject().value("Name").toString() : QString();
+  const QJsonArray& presets = this->Internals->GetPresets();
+  return index < static_cast<unsigned int>(presets.size()) ? presets[index].toObject().value("Name").toString() : QString();
 }
 
 // -----------------------------------------------------------------------------
@@ -192,11 +189,11 @@ QPixmap ColorPresets::getPixmapFromPreset(unsigned int index)
   QJsonObject presetObj = GetPreset(index);
   QSize resolution(180, 20);
 
-  if (!presetObj.contains("ColorSpace") || presetObj["ColorSpace"].toString() != "RGB")
+  if(!presetObj.contains("ColorSpace") || presetObj["ColorSpace"].toString() != "RGB")
   {
     return QPixmap();
   }
-  if (presetObj.contains("RGBPoints") && presetObj["RGBPoints"].isArray())
+  if(presetObj.contains("RGBPoints") && presetObj["RGBPoints"].isArray())
   {
     QJsonArray presetArray = presetObj["RGBPoints"].toArray();
     int numSamples = resolution.width();
@@ -204,9 +201,9 @@ QPixmap ColorPresets::getPixmapFromPreset(unsigned int index)
 
     QImage image(numSamples, 1, QImage::Format_RGB888);
 
-    for (int i=0; i < numSamples; ++i)
+    for(int i = 0; i < numSamples; ++i)
     {
-      image.setPixel(i, 0, qRgb(colorValues[3*i + 0], colorValues[3*i + 1], colorValues[3*i + 2]));
+      image.setPixel(i, 0, qRgb(colorValues[3 * i + 0], colorValues[3 * i + 1], colorValues[3 * i + 2]));
     }
 
     image = image.scaled(resolution);

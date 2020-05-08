@@ -42,48 +42,48 @@
  */
 class SIMPLib_EXPORT SIMPLDataPathValidator : public QObject
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    ~SIMPLDataPathValidator() override;
+public:
+  ~SIMPLDataPathValidator() override;
 
-    static SIMPLDataPathValidator* Instance();
+  static SIMPLDataPathValidator* Instance();
 
-    /**
-     * @brief Getter property for SIMPLDataDirectory
-     * @return Value of SIMPLDataDirectory
-     */
-    QString getSIMPLDataDirectory() const;
+  /**
+   * @brief Getter property for SIMPLDataDirectory
+   * @return Value of SIMPLDataDirectory
+   */
+  QString getSIMPLDataDirectory() const;
 
-    /**
-     * @brief setSIMPLDataDirectory
-     * @param path
-     */
-    void setSIMPLDataDirectory(const QString &path);
+  /**
+   * @brief setSIMPLDataDirectory
+   * @param path
+   */
+  void setSIMPLDataDirectory(const QString& path);
 
-    /**
-     * @brief This function creates an absolute path based on the location of the application executing the code BUT more
-     * assumes that this code is running from a packaged application in which case there are more assumptions made about
-     * where certain directories. We may try to navigate up/down directories based on platform.
-     * @param relativePath
-     * @return
-     */
-    QString convertToAbsolutePath(const QString &relativePath);
+  /**
+   * @brief This function creates an absolute path based on the location of the application executing the code BUT more
+   * assumes that this code is running from a packaged application in which case there are more assumptions made about
+   * where certain directories. We may try to navigate up/down directories based on platform.
+   * @param relativePath
+   * @return
+   */
+  QString convertToAbsolutePath(const QString& relativePath);
 
-  protected:
-    SIMPLDataPathValidator();
+protected:
+  SIMPLDataPathValidator();
 
-  signals:
-    void dataDirectoryChanged(const QString &path);
+signals:
+  void dataDirectoryChanged(const QString& path);
 
-  private:
-    static SIMPLDataPathValidator* m_Self;
+private:
+  static SIMPLDataPathValidator* m_Self;
 
-    QString m_SIMPLDataDirectory;
+  QString m_SIMPLDataDirectory;
 
-  public:
-    SIMPLDataPathValidator(const SIMPLDataPathValidator&) = delete;            // Copy Constructor Not Implemented
-    SIMPLDataPathValidator(SIMPLDataPathValidator&&) = delete;                 // Move Constructor Not Implemented
-    SIMPLDataPathValidator& operator=(const SIMPLDataPathValidator&) = delete; // Copy Assignment Not Implemented
-    SIMPLDataPathValidator& operator=(SIMPLDataPathValidator&&) = delete;      // Move Assignment Not Implemented
+public:
+  SIMPLDataPathValidator(const SIMPLDataPathValidator&) = delete;            // Copy Constructor Not Implemented
+  SIMPLDataPathValidator(SIMPLDataPathValidator&&) = delete;                 // Move Constructor Not Implemented
+  SIMPLDataPathValidator& operator=(const SIMPLDataPathValidator&) = delete; // Copy Assignment Not Implemented
+  SIMPLDataPathValidator& operator=(SIMPLDataPathValidator&&) = delete;      // Move Assignment Not Implemented
 };

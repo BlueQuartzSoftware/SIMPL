@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -90,7 +90,7 @@ enum JunkPlacement
   End,
   Both
 };
-}
+} // namespace Detail
 
 class RawBinaryReaderTest
 {
@@ -117,7 +117,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> bool createAndWriteToFile(T* dataArray, size_t dataSize, T* junkArray, size_t junkSize, Detail::JunkPlacement junkPlacement)
+  template <typename T>
+  bool createAndWriteToFile(T* dataArray, size_t dataSize, T* junkArray, size_t junkSize, Detail::JunkPlacement junkPlacement)
   {
     /* Any of these combinations will return failure:
      *      If the junkArray has values and junkPlacement is set to NONE
@@ -218,7 +219,8 @@ public:
   //
   // -----------------------------------------------------------------------------
   // testCase1: This tests when the file size is equal to the allocated size, and checks to see if the data read is the same as the data written.
-  template <typename T, size_t N> int testCase1_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  template <typename T, size_t N>
+  int testCase1_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     int err = 0;
     int dataArraySize = k_ArraySize * N;
@@ -287,7 +289,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void testCase1_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  template <typename T>
+  void testCase1_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     testCase1_Execute<T, 1>(name, scalarType);
     testCase1_Execute<T, 2>(name, scalarType);
@@ -324,7 +327,8 @@ public:
   //
   // -----------------------------------------------------------------------------
   // testCase2: This tests when the file size is smaller than the allocated size. (Reading past the end of the file)
-  template <typename T, size_t N> void testCase2_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  template <typename T, size_t N>
+  void testCase2_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     int err = 0;
     int dataArraySize = k_ArraySize * N / 2; // We don't care what is written...we just need the data array size to be less than the file size
@@ -382,7 +386,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void testCase2_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  template <typename T>
+  void testCase2_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     testCase2_Execute<T, 1>(name, scalarType);
     testCase2_Execute<T, 2>(name, scalarType);
@@ -419,7 +424,8 @@ public:
   //
   // -----------------------------------------------------------------------------
   // testCase3: This tests when the file size is larger than the allocated size and there is junk at the end of the file.
-  template <typename T, size_t N> void testCase3_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  template <typename T, size_t N>
+  void testCase3_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     int dataArraySize = k_ArraySize * N;
     int junkArraySize = 10;
@@ -493,7 +499,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void testCase3_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  template <typename T>
+  void testCase3_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     testCase3_Execute<T, 1>(name, scalarType);
     testCase3_Execute<T, 2>(name, scalarType);
@@ -530,7 +537,8 @@ public:
   //
   // -----------------------------------------------------------------------------
   // testCase4: This tests when the file size is larger than the allocated size and there is junk at the beginning of the file.
-  template <typename T, size_t N> void testCase4_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  template <typename T, size_t N>
+  void testCase4_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     int dataArraySize = k_ArraySize * N;
     int junkArraySize = 5;
@@ -632,7 +640,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void testCase4_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  template <typename T>
+  void testCase4_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     testCase4_Execute<T, 1>(name, scalarType);
     testCase4_Execute<T, 2>(name, scalarType);
@@ -669,7 +678,8 @@ public:
   //
   // -----------------------------------------------------------------------------
   // testCase5: This tests when the file size is larger than the allocated size and there is junk both at the beginning and end of the file.
-  template <typename T, size_t N> void testCase5_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  template <typename T, size_t N>
+  void testCase5_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     int dataArraySize = k_ArraySize * N;
     int junkArraySize = 10;
@@ -743,7 +753,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void testCase5_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  template <typename T>
+  void testCase5_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     testCase5_Execute<T, 1>(name, scalarType);
     testCase5_Execute<T, 2>(name, scalarType);
@@ -780,7 +791,8 @@ public:
   //
   // -----------------------------------------------------------------------------
   // testCase6: This tests when skipHeaderBytes equals the file size
-  template <typename T, size_t N> void testCase6_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  template <typename T, size_t N>
+  void testCase6_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     int dataArraySize = 1000;
     int junkArraySize = k_ArraySize * N;
@@ -842,7 +854,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void testCase6_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  template <typename T>
+  void testCase6_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     testCase6_Execute<T, 1>(name, scalarType);
     testCase6_Execute<T, 2>(name, scalarType);

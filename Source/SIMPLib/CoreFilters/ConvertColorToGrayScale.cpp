@@ -1,40 +1,40 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without
-* modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of
-* its
-* contributors may be used to endorse or promote products derived from this
-* software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of
+ * its
+ * contributors may be used to endorse or promote products derived from this
+ * software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "ConvertColorToGrayScale.h"
 
 #include <algorithm>
@@ -71,11 +71,11 @@ public:
   , m_NumComp(comp)
   {
   }
-  LuminosityImpl(const LuminosityImpl&) = default; // Copy Constructor Not Implemented
-  LuminosityImpl(LuminosityImpl&&) = default;      // Move Constructor Not Implemented
+  LuminosityImpl(const LuminosityImpl&) = default;           // Copy Constructor Not Implemented
+  LuminosityImpl(LuminosityImpl&&) = default;                // Move Constructor Not Implemented
   LuminosityImpl& operator=(const LuminosityImpl&) = delete; // Copy Assignment Not Implemented
   LuminosityImpl& operator=(LuminosityImpl&&) = delete;      // Move Assignment Not Implemented
-  ~LuminosityImpl()  = default;
+  ~LuminosityImpl() = default;
 
   void convert(size_t start, size_t end) const
   {
@@ -86,7 +86,10 @@ public:
     }
   }
 
-   void operator()(const SIMPLRange& range) const { convert(range.min(), range.max()); }
+  void operator()(const SIMPLRange& range) const
+  {
+    convert(range.min(), range.max());
+  }
 };
 
 class LightnessImpl
@@ -103,24 +106,25 @@ public:
   , m_NumComp(comp)
   {
   }
-  LightnessImpl(const LightnessImpl&) = default; // Copy Constructor Not Implemented
-  LightnessImpl(LightnessImpl&&) = default;      // Move Constructor Not Implemented
+  LightnessImpl(const LightnessImpl&) = default;           // Copy Constructor Not Implemented
+  LightnessImpl(LightnessImpl&&) = default;                // Move Constructor Not Implemented
   LightnessImpl& operator=(const LightnessImpl&) = delete; // Copy Assignment Not Implemented
   LightnessImpl& operator=(LightnessImpl&&) = delete;      // Move Assignment Not Implemented
-  ~LightnessImpl()  = default;
+  ~LightnessImpl() = default;
 
   void convert(size_t start, size_t end) const
   {
     for(size_t i = start; i < end; i++)
     {
-      std::pair<uint8_t*, uint8_t*> minmax{
-        std::minmax_element(m_ImageData + (start * m_NumComp), m_ImageData + (end * m_NumComp))
-      };
+      std::pair<uint8_t*, uint8_t*> minmax{std::minmax_element(m_ImageData + (start * m_NumComp), m_ImageData + (end * m_NumComp))};
       m_FlatImageData[i] = static_cast<uint8_t>(roundf((minmax.first[0] + minmax.second[0]) / 2.0f));
     }
   }
 
-  void operator()(const SIMPLRange& range) const { convert(range.min(), range.max()); }
+  void operator()(const SIMPLRange& range) const
+  {
+    convert(range.min(), range.max());
+  }
 };
 
 class SingleChannelImpl
@@ -139,11 +143,11 @@ public:
   , m_Channel(channel)
   {
   }
-  SingleChannelImpl(const SingleChannelImpl&) = default; // Copy Constructor Not Implemented
-  SingleChannelImpl(SingleChannelImpl&&) = default;      // Move Constructor Not Implemented
+  SingleChannelImpl(const SingleChannelImpl&) = default;           // Copy Constructor Not Implemented
+  SingleChannelImpl(SingleChannelImpl&&) = default;                // Move Constructor Not Implemented
   SingleChannelImpl& operator=(const SingleChannelImpl&) = delete; // Copy Assignment Not Implemented
   SingleChannelImpl& operator=(SingleChannelImpl&&) = delete;      // Move Assignment Not Implemented
-  ~SingleChannelImpl()  = default;
+  ~SingleChannelImpl() = default;
 
   void convert(size_t start, size_t end) const
   {
@@ -153,29 +157,31 @@ public:
     }
   }
 
-   void operator()(const SIMPLRange& range) const { convert(range.min(), range.max()); }
-
+  void operator()(const SIMPLRange& range) const
+  {
+    convert(range.min(), range.max());
+  }
 };
 
 class ParallelWrapper
 {
-  public:
-    ~ParallelWrapper() = default;
-    ParallelWrapper(const ParallelWrapper&) = delete; // Copy Constructor Not Implemented
-    ParallelWrapper(ParallelWrapper&&) = delete;      // Move Constructor Not Implemented
-    ParallelWrapper& operator=(const ParallelWrapper&) = delete; // Copy Assignment Not Implemented
-    ParallelWrapper& operator=(ParallelWrapper&&) = delete;      // Move Assignment Not Implemented
+public:
+  ~ParallelWrapper() = default;
+  ParallelWrapper(const ParallelWrapper&) = delete;            // Copy Constructor Not Implemented
+  ParallelWrapper(ParallelWrapper&&) = delete;                 // Move Constructor Not Implemented
+  ParallelWrapper& operator=(const ParallelWrapper&) = delete; // Copy Assignment Not Implemented
+  ParallelWrapper& operator=(ParallelWrapper&&) = delete;      // Move Assignment Not Implemented
 
-    template<typename T>
-    static void Run(T impl, size_t totalPoints)
-    {
-      ParallelDataAlgorithm dataAlg;
-      dataAlg.setRange(0, totalPoints);
-      dataAlg.execute(impl);
-    }
+  template <typename T>
+  static void Run(T impl, size_t totalPoints)
+  {
+    ParallelDataAlgorithm dataAlg;
+    dataAlg.setRange(0, totalPoints);
+    dataAlg.execute(impl);
+  }
 
-  protected:
-    ParallelWrapper() = default;
+protected:
+  ParallelWrapper() = default;
 };
 
 // -----------------------------------------------------------------------------
@@ -245,7 +251,9 @@ void ConvertColorToGrayScale::setupFilterParameters()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ConvertColorToGrayScale::initialize() { }
+void ConvertColorToGrayScale::initialize()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -332,7 +340,6 @@ void ConvertColorToGrayScale::dataCheck()
   }
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -371,9 +378,7 @@ void ConvertColorToGrayScale::execute()
     }
 
     DataArrayPath newPath = m_OutputArrayPaths[i];
-    UInt8ArrayType::Pointer outputGrayData = getDataContainerArray()->
-                                             getAttributeMatrix(newPath)->
-                                             getAttributeArrayAs<UInt8ArrayType>(newPath.getDataArrayName());
+    UInt8ArrayType::Pointer outputGrayData = getDataContainerArray()->getAttributeMatrix(newPath)->getAttributeArrayAs<UInt8ArrayType>(newPath.getDataArrayName());
 
     if(nullptr == outputGrayData.get())
     {
@@ -387,20 +392,20 @@ void ConvertColorToGrayScale::execute()
     size_t comp = inputColorData->getNumberOfComponents();
     size_t totalPoints = inputColorData->getNumberOfTuples();
 
-    switch (convType)
+    switch(convType)
     {
-      case ConversionType::Luminosity:
-        ParallelWrapper::Run<LuminosityImpl>(LuminosityImpl(inputColorData->getPointer(0), outputGrayData->getPointer(0), m_ColorWeights, comp), totalPoints );
-        break;
-      case ConversionType::Average:
-        ParallelWrapper::Run<LuminosityImpl>(LuminosityImpl(inputColorData->getPointer(0), outputGrayData->getPointer(0), {0.3333f, 0.3333f, 0.3333f}, comp) , totalPoints);
-        break;
-      case ConversionType::Lightness:
-        ParallelWrapper::Run<LightnessImpl>(LightnessImpl(inputColorData->getPointer(0), outputGrayData->getPointer(0), comp) , totalPoints);
-        break;
-      case ConversionType::SingleChannel:
-        ParallelWrapper::Run<SingleChannelImpl>(SingleChannelImpl(inputColorData->getPointer(0), outputGrayData->getPointer(0), comp, getColorChannel()) , totalPoints);
-        break;
+    case ConversionType::Luminosity:
+      ParallelWrapper::Run<LuminosityImpl>(LuminosityImpl(inputColorData->getPointer(0), outputGrayData->getPointer(0), m_ColorWeights, comp), totalPoints);
+      break;
+    case ConversionType::Average:
+      ParallelWrapper::Run<LuminosityImpl>(LuminosityImpl(inputColorData->getPointer(0), outputGrayData->getPointer(0), {0.3333f, 0.3333f, 0.3333f}, comp), totalPoints);
+      break;
+    case ConversionType::Lightness:
+      ParallelWrapper::Run<LightnessImpl>(LightnessImpl(inputColorData->getPointer(0), outputGrayData->getPointer(0), comp), totalPoints);
+      break;
+    case ConversionType::SingleChannel:
+      ParallelWrapper::Run<SingleChannelImpl>(SingleChannelImpl(inputColorData->getPointer(0), outputGrayData->getPointer(0), comp, getColorChannel()), totalPoints);
+      break;
     }
   }
 }
@@ -423,7 +428,7 @@ AbstractFilter::Pointer ConvertColorToGrayScale::newFilterInstance(bool copyFilt
 // -----------------------------------------------------------------------------
 QString ConvertColorToGrayScale::getCompiledLibraryName() const
 {
-  return  Core::CoreBaseName;
+  return Core::CoreBaseName;
 }
 
 // -----------------------------------------------------------------------------

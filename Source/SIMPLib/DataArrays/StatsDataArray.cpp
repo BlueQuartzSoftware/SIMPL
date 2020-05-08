@@ -122,7 +122,6 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, const std:
   return ptr;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -776,27 +775,27 @@ void StatsDataArray::fillArrayWithNewStatsData(size_t n, PhaseType::Type* phase_
 void StatsDataArray::fillArrayWithNewStatsData(size_t n, PhaseType::EnumType* phase_types)
 {
   m_StatsDataArray.resize(n);
-  for (size_t i = 0; i < n; ++i)
+  for(size_t i = 0; i < n; ++i)
   {
-    if (phase_types != nullptr)
+    if(phase_types != nullptr)
     {
-      if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Primary))
+      if(phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Primary))
       {
         m_StatsDataArray[i] = PrimaryStatsData::New();
       }
-      else if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Precipitate))
+      else if(phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Precipitate))
       {
         m_StatsDataArray[i] = PrecipitateStatsData::New();
       }
-      else if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Transformation))
+      else if(phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Transformation))
       {
         m_StatsDataArray[i] = TransformationStatsData::New();
       }
-      else if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Boundary))
+      else if(phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Boundary))
       {
         m_StatsDataArray[i] = BoundaryStatsData::New();
       }
-      else if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Matrix))
+      else if(phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Matrix))
       {
         m_StatsDataArray[i] = MatrixStatsData::New();
       }
@@ -805,7 +804,7 @@ void StatsDataArray::fillArrayWithNewStatsData(size_t n, PhaseType::EnumType* ph
         m_StatsDataArray[i] = StatsData::New();
       }
     }
-    if (phase_types == nullptr)
+    if(phase_types == nullptr)
     {
       m_StatsDataArray[i] = StatsData::New();
     }

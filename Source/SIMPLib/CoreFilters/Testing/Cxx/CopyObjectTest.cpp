@@ -119,7 +119,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void checkDataArray(IDataArray::Pointer originalData, IDataArray::Pointer newData, bool isRenamed)
+  template <typename T>
+  void checkDataArray(IDataArray::Pointer originalData, IDataArray::Pointer newData, bool isRenamed)
   {
     if(originalData == IDataArray::NullPointer() || newData == IDataArray::NullPointer())
     {
@@ -532,8 +533,8 @@ public:
     bool sameArrayNames = (newMatrixNames == oldMatrixNames);
     DREAM3D_REQUIRE_EQUAL(sameArrayNames, true)
 
-    //DataContainer::Container_t oldAttrMatrices = oldDC->getAttributeMatrices();
-    //DataContainer::Container_t newAttrMatrices = newDC->getAttributeMatrices();
+    // DataContainer::Container_t oldAttrMatrices = oldDC->getAttributeMatrices();
+    // DataContainer::Container_t newAttrMatrices = newDC->getAttributeMatrices();
 
     for(int i = 0; i < newMatrixNames.size(); i++)
     {

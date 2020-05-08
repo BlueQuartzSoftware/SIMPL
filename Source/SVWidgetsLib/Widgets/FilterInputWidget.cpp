@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "FilterInputWidget.h"
 
@@ -65,13 +65,10 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
 
-
 #if 0
 #include "ctkCollapsibleGroupBox.h"
 #define QGroupBox ctkCollapsibleGroupBox
 #endif
-
-
 
 // Initialize private static member variable
 QString FilterInputWidget::m_OpenDialogLastFilePath = "";
@@ -178,11 +175,11 @@ bool FilterInputWidget::eventFilter(QObject* o, QEvent* e)
 // -----------------------------------------------------------------------------
 void FilterInputWidget::setupGui()
 {
-//  QFont humanLabelFont = SVStyle::Instance()->GetHumanLabelFont();
-//  QFont brandingFont = SVStyle::Instance()->GetBrandingLabelFont();
+  //  QFont humanLabelFont = SVStyle::Instance()->GetHumanLabelFont();
+  //  QFont brandingFont = SVStyle::Instance()->GetBrandingLabelFont();
 
-//  m_Ui->filterHumanLabel->setFont(humanLabelFont);
-//  m_Ui->filterIndex->setFont(humanLabelFont);
+  //  m_Ui->filterHumanLabel->setFont(humanLabelFont);
+  //  m_Ui->filterIndex->setFont(humanLabelFont);
 
   QString releaseType = QString::fromLatin1(SIMPLViewProj_RELEASE_TYPE);
   if(releaseType.compare("Official") == 0)
@@ -191,12 +188,11 @@ void FilterInputWidget::setupGui()
   }
   else
   {
-    //m_Ui->brandingLabel->setFont(brandingFont);
+    // m_Ui->brandingLabel->setFont(brandingFont);
     m_Ui->brandingLabel->installEventFilter(this);
   }
-  
-  connect(m_Ui->informationBtn, SIGNAL(clicked()),
-           this, SLOT(showHelp()));
+
+  connect(m_Ui->informationBtn, SIGNAL(clicked()), this, SLOT(showHelp()));
 }
 
 // -----------------------------------------------------------------------------
@@ -250,39 +246,39 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
 
   QString groupBoxStyle;
   QTextStream ss(&groupBoxStyle);
-//  ss << "QGroupBox {";
-//  ss << "    font-weight: bold;";
-//  ss << "}";
-//  ss << "QGroupBox::title {";
-//  ss << "    subcontrol-origin: margin;";
-//  ss << "    subcontrol-position: top left;";
-//  ss << "    padding: 0 5px;";
-//  ss << "    font-weight: bold;";
-//  ss << "}";
+  //  ss << "QGroupBox {";
+  //  ss << "    font-weight: bold;";
+  //  ss << "}";
+  //  ss << "QGroupBox::title {";
+  //  ss << "    subcontrol-origin: margin;";
+  //  ss << "    subcontrol-position: top left;";
+  //  ss << "    padding: 0 5px;";
+  //  ss << "    font-weight: bold;";
+  //  ss << "}";
 
   QGroupBox* parametersGroupBox = new QGroupBox("Parameters", this);
   QVBoxLayout* pLayout = new QVBoxLayout(parametersGroupBox);
   pLayout->setContentsMargins(0, 0, 0, 0);
   pLayout->setSpacing(0);
-  //parametersGroupBox->setStyleSheet(groupBoxStyle);
+  // parametersGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* requiredGroupBox = new QGroupBox("Required Objects", this);
   QVBoxLayout* rLayout = new QVBoxLayout(requiredGroupBox);
   rLayout->setContentsMargins(0, 0, 0, 0);
   rLayout->setSpacing(0);
-  //requiredGroupBox->setStyleSheet(groupBoxStyle);
+  // requiredGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* createdGroupBox = new QGroupBox("Created Objects", this);
   QVBoxLayout* cLayout = new QVBoxLayout(createdGroupBox);
   cLayout->setContentsMargins(0, 0, 0, 0);
   cLayout->setSpacing(0);
-  //createdGroupBox->setStyleSheet(groupBoxStyle);
+  // createdGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* noCategoryGroupBox = new QGroupBox("Uncategorized", this);
   QVBoxLayout* nLayout = new QVBoxLayout(noCategoryGroupBox);
   nLayout->setContentsMargins(0, 0, 0, 0);
   nLayout->setSpacing(0);
-  //noCategoryGroupBox->setStyleSheet(groupBoxStyle);
+  // noCategoryGroupBox->setStyleSheet(groupBoxStyle);
 
   // Get the FilterWidgetManagere instance so we can instantiate new FilterParameterWidgets
   FilterWidgetManager* fwm = FilterWidgetManager::Instance();
@@ -296,19 +292,22 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
   {
     FilterParameter* parameter = (*iter).get();
 
-//    // Check to make sure that this is in fact a file system filter parameter
-//    if(nullptr != dynamic_cast<InputFileFilterParameter*>(parameter) || nullptr != dynamic_cast<InputPathFilterParameter*>(parameter) ||
-//       nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
-//    {
-//      validateFileSystemFilterParameter(parameter, filter);
-//    }
+    //    // Check to make sure that this is in fact a file system filter parameter
+    //    if(nullptr != dynamic_cast<InputFileFilterParameter*>(parameter) || nullptr != dynamic_cast<InputPathFilterParameter*>(parameter) ||
+    //       nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
+    //    {
+    //      validateFileSystemFilterParameter(parameter, filter);
+    //    }
 
     QWidget* filterParameterWidget = fwm->createWidget(parameter, filter, this);
     m_PropertyToWidget.insert(parameter->getPropertyName(), filterParameterWidget); // Update our Map of Filter Parameter Properties to the Widget
     // Alert to DataArrayPath requirements
-    connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)), this, SLOT(getEmittedPathReqs(DataContainerSelectionFilterParameter::RequirementType)));
-    connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SLOT(getEmittedPathReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
-    connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)), this, SLOT(getEmittedPathReqs(DataArraySelectionFilterParameter::RequirementType)));
+    connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)), this,
+            SLOT(getEmittedPathReqs(DataContainerSelectionFilterParameter::RequirementType)));
+    connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this,
+            SLOT(getEmittedPathReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
+    connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)), this,
+            SLOT(getEmittedPathReqs(DataArraySelectionFilterParameter::RequirementType)));
     connect(filterParameterWidget, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
     // Alert to DataArrayPaths from the DataStructureWidget
     connect(this, SIGNAL(filterPath(DataArrayPath)), filterParameterWidget, SIGNAL(filterPathInput(DataArrayPath)));
@@ -324,7 +323,6 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
     connect(this, SIGNAL(dataArrayPathSelectionLocked(QToolButton*)), filterParameterWidget, SIGNAL(lockDataArrayPathSelection(QToolButton*)));
     connect(filterParameterWidget, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)));
     connect(this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), filterParameterWidget, SIGNAL(unlockDataArrayPathSelection(QToolButton*)));
-
 
     if(nullptr == filterParameterWidget)
     {
@@ -646,17 +644,16 @@ void FilterInputWidget::displayFilterParameters(AbstractFilter::Pointer filter)
     m_VariablesWidget->setVisible(true);
   }
 
-
-    ISIMPLibPlugin* plug = filter->getPluginInstance();
-    if(nullptr != plug)
-    {
-      m_BrandingLabel = QString("Plugin: %1 (%2) Filter Name: %3").arg(plug->getPluginDisplayName()).arg(plug->getVersion()).arg(filter->getNameOfClass());
-    }
-    else
-    {
-      m_BrandingLabel = QString("Plugin: Unknown Plugin. Filter Name: %1").arg(filter->getNameOfClass());
-    }
-    m_Ui->brandingLabel->setText(m_BrandingLabel);
+  ISIMPLibPlugin* plug = filter->getPluginInstance();
+  if(nullptr != plug)
+  {
+    m_BrandingLabel = QString("Plugin: %1 (%2) Filter Name: %3").arg(plug->getPluginDisplayName()).arg(plug->getVersion()).arg(filter->getNameOfClass());
+  }
+  else
+  {
+    m_BrandingLabel = QString("Plugin: Unknown Plugin. Filter Name: %1").arg(filter->getNameOfClass());
+  }
+  m_Ui->brandingLabel->setText(m_BrandingLabel);
 
   // Add a label at the top of the Inputs Tabs to show what filter we are working on
   m_Ui->filterHumanLabel->setText(filter->getHumanLabel());
@@ -665,22 +662,21 @@ void FilterInputWidget::displayFilterParameters(AbstractFilter::Pointer filter)
   // m_Ui->filterIndex->clear();
   QString style;
 
-
   QString filterGroup;
   QTextStream groupStream(&filterGroup);
   groupStream << "Group: " << filter->getGroupName() << "\n";
   groupStream << "Subgroup: " << filter->getSubGroupName();
   m_Ui->filterHumanLabel->setToolTip(filterGroup);
 
-//  QColor bgColor =  w->getGroupColor();
-//  QColor borderColor = QColor::fromHsv(bgColor.hue(), 100, 120);
+  //  QColor bgColor =  w->getGroupColor();
+  //  QColor borderColor = QColor::fromHsv(bgColor.hue(), 100, 120);
 
   QTextStream styleStream(&style);
   styleStream << "QFrame#" << m_Ui->labelFrame->objectName() << "{";
   styleStream << "border-bottom: 0px solid;";
-//  styleStream << "border-bottom-color: " << borderColor.name() << ";";
- // styleStream << "background-color: " << bgColor.name() << ";";
- // styleStream << "border-radius: 0 0 0 0px;";
+  //  styleStream << "border-bottom-color: " << borderColor.name() << ";";
+  // styleStream << "background-color: " << bgColor.name() << ";";
+  // styleStream << "border-radius: 0 0 0 0px;";
   styleStream << "}";
 
 #if 0
@@ -742,8 +738,8 @@ void FilterInputWidget::getEmittedPathReqs(DataContainerSelectionFilterParameter
 {
   emit viewPathsMatchingReqs(dcReqs);
 
-  //QObject* obj = this->sender();
-  //for(QWidget* widget : m_PropertyToWidget)
+  // QObject* obj = this->sender();
+  // for(QWidget* widget : m_PropertyToWidget)
   //{
   //  FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
   //  if(fpWidget && fpWidget != obj)
@@ -760,8 +756,8 @@ void FilterInputWidget::getEmittedPathReqs(AttributeMatrixSelectionFilterParamet
 {
   emit viewPathsMatchingReqs(amReqs);
 
-  //QObject* obj = this->sender();
-  //for(QWidget* widget : m_PropertyToWidget)
+  // QObject* obj = this->sender();
+  // for(QWidget* widget : m_PropertyToWidget)
   //{
   //  FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
   //  if(fpWidget && fpWidget != obj)
@@ -778,8 +774,8 @@ void FilterInputWidget::getEmittedPathReqs(DataArraySelectionFilterParameter::Re
 {
   emit viewPathsMatchingReqs(daReqs);
 
-  //QObject* obj = this->sender();
-  //for(QWidget* widget : m_PropertyToWidget)
+  // QObject* obj = this->sender();
+  // for(QWidget* widget : m_PropertyToWidget)
   //{
   //  FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
   //  if(fpWidget && fpWidget != obj)

@@ -162,4 +162,3 @@ private:
   /** Enables warnings, if true */
   bool warnings;
 };
-

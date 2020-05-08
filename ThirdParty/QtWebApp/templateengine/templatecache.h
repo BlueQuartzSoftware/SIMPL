@@ -74,4 +74,3 @@ private:
   /** Used to synchronize threads */
   QMutex mutex;
 };
-

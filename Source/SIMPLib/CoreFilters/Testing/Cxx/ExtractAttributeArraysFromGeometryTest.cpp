@@ -104,7 +104,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void checkDataArray(std::shared_ptr<DataArray<T>> originalData, std::shared_ptr<DataArray<T>> newData)
+  template <typename T>
+  void checkDataArray(std::shared_ptr<DataArray<T>> originalData, std::shared_ptr<DataArray<T>> newData)
   {
     DREAM3D_REQUIRE_EQUAL(originalData->getSize(), newData->getSize())
 
@@ -677,7 +678,8 @@ public:
 
     // Create Geometry
 
-    std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 1.55f}, {3.0f, 1.0f, 1.55f}, {2.0f, 3.0f, 1.55f}, {2.0f, 2.0f, 3.55f}, {2.5f, 1.0f, 1.55f}, {4.3f, 1.0f, 1.55f}, {5.1f, 3.0f, 1.55f}, {7.63f, 2.0f, 3.55f}};
+    std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 1.55f}, {3.0f, 1.0f, 1.55f}, {2.0f, 3.0f, 1.55f}, {2.0f, 2.0f, 3.55f},
+                                                {2.5f, 1.0f, 1.55f}, {4.3f, 1.0f, 1.55f}, {5.1f, 3.0f, 1.55f}, {7.63f, 2.0f, 3.55f}};
 
     std::vector<std::vector<MeshIndexType>> elements = {{0, 1, 2, 3, 4, 5, 6, 7}};
 

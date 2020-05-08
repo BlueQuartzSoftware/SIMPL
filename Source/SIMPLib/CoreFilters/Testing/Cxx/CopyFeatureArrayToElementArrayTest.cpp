@@ -95,7 +95,8 @@ public:
     return da;
   }
 
-  template <typename T> void TestCopyFeatureArrayToElementArrayForType()
+  template <typename T>
+  void TestCopyFeatureArrayToElementArrayForType()
   {
     // Names and Constants
 
@@ -103,7 +104,6 @@ public:
 
     static const QString k_Cell_AMName("Cell Attribute Matrix");
     static const QString k_Feature_AMName("Feature Attribute Matrix");
-
 
     static const QString k_CellFeatureIdsArrayName("FeatureIds");
     static const QString k_CellTempArrayName("Temperature");
@@ -135,12 +135,12 @@ public:
     {
       for(size_t x = 0; x < 10; x++)
       {
-        size_t index = (10*y) + x;
+        size_t index = (10 * y) + x;
         cellFeatureIds->setValue(index, static_cast<int32_t>(y));
       }
     }
 
-    //Create an array in teh Feature Attribute Matrix with 3 values since we created 3 features in the cell attribute matrix
+    // Create an array in teh Feature Attribute Matrix with 3 values since we created 3 features in the cell attribute matrix
     typename DataArray<T>::Pointer avgTempValue = DataArray<T>::CreateArray(3, k_FeatureDataArrayName, true);
     featureAM->insertOrAssign(avgTempValue);
     for(int i = 0; i < 3; i++)
@@ -184,25 +184,23 @@ public:
 
     for(size_t i = 0; i < createdElementArray->getNumberOfTuples(); i++)
     {
-//      daFeatures->printTuple(ss , i);
-//      createdElementArray->printTuple(ss, i);
-//      ss << "---\n";
+      //      daFeatures->printTuple(ss , i);
+      //      createdElementArray->printTuple(ss, i);
+      //      ss << "---\n";
 
-        int32_t featureId = cellFeatureIds->getValue(i);
-        T value = createdElementArray->getValue(i);
-        T featureValue = avgTempValue->getValue(featureId);
-        DREAM3D_REQUIRE_EQUAL(value, featureValue);
+      int32_t featureId = cellFeatureIds->getValue(i);
+      T value = createdElementArray->getValue(i);
+      T featureValue = avgTempValue->getValue(featureId);
+      DREAM3D_REQUIRE_EQUAL(value, featureValue);
 
-//      for(size_t j = 0; j < daFeatures->getNumberOfComponents(); j++)
-//      {
+      //      for(size_t j = 0; j < daFeatures->getNumberOfComponents(); j++)
+      //      {
 
-//        T oldValue = daFeatures->getComponent(i, j);
-//        T newValue = createdElementArray->getComponent(daIDList->getValue(i), j);
-//        DREAM3D_REQUIRE_EQUAL(newValue, oldValue)
-//      }
+      //        T oldValue = daFeatures->getComponent(i, j);
+      //        T newValue = createdElementArray->getComponent(daIDList->getValue(i), j);
+      //        DREAM3D_REQUIRE_EQUAL(newValue, oldValue)
+      //      }
     }
-
-
   }
 
   // -----------------------------------------------------------------------------

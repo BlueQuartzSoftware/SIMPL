@@ -203,7 +203,6 @@ public:
    */
   void execute() override;
 
-
 protected:
   GenerateTiltSeries();
 

@@ -160,14 +160,13 @@ public:
   QUrl getConnectionURL()
   {
     QUrl url;
-    for (auto address : QNetworkInterface::allAddresses())
+    for(auto address : QNetworkInterface::allAddresses())
     {
-      if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost))
+      if(address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost))
       {
         url.setHost(address.toString());
         break;
       }
-
     }
     url.setScheme("http");
     url.setPort(8080);
@@ -371,7 +370,7 @@ public:
 
     QHttpMultiPart* multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 
-	QString pipelineData;
+    QString pipelineData;
     {
       QFile inputFile(UnitTest::RestUnitTest::SmallIN100ArchivePipeline);
       DREAM3D_REQUIRE_EQUAL(inputFile.open(QIODevice::ReadOnly), true);
@@ -391,7 +390,7 @@ public:
       doc.setObject(rootObj);
       jsonByteArray = doc.toJson();
 
-	  pipelineData = QString::fromStdString(jsonByteArray.toStdString());
+      pipelineData = QString::fromStdString(jsonByteArray.toStdString());
 
       QHttpPart jsonPart;
       jsonPart.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");

@@ -229,7 +229,8 @@ public:
    * @param data
    * @return
    */
-  template <typename T> QJsonArray generateJsonArrayFromDataArray(typename DataArray<T>::Pointer data)
+  template <typename T>
+  QJsonArray generateJsonArrayFromDataArray(typename DataArray<T>::Pointer data)
   {
     QJsonArray json;
     if(nullptr != data.get())

@@ -48,7 +48,8 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 
-enum createdPathID : RenameDataPath::DataID_t {
+enum createdPathID : RenameDataPath::DataID_t
+{
   DataContainerID = 1,
   AttributeMatrixID,
   DataArrayID
@@ -151,8 +152,7 @@ void CopyObject::dataCheck()
   switch(getObjectToCopy())
   {
   // Copy Data Container
-  case 0:
-  {
+  case 0: {
     if(getDataContainerArray()->doesDataContainerExist(getCopiedObjectName()))
     {
       QString ss = QObject::tr("A Data Container already exists with the name %1").arg(getCopiedObjectName());
@@ -174,8 +174,7 @@ void CopyObject::dataCheck()
     break;
   }
   // Copy Attribute Matrix
-  case 1:
-  {
+  case 1: {
     DataArrayPath path(getAttributeMatrixToCopy().getDataContainerName(), getCopiedObjectName(), "");
     if(getDataContainerArray()->doesAttributeMatrixExist(path))
     {
@@ -198,8 +197,7 @@ void CopyObject::dataCheck()
     break;
   }
   // Copy Attribute Array
-  case 2:
-  {
+  case 2: {
     DataArrayPath path(getAttributeArrayToCopy().getDataContainerName(), getAttributeArrayToCopy().getAttributeMatrixName(), getCopiedObjectName());
     if(getDataContainerArray()->doesAttributeArrayExist(path))
     {
@@ -221,13 +219,11 @@ void CopyObject::dataCheck()
 
     break;
   }
-  default:
-  {
+  default: {
     break;
   }
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -241,7 +237,6 @@ void CopyObject::execute()
   {
     return;
   }
-
 }
 
 // -----------------------------------------------------------------------------

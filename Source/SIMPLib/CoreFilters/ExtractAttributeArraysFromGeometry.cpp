@@ -54,7 +54,8 @@
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 
-enum createdPathID : RenameDataPath::DataID_t {
+enum createdPathID : RenameDataPath::DataID_t
+{
   RectGrid_XBoundsID = 1,
   RectGrid_YBoundsID,
   RectGrid_ZBoundsID,
@@ -129,10 +130,11 @@ void ExtractAttributeArraysFromGeometry::setupFilterParameters()
         "SharedVertexListArrayPath3", "SharedQuadListArrayPath",                     // QuadGeom
         "SharedVertexListArrayPath4", "SharedTetListArrayPath",                      // TetrahedralGeom
         "SharedVertexListArrayPath5", "SharedHexListArrayPath"                       // HexahedralGeom
-    }; 
+    };
     parameter->setLinkedProperties(linkedProps);
     parameter->setCategory(FilterParameter::Parameter);
-    IGeometry::Types geomTypes = {IGeometry::Type::RectGrid, IGeometry::Type::Vertex, IGeometry::Type::Edge, IGeometry::Type::Triangle, IGeometry::Type::Quad, IGeometry::Type::Tetrahedral, IGeometry::Type::Hexahedral};
+    IGeometry::Types geomTypes = {IGeometry::Type::RectGrid, IGeometry::Type::Vertex,      IGeometry::Type::Edge,      IGeometry::Type::Triangle,
+                                  IGeometry::Type::Quad,     IGeometry::Type::Tetrahedral, IGeometry::Type::Hexahedral};
     parameter->setDefaultGeometryTypes(geomTypes);
     parameters.push_back(parameter);
   }
@@ -185,10 +187,10 @@ void ExtractAttributeArraysFromGeometry::setupFilterParameters()
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Vertex, IGeometry::Type::Hexahedral);
     parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Shared Vertex List", SharedVertexListArrayPath5, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req,
-      static_cast<int32_t>(IGeometry::Type::Hexahedral)));
+                                                  static_cast<int32_t>(IGeometry::Type::Hexahedral)));
     req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Cell, IGeometry::Type::Hexahedral);
     parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Hexahedral List", SharedHexListArrayPath, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req,
-      static_cast<int32_t>(IGeometry::Type::Hexahedral)));
+                                                  static_cast<int32_t>(IGeometry::Type::Hexahedral)));
   }
   setFilterParameters(parameters);
 }
@@ -497,8 +499,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     break;
   }
-  default:
-  {
+  default: {
     QString ss = QObject::tr("Selected Data Container (%1) does not contain a valid geometry\n"
                              "Geometry Type: %2\n"
                              "Valid Geometry Types: Rectilinear Grid, Vertex, Edge, Triangle, Quadrilateral, Tetrahedral")
@@ -509,7 +510,6 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
   }
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -633,12 +633,10 @@ void ExtractAttributeArraysFromGeometry::execute()
 
     break;
   }
-  default:
-  {
+  default: {
     break;
   }
   }
-
 }
 
 // -----------------------------------------------------------------------------

@@ -46,7 +46,7 @@ class IDataStructureNode;
  * AttributeMatrix iterators only iterate over their DataArrays.
  * This was made constexpr for the sake of creating faster runtime operations.
  */
-class DsnIterator : public std::iterator<std::random_access_iterator_tag, std::shared_ptr<IDataStructureNode>, size_t> //std::iterator_traits<std::shared_ptr<IDataStructureNode>>
+class DsnIterator : public std::iterator<std::random_access_iterator_tag, std::shared_ptr<IDataStructureNode>, size_t> // std::iterator_traits<std::shared_ptr<IDataStructureNode>>
 {
   using self_type = DsnIterator;
   using difference_type = size_t;
@@ -70,8 +70,9 @@ public:
   DsnIterator(const collection_type& collection, size_t index)
   : m_Collection(collection)
   , m_Index(index)
-  {}
-  
+  {
+  }
+
   /**
    * @brief Copy iterator
    * @param other
@@ -79,7 +80,8 @@ public:
   DsnIterator(const self_type& other)
   : m_Collection(other.m_Collection)
   , m_Index(other.m_Index)
-  {}
+  {
+  }
 
   /**
    * @brief Destructor
@@ -170,11 +172,11 @@ public:
   }
 
   /**
-  * @brief Returns true if the given iterator comes later in the collection.
-  * Returns false otherwise.
-  * @param other
-  * @return
-  */
+   * @brief Returns true if the given iterator comes later in the collection.
+   * Returns false otherwise.
+   * @param other
+   * @return
+   */
   constexpr bool operator<(const self_type& other) const
   {
     return m_Index < other.m_Index;
@@ -214,10 +216,10 @@ public:
   }
 
   /**
-    * @brief Returns true if other iterator points to the same index in same collection.
-    * @param rhs right hand side
-    * @return
-    */
+   * @brief Returns true if other iterator points to the same index in same collection.
+   * @param rhs right hand side
+   * @return
+   */
   constexpr bool operator==(const self_type& rhs) const
   {
     return (m_Index == rhs.m_Index) && (m_Collection == rhs.m_Collection);
@@ -253,7 +255,6 @@ private:
   difference_type m_Index;
 };
 
-
 /**
  * @brief The DsnConstIterator is a bidirectional const iterator over data structure types
  * belonging to the same level.  DataContainerArray iterators only iterate over
@@ -261,7 +262,7 @@ private:
  * AttributeMatrix iterators only iterate over their DataArrays.
  * This was made constexpr for the sake of creating faster runtime operations.
  */
-class DsnConstIterator : public std::iterator<std::random_access_iterator_tag, const std::shared_ptr<IDataStructureNode>, size_t> //std::iterator_traits<const std::shared_ptr<IDataStructureNode>>
+class DsnConstIterator : public std::iterator<std::random_access_iterator_tag, const std::shared_ptr<IDataStructureNode>, size_t> // std::iterator_traits<const std::shared_ptr<IDataStructureNode>>
 {
   using self_type = DsnConstIterator;
   using difference_type = size_t;
@@ -285,7 +286,8 @@ public:
   DsnConstIterator(const collection_type& collection, size_t index)
   : m_Collection(collection)
   , m_Index(index)
-  {}
+  {
+  }
 
   /**
    * @brief Copy constructor
@@ -294,7 +296,8 @@ public:
   DsnConstIterator(const self_type& other)
   : m_Collection(other.m_Collection)
   , m_Index(other.m_Index)
-  {}
+  {
+  }
 
   /**
    * @brief Destructor
@@ -385,11 +388,11 @@ public:
   }
 
   /**
-  * @brief Returns true if the given iterator comes later in the collection.
-  * Returns false otherwise.
-  * @param other
-  * @return
-  */
+   * @brief Returns true if the given iterator comes later in the collection.
+   * Returns false otherwise.
+   * @param other
+   * @return
+   */
   constexpr bool operator<(const self_type& other) const
   {
     return m_Index < other.m_Index;

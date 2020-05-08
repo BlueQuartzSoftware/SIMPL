@@ -27,7 +27,7 @@ HttpSessionStore::HttpSessionStore(ServerSettings* settings, QObject* parent)
     cookieName = settings->cookieName;
     expirationTime = settings->expirationTime;
   }
-//  qDebug() << "HttpSessionStore: Sessions expire after " << expirationTime << " milliseconds";
+  //  qDebug() << "HttpSessionStore: Sessions expire after " << expirationTime << " milliseconds";
 }
 
 // -----------------------------------------------------------------------------
@@ -139,7 +139,7 @@ HttpSession HttpSessionStore::getSession(HttpRequest& request, HttpResponse& res
     //    QByteArray cookieDomain = settings->value("cookieDomain").toByteArray();
 
     HttpSession session(true);
-//    qDebug() << "HttpSessionStore: create new session with ID " << session.getId().data();
+    //    qDebug() << "HttpSessionStore: create new session with ID " << session.getId().data();
     sessions.insert(session.getId(), session);
     // response.setCookie(HttpCookie(cookieName, session.getId(), expirationTime / 1000, cookiePath, cookieComment, cookieDomain));
     return session;

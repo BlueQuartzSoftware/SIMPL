@@ -93,6 +93,4 @@ private slots:
 private:
   /** Should we print out all sorts of diagnostics */
   bool verbose = false;
-
 };
-

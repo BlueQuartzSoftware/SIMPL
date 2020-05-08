@@ -18,4 +18,3 @@
 #if !defined(QtWebAppLib_EXPORT)
 #define QtWebAppLib_EXPORT
 #endif
-

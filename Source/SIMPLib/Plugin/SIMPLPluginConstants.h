@@ -6,7 +6,7 @@
 
 namespace SIMPL
 {
-namespace JSON 
+namespace JSON
 {
 const QString ErrorCode("ErrorCode");
 const QString ErrorMessage("ErrorMessage");
@@ -68,6 +68,6 @@ const QString FilterParameterHumanLabel("FilterParameterHumanLabel");
 const QString FilterParameterPropertyName("FilterParameterPropertyName");
 const QString FilterParameterReadOnly("FilterParameterReadOnly");
 const QString FilterParameters("FilterParameters");
-}
+} // namespace JSON
 
-}
+} // namespace SIMPL

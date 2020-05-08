@@ -1,33 +1,33 @@
 /* ============================================================================
-* Copyright (c) 2017 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2017 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
@@ -40,28 +40,28 @@ class PipelineModel;
 
 class SVWidgetsLib_EXPORT PipelineItemHeightAnimation : public QVariantAnimation
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    enum class AnimationDirection : unsigned int
-    {
-      Open,
-      Close
-    };
+public:
+  enum class AnimationDirection : unsigned int
+  {
+    Open,
+    Close
+  };
 
-    PipelineItemHeightAnimation(PipelineModel* model, QPersistentModelIndex index, AnimationDirection direction, QObject* parent = nullptr);
+  PipelineItemHeightAnimation(PipelineModel* model, QPersistentModelIndex index, AnimationDirection direction, QObject* parent = nullptr);
 
-  private slots:
-    void listenValueChanged(const QVariant & value);
+private slots:
+  void listenValueChanged(const QVariant& value);
 
-  private:
-    QPersistentModelIndex m_Index;
-    PipelineModel* m_PipelineModel;
-    AnimationDirection m_Direction;
+private:
+  QPersistentModelIndex m_Index;
+  PipelineModel* m_PipelineModel;
+  AnimationDirection m_Direction;
 
-  public:
-    PipelineItemHeightAnimation(const PipelineItemHeightAnimation&) = delete; // Copy Constructor Not Implemented
-    PipelineItemHeightAnimation(PipelineItemHeightAnimation&&) = delete;      // Move Constructor Not Implemented
-    PipelineItemHeightAnimation& operator=(const PipelineItemHeightAnimation&) = delete; // Copy Assignment Not Implemented
-    PipelineItemHeightAnimation& operator=(PipelineItemHeightAnimation&&) = delete;      // Move Assignment Not Implemented
+public:
+  PipelineItemHeightAnimation(const PipelineItemHeightAnimation&) = delete;            // Copy Constructor Not Implemented
+  PipelineItemHeightAnimation(PipelineItemHeightAnimation&&) = delete;                 // Move Constructor Not Implemented
+  PipelineItemHeightAnimation& operator=(const PipelineItemHeightAnimation&) = delete; // Copy Assignment Not Implemented
+  PipelineItemHeightAnimation& operator=(PipelineItemHeightAnimation&&) = delete;      // Move Assignment Not Implemented
 };

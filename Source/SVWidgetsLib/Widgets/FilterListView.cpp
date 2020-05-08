@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "FilterListView.h"
 
@@ -63,7 +63,7 @@ FilterListView::FilterListView(QWidget* parent)
 
   setRootIsDecorated(false);
   setAttribute(Qt::WA_MacShowFocusRect, false);
-  
+
   FilterListModel* model = new FilterListModel(this);
   setModel(model);
 
@@ -82,7 +82,7 @@ void FilterListView::connectSignalsSlots()
 {
   connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(requestContextMenu(const QPoint&)));
 
-  connect(this, &FilterListView::doubleClicked, [=] (const QModelIndex &index) {
+  connect(this, &FilterListView::doubleClicked, [=](const QModelIndex& index) {
     FilterListModel* model = getFilterListModel();
 
     QString filterClassName = model->data(index, FilterListModel::Roles::ClassNameRole).toString();
@@ -156,38 +156,32 @@ void FilterListView::addGroup(SearchGroup group)
 
   QModelIndex index = model->index(row, FilterListModel::Column::Contents);
 
-  switch (group)
+  switch(group)
   {
-    case SearchGroup::HumanLabel:
-    {
-      model->setData(index, "Human Label", Qt::DisplayRole);
-      break;
-    }
-    case SearchGroup::GroupName:
-    {
-      model->setData(index, "Group Name", Qt::DisplayRole);
-      break;
-    }
-    case SearchGroup::SubgroupName:
-    {
-      model->setData(index, "Subgroup Name", Qt::DisplayRole);
-      break;
-    }
-    case SearchGroup::BrandingName:
-    {
-      model->setData(index, "Branding Name", Qt::DisplayRole);
-      break;
-    }
-    case SearchGroup::CompiledLibraryName:
-    {
-      model->setData(index, "Compiled Library Name", Qt::DisplayRole);
-      break;
-    }
-    case SearchGroup::Keywords:
-    {
-      model->setData(index, "Keywords", Qt::DisplayRole);
-      break;
-    }
+  case SearchGroup::HumanLabel: {
+    model->setData(index, "Human Label", Qt::DisplayRole);
+    break;
+  }
+  case SearchGroup::GroupName: {
+    model->setData(index, "Group Name", Qt::DisplayRole);
+    break;
+  }
+  case SearchGroup::SubgroupName: {
+    model->setData(index, "Subgroup Name", Qt::DisplayRole);
+    break;
+  }
+  case SearchGroup::BrandingName: {
+    model->setData(index, "Branding Name", Qt::DisplayRole);
+    break;
+  }
+  case SearchGroup::CompiledLibraryName: {
+    model->setData(index, "Compiled Library Name", Qt::DisplayRole);
+    break;
+  }
+  case SearchGroup::Keywords: {
+    model->setData(index, "Keywords", Qt::DisplayRole);
+    break;
+  }
   }
 
   m_SearchGroupIndexMap.insert(group, index);
@@ -200,14 +194,14 @@ void FilterListView::addGroup(SearchGroup group)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex FilterListView::findIndexByName(const QString &name)
+QModelIndex FilterListView::findIndexByName(const QString& name)
 {
   FilterListModel* model = getFilterListModel();
-  for (int i = 0; i < model->rowCount(); i++)
+  for(int i = 0; i < model->rowCount(); i++)
   {
     QModelIndex index = model->index(i, FilterListModel::Column::Contents);
     QString filterHumanLabel = model->data(index, Qt::DisplayRole).toString();
-    if (filterHumanLabel == name)
+    if(filterHumanLabel == name)
     {
       return index;
     }
@@ -241,14 +235,14 @@ void FilterListView::keyPressEvent(QKeyEvent* event)
 void FilterListView::listenKeyPressed(QKeyEvent* event)
 {
   FilterListModel* model = getFilterListModel();
-  if (model->rowCount() > 0)
+  if(model->rowCount() > 0)
   {
     QModelIndexList selectedIndexes = selectionModel()->selectedRows();
 
     if(event->key() == Qt::Key_Down)
     {
       QModelIndex index = findNextSelectableIndex();
-      if (index.isValid())
+      if(index.isValid())
       {
         scrollTo(index);
         selectionModel()->select(index, QItemSelectionModel::SelectCurrent);
@@ -260,9 +254,9 @@ void FilterListView::listenKeyPressed(QKeyEvent* event)
     if(event->key() == Qt::Key_Up)
     {
       QModelIndex index = findPreviousSelectableIndex();
-      if (index.isValid())
+      if(index.isValid())
       {
-        if (index.row() == 0)
+        if(index.row() == 0)
         {
           scrollTo(index.parent());
         }
@@ -303,12 +297,12 @@ QModelIndex FilterListView::findNextSelectableIndex()
   FilterListModel* model = getFilterListModel();
 
   QModelIndexList selectedIndexes = selectionModel()->selectedRows();
-  if (selectedIndexes.size() > 1)
+  if(selectedIndexes.size() > 1)
   {
     return QModelIndex();
   }
 
-  if (selectedIndexes.isEmpty())
+  if(selectedIndexes.isEmpty())
   {
     QModelIndex parent = model->index(0, FilterListModel::Column::Contents);
     return model->index(0, FilterListModel::Column::Contents, parent);
@@ -316,15 +310,15 @@ QModelIndex FilterListView::findNextSelectableIndex()
 
   QModelIndex parent = selectedIndexes[0].parent();
 
-  if (selectedIndexes[0].row() == (model->rowCount(parent) - 1))
+  if(selectedIndexes[0].row() == (model->rowCount(parent) - 1))
   {
     QModelIndex nextParent = model->index(parent.row() + 1, FilterListModel::Column::Contents);
-    if (nextParent.isValid())
+    if(nextParent.isValid())
     {
       return model->index(0, FilterListModel::Column::Contents, nextParent);
     }
 
-      return selectedIndexes[0];
+    return selectedIndexes[0];
   }
 
   return model->index(selectedIndexes[0].row() + 1, FilterListModel::Column::Contents, parent);
@@ -340,22 +334,22 @@ QModelIndex FilterListView::findPreviousSelectableIndex()
   FilterListModel* model = getFilterListModel();
 
   QModelIndexList selectedIndexes = selectionModel()->selectedRows();
-  if (selectedIndexes.size() > 1)
+  if(selectedIndexes.size() > 1)
   {
     return QModelIndex();
   }
 
-  if (selectedIndexes.isEmpty())
+  if(selectedIndexes.isEmpty())
   {
     return QModelIndex();
   }
 
   QModelIndex parent = selectedIndexes[0].parent();
 
-  if (selectedIndexes[0].row() == 0)
+  if(selectedIndexes[0].row() == 0)
   {
     QModelIndex previousParent = model->index(parent.row() - 1, FilterListModel::Column::Contents);
-    if (previousParent.isValid())
+    if(previousParent.isValid())
     {
       return model->index(model->rowCount(previousParent) - 1, FilterListModel::Column::Contents, previousParent);
     }
@@ -436,7 +430,7 @@ void FilterListView::requestContextMenu(const QPoint& pos)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterListView::launchHelpForItem(const QString &humanLabel)
+void FilterListView::launchHelpForItem(const QString& humanLabel)
 {
   FilterManager* fm = FilterManager::Instance();
   if(nullptr == fm)
@@ -463,13 +457,13 @@ void FilterListView::launchHelpForItem(const QString &humanLabel)
 //
 // -----------------------------------------------------------------------------
 void FilterListView::performDrag()
-{  
+{
   QModelIndex index = indexAt(m_StartPos);
   if(index.isValid())
   {
     FilterListModel* model = getFilterListModel();
 
-    if (static_cast<FilterListItem::ItemType>(model->data(index, FilterListModel::ItemTypeRole).toInt()) == FilterListItem::ItemType::Filter)
+    if(static_cast<FilterListItem::ItemType>(model->data(index, FilterListModel::ItemTypeRole).toInt()) == FilterListItem::ItemType::Filter)
     {
       QJsonObject obj;
       QString filterHumanLabel = model->data(index, Qt::DisplayRole).toString();

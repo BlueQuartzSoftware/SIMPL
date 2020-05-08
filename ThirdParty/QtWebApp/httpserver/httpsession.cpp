@@ -132,7 +132,7 @@ QByteArray HttpSession::getId() const
     return dataPtr->m_SessionId;
   }
 
-    return QByteArray();
+  return QByteArray();
 }
 
 // -----------------------------------------------------------------------------

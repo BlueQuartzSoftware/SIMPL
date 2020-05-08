@@ -40,16 +40,13 @@
 
 #include <QtCore/QPropertyAnimation>
 
-
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 QtSDisclosableWidget::QtSDisclosableWidget(QWidget* parent)
 : QWidget(parent)
 {
-//  connect(this, SIGNAL(toggled(bool)), this, SLOT(disclose(bool)));
+  //  connect(this, SIGNAL(toggled(bool)), this, SLOT(disclose(bool)));
 
   toggleButton.setStyleSheet("QToolButton { border: none; }");
   toggleButton.setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
@@ -61,7 +58,7 @@ QtSDisclosableWidget::QtSDisclosableWidget(QWidget* parent)
   headerLine.setFrameShadow(QFrame::Sunken);
   headerLine.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
-//  contentArea.setStyleSheet("QScrollArea { border: none; }");
+  //  contentArea.setStyleSheet("QScrollArea { border: none; }");
   contentArea.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
   contentArea.setMaximumHeight(0);
   contentArea.setMinimumHeight(0);
@@ -106,13 +103,12 @@ void QtSDisclosableWidget::updateWidgetStyle()
 // -----------------------------------------------------------------------------
 void QtSDisclosableWidget::setupGui()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSDisclosableWidget::setTitle(const QString &title)
+void QtSDisclosableWidget::setTitle(const QString& title)
 {
   toggleButton.setText(title);
 }
@@ -126,13 +122,14 @@ void QtSDisclosableWidget::setContentLayout(QLayout* contentLayout)
   contentArea.setLayout(contentLayout);
   const auto collapsedHeight = sizeHint().height() - contentArea.maximumHeight();
   auto contentHeight = contentLayout->sizeHint().height();
-  for (int i = 0; i < toggleAnimation.animationCount() - 1; ++i) {
-    QPropertyAnimation * spoilerAnimation = static_cast<QPropertyAnimation *>(toggleAnimation.animationAt(i));
+  for(int i = 0; i < toggleAnimation.animationCount() - 1; ++i)
+  {
+    QPropertyAnimation* spoilerAnimation = static_cast<QPropertyAnimation*>(toggleAnimation.animationAt(i));
     spoilerAnimation->setDuration(animationDuration);
     spoilerAnimation->setStartValue(collapsedHeight);
     spoilerAnimation->setEndValue(collapsedHeight + contentHeight);
   }
-  QPropertyAnimation * contentAnimation = static_cast<QPropertyAnimation *>(toggleAnimation.animationAt(toggleAnimation.animationCount() - 1));
+  QPropertyAnimation* contentAnimation = static_cast<QPropertyAnimation*>(toggleAnimation.animationAt(toggleAnimation.animationCount() - 1));
   contentAnimation->setDuration(animationDuration);
   contentAnimation->setStartValue(0);
   contentAnimation->setEndValue(contentHeight);
