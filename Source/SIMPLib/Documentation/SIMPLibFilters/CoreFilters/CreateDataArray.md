@@ -10,13 +10,13 @@ This **Filter** creates an **Attribute Array** of any primitive type with any nu
 
 When initializing a multicomponent array square bracket notation can be used to specify different initialization values for each component. For example say that I want to intialize a 2 component array where the first component is 0 and the second component is 1 we would use the following input string for the *Initialization Value*
 
-    [0;1]
+    0;1
 
 We are using semicolons instead of commas or decimal points due to different international standards (European versus United States?).
 
 Another example is if you want to create a floating point array where each tuple has 10 components but you just want the value of 2.5 to be used for each, then simply use:
 
-    [2.5] or 2.5
+    2.5
 
 ### Scalar Type Values ###
 

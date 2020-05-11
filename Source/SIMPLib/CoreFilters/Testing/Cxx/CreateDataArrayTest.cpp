@@ -129,42 +129,28 @@ public:
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
     filter->setNumberOfComponents(k_NumComponents);
-    filter->setInitializationValue("[2;3;4");
-    filter->preflight();
-    err = filter->getErrorCode();
-    DREAM3D_REQUIRE_EQUAL(err, -5458);
-
-    dca = CreateDataContainerArray();
-    filter->setDataContainerArray(dca);
-    filter->setInitializationValue("2;3;4]");
-    filter->preflight();
-    err = filter->getErrorCode();
-    DREAM3D_REQUIRE_EQUAL(err, -5458);
-
-    dca = CreateDataContainerArray();
-    filter->setDataContainerArray(dca);
     filter->setInitializationValue("2;3;4");
     filter->preflight();
     err = filter->getErrorCode();
-    DREAM3D_REQUIRE_EQUAL(err, -5457);
+    DREAM3D_REQUIRE_EQUAL(err, 0);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[2;4]");
+    filter->setInitializationValue("2;4");
     filter->preflight();
     err = filter->getErrorCode();
-    DREAM3D_REQUIRE_EQUAL(err, -5459);
+    DREAM3D_REQUIRE_EQUAL(err, -5548);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
     filter->setInitializationValue("2;3;hfi4");
     filter->preflight();
     err = filter->getErrorCode();
-    DREAM3D_REQUIRE_EQUAL(err, -5457);
+    DREAM3D_REQUIRE_EQUAL(err, -5400);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[2;3;hfi4]");
+    filter->setInitializationValue("2;3;hfi4");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -5400);
@@ -191,21 +177,21 @@ public:
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[65.333;78.666;88.432347]");
+    filter->setInitializationValue("65.333;78.666;88.432347");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -5400);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[-65;78;88]");
+    filter->setInitializationValue("-65;78;88");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -5400);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[65;78;88]");
+    filter->setInitializationValue("65;78;88");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
@@ -243,14 +229,14 @@ public:
     // Now try with muliple components but a single value in the string
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[-65]");
+    filter->setInitializationValue("-65");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -5400);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[65]");
+    filter->setInitializationValue("65");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
@@ -289,13 +275,6 @@ public:
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
     filter->setInitializationValue("-65");
-    filter->preflight();
-    err = filter->getErrorCode();
-    DREAM3D_REQUIRE_EQUAL(err, -5457);
-
-    dca = CreateDataContainerArray();
-    filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[-65]");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -5400);
@@ -359,14 +338,14 @@ public:
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[65.333;78.666;88.432347]");
+    filter->setInitializationValue("65.333;78.666;88.432347");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -5400);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[-65;78;88]");
+    filter->setInitializationValue("-65;78;88");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
@@ -404,7 +383,7 @@ public:
     // Now try with muliple components but a single value in the string
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[-65]");
+    filter->setInitializationValue("-65");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
@@ -499,14 +478,14 @@ public:
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[65.333;78.666;88.432347]");
+    filter->setInitializationValue("65.333;78.666;88.432347");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[65;78;88]");
+    filter->setInitializationValue("65;78;88");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
@@ -544,7 +523,7 @@ public:
     // Now try with muliple components but a single value in the string
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
-    filter->setInitializationValue("[65]");
+    filter->setInitializationValue("65");
     filter->preflight();
     err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
