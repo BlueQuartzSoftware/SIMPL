@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------
 # Add Unit Test for Plugins and Filters
-# 
+#-------------------------------------------------------------------------------
 function(SIMPL_GenerateUnitTestFile)
   set(options USE_QTGUI)
   set(oneValueArgs PLUGIN_NAME TEST_DATA_DIR)
@@ -110,7 +110,7 @@ endfunction()
 
 #-------------------------------------------------------------------------------
 # SIMPL_ADD_UNIT_TEST
-# 
+#-------------------------------------------------------------------------------
 macro(SIMPL_ADD_UNIT_TEST TEST_NAMES UNIT_TEST_SOURCE_DIR)
   foreach(name ${TEST_NAMES})
     set( ${SIMPL_UNIT_TEST}_TEST_SRCS
@@ -133,7 +133,7 @@ endmacro()
 
 #-------------------------------------------------------------------------------
 # SIMPL_ADD_UNIT_TEST_MOC_FILE
-# 
+#-------------------------------------------------------------------------------
 macro(SIMPL_ADD_UNIT_TEST_MOC_FILE SOURCE_FILE UNIT_TEST_SOURCE_DIR)
 
   # QT5_WRAP_CPP( simpl_unit_test_moc ${UNIT_TEST_SOURCE_DIR}/${SOURCE_FILE}.cpp)
@@ -152,8 +152,8 @@ endmacro()
 # @param REGISTER_KNOWN_FILTERS_FILE
 # @param FILTER_GROUP
 # @param BINARY_DIR
+#-------------------------------------------------------------------------------
 function(SIMPL_START_FILTER_GROUP)
-
   set(options)
   set(oneValueArgs ALL_FILTERS_HEADERFILE REGISTER_KNOWN_FILTERS_FILE FILTER_GROUP BINARY_DIR)
   set(multiValueArgs)
@@ -174,7 +174,7 @@ function(SIMPL_START_FILTER_GROUP)
   if("${P_FILTER_GROUP}" STREQUAL "Core")
     set(P_FILTER_GROUP "SIMPLib")
   endif()
-  file(WRITE "${SIMPLProj_BINARY_DIR}/${P_FILTER_GROUP}PublicFilters.txt" "# ${P_FILTER_GROUP} Public Filters\n")
+  file(WRITE "${SIMPLProj_BINARY_DIR}/${P_FILTER_GROUP}Filters.txt" "# ${P_FILTER_GROUP} Public Filters\n")
 endfunction()
 
 #-------------------------------------------------------------------------------
@@ -182,6 +182,7 @@ endfunction()
 # @param WidgetsBinaryDir
 # @param filterGroup
 # @param humanGroup
+#-------------------------------------------------------------------------------
 macro(SIMPL_END_FILTER_GROUP WidgetsBinaryDir filterGroup humanGroup)
 endmacro()
 
@@ -195,6 +196,7 @@ endmacro()
 
 #-------------------------------------------------------------------------------
 # Macro ADD_SIMPL_SUPPORT_MOC_HEADER
+#-------------------------------------------------------------------------------
 macro(ADD_SIMPL_SUPPORT_MOC_HEADER SourceDir filterGroup headerFileName)
   # QT5_WRAP_CPP( _moc_filter_source  ${SourceDir}/${filterGroup}/${headerFileName})
   # set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
@@ -209,6 +211,7 @@ endmacro()
 
 #-------------------------------------------------------------------------------
 # Macro ADD_SIMPL_SUPPORT_HEADER_SUBDIR
+#-------------------------------------------------------------------------------
 macro(ADD_SIMPL_SUPPORT_HEADER_SUBDIR SourceDir filterGroup headerFileName subdir)
     set(Project_SRCS ${Project_SRCS}
                     ${SourceDir}/${filterGroup}/${subdir}/${headerFileName})
@@ -217,6 +220,7 @@ endmacro()
 
 #-------------------------------------------------------------------------------
 # Macro ADD_SIMPL_SUPPORT_SOURCE
+#-------------------------------------------------------------------------------
 macro(ADD_SIMPL_SUPPORT_SOURCE SourceDir filterGroup sourceFileName)
     set(Project_SRCS ${Project_SRCS}
                     ${SourceDir}/${filterGroup}/${sourceFileName})
@@ -240,6 +244,7 @@ endmacro()
 # @param filterName The base filename of the filter, i.e., SomeFilter.cpp would be "SomeFilter"
 # @param filterDocPath The absolute path to the .md documentation file
 # @param publicFilter  Boolean TRUE or FALSE
+#-------------------------------------------------------------------------------
 macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath publicFilter)
 
   # QT5_WRAP_CPP( _moc_filter_source  ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h)
@@ -265,20 +270,24 @@ macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath 
   file(APPEND ${AllFiltersHeaderFile} "#include \"${FilterLib}/${filterGroup}/${filterName}.h\"\n")
 
   if( ${publicFilter} STREQUAL TRUE)
-      file(APPEND ${RegisterKnownFiltersFile} "   FilterFactory<${filterName}>::Pointer ${filterName}Factory = FilterFactory<${filterName}>::New();\n")
-      file(APPEND ${RegisterKnownFiltersFile} "   fm->addFilterFactory(\"${filterName}\",${filterName}Factory);\n\n")
+    file(APPEND ${RegisterKnownFiltersFile} "   FilterFactory<${filterName}>::Pointer ${filterName}Factory = FilterFactory<${filterName}>::New();\n")
+    file(APPEND ${RegisterKnownFiltersFile} "   fm->addFilterFactory(\"${filterName}\",${filterName}Factory);\n\n")
 
-      #-- Check to make sure we have a Documentation file for the filter
-      if(NOT EXISTS ${filterDocPath} )
-        message(FATAL_ERROR "*** Missing Documentation File for ${filterDocPath}")
-      endif()
+    #-- Check to make sure we have a Documentation file for the filter
+    if(NOT EXISTS ${filterDocPath} )
+      message(FATAL_ERROR "*** Missing Documentation File for ${filterDocPath}")
+    endif()
 
-      get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)
-      set_property(GLOBAL APPEND PROPERTY DREAM3DDoc_${filterGroup} ${filterDocPath})
+    get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)
+    set_property(GLOBAL APPEND PROPERTY DREAM3DDoc_${filterGroup} ${filterDocPath})
+    # This bit of code creates a text file that the Python Bindings Generator is going to read from. We have to
+    # special case the "Core" filters that are part of SIMPLib to get the file naming correct.
+    if("${filterGroup}" STREQUAL "CoreFilters")
+      file(APPEND "${SIMPLProj_BINARY_DIR}/SIMPLibFilters.txt" "${filterName}.h\n")
+    else()
+      file(APPEND "${SIMPLProj_BINARY_DIR}/${filterGroup}.txt" "${filterName}.h\n")
+    endif()    
   endif()
-
-  file(APPEND ${SIMPLProj_BINARY_DIR}/${FilterLib}PublicFilters.txt "${filterName}.h\n")
-
 endmacro()
 
 #-------------------------------------------------------------------------------

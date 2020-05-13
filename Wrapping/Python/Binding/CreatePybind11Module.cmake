@@ -132,7 +132,7 @@ function(CreatePybind11Plugin)
 
   CreatePybind11Module(MODULE_NAME ${PLUGIN_NAME_lower}
     OUTPUT_DIR "${${ARGS_PLUGIN_NAME}_BINARY_DIR}/Wrapping/PythonCore"
-    FILE_LIST_PATH "${SIMPLProj_BINARY_DIR}/${ARGS_PLUGIN_NAME}PublicFilters.txt"
+    FILE_LIST_PATH "${SIMPLProj_BINARY_DIR}/${ARGS_PLUGIN_NAME}Filters.txt"
     SOURCE_DIR "${${ARGS_PLUGIN_NAME}_SOURCE_DIR}/${ARGS_PLUGIN_NAME}Filters"
     INCLUDE_DIR "${${ARGS_PLUGIN_NAME}_SOURCE_DIR}"
     PYTHON_OUTPUT_DIR "${SIMPLProj_BINARY_DIR}/Wrapping/dream3d"
