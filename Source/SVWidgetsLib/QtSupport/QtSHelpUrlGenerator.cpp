@@ -93,6 +93,10 @@ QUrl QtSHelpUrlGenerator::GenerateHTMLUrl(QString htmlName)
   }
 #endif
 
+    FilterManager* fm = FilterManager::Instance();
+
+    IFilterFactory::Pointer factory = fm->getFactoryFromClassName(htmlName);
+
 #ifdef SIMPL_USE_MKDOCS
   {
     QString helpFilePath;
@@ -113,9 +117,6 @@ QUrl QtSHelpUrlGenerator::GenerateHTMLUrl(QString htmlName)
 
 #ifdef SIMPL_USE_DISCOUNT
   {
-    FilterManager* fm = FilterManager::Instance();
-
-    IFilterFactory::Pointer factory = fm->getFactoryFromClassName(htmlName);
     QString pluginName;
     if(factory.get())
     {
