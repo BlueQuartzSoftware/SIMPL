@@ -470,20 +470,29 @@ option(SIMPL_ENABLE_PYTHON "Generate and Compile Python wrapping codes" OFF)
 if(SIMPL_ENABLE_PYTHON)
   option(SIMPL_USE_ANACONDA_PYTHON "Whether the selected Python executable is part of an Anaconda environment" OFF)
 
-  if(SIMPL_USE_ANACONDA_PYTHON)
-    if(NOT ANACONDA_DIR)
-      message(FATAL_ERROR "ANACONDA_DIR is not set.")
-    endif()
+  mark_as_advanced(CLEAR PYTHON_EXECUTABLE)
 
-    if(NOT ANACONDA_ENVIRONMENT_NAME)
-      message(FATAL_ERROR "ANACONDA_ENVIRONMENT_NAME is not set.")
+  if(SIMPL_USE_ANACONDA_PYTHON)
+    if(NOT ANACONDA_DIR OR NOT ANACONDA_ENVIRONMENT_NAME)
+      set(ANACONDA_DIR "ANACONDA_DIR-NOTFOUND" CACHE PATH "Path to Anaconda directory")
+      set(ANACONDA_ENVIRONMENT_NAME "ANACONDA_ENVIRONMENT_NAME-NOTFOUND" CACHE STRING "Anaconda virtual environment to use")
+      set(ANACONDA_ERROR_MESSAGE "ANACONDA_DIR = ${ANACONDA_DIR}\nANACONDA_ENVIRONMENT_NAME = ${ANACONDA_ENVIRONMENT_NAME}\n")
+      if(NOT ANACONDA_DIR)
+        string(APPEND ANACONDA_ERROR_MESSAGE "ANACONDA_DIR is not set.\n")
+      endif()
+      if(NOT ANACONDA_ENVIRONMENT_NAME)
+        string(APPEND ANACONDA_ERROR_MESSAGE "ANACONDA_ENVIRONMENT_NAME is not set.\n")
+      endif()
+      message(FATAL_ERROR ${ANACONDA_ERROR_MESSAGE})
     endif()
 
     if(WIN32)
-      set(SIMPL_CONDA_EXECUTABLE ${ANACONDA_DIR}/condabin/conda.bat CACHE FILEPATH "")
+      set(SIMPL_CONDA_EXECUTABLE ${ANACONDA_DIR}/condabin/conda.bat CACHE FILEPATH "Path to conda executable")
     else()
-      set(SIMPL_CONDA_EXECUTABLE ${ANACONDA_DIR}/condabin/conda CACHE FILEPATH "")
+      set(SIMPL_CONDA_EXECUTABLE ${ANACONDA_DIR}/condabin/conda CACHE FILEPATH "Path to conda executable")
     endif()
+
+    mark_as_advanced(SIMPL_CONDA_EXECUTABLE)
   endif()
 
   include(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/CreatePybind11Module.cmake)
@@ -494,16 +503,29 @@ if(SIMPL_ENABLE_PYTHON)
 
   file(WRITE ${SIMPL_PY_SOURCES_FILE} "${SIMPL_PY_SOURCES}")
 
+  get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+
   CreatePybind11Module(MODULE_NAME "simpl"
     OUTPUT_DIR "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore"
     FILE_LIST_PATH ${SIMPL_PY_SOURCES_FILE}
     SOURCE_DIR "${SIMPLProj_SOURCE_DIR}/Source"
     HEADER_PATH "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/pySIMPLHeader.cpp"
     BODY_PATH "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/pySIMPLBody.cpp"
-    PYTHON_OUTPUT_DIR "${SIMPLProj_BINARY_DIR}/Wrapping/dream3d"
+    PYTHON_OUTPUT_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/$<${_isMultiConfig}:$<CONFIG>>"
     LINK_LIBRARIES SIMPLib
     INCLUDE_DIRS ${SIMPLProj_SOURCE_DIR}/Wrapping/Python
   )
+
+  add_custom_target(CopyPythonSupport ALL
+    COMMAND ${CMAKE_COMMAND} -E copy
+      ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/SIMPL/simpl_helpers.py
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/$<${_isMultiConfig}:$<CONFIG>>"
+    COMMENT "Copying simpl_helpers.py to binary directory"
+  )
+
+  add_dependencies(simpl CopyPythonSupport)
+
+  set_property(TARGET CopyPythonSupport PROPERTY FOLDER "ZZ_COPY_FILES")
 
   if(SIMPL_BUILD_TESTING)
     file(READ ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/SIMPL/simpl_test_dirs.in.py SIMPL_TEST_DIRS_FILE)
@@ -513,7 +535,7 @@ if(SIMPL_ENABLE_PYTHON)
     string(REPLACE "\${DREAM3D_DATA_DIR}" ${DREAM3D_DATA_DIR} SIMPL_TEST_DIRS_FILE ${SIMPL_TEST_DIRS_FILE})
 
     file(GENERATE
-      OUTPUT ${SIMPLProj_BINARY_DIR}/Wrapping/dream3d/$<CONFIG>/simpl_test_dirs.py
+      OUTPUT "$<TARGET_FILE_DIR:simpl>/simpl_test_dirs.py"
       CONTENT ${SIMPL_TEST_DIRS_FILE}
     )
 
