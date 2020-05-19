@@ -1,3 +1,10 @@
+
+#-------------------------------------------------------------------------------
+# @Brief function AddPythonTest
+# @ NAME
+# @ FILE
+# @ PYTHONPATH
+#-------------------------------------------------------------------------------
 function(AddPythonTest)
   set(options )
   set(oneValueArgs NAME FILE)
@@ -50,6 +57,17 @@ function(AddPythonTest)
   )
 endfunction()
 
+#-------------------------------------------------------------------------------
+# @Brief function CreatePybind11Module
+# @ MODULE_NAME
+# @ OUTPUT_DIR
+# @ FILE_LIST_PATH
+# @ SOURCE_DIR
+# @ HEADER_PATH
+# @ BODY_PATH
+# @ INCLUDE_DIR
+# @ PYTHON_OUTPUT_DIR
+#-------------------------------------------------------------------------------
 function(CreatePybind11Module)
   set(options PLUGIN)
   set(oneValueArgs MODULE_NAME OUTPUT_DIR FILE_LIST_PATH SOURCE_DIR HEADER_PATH BODY_PATH INCLUDE_DIR PYTHON_OUTPUT_DIR)
@@ -126,6 +144,13 @@ function(CreatePybind11Module)
   )
 endfunction()
 
+#-------------------------------------------------------------------------------
+# @Brief function CreatePybind11Plugin
+# @ PLUGIN_NAME
+# @ PLUGIN_TARGET
+# @ HEADER_PATH
+# @ BODY_PATH
+#-------------------------------------------------------------------------------
 function(CreatePybind11Plugin)
   set(options)
   set(oneValueArgs PLUGIN_NAME PLUGIN_TARGET HEADER_PATH BODY_PATH)
@@ -138,7 +163,7 @@ function(CreatePybind11Plugin)
 
   CreatePybind11Module(MODULE_NAME ${PLUGIN_NAME_lower}
     OUTPUT_DIR "${${ARGS_PLUGIN_NAME}_BINARY_DIR}/Wrapping/PythonCore"
-    FILE_LIST_PATH "${SIMPLProj_BINARY_DIR}/${ARGS_PLUGIN_NAME}Filters.txt"
+    FILE_LIST_PATH "${SIMPLProj_BINARY_DIR}/Wrapping/${ARGS_PLUGIN_NAME}Filters.txt"
     SOURCE_DIR "${${ARGS_PLUGIN_NAME}_SOURCE_DIR}/${ARGS_PLUGIN_NAME}Filters"
     INCLUDE_DIR "${${ARGS_PLUGIN_NAME}_SOURCE_DIR}"
     PYTHON_OUTPUT_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/$<${_isMultiConfig}:$<CONFIG>>"
@@ -150,6 +175,13 @@ function(CreatePybind11Plugin)
   )
 endfunction()
 
+
+#-------------------------------------------------------------------------------
+# @Brief function CreatePythonTests
+# @ PREFIX
+# @ INPUT_DIR
+# @ TEST_NAMES
+#-------------------------------------------------------------------------------
 function(CreatePythonTests)
   set(options)
   set(oneValueArgs PREFIX INPUT_DIR)

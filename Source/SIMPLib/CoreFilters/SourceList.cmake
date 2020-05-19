@@ -96,8 +96,7 @@ set_property(GLOBAL PROPERTY PluginNumFilters ${PluginNumFilters})
 foreach(f ${_PublicFilters} )
   ADD_SIMPL_FILTER(  "SIMPLib" "FilterWidgetsLib"
                         ${_filterGroupName} ${f}
-                        ${SIMPLib_FILTER_DOC_DIR}/${_filterGroupName}/${f}.md TRUE
-                        ${SIMPLProj_BINARY_DIR})
+                        ${SIMPLib_FILTER_DOC_DIR}/${_filterGroupName}/${f}.md TRUE)
 endforeach()
 
 
@@ -118,8 +117,7 @@ set(_PrivateFilters
 foreach(f ${_PrivateFilters} )
   ADD_SIMPL_FILTER(  "SIMPLib" "FilterWidgetsLib"
                         ${_filterGroupName} ${f}
-                        ${SIMPLib_FILTER_DOC_DIR}/${_filterGroupName}/${f}.md FALSE
-                        ${SIMPLProj_BINARY_DIR})
+                        ${SIMPLib_FILTER_DOC_DIR}/${_filterGroupName}/${f}.md FALSE)
 endforeach()
 
 source_group("${SIMPLib_SOURCE_DIR} ${_filterGroupName} util" FILES ${HEADERS} ${SOURCES})
