@@ -35,15 +35,15 @@
 
 #pragma once
 
+#include <QtCore/QString>
+
+#include "SIMPLib/DataArrays/DataArray.hpp"
+
 #include "itkImage.h"
 #include "itkImageRegionIterator.h"
 #include "itkImageToImageFilter.h"
 #include "itkImportImageFilter.h"
 #include "itkRGBPixel.h"
-
-#include <QtCore/QString>
-
-#include "SIMPLib/DataArrays/DataArray.hpp"
 
 #if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
 #define ITKv5_CONST

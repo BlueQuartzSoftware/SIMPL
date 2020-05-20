@@ -35,12 +35,7 @@
 
 #pragma once
 
-// ITK Includes first
 #include <memory>
-
-#include "itkExtractImageFilter.h"
-#include "itkRGBAPixel.h"
-#include "itkRGBPixel.h"
 
 // DREAM3D Includes next
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -49,8 +44,20 @@
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/SIMPLib.h"
 
-// Our Plugin Includes next
+
+#include <itkConfigure.h>
+#if(ITK_VERSION_MAJOR == 4) 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wself-assign-field"
+#endif
+#endif
 #include "SIMPLib/ITK/itkSupportConstants.h"
+
+// ITK Includes first
+#include "itkExtractImageFilter.h"
+#include "itkRGBAPixel.h"
+#include "itkRGBPixel.h"
 
 template <typename T, typename K, typename ItkOutPixelType>
 class Dream3DToItkImageConversion
@@ -582,3 +589,8 @@ public:
 
 //// Create some typedefs for our convenience
 typedef ItkBridge<ImageProcessingConstants::DefaultPixelType> ITKUtilitiesType;
+
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif

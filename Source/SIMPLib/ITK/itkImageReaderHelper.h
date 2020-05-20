@@ -1,8 +1,13 @@
-/**
- *
- */
 
 #pragma once
+
+#include <itkConfigure.h>
+#if(ITK_VERSION_MAJOR == 4) 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wself-assign-field"
+#endif
+#endif
 
 #include "itkImage.h"
 
@@ -32,3 +37,9 @@ private:                                                                        
                                                                                                                                                                                                        \
   template <typename TPixel, unsigned int dimensions>                                                                                                                                                  \
   void readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Image<TPixel, dimensions>>::Pointer& reader, DataContainer::Pointer& container);
+
+
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif

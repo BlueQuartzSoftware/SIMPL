@@ -31,14 +31,21 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef itkDream3DTransforContainerTestHelper_h
-#define itkDream3DTransforContainerTestHelper_h
+#pragma once
 
-#include "itkAffineTransform.h"
-#include "itkCompositeTransform.h"
 
 #include "SIMPLib/Geometry/CompositeTransformContainer.h"
 #include "SIMPLib/Geometry/TransformContainer.h"
+
+#include <itkConfigure.h>
+#if(ITK_VERSION_MAJOR == 4) 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wself-assign-field"
+#endif
+#endif
+#include "itkAffineTransform.h"
+#include "itkCompositeTransform.h"
 
 using AffineType = itk::AffineTransform<float, 3>;
 using CompositeTransform = itk::CompositeTransform<float, 3>;
@@ -102,4 +109,8 @@ typename TransformContainer::Pointer GetTransformContainerFromITKAffineTransform
   return transformContainer;
 }
 
+
+#ifdef __clang__
+#pragma clang diagnostic pop
 #endif
+

@@ -77,10 +77,13 @@
 #pragma once
 
 #include <itkConfigure.h>
-
 #if(ITK_VERSION_MAJOR == 5) && (ITK_VERSION_MINOR >= 1)
 #include <itkCommonEnums.h>
 #else
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wself-assign-field"
+#endif
 #include <itkImageIOBase.h>
 #endif
 
@@ -534,3 +537,9 @@
       setErrorCondition(errorCondition, "Array not found");                                                                                                                                            \
     }                                                                                                                                                                                                  \
   }
+
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
+
