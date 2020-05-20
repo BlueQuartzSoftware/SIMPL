@@ -6,7 +6,7 @@
 #include <limits>
 #include <iomanip>
 
-#include <SIMPLib/Math/SIMPLibMath.h>
+#include "SIMPLib/Math/SIMPLibMath.h"
 
 /**
  * @brief ArrayHelpers: Some quick methods that act on an "array" of POD values.
