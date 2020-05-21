@@ -31,20 +31,20 @@
 
 #include <QtCore/QJsonObject>
 
-typedef struct
+struct Float3rdOrderPoly_t
 {
-  float c30;
-  float c03;
-  float c21;
-  float c12;
-  float c20;
-  float c02;
-  float c11;
-  float c10;
-  float c01;
-  float c00;
+  float c30 = 0.0f;
+  float c03 = 0.0f;
+  float c21 = 0.0f;
+  float c12 = 0.0f;
+  float c20 = 0.0f;
+  float c02 = 0.0f;
+  float c11 = 0.0f;
+  float c10 = 0.0f;
+  float c01 = 0.0f;
+  float c00 = 0.0f;
 
-  void writeJson(QJsonObject& json)
+  void writeJson(QJsonObject& json) const
   {
     json["c30"] = c30;
     json["c03"] = c03;
@@ -58,7 +58,7 @@ typedef struct
     json["c00"] = c00;
   }
 
-  bool readJson(QJsonObject& json)
+  bool readJson(const QJsonObject& json)
   {
     if(json["c30"].isDouble() && json["c03"].isDouble() && json["c21"].isDouble() && json["c12"].isDouble() && json["c20"].isDouble() && json["c02"].isDouble() && json["c11"].isDouble() &&
        json["c10"].isDouble() && json["c01"].isDouble() && json["c00"].isDouble())
@@ -77,6 +77,6 @@ typedef struct
     }
     return false;
   }
-} Float3rdOrderPoly_t;
+};
 
 Q_DECLARE_METATYPE(Float3rdOrderPoly_t)

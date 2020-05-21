@@ -87,10 +87,10 @@ public:
   }
   virtual ~StructArrayTest() = default;
 
-  typedef struct
+  struct Vec3Int_t
   {
     uint32_t pos[3];
-  } Vec3Int_t;
+  };
 
   typedef StructArray<Vec3Int_t> Vec3IntList_t;
   typedef Vec3IntList_t::Pointer Vec3IntListPointer_t;

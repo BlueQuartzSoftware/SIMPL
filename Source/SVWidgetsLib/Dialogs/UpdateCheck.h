@@ -49,7 +49,7 @@ class SVWidgetsLib_EXPORT UpdateCheck : public QObject
   Q_OBJECT
 
 public:
-  typedef struct
+  struct SIMPLVersionData_t
   {
     QString complete;
     QString major;
@@ -60,7 +60,7 @@ public:
     QString packageComplete;
     QString buildDate;
     QString appName;
-  } SIMPLVersionData_t;
+  };
 
   UpdateCheck(SIMPLVersionData_t versionData, QObject* parent = nullptr);
   ~UpdateCheck() override;

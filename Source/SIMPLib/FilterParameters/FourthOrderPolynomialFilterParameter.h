@@ -41,44 +41,25 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
-typedef struct
+struct Float4thOrderPoly_t
 {
-  float c40;
-  float c04;
-  float c31;
-  float c13;
-  float c22;
-  float c30;
-  float c03;
-  float c21;
-  float c12;
-  float c20;
-  float c02;
-  float c11;
-  float c10;
-  float c01;
-  float c00;
+  float c40 = 0.0f;
+  float c04 = 0.0f;
+  float c31 = 0.0f;
+  float c13 = 0.0f;
+  float c22 = 0.0f;
+  float c30 = 0.0f;
+  float c03 = 0.0f;
+  float c21 = 0.0f;
+  float c12 = 0.0f;
+  float c20 = 0.0f;
+  float c02 = 0.0f;
+  float c11 = 0.0f;
+  float c10 = 0.0f;
+  float c01 = 0.0f;
+  float c00 = 0.0f;
 
-  void Float4thOrderPoly(float C40, float C04, float C31, float C13, float C22, float C30, float C03, float C21, float C12, float C20, float C02, float C11, float C10, float C01, float C00)
-  {
-    c40 = C40;
-    c04 = C04;
-    c31 = C31;
-    c13 = C13;
-    c22 = C22;
-    c30 = C30;
-    c03 = C03;
-    c21 = C21;
-    c12 = C12;
-    c20 = C20;
-    c02 = C02;
-    c11 = C11;
-    c10 = C10;
-    c01 = C01;
-    c00 = C00;
-  }
-
-  void writeJson(QJsonObject& json)
+  void writeJson(QJsonObject& json) const
   {
     json["c40"] = static_cast<double>(c40);
     json["c04"] = static_cast<double>(c04);
@@ -97,7 +78,7 @@ typedef struct
     json["c00"] = static_cast<double>(c00);
   }
 
-  bool readJson(QJsonObject& json)
+  bool readJson(const QJsonObject& json)
   {
     if(json["c40"].isDouble() && json["c04"].isDouble() && json["c31"].isDouble() && json["c13"].isDouble() && json["c22"].isDouble() && json["c30"].isDouble() && json["c03"].isDouble() &&
        json["c21"].isDouble() && json["c12"].isDouble() && json["c20"].isDouble() && json["c02"].isDouble() && json["c11"].isDouble() && json["c10"].isDouble() && json["c01"].isDouble() &&
@@ -122,7 +103,7 @@ typedef struct
     }
     return false;
   }
-} Float4thOrderPoly_t;
+};
 
 Q_DECLARE_METATYPE(Float4thOrderPoly_t)
 

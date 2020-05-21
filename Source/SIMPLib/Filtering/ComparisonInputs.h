@@ -41,7 +41,7 @@
 
 #include "SIMPLib/SIMPLib.h"
 
-typedef struct
+struct ComparisonInput_t
 {
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(ComparisonInput_t)
@@ -56,10 +56,10 @@ typedef struct
   QString dataContainerName;
   QString attributeMatrixName;
   QString attributeArrayName;
-  int compOperator;
-  double compValue;
+  int compOperator = 0;
+  double compValue = 0.0;
 
-  void writeJson(QJsonObject& json)
+  void writeJson(QJsonObject& json) const
   {
     json["Data Container Name"] = dataContainerName;
     json["Attribute Matrix Name"] = attributeMatrixName;
@@ -68,7 +68,7 @@ typedef struct
     json["Comparison Value"] = compValue;
   }
 
-  bool readJson(QJsonObject& json)
+  bool readJson(const QJsonObject& json)
   {
     if(json["Data Container Name"].isString() && json["Attribute Matrix Name"].isString() && json["Attribute Array Name"].isString() && json["Comparison Operator"].isDouble() &&
        json["Comparison Value"].isDouble())
@@ -83,7 +83,7 @@ typedef struct
     return false;
   }
 
-} ComparisonInput_t;
+};
 
 /**
  * @class ComparisonInputs ComparisonInputs.h DREAM3DLib/Common/ComparisonInputs.h

@@ -90,11 +90,11 @@ public:
   using SetterCallbackType = std::function<void(DataArrayPath)>;
   using GetterCallbackType = std::function<DataArrayPath(void)>;
 
-  typedef struct
+  struct RequirementType
   {
     IGeometry::Types dcGeometryTypes;
     AttributeMatrix::Types amTypes;
-  } RequirementType;
+  };
 
   /**
    * @brief New This function instantiates an instance of the DataArrayCreationFilterParameter.  Specifying a RequirementType will

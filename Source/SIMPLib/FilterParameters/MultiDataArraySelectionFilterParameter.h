@@ -88,13 +88,13 @@ public:
   typedef std::function<void(QVector<DataArrayPath>)> SetterCallbackType;
   typedef std::function<QVector<DataArrayPath>(void)> GetterCallbackType;
 
-  typedef struct
+  struct RequirementType
   {
     IGeometry::Types dcGeometryTypes;
     AttributeMatrix::Types amTypes;
     QVector<QString> daTypes;
     std::vector<std::vector<size_t>> componentDimensions;
-  } RequirementType;
+  };
 
   /**
    * @brief New This function instantiates an instance of the MultiDataArraySelectionFilterParameter.  Specifying a RequirementType will

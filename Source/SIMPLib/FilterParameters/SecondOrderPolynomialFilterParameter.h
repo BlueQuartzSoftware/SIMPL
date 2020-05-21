@@ -41,16 +41,16 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
-typedef struct
+struct Float2ndOrderPoly_t
 {
-  float c20;
-  float c02;
-  float c11;
-  float c10;
-  float c01;
-  float c00;
+  float c20 = 0.0f;
+  float c02 = 0.0f;
+  float c11 = 0.0f;
+  float c10 = 0.0f;
+  float c01 = 0.0f;
+  float c00 = 0.0f;
 
-  void writeJson(QJsonObject& json)
+  void writeJson(QJsonObject& json) const
   {
     json["c20"] = c20;
     json["c02"] = c02;
@@ -60,7 +60,7 @@ typedef struct
     json["c00"] = c00;
   }
 
-  bool readJson(QJsonObject& json)
+  bool readJson(const QJsonObject& json)
   {
     if(json["c20"].isDouble() && json["c02"].isDouble() && json["c11"].isDouble() && json["c10"].isDouble() && json["c01"].isDouble() && json["c00"].isDouble())
     {
@@ -74,7 +74,7 @@ typedef struct
     }
     return false;
   }
-} Float2ndOrderPoly_t;
+};
 
 Q_DECLARE_METATYPE(Float2ndOrderPoly_t)
 

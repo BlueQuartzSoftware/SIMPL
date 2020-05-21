@@ -45,47 +45,47 @@ namespace SurfaceMesh
 {
 namespace M3C
 {
-typedef struct
+struct VoxelCoord
 {
   float coord[3];
-} VoxelCoord;
+};
 
-typedef struct
+struct Neighbor
 {
   int neigh_id[num_neigh + 1];
-} Neighbor;
+};
 
-typedef struct
+struct Face
 {
   int64_t site_id[4]; // stores 4 sites at the corners of each square...
   int64_t edge_id[4]; // stores edge id turned on...others will have dummy -1...
   int nEdge;          // number of edges on the square...
   int FCnode;         // face center node...if not, it's -1...
   int effect;         // 0 if the square is useless; 1 is good...
-} Face;
+};
 
-typedef struct
+struct Segment
 {
   int64_t node_id[2]; // the segment heads from node_id[0] to node_id[1]...
   int edgeKind;       // initially marked as 2; for face edges it's always 2...
   int nSpin[2];       // 0 is to the left of the arrow; 1 is at right...
-} Segment;
+};
 
 /* Used for "inner edge" spin calculations */
-typedef struct
+struct ISegment
 {
   int64_t node_id[2]; // the segment heads from node_id[0] to node_id[1]...
   int edgeKind;       // initially marked with 2...
   int nSpin[4];
-} ISegment;
+};
 
-typedef struct
+struct Triangle
 {
   int64_t node_id[3]; // stores three new node id for vertices of the triangles...
   uint64_t e_id[3];   // stores three new edge id for sides of the triangles...
   int nSpin[2];       // two spins...
   int edgePlace[3];
-} Triangle;
+};
 
 typedef Triangle Patch; // This is here for compatibility
 } // namespace M3C
@@ -99,20 +99,20 @@ namespace SurfaceMesh
 {
 namespace NodesFile
 {
-typedef struct
+struct NodesFileRecord_t
 {
   int64_t nodeId;
   int nodeKind;
   float x;
   float y;
   float z;
-} NodesFileRecord_t;
+};
 const int ByteCount = sizeof(NodesFileRecord_t);
 } // namespace NodesFile
 
 namespace TrianglesFile
 {
-typedef struct
+struct TrianglesFileRecord_t
 {
   int64_t triId;
   int64_t nodeId_0;
@@ -120,7 +120,7 @@ typedef struct
   int64_t nodeId_2;
   int label_0;
   int label_1;
-} TrianglesFileRecord_t;
+};
 const int ByteCount = sizeof(TrianglesFileRecord_t);
 } // namespace TrianglesFile
 } // namespace SurfaceMesh
