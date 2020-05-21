@@ -34,6 +34,7 @@ set(SIMPLib_Utilities_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringOperations.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/TimeUtilities.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ToolTipGenerator.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/UTFUtilities.hpp
 )
 
 set(SIMPLib_Utilities_SRCS
