@@ -1,6 +1,15 @@
 #-------------------------------------------------------------------------------
 # Add Unit Test for Plugins and Filters
-# 
+#
+# @param USE_QTGUI
+# @param PLUGIN_NAME
+# @param TEST_DATA_DIR
+# @param SOURCES
+# @param LINK_LIBRARIES
+# @param INCLUDE_DIRS
+# @param EXTRA_SOURCES
+#
+#-------------------------------------------------------------------------------
 function(SIMPL_GenerateUnitTestFile)
   set(options USE_QTGUI)
   set(oneValueArgs PLUGIN_NAME TEST_DATA_DIR)
@@ -110,7 +119,10 @@ endfunction()
 
 #-------------------------------------------------------------------------------
 # SIMPL_ADD_UNIT_TEST
-# 
+#
+# @param TEST_NAMES
+# @param UNIT_TEST_SOURCE_DIR
+#-------------------------------------------------------------------------------
 macro(SIMPL_ADD_UNIT_TEST TEST_NAMES UNIT_TEST_SOURCE_DIR)
   foreach(name ${TEST_NAMES})
     set( ${SIMPL_UNIT_TEST}_TEST_SRCS
@@ -133,10 +145,11 @@ endmacro()
 
 #-------------------------------------------------------------------------------
 # SIMPL_ADD_UNIT_TEST_MOC_FILE
-# 
+#
+# @param SOURCE_FILE
+# @param UNIT_TEST_SOURCE_DIR
+#-------------------------------------------------------------------------------
 macro(SIMPL_ADD_UNIT_TEST_MOC_FILE SOURCE_FILE UNIT_TEST_SOURCE_DIR)
-
-  # QT5_WRAP_CPP( simpl_unit_test_moc ${UNIT_TEST_SOURCE_DIR}/${SOURCE_FILE}.cpp)
   set_source_files_properties( ${simpl_unit_test_moc} PROPERTIES GENERATED TRUE)
   set_source_files_properties( ${simpl_unit_test_moc} PROPERTIES HEADER_FILE_ONLY TRUE)
 
@@ -152,8 +165,8 @@ endmacro()
 # @param REGISTER_KNOWN_FILTERS_FILE
 # @param FILTER_GROUP
 # @param BINARY_DIR
+#-------------------------------------------------------------------------------
 function(SIMPL_START_FILTER_GROUP)
-
   set(options)
   set(oneValueArgs ALL_FILTERS_HEADERFILE REGISTER_KNOWN_FILTERS_FILE FILTER_GROUP BINARY_DIR)
   set(multiValueArgs)
@@ -174,7 +187,8 @@ function(SIMPL_START_FILTER_GROUP)
   if("${P_FILTER_GROUP}" STREQUAL "Core")
     set(P_FILTER_GROUP "SIMPLib")
   endif()
-  file(WRITE "${SIMPLProj_BINARY_DIR}/${P_FILTER_GROUP}PublicFilters.txt" "# ${P_FILTER_GROUP} Public Filters\n")
+  file(WRITE "${SIMPLProj_BINARY_DIR}/Documentation/${P_FILTER_GROUP}Filters.txt" "# ${P_FILTER_GROUP} Public Filters\n")
+  file(WRITE "${SIMPLProj_BINARY_DIR}/Wrapping/${P_FILTER_GROUP}Filters.txt" "# ${P_FILTER_GROUP} Python Filters\n")
 endfunction()
 
 #-------------------------------------------------------------------------------
@@ -182,11 +196,13 @@ endfunction()
 # @param WidgetsBinaryDir
 # @param filterGroup
 # @param humanGroup
+#-------------------------------------------------------------------------------
 macro(SIMPL_END_FILTER_GROUP WidgetsBinaryDir filterGroup humanGroup)
 endmacro()
 
 #-------------------------------------------------------------------------------
 # Macro ADD_SIMPL_SUPPORT_HEADER
+#-------------------------------------------------------------------------------
 macro(ADD_SIMPL_SUPPORT_HEADER SourceDir filterGroup headerFileName)
     set(Project_SRCS ${Project_SRCS}
                     ${SourceDir}/${filterGroup}/${headerFileName})
@@ -195,20 +211,17 @@ endmacro()
 
 #-------------------------------------------------------------------------------
 # Macro ADD_SIMPL_SUPPORT_MOC_HEADER
+#-------------------------------------------------------------------------------
 macro(ADD_SIMPL_SUPPORT_MOC_HEADER SourceDir filterGroup headerFileName)
-  # QT5_WRAP_CPP( _moc_filter_source  ${SourceDir}/${filterGroup}/${headerFileName})
-  # set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
-  # set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
-
   set(Project_SRCS ${Project_SRCS}
                     ${SourceDir}/${filterGroup}/${headerFileName}
-  #                  ${_moc_filter_source}
   )
   cmp_IDE_SOURCE_PROPERTIES( "${filterGroup}" "${SourceDir}/${filterGroup}/${headerFileName}" "" "0")
 endmacro()
 
 #-------------------------------------------------------------------------------
 # Macro ADD_SIMPL_SUPPORT_HEADER_SUBDIR
+#-------------------------------------------------------------------------------
 macro(ADD_SIMPL_SUPPORT_HEADER_SUBDIR SourceDir filterGroup headerFileName subdir)
     set(Project_SRCS ${Project_SRCS}
                     ${SourceDir}/${filterGroup}/${subdir}/${headerFileName})
@@ -217,13 +230,16 @@ endmacro()
 
 #-------------------------------------------------------------------------------
 # Macro ADD_SIMPL_SUPPORT_SOURCE
+#-------------------------------------------------------------------------------
 macro(ADD_SIMPL_SUPPORT_SOURCE SourceDir filterGroup sourceFileName)
     set(Project_SRCS ${Project_SRCS}
                     ${SourceDir}/${filterGroup}/${sourceFileName})
     cmp_IDE_SOURCE_PROPERTIES( "${filterGroup}" "" "${SourceDir}/${filterGroup}/${sourceFileName}" "0")
 endmacro()
+
 #-------------------------------------------------------------------------------
 # Macro ADD_SIMPL_SUPPORT_CLASS
+#-------------------------------------------------------------------------------
 macro(ADD_SIMPL_SUPPORT_CLASS SourceDir filterGroup className)
     set(Project_SRCS ${Project_SRCS}
                     ${SourceDir}/${filterGroup}/${className}.h
@@ -240,9 +256,8 @@ endmacro()
 # @param filterName The base filename of the filter, i.e., SomeFilter.cpp would be "SomeFilter"
 # @param filterDocPath The absolute path to the .md documentation file
 # @param publicFilter  Boolean TRUE or FALSE
+#-------------------------------------------------------------------------------
 macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath publicFilter)
-
-  # QT5_WRAP_CPP( _moc_filter_source  ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h)
   set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
   set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
 
@@ -265,24 +280,75 @@ macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath 
   file(APPEND ${AllFiltersHeaderFile} "#include \"${FilterLib}/${filterGroup}/${filterName}.h\"\n")
 
   if( ${publicFilter} STREQUAL TRUE)
-      file(APPEND ${RegisterKnownFiltersFile} "   FilterFactory<${filterName}>::Pointer ${filterName}Factory = FilterFactory<${filterName}>::New();\n")
-      file(APPEND ${RegisterKnownFiltersFile} "   fm->addFilterFactory(\"${filterName}\",${filterName}Factory);\n\n")
+    file(APPEND ${RegisterKnownFiltersFile} "   FilterFactory<${filterName}>::Pointer ${filterName}Factory = FilterFactory<${filterName}>::New();\n")
+    file(APPEND ${RegisterKnownFiltersFile} "   fm->addFilterFactory(\"${filterName}\",${filterName}Factory);\n\n")
 
-      #-- Check to make sure we have a Documentation file for the filter
-      if(NOT EXISTS ${filterDocPath} )
-        message(FATAL_ERROR "*** Missing Documentation File for ${filterDocPath}")
-      endif()
+    #-- Check to make sure we have a Documentation file for the filter
+    if(NOT EXISTS ${filterDocPath} )
+      message(FATAL_ERROR "*** Missing Documentation File for ${filterDocPath}")
+    endif()
 
-      get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)
-      set_property(GLOBAL APPEND PROPERTY DREAM3DDoc_${filterGroup} ${filterDocPath})
+    get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)
+    set_property(GLOBAL APPEND PROPERTY DREAM3DDoc_${filterGroup} ${filterDocPath})
+    # This bit of code creates a text file that the Python Bindings Generator is going to read from. We have to
+    # special case the "Core" filters that are part of SIMPLib to get the file naming correct.
+    if("${filterGroup}" STREQUAL "CoreFilters")
+      file(APPEND "${SIMPLProj_BINARY_DIR}/Documentation/SIMPLibFilters.txt" "${filterName}.h\n")
+      file(APPEND "${SIMPLProj_BINARY_DIR}/Wrapping/SIMPLibFilters.txt" "${filterName}.h\n")
+    else()
+      file(APPEND "${SIMPLProj_BINARY_DIR}/Documentation/${filterGroup}.txt" "${filterName}.h\n")
+      file(APPEND "${SIMPLProj_BINARY_DIR}/Wrapping/${filterGroup}.txt" "${filterName}.h\n")
+    endif()    
   endif()
-
-  file(APPEND ${SIMPLProj_BINARY_DIR}/${FilterLib}PublicFilters.txt "${filterName}.h\n")
-
 endmacro()
 
 #-------------------------------------------------------------------------------
+# Macro ADD_SIMPL_FILTER_SUPERCLASS
+# @brief This macros is needed if the developer creates a C++ class that is a subclass
+# of AbstractFilter AND that filter is *never* intended to be instantiated through 
+# the user interface. If those conditions apply then this is the macro for you.
+#
+# *IF* you are simply subclassing from an existing filter then you do *not* need
+# to call this macro, instead just call the ADD_SIMPL_FILTER instaed.
+#
+#
+# @param FilterLib The basename of the compiled plugin library
+# @param WidgetLib The widget library 
+# @param filterGroup The group that the filter is in.
+# @param filterName The name of the filter
+#-------------------------------------------------------------------------------
+macro(ADD_SIMPL_SUPERCLASS_FILTER FilterLib WidgetLib filterGroup filterName)
+  set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
+  set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
+
+  set(Project_SRCS ${Project_SRCS}
+                  ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h
+                  ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.cpp
+                  ${_moc_filter_source}
+                  )
+  #--- Organize inside the Visual Studio/Xcode Projects
+  cmp_IDE_SOURCE_PROPERTIES( "${filterGroup}" "${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h" "${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.cpp" ${PROJECT_INSTALL_HEADERS})
+  cmp_IDE_GENERATED_PROPERTIES ( "Generated/${FilterLib}/${filterGroup}" "" "${_moc_filter_source}" "0")
+
+  file(APPEND ${AllFiltersHeaderFile} "#include \"${FilterLib}/${filterGroup}/${filterName}.h\"\n")
+
+  #file(APPEND ${RegisterKnownFiltersFile} "   FilterFactory<${filterName}>::Pointer ${filterName}Factory = FilterFactory<${filterName}>::New();\n")
+  #file(APPEND ${RegisterKnownFiltersFile} "   fm->addFilterFactory(\"${filterName}\",${filterName}Factory);\n\n")
+
+  # This bit of code creates a text file that the Python Bindings Generator is going to read from. We have to
+  # special case the "Core" filters that are part of SIMPLib to get the file naming correct.
+  if("${filterGroup}" STREQUAL "CoreFilters")
+    file(APPEND "${SIMPLProj_BINARY_DIR}/Wrapping/SIMPLibFilters.txt" "${filterName}.h\n")
+  else()
+    file(APPEND "${SIMPLProj_BINARY_DIR}/Wrapping/${filterGroup}.txt" "${filterName}.h\n")
+  endif()    
+
+endmacro()
+
+
+#-------------------------------------------------------------------------------
 # Macro ADD_FILTER_LIST
+#-------------------------------------------------------------------------------
 macro(ADD_FILTER_LIST)
 
   file(APPEND ${RegisterKnownFiltersFile} "    QList<QString> pluginList;\n\n")

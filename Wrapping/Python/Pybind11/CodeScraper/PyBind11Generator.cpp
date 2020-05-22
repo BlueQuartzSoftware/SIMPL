@@ -43,7 +43,7 @@ void PyBind11Generator::readFilterList()
   {
     libName = QString("SIMPLib");
   }
-  QString listFilePath = SIMPL::PyBind11::SIMPLProjBinaryDir + "/" + libName + "PublicFilters.txt";
+  QString listFilePath = SIMPL::PyBind11::SIMPLProjBinaryDir + "/" + libName + "Filters.txt";
   QFileInfo listFileInfo(listFilePath);
   if(!listFileInfo.exists())
   {

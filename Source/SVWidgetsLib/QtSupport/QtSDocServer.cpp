@@ -198,7 +198,7 @@ QUrl QtSDocServer::GenerateHTMLUrl(const QString& className)
     QString pluginName;
     if(factory)
     {
-      pluginName = "/Filters/" + factory->getCompiledLibraryName() + "Filters";
+      pluginName = "/Filters/" + factory->getCompiledLibraryName() + "_Filters";
     }
     s = s.append(pluginName).append("/").append(className).append("/index.html");
     return QUrl(s);
