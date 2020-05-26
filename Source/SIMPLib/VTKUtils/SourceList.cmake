@@ -38,7 +38,7 @@ set(SUBDIR_NAME VTKUtils)
 
 # Any Class that inherits from QObject, either directly or through the heirarchy needs to have its header listed here
 set(SIMPLib_VTKUtils_Moc_HDRS
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/VTKFileReader.h
+
 )
 # --------------------------------------------------------------------
 # Run Qts automoc program to generate some source files that get compiled
@@ -54,7 +54,7 @@ set(SIMPLib_VTKUtils_HDRS
 )
 
 set(SIMPLib_VTKUtils_SRCS
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/VTKFileReader.cpp
+
 )
 
 
