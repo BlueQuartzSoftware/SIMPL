@@ -489,14 +489,6 @@ QString AbstractFilter::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QUuid AbstractFilter::getUuid() const
-{
-  return QUuid();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 QString AbstractFilter::generateHtmlSummary() const
 {
   QString html;
@@ -645,12 +637,6 @@ void AbstractFilter::addPathRename(const DataArrayPath& oldPath, const DataArray
 AbstractFilter::Pointer AbstractFilter::NullPointer()
 {
   return Pointer(static_cast<Self*>(nullptr));
-}
-
-// -----------------------------------------------------------------------------
-QString AbstractFilter::getNameOfClass() const
-{
-  return QString("AbstractFilter");
 }
 
 // -----------------------------------------------------------------------------

@@ -121,7 +121,8 @@ public:
   /**
    * @brief Returns the name of the class for AbstractFilter
    */
-  QString getNameOfClass() const override;
+  virtual QString getNameOfClass() const = 0;
+
   /**
    * @brief Returns the name of the class for AbstractFilter
    */
@@ -154,7 +155,7 @@ public:
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  virtual QUuid getUuid() const;
+  virtual QUuid getUuid() const = 0;
 
   /**
    * @brief getHumanLabel Returns the human label for the filter, which determines its

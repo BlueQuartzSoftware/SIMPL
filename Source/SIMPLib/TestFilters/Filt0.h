@@ -115,6 +115,8 @@ public:
     return "Misc";
   }
 
+  QUuid getUuid() const override;
+
   /**
    * @brief This method will instantiate all the end user settable options/parameters
    * for this filter
