@@ -102,7 +102,6 @@ QUuid Filt0::getUuid() const
   return QUuid("{2df74121-7513-598e-8d73-9a990303c600}");
 }
 
-
 // -----------------------------------------------------------------------------
 Filt0::Pointer Filt0::NullPointer()
 {
