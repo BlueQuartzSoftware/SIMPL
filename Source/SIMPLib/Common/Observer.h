@@ -64,8 +64,6 @@ class SIMPLib_EXPORT Observer : public QObject, public IObserver
 public:
   Observer();
 
-  Observer(QObject* parent);
-
   /**
    * @brief Returns the name of the class for Observer
    */
