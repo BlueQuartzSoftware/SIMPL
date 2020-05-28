@@ -692,6 +692,25 @@ void FilterPipeline::removeMessageReceiver(QObject* obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void FilterPipeline::addObserver(Observer* obj)
+{
+  connect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), obj, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
+  m_MessageReceivers.push_back(obj);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterPipeline::removeObserver(Observer* obj)
+{
+  disconnect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), obj, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
+  m_MessageReceivers.removeAll(obj);
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void FilterPipeline::connectFilterNotifications(AbstractFilter* filter)
 {
   for(const auto& messageReceiver : m_MessageReceivers)

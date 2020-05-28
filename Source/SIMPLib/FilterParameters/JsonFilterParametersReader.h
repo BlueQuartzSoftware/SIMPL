@@ -51,6 +51,17 @@
  */
 class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParametersReader
 {
+
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(JsonFilterParametersReader)
+  PYB11_SHARED_POINTERS(JsonFilterParametersReader)
+  PYB11_STATIC_NEW_MACRO(JsonFilterParametersReader)
+
+  PYB11_METHOD(FilterPipeline::Pointer readPipelineFromFile)
+
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
+
 public:
   using Self = JsonFilterParametersReader;
   using Pointer = std::shared_ptr<Self>;
