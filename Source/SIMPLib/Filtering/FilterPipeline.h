@@ -86,6 +86,8 @@ class SIMPLib_EXPORT FilterPipeline : public Observable
   PYB11_METHOD(bool empty)
   PYB11_METHOD(void clearErrorCode)
   PYB11_METHOD(void clearWarningCode)
+  PYB11_METHOD(void addObserver ARGS Observer)
+  PYB11_METHOD(void removeObserver ARGS Observer)
   PYB11_END_BINDINGS()
   // End Python bindings declarations
 
@@ -231,6 +233,10 @@ public:
   void addMessageReceiver(QObject* obj);
 
   void removeMessageReceiver(QObject* obj);
+
+  void addObserver(Observer* obj);
+
+  void removeObserver(Observer* obj);
 
   void connectFilterNotifications(AbstractFilter* filter);
   void disconnectFilterNotifications(AbstractFilter* filter);
