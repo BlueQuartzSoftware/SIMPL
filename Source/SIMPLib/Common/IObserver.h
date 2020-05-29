@@ -40,6 +40,14 @@
 
 class SIMPLib_EXPORT IObserver
 {
+  
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(IObserver)
+  PYB11_SHARED_POINTERS(IObserver)
+  PYB11_CREATION()
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
+
 public:
   IObserver();
   virtual ~IObserver();

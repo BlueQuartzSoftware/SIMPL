@@ -439,7 +439,7 @@ def sort_inherited_classes(classes: List[PyClass]) -> List[PyClass]:
 
   return result
 
-def generate_simpl_bindings(output_dir: str, header_path: str, body_path: str, files: List[str], source_dir: str, python_output_dir: str) -> None:
+def generate_simpl_bindings(output_dir: str, header_path: str, body_path: str, files: List[str], source_dir: str, python_output_dir: str, plugin_name: str) -> None:
   with open(f'{output_dir}/py_simpl.cpp', 'w') as module_file, open(f'{python_output_dir}/simplpy.py', 'w') as python_file, open(f'{python_output_dir}/simpl_UnitTest.py', 'w') as test_file:
     with open(header_path, 'r') as header_file:
       header_code = header_file.read()
@@ -487,7 +487,8 @@ def generate_simpl_bindings(output_dir: str, header_path: str, body_path: str, f
 
     module_file.write('}\n')
 
-def generate_plugin_bindings(output_dir: str, module_name: str, files: List[str], include_dir: Optional[str], python_output_dir: str, header_path: str = '', body_path: str = '') -> None:
+
+def generate_plugin_bindings(output_dir: str, module_name: str, files: List[str], include_dir: Optional[str], python_output_dir: str, header_path: str = '', body_path: str = '', plugin_name: str = '') -> None:
   with open(f'{output_dir}/py_{module_name}.cpp', 'w') as module_file, open(f'{python_output_dir}/{module_name}py.py', 'w') as python_file, open(f'{python_output_dir}/{module_name}_UnitTest.py', 'w') as test_file:
     includes = files
     if include_dir:
@@ -512,9 +513,12 @@ def generate_plugin_bindings(output_dir: str, module_name: str, files: List[str]
         custom_body_code = body_file.read()
 
     header_code = (
+      '// This header is automatically generated during build time by the "generate_python_bindings.py" file\n\n'
       '#include <memory>\n\n'
       '#include \"pybind11/pybind11.h\"\n\n'
+      '#include \"SIMPLib/Filtering/FilterManager.h\"\n\n'
       '#include \"Binding/Pybind11CustomTypeCasts.h\"\n\n'
+      f'#include \"{plugin_name}/{plugin_name}Plugin.h\"\n'
       f'{custom_header_code}\n'
       f'{include_code}\n\n'
       'namespace py = pybind11;\n'
@@ -554,8 +558,11 @@ def generate_plugin_bindings(output_dir: str, module_name: str, files: List[str]
     test_file.write(f'  print(\'{module_name} UnitTest Complete\')\n')
 
     module_file.write(f'{custom_body_code}\n')
-
-    module_file.write('}\n')
+    
+    module_file.write(f'  //Ensure all the filters are loaded when this module loads\n')
+    module_file.write(f'  {plugin_name}Plugin {module_name}Plugin;\n')
+    module_file.write(f'  {module_name}Plugin.registerFilters(FilterManager::Instance());\n')
+    module_file.write('\n}\n')
 
 def read_plugin_file_list(file_list_path: str, source_dir: str) -> List[str]:
   files = []
@@ -593,7 +600,9 @@ if __name__ == '__main__':
   parser.add_argument('--header_path')
   parser.add_argument('--body_path')
   parser.add_argument('--include_dir')
+  parser.add_argument('--plugin_name')
   parser.add_argument('--plugin', action='store_true')
+
 
   args = parser.parse_args()
 
@@ -601,11 +610,14 @@ if __name__ == '__main__':
     if args.module_name is None:
       parser.error('--plugin requires --module_name')
     files = read_plugin_file_list(args.file_list_path, args.source_dir)
-    generate_plugin_bindings(args.output_dir, args.module_name, files, args.include_dir, args.python_output_dir, args.header_path, args.body_path)
+    generate_plugin_bindings(args.output_dir, args.module_name, files, args.include_dir, args.python_output_dir, args.header_path, args.body_path, args.plugin_name)
+
   else:
     if args.header_path is None:
       parser.error('requires --header_path')
     if args.body_path is None:
       parser.error('requires --body_path')
     files = read_simpl_file_list(args.file_list_path, args.source_dir)
-    generate_simpl_bindings(args.output_dir, args.header_path, args.body_path, files, args.source_dir, args.python_output_dir)
+    generate_simpl_bindings(args.output_dir, args.header_path, args.body_path, files, args.source_dir, args.python_output_dir, args.plugin_name)
+
+
