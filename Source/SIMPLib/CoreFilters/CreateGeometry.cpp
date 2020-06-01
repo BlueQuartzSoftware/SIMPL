@@ -346,13 +346,21 @@ void CreateGeometry::dataCheck()
     }
     else
     {
-      rectgrid->setXBounds(m_XBoundsPtr.lock());
-      rectgrid->setYBounds(m_YBoundsPtr.lock());
-      rectgrid->setZBounds(m_ZBoundsPtr.lock());
 
-      getDataContainerArray()->getAttributeMatrix(getXBoundsArrayPath())->removeAttributeArray(getXBoundsArrayPath().getDataArrayName());
-      getDataContainerArray()->getAttributeMatrix(getYBoundsArrayPath())->removeAttributeArray(getYBoundsArrayPath().getDataArrayName());
-      getDataContainerArray()->getAttributeMatrix(getZBoundsArrayPath())->removeAttributeArray(getZBoundsArrayPath().getDataArrayName());
+      DataContainerArray::Pointer dca = getDataContainerArray();
+      DataContainer::Pointer dc = dca->getDataContainer(getXBoundsArrayPath());
+      AttributeMatrix::Pointer am = dc->getAttributeMatrix(getXBoundsArrayPath());
+
+      auto nameList = am->getAttributeArrayNames();
+
+      FloatArrayType::Pointer farray = std::dynamic_pointer_cast<FloatArrayType>(am->removeAttributeArray(getXBoundsArrayPath().getDataArrayName()));
+      rectgrid->setXBounds(farray);
+
+      farray = std::dynamic_pointer_cast<FloatArrayType>(am->removeAttributeArray(getYBoundsArrayPath().getDataArrayName()));
+      rectgrid->setYBounds(farray);
+
+      farray = std::dynamic_pointer_cast<FloatArrayType>(am->removeAttributeArray(getZBoundsArrayPath().getDataArrayName()));
+      rectgrid->setZBounds(farray);
     }
     rectgrid->setDimensions(SizeVec3Type(m_XBoundsPtr.lock()->getNumberOfTuples() - 1, m_YBoundsPtr.lock()->getNumberOfTuples() - 1, m_ZBoundsPtr.lock()->getNumberOfTuples() - 1));
     dc->setGeometry(rectgrid);
