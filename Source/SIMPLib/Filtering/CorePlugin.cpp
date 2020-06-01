@@ -46,7 +46,7 @@
 //
 // -----------------------------------------------------------------------------
 CorePlugin::CorePlugin()
-: m_Version(SIMPLib::Version::Package())
+: m_Version(SIMPLib::Version::Complete())
 , m_CompatibilityVersion(SIMPLib::Version::Package())
 , m_Vendor("OpenSource")
 , m_URL("http://www.bluequartz.net")
