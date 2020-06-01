@@ -55,6 +55,14 @@
  */
 class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParametersWriter
 {
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(JsonFilterParametersWriter)
+  PYB11_SHARED_POINTERS(JsonFilterParametersWriter)
+  PYB11_STATIC_NEW_MACRO(JsonFilterParametersWriter)
+  PYB11_METHOD(FilterPipeline::Pointer exportPipelineToFile)
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
+
 public:
   using Self = JsonFilterParametersWriter;
   using Pointer = std::shared_ptr<Self>;
@@ -111,10 +119,23 @@ public:
    * @param filePath The file path to write
    * @param pipelineName The name of the pipeline (Typically the name of the file)
    * @param expandPipeline Expand any embeded pipelines that are in DataContainerReader filters
-   * @param obs Any observer that we can pass error/warning messages back to in case something goes wrong.
+   * @param obs Any list of observers that we can pass error/warning messages back to in case something goes wrong.
    * @return
    */
   int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, bool expandPipelines, QList<IObserver*> obs = QList<IObserver*>()) override;
+
+  /**
+   * @brief exportPipelineToFile This function will write a pipeline to a
+   * JSON file. The file path passed in <b>WILL BE OVER WRITTEN</b> by this
+   * function <b>WITHOUT WARNING</b>
+   * @param pipeline The pipeline to be written
+   * @param filePath The file path to write
+   * @param pipelineName The name of the pipeline (Typically the name of the file)
+   * @param expandPipeline Expand any embeded pipelines that are in DataContainerReader filters
+   * @param obs Any observer that we can pass error/warning messages back to in case something goes wrong.
+   * @return
+   */
+  int exportPipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, bool expandPipelines, IObserver* obs = nullptr);
 
   /**
    * @brief WritePipelineToString This function will write a pipeline to a QString.
