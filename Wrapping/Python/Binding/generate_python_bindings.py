@@ -1,6 +1,8 @@
 import argparse
 import os
 import re
+import pathlib
+import filecmp
 
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -440,7 +442,7 @@ def sort_inherited_classes(classes: List[PyClass]) -> List[PyClass]:
   return result
 
 def generate_simpl_bindings(output_dir: str, header_path: str, body_path: str, files: List[str], source_dir: str, python_output_dir: str, plugin_name: str) -> None:
-  with open(f'{output_dir}/py_simpl.cpp', 'w') as module_file, open(f'{python_output_dir}/simplpy.py', 'w') as python_file, open(f'{python_output_dir}/simpl_UnitTest.py', 'w') as test_file:
+  with open(f'{output_dir}/py_simpl_temp.cpp', 'w') as module_file, open(f'{python_output_dir}/simplpy.py', 'w') as python_file, open(f'{python_output_dir}/simpl_UnitTest.py', 'w') as test_file:
     with open(header_path, 'r') as header_file:
       header_code = header_file.read()
       module_file.write(header_code)
@@ -489,7 +491,7 @@ def generate_simpl_bindings(output_dir: str, header_path: str, body_path: str, f
 
 
 def generate_plugin_bindings(output_dir: str, module_name: str, files: List[str], include_dir: Optional[str], python_output_dir: str, header_path: str = '', body_path: str = '', plugin_name: str = '') -> None:
-  with open(f'{output_dir}/py_{module_name}.cpp', 'w') as module_file, open(f'{python_output_dir}/{module_name}py.py', 'w') as python_file, open(f'{python_output_dir}/{module_name}_UnitTest.py', 'w') as test_file:
+  with open(f'{output_dir}/py_{module_name}_temp.cpp', 'w') as module_file, open(f'{python_output_dir}/{module_name}py.py', 'w') as python_file, open(f'{python_output_dir}/{module_name}_UnitTest.py', 'w') as test_file:
     includes = files
     if include_dir:
       includes = []
@@ -590,6 +592,21 @@ def read_simpl_file_list(file_list_path: str, source_dir: str) -> List[str]:
   files = list(dict.fromkeys(files))
   return files
 
+def move_file(temp_file, target_file):
+  final_file_path = pathlib.Path(target_file)
+  
+  if final_file_path.exists ():
+      #print ("Final File exists, comparing contents...")
+      if filecmp.cmp(temp_file, target_file, shallow=False):
+        #print("   Contents are the same. Removing temp file...")
+        os.remove(temp_file)
+      else:
+        #print ("  Contents differ, moving new file into place...")
+        os.rename(temp_file, target_file)
+  else:
+      #print("File Does NOT Exist. Renaming Temp file...")
+      os.rename(temp_file, target_file)
+
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument('output_dir')
@@ -611,6 +628,7 @@ if __name__ == '__main__':
       parser.error('--plugin requires --module_name')
     files = read_plugin_file_list(args.file_list_path, args.source_dir)
     generate_plugin_bindings(args.output_dir, args.module_name, files, args.include_dir, args.python_output_dir, args.header_path, args.body_path, args.plugin_name)
+    move_file(f'{args.output_dir}/py_{args.module_name}_temp.cpp', f'{args.output_dir}/py_{args.module_name}.cpp')
 
   else:
     if args.header_path is None:
@@ -619,5 +637,6 @@ if __name__ == '__main__':
       parser.error('requires --body_path')
     files = read_simpl_file_list(args.file_list_path, args.source_dir)
     generate_simpl_bindings(args.output_dir, args.header_path, args.body_path, files, args.source_dir, args.python_output_dir, args.plugin_name)
+    move_file(f'{args.output_dir}/py_simpl_temp.cpp', f'{args.output_dir}/py_simpl.cpp')
 
 
