@@ -43,6 +43,8 @@ public:
   StackFileListInfo();
   ~StackFileListInfo() override;
 
+  StackFileListInfo(const QString& extension, int32_t startIndex, int32_t endIndex, int32_t padding);
+
   qint32 StartIndex = 0;
   qint32 EndIndex = 1;
 

@@ -69,7 +69,7 @@ public:
   };
   Q_ENUM(DataType)
 
-  ~DataArrayPathHelper() = default;
+  ~DataArrayPathHelper() override = default;
 
 private:
   DataArrayPathHelper() = default;

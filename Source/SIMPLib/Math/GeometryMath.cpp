@@ -654,7 +654,7 @@ void GeometryMath::FindBoundingBoxOfRotatedFace(TriangleGeom* faces, int faceId,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GeometryMath::FindPolygonNormal(const float* vertices, const int64_t numVerts, float n[3])
+void GeometryMath::FindPolygonNormal(const float* vertices, int64_t numVerts, float n[3])
 {
   // Return immediately if the  number of vertices cannot form a polygon
   if(numVerts < 3)
@@ -907,7 +907,7 @@ char GeometryMath::RayIntersectsPlane(const float* a, const float* b, const floa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-char GeometryMath::RayIntersectsPlane(const float* n, const float d, const float* q, const float* r, float* p)
+char GeometryMath::RayIntersectsPlane(const float* n, float d, const float* q, const float* r, float* p)
 {
   float rq[3];
   float num, denom, t;

@@ -118,10 +118,7 @@ public:
   /**
    * @brief Default constructor
    */
-  NamedCollection()
-  {
-  }
-
+  NamedCollection() = default;
   // NamedCollection(const NamedCollection<T>& other)
   //: m_Items(other.m_Items)
   //{
@@ -134,7 +131,7 @@ public:
   /**
    * @brief Remove all children from the collection before it is destroyed.
    */
-  virtual ~NamedCollection()
+  ~NamedCollection() override
   {
     clear();
   }

@@ -72,7 +72,7 @@ public:
   using Iterator = CollectionType::iterator;
   using ConstIterator = CollectionType::const_iterator;
 
-  virtual ~AbstractMontage();
+  ~AbstractMontage() override;
 
   /**
    * @brief Checks if the montage's values are valid.

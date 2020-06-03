@@ -72,7 +72,7 @@ int ComparisonInputs::size()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonInputs::addInput(const QString dataContainerName, const QString attributeMatrixName, const QString arrayName, int compOperator, double compValue)
+void ComparisonInputs::addInput(const QString& dataContainerName, const QString& attributeMatrixName, const QString& arrayName, int compOperator, double compValue)
 {
   ComparisonInput_t v;
   v.dataContainerName = dataContainerName;

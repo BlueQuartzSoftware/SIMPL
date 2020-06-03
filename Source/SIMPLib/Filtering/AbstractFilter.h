@@ -121,7 +121,7 @@ public:
   /**
    * @brief Returns the name of the class for AbstractFilter
    */
-  virtual QString getNameOfClass() const = 0;
+  QString getNameOfClass() const override = 0;
 
   /**
    * @brief Returns the name of the class for AbstractFilter
