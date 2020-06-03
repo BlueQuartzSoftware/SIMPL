@@ -153,6 +153,12 @@ class PyClass():
     if args_text:
       args_text = ', ' + args_text
     code = f'def {camel_to_snake(self.name)}(data_container_array{args_text}):\n'
+    code += '  \"\"\"\n'
+    code += f'  {self.name}\n\n'
+    code += '  :param DataContainerArray data_container_array\n'
+    for prop in self.properties:
+      code += f'  :param {prop.type} {prop.name}\n'
+    code += ' \"\"\"\n\n'
     code += f'  filter = {module_name}.{self.name}()\n'
     code += f'  filter.setDataContainerArray(data_container_array)\n'
 
