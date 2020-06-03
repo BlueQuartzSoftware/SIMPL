@@ -83,27 +83,9 @@ function(CreatePybind11Module)
 
   string(TOLOWER ${ARGS_MODULE_NAME} MODULE_NAME_lower)
 
-set(d3dAllModules "${SIMPLProj_BINARY_DIR}/CreateDream3dAll.py")
-if("${ARGS_MODULE_NAME}" STREQUAL "simpl")
-  file(WRITE "${d3dAllModules}" "import argparse\n")
-  file(APPEND "${d3dAllModules}" "import os\n")
-  file(APPEND "${d3dAllModules}" "import re\n")
-  file(APPEND "${d3dAllModules}" "from pathlib import Path\n")
+  get_property(PY_ALL_MODULES_FILE GLOBAL PROPERTY PY_ALL_MODULES_FILE)
 
-  file(APPEND "${d3dAllModules}" "if __name__ == '__main__':\n")
-  file(APPEND "${d3dAllModules}" "  parser = argparse.ArgumentParser()\n")
-  file(APPEND "${d3dAllModules}" "  parser.add_argument('python_output_dir')\n")
-  file(APPEND "${d3dAllModules}" "  args = parser.parse_args()\n")
-  file(APPEND "${d3dAllModules}" "  with open(f'{args.python_output_dir}/dream3d.py', 'w') as d3d_file:\n")
-  file(APPEND "${d3dAllModules}" "    d3d_file.write(f'import ${MODULE_NAME_lower}py\\n')\n")
-
-  add_custom_target(CreateDream3dModuleFile ALL
-      COMMAND ${PYTHON_EXECUTABLE} ${d3dAllModules} "${ARGS_PYTHON_OUTPUT_DIR}"
-      COMMENT "Creating dream3d.py module file")
-
-else()
-  file(APPEND "${d3dAllModules}" "    d3d_file.write(f'import ${MODULE_NAME_lower}py\\n')\n")
-endif()
+  file(APPEND ${PY_ALL_MODULES_FILE} "${MODULE_NAME_lower}\n")
 
   set(CREATE_PYTHON_BINDINGS_TARGET ${MODULE_NAME_lower}CreatePythonBindings)
   set(PYTHON_MODULE_SOURCE_FILE ${ARGS_OUTPUT_DIR}/py_${MODULE_NAME_lower}.cpp)
@@ -128,6 +110,7 @@ endif()
       COMMENT "${ARGS_MODULE_NAME}: Generating Python bindings"
       BYPRODUCTS ${PYTHON_MODULE_SOURCE_FILE}
   )
+
   set_property(TARGET ${CREATE_PYTHON_BINDINGS_TARGET} PROPERTY FOLDER "Python/Generator")
 
   add_custom_command(TARGET ${CREATE_PYTHON_BINDINGS_TARGET}
@@ -180,6 +163,7 @@ function(CreatePybind11Plugin)
   set(oneValueArgs PLUGIN_NAME PLUGIN_TARGET HEADER_PATH BODY_PATH)
   set(multiValueArgs)
   cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
   get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 
   CreatePybind11Module(MODULE_NAME ${ARGS_PLUGIN_NAME}
@@ -187,7 +171,7 @@ function(CreatePybind11Plugin)
     FILE_LIST_PATH "${SIMPLProj_BINARY_DIR}/Wrapping/${ARGS_PLUGIN_NAME}Filters.txt"
     SOURCE_DIR "${${ARGS_PLUGIN_NAME}_SOURCE_DIR}/${ARGS_PLUGIN_NAME}Filters"
     INCLUDE_DIR "${${ARGS_PLUGIN_NAME}_SOURCE_DIR}"
-    PYTHON_OUTPUT_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/$<${_isMultiConfig}:$<CONFIG>>"
+    PYTHON_OUTPUT_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}$<${_isMultiConfig}:/$<CONFIG>>"
     HEADER_PATH ${ARGS_HEADER_PATH}
     BODY_PATH ${ARGS_BODY_PATH}
     LINK_LIBRARIES ${ARGS_PLUGIN_TARGET}

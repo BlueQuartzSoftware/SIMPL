@@ -503,7 +503,22 @@ if(SIMPL_ENABLE_PYTHON)
 
   file(WRITE ${SIMPL_PY_SOURCES_FILE} "${SIMPL_PY_SOURCES}")
 
+  set(PY_ALL_MODULES_GENERATOR ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/generate_all_modules_file.py)
+  set(PY_ALL_MODULES_FILE ${SIMPLProj_BINARY_DIR}/Wrapping/all_modules.txt)
+  set_property(GLOBAL PROPERTY PY_ALL_MODULES_FILE ${PY_ALL_MODULES_FILE})
+
+  file(WRITE ${PY_ALL_MODULES_FILE} "")
+
   get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+
+  add_custom_target(CreateDream3dModuleFile ALL
+    COMMAND ${PYTHON_EXECUTABLE} ${PY_ALL_MODULES_GENERATOR}
+    "${PY_ALL_MODULES_FILE}"
+    "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}$<${_isMultiConfig}:/$<CONFIG>>"
+    COMMENT "Creating dream3d.py module file"
+  )
+
+  set_property(TARGET CreateDream3dModuleFile PROPERTY FOLDER "Python")
 
   CreatePybind11Module(MODULE_NAME "simpl"
     OUTPUT_DIR "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore"
@@ -511,7 +526,7 @@ if(SIMPL_ENABLE_PYTHON)
     SOURCE_DIR "${SIMPLProj_SOURCE_DIR}/Source"
     HEADER_PATH "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/pySIMPLHeader.cpp"
     BODY_PATH "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/pySIMPLBody.cpp"
-    PYTHON_OUTPUT_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/$<${_isMultiConfig}:$<CONFIG>>"
+    PYTHON_OUTPUT_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}$<${_isMultiConfig}:/$<CONFIG>>"
     LINK_LIBRARIES SIMPLib
     INCLUDE_DIRS ${SIMPLProj_SOURCE_DIR}/Wrapping/Python
   )
@@ -519,7 +534,7 @@ if(SIMPL_ENABLE_PYTHON)
   add_custom_target(CopyPythonSupport ALL
     COMMAND ${CMAKE_COMMAND} -E copy
       ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/SIMPL/simpl_helpers.py
-      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/$<${_isMultiConfig}:$<CONFIG>>"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}$<${_isMultiConfig}:/$<CONFIG>>"
     COMMENT "Copying simpl_helpers.py to binary directory"
   )
 
