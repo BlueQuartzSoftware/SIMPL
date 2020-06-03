@@ -36,6 +36,15 @@
 StackFileListInfo::StackFileListInfo() = default;
 
 // -----------------------------------------------------------------------------
+StackFileListInfo::StackFileListInfo(const QString& extension, int32_t startIndex, int32_t endIndex, int32_t padding)
+{
+  FileExtension = extension;
+  StartIndex = startIndex;
+  EndIndex = endIndex;
+  PaddingDigits = padding;
+}
+
+// -----------------------------------------------------------------------------
 StackFileListInfo::~StackFileListInfo() = default;
 
 // -----------------------------------------------------------------------------

@@ -131,7 +131,7 @@ IDataStructureNode::ParentType* IDataStructureNode::getParentNode() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IDataStructureNode::setParentNode(ParentType* const parent)
+void IDataStructureNode::setParentNode(ParentType* parent)
 {
   if(parent == m_Parent)
   {

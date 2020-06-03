@@ -127,7 +127,7 @@ public:
    * @param numVerts
    * @param n
    */
-  static void FindPolygonNormal(const float* vertices, const int64_t numVerts, float n[3]);
+  static void FindPolygonNormal(const float* vertices, int64_t numVerts, float n[3]);
 
   /**
    * @brief Computes the normal vector to a plane containing 3 points (AB X AC).
@@ -364,7 +364,7 @@ public:
    * @param p
    * @return
    */
-  static char RayIntersectsPlane(const float* n, const float d, const float* q, const float* r, float* p);
+  static char RayIntersectsPlane(const float* n, float d, const float* q, const float* r, float* p);
 
 protected:
   GeometryMath();

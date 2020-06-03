@@ -96,7 +96,7 @@ private:
    * IDataStructureNode::clearParentNode.  THIS DOES NOT ADD THE NODE TO THE TARGET PARENT!
    * @param parent
    */
-  void setParentNode(ParentType* const parent);
+  void setParentNode(ParentType* parent);
 
   /**
    * @brief Clears the parent pointer and removes this from its parent constainer.

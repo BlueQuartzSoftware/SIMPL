@@ -100,7 +100,7 @@ class SIMPLib_EXPORT ComparisonInputs : public QObject
   PYB11_BEGIN_BINDINGS(ComparisonInputs)
   PYB11_CREATION()  
   PYB11_PROPERTY(QVector<ComparisonInput_t> Inputs READ getInputs)
-  PYB11_METHOD(void addInput OVERLOAD const.QString,dataContainerName const.QString,attributeMatrixName const.QString,arrayName int,compOperator double,compValue)
+  PYB11_METHOD(void addInput OVERLOAD const.QString.&,dataContainerName const.QString.&,attributeMatrixName const.QString.&,arrayName int,compOperator double,compValue)
   PYB11_METHOD(void addInput OVERLOAD const.ComparisonInput_t.&,input)
   //PYB11_METHOD(ComparisonInput_t& getInput ARGS index)
   //PYB11_METHOD(ComparisonInput_t& operator[] ARGS index)
@@ -118,7 +118,7 @@ public:
 
   int size();
 
-  void addInput(const QString dataContainerName, const QString attributeMatrixName, const QString arrayName, int compOperator, double compValue);
+  void addInput(const QString& dataContainerName, const QString& attributeMatrixName, const QString& arrayName, int compOperator, double compValue);
   void addInput(const ComparisonInput_t& input);
 
   ComparisonInput_t& getInput(int index);

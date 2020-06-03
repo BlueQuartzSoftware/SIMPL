@@ -62,7 +62,7 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
   PYB11_PROPERTY(QVector<AbstractComparison::Pointer> Inputs READ getInputs)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(QString AttributeMatrixName READ getAttributeMatrixName WRITE setAttributeMatrixName)
-  PYB11_METHOD(void addInput OVERLOAD int,unionOperator const.QString,arrayName int,compOperator double,compValue)
+  PYB11_METHOD(void addInput OVERLOAD int,unionOperator const.QString.&,arrayName int,compOperator double,compValue)
   PYB11_METHOD(void addInput OVERLOAD int,unionOperator bool,invertComparison QVector<AbstractComparison::Pointer>,comparisons)
   PYB11_METHOD(void addInput OVERLOAD AbstractComparison::Pointer,input)
   PYB11_METHOD(int size)
@@ -89,7 +89,7 @@ public:
    * @param compOperator
    * @param compValue
    */
-  void addInput(int unionOperator, const QString arrayName, int compOperator, double compValue);
+  void addInput(int unionOperator, const QString& arrayName, int compOperator, double compValue);
 
   /**
    * @brief Adds a new input to the list of comparisons

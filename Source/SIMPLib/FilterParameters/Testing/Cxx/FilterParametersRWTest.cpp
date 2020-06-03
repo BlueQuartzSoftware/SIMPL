@@ -107,7 +107,7 @@ public:
     m_AxisAngle1.k = 6.4f;
     m_AxisAngle1.l = 8.2f;
 
-    m_ComparisonInputs1.addInput("DataContainer", "AttributeMatrix", "DataArrayName", 2, 4.6);
+    m_ComparisonInputs1.addInput(QString("DataContainer"), QString("AttributeMatrix"), QString("DataArrayName"), 2, 4.6);
 
     {
       DataArrayProxy daProxy = DataArrayProxy("TestPath", "TestName");

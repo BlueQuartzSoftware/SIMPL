@@ -126,7 +126,7 @@ int ComparisonInputsAdvanced::size()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonInputsAdvanced::addInput(int unionOperator, const QString arrayName, int compOperator, double compValue)
+void ComparisonInputsAdvanced::addInput(int unionOperator, const QString& arrayName, int compOperator, double compValue)
 {
   ComparisonValue::Pointer v = ComparisonValue::New();
   v->setUnionOperator(unionOperator);

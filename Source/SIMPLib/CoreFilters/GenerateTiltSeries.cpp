@@ -94,12 +94,19 @@ public:
   using CoordinateType = FloatVec3Type;
   using OrientationMatrixType = std::vector<float>;
 
-  ResampleGrid(GenerateTiltSeries* filter, const FloatArrayType::Pointer& inputGrid, const DataContainer::Pointer& outDc, const AxisAngleType& rotationAxis, size_t gridIndex)
+  ResampleGrid(GenerateTiltSeries* filter, const FloatArrayType::Pointer& inputGrid, const DataContainer::Pointer& outDc, const AxisAngleType& rotationAxis
+#if GTS_GENERATE_DEBUG_ARRAYS
+               ,
+               size_t gridIndex
+#endif
+               )
   : m_Filter(filter)
   , m_Coords(inputGrid)
   , m_OutputDC(outDc)
   , m_RotationAxis(rotationAxis)
+#if GTS_GENERATE_DEBUG_ARRAYS
   , m_GridIndex(gridIndex)
+#endif
   {
   }
   ~ResampleGrid() = default;
@@ -297,7 +304,9 @@ private:
   FloatArrayType::Pointer m_Coords;
   DataContainer::Pointer m_OutputDC;
   std::array<float, 4> m_RotationAxis;
+#if GTS_GENERATE_DEBUG_ARRAYS
   size_t m_GridIndex = 0;
+#endif
 };
 
 } // namespace Detail
@@ -489,7 +498,12 @@ void GenerateTiltSeries::execute()
     }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-    g->run(Detail::ResampleGrid(this, gridCoords, gridDC, rotationAxis, gridIndex));
+    g->run(Detail::ResampleGrid(this, gridCoords, gridDC, rotationAxis
+#if GTS_GENERATE_DEBUG_ARRAYS
+                                ,
+                                gridIndex
+#endif
+                                ));
     threadCount++;
     if(threadCount == nthreads)
     {
@@ -498,7 +512,12 @@ void GenerateTiltSeries::execute()
     }
 #else
     //    std::cout << "Resample Deg = " << currentDeg << std::endl;
-    Detail::ResampleGrid impl(this, gridCoords, gridDC, rotationAxis, gridIndex);
+    Detail::ResampleGrid impl(this, gridCoords, gridDC, rotationAxis
+#if GTS_GENERATE_DEBUG_ARRAYS
+                              ,
+                              gridIndex
+#endif
+    );
     impl();
 #endif
 
