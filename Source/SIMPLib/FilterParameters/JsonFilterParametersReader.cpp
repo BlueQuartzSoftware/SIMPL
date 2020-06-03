@@ -472,12 +472,6 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
            << "Possible reasons include a name change of the filter, plugin not loading or a simple spelling mistake? A \n"
            << "blank filter has been inserted in its place. The filter name is: " << filterName << "\n";
 
-        // FilterManager::Collection factories = filtManager->getFactories();
-        // for(const auto& factory : factories)
-        // {
-        //   ss << factory->getFilterClassName() << "\n";
-        // }
-
         QString prefix = "JsonFilterParametersReader::ReadPipelineFromFile()";
         PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New(pipeline->getName(), QObject::tr("%1: %2").arg(prefix).arg(msg), -66066);
         obs->processPipelineMessage(pm);

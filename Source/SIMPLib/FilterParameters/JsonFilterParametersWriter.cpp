@@ -86,18 +86,9 @@ int JsonFilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipe
 // -----------------------------------------------------------------------------
 int JsonFilterParametersWriter::exportPipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, bool expandPipeline, IObserver* obs)
 {
-  int err = 0;
-  err = populateWriter(pipeline, pipelineName, expandPipeline, {obs});
-  if(err < 0)
-  {
-    return err;
-  }
-
-  setFileName(filePath);
-  writePipeline();
-  clearWriter();
-  return err;
+  return writePipelineToFile(pipeline, filePath, pipelineName, expandPipeline, {obs});
 }
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
