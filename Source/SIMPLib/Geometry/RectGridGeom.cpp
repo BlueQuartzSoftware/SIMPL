@@ -1145,6 +1145,7 @@ IGeometry::Pointer RectGridGeom::deepCopy(bool forceNoAllocate) const
   copy->setZBounds(zBounds);
   copy->setElementSizes(elementSizes);
   copy->setSpatialDimensionality(getSpatialDimensionality());
+  copy->setUnits(getUnits());
 
   return copy;
 }
