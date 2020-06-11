@@ -821,15 +821,25 @@ herr_t ImportHDF5DatasetWidget::updateAttributeTable(const QString& path)
         }
         if(classType == H5T_INTEGER)
         {
-          int data = 0;
-          err = QH5Lite::readScalarAttribute(parentLoc, objName, key, data);
-          strData = QString::number(data);
+          std::vector<int32_t> data;
+          err = QH5Lite::readVectorAttribute(parentLoc, objName, key, data);
+          strData.clear();
+          QTextStream ss(&strData);
+          for(const auto& i : data)
+          {
+            ss << i << " ";
+          }
         }
         if(classType == H5T_FLOAT)
         {
-          float data = 0.0f;
-          err = QH5Lite::readScalarAttribute(parentLoc, objName, key, data);
-          strData = QString::number(data);
+          std::vector<float> data;
+          err = QH5Lite::readVectorAttribute(parentLoc, objName, key, data);
+          strData.clear();
+          QTextStream ss(&strData);
+          for(const auto& i : data)
+          {
+            ss << i << " ";
+          }
         }
         if(classType == H5T_TIME)
         {
