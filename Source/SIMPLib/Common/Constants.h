@@ -66,11 +66,11 @@ namespace SIMPL
 {
 
 using Rgb = uint32_t;
-const Rgb RGB_MASK = 0x00ffffff; // masks RGB values
+constexpr Rgb RGB_MASK = 0x00ffffff; // masks RGB values
 const QString PathSep("|");
-const uint8_t Unchecked = 0;
-const uint8_t PartiallyChecked = 1;
-const uint8_t Checked = 2;
+constexpr uint8_t Unchecked = 0;
+constexpr uint8_t PartiallyChecked = 1;
+constexpr uint8_t Checked = 2;
 
 enum InfoStringFormat
 {
@@ -85,9 +85,9 @@ enum InfoStringFormat
 /** @brief Constants defined for the Stacking order of images into a 3D Volume */
 namespace RefFrameZDir
 {
-const unsigned int LowtoHigh = 0;
-const unsigned int HightoLow = 1;
-const unsigned int UnknownRefFrameZDirection = 2;
+constexpr uint32_t LowtoHigh = 0;
+constexpr uint32_t HightoLow = 1;
+constexpr uint32_t UnknownRefFrameZDirection = 2;
 } // namespace RefFrameZDir
 
 namespace TypeNames
@@ -116,20 +116,20 @@ const QString SupportedTypeList(TypeNames::Bool + ", " + TypeNames::StringArray 
 
 namespace TypeEnums
 {
-const int Int8 = 0;
-const int UInt8 = 1;
-const int Int16 = 2;
-const int UInt16 = 3;
-const int Int32 = 4;
-const int UInt32 = 5;
-const int Int64 = 6;
-const int UInt64 = 7;
-const int Float = 8;
-const int Double = 9;
-const int Bool = 10;
-const int SizeT = 11;
+constexpr int32_t Int8 = 0;
+constexpr int32_t UInt8 = 1;
+constexpr int32_t Int16 = 2;
+constexpr int32_t UInt16 = 3;
+constexpr int32_t Int32 = 4;
+constexpr int32_t UInt32 = 5;
+constexpr int32_t Int64 = 6;
+constexpr int32_t UInt64 = 7;
+constexpr int32_t Float = 8;
+constexpr int32_t Double = 9;
+constexpr int32_t Bool = 10;
+constexpr int32_t SizeT = 11;
 
-const int UnknownType = 12;
+constexpr int32_t UnknownType = 12;
 const QString SupportedTypeList(TypeNames::Bool + ", " + TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " + TypeNames::Int32 + ", " +
                                 TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double + ", " + TypeNames::SizeT);
 } // namespace TypeEnums
@@ -138,21 +138,21 @@ namespace NumericTypes
 {
 namespace Names
 {
-const QString Int8("signed   int 8  bit");
-const QString UInt8("unsigned int 8  bit");
-const QString Int16("signed   int 16 bit");
+const QString Int8("signed int 8 bit");
+const QString UInt8("unsigned int 8 bit");
+const QString Int16("signed int 16 bit");
 const QString UInt16("unsigned int 16 bit");
-const QString Int32("signed   int 32 bit");
+const QString Int32("signed int 32 bit");
 const QString UInt32("unsigned int 32 bit");
-const QString Int64("signed   int 64 bit");
+const QString Int64("signed int 64 bit");
 const QString UInt64("unsigned int 64 bit");
-const QString Float("       Float 32 bit");
-const QString Double("      Double 64 bit");
+const QString Float("Float 32 bit");
+const QString Double("Double 64 bit");
 const QString Bool("Bool");
 const QString SizeT("size_t");
 } // namespace Names
 
-enum class Type : int
+enum class Type : int32_t
 {
   Int8 = 0,
   UInt8,
@@ -176,7 +176,7 @@ const QString SupportedTypeList(NumericTypes::Names::Int8 + ", " + NumericTypes:
 
 namespace DelimiterTypes
 {
-enum class Type : int
+enum class Type : int32_t
 {
   Comma = 0,
   Semicolon = 1,
@@ -188,7 +188,7 @@ enum class Type : int
 
 namespace ScalarTypes
 {
-enum class Type : int
+enum class Type : int32_t
 {
   Int8 = 0,
   UInt8,
@@ -215,8 +215,8 @@ namespace Defaults
 const QString None("None");
 const QString AnyPrimitive("Any");
 const size_t AnyComponentSize = std::numeric_limits<size_t>::max();
-// const uint32_t AnyAttributeMatrix = std::numeric_limits<uint32_t>::max();
-// const uint32_t AnyGeometry = std::numeric_limits<uint32_t>::max();
+// constexpr uint32_t AnyAttributeMatrix = std::numeric_limits<uint32_t>::max();
+// constexpr uint32_t AnyGeometry = std::numeric_limits<uint32_t>::max();
 
 const QString AttributeMatrixName("AttributeMatrix");
 const QString ElementAttributeMatrixName("ElementAttributeMatrix");
@@ -273,7 +273,7 @@ const QString NewAttributeMatrixName("NewAttributeMatrixName");
 
 namespace PipelineVersionNumbers
 {
-const int CurrentVersion(6);
+constexpr int32_t CurrentVersion(6);
 }
 
 namespace FilterGroups
@@ -719,12 +719,12 @@ const QString Node("Node");
 
 // namespace PhaseType
 //{
-//  //const unsigned int PrimaryPhase = 0;              //!<
-//  //const unsigned int PrecipitatePhase = 1;          //!<
-//  //const unsigned int TransformationPhase = 2;       //!<
-//  //const unsigned int MatrixPhase = 3;              //!<
-//  //const unsigned int BoundaryPhase = 4;              //!<
-//  //const unsigned int Unknown = 999;    //!<
+//  //constexpr uint32_t PrimaryPhase = 0;              //!<
+//  //constexpr uint32_t PrecipitatePhase = 1;          //!<
+//  //constexpr uint32_t TransformationPhase = 2;       //!<
+//  //constexpr uint32_t MatrixPhase = 3;              //!<
+//  //constexpr uint32_t BoundaryPhase = 4;              //!<
+//  //constexpr uint32_t Unknown = 999;    //!<
 
 //  const QString Primary("Primary");
 //  const QString Precipitate("Precipitate");
@@ -736,33 +736,33 @@ const QString Node("Node");
 
 namespace AlignmentMethod
 {
-const unsigned int OuterBoundary = 0;            //!<
-const unsigned int Misorientation = 1;           //!<
-const unsigned int MutualInformation = 2;        //!<
-const unsigned int Count = 3;                    //!<
-const unsigned int UnknownAlignmentMethod = 999; //!<
+constexpr uint32_t OuterBoundary = 0;            //!<
+constexpr uint32_t Misorientation = 1;           //!<
+constexpr uint32_t MutualInformation = 2;        //!<
+constexpr uint32_t Count = 3;                    //!<
+constexpr uint32_t UnknownAlignmentMethod = 999; //!<
 } // namespace AlignmentMethod
 
 namespace StatisticsType
 {
-const unsigned int Feature_SizeVBoverA = 0;      //!<
-const unsigned int Feature_SizeVCoverA = 1;      //!<
-const unsigned int Feature_SizeVNeighbors = 2;   //!<
-const unsigned int Feature_SizeVOmega3 = 3;      //!<
-const unsigned int Feature_SizeVClustering = 4;  //!<
-const unsigned int UnknownStatisticsGroup = 999; //!<
+constexpr uint32_t Feature_SizeVBoverA = 0;      //!<
+constexpr uint32_t Feature_SizeVCoverA = 1;      //!<
+constexpr uint32_t Feature_SizeVNeighbors = 2;   //!<
+constexpr uint32_t Feature_SizeVOmega3 = 3;      //!<
+constexpr uint32_t Feature_SizeVClustering = 4;  //!<
+constexpr uint32_t UnknownStatisticsGroup = 999; //!<
 
 } // namespace StatisticsType
 
 namespace DistributionType
 {
-const unsigned int Beta = 0;                    //!<
-const unsigned int LogNormal = 1;               //!<
-const unsigned int Power = 2;                   //!<
-const unsigned int RDFFrequency = 3;            //!<
-const unsigned int RDFMaxMin = 4;               //!<
-const unsigned int UnknownDistributionType = 5; //!<
-const unsigned int Count = 6;                   //!<
+constexpr uint32_t Beta = 0;                    //!<
+constexpr uint32_t LogNormal = 1;               //!<
+constexpr uint32_t Power = 2;                   //!<
+constexpr uint32_t RDFFrequency = 3;            //!<
+constexpr uint32_t RDFMaxMin = 4;               //!<
+constexpr uint32_t UnknownDistributionType = 5; //!<
+constexpr uint32_t Count = 6;                   //!<
 
 enum ColumnCount
 {
@@ -777,83 +777,83 @@ enum ColumnCount
 
 namespace EulerAngleConversionType
 {
-const unsigned int DegreesToRadians = 0; //!<
-const unsigned int RadiansToDegrees = 1; //!<
+constexpr uint32_t DegreesToRadians = 0; //!<
+constexpr uint32_t RadiansToDegrees = 1; //!<
 } // namespace EulerAngleConversionType
 
 namespace FlattenImageMethod
 {
-const unsigned int Lightness = 0;  //!<
-const unsigned int Average = 1;    //!<
-const unsigned int Luminosity = 2; //!<
+constexpr uint32_t Lightness = 0;  //!<
+constexpr uint32_t Average = 1;    //!<
+constexpr uint32_t Luminosity = 2; //!<
 } // namespace FlattenImageMethod
 
 namespace EulerFrameRotationAxis
 {
-const unsigned int RD = 0;   //!<
-const unsigned int TD = 1;   //!<
-const unsigned int ND = 2;   //!<
-const unsigned int None = 3; //!<
+constexpr uint32_t RD = 0;   //!<
+constexpr uint32_t TD = 1;   //!<
+constexpr uint32_t ND = 2;   //!<
+constexpr uint32_t None = 3; //!<
 } // namespace EulerFrameRotationAxis
 
 namespace SampleFrameRotationAxis
 {
-const unsigned int X = 0;    //!<
-const unsigned int Y = 1;    //!<
-const unsigned int Z = 2;    //!<
-const unsigned int None = 3; //!<
+constexpr uint32_t X = 0;    //!<
+constexpr uint32_t Y = 1;    //!<
+constexpr uint32_t Z = 2;    //!<
+constexpr uint32_t None = 3; //!<
 } // namespace SampleFrameRotationAxis
 
 namespace RefFrameRotationAngle
 {
-const unsigned int Ninety = 0;     //!<
-const unsigned int oneEighty = 1;  //!<
-const unsigned int twoSeventy = 2; //!<
-const unsigned int Mirror = 3;     //!<
-const unsigned int Zero = 4;       //!<
+constexpr uint32_t Ninety = 0;     //!<
+constexpr uint32_t oneEighty = 1;  //!<
+constexpr uint32_t twoSeventy = 2; //!<
+constexpr uint32_t Mirror = 3;     //!<
+constexpr uint32_t Zero = 4;       //!<
 } // namespace RefFrameRotationAngle
 
 namespace Overlap
 {
-const unsigned int Rigid = 0;            //!<
-const unsigned int Progressive = 1;      //!<
-const unsigned int UnknownOverlap = 999; //!<
+constexpr uint32_t Rigid = 0;            //!<
+constexpr uint32_t Progressive = 1;      //!<
+constexpr uint32_t UnknownOverlap = 999; //!<
 } // namespace Overlap
 
 //  namespace DataContainerType
 //  {
-//    const unsigned int VolumeDataContainer = 0; //!<
-//    const unsigned int SurfaceDataContainer = 1; //!<
-//    const unsigned int EdgeDataContainer = 2; //!<
-//    const unsigned int VertexDataContainer = 3; //!<
-//    const unsigned int UnknownDataContainer = 999; //!<
+//    constexpr uint32_t VolumeDataContainer = 0; //!<
+//    constexpr uint32_t SurfaceDataContainer = 1; //!<
+//    constexpr uint32_t EdgeDataContainer = 2; //!<
+//    constexpr uint32_t VertexDataContainer = 3; //!<
+//    constexpr uint32_t UnknownDataContainer = 999; //!<
 //  }
 
 //  namespace AttributeMatrixType
 //  {
-//    const unsigned int Vertex = 0; //!<
-//    const unsigned int Edge = 1; //!<
-//    const unsigned int Face = 2; //!<
-//    const unsigned int Cell = 3; //!<
-//    const unsigned int VertexFeature = 4; //!<
-//    const unsigned int EdgeFeature = 5; //!<
-//    const unsigned int FaceFeature = 6; //!<
-//    const unsigned int CellFeature = 7; //!<
-//    const unsigned int VertexEnsemble = 8; //!<
-//    const unsigned int EdgeEnsemble = 9; //!<
-//    const unsigned int FaceEnsemble = 10; //!<
-//    const unsigned int CellEnsemble = 11; //!<
-//    const unsigned int MetaData = 12; //!<
-//    const unsigned int Generic = 13; //!<
-//    const unsigned int Unknown = 999; //!<
+//    constexpr uint32_t Vertex = 0; //!<
+//    constexpr uint32_t Edge = 1; //!<
+//    constexpr uint32_t Face = 2; //!<
+//    constexpr uint32_t Cell = 3; //!<
+//    constexpr uint32_t VertexFeature = 4; //!<
+//    constexpr uint32_t EdgeFeature = 5; //!<
+//    constexpr uint32_t FaceFeature = 6; //!<
+//    constexpr uint32_t CellFeature = 7; //!<
+//    constexpr uint32_t VertexEnsemble = 8; //!<
+//    constexpr uint32_t EdgeEnsemble = 9; //!<
+//    constexpr uint32_t FaceEnsemble = 10; //!<
+//    constexpr uint32_t CellEnsemble = 11; //!<
+//    constexpr uint32_t MetaData = 12; //!<
+//    constexpr uint32_t Generic = 13; //!<
+//    constexpr uint32_t Unknown = 999; //!<
 //  }
 
 //  namespace AttributeMatrixObjectType
 //  {
-//    const unsigned int Element = 0;
-//    const unsigned int Feature = 1;
-//    const unsigned int Ensemble = 2;
-//    const unsigned int Any = 3;
+//    constexpr uint32_t Element = 0;
+//    constexpr uint32_t Feature = 1;
+//    constexpr uint32_t Ensemble = 2;
+//    constexpr uint32_t Any = 3;
 //  }
 
 namespace Geometry
@@ -933,21 +933,21 @@ const QString k_Unknown("Unknown");
 
 //  namespace GeometryType
 //  {
-//    const unsigned int ImageGeometry = 11;
-//    const unsigned int RectGridGeometry = 11;
-//    const unsigned int VertexGeometry = 1;
-//    const unsigned int EdgeGeometry = 3;
-//    const unsigned int TriangleGeometry = 5;
-//    const unsigned int QuadGeometry = 9;
-//    const unsigned int TetrahedralGeometry = 10;
-//    const unsigned int UnknownGeometry = 999;
+//    constexpr uint32_t ImageGeometry = 11;
+//    constexpr uint32_t RectGridGeometry = 11;
+//    constexpr uint32_t VertexGeometry = 1;
+//    constexpr uint32_t EdgeGeometry = 3;
+//    constexpr uint32_t TriangleGeometry = 5;
+//    constexpr uint32_t QuadGeometry = 9;
+//    constexpr uint32_t TetrahedralGeometry = 10;
+//    constexpr uint32_t UnknownGeometry = 999;
 //  }
 
 namespace XdmfGridType
 {
-const unsigned int PolyData = 0;
-const unsigned int RectilinearGrid = 1;
-const unsigned int UnknownGrid = 0xFFFFFFFF;
+constexpr uint32_t PolyData = 0;
+constexpr uint32_t RectilinearGrid = 1;
+constexpr uint32_t UnknownGrid = 0xFFFFFFFF;
 } // namespace XdmfGridType
 
 namespace XdmfCenterType
@@ -961,17 +961,17 @@ const QString Grid("Grid");
 
 // namespace ShapeType
 //{
-//  const unsigned int EllipsoidShape = 0; //!<
-//  const unsigned int SuperEllipsoidShape = 1; //!<
-//  const unsigned int CubeOctahedronShape = 2; //!<
-//  const unsigned int CylinderAShape = 3; //!<
-//  const unsigned int CylinderBShape = 4; //!<
-//  const unsigned int CylinderCShape = 5; //!<
-//  const unsigned int ShapeTypeEnd = 6;
-//  const unsigned int UnknownShapeType = 999; //!<
+//  constexpr uint32_t EllipsoidShape = 0; //!<
+//  constexpr uint32_t SuperEllipsoidShape = 1; //!<
+//  constexpr uint32_t CubeOctahedronShape = 2; //!<
+//  constexpr uint32_t CylinderAShape = 3; //!<
+//  constexpr uint32_t CylinderBShape = 4; //!<
+//  constexpr uint32_t CylinderCShape = 5; //!<
+//  constexpr uint32_t ShapeTypeEnd = 6;
+//  constexpr uint32_t UnknownShapeType = 999; //!<
 //}
 
-enum class Precipitates : unsigned int
+enum class Precipitates : uint32_t
 {
   NoPrecipitates = 0,       //!<
   BoundaryPrecipitates = 1, //!<
@@ -1006,17 +1006,17 @@ namespace SurfaceMesh
 {
 namespace NodeType
 {
-const signed char Unused = 0;
-const signed char Default = 2;
-const signed char TriplePoint = 3;
-const signed char QuadPoint = 4;
-const signed char SurfaceDefault = 12;
-const signed char SurfaceTriplePoint = 13;
-const signed char SurfaceQuadPoint = 14;
+constexpr int8_t Unused = 0;
+constexpr int8_t Default = 2;
+constexpr int8_t TriplePoint = 3;
+constexpr int8_t QuadPoint = 4;
+constexpr int8_t SurfaceDefault = 12;
+constexpr int8_t SurfaceTriplePoint = 13;
+constexpr int8_t SurfaceQuadPoint = 14;
 } // namespace NodeType
 namespace NodeId
 {
-const signed char Unused = -1;
+constexpr int8_t Unused = -1;
 }
 } // namespace SurfaceMesh
 
@@ -1065,9 +1065,9 @@ enum Enumeration
 
 namespace Layout
 {
-const signed int Horizontal = 0;
-const signed int Vertical = 1;
-const signed int Square = 2;
+constexpr int32_t Horizontal = 0;
+constexpr int32_t Vertical = 1;
+constexpr int32_t Square = 2;
 }; // namespace Layout
 } // namespace SIMPL
 
