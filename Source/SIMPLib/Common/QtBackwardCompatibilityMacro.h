@@ -10,6 +10,13 @@
 #define QFONTMETRICS_WIDTH horizontalAdvance
 #endif
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
+#define QFOREGROUND QPalette::Foreground
+#else
+#define QFOREGROUND QPalette::WindowText
+
+#endif
+
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
 
 #ifndef QVECTOR_FROM_STD_VECTOR
