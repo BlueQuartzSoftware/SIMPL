@@ -42,7 +42,6 @@
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/Math/MatrixMath.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
-//#include "SIMPLib/Math/SIMPLibRandom.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -334,18 +333,19 @@ float GeometryMath::LengthOfRayInBox(const float* p, const float* q, const float
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GeometryMath::GenerateRandomRay(float length, float ray[3])
+void GeometryMath::GenerateRandomRay(float length, float ray[3], float rand1, float rand2)
 {
   float w, t;
-
+#if 0
   std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
   std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
   std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
   generator.seed(seed);
   std::uniform_real_distribution<> distribution(0.0, 1.0);
+#endif
 
-  ray[2] = (2.0f * distribution(generator)) - 1.0f;
-  t = (SIMPLib::Constants::k_2Pi * distribution(generator));
+  ray[2] = (2.0f * rand1) - 1.0f;
+  t = (SIMPLib::Constants::k_2Pi * rand2);
   w = sqrtf(1.0f - (ray[2] * ray[2]));
   ray[0] = w * cosf(t);
   ray[1] = w * sinf(t);
@@ -1072,16 +1072,23 @@ char GeometryMath::PointInPolyhedron(TriangleGeom* faces, const Int32Int32Dynami
   p[1] = 0;
   p[2] = 0;
 
-LOOP:
+  std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
+  std::mt19937_64 generator(seed);
+  std::uniform_real_distribution<> distribution(0.0, 1.0);
+
   while(k++ < numFaces)
   {
     crossings = 0;
 
+    float rand1 = distribution(generator);
+    float rand2 = distribution(generator);
+
     // Generate and add ray to point to find other end
-    GenerateRandomRay(radius, ray);
+    GenerateRandomRay(radius, ray, rand1, rand2);
     r[0] = q[0] + ray[0];
     r[1] = q[1] + ray[1];
     r[2] = q[2] + ray[2];
+    bool doNextCheck = false;
 
     for(f = 0; f < numFaces; f++)
     {
@@ -1102,7 +1109,8 @@ LOOP:
       /* If ray is degenerate, then goto outer while to generate another. */
       if(code == 'p' || code == 'v' || code == 'e' || code == '?')
       {
-        goto LOOP;
+        doNextCheck = true;
+        break;
       }
 
       /* If ray hits face at interior point, increment crossings. */
@@ -1118,7 +1126,10 @@ LOOP:
       }
 
     } /* End check each face */
-
+    if(doNextCheck)
+    {
+      continue;
+    }
     /* No degeneracies encountered: ray is generic, so finished. */
     break;
 
@@ -1165,17 +1176,23 @@ char GeometryMath::PointInPolyhedron(TriangleGeom* faces, const Int32Int32Dynami
   p[1] = 0;
   p[2] = 0;
 
-LOOP:
+  std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
+  std::mt19937_64 generator(seed);
+  std::uniform_real_distribution<> distribution(0.0, 1.0);
+
   while(k++ < numFaces)
   {
     crossings = 0;
 
+    float rand1 = distribution(generator);
+    float rand2 = distribution(generator);
+
     // Generate and add ray to point to find other end
-    GenerateRandomRay(radius, ray);
+    GenerateRandomRay(radius, ray, rand1, rand2);
     r[0] = q[0] + ray[0];
     r[1] = q[1] + ray[1];
     r[2] = q[2] + ray[2];
-
+    bool doNextCheck = false;
     for(f = 0; f < numFaces; f++)
     {
       /* Begin check each face */
@@ -1203,7 +1220,8 @@ LOOP:
       /* If ray is degenerate, then goto outer while to generate another. */
       if(code == 'p' || code == 'v' || code == 'e' || code == '?')
       {
-        goto LOOP;
+        doNextCheck = true;
+        break;
       }
 
       /* If ray hits face at interior point, increment crossings. */
@@ -1219,7 +1237,10 @@ LOOP:
       }
 
     } /* End check each face */
-
+    if(doNextCheck)
+    {
+      continue;
+    }
     /* No degeneracies encountered: ray is generic, so finished. */
     break;
 

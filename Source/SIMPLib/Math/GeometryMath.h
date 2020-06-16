@@ -192,25 +192,32 @@ public:
 
   /**
    * @brief Determines if a point is inside of a polyhedron defined by a set of faces
-   * @param p
+   * @param faces
+   * @param faceIds
+   * @param vertices
+   * @param point
    * @param lowerLeft
    * @param upperRight
    * @param radius
    * @return
    */
-  static char PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* faceBBs, const float* q, const float* ll, const float* ur, float radius);
+  static char PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* vertices, const float* point, const float* lowerLeft, const float* upperRight,
+                                float radius);
 
   /**
    * @brief Determines if a point is inside of a polyhedron defined by a set of faces
-   * @param p
+   * @param faces
+   * @param faceIds
+   * @param vertices
+   * @param point
    * @param lowerLeft
    * @param upperRight
    * @param radius
    * @param distToBoundary
    * @return
    */
-  static char PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* faceBBs, const float* q, const float* ll, const float* ur, float radius,
-                                float& distToBoundary);
+  static char PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* vertices, const float* point, const float* lowerLeft, const float* upperRight,
+                                float radius, float& distToBoundary);
 
   /**
    * @brief Determines if a point is inside of a triangle defined by 3 points
@@ -272,7 +279,7 @@ public:
    * @param ray 1x3 Vector
    * @return
    */
-  static void GenerateRandomRay(float length, float ray[3]);
+  static void GenerateRandomRay(float length, float ray[3], float rand1, float rand2);
 
   /**
    * @brief Determines the bounding box defined by the lower left and upper right corners of a set of vertices
