@@ -279,7 +279,7 @@ public:
    * @param ray 1x3 Vector
    * @return
    */
-  static void GenerateRandomRay(float length, float ray[3], float rand1, float rand2);
+  static void GenerateRandomRay(float length, float* ray);
 
   /**
    * @brief Determines the bounding box defined by the lower left and upper right corners of a set of vertices

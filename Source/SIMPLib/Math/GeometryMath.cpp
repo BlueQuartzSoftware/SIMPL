@@ -159,7 +159,7 @@ bool GeometryMath::FindRayIntersectionsWithSphere(float* p, float* R, float leng
   }
 
   // determine distance along ray from where perpendicular distance is calculated to point on sphere
-  float t1c = sqrt(radius2 - d2);
+  float t1c = std::sqrt(radius2 - d2);
 
   // determine intersection points on sphere by combining tc and t1c
   t1 = tc - t1c;
@@ -333,22 +333,20 @@ float GeometryMath::LengthOfRayInBox(const float* p, const float* q, const float
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GeometryMath::GenerateRandomRay(float length, float ray[3], float rand1, float rand2)
+void GeometryMath::GenerateRandomRay(float length, float* ray)
 {
-  float w, t;
-#if 0
-  std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
-  std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
   std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-  generator.seed(seed);
+  std::mt19937_64 generator(seed);
   std::uniform_real_distribution<> distribution(0.0, 1.0);
-#endif
+
+  float rand1 = distribution(generator);
+  float rand2 = distribution(generator);
 
   ray[2] = (2.0f * rand1) - 1.0f;
-  t = (SIMPLib::Constants::k_2Pi * rand2);
-  w = sqrtf(1.0f - (ray[2] * ray[2]));
-  ray[0] = w * cosf(t);
-  ray[1] = w * sinf(t);
+  float t = static_cast<float>(SIMPLib::Constants::k_2Pi) * rand2;
+  float w = std::sqrt(1.0f - (ray[2] * ray[2]));
+  ray[0] = w * std::cos(t);
+  ray[1] = w * std::sin(t);
   ray[0] *= length;
   ray[1] *= length;
   ray[2] *= length;
@@ -1072,19 +1070,12 @@ char GeometryMath::PointInPolyhedron(TriangleGeom* faces, const Int32Int32Dynami
   p[1] = 0;
   p[2] = 0;
 
-  std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-  std::mt19937_64 generator(seed);
-  std::uniform_real_distribution<> distribution(0.0, 1.0);
-
   while(k++ < numFaces)
   {
     crossings = 0;
 
-    float rand1 = distribution(generator);
-    float rand2 = distribution(generator);
-
     // Generate and add ray to point to find other end
-    GenerateRandomRay(radius, ray, rand1, rand2);
+    GenerateRandomRay(radius, ray);
     r[0] = q[0] + ray[0];
     r[1] = q[1] + ray[1];
     r[2] = q[2] + ray[2];
@@ -1176,19 +1167,13 @@ char GeometryMath::PointInPolyhedron(TriangleGeom* faces, const Int32Int32Dynami
   p[1] = 0;
   p[2] = 0;
 
-  std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-  std::mt19937_64 generator(seed);
-  std::uniform_real_distribution<> distribution(0.0, 1.0);
-
   while(k++ < numFaces)
   {
     crossings = 0;
 
-    float rand1 = distribution(generator);
-    float rand2 = distribution(generator);
-
     // Generate and add ray to point to find other end
-    GenerateRandomRay(radius, ray, rand1, rand2);
+    GenerateRandomRay(radius, ray);
+
     r[0] = q[0] + ray[0];
     r[1] = q[1] + ray[1];
     r[2] = q[2] + ray[2];
