@@ -216,6 +216,7 @@ DataArray<T>::~DataArray()
   clear();
 }
 
+// -----------------------------------------------------------------------------
 template <typename T>
 typename DataArray<T>::Pointer DataArray<T>::CreateArray(size_t numTuples, const QString& name, bool allocate)
 {
@@ -225,6 +226,26 @@ typename DataArray<T>::Pointer DataArray<T>::CreateArray(size_t numTuples, const
   }
   comp_dims_type cDims = {1};
   auto d = std::make_shared<DataArray<T>>(numTuples, name, cDims, static_cast<T>(0), allocate);
+  if(allocate)
+  {
+    if(d->allocate() < 0)
+    {
+      // Could not allocate enough memory, reset the pointer to null and return
+      return nullptr;
+    }
+  }
+  return d;
+}
+// -----------------------------------------------------------------------------
+template <typename T>
+typename DataArray<T>::Pointer DataArray<T>::CreateArray(size_t numTuples, const std::string& name, bool allocate)
+{
+  if(name.empty())
+  {
+    return nullptr;
+  }
+  comp_dims_type cDims = {1};
+  auto d = std::make_shared<DataArray<T>>(numTuples, QString::fromStdString(name), cDims, static_cast<T>(0), allocate);
   if(allocate)
   {
     if(d->allocate() < 0)

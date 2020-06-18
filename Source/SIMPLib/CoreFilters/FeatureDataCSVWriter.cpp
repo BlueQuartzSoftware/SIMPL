@@ -203,7 +203,7 @@ void FeatureDataCSVWriter::execute()
   std::vector<IDataArray::Pointer> data;
 
   // For checking if an array is a neighborlist
-  NeighborList<int32_t>::Pointer neighborlistPtr = NeighborList<int32_t>::CreateArray(0, "_INTERNAL_USE_ONLY_JunkNeighborList", false);
+  NeighborList<int32_t>::Pointer neighborlistPtr = NeighborList<int32_t>::CreateArray(0, std::string("_INTERNAL_USE_ONLY_JunkNeighborList"), false);
 
   // Print the FeatureIds Header before the rest of the headers
   outFile << SIMPL::FeatureData::FeatureID;

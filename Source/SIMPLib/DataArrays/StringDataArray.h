@@ -36,7 +36,6 @@
 #pragma once
 
 #include <memory>
-
 #include <string>
 #include <vector>
 
@@ -104,7 +103,7 @@ public:
    * @return
    */
   static Pointer CreateArray(size_t numTuples, const QString& name, bool allocate = true);
-
+  static Pointer CreateArray(size_t numTuples, const std::string& name, bool allocate = true);
   /**
    * @brief CreateArray
    * @param numTuples
@@ -379,7 +378,6 @@ public:
    * @param value
    */
   void setValue(size_t i, const QString& value);
-
   /**
    * @brief getValue
    * @param i

@@ -95,7 +95,7 @@ public:
         AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(std::vector<size_t>(1, 16), "Cell Attribute Matrix", AttributeMatrix::Type::Cell);
         AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(std::vector<size_t>(1, 5), "Feature Attribute Matrix", AttributeMatrix::Type::Cell);
 
-        DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, "FeatureIds", true);
+        DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, std::string("FeatureIds"), true);
         size_t numTuples = featureIds->getNumberOfTuples();
         int32_t value = 1;
         featureIds->initializeTuple(0, &value);
@@ -122,7 +122,7 @@ public:
         featureIds->initializeTuple(14, &value);
         featureIds->initializeTuple(15, &value);
 
-        DataArray<float>::Pointer cellDataArray = DataArray<float>::CreateArray(16, "CellData", true);
+        DataArray<float>::Pointer cellDataArray = DataArray<float>::CreateArray(16, std::string("CellData"), true);
         numTuples = cellDataArray->getNumberOfTuples();
         for(size_t i = 0; i < numTuples; i++)
         {
@@ -185,7 +185,7 @@ public:
         AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(std::vector<size_t>(1, 16), "Cell Attribute Matrix", AttributeMatrix::Type::Cell);
         AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(std::vector<size_t>(1, 5), "Feature Attribute Matrix", AttributeMatrix::Type::Cell);
 
-        DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, "FeatureIds", true);
+        DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, std::string("FeatureIds"), true);
         size_t numTuples = featureIds->getNumberOfTuples();
         int32_t value = 1;
         featureIds->initializeTuple(0, &value);
@@ -276,7 +276,7 @@ public:
         AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(std::vector<size_t>(1, 16), "Cell Attribute Matrix", AttributeMatrix::Type::Cell);
         AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(std::vector<size_t>(1, 5), "Feature Attribute Matrix", AttributeMatrix::Type::Cell);
 
-        DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, "FeatureIds", true);
+        DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, std::string("FeatureIds"), true);
         int32_t value = 1;
         featureIds->initializeTuple(0, &value);
         featureIds->initializeTuple(1, &value);

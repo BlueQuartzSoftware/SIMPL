@@ -118,11 +118,11 @@ public:
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
     AttributeMatrix::Pointer am1 = AttributeMatrix::New(std::vector<size_t>(1, 10), "AttributeMatrix", AttributeMatrix::Type::Cell);
     AttributeMatrix::Pointer am2 = AttributeMatrix::New(std::vector<size_t>(1, 1), "NumericMatrix", AttributeMatrix::Type::Cell);
-    FloatArrayType::Pointer array1 = FloatArrayType::CreateArray(10, "InputArray1", true);
+    FloatArrayType::Pointer array1 = FloatArrayType::CreateArray(10, std::string("InputArray1"), true);
     array1->initializeWithValue(-12);
-    UInt32ArrayType::Pointer array2 = UInt32ArrayType::CreateArray(10, "InputArray2", true);
+    UInt32ArrayType::Pointer array2 = UInt32ArrayType::CreateArray(10, std::string("InputArray2"), true);
     array2->initializeWithValue(10);
-    UInt32ArrayType::Pointer sArray = UInt32ArrayType::CreateArray(10, "Spaced Array", true);
+    UInt32ArrayType::Pointer sArray = UInt32ArrayType::CreateArray(10, std::string("Spaced Array"), true);
     sArray->initializeWithValue(2);
 
     UInt32ArrayType::Pointer mcArray1 = UInt32ArrayType::CreateArray(std::vector<size_t>(1, 10), std::vector<size_t>(1, 3), "MultiComponent Array1", true);

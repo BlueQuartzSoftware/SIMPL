@@ -96,6 +96,7 @@ public:
    * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
    */
   static Pointer CreateArray(size_t numElements, const QString& name, bool allocate = true);
+  static Pointer CreateArray(size_t numElements, const std::string& name, bool allocate = true);
 
   /**
    * @brief CreateArray

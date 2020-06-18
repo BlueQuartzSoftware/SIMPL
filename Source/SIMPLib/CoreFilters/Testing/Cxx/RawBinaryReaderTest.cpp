@@ -229,8 +229,7 @@ public:
     //// qDebug() << "Testing case 1: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
-    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, "_Temp_",
-                                                                     true); // This makes sure our allocated array is deleted when we leave
+    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, std::string("_Temp_"), true);
     T* dataArray = array->getPointer(0);
 
     // Write some data into the data array
@@ -337,7 +336,7 @@ public:
     // qDebug() << "Testing case 2: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
-    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, "_Temp_",
+    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, std::string("_Temp_"),
                                                                      true); // This makes sure our allocated array is deleted when we leave
     T* dataArray = array->getPointer(0);
 
@@ -434,7 +433,7 @@ public:
     // qDebug() << "Testing case 3: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
-    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, "_Temp__",
+    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, std::string("_Temp__"),
                                                                      true); // This makes sure our allocated array is deleted when we leave
     T* dataArray = array->getPointer(0);
 
@@ -547,7 +546,7 @@ public:
     // qDebug() << "Testing case 4: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
-    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, "_Temp_",
+    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, std::string("_Temp_"),
                                                                      true); // This makes sure our allocated array is deleted when we leave
     T* dataArray = array->getPointer(0);
 
@@ -688,7 +687,7 @@ public:
     // qDebug() << "Testing case 5: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
-    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, "_Temp_",
+    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, std::string("_Temp_"),
                                                                      true); // This makes sure our allocated array is deleted when we leave
     T* dataArray = array->getPointer(0);
 
@@ -801,7 +800,7 @@ public:
     // qDebug() << "Testing case 6: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
-    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, "_Temp_",
+    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, std::string("_Temp_"),
                                                                      true); // This makes sure our allocated array is deleted when we leave
     T* dataArray = array->getPointer(0);
 

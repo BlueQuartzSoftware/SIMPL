@@ -193,7 +193,7 @@ public:
   {
     char delimiter = '\t';
     using DataArrayType = DataArray<T>;
-    typename DataArrayType::Pointer output = DataArrayType::CreateArray(1, "OutputArray", false);
+    typename DataArrayType::Pointer output = DataArrayType::CreateArray(1, std::string("OutputArray"), false);
     QString outputType = output->getTypeAsString();
 
     ASCIIWizardData data;

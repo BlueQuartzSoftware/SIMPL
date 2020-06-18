@@ -242,7 +242,7 @@ public:
     size_t elemId = 0;
 
     // Fill out lists with number of references to cells
-    typename DataArray<K>::Pointer linkLocPtr = DataArray<K>::CreateArray(numVerts, "_INTERNAL_USE_ONLY_Vertices", true);
+    typename DataArray<K>::Pointer linkLocPtr = DataArray<K>::CreateArray(numVerts, std::string("_INTERNAL_USE_ONLY_Vertices"), true);
     linkLocPtr->initializeWithValue(0);
     K* linkLoc = linkLocPtr->getPointer(0);
     K* verts = nullptr;
@@ -329,7 +329,7 @@ public:
     dynamicList->allocateLists(linkCount);
 
     // Allocate an array of bools that we use each iteration so that we don't put duplicates into the array
-    typename DataArray<bool>::Pointer visitedPtr = DataArray<bool>::CreateArray(numElems, "_INTERNAL_USE_ONLY_Visited", true);
+    typename DataArray<bool>::Pointer visitedPtr = DataArray<bool>::CreateArray(numElems, std::string("_INTERNAL_USE_ONLY_Visited"), true);
     visitedPtr->initializeWithValue(false);
     bool* visited = visitedPtr->getPointer(0);
 

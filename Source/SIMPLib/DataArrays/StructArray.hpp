@@ -114,6 +114,33 @@ public:
   }
 
   /**
+   * @brief Static constructor
+   * @param numElements The number of elements in the internal array.
+   * @param name The name of the array
+   * @return Std::Shared_Ptr wrapping an instance of StructArrayTemplate<T>
+   */
+  static Pointer CreateArray(size_t numElements, const std::string& name, bool allocate = true)
+  {
+    if(name.empty())
+    {
+      return NullPointer();
+    }
+    StructArray<T>* d = new StructArray<T>(numElements, true);
+    if(allocate)
+    {
+      if(d->Allocate() < 0)
+      {
+        // Could not allocate enough memory, reset the pointer to null and return
+        delete d;
+        return StructArray<T>::NullPointer();
+      }
+    }
+    d->setName(QString::fromStdString(name));
+    Pointer ptr(d);
+    return ptr;
+  }
+
+  /**
    * @brief Static Method to create a DataArray from a QVector through a deep copy of the data
    * contained in the vector. The number of components will be set to 1.
    * @param vec The vector to copy the data from

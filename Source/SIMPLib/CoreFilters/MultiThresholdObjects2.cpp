@@ -256,7 +256,7 @@ void MultiThresholdObjects2::createBoolArray(int64_t& totalTuples, BoolArrayType
 
   // Get the total number of tuples, create and initialize an array to use for these results
   totalTuples = static_cast<int64_t>(m->getAttributeMatrix(amName)->getNumberOfTuples());
-  thresholdArrayPtr = BoolArrayType::CreateArray(totalTuples, "_INTERNAL_USE_ONLY_TEMP", true);
+  thresholdArrayPtr = BoolArrayType::CreateArray(totalTuples, std::string("_INTERNAL_USE_ONLY_TEMP"), true);
 
   // Initialize the array to false
   thresholdArrayPtr->initializeWithZeros();
@@ -385,7 +385,7 @@ void MultiThresholdObjects2::thresholdValue(ComparisonValue::Pointer comparisonV
 
   // Get the total number of tuples, create and initialize an array to use for these results
   int64_t totalTuples = static_cast<int64_t>(m->getAttributeMatrix(amName)->getNumberOfTuples());
-  BoolArrayType::Pointer currentArrayPtr = BoolArrayType::CreateArray(totalTuples, "_INTERNAL_USE_ONLY_TEMP", true);
+  BoolArrayType::Pointer currentArrayPtr = BoolArrayType::CreateArray(totalTuples, std::string("_INTERNAL_USE_ONLY_TEMP"), true);
 
   // Initialize the array to false
   currentArrayPtr->initializeWithZeros();

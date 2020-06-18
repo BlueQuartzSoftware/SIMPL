@@ -109,7 +109,7 @@ public:
 
   static Pointer New()
   {
-    return CreateArray(0, "NeighborList", false);
+    return CreateArray(0, std::string("NeighborList"), false);
   }
 
   /**
@@ -127,6 +127,27 @@ public:
       return NullPointer();
     }
     Pointer ptr = Pointer(new NeighborList<T>(numTuples, name));
+    if(allocate)
+    {
+      ptr->resizeTuples(numTuples);
+    }
+    return ptr;
+  }
+  /**
+   * @brief CreateArray
+   * @param numTuples
+   * @param name
+   * @param allocate
+   * @return
+   */
+  static Pointer CreateArray(size_t numTuples, const std::string& name, bool allocate = true)
+  {
+    // std::cout << "NeighborList::CreateArray  name= " << name.toStdString() << "   numTuples= " << numTuples << std::endl;
+    if(name.empty())
+    {
+      return NullPointer();
+    }
+    Pointer ptr = Pointer(new NeighborList<T>(numTuples, QString::fromStdString(name)));
     if(allocate)
     {
       ptr->resizeTuples(numTuples);
