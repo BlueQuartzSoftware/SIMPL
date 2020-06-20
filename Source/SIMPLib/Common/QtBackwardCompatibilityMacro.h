@@ -12,9 +12,10 @@
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
 #define QFOREGROUND QPalette::Foreground
+#define QBACKGROUND QPalette::Background
 #else
 #define QFOREGROUND QPalette::WindowText
-
+#define QBACKGROUND QPalette::Window
 #endif
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
