@@ -124,6 +124,128 @@
 namespace SIMPLFileUtils
 {
 
+#if defined(WIN32)
+static const char Separator = '\\';
+#else
+static const char Separator = '/';
+#endif
+static const char UnixSeparator = '/';
+static const char Dot = '.';
+
+// -----------------------------------------------------------------------------
+std::string fromNativeSeparators(const std::string& fsPath)
+{
+  std::string path(fsPath);
+#if defined(WIN32)
+  for(int i = 0; i < (int)path.length(); i++)
+  {
+    if(path[i] == Separator)
+      path[i] = UnixSeparator;
+  }
+#endif
+  return path;
+}
+
+// -----------------------------------------------------------------------------
+std::string toNativeSeparators(const std::string& fsPath)
+{
+  std::string path(fsPath);
+#if defined(WIN32)
+  for(int i = 0; i < (int)path.length(); i++)
+  {
+    if(path[i] == UnixSeparator)
+      path[i] = Separator;
+  }
+#endif
+  return path;
+}
+
+// -----------------------------------------------------------------------------
+std::string cleanPath(const std::string& fsPath)
+{
+  if(fsPath.length() == 0)
+    return fsPath;
+  std::string path(fsPath);
+  char slash = '/';
+  char dot = '.';
+  if(Separator != UnixSeparator)
+  {
+    path = fromNativeSeparators(path);
+  }
+
+  // Peel off any trailing slash
+  if(path[path.length() - 1] == slash)
+  {
+    path = path.substr(0, path.length() - 1);
+  }
+
+  std::vector<std::string> stk;
+  std::string::size_type pos = 0;
+  std::string::size_type pos1 = 0;
+
+  pos = path.find(slash, pos);
+  pos1 = path.find(slash, pos + 1);
+#if defined(WIN32)
+  // Check for UNC style paths first
+  if(pos == 0 && pos1 == 1)
+  {
+    pos1 = path.find(slash, pos1 + 1);
+  }
+  else
+#endif
+      if(pos != 0)
+  {
+    stk.push_back(path.substr(0, pos));
+  }
+  // check for a top level Unix Path:
+  if(pos == 0 && pos1 == std::string::npos)
+  {
+    stk.push_back(path);
+  }
+
+  while(pos1 != std::string::npos)
+  {
+    if(pos1 - pos == 3 && path[pos + 1] == dot && path[pos + 2] == dot)
+    {
+      //  std::cout << "Popping back element" << std::endl;
+      if(stk.size() > 0)
+      {
+        stk.pop_back();
+      }
+    }
+    else if(pos1 - pos == 2 && path[pos + 1] == dot)
+    {
+    }
+    else if(pos + 1 == pos1)
+    {
+    }
+    else
+    {
+      stk.push_back(path.substr(pos, pos1 - pos));
+    }
+    pos = pos1;
+    pos1 = path.find(slash, pos + 1);
+    if(pos1 == std::string::npos)
+    {
+      stk.push_back(path.substr(pos, path.length() - pos));
+    }
+  }
+  std::string ret;
+  for(std::vector<std::string>::iterator iter = stk.begin(); iter != stk.end(); ++iter)
+  {
+    ret.append(*iter);
+  }
+  ret = toNativeSeparators(ret);
+#if defined(WIN32)
+  if(ret.length() > 2 && isalpha(ret[0]) != 0 && islower(ret[0]) != 0 && ret[1] == ':' && ret[2] == '\\')
+  {
+    // we have a lower case drive letter which needs to be changed to upper case.
+    ret[0] = toupper(ret[0]);
+  }
+#endif
+  return ret;
+}
+
 // -----------------------------------------------------------------------------
 std::string CurrentPath()
 {
@@ -137,7 +259,7 @@ std::string CurrentPath()
     result = MXA_GET_CWD(currentName, MXA_PATH_MAX);
     if(nullptr == result)
     {
-      std::cout << "Error: FILE_INFO_CLASS_NAME::currentPath result was NULL." << std::endl;
+      std::cout << "Error: currentPath result was NULL." << std::endl;
     }
     else
     {
@@ -146,10 +268,10 @@ std::string CurrentPath()
   }
   else
   {
-    std::cout << "Error: FILE_INFO_CLASS_NAME::currentPath stat function failed." << std::endl;
+    std::cout << "Error: currentPath stat function failed." << std::endl;
   }
 #if defined(WIN32)
-  currentPath = FILE_INFO_CLASS_NAME::cleanPath(currentPath);
+  currentPath = cleanPath(currentPath);
 #endif
 
   return currentPath;
