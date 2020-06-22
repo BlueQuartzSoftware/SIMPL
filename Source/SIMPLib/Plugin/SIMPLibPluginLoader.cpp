@@ -60,15 +60,12 @@ SIMPLibPluginLoader::SIMPLibPluginLoader() = default;
 // -----------------------------------------------------------------------------
 SIMPLibPluginLoader::~SIMPLibPluginLoader() = default;
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool quiet)
+void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, const QString& applicationDirPath, bool quiet)
 {
   QStringList pluginDirs;
-  pluginDirs << qApp->applicationDirPath();
+  pluginDirs << applicationDirPath;
 
-  QDir aPluginDir = QDir(qApp->applicationDirPath());
+  QDir aPluginDir = QDir(applicationDirPath);
   if(!quiet)
   {
     qDebug() << "Loading SIMPLib Plugins.";
@@ -277,4 +274,11 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
       qDebug() << message;
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool quiet)
+{
+
+  SIMPLibPluginLoader::LoadPluginFilters(filterManager, qApp->applicationDirPath());
 }

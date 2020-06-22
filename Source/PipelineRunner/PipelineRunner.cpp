@@ -33,25 +33,25 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-// C Includes
-#include <cassert>
+#include <cctype>
 #include <cstdlib>
-
-// C++ Includes
+#include <cstring> // Needed for memset
 #include <iostream>
+#include <string>
+#include <vector>
 
 // Qt Includes
 #include <QtCore/QCommandLineOption>
 #include <QtCore/QCommandLineParser>
-#include <QtCore/QFileInfo>
-#include <QtCore/QCoreApplication>
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtCore/QString>
-
-// DREAM3DLib includes
 #include <QtCore/QTextStream>
 
+// DREAM3DLib includes
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
@@ -61,8 +61,101 @@
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/SIMPLibVersion.h"
+
+#if !defined(_MSC_VER)
+#include <unistd.h>
+#endif
+
+#if defined(_MSC_VER)
+#include <direct.h>
+#define UNLINK _unlink
+#define MXA_PATH_MAX MAX_PATH
+#define MXA_GET_CWD _getcwd
+#else
+#define UNLINK ::unlink
+#include <dirent.h>
+#define MXA_PATH_MAX PATH_MAX
+#define MXA_GET_CWD ::getcwd
+#endif
+
+#include <sys/stat.h>
+
+#if defined(_WIN32)
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#define MXA_STATBUF struct _stati64       // non-ANSI defs
+#define MXA_STATBUF4TSTAT struct _stati64 // non-ANSI defs
+#define MXA_STAT _stati64
+#define MXA_FSTAT _fstati64
+
+#define MXA_STAT_REG _S_IFREG
+#define MXA_STAT_DIR _S_IFDIR
+#define MXA_STAT_MASK _S_IFMT
+#if defined(_S_IFLNK)
+#define MXA_STAT_LNK _S_IFLNK
+#endif
+
+#elif defined(__APPLE__)
+
+#define MXA_STATBUF struct stat
+#define MXA_STATBUF4TSTAT struct stat
+#define MXA_STAT stat
+#define MXA_FSTAT fstat
+
+#define MXA_STAT_REG S_IFREG
+#define MXA_STAT_DIR S_IFDIR
+#define MXA_STAT_MASK S_IFMT
+#define MXA_STAT_LNK S_IFLNK
+
+#else
+#define MXA_STATBUF struct stat
+#define MXA_STATBUF4TSTAT struct stat
+#define MXA_STAT stat
+#define MXA_FSTAT fstat
+
+#define MXA_STAT_REG S_IFREG
+#define MXA_STAT_DIR S_IFDIR
+#define MXA_STAT_MASK S_IFMT
+#define MXA_STAT_LNK S_IFLNK
+#endif
+
+namespace SIMPLFileUtils
+{
+
+// -----------------------------------------------------------------------------
+std::string CurrentPath()
+{
+  std::string currentPath;
+  MXA_STATBUF st;
+  if(0 == MXA_STAT(".", &st))
+  {
+    char currentName[MXA_PATH_MAX + 1];
+    char* result = nullptr;
+    ::memset(&currentName[0], 0, MXA_PATH_MAX + 1); // Clear everything to zeros.
+    result = MXA_GET_CWD(currentName, MXA_PATH_MAX);
+    if(nullptr == result)
+    {
+      std::cout << "Error: FILE_INFO_CLASS_NAME::currentPath result was NULL." << std::endl;
+    }
+    else
+    {
+      currentPath = std::string(currentName);
+    }
+  }
+  else
+  {
+    std::cout << "Error: FILE_INFO_CLASS_NAME::currentPath stat function failed." << std::endl;
+  }
+#if defined(WIN32)
+  currentPath = FILE_INFO_CLASS_NAME::cleanPath(currentPath);
+#endif
+
+  return currentPath;
+}
+
+} // namespace SIMPLFileUtils
 
 // -----------------------------------------------------------------------------
 //
@@ -71,11 +164,17 @@ int main(int argc, char* argv[])
 {
 
   // Instantiate the QCoreApplication that we need to get the current path and load plugins.
-  QCoreApplication* app = new QCoreApplication(argc, argv);
-  QCoreApplication::setOrganizationName("BlueQuartz Software");
-  QCoreApplication::setOrganizationDomain("bluequartz.net");
-  QCoreApplication::setApplicationName("PipelineRunner");
-  QCoreApplication::setApplicationVersion(SIMPLib::Version::Major() + "." + SIMPLib::Version::Minor() + "." + SIMPLib::Version::Patch());
+  //  QCoreApplication* app = new QCoreApplication(argc, argv);
+  //  QCoreApplication::setOrganizationName("BlueQuartz Software");
+  //  QCoreApplication::setOrganizationDomain("bluequartz.net");
+  //  QCoreApplication::setApplicationName("PipelineRunner");
+  //  QCoreApplication::setApplicationVersion(SIMPLib::Version::Major() + "." + SIMPLib::Version::Minor() + "." + SIMPLib::Version::Patch());
+
+  QStringList arguments;
+  for(int32_t arg = 0; arg < argc; arg++)
+  {
+    arguments << QString(argv[arg]);
+  }
 
   QCommandLineParser parser;
   QString str;
@@ -93,7 +192,7 @@ int main(int argc, char* argv[])
   parser.addOption(pipelineFileArg);
 
   // Process the actual command line arguments given by the user
-  parser.process(*app);
+  parser.process(arguments);
 
   QString pipelineFile = parser.value(pipelineFileArg);
 
@@ -102,7 +201,9 @@ int main(int argc, char* argv[])
 
   // Register all the filters including trying to load those from Plugins
   FilterManager* fm = FilterManager::Instance();
-  SIMPLibPluginLoader::LoadPluginFilters(fm);
+  QString cwd = QString::fromStdString(SIMPLFileUtils::CurrentPath());
+
+  SIMPLibPluginLoader::LoadPluginFilters(fm, cwd);
 
   QMetaObjectUtilities::RegisterMetaTypes();
 
@@ -142,7 +243,7 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  std::cout << "Pipeline Count: " << pipeline->size() << std::endl;
+  std::cout << "Filter Count: " << pipeline->size() << std::endl;
   Observer obs; // Create an Observer to report errors/progress from the executing pipeline
   pipeline->addMessageReceiver(&obs);
   // Preflight the pipeline
@@ -154,6 +255,8 @@ int main(int argc, char* argv[])
   }
   // Now actually execute the pipeline
   pipeline->execute();
+
+  pipeline->removeMessageReceiver(&obs);
   err = pipeline->getErrorCode();
   if(err < 0)
   {

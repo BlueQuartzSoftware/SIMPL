@@ -56,6 +56,14 @@ public:
    */
   static void LoadPluginFilters(FilterManager* filterManager, bool quiet = false);
 
+  /**
+   * @brief LoadPluginFilters
+   * @param filterManager
+   * @param currentWorkingPath
+   * @param quiet
+   */
+  static void LoadPluginFilters(FilterManager* filterManager, const QString& currentWorkingPath, bool quiet = false);
+
 protected:
   SIMPLibPluginLoader();
 
