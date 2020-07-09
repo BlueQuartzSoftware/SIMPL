@@ -42,8 +42,8 @@
 // -----------------------------------------------------------------------------
 ParallelTaskAlgorithm::ParallelTaskAlgorithm()
 : m_Parallelization(true)
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 , m_MaxThreads(std::thread::hardware_concurrency())
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 , m_TaskGroup(new tbb::task_group)
 #endif
 {

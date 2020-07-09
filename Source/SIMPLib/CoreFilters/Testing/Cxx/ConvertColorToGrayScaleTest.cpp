@@ -40,25 +40,23 @@
 
 #include <QtCore/QDebug>
 
-#include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
+#include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
+#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
-
-#include <tbb/parallel_for.h>
 
 class ConvertColorToGrayScaleTest
 {
@@ -352,12 +350,11 @@ class ConvertColorToGrayScaleTest
     std::vector<uint8_t> colorArray{algorithmMap[algoMapIndex]};
 
     int wrongValues = 0;
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, colorArray.size()), [&](const tbb::blocked_range<size_t>& r) {
-      for(size_t index = r.begin(); index < r.end(); ++index)
-      {
-        wrongValues += (testArray->getValue(index) == colorArray[index]) ? 0 : 1;
-      }
-    });
+    for(size_t index = 0; index < colorArray.size(); ++index)
+    {
+      wrongValues += (testArray->getValue(index) == colorArray[index]) ? 0 : 1;
+    }
+
     return wrongValues;
   }
 

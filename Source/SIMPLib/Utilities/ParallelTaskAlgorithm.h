@@ -92,8 +92,8 @@ public:
   template <typename Body>
   void execute(const Body& body)
   {
-    bool doParallel = false;
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+    bool doParallel = false;
     doParallel = m_Parallelization;
     if(doParallel)
     {
@@ -116,8 +116,8 @@ public:
 
 private:
   bool m_Parallelization = false;
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   uint32_t m_MaxThreads = 1;
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   uint32_t m_CurThreads = 0;
   std::shared_ptr<tbb::task_group> m_TaskGroup;
 #endif
