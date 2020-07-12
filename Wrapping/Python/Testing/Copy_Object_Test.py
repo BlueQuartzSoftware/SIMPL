@@ -32,16 +32,12 @@ def copy_object_test():
                               simpl.DataArrayPath('', '', ''),
                               simpl.DataArrayPath('ImageDataContainer', 'CellAttributeMatrix', 'Int32Data'),
                               'Int32Data_Copy')
-    if err < 0:
-        print('copy_object ErrorCondition %d' % err)
-    assert err == 0
+    assert err == 0, f'CopyObject ErrorCondition: {err}'
 
     # Write to DREAM3D file
     err = sc.WriteDREAM3DFile(sd.GetBuildDirectory()
                               + '/Data/Output/CoreFilterTests/CopyObjectTest.dream3d', dca)
-    if err < 0:
-        print('WriteDREAM3DFile ErrorCondition: %d' % err)
-    assert err == 0
+    assert err == 0, f'WriteDREAM3DFile ErrorCondition: {err}'
 
 if __name__ == '__main__':
     copy_object_test()

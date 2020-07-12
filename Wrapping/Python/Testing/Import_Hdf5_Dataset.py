@@ -25,9 +25,7 @@ def createInputFile():
                                          simpl.NumericTypes.Float, 3, 1,
                                          sd.GetBuildDirectory() + '/Data/SIMPL/VertexCoordinates.csv',
                                          simpl.DelimiterTypes.Comma)
-    if err < 0:
-        print('ImportAsciiDataArray ErrorCondition: %d' % err)
-    assert err == 0
+    assert err == 0, f'ImportAsciiDataArray ErrorCondition: {err}'
 
     # Write to DREAM3D file
     err = sc.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/CoreFilters/ImportHDF5.h5', dca)
@@ -53,9 +51,7 @@ def import_hdf5_dataset_test():
     err = simplpy.import_hdf5_dataset(dca, sd.GetBuildDirectory() + '/Data/Output/CoreFilters/ImportHDF5.h5',
                                       dataset_import_info_list,
                                       simpl.DataArrayPath('DataContainer', 'CellAttributeMatrix', ''))
-    if err < 0:
-        print('ImportHdf5Dataset ErrorCondition: %d' % err)
-    assert err == 0
+    assert err == 0, f'ImportHdf5Dataset ErrorCondition: {err}'
 
     # Write to DREAM3D file
     err = sc.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/CoreFilters/ImportHDF5.dream3d', dca)

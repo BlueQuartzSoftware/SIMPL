@@ -117,8 +117,7 @@ def remove_component_from_array_test():
                                         sd.GetBuildDirectory() +
                                         '/Data/Output/Statistics/SmallIN100_CrystalStats.dream3d',
                                         False, dcap)
-    if err < 0:
-        print('DataContainerReader ErrorCondition %d' % err)
+    assert err == 0, f'DataContainerReader ErrorCondition {err}'
         
     # Remove Component From Array
     err = simplpy.remove_component_from_array(dca,
@@ -127,15 +126,13 @@ def remove_component_from_array_test():
                                                                   'AxisEulerAngles'), 2, True,
                                               'AxisEulerAngles_RemovedComp',
                                               'AxisEulerAngles_Reduced')
-    if err < 0:
-        print('RemoveComponentFromArray ErrorCondition %d' % err)
+    assert err == 0, f'RemoveComponentFromArray ErrorCondition {err}'
 
     # Write to DREAM3D file
     err = sc.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/CoreFilterTests/' +
                               'RemoveComponentFromArray.dream3d',
                               dca)
-    if err < 0:
-        print('WriteDREAM3DFile ErrorCondition: %d' % err)
+    assert err == 0, f'WriteDREAM3DFile ErrorCondition: {err}'
 
 if __name__ == '__main__':
     remove_component_from_array_test()

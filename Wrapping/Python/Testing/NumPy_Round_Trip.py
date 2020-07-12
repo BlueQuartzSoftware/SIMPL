@@ -46,8 +46,7 @@ def Test1():
   dap = simpl.DataArrayPath('DC', 'CAM', 'Eulers')
   # Run the filter ChangeAngleRepresentation since this filter acts on data 'in place'
   err = orient.change_angle_representation(dca, 1, dap)
-  if err < 0:
-    print('change_angle_representation ErrorCondition: %d' % err)
+  assert err == 0, f'change_angle_representation ErrorCondition: {err}'
 
   roundtrip = np.asarray(eulers)
 
@@ -82,8 +81,7 @@ def Test2():
   dap = simpl.DataArrayPath('DC', 'CAM', 'Eulers')
   # Run the filter ChangeAngleRepresentation since this filter acts on data 'in place'
   err = orient.change_angle_representation(dca, 1, dap)
-  if err < 0:
-    print('change_angle_representation ErrorCondition: %d' % err)
+  assert err == 0, f'change_angle_representation ErrorCondition: {err}'
 
 
 def Test3():
@@ -111,8 +109,7 @@ def Test3():
   # now build up a pipeline to act on the Data Structure that we just created
   dap = simpl.DataArrayPath('DC', 'CAM', 'Eulers')
   err = orient.change_angle_representation(dca, 1, dap)
-  if err < 0:
-    print('change_angle_representation ErrorCondition: %d' % err)
+  assert err == 0, f'change_angle_representation ErrorCondition: {err}'
 
   # Convert in-place to an numpy array
   np_eulers = np.asarray(eulers)
@@ -132,8 +129,7 @@ def Test3():
 
   # Write to DREAM3D file
   err = sc.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/Python_RoundTrip/RoundTripTest.dream3d', dca)
-  if err < 0:
-      print('WriteDREAM3DFile ErrorCondition: %d' % err)
+  assert err == 0, f'WriteDREAM3DFile ErrorCondition: {err}'
 
 if __name__ == '__main__':
   Test1()

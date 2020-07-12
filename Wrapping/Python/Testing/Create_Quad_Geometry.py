@@ -11,8 +11,7 @@ def CreateQuadGeometryTest():
 
   # Create the Data Container
   err = d3d.create_data_container(dca, 'DataContainer')
-  if err < 0:
-    print('DataContainer ErrorCondition: %d' % err)
+  assert err == 0, f'DataContainer ErrorCondition: {err}'
 
   # Import ASCII Data - #1 - Vertex Coordinates
   importFile = sd.GetBuildDirectory() + '/Data/SIMPL/VertexCoordinates.csv'
@@ -30,8 +29,7 @@ def CreateQuadGeometryTest():
     'dataTypes': ['float', 'float', 'float']
   }
   err = d3d.read_ascii_data(dca, wizardData)
-  if err < 0:
-    print('Import ASCII Data #1 -  ErrorCondition: %d' % err)
+  assert err == 0, f'Import ASCII Data #1 -  ErrorCondition: {err}'
   
   # Import ASCII Data - #2 - Edge Connectivity
   importFile = sd.GetBuildDirectory() + '/Data/SIMPL/QuadConnectivity.csv'
@@ -49,16 +47,14 @@ def CreateQuadGeometryTest():
     'dataTypes': ['int64_t', 'int64_t','int64_t', 'int64_t']
   }  
   err = d3d.read_ascii_data(dca, wizardData)
-  if err < 0:
-    print('Import ASCII Data #2 -  ErrorCondition: %d' % err)
+  assert err == 0, f'Import ASCII Data #2 -  ErrorCondition: {err}'
 
   # Combine Attribute Arrays # 1:
   selectedDataArrayPaths = [simpl.DataArrayPath('DataContainer', 'Bounds', 'x'), 
   simpl.DataArrayPath('DataContainer', 'Bounds', 'y'), 
   simpl.DataArrayPath('DataContainer', 'Bounds', 'z')]
   err = d3d.combine_attribute_arrays(dca, selectedDataArrayPaths, 'Vertices', False)
-  if err < 0:
-    print('Combined Attribute Arrays #1 -  ErrorCondition: %d' % err)
+  assert err == 0, f'Combined Attribute Arrays #1 -  ErrorCondition: {err}'
 
   # Delete Data # 1
   dcap = simpl.DataContainerArrayProxy()
@@ -68,16 +64,14 @@ def CreateQuadGeometryTest():
   dcap.getDataContainerProxy('DataContainer').getAttributeMatrixProxy('Bounds').getDataArrayProxy('y').Flag = 2
   dcap.getDataContainerProxy('DataContainer').getAttributeMatrixProxy('Bounds').getDataArrayProxy('z').Flag = 2
   err = d3d.remove_arrays(dca, dcap)
-  if err < 0:
-    print('Remove Arrays #1 -  ErrorCondition: %d' % err)
+  assert err == 0, f'Remove Arrays #1 -  ErrorCondition: {err}'
 
   # Combine Attribute Arrays #2:
   selectedDataArrayPaths = [simpl.DataArrayPath('DataContainer', 'QuadList', 'V0'), 
   simpl.DataArrayPath('DataContainer', 'QuadList', 'V1'), simpl.DataArrayPath('DataContainer', 'QuadList', 'V2'), 
   simpl.DataArrayPath('DataContainer', 'QuadList', 'V3')]
   err = d3d.combine_attribute_arrays(dca, selectedDataArrayPaths, 'Quads', False)
-  if err < 0:
-    print('Combined Attribute Arrays #2 -  ErrorCondition: %d' % err)
+  assert err == 0, f'Combined Attribute Arrays #2 -  ErrorCondition: {err}'
 
   # Delete Data # 2
   dcap = simpl.DataContainerArrayProxy()
@@ -88,8 +82,7 @@ def CreateQuadGeometryTest():
   dcap.getDataContainerProxy('DataContainer').getAttributeMatrixProxy('QuadList').getDataArrayProxy('V2').Flag = 2
   dcap.getDataContainerProxy('DataContainer').getAttributeMatrixProxy('QuadList').getDataArrayProxy('V3').Flag = 2
   err = d3d.remove_arrays(dca, dcap)
-  if err < 0:
-    print('Remove Arrays #2 -  ErrorCondition: %d' % err)
+  assert err == 0, f'Remove Arrays #2 -  ErrorCondition: {err}'
 
   # Create Geometry
   err = sc.CreateGeometry(dca, 0, simpl.IGeometry.Type.Quad, 'DataContainer', False, 
@@ -97,12 +90,10 @@ def CreateQuadGeometryTest():
   shared_quad_list_array_path = simpl.DataArrayPath('DataContainer', 'QuadList', 'Quads'),
   vertex_attribute_matrix_name = 'VertexData',
   face_attribute_matrix_name = 'FaceData')
-  if err < 0:
-    print('Create Geometry -  ErrorCondition: %d' % err)
+  assert err == 0, f'Create Geometry -  ErrorCondition: {err}'
 
   err = d3d.data_container_writer(dca, sd.GetTestTempDirectory() + '/CreateQuadGeometry.dream3d', True, False)
-  if err < 0:
-    print('DataContainerWriter ErrorCondition: %d' % err)
+  assert err == 0, f'DataContainerWriter ErrorCondition: {err}'
 
 if __name__ == '__main__':
   CreateQuadGeometryTest()

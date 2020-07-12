@@ -11,8 +11,7 @@ def CreateVertexGeometryTest():
 
   # Create the Data Container
   err = d3d.create_data_container(dca, 'DataContainer')
-  if err < 0:
-    print('DataContainer ErrorCondition: %d' % err)
+  assert err == 0, f'DataContainer ErrorCondition: {err}'
 
   # Import ASCII Data - #1 - Vertex Coordinates
   importFile = sd.GetBuildDirectory() + '/Data/SIMPL/VertexCoordinates.csv'
@@ -30,16 +29,14 @@ def CreateVertexGeometryTest():
     'dataTypes': ['float', 'float', 'float']
   }
   err = d3d.read_ascii_data(dca, wizardData)
-  if err < 0:
-    print('Import ASCII Data #1 -  ErrorCondition: %d' % err)
+  assert err == 0, f'Import ASCII Data #1 -  ErrorCondition: {err}'
   
   # Combine Attribute Arrays # 1:
   selectedDataArrayPaths = [simpl.DataArrayPath('DataContainer', 'Bounds', 'x'), 
   simpl.DataArrayPath('DataContainer', 'Bounds', 'y'), 
   simpl.DataArrayPath('DataContainer', 'Bounds', 'z')]
   err = d3d.combine_attribute_arrays(dca, selectedDataArrayPaths, 'Vertices', False)
-  if err < 0:
-    print('Combined Attribute Arrays #1 -  ErrorCondition: %d' % err)
+  assert err == 0, f'Combined Attribute Arrays #1 -  ErrorCondition: {err}'
 
   # Delete Data # 1
   dcap = simpl.DataContainerArrayProxy()
@@ -49,8 +46,7 @@ def CreateVertexGeometryTest():
   dcap.getDataContainerProxy('DataContainer').getAttributeMatrixProxy('Bounds').getDataArrayProxy('y').Flag = 2
   dcap.getDataContainerProxy('DataContainer').getAttributeMatrixProxy('Bounds').getDataArrayProxy('z').Flag = 2
   err = d3d.remove_arrays(dca, dcap)
-  if err < 0:
-    print('Remove Arrays #1 -  ErrorCondition: %d' % err)
+  assert err == 0, f'Remove Arrays #1 -  ErrorCondition: {err}'
 
   # Create Geometry
   data_container_name = 'DataContainer'
@@ -59,12 +55,10 @@ def CreateVertexGeometryTest():
   err = sc.CreateGeometry(dca, 0, simpl.IGeometry.Type.Vertex, 'DataContainer', False, 
   shared_vertex_list_array_path = simpl.DataArrayPath('DataContainer', 'Bounds', 'Vertices'),
   vertex_attribute_matrix_name = 'VertexData')
-  if err < 0:
-    print('Create Geometry -  ErrorCondition: %d' % err)
+  assert err == 0, f'Create Geometry -  ErrorCondition: {err}'
 
   err = d3d.data_container_writer(dca, sd.GetTestTempDirectory() + '/CreateVertexGeometry.dream3d', True, False)
-  if err < 0:
-    print('DataContainerWriter ErrorCondition: %d' % err)
+  assert err == 0, f'DataContainerWriter ErrorCondition: {err}'
 
 if __name__ == '__main__':
   CreateVertexGeometryTest()

@@ -23,9 +23,7 @@ def DataContainerTest() :
 
   dc.addOrReplaceAttributeMatrix(am)
 
-  exists = dc.doesAttributeMatrixExist('CellAttributeMatrix')
-  
-  print('Exists: %s' % exists)
+  assert dc.doesAttributeMatrixExist(amName)
 
 if __name__ == '__main__':
   DataContainerTest()

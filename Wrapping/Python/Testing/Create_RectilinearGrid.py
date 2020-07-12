@@ -14,8 +14,7 @@ def CreateRectilinearGridTest():
 
   # Create the Data Container
   err = d3d.create_data_container(dca, 'DataContainer')
-  if err < 0:
-    print('DataContainer ErrorCondition: %d' % err)
+  assert err == 0, f'DataContainer ErrorCondition: {err}'
 
   # Import ASCII Data - Rectilinear Grid
   importFile = sd.GetBuildDirectory() + '/Data/SIMPL/RectilinearGrid.csv'
@@ -33,8 +32,7 @@ def CreateRectilinearGridTest():
     'dataTypes': ['float', 'float', 'float']
   }
   err = d3d.read_ascii_data(dca, wizardData)
-  if err < 0:
-    print('Import ASCII Data #1 -  ErrorCondition: %d' % err)
+  assert err == 0, f'Import ASCII Data #1 -  ErrorCondition: {err}'
   
   # Create Geometry
   err = sc.CreateGeometry(dca, 0, simpl.IGeometry.Type.Triangle, 'DataContainer', False, 
@@ -42,12 +40,10 @@ def CreateRectilinearGridTest():
   y_bounds_array_path = simpl.DataArrayPath('DataContainer', 'Bounds', 'y'),
   z_bounds_array_path = simpl.DataArrayPath('DataContainer', 'Bounds', 'z'),
   face_attribute_matrix_name = 'CellData')
-  if err < 0:
-    print('Create Geometry -  ErrorCondition: %d' % err)
+  assert err == 0, f'Create Geometry -  ErrorCondition: {err}'
 
   err = d3d.data_container_writer(dca, sd.GetTestTempDirectory() + '/CreateRectilinearGrid.dream3d', True, False)
-  if err < 0:
-    print('DataContainerWriter ErrorCondition: %d' % err)
+  assert err == 0, f'DataContainerWriter ErrorCondition: {err}'
 
 if __name__ == '__main__':
   CreateRectilinearGridTest()
