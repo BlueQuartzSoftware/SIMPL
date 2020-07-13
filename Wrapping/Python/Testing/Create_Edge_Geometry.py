@@ -34,7 +34,7 @@ def CreateEdgeGeometryTest():
     'headers': ['V1', 'V0'],
     'attrMatType': 3,
     'tupleDimensions': [264],
-    'dataTypes': ['int64_t', 'int64_t']
+    'dataTypes': ['uint64_t', 'uint64_t']
   }  
   err = d3d.read_ascii_data(dca, wizardData)
   assert err == 0, f'Import ASCII Data #2 -  ErrorCondition: {err}'

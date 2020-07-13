@@ -59,7 +59,7 @@ def export_triangle_geometry():
         'headers': ['V0', 'V1', 'V2'],
         'attrMatType': 3,
         'tupleDimensions': [242],
-        'dataTypes': ['int64_t', 'int64_t', 'int64_t']
+        'dataTypes': ['uint64_t', 'uint64_t', 'uint64_t']
     }
     err = simplpy.read_ascii_data(dca, wizard_data)
     assert err == 0, f'Import ASCII Data #2 -  ErrorCondition: {err}'
