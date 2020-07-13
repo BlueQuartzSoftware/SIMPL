@@ -49,7 +49,7 @@ def CreateEdgeGeometryTest():
   # Delete Data # 1
   # Remove array helper function:
   err = sc.RemoveArrays(dca, [('DataContainer', 'Bounds', 'x'), ('DataContainer', 'Bounds', 'y'), ('DataContainer', 'Bounds', 'z')])
-  assert err == 0, f'Remove Arrays #1 -  ErrorCondition: {err}'
+  assert err, f'Remove Arrays #1 -  ErrorCondition: {err}'
 
   # Combine Attribute Arrays #2:
   selectedDataArrayPaths = [simpl.DataArrayPath('DataContainer', 'EdgeList', 'V0'), 
@@ -60,7 +60,7 @@ def CreateEdgeGeometryTest():
   # Delete Data # 2
   # Remove array helper function:
   err = sc.RemoveArrays(dca, [('DataContainer', 'EdgeList', 'V0'), ('DataContainer', 'EdgeList', 'V1')])
-  assert err == 0, f'Remove Arrays #2 -  ErrorCondition: {err}'
+  assert err, f'Remove Arrays #2 -  ErrorCondition: {err}'
 
   # Create Geometry
   err = sc.CreateGeometry(dca, sc.ArrayHandling.CopyArrays, simpl.IGeometry.Type.Edge, 'DataContainer', False, 
