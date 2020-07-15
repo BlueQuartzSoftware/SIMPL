@@ -140,7 +140,7 @@ public:
     // Back to MultiFile mode
     writer->setOutputStyle(WriteASCIIData::MultiFile);
 
-    NeighborList<int32_t>::Pointer neighborList = NeighborList<int32_t>::CreateArray(k_ArraySize, "NeighborList", true);
+    NeighborList<int32_t>::Pointer neighborList = NeighborList<int32_t>::CreateArray(k_ArraySize, std::string("NeighborList"), true);
     am->insertOrAssign(neighborList);
 
     paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "NeighborList")};
@@ -153,7 +153,7 @@ public:
     err = writer->getErrorCode();
     DREAM3D_REQUIRE(err < 0)
 
-    StructArray<int32_t>::Pointer structArray = StructArray<int32_t>::CreateArray(k_ArraySize, "StructArray", true);
+    StructArray<int32_t>::Pointer structArray = StructArray<int32_t>::CreateArray(k_ArraySize, std::string("StructArray"), true);
     am->insertOrAssign(structArray);
     paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "StructArray")};
     writer->setSelectedDataArrayPaths(paths);
@@ -165,7 +165,7 @@ public:
     err = writer->getErrorCode();
     DREAM3D_REQUIRE(err < 0)
 
-    StatsDataArray::Pointer statsDataArray = StatsDataArray::CreateArray(k_ArraySize, "StatsDataArray", true);
+    StatsDataArray::Pointer statsDataArray = StatsDataArray::CreateArray(k_ArraySize, std::string("StatsDataArray"), true);
     am->insertOrAssign(statsDataArray);
     paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "StatsDataArray")};
     writer->setSelectedDataArrayPaths(paths);

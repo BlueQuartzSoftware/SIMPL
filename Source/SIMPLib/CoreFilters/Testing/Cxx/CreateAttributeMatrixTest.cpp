@@ -360,8 +360,8 @@ public:
     std::vector<size_t> tDims = {10, 10};
     AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "Test", AttributeMatrix::Type::Cell);
 
-    FloatArrayType::Pointer floatArray = FloatArrayType::CreateArray(100, "Float", true);
-    Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray(100, "Int32", true);
+    FloatArrayType::Pointer floatArray = FloatArrayType::CreateArray(100, std::string("Float"), true);
+    Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray(100, std::string("Int32"), true);
   }
   // -----------------------------------------------------------------------------
   //

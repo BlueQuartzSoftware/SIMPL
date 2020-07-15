@@ -129,7 +129,7 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
     dc->addOrReplaceAttributeMatrix(am);
 
-    DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray", true);
+    DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, std::string("DataArray"), true);
     am->insertOrAssign(da);
 
     filter->setDataContainerArray(dca);
@@ -167,7 +167,7 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
     dc->addOrReplaceAttributeMatrix(am);
 
-    DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray", true);
+    DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, std::string("DataArray"), true);
     am->insertOrAssign(da);
 
     filter->setDataContainerArray(dca);
@@ -207,7 +207,7 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
     dc->addOrReplaceAttributeMatrix(am);
 
-    DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray", true);
+    DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, std::string("DataArray"), true);
     am->insertOrAssign(da);
 
     filter->setDataContainerArray(dca);
@@ -245,7 +245,7 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
     dc->addOrReplaceAttributeMatrix(am);
 
-    DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray", true);
+    DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, std::string("DataArray"), true);
     am->insertOrAssign(da);
 
     filter->setDataContainerArray(dca);
@@ -282,9 +282,9 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
     dc->addOrReplaceAttributeMatrix(am);
 
-    DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray", true);
+    DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, std::string("DataArray"), true);
     am->insertOrAssign(da);
-    DataArray<int>::Pointer da2 = DataArray<int>::CreateArray(1, "DataArray_2", true);
+    DataArray<int>::Pointer da2 = DataArray<int>::CreateArray(1, std::string("DataArray_2"), true);
     am->insertOrAssign(da2);
 
     filter->setDataContainerArray(dca);

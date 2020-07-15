@@ -170,9 +170,9 @@ public:
     }
   }
 
-private:
-  CombineAttributeArraysTemplatePrivate(const CombineAttributeArraysTemplatePrivate&); // Copy Constructor Not Implemented
-  void operator=(const CombineAttributeArraysTemplatePrivate&);                        // Move assignment Not Implemented
+public:
+  CombineAttributeArraysTemplatePrivate(const CombineAttributeArraysTemplatePrivate&) = delete; // Copy Constructor Not Implemented
+  void operator=(const CombineAttributeArraysTemplatePrivate&) = delete;                        // Move assignment Not Implemented
 };
 
 // -----------------------------------------------------------------------------

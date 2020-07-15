@@ -190,7 +190,7 @@ public:
   {
     // Test dropping of front elements only
     {
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS, "Test1", true);
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(NUM_ELEMENTS, std::string("Test1"), true);
       DREAM3D_REQUIRE_EQUAL(array->isAllocated(), true);
       for(size_t i = 0; i < NUM_ELEMENTS; ++i)
       {
@@ -419,7 +419,7 @@ public:
 
 #define TEST_TYPE_STRING(type)                                                                                                                                                                         \
   {                                                                                                                                                                                                    \
-    DataArray<type>::Pointer p_##type = DataArray<type>::CreateArray(1, "Test", false);                                                                                                                \
+    DataArray<type>::Pointer p_##type = DataArray<type>::CreateArray(1, std::string("Test"), false);                                                                                                   \
     QString s_##type = p_##type->getTypeAsString();                                                                                                                                                    \
     s_##type = s_##type; /* qDebug() << #type << s_##type; */                                                                                                                                          \
     auto value = static_cast<type>(1);                                                                                                                                                                 \
@@ -458,7 +458,7 @@ public:
   {
     int32_t* ptr = nullptr;
     {
-      Int32ArrayType::Pointer d = Int32ArrayType::CreateArray(0, "Test7", true);
+      Int32ArrayType::Pointer d = Int32ArrayType::CreateArray(0, std::string("Test7"), true);
       DREAM3D_REQUIRE_EQUAL(0, d->getSize());
       DREAM3D_REQUIRE_EQUAL(0, d->getNumberOfTuples());
       ptr = d->getPointer(0);
@@ -636,7 +636,7 @@ public:
     std::vector<size_t> tDims(10);
     AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "AttributeMatrix", AttributeMatrix::Type::Cell);
 
-    typename NeighborList<T>::Pointer neiList = NeighborList<T>::CreateArray(10, "NeighborList", true);
+    typename NeighborList<T>::Pointer neiList = NeighborList<T>::CreateArray(10, std::string("NeighborList"), true);
 
     for(int i = 0; i < 10; ++i)
     {
@@ -815,7 +815,7 @@ public:
     size_t dims[RANK] = {DIM0, DIM1, DIM2};
     int numComp = 1;
     {
-      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, "TEST", true);
+      typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, std::string("TEST"), true);
       err = ValidateArrayForType<T>(array, numTuples, numComp);
       DREAM3D_REQUIRED(err, >=, 0)
     }
@@ -1170,7 +1170,7 @@ true);
   // -----------------------------------------------------------------------------
   void TestPrintDataArray()
   {
-    FloatArrayType::Pointer floats = FloatArrayType::CreateArray(1, "Test_Float", true);
+    FloatArrayType::Pointer floats = FloatArrayType::CreateArray(1, std::string("Test_Float"), true);
     floats->setValue(0, SIMPLib::Constants::k_Pif);
     QString outStr;
     QTextStream out(&outStr);
@@ -1183,7 +1183,7 @@ true);
     DREAM3D_REQUIRE_EQUAL(comp, 0);
 
     outStr.clear();
-    DoubleArrayType::Pointer doubles = DoubleArrayType::CreateArray(1, "Test_Double", true);
+    DoubleArrayType::Pointer doubles = DoubleArrayType::CreateArray(1, std::string("Test_Double"), true);
     doubles->setValue(0, SIMPLib::Constants::k_Pi);
     doubles->printTuple(out, 0);
     matchString = "3.141592653589793";

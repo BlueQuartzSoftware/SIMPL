@@ -98,18 +98,39 @@ public:
     {
       return NullPointer();
     }
-    StructArray<T>* d = new StructArray<T>(numElements, true);
+    Pointer ptr = std::shared_ptr<Self>(new Self(numElements, true));
     if(allocate)
     {
-      if(d->Allocate() < 0)
+      if(ptr->Allocate() < 0)
       {
-        // Could not allocate enough memory, reset the pointer to null and return
-        delete d;
-        return StructArray<T>::NullPointer();
+        return Self::NullPointer();
       }
     }
-    d->setName(name);
-    Pointer ptr(d);
+    ptr->setName(name);
+    return ptr;
+  }
+
+  /**
+   * @brief Static constructor
+   * @param numElements The number of elements in the internal array.
+   * @param name The name of the array
+   * @return Std::Shared_Ptr wrapping an instance of StructArrayTemplate<T>
+   */
+  static Pointer CreateArray(size_t numElements, const std::string& name, bool allocate = true)
+  {
+    if(name.empty())
+    {
+      return NullPointer();
+    }
+    Pointer ptr = std::shared_ptr<Self>(new Self(numElements, true));
+    if(allocate)
+    {
+      if(ptr->Allocate() < 0)
+      {
+        return Self::NullPointer();
+      }
+    }
+    ptr->setName(QString::fromStdString(name));
     return ptr;
   }
 
@@ -138,7 +159,7 @@ public:
   ~StructArray() override
   {
     // qDebug() << "~StructArrayTemplate '" << m_Name << "'" ;
-    if((nullptr != m_Array) && (true == m_OwnsData))
+    if((nullptr != m_Array) && (m_OwnsData))
     {
       deallocate();
     }
@@ -210,7 +231,7 @@ public:
    */
   int32_t Allocate()
   {
-    if((nullptr != m_Array) && (true == m_OwnsData))
+    if((nullptr != m_Array) && (m_OwnsData))
     {
       deallocate();
     }
@@ -242,7 +263,7 @@ public:
    */
   virtual void initialize()
   {
-    if(nullptr != m_Array && true == m_OwnsData)
+    if(nullptr != m_Array && m_OwnsData)
     {
       deallocate();
     }
@@ -899,6 +920,9 @@ private:
   //   unsigned long long int MUD_FLAP_3;
   //  unsigned long long int MUD_FLAP_5;
 
-  StructArray(const StructArray&);    // Not Implemented
-  void operator=(const StructArray&); // Not Implemented
+public:
+  StructArray(const StructArray&) = delete;            // Copy Constructor Not Implemented
+  StructArray(StructArray&&) = delete;                 // Move Constructor Not Implemented
+  StructArray& operator=(const StructArray&) = delete; // Copy Assignment Not Implemented
+  StructArray& operator=(StructArray&&) = delete;      // Move Assignment Not Implemented
 };

@@ -497,7 +497,7 @@ public:
     {
       if(nullptr != filter)
       {
-        typename ArrayType::Pointer validTargetArray = ArrayType::CreateArray(1, "JUNK_INTERNAL_ARRAY", false);
+        typename ArrayType::Pointer validTargetArray = ArrayType::CreateArray(1, std::string("JUNK_INTERNAL_ARRAY"), false);
         IDataArrayShPtrType srcArray = getAttributeArray(arrayName);
         QString srcDesc = srcArray->getTypeAsString();
         QString desc = validTargetArray->getTypeAsString();
@@ -541,7 +541,7 @@ public:
     typename ArrayType::Pointer array = std::dynamic_pointer_cast<ArrayType>(targetDestArray);
     if(nullptr == array.get())
     {
-      typename ArrayType::Pointer dat = ArrayType::CreateArray(1, "JUNK-INTERNAL-USE-ONLY", true);
+      typename ArrayType::Pointer dat = ArrayType::CreateArray(1, std::string("JUNK-INTERNAL-USE-ONLY"), true);
       QString ss = QObject::tr(" - The filter requested an array named '%1' with type '%2' from the filter '%3'.\n"
                                "An Array with name '%4' is stored in the %5 but is of type %6\n")
                        .arg(arrayName)

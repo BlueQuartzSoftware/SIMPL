@@ -71,7 +71,17 @@ StringDataArray::Pointer StringDataArray::CreateArray(size_t numTuples, const QS
   Pointer ptr(d);
   return ptr;
 }
-
+// -----------------------------------------------------------------------------
+StringDataArray::Pointer StringDataArray::CreateArray(size_t numTuples, const std::string& name, bool allocate)
+{
+  if(name.empty())
+  {
+    return NullPointer();
+  }
+  StringDataArray* d = new StringDataArray(numTuples, QString::fromStdString(name), allocate);
+  Pointer ptr(d);
+  return ptr;
+}
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

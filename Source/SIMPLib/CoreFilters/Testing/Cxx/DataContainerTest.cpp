@@ -485,7 +485,7 @@ public:
     DREAM3D_REQUIRE_VALID_POINTER(attrMat.get())
 
     // Now create an Array and add it to the Attribute Matrix
-    typename T::Pointer p = T::CreateArray(5, "Test", true);
+    typename T::Pointer p = T::CreateArray(5, std::string("Test"), true);
 
     tDims[0] = 5;
     attrMat->resizeAttributeArrays(tDims);

@@ -83,7 +83,22 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numElements, const QS
   }
   return ptr;
 }
-
+// -----------------------------------------------------------------------------
+StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numElements, const std::string& name, bool allocate)
+{
+  if(name.empty())
+  {
+    return NullPointer();
+  }
+  StatsDataArray::Pointer ptr = StatsDataArray::New();
+  ptr->setName(QString::fromStdString(name));
+  std::vector<PhaseType::Type> phase_types(numElements, PhaseType::Type::Unknown);
+  if(allocate && numElements > 0)
+  {
+    ptr->fillArrayWithNewStatsData(numElements, &(phase_types.front()));
+  }
+  return ptr;
+}
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

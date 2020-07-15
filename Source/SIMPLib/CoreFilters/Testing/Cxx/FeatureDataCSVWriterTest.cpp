@@ -181,7 +181,7 @@ public:
     std::vector<IDataArray::Pointer> nlList;
     int originalNumColumns = 0;
 
-    NeighborList<int32_t>::Pointer neighborlistPtr = NeighborList<int32_t>::CreateArray(0, "_INTERNAL_USE_ONLY_JunkNeighborList", false);
+    NeighborList<int32_t>::Pointer neighborlistPtr = NeighborList<int32_t>::CreateArray(0, std::string("_INTERNAL_USE_ONLY_JunkNeighborList"), false);
 
     for(int i = 0; i < daNames.size(); i++)
     {

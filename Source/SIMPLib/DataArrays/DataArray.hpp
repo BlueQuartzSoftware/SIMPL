@@ -140,6 +140,7 @@ public:
    * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
    */
   static Pointer CreateArray(size_t numTuples, const QString& name, bool allocate);
+  static Pointer CreateArray(size_t numTuples, const std::string& name, bool allocate);
 
   /**
    * @brief Static constructor
