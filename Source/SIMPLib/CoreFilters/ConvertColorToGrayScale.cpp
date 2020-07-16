@@ -116,7 +116,7 @@ public:
   {
     for(size_t i = start; i < end; i++)
     {
-      std::pair<uint8_t*, uint8_t*> minmax{std::minmax_element(m_ImageData + (start * m_NumComp), m_ImageData + (end * m_NumComp))};
+      std::pair<uint8_t*, uint8_t*> minmax{std::minmax_element(m_ImageData + (i * m_NumComp), m_ImageData + (i * m_NumComp + 3))};
       m_FlatImageData[i] = static_cast<uint8_t>(roundf((minmax.first[0] + minmax.second[0]) / 2.0f));
     }
   }
