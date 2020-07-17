@@ -153,7 +153,7 @@ private:
 
 public:
   /* Rule of 5: All special member functions should be defined if any are defined.
-   * https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c21-if-you-define-or-delete-any-default-operation-define-or-delete-them-all
+   * CppCoreGuidelines #c21 if you define or delete any default operation define or delete them all
    */
   ApplyImageTransforms(const ApplyImageTransforms&) = delete;            // Copy Constructor Not Implemented
   ApplyImageTransforms& operator=(const ApplyImageTransforms&) = delete; // Copy Assignment Not Implemented
