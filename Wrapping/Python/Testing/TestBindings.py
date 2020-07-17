@@ -1,5 +1,3 @@
-import time
-
 # These are the simpl_py python modules
 import simpl
 import simplpy
@@ -49,8 +47,6 @@ def PipelineTest():
   pipeline.popFront()
   filterCount = pipeline.size()
   print('Filter Count: %d' % filterCount)
-
-  time.sleep(2)
 
 if __name__ == '__main__':
   PipelineTest()
