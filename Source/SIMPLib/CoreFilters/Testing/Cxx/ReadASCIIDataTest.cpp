@@ -442,6 +442,7 @@ public:
     ConvertType<uint64_t>();
     ConvertType<float>();
     ConvertType<double>();
+    ConvertType<size_t>();
 
     return EXIT_SUCCESS;
   }
