@@ -22,13 +22,13 @@ def AttributeMatrixAccessTest():
     dap = simpl.DataArrayPath('AM Test', 'CellAttributeMatrix', '')
     am0 = dca.getAttributeMatrix(dap)
     assert am0 == am
-    assert True == dca.doesAttributeMatrixExist(dap)
+    assert dca.doesAttributeMatrixExist(dap)
 
     # Change the data array path to something that does not exist.
     dap.update('AM Test', 'Foo', '')
     am0 = dca.getAttributeMatrix(dap)
     assert am0 != am
-    assert False == dca.doesAttributeMatrixExist(dap)
+    assert not dca.doesAttributeMatrixExist(dap)
 
 def DataContainerTest():
     '''
