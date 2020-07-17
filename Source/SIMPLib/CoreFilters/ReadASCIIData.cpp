@@ -394,6 +394,11 @@ void ReadASCIIData::dataCheck()
       UInt64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType>(this, arrayPath, 0, cDims, "");
       m_ASCIIArrayMap.insert(i, ptr);
     }
+    else if(dataType == SIMPL::TypeNames::SizeT)
+    {
+      SizeTArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<SizeTArrayType>(this, arrayPath, 0, cDims, "");
+      m_ASCIIArrayMap.insert(i, ptr);
+    }
     else if(dataType == SIMPL::TypeNames::String)
     {
       StringDataArray::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray>(this, arrayPath, "", cDims, "");
@@ -495,6 +500,12 @@ void ReadASCIIData::execute()
     {
       UInt64ArrayType::Pointer data = std::dynamic_pointer_cast<UInt64ArrayType>(m_ASCIIArrayMap.value(i));
       UInt64ParserType::Pointer parser = UInt64ParserType::New(data, name, i);
+      dataParsers.push_back(parser);
+    }
+    else if(dataType == SIMPL::TypeNames::SizeT)
+    {
+      SizeTArrayType::Pointer data = std::dynamic_pointer_cast<SizeTArrayType>(m_ASCIIArrayMap.value(i));
+      SizeTParserType::Pointer parser = SizeTParserType::New(data, name, i);
       dataParsers.push_back(parser);
     }
     else if(dataType == SIMPL::TypeNames::String)

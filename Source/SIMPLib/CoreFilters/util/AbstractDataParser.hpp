@@ -210,5 +210,6 @@ using UInt64ParserType = Parser<UInt64ArrayType, UInt64Functor>;
 
 using FloatParserType = Parser<FloatArrayType, FloatFunctor>;
 using DoubleParserType = Parser<DoubleArrayType, DoubleFunctor>;
+using SizeTParserType = Parser<SizeTArrayType, SizeTFunctor>;
 
 using StringParserType = Parser<StringDataArray, StringFunctor>;

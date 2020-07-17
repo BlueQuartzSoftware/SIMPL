@@ -419,6 +419,44 @@ public:
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+class SizeTFunctor : public ParserFunctor
+{
+public:
+  ~SizeTFunctor() override = default;
+
+  size_t operator()(const QString& token, ErrorObject& obj)
+  {
+    size_t value = token.toULongLong(&obj.ok);
+    if(!obj.ok)
+    {
+      if(token.contains('.'))
+      {
+        double doubleValue = token.toDouble(&obj.ok);
+        if(!obj.ok)
+        {
+          obj.errorMessage = ParserErrorMessages::CouldNotConvert;
+        }
+        else
+        {
+          value = static_cast<uint64_t>(doubleValue);
+        }
+      }
+      else if(token.isEmpty() == false && token[0] == '-')
+      {
+        obj.errorMessage = ParserErrorMessages::ValueOutOfRange;
+      }
+      else
+      {
+        obj.errorMessage = ParserErrorMessages::CouldNotConvert;
+      }
+    }
+    return value;
+  }
+};
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 class StringFunctor : public ParserFunctor
 {
 public:
