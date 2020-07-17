@@ -8,24 +8,22 @@ import simpl_test_dirs as sd
 
 def rename_array_test():
     # Create Data Container Array
-    dca = simpl.DataContainerArray()
+    dc_name = 'foo'
+    am_name = 'bar'
+    da_name = 'baz'
 
-    # Read DREAM3D File
-    err = sc.ReadDREAM3DFile(dca, sd.GetBuildDirectory() + '/Data/Output/Statistics/SmallIN100_CrystalStats.dream3d')
-    assert err == 0, f'DataContainerReader ErrorCondition {err}'
+    dca = simpl.DataContainerArray()
+    dc = simpl.DataContainer(dc_name)
+    am = simpl.AttributeMatrix(simpl.VectorSizeT([10]), am_name, simpl.AttributeMatrix.Type.Generic)
+    da = simpl.Int32Array(10, da_name, 0)
+
+    am.addOrReplaceAttributeArray(da)
+    dc.addOrReplaceAttributeMatrix(am)
+    dca.addOrReplaceDataContainer(dc)
 
     # Rename Attribute Array
-    err = simplpy.rename_attribute_array(dca,
-                                         simpl.DataArrayPath('Small IN100', 'EBSD Scan Data',
-                                                             'IPFColor'),
-                                         'InversePoleFigureColor')
+    err = simplpy.rename_attribute_array(dca, simpl.DataArrayPath(dc_name, am_name, da_name), 'qux')
     assert err == 0, f'RenameAttributeArray ErrorCondition {err}'
-
-    # Write to DREAM3D file
-    err = sc.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/CoreFilterTests/' +
-                              'RenameAttributeArray.dream3d',
-                              dca)
-    assert err == 0, f'WriteDREAM3DFile ErrorCondition: {err}'
 
 if __name__ == '__main__':
     rename_array_test()
