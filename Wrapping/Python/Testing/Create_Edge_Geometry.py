@@ -13,54 +13,19 @@ def CreateEdgeGeometryTest():
   err = d3d.create_data_container(dca, 'DataContainer')
   assert err == 0, f'DataContainer ErrorCondition: {err}'
 
-  # Import ASCII Data - #1 - Vertex Coordinates (Using helper function)
-  importFile = sd.GetBuildDirectory() + '/Data/SIMPL/VertexCoordinates.csv'
+  # Read vertices
+  err = d3d.create_attribute_matrix(dca, simpl.DataArrayPath('DataContainer', 'Bounds', ''), simpl.AttributeMatrix.Type.Cell, sh.CreateDynamicTableData([[144]]))
+  assert err == 0, f'CreateAttributeMatrix - Error: {err}'
 
-  err = d3d.read_ascii_data(dca, sh.CreateAsciiWizardData(importFile, 2, 145, [','], False, True, 
-  simpl.DataArrayPath('DataContainer', 'Bounds', ''), ['x', 'y', 'z'], 3,
-  [144], ['float', 'float', 'float']))
-  assert err == 0, f'Import ASCII Data #1 -  ErrorCondition: {err}'
-  
-  # Import ASCII Data - #2 - Edge Connectivity (Without using helper function)
-  importFile = sd.GetBuildDirectory() + '/Data/SIMPL/EdgeConnectivity.csv'
-  wizardData = {
-    'inputFilePath': importFile,
-    'beginIndex': 2,
-    'numberOfLines': 265,
-    'delimiters': [','],    
-    'consecutiveDelimiters': False,
-    'automaticAM': True,
-    'selectedPath': simpl.DataArrayPath('DataContainer', 'EdgeList', ''),
-    'headers': ['V1', 'V0'],
-    'attrMatType': 3,
-    'tupleDimensions': [264],
-    'dataTypes': ['uint64_t', 'uint64_t']
-  }  
-  err = d3d.read_ascii_data(dca, wizardData)
-  assert err == 0, f'Import ASCII Data #2 -  ErrorCondition: {err}'
+  err = d3d.import_asci_data_array(dca, simpl.DataArrayPath('DataContainer', 'Bounds', 'Vertices'), simpl.NumericTypes.Float, 3, 1, sd.GetBuildDirectory() + '/Data/SIMPL/VertexCoordinates.csv', 0)
+  assert err == 0, f'ImportAsciDataArray - Error {err}'
 
-  # Combine Attribute Arrays # 1:
-  selectedDataArrayPaths = [simpl.DataArrayPath('DataContainer', 'Bounds', 'x'), 
-  simpl.DataArrayPath('DataContainer', 'Bounds', 'y'), 
-  simpl.DataArrayPath('DataContainer', 'Bounds', 'z')]
-  err = d3d.combine_attribute_arrays(dca, selectedDataArrayPaths, 'Vertices', False)
-  assert err == 0, f'Combined Attribute Arrays #1 -  ErrorCondition: {err}'
+  # Read edges
+  err = d3d.create_attribute_matrix(dca, simpl.DataArrayPath('DataContainer', 'EdgeList', ''), simpl.AttributeMatrix.Type.Cell, sh.CreateDynamicTableData([[264]]))
+  assert err == 0, f'CreateAttributeMatrix - Error: {err}'
 
-  # Delete Data # 1
-  # Remove array helper function:
-  err = sh.RemoveArrays(dca, [('DataContainer', 'Bounds', 'x'), ('DataContainer', 'Bounds', 'y'), ('DataContainer', 'Bounds', 'z')])
-  assert err, f'Remove Arrays #1 -  ErrorCondition: {err}'
-
-  # Combine Attribute Arrays #2:
-  selectedDataArrayPaths = [simpl.DataArrayPath('DataContainer', 'EdgeList', 'V0'), 
-  simpl.DataArrayPath('DataContainer', 'EdgeList', 'V1')]
-  err = d3d.combine_attribute_arrays(dca, selectedDataArrayPaths, 'Edges', False)
-  assert err == 0, f'Combined Attribute Arrays #2 -  ErrorCondition: {err}'
-
-  # Delete Data # 2
-  # Remove array helper function:
-  err = sh.RemoveArrays(dca, [('DataContainer', 'EdgeList', 'V0'), ('DataContainer', 'EdgeList', 'V1')])
-  assert err, f'Remove Arrays #2 -  ErrorCondition: {err}'
+  err = d3d.import_asci_data_array(dca, simpl.DataArrayPath('DataContainer', 'EdgeList', 'Edges'), simpl.NumericTypes.SizeT, 2, 1, sd.GetBuildDirectory() + '/Data/SIMPL/EdgeConnectivity.csv', 0)
+  assert err == 0, f'ImportAsciDataArray - Error {err}'
 
   # Create Geometry
   err = sh.CreateGeometry(dca, sh.ArrayHandling.CopyArrays, simpl.IGeometry.Type.Edge, 'DataContainer', False, 
