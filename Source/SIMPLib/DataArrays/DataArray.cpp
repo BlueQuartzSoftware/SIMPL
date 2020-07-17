@@ -1084,6 +1084,10 @@ QString DataArray<T>::getTypeAsString() const
   {
     return "double";
   }
+  else if constexpr(std::is_same_v<T, size_t>)
+  {
+    return "size_t";
+  }
   else if constexpr(std::is_same_v<T, bool>)
   {
     return "bool";
