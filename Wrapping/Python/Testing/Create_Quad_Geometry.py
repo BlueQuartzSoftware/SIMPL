@@ -2,7 +2,7 @@
 
 import simpl
 import simplpy as d3d
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def CreateQuadGeometryTest():
@@ -85,7 +85,7 @@ def CreateQuadGeometryTest():
   assert err == 0, f'Remove Arrays #2 -  ErrorCondition: {err}'
 
   # Create Geometry
-  err = sc.CreateGeometry(dca, 0, simpl.IGeometry.Type.Quad, 'DataContainer', False, 
+  err = sh.CreateGeometry(dca, 0, simpl.IGeometry.Type.Quad, 'DataContainer', False, 
   shared_vertex_list_array_path = simpl.DataArrayPath('DataContainer', 'Bounds', 'Vertices'),
   shared_quad_list_array_path = simpl.DataArrayPath('DataContainer', 'QuadList', 'Quads'),
   vertex_attribute_matrix_name = 'VertexData',

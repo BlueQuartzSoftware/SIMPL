@@ -5,7 +5,7 @@
 
 import simpl
 import simplpy as d3d
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def CreateRectilinearGridTest():
@@ -35,7 +35,7 @@ def CreateRectilinearGridTest():
   assert err == 0, f'Import ASCII Data #1 -  ErrorCondition: {err}'
   
   # Create Geometry
-  err = sc.CreateGeometry(dca, 0, simpl.IGeometry.Type.Triangle, 'DataContainer', False, 
+  err = sh.CreateGeometry(dca, 0, simpl.IGeometry.Type.Triangle, 'DataContainer', False, 
   x_bounds_array_path = simpl.DataArrayPath('DataContainer', 'Bounds', 'x'),
   y_bounds_array_path = simpl.DataArrayPath('DataContainer', 'Bounds', 'y'),
   z_bounds_array_path = simpl.DataArrayPath('DataContainer', 'Bounds', 'z'),

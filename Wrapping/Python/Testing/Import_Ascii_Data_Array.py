@@ -2,7 +2,7 @@
 
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def import_ascii_array_test():
@@ -15,7 +15,7 @@ def import_ascii_array_test():
 
     # Create an Attribute Matrix
     amDims = [[143, 1, 1]]
-    tableData = sc.CreateDynamicTableData(amDims)
+    tableData = sh.CreateDynamicTableData(amDims)
     dap = simpl.DataArrayPath('DataContainer', 'CellAttributeMatrix', '')
     err = simplpy.create_attribute_matrix(dca, dap, simpl.AttributeMatrix.Type.Cell, tableData)
     assert err == 0

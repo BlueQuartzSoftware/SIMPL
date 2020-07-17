@@ -2,7 +2,7 @@
 
 import simpl
 import simplpy as d3d
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def CreateEdgeGeometryTest():
@@ -16,7 +16,7 @@ def CreateEdgeGeometryTest():
   # Import ASCII Data - #1 - Vertex Coordinates (Using helper function)
   importFile = sd.GetBuildDirectory() + '/Data/SIMPL/VertexCoordinates.csv'
 
-  err = d3d.read_ascii_data(dca, sc.CreateAsciiWizardData(importFile, 2, 145, [','], False, True, 
+  err = d3d.read_ascii_data(dca, sh.CreateAsciiWizardData(importFile, 2, 145, [','], False, True, 
   simpl.DataArrayPath('DataContainer', 'Bounds', ''), ['x', 'y', 'z'], 3,
   [144], ['float', 'float', 'float']))
   assert err == 0, f'Import ASCII Data #1 -  ErrorCondition: {err}'
@@ -48,7 +48,7 @@ def CreateEdgeGeometryTest():
 
   # Delete Data # 1
   # Remove array helper function:
-  err = sc.RemoveArrays(dca, [('DataContainer', 'Bounds', 'x'), ('DataContainer', 'Bounds', 'y'), ('DataContainer', 'Bounds', 'z')])
+  err = sh.RemoveArrays(dca, [('DataContainer', 'Bounds', 'x'), ('DataContainer', 'Bounds', 'y'), ('DataContainer', 'Bounds', 'z')])
   assert err, f'Remove Arrays #1 -  ErrorCondition: {err}'
 
   # Combine Attribute Arrays #2:
@@ -59,11 +59,11 @@ def CreateEdgeGeometryTest():
 
   # Delete Data # 2
   # Remove array helper function:
-  err = sc.RemoveArrays(dca, [('DataContainer', 'EdgeList', 'V0'), ('DataContainer', 'EdgeList', 'V1')])
+  err = sh.RemoveArrays(dca, [('DataContainer', 'EdgeList', 'V0'), ('DataContainer', 'EdgeList', 'V1')])
   assert err, f'Remove Arrays #2 -  ErrorCondition: {err}'
 
   # Create Geometry
-  err = sc.CreateGeometry(dca, sc.ArrayHandling.CopyArrays, simpl.IGeometry.Type.Edge, 'DataContainer', False, 
+  err = sh.CreateGeometry(dca, sh.ArrayHandling.CopyArrays, simpl.IGeometry.Type.Edge, 'DataContainer', False, 
   shared_vertex_list_array_path = simpl.DataArrayPath('DataContainer', 'Bounds', 'Vertices'),
   shared_edge_list_array_path = simpl.DataArrayPath('DataContainer', 'EdgeList', 'Edges'),
   vertex_attribute_matrix_name = 'VertexData',

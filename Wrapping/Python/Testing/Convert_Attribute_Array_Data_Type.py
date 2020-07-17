@@ -4,7 +4,7 @@ Creates a Int32 array and then converts it to UInt8
 
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 import datetime
@@ -14,11 +14,11 @@ def convert_data_test():
     dca = simpl.DataContainerArray()
 
     # Create a Data Container
-    dc = sc.CreateDataContainer('ImageDataContainer')
+    dc = sh.CreateDataContainer('ImageDataContainer')
     dca.addOrReplaceDataContainer(dc)
  
     shape = simpl.VectorSizeT([4, 5, 2])
-    cellAm = sc.CreateAttributeMatrix(shape, 'CellAttributeMatrix', simpl.AttributeMatrix.Type.Cell)
+    cellAm = sh.CreateAttributeMatrix(shape, 'CellAttributeMatrix', simpl.AttributeMatrix.Type.Cell)
     dc.addOrReplaceAttributeMatrix(cellAm)   
     
     dap = simpl.DataArrayPath('ImageDataContainer', 'CellAttributeMatrix', 'Int32Data')
@@ -32,7 +32,7 @@ def convert_data_test():
     assert err == 0
 
     # Write to DREAM3D file
-    err = sc.WriteDREAM3DFile(sd.GetBuildDirectory()
+    err = sh.WriteDREAM3DFile(sd.GetBuildDirectory()
                               + '/Data/Output/CoreFilterTests/ConvertAttributeArrayDataType.dream3d', dca)
     assert err == 0
 

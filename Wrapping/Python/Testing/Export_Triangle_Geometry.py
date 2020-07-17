@@ -1,6 +1,6 @@
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def export_triangle_geometry():
@@ -82,7 +82,7 @@ def export_triangle_geometry():
     assert err == 0, f'Remove Arrays #2 -  ErrorCondition: {err}'
 
     # Create Geometry
-    err = sc.CreateGeometry(dca, 0, simpl.IGeometry.Type.Triangle, 'DataContainer', False,
+    err = sh.CreateGeometry(dca, 0, simpl.IGeometry.Type.Triangle, 'DataContainer', False,
                             shared_vertex_list_array_path=simpl.DataArrayPath('DataContainer', 'Bounds', 'Vertices'),
                             shared_tri_list_array_path=simpl.DataArrayPath('DataContainer', 'Triangles', 'Triangles'),
                             vertex_attribute_matrix_name='VertexData',

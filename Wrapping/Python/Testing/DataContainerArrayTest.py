@@ -1,6 +1,6 @@
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def AttributeMatrixAccessTest():
@@ -9,8 +9,8 @@ def AttributeMatrixAccessTest():
     and DataContainerArray
     '''
     print('Starting AttributeMatrixAccessTest....')
-    dca = sc.CreateDataContainerArray()
-    dc = sc.CreateDataContainer('AM Test')
+    dca = sh.CreateDataContainerArray()
+    dc = sh.CreateDataContainer('AM Test')
     dca.addOrReplaceDataContainer(dc)
     
     amType = simpl.AttributeMatrix.Type.Cell
@@ -36,9 +36,9 @@ def DataContainerTest():
     This needs to be updated as more methods are exposed to Python
     '''
     print('Starting DataContainerTest....')
-    dca = sc.CreateDataContainerArray()
-    dc0 = sc.CreateDataContainer('dc0')
-    dc1 = sc.CreateDataContainer('dc1')
+    dca = sh.CreateDataContainerArray()
+    dc0 = sh.CreateDataContainer('dc0')
+    dc1 = sh.CreateDataContainer('dc1')
 
     dca.addOrReplaceDataContainer(dc0)
     dca.addOrReplaceDataContainer(dc1)
@@ -66,8 +66,8 @@ def DataContainerTest():
 
 def MiscTest():
     print('Starting MiscTest')
-    dca = sc.CreateDataContainerArray()
-    dc = sc.CreateDataContainer('My New DataContainer')
+    dca = sh.CreateDataContainerArray()
+    dc = sh.CreateDataContainer('My New DataContainer')
     dca.addOrReplaceDataContainer(dc)
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def AttributeMatrixTest():
@@ -8,7 +8,7 @@ def AttributeMatrixTest():
     amType = simpl.AttributeMatrix.Type.Cell
     tupleDims = simpl.VectorSizeT([5,4,3])
     amName = 'CellAttributeMatrix'
-    am = sc.CreateAttributeMatrix(tupleDims, amName, amType)
+    am = sh.CreateAttributeMatrix(tupleDims, amName, amType)
 
     print('Name: %s' % am.Name)
 

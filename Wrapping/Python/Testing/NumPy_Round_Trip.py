@@ -2,7 +2,7 @@ import numpy as np
 
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 import orientationanalysispy as orient
 
@@ -28,13 +28,13 @@ def Test1():
   print(z[0])
 
   # Create the DataContainerArray
-  dca = sc.CreateDataContainerArray()
+  dca = sh.CreateDataContainerArray()
   # Create and add a DataContainer to the DataContainerArray
-  dc = sc.CreateDataContainer('DC')
+  dc = sh.CreateDataContainer('DC')
   dca.addOrReplaceDataContainer(dc)
   # Create and add an AttributeMatrix to the DataContainerArray
   shape = simpl.VectorSizeT([4, 3, 2])
-  cellAm = sc.CreateAttributeMatrix(shape, 'CAM', simpl.AttributeMatrix.Type.Cell)
+  cellAm = sh.CreateAttributeMatrix(shape, 'CAM', simpl.AttributeMatrix.Type.Cell)
   dc.addOrReplaceAttributeMatrix(cellAm)
 
   # Create the wrapped DataArray<float> array
@@ -61,18 +61,18 @@ def Test2():
   python side of things.
   '''
   print('===================== Test 2 =====================')
-  dca = sc.CreateDataContainerArray()
+  dca = sh.CreateDataContainerArray()
 
-  dc = sc.CreateDataContainer('DC')
+  dc = sh.CreateDataContainer('DC')
   dca.addOrReplaceDataContainer(dc)
 
   shape = simpl.VectorSizeT([4, 3, 2])
-  cellAm = sc.CreateAttributeMatrix(shape, 'CAM', simpl.AttributeMatrix.Type.Cell)
+  cellAm = sh.CreateAttributeMatrix(shape, 'CAM', simpl.AttributeMatrix.Type.Cell)
   dc.addOrReplaceAttributeMatrix(cellAm)
   # Create the Component Dimensions for the Array, 3 Component in this case
   cDims = simpl.VectorSizeT([3])
   # Create the array which wraps a Numpy contiguous array 
-  npyArray, eulers = sc.CreateDataArray('Eulers', shape, cDims, np.float32)
+  npyArray, eulers = sh.CreateDataArray('Eulers', shape, cDims, np.float32)
   npyArray.fill(3.1415927)
   # Add the DataArray to the AttributeMatrix
   cellAm.addOrReplaceAttributeArray(eulers)
@@ -92,13 +92,13 @@ def Test3():
   '''
   print('===================== Test 3 =====================')
 
-  dca = sc.CreateDataContainerArray()
+  dca = sh.CreateDataContainerArray()
 
-  dc = sc.CreateDataContainer('DC')
+  dc = sh.CreateDataContainer('DC')
   dca.addOrReplaceDataContainer(dc)
   # The shape is in XYZ order
   shape = simpl.VectorSizeT([4, 3, 2])
-  cellAm = sc.CreateAttributeMatrix(shape, 'CAM', simpl.AttributeMatrix.Type.Cell)
+  cellAm = sh.CreateAttributeMatrix(shape, 'CAM', simpl.AttributeMatrix.Type.Cell)
   dc.addOrReplaceAttributeMatrix(cellAm)
 
   # Create the Component Dimensions for the Array, 3 Component in this case
@@ -128,7 +128,7 @@ def Test3():
   cellAm.addOrReplaceAttributeArray(simpl_rads)
 
   # Write to DREAM3D file
-  err = sc.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/Python_RoundTrip/RoundTripTest.dream3d', dca)
+  err = sh.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/Python_RoundTrip/RoundTripTest.dream3d', dca)
   assert err == 0, f'WriteDREAM3DFile ErrorCondition: {err}'
 
 if __name__ == '__main__':

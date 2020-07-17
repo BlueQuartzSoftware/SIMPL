@@ -3,7 +3,7 @@
 
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 import datetime
@@ -132,7 +132,7 @@ def split_array_test():
     assert err == 0, f'SplitAttributeArray ErrorCondition {err}'
 
     # Write to DREAM3D file
-    err = sc.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/CoreFilterTests/' +
+    err = sh.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/CoreFilterTests/' +
                               'SplitAttributeArray.dream3d',
                               dca)
     assert err == 0, f'WriteDREAM3DFile ErrorCondition: {err}'

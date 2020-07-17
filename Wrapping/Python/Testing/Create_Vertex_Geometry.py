@@ -2,7 +2,7 @@
 
 import simpl
 import simplpy as d3d
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def CreateVertexGeometryTest():
@@ -52,7 +52,7 @@ def CreateVertexGeometryTest():
   data_container_name = 'DataContainer'
   shared_vertex_list_array_path = simpl.DataArrayPath('DataContainer', 'Bounds', 'Vertices')
   vertex_attribute_matrix_name = 'VertexData'
-  err = sc.CreateGeometry(dca, 0, simpl.IGeometry.Type.Vertex, 'DataContainer', False, 
+  err = sh.CreateGeometry(dca, 0, simpl.IGeometry.Type.Vertex, 'DataContainer', False, 
   shared_vertex_list_array_path = simpl.DataArrayPath('DataContainer', 'Bounds', 'Vertices'),
   vertex_attribute_matrix_name = 'VertexData')
   assert err == 0, f'Create Geometry -  ErrorCondition: {err}'

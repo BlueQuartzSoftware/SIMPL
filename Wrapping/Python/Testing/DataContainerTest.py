@@ -1,6 +1,6 @@
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def DataContainerTest() :
@@ -8,7 +8,7 @@ def DataContainerTest() :
   Tests various methods of the DataContainer Class
   '''
 
-  dca = sc.CreateDataContainerArray()
+  dca = sh.CreateDataContainerArray()
 
   # Create a DataContainer
   dc = simpl.DataContainer('Default Name')
@@ -19,7 +19,7 @@ def DataContainerTest() :
   amType = simpl.AttributeMatrix.Type.Cell
   tupleDims = simpl.VectorSizeT([5, 4, 3])
   amName = 'CellAttributeMatrix'
-  am = sc.CreateAttributeMatrix(tupleDims, amName, amType)
+  am = sh.CreateAttributeMatrix(tupleDims, amName, amType)
 
   dc.addOrReplaceAttributeMatrix(am)
 

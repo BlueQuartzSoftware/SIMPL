@@ -3,7 +3,7 @@
 
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def array_calculator_test():
@@ -16,7 +16,7 @@ def array_calculator_test():
 
     # Create an Attribute Matrix
     amDims = [[4, 5, 6]]
-    tableData = sc.CreateDynamicTableData(amDims)
+    tableData = sh.CreateDynamicTableData(amDims)
     dap = simpl.DataArrayPath('ImageDataContainer', 'CellAttributeMatrix', '')
     err = simplpy.create_attribute_matrix(dca, dap, simpl.AttributeMatrix.Type.Cell, tableData)
     assert err == 0
@@ -34,7 +34,7 @@ def array_calculator_test():
     assert err == 0
 
     # Write to DREAM3D file
-    err = sc.WriteDREAM3DFile(sd.GetBuildDirectory()
+    err = sh.WriteDREAM3DFile(sd.GetBuildDirectory()
                               + '/Data/Output/CoreFilterTests/ArrayCalculatorTest.dream3d', dca)
     assert err == 0
 
