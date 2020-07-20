@@ -3,7 +3,7 @@ import numpy as np
 
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def ImageReadTest():
@@ -23,15 +23,15 @@ def ImageReadTest():
     z_flat = np.ravel(z)
 
     # Create the DataContainerArray
-    dca = sc.CreateDataContainerArray()
+    dca = sh.CreateDataContainerArray()
 
     # Create the DataContainer
-    dc = sc.CreateDataContainer('ImageDataContainer')
+    dc = sh.CreateDataContainer('ImageDataContainer')
     dca.addOrReplaceDataContainer(dc)
 
     # Create an AttributeMatrix and add it to the DataContainer
     amShape = simpl.VectorSizeT([shape[1], shape[0], 1])
-    cellAm = sc.CreateAttributeMatrix(amShape, 'CellAttributeMatrix', simpl.AttributeMatrix.Type.Cell)
+    cellAm = sh.CreateAttributeMatrix(amShape, 'CellAttributeMatrix', simpl.AttributeMatrix.Type.Cell)
     dc.addOrReplaceAttributeMatrix(cellAm)
 
     # Create an AttributeArray from the image data and add it to the AttributeMatrix
@@ -47,7 +47,7 @@ def ImageReadTest():
     dc.setGeometry(imageGeom)
 
     # Write the file out
-    err = sc.WriteDREAM3DFile( sd.GetBuildDirectory() + '/Data/Output/PythonTest/ImageReadTest.dream3d', dca, True)
+    err = sh.WriteDREAM3DFile( sd.GetBuildDirectory() + '/Data/Output/PythonTest/ImageReadTest.dream3d', dca, True)
     assert err == 0
 
 if __name__ == '__main__':

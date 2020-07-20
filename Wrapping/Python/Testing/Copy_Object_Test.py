@@ -3,7 +3,7 @@
 
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def copy_object_test():
@@ -16,7 +16,7 @@ def copy_object_test():
 
     # Create an Attribute Matrix
     amDims = [[4, 5, 6]]
-    tableData = sc.CreateDynamicTableData(amDims)
+    tableData = sh.CreateDynamicTableData(amDims)
     dap = simpl.DataArrayPath('ImageDataContainer', 'CellAttributeMatrix', '')
     err = simplpy.create_attribute_matrix(dca, dap, simpl.AttributeMatrix.Type.Cell, tableData)
     assert err == 0
@@ -28,20 +28,16 @@ def copy_object_test():
     assert err == 0
 
     # Test: Copy Object
-    err = simplpy.copy_object(dca, sc.ObjectToCopy.AttributeArray, '', 
+    err = simplpy.copy_object(dca, sh.ObjectToCopy.AttributeArray, '', 
                               simpl.DataArrayPath('', '', ''),
                               simpl.DataArrayPath('ImageDataContainer', 'CellAttributeMatrix', 'Int32Data'),
                               'Int32Data_Copy')
-    if err < 0:
-        print('copy_object ErrorCondition %d' % err)
-    assert err == 0
+    assert err == 0, f'CopyObject ErrorCondition: {err}'
 
     # Write to DREAM3D file
-    err = sc.WriteDREAM3DFile(sd.GetBuildDirectory()
+    err = sh.WriteDREAM3DFile(sd.GetBuildDirectory()
                               + '/Data/Output/CoreFilterTests/CopyObjectTest.dream3d', dca)
-    if err < 0:
-        print('WriteDREAM3DFile ErrorCondition: %d' % err)
-    assert err == 0
+    assert err == 0, f'WriteDREAM3DFile ErrorCondition: {err}'
 
 if __name__ == '__main__':
     copy_object_test()

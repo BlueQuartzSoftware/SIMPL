@@ -2,7 +2,7 @@
 
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def import_ascii_array_test():
@@ -15,7 +15,7 @@ def import_ascii_array_test():
 
     # Create an Attribute Matrix
     amDims = [[143, 1, 1]]
-    tableData = sc.CreateDynamicTableData(amDims)
+    tableData = sh.CreateDynamicTableData(amDims)
     dap = simpl.DataArrayPath('DataContainer', 'CellAttributeMatrix', '')
     err = simplpy.create_attribute_matrix(dca, dap, simpl.AttributeMatrix.Type.Cell, tableData)
     assert err == 0
@@ -25,9 +25,7 @@ def import_ascii_array_test():
                                          simpl.NumericTypes.Float, 3, 1,
                                          sd.GetBuildDirectory() + '/Data/SIMPL/VertexCoordinates.csv',
                                          simpl.DelimiterTypes.Comma)
-    if err < 0:
-        print('ImportAsciiDataArray ErrorCondition: %d' % err)
-    assert err == 0
+    assert err == 0, f'ImportAsciiDataArray ErrorCondition: {err}'
 
     # Export ASCII Data
     # Output Style = 0 Means Multiple Files, Style = 1 Means a Single file
@@ -37,9 +35,7 @@ def import_ascii_array_test():
                                    sd.GetBuildDirectory() + '/Data/Output/CoreFilters', # Only needed for Multi-File output
                                    sd.GetBuildDirectory() + '/Data/Output/CoreFilters/AcsiiOutput.csv', # Only needed for Single File Style
                                    simpl.DelimiterTypes.Comma, '.csv', 10, outStyle)
-    if err < 0:
-        print('WriteAsciiData ErrorCondition: %d' % err)
-    assert err == 0
+    assert err == 0, f'WriteAsciiData ErrorCondition: {err}'
 
 if __name__ == '__main__':
     import_ascii_array_test()

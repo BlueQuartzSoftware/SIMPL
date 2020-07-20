@@ -3,7 +3,7 @@
 
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 import datetime
@@ -122,23 +122,20 @@ def split_array_test():
                                         sd.GetBuildDirectory() +
                                         '/Data/Output/Statistics/SmallIN100_CrystalStats.dream3d',
                                         False, dcap)
-    if err < 0:
-        print('DataContainerReader ErrorCondition %d' % err)
+    assert err == 0, f'DataContainerReader ErrorCondition {err}'
         
     # Split Attribute Array
     err = simplpy.split_attribute_array(dca,
                                         simpl.DataArrayPath('Small IN100', 'Grain Data',
                                                             'Centroids'),
                                         '_Component_')
-    if err < 0:
-        print('SplitAttributeArray ErrorCondition %d' % err)
+    assert err == 0, f'SplitAttributeArray ErrorCondition {err}'
 
     # Write to DREAM3D file
-    err = sc.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/CoreFilterTests/' +
+    err = sh.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/CoreFilterTests/' +
                               'SplitAttributeArray.dream3d',
                               dca)
-    if err < 0:
-        print('WriteDREAM3DFile ErrorCondition: %d' % err)
+    assert err == 0, f'WriteDREAM3DFile ErrorCondition: {err}'
 
 if __name__ == '__main__':
     split_array_test()

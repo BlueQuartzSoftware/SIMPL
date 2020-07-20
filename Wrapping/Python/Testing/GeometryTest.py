@@ -2,7 +2,7 @@ import numpy as np
 
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def GeometryTest():

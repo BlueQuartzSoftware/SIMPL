@@ -2,7 +2,7 @@
 
 import simpl
 import simplpy
-import simpl_helpers as sc
+import simpl_helpers as sh
 import simpl_test_dirs as sd
 
 def createInputFile():
@@ -15,7 +15,7 @@ def createInputFile():
 
     # Create an Attribute Matrix
     amDims = [[143, 1, 1]]
-    tableData = sc.CreateDynamicTableData(amDims)
+    tableData = sh.CreateDynamicTableData(amDims)
     dap = simpl.DataArrayPath('DataContainer', 'CellAttributeMatrix', '')
     err = simplpy.create_attribute_matrix(dca, dap, simpl.AttributeMatrix.Type.Cell, tableData)
     assert err == 0
@@ -25,12 +25,10 @@ def createInputFile():
                                          simpl.NumericTypes.Float, 3, 1,
                                          sd.GetBuildDirectory() + '/Data/SIMPL/VertexCoordinates.csv',
                                          simpl.DelimiterTypes.Comma)
-    if err < 0:
-        print('ImportAsciiDataArray ErrorCondition: %d' % err)
-    assert err == 0
+    assert err == 0, f'ImportAsciiDataArray ErrorCondition: {err}'
 
     # Write to DREAM3D file
-    err = sc.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/CoreFilters/ImportHDF5.h5', dca)
+    err = sh.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/CoreFilters/ImportHDF5.h5', dca)
     assert err == 0
 
 def import_hdf5_dataset_test():
@@ -43,7 +41,7 @@ def import_hdf5_dataset_test():
 
     # Create an Attribute Matrix
     amDims = [[143, 1, 1]]
-    tableData = sc.CreateDynamicTableData(amDims)
+    tableData = sh.CreateDynamicTableData(amDims)
     dap = simpl.DataArrayPath('DataContainer', 'CellAttributeMatrix', '')
     err = simplpy.create_attribute_matrix(dca, dap, simpl.AttributeMatrix.Type.Cell, tableData)
     assert err == 0
@@ -53,12 +51,10 @@ def import_hdf5_dataset_test():
     err = simplpy.import_hdf5_dataset(dca, sd.GetBuildDirectory() + '/Data/Output/CoreFilters/ImportHDF5.h5',
                                       dataset_import_info_list,
                                       simpl.DataArrayPath('DataContainer', 'CellAttributeMatrix', ''))
-    if err < 0:
-        print('ImportHdf5Dataset ErrorCondition: %d' % err)
-    assert err == 0
+    assert err == 0, f'ImportHdf5Dataset ErrorCondition: {err}'
 
     # Write to DREAM3D file
-    err = sc.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/CoreFilters/ImportHDF5.dream3d', dca)
+    err = sh.WriteDREAM3DFile(sd.GetBuildDirectory() + '/Data/Output/CoreFilters/ImportHDF5.dream3d', dca)
     assert err == 0
 
 if __name__ == '__main__':
