@@ -66,11 +66,11 @@ namespace SIMPL
 {
 
 using Rgb = uint32_t;
-constexpr Rgb RGB_MASK = 0x00ffffff; // masks RGB values
-const QString PathSep("|");
-constexpr uint8_t Unchecked = 0;
-constexpr uint8_t PartiallyChecked = 1;
-constexpr uint8_t Checked = 2;
+inline constexpr Rgb RGB_MASK = 0x00ffffff; // masks RGB values
+inline const QString PathSep("|");
+inline constexpr uint8_t Unchecked = 0;
+inline constexpr uint8_t PartiallyChecked = 1;
+inline constexpr uint8_t Checked = 2;
 
 enum InfoStringFormat
 {
@@ -85,52 +85,52 @@ enum InfoStringFormat
 /** @brief Constants defined for the Stacking order of images into a 3D Volume */
 namespace RefFrameZDir
 {
-constexpr uint32_t LowtoHigh = 0;
-constexpr uint32_t HightoLow = 1;
-constexpr uint32_t UnknownRefFrameZDirection = 2;
+inline constexpr uint32_t LowtoHigh = 0;
+inline constexpr uint32_t HightoLow = 1;
+inline constexpr uint32_t UnknownRefFrameZDirection = 2;
 } // namespace RefFrameZDir
 
 namespace TypeNames
 {
-const QString Bool("bool");
-const QString Float("float");
-const QString Double("double");
-const QString Int8("int8_t");
-const QString UInt8("uint8_t");
-const QString Int16("int16_t");
-const QString UInt16("uint16_t");
-const QString Int32("int32_t");
-const QString UInt32("uint32_t");
-const QString Int64("int64_t");
-const QString UInt64("uint64_t");
-const QString SizeT("size_t");
-const QString String("string");
-const QString StatsDataArray("StatsDataArray");
-const QString NeighborList("NeighborList<T>");
-const QString StringArray("StringDataArray");
-const QString Unknown("Unknown");
-const QString SupportedTypeList(TypeNames::Bool + ", " + TypeNames::StringArray + ", " + TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " +
+inline const QString Bool("bool");
+inline const QString Float("float");
+inline const QString Double("double");
+inline const QString Int8("int8_t");
+inline const QString UInt8("uint8_t");
+inline const QString Int16("int16_t");
+inline const QString UInt16("uint16_t");
+inline const QString Int32("int32_t");
+inline const QString UInt32("uint32_t");
+inline const QString Int64("int64_t");
+inline const QString UInt64("uint64_t");
+inline const QString SizeT("size_t");
+inline const QString String("string");
+inline const QString StatsDataArray("StatsDataArray");
+inline const QString NeighborList("NeighborList<T>");
+inline const QString StringArray("StringDataArray");
+inline const QString Unknown("Unknown");
+inline const QString SupportedTypeList(TypeNames::Bool + ", " + TypeNames::StringArray + ", " + TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " +
                                 TypeNames::Int32 + ", " + TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double + ", " +
                                 TypeNames::SizeT);
 } // namespace TypeNames
 
 namespace TypeEnums
 {
-constexpr int32_t Int8 = 0;
-constexpr int32_t UInt8 = 1;
-constexpr int32_t Int16 = 2;
-constexpr int32_t UInt16 = 3;
-constexpr int32_t Int32 = 4;
-constexpr int32_t UInt32 = 5;
-constexpr int32_t Int64 = 6;
-constexpr int32_t UInt64 = 7;
-constexpr int32_t Float = 8;
-constexpr int32_t Double = 9;
-constexpr int32_t Bool = 10;
-constexpr int32_t SizeT = 11;
+inline constexpr int32_t Int8 = 0;
+inline constexpr int32_t UInt8 = 1;
+inline constexpr int32_t Int16 = 2;
+inline constexpr int32_t UInt16 = 3;
+inline constexpr int32_t Int32 = 4;
+inline constexpr int32_t UInt32 = 5;
+inline constexpr int32_t Int64 = 6;
+inline constexpr int32_t UInt64 = 7;
+inline constexpr int32_t Float = 8;
+inline constexpr int32_t Double = 9;
+inline constexpr int32_t Bool = 10;
+inline constexpr int32_t SizeT = 11;
 
-constexpr int32_t UnknownType = 12;
-const QString SupportedTypeList(TypeNames::Bool + ", " + TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " + TypeNames::Int32 + ", " +
+inline constexpr int32_t UnknownType = 12;
+inline const QString SupportedTypeList(TypeNames::Bool + ", " + TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " + TypeNames::Int32 + ", " +
                                 TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double + ", " + TypeNames::SizeT);
 } // namespace TypeEnums
 
@@ -138,18 +138,18 @@ namespace NumericTypes
 {
 namespace Names
 {
-const QString Int8("signed int 8 bit");
-const QString UInt8("unsigned int 8 bit");
-const QString Int16("signed int 16 bit");
-const QString UInt16("unsigned int 16 bit");
-const QString Int32("signed int 32 bit");
-const QString UInt32("unsigned int 32 bit");
-const QString Int64("signed int 64 bit");
-const QString UInt64("unsigned int 64 bit");
-const QString Float("Float 32 bit");
-const QString Double("Double 64 bit");
-const QString Bool("Bool");
-const QString SizeT("size_t");
+inline const QString Int8("signed int 8 bit");
+inline const QString UInt8("unsigned int 8 bit");
+inline const QString Int16("signed int 16 bit");
+inline const QString UInt16("unsigned int 16 bit");
+inline const QString Int32("signed int 32 bit");
+inline const QString UInt32("unsigned int 32 bit");
+inline const QString Int64("signed int 64 bit");
+inline const QString UInt64("unsigned int 64 bit");
+inline const QString Float("Float 32 bit");
+inline const QString Double("Double 64 bit");
+inline const QString Bool("Bool");
+inline const QString SizeT("size_t");
 } // namespace Names
 
 enum class Type : int32_t
@@ -169,7 +169,7 @@ enum class Type : int32_t
   UnknownNumType
 };
 
-const QString SupportedTypeList(NumericTypes::Names::Int8 + ", " + NumericTypes::Names::UInt8 + ", " + NumericTypes::Names::Int16 + ", " + NumericTypes::Names::UInt16 + ", " +
+inline const QString SupportedTypeList(NumericTypes::Names::Int8 + ", " + NumericTypes::Names::UInt8 + ", " + NumericTypes::Names::Int16 + ", " + NumericTypes::Names::UInt16 + ", " +
                                 NumericTypes::Names::Int32 + ", " + NumericTypes::Names::UInt32 + ", " + NumericTypes::Names::Int64 + ", " + NumericTypes::Names::UInt64 + ", " +
                                 NumericTypes::Names::Float + ", " + NumericTypes::Names::Double + ", " + NumericTypes::Names::Bool + ", " + NumericTypes::Names::SizeT);
 } // namespace NumericTypes
@@ -207,562 +207,562 @@ enum class Type : int32_t
 
 namespace IO
 {
-const QString DAPSettingsHeader("Path");
+inline const QString DAPSettingsHeader("Path");
 }
 
 namespace Defaults
 {
-const QString None("None");
-const QString AnyPrimitive("Any");
-const size_t AnyComponentSize = std::numeric_limits<size_t>::max();
-// constexpr uint32_t AnyAttributeMatrix = std::numeric_limits<uint32_t>::max();
-// constexpr uint32_t AnyGeometry = std::numeric_limits<uint32_t>::max();
+inline const QString None("None");
+inline const QString AnyPrimitive("Any");
+inline const size_t AnyComponentSize = std::numeric_limits<size_t>::max();
+// inline constexpr uint32_t AnyAttributeMatrix = std::numeric_limits<uint32_t>::max();
+// inline constexpr uint32_t AnyGeometry = std::numeric_limits<uint32_t>::max();
 
-const QString AttributeMatrixName("AttributeMatrix");
-const QString ElementAttributeMatrixName("ElementAttributeMatrix");
-const QString FeatureAttributeMatrixName("FeatureAttributeMatrix");
-const QString EnsembleAttributeMatrixName("EnsembleAttributeMatrix");
+inline const QString AttributeMatrixName("AttributeMatrix");
+inline const QString ElementAttributeMatrixName("ElementAttributeMatrix");
+inline const QString FeatureAttributeMatrixName("FeatureAttributeMatrix");
+inline const QString EnsembleAttributeMatrixName("EnsembleAttributeMatrix");
 
-const QString ImageDataContainerName("ImageDataContainer");
-const QString NewImageDataContainerName("NewImageDataContainer");
-const QString TriangleDataContainerName("TriangleDataContainer");
-const QString QuadDataContainerName("QuadDataContainer");
-const QString TetrahedralDataContainerName("TetrahedralDataContainer");
-const QString HexahedralDataContainerName("HexahedralDataContainer");
+inline const QString ImageDataContainerName("ImageDataContainer");
+inline const QString NewImageDataContainerName("NewImageDataContainer");
+inline const QString TriangleDataContainerName("TriangleDataContainer");
+inline const QString QuadDataContainerName("QuadDataContainer");
+inline const QString TetrahedralDataContainerName("TetrahedralDataContainer");
+inline const QString HexahedralDataContainerName("HexahedralDataContainer");
 
-const QString VertexDataContainerName("VertexDataContainer");
-const QString VertexAttributeMatrixName("VertexData");
-const QString VertexFeatureAttributeMatrixName("VertexFeatureData");
-const QString VertexEnsembleAttributeMatrixName("VertexEnsembleData");
+inline const QString VertexDataContainerName("VertexDataContainer");
+inline const QString VertexAttributeMatrixName("VertexData");
+inline const QString VertexFeatureAttributeMatrixName("VertexFeatureData");
+inline const QString VertexEnsembleAttributeMatrixName("VertexEnsembleData");
 
-const QString EdgeDataContainerName("EdgeDataContainer");
-const QString EdgeAttributeMatrixName("EdgeData");
-const QString EdgeFeatureAttributeMatrixName("EdgeFeatureData");
-const QString EdgeEnsembleAttributeMatrixName("EdgeEnsembleData");
+inline const QString EdgeDataContainerName("EdgeDataContainer");
+inline const QString EdgeAttributeMatrixName("EdgeData");
+inline const QString EdgeFeatureAttributeMatrixName("EdgeFeatureData");
+inline const QString EdgeEnsembleAttributeMatrixName("EdgeEnsembleData");
 
-const QString SurfaceDataContainerName("SurfaceDataContainer");
-const QString FaceAttributeMatrixName("FaceData");
-const QString FaceFeatureAttributeMatrixName("FaceFeatureData");
-const QString FaceEnsembleAttributeMatrixName("FaceEnsembleData");
+inline const QString SurfaceDataContainerName("SurfaceDataContainer");
+inline const QString FaceAttributeMatrixName("FaceData");
+inline const QString FaceFeatureAttributeMatrixName("FaceFeatureData");
+inline const QString FaceEnsembleAttributeMatrixName("FaceEnsembleData");
 
-const QString VolumeDataContainerName("VolumeDataContainer");
-const QString NewVolumeDataContainerName("NewVolumeDataContainer");
-const QString CellAttributeMatrixName("CellData");
-const QString NewCellAttributeMatrixName("NewCellData");
-const QString CellFeatureAttributeMatrixName("CellFeatureData");
-const QString NewCellFeatureAttributeMatrixName("NewCellFeatureData");
-const QString CellEnsembleAttributeMatrixName("CellEnsembleData");
+inline const QString VolumeDataContainerName("VolumeDataContainer");
+inline const QString NewVolumeDataContainerName("NewVolumeDataContainer");
+inline const QString CellAttributeMatrixName("CellData");
+inline const QString NewCellAttributeMatrixName("NewCellData");
+inline const QString CellFeatureAttributeMatrixName("CellFeatureData");
+inline const QString NewCellFeatureAttributeMatrixName("NewCellFeatureData");
+inline const QString CellEnsembleAttributeMatrixName("CellEnsembleData");
 
-const QString VoxelDataName("VoxelData");
+inline const QString VoxelDataName("VoxelData");
 
-const QString SyntheticVolumeDataContainerName("SyntheticVolumeDataContainer");
-const QString StatsGenerator("StatsGeneratorDataContainer");
+inline const QString SyntheticVolumeDataContainerName("SyntheticVolumeDataContainer");
+inline const QString StatsGenerator("StatsGeneratorDataContainer");
 
-const QString SomePath("SomeDataContainer|SomeAttributeMatrix|SomeDataArray");
+inline const QString SomePath("SomeDataContainer|SomeAttributeMatrix|SomeDataArray");
 
-const QString GenericBundleName("GenericBundle");
-const QString TimeSeriesBundleName("TimeSeriesBundle");
+inline const QString GenericBundleName("GenericBundle");
+inline const QString TimeSeriesBundleName("TimeSeriesBundle");
 
-const QString GenericBundleAttributeMatrixName("GenericBundleAttributeMatrix");
-const QString TimeSeriesBundleAttributeMatrixName("TimeSeriesBundleAttributeMatrix");
+inline const QString GenericBundleAttributeMatrixName("GenericBundleAttributeMatrix");
+inline const QString TimeSeriesBundleAttributeMatrixName("TimeSeriesBundleAttributeMatrix");
 
-const QString DataContainerName("DataContainer");
-const QString NewDataContainerName("NewDataContainer");
-const QString NewAttributeMatrixName("NewAttributeMatrixName");
+inline const QString DataContainerName("DataContainer");
+inline const QString NewDataContainerName("NewDataContainer");
+inline const QString NewAttributeMatrixName("NewAttributeMatrixName");
 } // namespace Defaults
 
 namespace PipelineVersionNumbers
 {
-constexpr int32_t CurrentVersion(6);
+inline constexpr int32_t CurrentVersion(6);
 }
 
 namespace FilterGroups
 {
-const QString CoreFilters("Core");
-const QString Generic("Generic");
-const QString IOFilters("IO");
-const QString ProcessingFilters("Processing");
-const QString ReconstructionFilters("Reconstruction");
-const QString SamplingFilters("Sampling");
-const QString StatisticsFilters("Statistics");
-const QString SyntheticBuildingFilters("Synthetic Building");
-const QString SurfaceMeshingFilters("Surface Meshing");
-const QString Utilities("Utilities");
-const QString CustomFilters("Custom");
-const QString Unsupported("Unsupported");
+inline const QString CoreFilters("Core");
+inline const QString Generic("Generic");
+inline const QString IOFilters("IO");
+inline const QString ProcessingFilters("Processing");
+inline const QString ReconstructionFilters("Reconstruction");
+inline const QString SamplingFilters("Sampling");
+inline const QString StatisticsFilters("Statistics");
+inline const QString SyntheticBuildingFilters("Synthetic Building");
+inline const QString SurfaceMeshingFilters("Surface Meshing");
+inline const QString Utilities("Utilities");
+inline const QString CustomFilters("Custom");
+inline const QString Unsupported("Unsupported");
 } // namespace FilterGroups
 
 namespace FilterSubGroups
 {
-const QString EnsembleStatsFilters("Ensemble");
-const QString MemoryManagementFilters("Memory/Management");
-const QString SpatialFilters("Spatial");
-const QString StatisticsFilters("Statistics");
-const QString FeatureIdentificationFilters("FeatureIdentification");
-const QString OutputFilters("Output");
-const QString InputFilters("Input");
-const QString ImageFilters("Image");
-const QString CleanupFilters("Cleanup");
-const QString ThresholdFilters("Threshold");
-const QString RegularizationFilters("Regularization");
-const QString ConversionFilters("Conversion");
-const QString FusionFilters("Fusion");
-const QString WarpingFilters("Warping");
-const QString AlignmentFilters("Alignment");
-const QString SegmentationFilters("Segmentation");
-const QString GroupingFilters("Grouping");
-const QString CropCutFilters("Croping/Cutting");
-const QString RotationTransformationFilters("Rotating/Transforming");
-const QString ResolutionFilters("Spacing");
-const QString MorphologicalFilters("Morphological");
-const QString PackingFilters("Packing");
-const QString CrystallographyFilters("Crystallography");
-const QString GenerationFilters("Generation");
-const QString SmoothingFilters("Smoothing");
-const QString CurvatureFilters("Curvature");
-const QString ConnectivityArrangementFilters("Connectivity/Arrangement");
-const QString MappingFilters("Mapping");
-const QString MiscFilters("Misc");
-const QString GeometryFilters("Geometry");
-const QString ImportFilters("Import");
-const QString ExportFilters("Export");
+inline const QString EnsembleStatsFilters("Ensemble");
+inline const QString MemoryManagementFilters("Memory/Management");
+inline const QString SpatialFilters("Spatial");
+inline const QString StatisticsFilters("Statistics");
+inline const QString FeatureIdentificationFilters("FeatureIdentification");
+inline const QString OutputFilters("Output");
+inline const QString InputFilters("Input");
+inline const QString ImageFilters("Image");
+inline const QString CleanupFilters("Cleanup");
+inline const QString ThresholdFilters("Threshold");
+inline const QString RegularizationFilters("Regularization");
+inline const QString ConversionFilters("Conversion");
+inline const QString FusionFilters("Fusion");
+inline const QString WarpingFilters("Warping");
+inline const QString AlignmentFilters("Alignment");
+inline const QString SegmentationFilters("Segmentation");
+inline const QString GroupingFilters("Grouping");
+inline const QString CropCutFilters("Croping/Cutting");
+inline const QString RotationTransformationFilters("Rotating/Transforming");
+inline const QString ResolutionFilters("Spacing");
+inline const QString MorphologicalFilters("Morphological");
+inline const QString PackingFilters("Packing");
+inline const QString CrystallographyFilters("Crystallography");
+inline const QString GenerationFilters("Generation");
+inline const QString SmoothingFilters("Smoothing");
+inline const QString CurvatureFilters("Curvature");
+inline const QString ConnectivityArrangementFilters("Connectivity/Arrangement");
+inline const QString MappingFilters("Mapping");
+inline const QString MiscFilters("Misc");
+inline const QString GeometryFilters("Geometry");
+inline const QString ImportFilters("Import");
+inline const QString ExportFilters("Export");
 } // namespace FilterSubGroups
 
 namespace GeneralData
 {
-const QString CombinedData("CombinedData");
-const QString ThresholdArray("ThresholdArray");
-const QString Mask("Mask");
+inline const QString CombinedData("CombinedData");
+inline const QString ThresholdArray("ThresholdArray");
+inline const QString Mask("Mask");
 } // namespace GeneralData
 
 namespace CellData
 {
-const QString AxisAngles("AxisAngles");
-const QString BC("BandContrasts");
-const QString BandContrast("BandContrast");
-const QString CellPhases("Phases");
-const QString ConfidenceIndex("Confidence Index");
-const QString CAxisLocation("CAxisLocation");
-const QString ConfidenceIndexNoSpace("ConfidenceIndex");
-const QString Current("Current");
-const QString DislocationTensors("DislocationTensors");
-const QString EulerAngles("EulerAngles");
-const QString EulerColor("EulerColor");
-const QString FarFeatureQuats("FarFeatureQuats");
-const QString FarFeatureZoneIds("FarFeatureZoneIds");
-const QString FitQuality("FitQuality");
-const QString FlatImageData("FlatImageData");
-const QString GBEuclideanDistances("GBEuclideanDistances");
-const QString GBManhattanDistances("GBManhattanDistances");
-const QString GlobAlpha("GlobAlpha");
-const QString GoodVoxels("GoodVoxels");
-const QString FeatureIds("FeatureIds");
-const QString FeatureReferenceCAxisMisorientations("FeatureReferenceCAxisMisorientations");
-const QString FeatureReferenceMisorientations("FeatureReferenceMisorientations");
-const QString IPFColor("IPFColor");
-const QString ImageData("ImageData");
-const QString ImageQuality("Image Quality");
-const QString ImageQualityNoSpace("ImageQuality");
-const QString KernelAverageMisorientations("KernelAverageMisorientations");
-const QString Mask("Mask");
-const QString MotionDirection("MotionDirection");
-const QString MicroTexVolFrac("MicroTexVolFrac");
-const QString MisorientationColor("MisorientationColor");
-const QString ParentDensity("ParentDensity");
-const QString MTRgKAM("MTRgKAM");
-const QString NearestNeighbors("NearestNeighbors");
-const QString ParentIds("ParentIds");
-const QString Phases("Phases");
-const QString ProjectedImageMin("ProjectedImageMin");
-const QString ProjectedImageMax("ProjectedImageMax");
-const QString ProjectedImageAvg("ProjectedImageAvg");
-const QString ProjectedImageStd("ProjectedImageStd");
-const QString ProjectedImageVar("ProjectedImageVar");
-const QString QPEuclideanDistances("QPEuclideanDistances");
-const QString QPManhattanDistances("QPManhattanDistances");
-const QString Quats("Quats");
-const QString RodriguesColor("RodriguesColor");
-const QString RodriguesVectors("RodriguesVectors");
-const QString SolidMeshNodes("SolidMeshNodes");
-const QString SineParams("SineParams");
-const QString SolidMeshTetrahedrons("SolidMeshTetrahedrons");
-const QString Speed("Speed");
-const QString SurfaceMeshCells("SurfaceMeshCells");
-const QString BoundaryCells("BoundaryCells");
-const QString TJManhattanDistances("TJManhattanDistances");
-const QString TJEuclideanDistances("TJEuclideanDistances");
-const QString VectorColor("VectorColor");
-const QString VectorData("VectorData");
-const QString Histogram("Histogram");
+inline const QString AxisAngles("AxisAngles");
+inline const QString BC("BandContrasts");
+inline const QString BandContrast("BandContrast");
+inline const QString CellPhases("Phases");
+inline const QString ConfidenceIndex("Confidence Index");
+inline const QString CAxisLocation("CAxisLocation");
+inline const QString ConfidenceIndexNoSpace("ConfidenceIndex");
+inline const QString Current("Current");
+inline const QString DislocationTensors("DislocationTensors");
+inline const QString EulerAngles("EulerAngles");
+inline const QString EulerColor("EulerColor");
+inline const QString FarFeatureQuats("FarFeatureQuats");
+inline const QString FarFeatureZoneIds("FarFeatureZoneIds");
+inline const QString FitQuality("FitQuality");
+inline const QString FlatImageData("FlatImageData");
+inline const QString GBEuclideanDistances("GBEuclideanDistances");
+inline const QString GBManhattanDistances("GBManhattanDistances");
+inline const QString GlobAlpha("GlobAlpha");
+inline const QString GoodVoxels("GoodVoxels");
+inline const QString FeatureIds("FeatureIds");
+inline const QString FeatureReferenceCAxisMisorientations("FeatureReferenceCAxisMisorientations");
+inline const QString FeatureReferenceMisorientations("FeatureReferenceMisorientations");
+inline const QString IPFColor("IPFColor");
+inline const QString ImageData("ImageData");
+inline const QString ImageQuality("Image Quality");
+inline const QString ImageQualityNoSpace("ImageQuality");
+inline const QString KernelAverageMisorientations("KernelAverageMisorientations");
+inline const QString Mask("Mask");
+inline const QString MotionDirection("MotionDirection");
+inline const QString MicroTexVolFrac("MicroTexVolFrac");
+inline const QString MisorientationColor("MisorientationColor");
+inline const QString ParentDensity("ParentDensity");
+inline const QString MTRgKAM("MTRgKAM");
+inline const QString NearestNeighbors("NearestNeighbors");
+inline const QString ParentIds("ParentIds");
+inline const QString Phases("Phases");
+inline const QString ProjectedImageMin("ProjectedImageMin");
+inline const QString ProjectedImageMax("ProjectedImageMax");
+inline const QString ProjectedImageAvg("ProjectedImageAvg");
+inline const QString ProjectedImageStd("ProjectedImageStd");
+inline const QString ProjectedImageVar("ProjectedImageVar");
+inline const QString QPEuclideanDistances("QPEuclideanDistances");
+inline const QString QPManhattanDistances("QPManhattanDistances");
+inline const QString Quats("Quats");
+inline const QString RodriguesColor("RodriguesColor");
+inline const QString RodriguesVectors("RodriguesVectors");
+inline const QString SolidMeshNodes("SolidMeshNodes");
+inline const QString SineParams("SineParams");
+inline const QString SolidMeshTetrahedrons("SolidMeshTetrahedrons");
+inline const QString Speed("Speed");
+inline const QString SurfaceMeshCells("SurfaceMeshCells");
+inline const QString BoundaryCells("BoundaryCells");
+inline const QString TJManhattanDistances("TJManhattanDistances");
+inline const QString TJEuclideanDistances("TJEuclideanDistances");
+inline const QString VectorColor("VectorColor");
+inline const QString VectorData("VectorData");
+inline const QString Histogram("Histogram");
 } // namespace CellData
 
 namespace FeatureData
 {
-const QString FeatureID("Feature_ID");
-const QString Active("Active");
-const QString AspectRatios("AspectRatios");
-const QString AvgCAxes("AvgCAxes");
-const QString AvgCAxisMisalignments("AvgCAxisMisalignments");
-const QString LocalCAxisMisalignments("LocalCAxisMisalignments");
-const QString UnbiasedLocalCAxisMisalignments("UnbiasedLocalCAxisMisalignments");
-const QString AvgQuats("AvgQuats");
-const QString AxisEulerAngles("AxisEulerAngles");
-const QString AxisLengths("AxisLengths");
-const QString BasalLoadingFactor("BasalLoadingFactor");
-const QString BiasedFeatures("BiasedFeatures");
-const QString CAxisMisalignmentList("CAxisMisalignmentList");
-const QString Centroids("Centroids");
-const QString ClusteringList("ClusteringList");
-const QString ElasticStrains("ElasticStrains");
-const QString EquivalentDiameters("EquivalentDiameters");
-const QString SaltykovEquivalentDiameters("SaltykovEquivalentDiameters");
-const QString EulerAngles("EulerAngles");
-const QString AvgEulerAngles("AvgEulerAngles");
-const QString F1List("F1List");
-const QString F1sptList("F1sptList");
-const QString F7List("F7List");
-const QString FarFeatureOrientations("FarFeatureOrientations");
-const QString FeaturePhases("Phases");
-const QString GoodFeatures("GoodFeatures");
-const QString FeatureAvgCAxisMisorientations("FeatureAvgCAxisMisorientations");
-const QString FeatureAvgMisorientations("FeatureAvgMisorientations");
-const QString FeatureStdevCAxisMisorientations("FeatureStdevCAxisMisorientations");
-const QString KernelAvgMisorientations("KernelAvgMisorientations");
-const QString LMG("LMG");
-const QString LargestCrossSections("LargestCrossSections");
-const QString Mask("Mask");
-const QString MTRdensity("MTRdensity");
-const QString MTRgKAM("MTRgKAM");
+inline const QString FeatureID("Feature_ID");
+inline const QString Active("Active");
+inline const QString AspectRatios("AspectRatios");
+inline const QString AvgCAxes("AvgCAxes");
+inline const QString AvgCAxisMisalignments("AvgCAxisMisalignments");
+inline const QString LocalCAxisMisalignments("LocalCAxisMisalignments");
+inline const QString UnbiasedLocalCAxisMisalignments("UnbiasedLocalCAxisMisalignments");
+inline const QString AvgQuats("AvgQuats");
+inline const QString AxisEulerAngles("AxisEulerAngles");
+inline const QString AxisLengths("AxisLengths");
+inline const QString BasalLoadingFactor("BasalLoadingFactor");
+inline const QString BiasedFeatures("BiasedFeatures");
+inline const QString CAxisMisalignmentList("CAxisMisalignmentList");
+inline const QString Centroids("Centroids");
+inline const QString ClusteringList("ClusteringList");
+inline const QString ElasticStrains("ElasticStrains");
+inline const QString EquivalentDiameters("EquivalentDiameters");
+inline const QString SaltykovEquivalentDiameters("SaltykovEquivalentDiameters");
+inline const QString EulerAngles("EulerAngles");
+inline const QString AvgEulerAngles("AvgEulerAngles");
+inline const QString F1List("F1List");
+inline const QString F1sptList("F1sptList");
+inline const QString F7List("F7List");
+inline const QString FarFeatureOrientations("FarFeatureOrientations");
+inline const QString FeaturePhases("Phases");
+inline const QString GoodFeatures("GoodFeatures");
+inline const QString FeatureAvgCAxisMisorientations("FeatureAvgCAxisMisorientations");
+inline const QString FeatureAvgMisorientations("FeatureAvgMisorientations");
+inline const QString FeatureStdevCAxisMisorientations("FeatureStdevCAxisMisorientations");
+inline const QString KernelAvgMisorientations("KernelAvgMisorientations");
+inline const QString LMG("LMG");
+inline const QString LargestCrossSections("LargestCrossSections");
+inline const QString Mask("Mask");
+inline const QString MTRdensity("MTRdensity");
+inline const QString MTRgKAM("MTRgKAM");
 
-const QString MisorientationList("MisorientationList");
-const QString NeighborList("NeighborList");
-const QString NeighborhoodList("NeighborhoodList");
-const QString Neighborhoods("Neighborhoods");
-const QString NumCells("NumCells");
-const QString NumElements("NumElements");
-const QString NumFeaturesPerParent("NumFeaturesPerParent");
-const QString NumNeighbors("NumNeighbors");
-const QString Omega3s("Omega3s");
-const QString ParentIds("ParentIds");
-const QString Phases("Phases");
-const QString Poles("Poles");
-const QString RGBs("RGBs");
-const QString Schmids("Schmids");
-const QString SharedSurfaceAreaList("SharedSurfaceAreaList");
-const QString SlipSystems("SlipSystems");
-const QString SurfaceAreaVol("SurfaceAreaVolumeRatio");
-const QString SurfaceFeatures("SurfaceFeatures");
-const QString SurfaceElementFractions("SurfaceElementFractions");
-const QString Volumes("Volumes");
-const QString AvgMisorientations("AvgMisorientations");
-const QString mPrimeList("mPrimeList");
-const QString NumBins("NumBins");
-const QString ScalarAverages("ScalarAverages");
+inline const QString MisorientationList("MisorientationList");
+inline const QString NeighborList("NeighborList");
+inline const QString NeighborhoodList("NeighborhoodList");
+inline const QString Neighborhoods("Neighborhoods");
+inline const QString NumCells("NumCells");
+inline const QString NumElements("NumElements");
+inline const QString NumFeaturesPerParent("NumFeaturesPerParent");
+inline const QString NumNeighbors("NumNeighbors");
+inline const QString Omega3s("Omega3s");
+inline const QString ParentIds("ParentIds");
+inline const QString Phases("Phases");
+inline const QString Poles("Poles");
+inline const QString RGBs("RGBs");
+inline const QString Schmids("Schmids");
+inline const QString SharedSurfaceAreaList("SharedSurfaceAreaList");
+inline const QString SlipSystems("SlipSystems");
+inline const QString SurfaceAreaVol("SurfaceAreaVolumeRatio");
+inline const QString SurfaceFeatures("SurfaceFeatures");
+inline const QString SurfaceElementFractions("SurfaceElementFractions");
+inline const QString Volumes("Volumes");
+inline const QString AvgMisorientations("AvgMisorientations");
+inline const QString mPrimeList("mPrimeList");
+inline const QString NumBins("NumBins");
+inline const QString ScalarAverages("ScalarAverages");
 
 } // namespace FeatureData
 
 namespace EnsembleData
 {
-const QString NumFeatures("NumFeatures");
-const QString VolFractions("VolFractions");
-const QString TotalSurfaceAreas("TotalSurfaceAreas");
-const QString CrystalSymmetry("Crystal Symmetry");
-const QString CrystalStructures("CrystalStructures");
-const QString PhaseTypes("PhaseTypes");
-const QString BravaisLattice("BravaisLattice");
-const QString PrecipitateFractions("PrecipitateFractions");
-const QString ShapeTypes("ShapeTypes");
-const QString Statistics("Statistics");
-const QString PhaseName("PhaseName");
-const QString LatticeConstants("LatticeConstants");
-const QString GBCD("GBCD");
-const QString GBCDdimensions("GBCDdimensions");
-const QString FitParameters("FitParameters");
-const QString MaterialName("MaterialName");
+inline const QString NumFeatures("NumFeatures");
+inline const QString VolFractions("VolFractions");
+inline const QString TotalSurfaceAreas("TotalSurfaceAreas");
+inline const QString CrystalSymmetry("Crystal Symmetry");
+inline const QString CrystalStructures("CrystalStructures");
+inline const QString PhaseTypes("PhaseTypes");
+inline const QString BravaisLattice("BravaisLattice");
+inline const QString PrecipitateFractions("PrecipitateFractions");
+inline const QString ShapeTypes("ShapeTypes");
+inline const QString Statistics("Statistics");
+inline const QString PhaseName("PhaseName");
+inline const QString LatticeConstants("LatticeConstants");
+inline const QString GBCD("GBCD");
+inline const QString GBCDdimensions("GBCDdimensions");
+inline const QString FitParameters("FitParameters");
+inline const QString MaterialName("MaterialName");
 } // namespace EnsembleData
 
 namespace VertexData
 {
-const QString AtomVelocities("AtomVelocities");
-const QString AtomTypes("AtomTypes");
-const QString AtomFeatureLabels("AtomFeatureLabels");
-const QString NumberOfArms("NumberOfArms");
-const QString NodeConstraints("NodeConstraints");
-const QString SurfaceMeshNodes("Nodes");
-const QString SurfaceMeshNodeType("NodeType");
-const QString SurfaceMeshNodeNormals("NodeNormals");
-const QString SurfaceMeshNodeFaces("NodeFaces");
+inline const QString AtomVelocities("AtomVelocities");
+inline const QString AtomTypes("AtomTypes");
+inline const QString AtomFeatureLabels("AtomFeatureLabels");
+inline const QString NumberOfArms("NumberOfArms");
+inline const QString NodeConstraints("NodeConstraints");
+inline const QString SurfaceMeshNodes("Nodes");
+inline const QString SurfaceMeshNodeType("NodeType");
+inline const QString SurfaceMeshNodeNormals("NodeNormals");
+inline const QString SurfaceMeshNodeFaces("NodeFaces");
 } // namespace VertexData
 
 namespace FaceData
 {
-const QString SurfaceMeshFaces("Faces");
-const QString SurfaceMeshFaceIPFColors("IPFColors");
-const QString SurfaceMeshFaceMisorientationColors("MisorientationColors");
-const QString SurfaceMeshFaceSchuhMisorientationColors("SchuhMisorientationColors");
-const QString SurfaceMeshFaceLabels("FaceLabels");
-const QString SurfaceMeshFacePhases("Phases");
-const QString SurfaceMeshF1s("F1s");
-const QString SurfaceMeshF1spts("F1spts");
-const QString SurfaceMeshF7s("F7s");
-const QString SurfaceMeshmPrimes("mPrimes");
-const QString SurfaceMeshVoxels("SurfaceMeshVoxels");
-const QString SurfaceMeshFaceCentroids("FaceCentroids");
-const QString SurfaceMeshFaceAreas("FaceAreas");
-const QString SurfaceMeshTwinBoundary("TwinBoundary");
-const QString SurfaceMeshTwinBoundaryIncoherence("TwinBoundaryIncoherence");
-const QString SurfaceMeshTwinBoundarySchmidFactors("TwinBoundarySchmidFactors");
-const QString SurfaceMeshFaceDihedralAngles("FaceDihedralAngles");
-const QString SurfaceMeshFaceNormals("FaceNormals");
-const QString SurfaceMeshFeatureFaceId("FeatureFaceId");
-const QString SurfaceMeshGaussianCurvatures("GaussianCurvatures");
-const QString SurfaceMeshMeanCurvatures("MeanCurvatures");
-const QString SurfaceMeshPrincipalCurvature1("PrincipalCurvature1");
-const QString SurfaceMeshPrincipalCurvature2("PrincipalCurvature2");
-const QString SurfaceMeshPrincipalDirection1("PrincipalDirection1");
-const QString SurfaceMeshPrincipalDirection2("PrincipalDirection2");
+inline const QString SurfaceMeshFaces("Faces");
+inline const QString SurfaceMeshFaceIPFColors("IPFColors");
+inline const QString SurfaceMeshFaceMisorientationColors("MisorientationColors");
+inline const QString SurfaceMeshFaceSchuhMisorientationColors("SchuhMisorientationColors");
+inline const QString SurfaceMeshFaceLabels("FaceLabels");
+inline const QString SurfaceMeshFacePhases("Phases");
+inline const QString SurfaceMeshF1s("F1s");
+inline const QString SurfaceMeshF1spts("F1spts");
+inline const QString SurfaceMeshF7s("F7s");
+inline const QString SurfaceMeshmPrimes("mPrimes");
+inline const QString SurfaceMeshVoxels("SurfaceMeshVoxels");
+inline const QString SurfaceMeshFaceCentroids("FaceCentroids");
+inline const QString SurfaceMeshFaceAreas("FaceAreas");
+inline const QString SurfaceMeshTwinBoundary("TwinBoundary");
+inline const QString SurfaceMeshTwinBoundaryIncoherence("TwinBoundaryIncoherence");
+inline const QString SurfaceMeshTwinBoundarySchmidFactors("TwinBoundarySchmidFactors");
+inline const QString SurfaceMeshFaceDihedralAngles("FaceDihedralAngles");
+inline const QString SurfaceMeshFaceNormals("FaceNormals");
+inline const QString SurfaceMeshFeatureFaceId("FeatureFaceId");
+inline const QString SurfaceMeshGaussianCurvatures("GaussianCurvatures");
+inline const QString SurfaceMeshMeanCurvatures("MeanCurvatures");
+inline const QString SurfaceMeshPrincipalCurvature1("PrincipalCurvature1");
+inline const QString SurfaceMeshPrincipalCurvature2("PrincipalCurvature2");
+inline const QString SurfaceMeshPrincipalDirection1("PrincipalDirection1");
+inline const QString SurfaceMeshPrincipalDirection2("PrincipalDirection2");
 } // namespace FaceData
 
 namespace EdgeData
 {
-const QString DislocationIds("DislocationIds");
-const QString BurgersVectors("BurgersVectors");
-const QString SlipPlaneNormals("SlipPlaneNormals");
-const QString SurfaceMeshEdges("SurfaceMeshEdges");
-const QString SurfaceMeshUniqueEdges("SurfaceMeshUniqueEdges");
-const QString SurfaceMeshInternalEdges("SurfaceMeshInternalEdges");
-const QString SurfaceMeshTriangleEdges("SurfaceMeshTriangleEdges");
-const QString SurfaceMeshEdgeFaces("SurfaceMeshEdgeFaces");
+inline const QString DislocationIds("DislocationIds");
+inline const QString BurgersVectors("BurgersVectors");
+inline const QString SlipPlaneNormals("SlipPlaneNormals");
+inline const QString SurfaceMeshEdges("SurfaceMeshEdges");
+inline const QString SurfaceMeshUniqueEdges("SurfaceMeshUniqueEdges");
+inline const QString SurfaceMeshInternalEdges("SurfaceMeshInternalEdges");
+inline const QString SurfaceMeshTriangleEdges("SurfaceMeshTriangleEdges");
+inline const QString SurfaceMeshEdgeFaces("SurfaceMeshEdgeFaces");
 } // namespace EdgeData
 
 namespace Settings
 {
-const QString Library("Filter Library");
-const QString PrebuiltPipelines("Prebuilt Pipelines");
-const QString FavoritePipelines("Favorite Pipelines");
-const QString PipelineBuilderGroup("PipelineBuilder");
-const QString FavoriteConfig("favorite_config");
-const QString NumFilters("Number_Filters");
-const QString PipelineName("Name");
-const QString FilterName("Filter_Name");
-const QString FilterUuid("Filter_Uuid");
-const QString FilterVersion("FilterVersion");
-const QString HumanLabel("Filter_Human_Label");
-const QString FilterEnabled("Filter_Enabled");
-const QString GroupName("GroupName");
-const QString SubGroupName("SubGroupName");
-const QString BrandingString("BrandingString");
-const QString CompiledLibraryName("CompiledLibraryName");
-const QString Version("Version");
-const QString PipelineBuilderGeomertry("PipelineBuilderGeometry");
+inline const QString Library("Filter Library");
+inline const QString PrebuiltPipelines("Prebuilt Pipelines");
+inline const QString FavoritePipelines("Favorite Pipelines");
+inline const QString PipelineBuilderGroup("PipelineBuilder");
+inline const QString FavoriteConfig("favorite_config");
+inline const QString NumFilters("Number_Filters");
+inline const QString PipelineName("Name");
+inline const QString FilterName("Filter_Name");
+inline const QString FilterUuid("Filter_Uuid");
+inline const QString FilterVersion("FilterVersion");
+inline const QString HumanLabel("Filter_Human_Label");
+inline const QString FilterEnabled("Filter_Enabled");
+inline const QString GroupName("GroupName");
+inline const QString SubGroupName("SubGroupName");
+inline const QString BrandingString("BrandingString");
+inline const QString CompiledLibraryName("CompiledLibraryName");
+inline const QString Version("Version");
+inline const QString PipelineBuilderGeomertry("PipelineBuilderGeometry");
 } // namespace Settings
 
 namespace HDF5
 {
-const QString FileVersion("7.0");
-const QString FileVersionName("FileVersion");
-const QString DREAM3DVersion("DREAM3D Version");
-const QString ObjectType("ObjectType");
-const QString Rank("Rank");
-const QString TupleDimensions("TupleDimensions");
-const QString ComponentDimensions("ComponentDimensions");
-const QString AxisDimensions("Tuple Axis Dimensions");
-const QString DataArrayVersion("DataArrayVersion");
+inline const QString FileVersion("7.0");
+inline const QString FileVersionName("FileVersion");
+inline const QString DREAM3DVersion("DREAM3D Version");
+inline const QString ObjectType("ObjectType");
+inline const QString Rank("Rank");
+inline const QString TupleDimensions("TupleDimensions");
+inline const QString ComponentDimensions("ComponentDimensions");
+inline const QString AxisDimensions("Tuple Axis Dimensions");
+inline const QString DataArrayVersion("DataArrayVersion");
 } // namespace HDF5
 
 namespace StringConstants
 {
-const QString Alpha("Alpha");
-const QString Angle("Angle");
+inline const QString Alpha("Alpha");
+inline const QString Angle("Angle");
 
-const QString Average("Average");
-const QString Axis("Axis");
-const QString AxisODFWeights("AxisODF-Weights");
-const QString AxisOrientation("AxisOrientation");
-const QString Beta("Beta");
-const QString BetaDistribution("Beta Distribution");
-const QString BinNumber("BinNumber");
-const QString BinCount("Bin Count");
-const QString BinStepSize("Bin Step Size");
-const QString BoundaryArea("BoundaryArea");
-const QString BoundaryStatsData("BoundaryStatsData");
-const QString CellNeighbors("CellNeighbors");
+inline const QString Average("Average");
+inline const QString Axis("Axis");
+inline const QString AxisODFWeights("AxisODF-Weights");
+inline const QString AxisOrientation("AxisOrientation");
+inline const QString Beta("Beta");
+inline const QString BetaDistribution("Beta Distribution");
+inline const QString BinNumber("BinNumber");
+inline const QString BinCount("Bin Count");
+inline const QString BinStepSize("Bin Step Size");
+inline const QString BoundaryArea("BoundaryArea");
+inline const QString BoundaryStatsData("BoundaryStatsData");
+inline const QString CellNeighbors("CellNeighbors");
 
-const QString CellsContainingVert("CellsContainingVert");
-const QString CellsName("Cells");
-const QString CrystalStructure("CrystalStructure");
-const QString DataContainerGroupName("DataContainers");
-const QString DataContainerBundleGroupName("DataContainerBundles");
-const QString DataContainerNames("DataContainerNames");
-const QString MetaDataArrays("MetaDataArrays");
-const QString MontageGroupName("Montages");
-const QString DataContainerType("DataContainerType");
-const QString AttributeMatrixType("AttributeMatrixType");
+inline const QString CellsContainingVert("CellsContainingVert");
+inline const QString CellsName("Cells");
+inline const QString CrystalStructure("CrystalStructure");
+inline const QString DataContainerGroupName("DataContainers");
+inline const QString DataContainerBundleGroupName("DataContainerBundles");
+inline const QString DataContainerNames("DataContainerNames");
+inline const QString MetaDataArrays("MetaDataArrays");
+inline const QString MontageGroupName("Montages");
+inline const QString DataContainerType("DataContainerType");
+inline const QString AttributeMatrixType("AttributeMatrixType");
 
-const QString Dims("Dims");
-const QString DistributionType("Distribution Type");
+inline const QString Dims("Dims");
+inline const QString DistributionType("Distribution Type");
 
-const QString EdgeNeighbors("EdgeNeighbors");
-const QString EdgesContainingVert("EdgesContainingVert");
-const QString EdgesName("Edges");
-const QString EdgeCentroids("EdgeCentroids");
-const QString EdgeLengths("EdgeLengths");
-const QString Euler1("Euler 1");
-const QString Euler2("Euler 2");
-const QString Euler3("Euler 3");
-const QString Exp_k("K");
+inline const QString EdgeNeighbors("EdgeNeighbors");
+inline const QString EdgesContainingVert("EdgesContainingVert");
+inline const QString EdgesName("Edges");
+inline const QString EdgeCentroids("EdgeCentroids");
+inline const QString EdgeLengths("EdgeLengths");
+inline const QString Euler1("Euler 1");
+inline const QString Euler2("Euler 2");
+inline const QString Euler3("Euler 3");
+inline const QString Exp_k("K");
 
-const QString FaceNeighbors("FaceNeighbors");
-const QString FacesContainingVert("FacesContainingVert");
-const QString FacesName("Faces");
-const QString TrianglesName("Triangles");
-const QString TriangleNeighbors("TriangleNeighbors");
-const QString TrianglesContainingVert("TrianglesContainingVert");
-const QString TriangleCentroids("TriangleCentroids");
-const QString TriangleAreas("TriangleAreas");
-const QString Frequencies("Frequencies");
+inline const QString FaceNeighbors("FaceNeighbors");
+inline const QString FacesContainingVert("FacesContainingVert");
+inline const QString FacesName("Faces");
+inline const QString TrianglesName("Triangles");
+inline const QString TriangleNeighbors("TriangleNeighbors");
+inline const QString TrianglesContainingVert("TrianglesContainingVert");
+inline const QString TriangleCentroids("TriangleCentroids");
+inline const QString TriangleAreas("TriangleAreas");
+inline const QString Frequencies("Frequencies");
 
-const QString QuadsName("Quadrilaterals");
-const QString QuadNeighbors("QuadrilateralNeighbors");
-const QString QuadsContainingVert("QuadrilateralsContainingVerts");
-const QString QuadCentroids("QuadrilateralCentroids");
-const QString QuadAreas("QuadrilateralAreas");
+inline const QString QuadsName("Quadrilaterals");
+inline const QString QuadNeighbors("QuadrilateralNeighbors");
+inline const QString QuadsContainingVert("QuadrilateralsContainingVerts");
+inline const QString QuadCentroids("QuadrilateralCentroids");
+inline const QString QuadAreas("QuadrilateralAreas");
 
-const QString TetsName("Tetrahedra");
-const QString TetNeighbors("TetrahedralNeighbors");
-const QString TetsContainingVert("TetrahedraContainingVerts");
-const QString TetCentroids("TetrahedralCentroids");
-const QString TetVolumes("TetrahedralVolumes");
+inline const QString TetsName("Tetrahedra");
+inline const QString TetNeighbors("TetrahedralNeighbors");
+inline const QString TetsContainingVert("TetrahedraContainingVerts");
+inline const QString TetCentroids("TetrahedralCentroids");
+inline const QString TetVolumes("TetrahedralVolumes");
 
-const QString HexasName("Hexahedra");
-const QString HexNeighbors("HexahedralNeighbors");
-const QString HexasContainingVert("HexahedraContainingVerts");
-const QString HexCentroids("HexahedralCentroids");
-const QString HexVolumes("HexahedralVolumes");
+inline const QString HexasName("Hexahedra");
+inline const QString HexNeighbors("HexahedralNeighbors");
+inline const QString HexasContainingVert("HexahedraContainingVerts");
+inline const QString HexCentroids("HexahedralCentroids");
+inline const QString HexVolumes("HexahedralVolumes");
 
-const QString VoxelSizes("VoxelSizes");
-const QString VertexSizes("VertexSizes");
+inline const QString VoxelSizes("VoxelSizes");
+inline const QString VertexSizes("VertexSizes");
 
-const QString GBCD("GBCD");
-const QString FeatureAvgDisorientation("FeatureAvgDisorientation");
-const QString Feature_Diameter_Info("Feature_Diameter_Info");
-const QString Feature_SizeVBoverA_Distributions("FeatureSize Vs B Over A Distributions");
-const QString Feature_SizeVCoverA_Distributions("FeatureSize Vs C Over A Distributions");
-const QString Feature_SizeVNeighbors_Distributions("FeatureSize Vs Neighbors Distributions");
-const QString Feature_SizeVOmega3_Distributions("FeatureSize Vs Omega3 Distributions");
-const QString Feature_SizeVClustering_Distributions("FeatureSize Vs Clustering Distributions");
-const QString Feature_Size_Distribution("FeatureSize Distribution");
-const QString KernelAvgDisorientation("KernelAvgDisorientation");
-const QString LogNormalDistribution("Log Normal Distribution");
-const QString MDFWeights("MDF-Weights");
-const QString MatrixStatsData("MatrixStatsData");
-const QString MeshFaceNeighborLists("MeshFaceNeighborLists");
-const QString MicroTextureBins("MicroTextureBins");
-const QString MinimumValue("Minimum Value");
-const QString MinMaxNoOfBins("MinMaxNoOfBins");
-const QString MisorientationBins("MisorientationBins");
-const QString Neighbor_Feature_ID_List("Neighbor_Feature_ID_List");
+inline const QString GBCD("GBCD");
+inline const QString FeatureAvgDisorientation("FeatureAvgDisorientation");
+inline const QString Feature_Diameter_Info("Feature_Diameter_Info");
+inline const QString Feature_SizeVBoverA_Distributions("FeatureSize Vs B Over A Distributions");
+inline const QString Feature_SizeVCoverA_Distributions("FeatureSize Vs C Over A Distributions");
+inline const QString Feature_SizeVNeighbors_Distributions("FeatureSize Vs Neighbors Distributions");
+inline const QString Feature_SizeVOmega3_Distributions("FeatureSize Vs Omega3 Distributions");
+inline const QString Feature_SizeVClustering_Distributions("FeatureSize Vs Clustering Distributions");
+inline const QString Feature_Size_Distribution("FeatureSize Distribution");
+inline const QString KernelAvgDisorientation("KernelAvgDisorientation");
+inline const QString LogNormalDistribution("Log Normal Distribution");
+inline const QString MDFWeights("MDF-Weights");
+inline const QString MatrixStatsData("MatrixStatsData");
+inline const QString MeshFaceNeighborLists("MeshFaceNeighborLists");
+inline const QString MicroTextureBins("MicroTextureBins");
+inline const QString MinimumValue("Minimum Value");
+inline const QString MinMaxNoOfBins("MinMaxNoOfBins");
+inline const QString MisorientationBins("MisorientationBins");
+inline const QString Neighbor_Feature_ID_List("Neighbor_Feature_ID_List");
 
-const QString ODF("ODF");
-const QString ODFWeights("ODF-Weights");
+inline const QString ODF("ODF");
+inline const QString ODFWeights("ODF-Weights");
 
-const QString ParentPhase("Parent Phase");
-const QString PhaseFraction("PhaseFraction");
-const QString PhaseType("PhaseType");
-const QString PipelineGroupName("Pipeline");
-const QString PipelineVersionName("Pipeline Version");
-const QString PipelineCurrentName("Current Pipeline");
-const QString PowerLawDistribution("Power Law Distribution");
-const QString PrecipitateBoundaryFraction("Precipitate Boundary Fraction");
-const QString PrecipitateStatsData("PrecipitateStatsData");
-const QString PrimaryStatsData("PrimaryStatsData");
-const QString PresetName("PresetName");
+inline const QString ParentPhase("Parent Phase");
+inline const QString PhaseFraction("PhaseFraction");
+inline const QString PhaseType("PhaseType");
+inline const QString PipelineGroupName("Pipeline");
+inline const QString PipelineVersionName("Pipeline Version");
+inline const QString PipelineCurrentName("Current Pipeline");
+inline const QString PowerLawDistribution("Power Law Distribution");
+inline const QString PrecipitateBoundaryFraction("Precipitate Boundary Fraction");
+inline const QString PrecipitateStatsData("PrecipitateStatsData");
+inline const QString PrimaryStatsData("PrimaryStatsData");
+inline const QString PresetName("PresetName");
 
-const QString RadialDistFunc("Radial Distribution Function");
-const QString RdfMinDistance("Min");
-const QString RdfMaxDistance("Max");
-const QString RdfBoxDims("BoxDims");
-const QString RdfBoxRes("BoxRes");
+inline const QString RadialDistFunc("Radial Distribution Function");
+inline const QString RdfMinDistance("Min");
+inline const QString RdfMaxDistance("Max");
+inline const QString RdfBoxDims("BoxDims");
+inline const QString RdfBoxRes("BoxRes");
 
-const QString Sigma("Sigma");
-const QString StandardDeviation("Standard Deviation");
-const QString Statistics("Statistics");
-const QString Stats("Stats");
-const QString StatsData("StatsData");
-const QString StatsType("StatsType");
+inline const QString Sigma("Sigma");
+inline const QString StandardDeviation("Standard Deviation");
+inline const QString Statistics("Statistics");
+inline const QString Stats("Stats");
+inline const QString StatsData("StatsData");
+inline const QString StatsType("StatsType");
 
-const QString TransformationStatsData("TransformationStatsData");
-const QString UnknownDistribution("Unknown Distribution");
+inline const QString TransformationStatsData("TransformationStatsData");
+inline const QString UnknownDistribution("Unknown Distribution");
 
-const QString VerticesName("Vertices");
-const QString VertsName("Verts");
-const QString ImageName("Image");
+inline const QString VerticesName("Vertices");
+inline const QString VertsName("Verts");
+inline const QString ImageName("Image");
 
-const QString Weight("Weight");
+inline const QString Weight("Weight");
 
-const QString MetaData("_META_DATA");
+inline const QString MetaData("_META_DATA");
 
-const QString Name("Name");
-const QString Index("Index");
+inline const QString Name("Name");
+inline const QString Index("Index");
 } // namespace StringConstants
 
 namespace CellType
 {
-const QString Quadrilateral("Quadrilateral");
-const QString Tetrahedron("Tetrahedron");
-const QString Triangle("Triangle");
-const QString Face("Face");
-const QString Edge("Edge");
-const QString Vertex("Vertex");
-const QString Node("Node");
+inline const QString Quadrilateral("Quadrilateral");
+inline const QString Tetrahedron("Tetrahedron");
+inline const QString Triangle("Triangle");
+inline const QString Face("Face");
+inline const QString Edge("Edge");
+inline const QString Vertex("Vertex");
+inline const QString Node("Node");
 } // namespace CellType
 
 // namespace PhaseType
 //{
-//  //constexpr uint32_t PrimaryPhase = 0;              //!<
-//  //constexpr uint32_t PrecipitatePhase = 1;          //!<
-//  //constexpr uint32_t TransformationPhase = 2;       //!<
-//  //constexpr uint32_t MatrixPhase = 3;              //!<
-//  //constexpr uint32_t BoundaryPhase = 4;              //!<
-//  //constexpr uint32_t Unknown = 999;    //!<
+//  //inline constexpr uint32_t PrimaryPhase = 0;              //!<
+//  //inline constexpr uint32_t PrecipitatePhase = 1;          //!<
+//  //inline constexpr uint32_t TransformationPhase = 2;       //!<
+//  //inline constexpr uint32_t MatrixPhase = 3;              //!<
+//  //inline constexpr uint32_t BoundaryPhase = 4;              //!<
+//  //inline constexpr uint32_t Unknown = 999;    //!<
 
-//  const QString Primary("Primary");
-//  const QString Precipitate("Precipitate");
-//  const QString Transformation("Transformation");
-//  const QString Matrix("Matrix");
-//  const QString Boundary("Boundary");
-//  const QString UnknownPhase("Unknown");
+//  inline const QString Primary("Primary");
+//  inline const QString Precipitate("Precipitate");
+//  inline const QString Transformation("Transformation");
+//  inline const QString Matrix("Matrix");
+//  inline const QString Boundary("Boundary");
+//  inline const QString UnknownPhase("Unknown");
 //}
 
 namespace AlignmentMethod
 {
-constexpr uint32_t OuterBoundary = 0;            //!<
-constexpr uint32_t Misorientation = 1;           //!<
-constexpr uint32_t MutualInformation = 2;        //!<
-constexpr uint32_t Count = 3;                    //!<
-constexpr uint32_t UnknownAlignmentMethod = 999; //!<
+inline constexpr uint32_t OuterBoundary = 0;            //!<
+inline constexpr uint32_t Misorientation = 1;           //!<
+inline constexpr uint32_t MutualInformation = 2;        //!<
+inline constexpr uint32_t Count = 3;                    //!<
+inline constexpr uint32_t UnknownAlignmentMethod = 999; //!<
 } // namespace AlignmentMethod
 
 namespace StatisticsType
 {
-constexpr uint32_t Feature_SizeVBoverA = 0;      //!<
-constexpr uint32_t Feature_SizeVCoverA = 1;      //!<
-constexpr uint32_t Feature_SizeVNeighbors = 2;   //!<
-constexpr uint32_t Feature_SizeVOmega3 = 3;      //!<
-constexpr uint32_t Feature_SizeVClustering = 4;  //!<
-constexpr uint32_t UnknownStatisticsGroup = 999; //!<
+inline constexpr uint32_t Feature_SizeVBoverA = 0;      //!<
+inline constexpr uint32_t Feature_SizeVCoverA = 1;      //!<
+inline constexpr uint32_t Feature_SizeVNeighbors = 2;   //!<
+inline constexpr uint32_t Feature_SizeVOmega3 = 3;      //!<
+inline constexpr uint32_t Feature_SizeVClustering = 4;  //!<
+inline constexpr uint32_t UnknownStatisticsGroup = 999; //!<
 
 } // namespace StatisticsType
 
 namespace DistributionType
 {
-constexpr uint32_t Beta = 0;                    //!<
-constexpr uint32_t LogNormal = 1;               //!<
-constexpr uint32_t Power = 2;                   //!<
-constexpr uint32_t RDFFrequency = 3;            //!<
-constexpr uint32_t RDFMaxMin = 4;               //!<
-constexpr uint32_t UnknownDistributionType = 5; //!<
-constexpr uint32_t Count = 6;                   //!<
+inline constexpr uint32_t Beta = 0;                    //!<
+inline constexpr uint32_t LogNormal = 1;               //!<
+inline constexpr uint32_t Power = 2;                   //!<
+inline constexpr uint32_t RDFFrequency = 3;            //!<
+inline constexpr uint32_t RDFMaxMin = 4;               //!<
+inline constexpr uint32_t UnknownDistributionType = 5; //!<
+inline constexpr uint32_t Count = 6;                   //!<
 
 enum ColumnCount
 {
@@ -777,198 +777,198 @@ enum ColumnCount
 
 namespace EulerAngleConversionType
 {
-constexpr uint32_t DegreesToRadians = 0; //!<
-constexpr uint32_t RadiansToDegrees = 1; //!<
+inline constexpr uint32_t DegreesToRadians = 0; //!<
+inline constexpr uint32_t RadiansToDegrees = 1; //!<
 } // namespace EulerAngleConversionType
 
 namespace FlattenImageMethod
 {
-constexpr uint32_t Lightness = 0;  //!<
-constexpr uint32_t Average = 1;    //!<
-constexpr uint32_t Luminosity = 2; //!<
+inline constexpr uint32_t Lightness = 0;  //!<
+inline constexpr uint32_t Average = 1;    //!<
+inline constexpr uint32_t Luminosity = 2; //!<
 } // namespace FlattenImageMethod
 
 namespace EulerFrameRotationAxis
 {
-constexpr uint32_t RD = 0;   //!<
-constexpr uint32_t TD = 1;   //!<
-constexpr uint32_t ND = 2;   //!<
-constexpr uint32_t None = 3; //!<
+inline constexpr uint32_t RD = 0;   //!<
+inline constexpr uint32_t TD = 1;   //!<
+inline constexpr uint32_t ND = 2;   //!<
+inline constexpr uint32_t None = 3; //!<
 } // namespace EulerFrameRotationAxis
 
 namespace SampleFrameRotationAxis
 {
-constexpr uint32_t X = 0;    //!<
-constexpr uint32_t Y = 1;    //!<
-constexpr uint32_t Z = 2;    //!<
-constexpr uint32_t None = 3; //!<
+inline constexpr uint32_t X = 0;    //!<
+inline constexpr uint32_t Y = 1;    //!<
+inline constexpr uint32_t Z = 2;    //!<
+inline constexpr uint32_t None = 3; //!<
 } // namespace SampleFrameRotationAxis
 
 namespace RefFrameRotationAngle
 {
-constexpr uint32_t Ninety = 0;     //!<
-constexpr uint32_t oneEighty = 1;  //!<
-constexpr uint32_t twoSeventy = 2; //!<
-constexpr uint32_t Mirror = 3;     //!<
-constexpr uint32_t Zero = 4;       //!<
+inline constexpr uint32_t Ninety = 0;     //!<
+inline constexpr uint32_t oneEighty = 1;  //!<
+inline constexpr uint32_t twoSeventy = 2; //!<
+inline constexpr uint32_t Mirror = 3;     //!<
+inline constexpr uint32_t Zero = 4;       //!<
 } // namespace RefFrameRotationAngle
 
 namespace Overlap
 {
-constexpr uint32_t Rigid = 0;            //!<
-constexpr uint32_t Progressive = 1;      //!<
-constexpr uint32_t UnknownOverlap = 999; //!<
+inline constexpr uint32_t Rigid = 0;            //!<
+inline constexpr uint32_t Progressive = 1;      //!<
+inline constexpr uint32_t UnknownOverlap = 999; //!<
 } // namespace Overlap
 
 //  namespace DataContainerType
 //  {
-//    constexpr uint32_t VolumeDataContainer = 0; //!<
-//    constexpr uint32_t SurfaceDataContainer = 1; //!<
-//    constexpr uint32_t EdgeDataContainer = 2; //!<
-//    constexpr uint32_t VertexDataContainer = 3; //!<
-//    constexpr uint32_t UnknownDataContainer = 999; //!<
+//    inline constexpr uint32_t VolumeDataContainer = 0; //!<
+//    inline constexpr uint32_t SurfaceDataContainer = 1; //!<
+//    inline constexpr uint32_t EdgeDataContainer = 2; //!<
+//    inline constexpr uint32_t VertexDataContainer = 3; //!<
+//    inline constexpr uint32_t UnknownDataContainer = 999; //!<
 //  }
 
 //  namespace AttributeMatrixType
 //  {
-//    constexpr uint32_t Vertex = 0; //!<
-//    constexpr uint32_t Edge = 1; //!<
-//    constexpr uint32_t Face = 2; //!<
-//    constexpr uint32_t Cell = 3; //!<
-//    constexpr uint32_t VertexFeature = 4; //!<
-//    constexpr uint32_t EdgeFeature = 5; //!<
-//    constexpr uint32_t FaceFeature = 6; //!<
-//    constexpr uint32_t CellFeature = 7; //!<
-//    constexpr uint32_t VertexEnsemble = 8; //!<
-//    constexpr uint32_t EdgeEnsemble = 9; //!<
-//    constexpr uint32_t FaceEnsemble = 10; //!<
-//    constexpr uint32_t CellEnsemble = 11; //!<
-//    constexpr uint32_t MetaData = 12; //!<
-//    constexpr uint32_t Generic = 13; //!<
-//    constexpr uint32_t Unknown = 999; //!<
+//    inline constexpr uint32_t Vertex = 0; //!<
+//    inline constexpr uint32_t Edge = 1; //!<
+//    inline constexpr uint32_t Face = 2; //!<
+//    inline constexpr uint32_t Cell = 3; //!<
+//    inline constexpr uint32_t VertexFeature = 4; //!<
+//    inline constexpr uint32_t EdgeFeature = 5; //!<
+//    inline constexpr uint32_t FaceFeature = 6; //!<
+//    inline constexpr uint32_t CellFeature = 7; //!<
+//    inline constexpr uint32_t VertexEnsemble = 8; //!<
+//    inline constexpr uint32_t EdgeEnsemble = 9; //!<
+//    inline constexpr uint32_t FaceEnsemble = 10; //!<
+//    inline constexpr uint32_t CellEnsemble = 11; //!<
+//    inline constexpr uint32_t MetaData = 12; //!<
+//    inline constexpr uint32_t Generic = 13; //!<
+//    inline constexpr uint32_t Unknown = 999; //!<
 //  }
 
 //  namespace AttributeMatrixObjectType
 //  {
-//    constexpr uint32_t Element = 0;
-//    constexpr uint32_t Feature = 1;
-//    constexpr uint32_t Ensemble = 2;
-//    constexpr uint32_t Any = 3;
+//    inline constexpr uint32_t Element = 0;
+//    inline constexpr uint32_t Feature = 1;
+//    inline constexpr uint32_t Ensemble = 2;
+//    inline constexpr uint32_t Any = 3;
 //  }
 
 namespace Geometry
 {
-const QString Geometry("_SIMPL_GEOMETRY");
-const QString GeometryName("GeometryName");
-const QString GeometryType("GeometryType");
-const QString GeometryTypeName("GeometryTypeName");
-const QString NumberOfTuples("NumberOfTuples");
-const QString UnitDimensionality("UnitDimensionality");
-const QString SpatialDimensionality("SpatialDimensionality");
+inline const QString Geometry("_SIMPL_GEOMETRY");
+inline const QString GeometryName("GeometryName");
+inline const QString GeometryType("GeometryType");
+inline const QString GeometryTypeName("GeometryTypeName");
+inline const QString NumberOfTuples("NumberOfTuples");
+inline const QString UnitDimensionality("UnitDimensionality");
+inline const QString SpatialDimensionality("SpatialDimensionality");
 
-const QString AnyGeometry("AnyGeometry");
-const QString UnknownGeometry("UnkownGeometry");
-const QString ImageGeometry("ImageGeometry");
-const QString RectGridGeometry("RectGridGeometry");
-const QString VertexGeometry("VertexGeometry");
-const QString EdgeGeometry("EdgeGeometry");
-const QString TriangleGeometry("TriangleGeometry");
-const QString QuadGeometry("QuadrilateralGeometry");
-const QString TetrahedralGeometry("TetrahedralGeometry");
-const QString HexahedralGeometry("HexahedralGeometry");
+inline const QString AnyGeometry("AnyGeometry");
+inline const QString UnknownGeometry("UnkownGeometry");
+inline const QString ImageGeometry("ImageGeometry");
+inline const QString RectGridGeometry("RectGridGeometry");
+inline const QString VertexGeometry("VertexGeometry");
+inline const QString EdgeGeometry("EdgeGeometry");
+inline const QString TriangleGeometry("TriangleGeometry");
+inline const QString QuadGeometry("QuadrilateralGeometry");
+inline const QString TetrahedralGeometry("TetrahedralGeometry");
+inline const QString HexahedralGeometry("HexahedralGeometry");
 
-const QString xBoundsList("xBounds");
-const QString yBoundsList("yBounds");
-const QString zBoundsList("zBounds");
-const QString SharedVertexList("SharedVertexList");
-const QString SharedEdgeList("SharedEdgeList");
-const QString SharedTriList("SharedTriList");
-const QString SharedQuadList("SharedQuadList");
-const QString SharedTetList("SharedTetList");
-const QString SharedHexList("SharedHexList");
-const QString UnsharedEdgeList("UnsharedEdgeList");
-const QString UnsharedFaceList("UnsharedFaceList");
+inline const QString xBoundsList("xBounds");
+inline const QString yBoundsList("yBounds");
+inline const QString zBoundsList("zBounds");
+inline const QString SharedVertexList("SharedVertexList");
+inline const QString SharedEdgeList("SharedEdgeList");
+inline const QString SharedTriList("SharedTriList");
+inline const QString SharedQuadList("SharedQuadList");
+inline const QString SharedTetList("SharedTetList");
+inline const QString SharedHexList("SharedHexList");
+inline const QString UnsharedEdgeList("UnsharedEdgeList");
+inline const QString UnsharedFaceList("UnsharedFaceList");
 
-const QString TransformContainerGroup("TransformContainerGroup");
-const QString TransformContainer("TransformContainer");
-const QString CompositeTransformContainer("CompositeTransformContainer");
-const QString TransformContainerTypeName("TransformContainerTypeName");
-const QString UnknownTransformContainer("UnknownTransformContainer");
-const QString TransformContainerParameters("TransformParameters");
-const QString TransformContainerFixedParameters("TransformFixedParameters");
-const QString TransformContainerTypeAsString("TransformType");
-const QString TransformContainerMovingName("TransformMovingName");
-const QString TransformContainerReferenceName("TransformReferenceName");
+inline const QString TransformContainerGroup("TransformContainerGroup");
+inline const QString TransformContainer("TransformContainer");
+inline const QString CompositeTransformContainer("CompositeTransformContainer");
+inline const QString TransformContainerTypeName("TransformContainerTypeName");
+inline const QString UnknownTransformContainer("UnknownTransformContainer");
+inline const QString TransformContainerParameters("TransformParameters");
+inline const QString TransformContainerFixedParameters("TransformFixedParameters");
+inline const QString TransformContainerTypeAsString("TransformType");
+inline const QString TransformContainerMovingName("TransformMovingName");
+inline const QString TransformContainerReferenceName("TransformReferenceName");
 
-const QString k_Yoctometer("Yoctometer");
-const QString k_Zeptometer("Zeptometer");
-const QString k_Attometer("Attometer");
-const QString k_Femtometer("Femtometer");
-const QString k_Picometer("Picometer");
-const QString k_Nanometer("Nanometer");
-const QString k_Micrometer("Micrometer");
-const QString k_Millimeter("Millimeter");
-const QString k_Centimeter("Centimeter");
-const QString k_Decimeter("Decimeter");
-const QString k_Meter("Meter");
-const QString k_Decameter("Decameter");
-const QString k_Hectometer("Hectometer");
-const QString k_Kilometer("Kilometer");
-const QString k_Megameter("Megameter");
-const QString k_Gigameter("Gigameter");
-const QString k_Terameter("Terameter");
-const QString k_Petameter("Petameter");
-const QString k_Exameter("Exameter");
-const QString k_Zettameter("Zettameter");
-const QString k_Yottameter("Yottameter");
-const QString k_Angstrom("Angstrom");
-const QString k_Mil("Mil");
-const QString k_Inch("Inch");
-const QString k_Foot("Foot");
-const QString k_Mile("Mile");
-const QString k_Fathom("Fathom");
-const QString k_Unspecified("Unspecified");
-const QString k_Unknown("Unknown");
+inline const QString k_Yoctometer("Yoctometer");
+inline const QString k_Zeptometer("Zeptometer");
+inline const QString k_Attometer("Attometer");
+inline const QString k_Femtometer("Femtometer");
+inline const QString k_Picometer("Picometer");
+inline const QString k_Nanometer("Nanometer");
+inline const QString k_Micrometer("Micrometer");
+inline const QString k_Millimeter("Millimeter");
+inline const QString k_Centimeter("Centimeter");
+inline const QString k_Decimeter("Decimeter");
+inline const QString k_Meter("Meter");
+inline const QString k_Decameter("Decameter");
+inline const QString k_Hectometer("Hectometer");
+inline const QString k_Kilometer("Kilometer");
+inline const QString k_Megameter("Megameter");
+inline const QString k_Gigameter("Gigameter");
+inline const QString k_Terameter("Terameter");
+inline const QString k_Petameter("Petameter");
+inline const QString k_Exameter("Exameter");
+inline const QString k_Zettameter("Zettameter");
+inline const QString k_Yottameter("Yottameter");
+inline const QString k_Angstrom("Angstrom");
+inline const QString k_Mil("Mil");
+inline const QString k_Inch("Inch");
+inline const QString k_Foot("Foot");
+inline const QString k_Mile("Mile");
+inline const QString k_Fathom("Fathom");
+inline const QString k_Unspecified("Unspecified");
+inline const QString k_Unknown("Unknown");
 } // namespace Geometry
 
 //  namespace GeometryType
 //  {
-//    constexpr uint32_t ImageGeometry = 11;
-//    constexpr uint32_t RectGridGeometry = 11;
-//    constexpr uint32_t VertexGeometry = 1;
-//    constexpr uint32_t EdgeGeometry = 3;
-//    constexpr uint32_t TriangleGeometry = 5;
-//    constexpr uint32_t QuadGeometry = 9;
-//    constexpr uint32_t TetrahedralGeometry = 10;
-//    constexpr uint32_t UnknownGeometry = 999;
+//    inline constexpr uint32_t ImageGeometry = 11;
+//    inline constexpr uint32_t RectGridGeometry = 11;
+//    inline constexpr uint32_t VertexGeometry = 1;
+//    inline constexpr uint32_t EdgeGeometry = 3;
+//    inline constexpr uint32_t TriangleGeometry = 5;
+//    inline constexpr uint32_t QuadGeometry = 9;
+//    inline constexpr uint32_t TetrahedralGeometry = 10;
+//    inline constexpr uint32_t UnknownGeometry = 999;
 //  }
 
 namespace XdmfGridType
 {
-constexpr uint32_t PolyData = 0;
-constexpr uint32_t RectilinearGrid = 1;
-constexpr uint32_t UnknownGrid = 0xFFFFFFFF;
+inline constexpr uint32_t PolyData = 0;
+inline constexpr uint32_t RectilinearGrid = 1;
+inline constexpr uint32_t UnknownGrid = 0xFFFFFFFF;
 } // namespace XdmfGridType
 
 namespace XdmfCenterType
 {
-const QString Node("Node");
-const QString Edge("Edge");
-const QString Face("Face");
-const QString Cell("Cell");
-const QString Grid("Grid");
+inline const QString Node("Node");
+inline const QString Edge("Edge");
+inline const QString Face("Face");
+inline const QString Cell("Cell");
+inline const QString Grid("Grid");
 } // namespace XdmfCenterType
 
 // namespace ShapeType
 //{
-//  constexpr uint32_t EllipsoidShape = 0; //!<
-//  constexpr uint32_t SuperEllipsoidShape = 1; //!<
-//  constexpr uint32_t CubeOctahedronShape = 2; //!<
-//  constexpr uint32_t CylinderAShape = 3; //!<
-//  constexpr uint32_t CylinderBShape = 4; //!<
-//  constexpr uint32_t CylinderCShape = 5; //!<
-//  constexpr uint32_t ShapeTypeEnd = 6;
-//  constexpr uint32_t UnknownShapeType = 999; //!<
+//  inline constexpr uint32_t EllipsoidShape = 0; //!<
+//  inline constexpr uint32_t SuperEllipsoidShape = 1; //!<
+//  inline constexpr uint32_t CubeOctahedronShape = 2; //!<
+//  inline constexpr uint32_t CylinderAShape = 3; //!<
+//  inline constexpr uint32_t CylinderBShape = 4; //!<
+//  inline constexpr uint32_t CylinderCShape = 5; //!<
+//  inline constexpr uint32_t ShapeTypeEnd = 6;
+//  inline constexpr uint32_t UnknownShapeType = 999; //!<
 //}
 
 enum class Precipitates : uint32_t
@@ -982,23 +982,23 @@ enum class Precipitates : uint32_t
 namespace Reconstruction
 {
 /*    Reconstruction related */
-const QString H5VoxelFile("VoxelData.h5voxel");
+inline const QString H5VoxelFile("VoxelData.h5voxel");
 
-const QString VisualizationVizFile("Visualization.vtk");           // 11
-const QString DownSampledVizFile("DownSampled_Visualization.vtk"); // 11
-const QString HDF5FeatureFile("Features.h5feature");
+inline const QString VisualizationVizFile("Visualization.vtk");           // 11
+inline const QString DownSampledVizFile("DownSampled_Visualization.vtk"); // 11
+inline const QString HDF5FeatureFile("Features.h5feature");
 } // namespace Reconstruction
 
 namespace SyntheticBuilder
 {
-const QString FeatureDataFile("FeatureData.csv");
-const QString H5VoxelFile("VoxelData.h5voxel");
+inline const QString FeatureDataFile("FeatureData.csv");
+inline const QString H5VoxelFile("VoxelData.h5voxel");
 
-const QString VisualizationVizFile("Visualization.vtk");
-const QString HDF5FeatureFile("Features.h5feature");
+inline const QString VisualizationVizFile("Visualization.vtk");
+inline const QString HDF5FeatureFile("Features.h5feature");
 
-const QString ErrorFile("Error.txt");
-const QString VtkFile("Test.vtk");
+inline const QString ErrorFile("Error.txt");
+inline const QString VtkFile("Test.vtk");
 } // namespace SyntheticBuilder
 
 /*   Surface Meshing Related   */
@@ -1006,35 +1006,35 @@ namespace SurfaceMesh
 {
 namespace NodeType
 {
-constexpr int8_t Unused = 0;
-constexpr int8_t Default = 2;
-constexpr int8_t TriplePoint = 3;
-constexpr int8_t QuadPoint = 4;
-constexpr int8_t SurfaceDefault = 12;
-constexpr int8_t SurfaceTriplePoint = 13;
-constexpr int8_t SurfaceQuadPoint = 14;
+inline constexpr int8_t Unused = 0;
+inline constexpr int8_t Default = 2;
+inline constexpr int8_t TriplePoint = 3;
+inline constexpr int8_t QuadPoint = 4;
+inline constexpr int8_t SurfaceDefault = 12;
+inline constexpr int8_t SurfaceTriplePoint = 13;
+inline constexpr int8_t SurfaceQuadPoint = 14;
 } // namespace NodeType
 namespace NodeId
 {
-constexpr int8_t Unused = -1;
+inline constexpr int8_t Unused = -1;
 }
 } // namespace SurfaceMesh
 
 namespace SolidMeshing
 {
 /* Solid Meshing Related */
-const QString MeshFile("solid_mesh_v5_1.vtk");
-const QString MeshFile2("solid_mesh_v5_2.vtk");
-const QString ElementQualityFile("element_quality_measures_v5.txt");
-const QString VoxelsFile("voxels_v5.txt");
+inline const QString MeshFile("solid_mesh_v5_1.vtk");
+inline const QString MeshFile2("solid_mesh_v5_2.vtk");
+inline const QString ElementQualityFile("element_quality_measures_v5.txt");
+inline const QString VoxelsFile("voxels_v5.txt");
 } // namespace SolidMeshing
 
 namespace Union
 {
 namespace Strings
 {
-const QString And("And");
-const QString Or("Or");
+inline const QString And("And");
+inline const QString Or("Or");
 } // namespace Strings
 enum Enumeration
 {
@@ -1048,10 +1048,10 @@ namespace Comparison
 {
 namespace Strings
 {
-const QString LessThan("<");
-const QString GreaterThan(">");
-const QString Equal("=");
-const QString NotEqual("!=");
+inline const QString LessThan("<");
+inline const QString GreaterThan(">");
+inline const QString Equal("=");
+inline const QString NotEqual("!=");
 } // namespace Strings
 enum Enumeration
 {
@@ -1065,22 +1065,22 @@ enum Enumeration
 
 namespace Layout
 {
-constexpr int32_t Horizontal = 0;
-constexpr int32_t Vertical = 1;
-constexpr int32_t Square = 2;
+inline constexpr int32_t Horizontal = 0;
+inline constexpr int32_t Vertical = 1;
+inline constexpr int32_t Square = 2;
 }; // namespace Layout
 } // namespace SIMPL
 
 namespace Core
 {
-const QString CoreBaseName("Core");
+inline const QString CoreBaseName("Core");
 }
 
 namespace Test
 {
-const QString TestPluginFile("TestPlugin");
-const QString TestPluginDisplayName("Test Plugin");
-const QString TestBaseName("Test");
+inline const QString TestPluginFile("TestPlugin");
+inline const QString TestPluginDisplayName("Test Plugin");
+inline const QString TestBaseName("Test");
 } // namespace Test
 
 Q_DECLARE_METATYPE(SIMPL::NumericTypes::Type)
@@ -1090,15 +1090,15 @@ Q_DECLARE_METATYPE(SIMPL::DelimiterTypes::Type)
 #if 0
 namespace Generic
 {
-  const QString GenericPluginFile("GenericPlugin");
-  const QString GenericPluginDisplayName("Generic Plugin");
-  const QString GenericBaseName("Generic");
+  inline const QString GenericPluginFile("GenericPlugin");
+  inline const QString GenericPluginDisplayName("Generic Plugin");
+  inline const QString GenericBaseName("Generic");
 }
 
 namespace IO
 {
-  const QString IOPluginFile("IOPlugin");
-  const QString IOPluginDisplayName("IO Plugin");
-  const QString IOBaseName("IO");
+  inline const QString IOPluginFile("IOPlugin");
+  inline const QString IOPluginDisplayName("IO Plugin");
+  inline const QString IOBaseName("IO");
 }
 #endif
