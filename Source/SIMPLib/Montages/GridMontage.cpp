@@ -35,7 +35,9 @@
 #include <memory>
 #include <typeinfo>
 
+#include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Lite.h"
+#include "H5Support/QH5Utilities.h"
 
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Geometry/IGeometry3D.h"
@@ -572,7 +574,7 @@ QString GridMontage::getInfoString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int GridMontage::writeH5Data(hid_t groupId) const
+int GridMontage::writeH5Data(const hid_t& groupId) const
 {
   hid_t montageId = QH5Utilities::createGroup(groupId, getName());
   // This object will make sure the HDF5 Group id is closed when it goes out of scope.

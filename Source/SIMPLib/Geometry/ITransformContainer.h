@@ -37,7 +37,7 @@
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/SIMPLib.h"
 
-#include <hdf5.h>
+using hid_t = int64_t;
 
 class SIMPLib_EXPORT ITransformContainer : public Observable
 {
@@ -61,8 +61,8 @@ public:
   ITransformContainer();
   ~ITransformContainer() override;
 
-  virtual int writeTransformContainerToHDF5(hid_t parentId, const std::string& transformContainerName) = 0;
-  virtual int readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformContainerName) = 0;
+  virtual int writeTransformContainerToHDF5(const hid_t& parentId, const std::string& transformContainerName) = 0;
+  virtual int readTransformContainerFromHDF5(const hid_t& parentId, bool metaDataOnly, const std::string& transformContainerName) = 0;
 
 public:
   ITransformContainer(const ITransformContainer&) = delete;            // Copy Constructor Not Implemented

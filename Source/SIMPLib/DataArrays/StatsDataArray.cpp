@@ -447,7 +447,7 @@ void StatsDataArray::printComponent(QTextStream& out, size_t i, int j) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::writeH5Data(hid_t parentId, const std::vector<size_t>& tDims) const
+int StatsDataArray::writeH5Data(const hid_t& parentId, const std::vector<size_t>& tDims) const
 {
   herr_t err = 0;
   hid_t gid = QH5Utilities::createGroup(parentId, getName());
@@ -481,7 +481,7 @@ int StatsDataArray::writeH5Data(hid_t parentId, const std::vector<size_t>& tDims
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::readH5Data(hid_t parentId)
+int StatsDataArray::readH5Data(const hid_t& parentId)
 {
   bool ok = false;
   int err = 0;

@@ -705,7 +705,7 @@ public:
    * @param parentId
    * @return
    */
-  int writeH5Data(hid_t parentId, const std::vector<size_t>& tDims) const override
+  int writeH5Data(const hid_t& parentId, const std::vector<size_t>& tDims) const override
   {
     Q_ASSERT(false);
     return -1;
@@ -765,7 +765,7 @@ public:
    * @param parentId
    * @return
    */
-  int readH5Data(hid_t parentId) override
+  int readH5Data(const hid_t& parentId) override
   {
     Q_ASSERT(false);
     int err = -1;

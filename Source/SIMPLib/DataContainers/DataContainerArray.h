@@ -250,7 +250,7 @@ public:
    * @param obs
    * @return
    */
-  virtual int readDataContainersFromHDF5(bool preflight, hid_t dcaGid, DataContainerArrayProxy& dcaProxy, Observable* obs = nullptr);
+  virtual int readDataContainersFromHDF5(bool preflight, const hid_t& dcaGid, DataContainerArrayProxy& dcaProxy, Observable* obs = nullptr);
 
   /**
    * @brief setDataContainerBundles

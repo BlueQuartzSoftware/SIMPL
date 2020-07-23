@@ -32,14 +32,18 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "TransformContainer.h"
+
 #include "H5Support/H5Lite.h"
+#include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/H5Utilities.h"
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
+
 #include "SIMPLib/Common/Constants.h"
 
-#include "H5Support/H5ScopedSentinel.h"
-
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 TransformContainer::TransformContainer() = default;
 
 // -----------------------------------------------------------------------------
@@ -47,7 +51,7 @@ TransformContainer::TransformContainer() = default;
 // -----------------------------------------------------------------------------
 TransformContainer::~TransformContainer() = default;
 
-int TransformContainer::writeTransformContainerToHDF5(hid_t parentId, const std::string& transformName)
+int TransformContainer::writeTransformContainerToHDF5(const hid_t& parentId, const std::string& transformName)
 {
   herr_t err = 0;
   err = H5Utilities::createGroupsFromPath(transformName, parentId);
@@ -99,7 +103,7 @@ int TransformContainer::writeTransformContainerToHDF5(hid_t parentId, const std:
   return err;
 }
 
-int TransformContainer::readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformName)
+int TransformContainer::readTransformContainerFromHDF5(const hid_t& parentId, bool metaDataOnly, const std::string& transformName)
 {
   herr_t err = 0;
   err = H5Utilities::createGroupsFromPath(transformName, parentId);

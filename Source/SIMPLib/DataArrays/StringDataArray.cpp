@@ -459,7 +459,7 @@ QString StringDataArray::getFullNameOfClass() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StringDataArray::writeH5Data(hid_t parentId, const std::vector<size_t>& tDims) const
+int StringDataArray::writeH5Data(const hid_t& parentId, const std::vector<size_t>& tDims) const
 {
   return H5DataArrayWriter::writeStringDataArray<StringDataArray>(parentId, this);
 }
@@ -507,7 +507,7 @@ ToolTipGenerator StringDataArray::getToolTipGenerator() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StringDataArray::readH5Data(hid_t parentId)
+int StringDataArray::readH5Data(const hid_t& parentId)
 {
   int err = 0;
   this->resizeTuples(0);

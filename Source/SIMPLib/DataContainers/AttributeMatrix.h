@@ -43,8 +43,6 @@
 #include <memory>
 #include <vector>
 
-#include <hdf5.h>
-
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtCore/QVector>
@@ -596,7 +594,7 @@ public:
    * @param parentId
    * @return
    */
-  virtual int writeAttributeArraysToHDF5(hid_t parentId) const;
+  virtual int writeAttributeArraysToHDF5(const hid_t& parentId) const;
 
   /**
    * @brief addAttributeArrayFromHDF5Path

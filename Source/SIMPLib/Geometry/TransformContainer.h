@@ -38,8 +38,6 @@
 #include "SIMPLib/Geometry/ITransformContainer.h"
 #include "SIMPLib/SIMPLib.h"
 
-#include "H5Support/H5Lite.h"
-
 class SIMPLib_EXPORT TransformContainer : public ITransformContainer
 {
 public:
@@ -120,9 +118,9 @@ public:
 
   TransformContainer& operator=(const TransformContainer&);
 
-  int writeTransformContainerToHDF5(hid_t parentId, const std::string& transformContainerName) override;
+  int writeTransformContainerToHDF5(const hid_t& parentId, const std::string& transformContainerName) override;
 
-  int readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformContainerName) override;
+  int readTransformContainerFromHDF5(const hid_t& parentId, bool metaDataOnly, const std::string& transformContainerName) override;
 
 private:
   TransformContainer::TransformParametersType m_Parameters = {};

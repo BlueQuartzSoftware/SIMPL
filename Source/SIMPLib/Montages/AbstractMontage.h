@@ -34,12 +34,9 @@
 
 #include <QtCore/QString>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/INamedObject.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/SIMPLib.h"
-
-#include "H5Support/H5ScopedSentinel.h"
-#include "H5Support/QH5Utilities.h"
 
 class AbstractTileIndex;
 using AbstractTileIndexShPtr = std::shared_ptr<AbstractTileIndex>;
@@ -49,6 +46,8 @@ using DataContainerShPtr = std::shared_ptr<DataContainer>;
 
 class DataContainerArray;
 using DataContainerArrayShPtr = std::shared_ptr<DataContainerArray>;
+
+using hid_t = int64_t;
 
 /**
  * @brief The AbstractMontage class is the base for the various types of montages and
@@ -131,7 +130,7 @@ public:
    * @param groupId
    * @return error code
    */
-  virtual int writeH5Data(hid_t groupId) const = 0;
+  virtual int writeH5Data(const hid_t& groupId) const = 0;
 
   /* -------- Begin iterator support -------- */
   /**

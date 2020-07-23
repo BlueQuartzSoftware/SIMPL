@@ -37,6 +37,8 @@
 
 #include <QtCore/QTextStream>
 
+#include <hdf5.h>
+
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
@@ -238,7 +240,7 @@ void DataContainerArray::printDataContainerNames(QTextStream& out) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid, DataContainerArrayProxy& dcaProxy, Observable* obs)
+int DataContainerArray::readDataContainersFromHDF5(bool preflight, const hid_t& dcaGid, DataContainerArrayProxy& dcaProxy, Observable* obs)
 {
   int err = 0;
 

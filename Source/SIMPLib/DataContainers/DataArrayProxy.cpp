@@ -31,6 +31,7 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "DataArrayProxy.h"
 
+#include <hdf5.h>
 #include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
@@ -114,7 +115,7 @@ bool DataArrayProxy::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, DataArrayProxy>& dataArrays, SIMPLH5DataReaderRequirements* req, QString h5InternalPath)
+void DataArrayProxy::ReadDataArrayStructure(const hid_t& attrMatGid, QMap<QString, DataArrayProxy>& dataArrays, SIMPLH5DataReaderRequirements* req, QString h5InternalPath)
 {
 
   QList<QString> dataArrayNames;

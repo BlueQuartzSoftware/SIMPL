@@ -247,7 +247,7 @@ public:
    * @param groupId
    * @return error code
    */
-  int writeH5Data(hid_t groupId) const override;
+  int writeH5Data(const hid_t& groupId) const override;
 
   /**
    * @brief Sets the DataContainer vector for the montage.

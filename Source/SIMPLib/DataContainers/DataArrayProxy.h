@@ -37,8 +37,6 @@
 
 #include <vector>
 
-#include <hdf5.h>
-
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 #include <QtCore/QString>
@@ -48,6 +46,7 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
 class SIMPLH5DataReaderRequirements;
+using hid_t = int64_t;
 
 /**
  * @brief The DataArrayProxy class
@@ -151,7 +150,7 @@ public:
    * @param dataArrays
    * @param h5InternalPath
    */
-  static void ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, DataArrayProxy>& dataArrays, SIMPLH5DataReaderRequirements* req, QString h5InternalPath);
+  static void ReadDataArrayStructure(const hid_t& attrMatGid, QMap<QString, DataArrayProxy>& dataArrays, SIMPLH5DataReaderRequirements* req, QString h5InternalPath);
 
   /**
    * @brief Updates the proxy to match a renamed DataArrayPath
