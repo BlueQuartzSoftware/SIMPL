@@ -34,10 +34,12 @@
 
 #include <memory>
 
+#include "H5Support/H5SupportTypeDefs.h"
+
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/SIMPLib.h"
 
-using hid_t = int64_t;
+
 
 class SIMPLib_EXPORT ITransformContainer : public Observable
 {

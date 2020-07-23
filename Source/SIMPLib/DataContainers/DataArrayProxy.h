@@ -41,12 +41,14 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QString>
 
+#include "H5Support/H5SupportTypeDefs.h"
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
 class SIMPLH5DataReaderRequirements;
-using hid_t = int64_t;
+
 
 /**
  * @brief The DataArrayProxy class

@@ -14,6 +14,8 @@
 #include <memory>
 #include <vector>
 
+#include "H5Support/H5SupportTypeDefs.h"
+
 //--Qt Includes
 #include <QtCore/QString>
 #include <QtCore/QtDebug>
@@ -25,7 +27,7 @@
 
 class IDataArray;
 using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
-using hid_t = int64_t;
+
 /**
  * @class IDataArray IDataArray.h PathToHeader/IDataArray.h
  * @brief This class holds a raw pointer to some allocated data that can be stored

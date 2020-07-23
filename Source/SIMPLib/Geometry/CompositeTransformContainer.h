@@ -35,6 +35,8 @@
 
 #include <memory>
 
+#include "H5Support/H5SupportTypeDefs.h"
+
 #include "SIMPLib/Geometry/ITransformContainer.h"
 #include "SIMPLib/SIMPLib.h"
 

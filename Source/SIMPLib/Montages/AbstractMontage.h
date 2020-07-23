@@ -34,6 +34,8 @@
 
 #include <QtCore/QString>
 
+#include "H5Support/H5SupportTypeDefs.h"
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/INamedObject.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -46,8 +48,6 @@ using DataContainerShPtr = std::shared_ptr<DataContainer>;
 
 class DataContainerArray;
 using DataContainerArrayShPtr = std::shared_ptr<DataContainerArray>;
-
-using hid_t = int64_t;
 
 /**
  * @brief The AbstractMontage class is the base for the various types of montages and
