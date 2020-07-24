@@ -1288,7 +1288,7 @@ QString H5FilterParametersReader::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void H5FilterParametersReader::setPipelineGroupId(const hid_t& value)
+void H5FilterParametersReader::setPipelineGroupId(hid_t value)
 {
   m_PipelineGroupId = value;
 }

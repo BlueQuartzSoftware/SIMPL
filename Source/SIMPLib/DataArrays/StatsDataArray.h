@@ -351,14 +351,14 @@ public:
    * @param parentId
    * @return
    */
-  int writeH5Data(const hid_t& parentId, const std::vector<size_t>& tDims) const override;
+  int writeH5Data(hid_t parentId, const std::vector<size_t>& tDims) const override;
 
   /**
    * @brief readH5Data
    * @param parentId
    * @return
    */
-  int readH5Data(const hid_t& parentId) override;
+  int readH5Data(hid_t parentId) override;
 
   /**
    * @brief writeXdmfAttribute

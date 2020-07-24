@@ -541,7 +541,7 @@ AttributeMatrix::Pointer AttributeMatrix::deepCopy(bool forceNoAllocate) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AttributeMatrix::writeAttributeArraysToHDF5(const hid_t& parentId) const
+int AttributeMatrix::writeAttributeArraysToHDF5(hid_t parentId) const
 {
   int err = 0;
 

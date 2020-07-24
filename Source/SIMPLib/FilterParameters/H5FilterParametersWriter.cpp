@@ -852,7 +852,7 @@ QString H5FilterParametersWriter::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void H5FilterParametersWriter::setPipelineGroupId(const hid_t& value)
+void H5FilterParametersWriter::setPipelineGroupId(hid_t value)
 {
   m_PipelineGroupId = value;
 }
@@ -864,7 +864,7 @@ hid_t H5FilterParametersWriter::getPipelineGroupId() const
 }
 
 // -----------------------------------------------------------------------------
-void H5FilterParametersWriter::setGroupId(const hid_t& value)
+void H5FilterParametersWriter::setGroupId(hid_t value)
 {
   m_GroupId = value;
 }

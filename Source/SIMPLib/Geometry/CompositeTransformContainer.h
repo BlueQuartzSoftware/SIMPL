@@ -64,8 +64,8 @@ public:
   CompositeTransformContainer();
   ~CompositeTransformContainer() override;
   CompositeTransformContainer& operator=(const CompositeTransformContainer&);
-  int writeTransformContainerToHDF5(const hid_t& parentId, const std::string& transformContainerName) override;
-  int readTransformContainerFromHDF5(const hid_t& parentId, bool metaDataOnly, const std::string& transformContainerName) override;
+  int writeTransformContainerToHDF5(hid_t parentId, const std::string& transformContainerName) override;
+  int readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformContainerName) override;
   /**
    * @brief Setter property for TransformContainers
    */

@@ -51,7 +51,7 @@ TransformContainer::TransformContainer() = default;
 // -----------------------------------------------------------------------------
 TransformContainer::~TransformContainer() = default;
 
-int TransformContainer::writeTransformContainerToHDF5(const hid_t& parentId, const std::string& transformName)
+int TransformContainer::writeTransformContainerToHDF5(hid_t parentId, const std::string& transformName)
 {
   herr_t err = 0;
   err = H5Utilities::createGroupsFromPath(transformName, parentId);
@@ -103,7 +103,7 @@ int TransformContainer::writeTransformContainerToHDF5(const hid_t& parentId, con
   return err;
 }
 
-int TransformContainer::readTransformContainerFromHDF5(const hid_t& parentId, bool metaDataOnly, const std::string& transformName)
+int TransformContainer::readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformName)
 {
   herr_t err = 0;
   err = H5Utilities::createGroupsFromPath(transformName, parentId);

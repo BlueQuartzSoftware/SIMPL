@@ -87,7 +87,7 @@ public:
   /**
    * @brief Setter property for PipelineGroupId
    */
-  void setPipelineGroupId(const hid_t& value);
+  void setPipelineGroupId(hid_t value);
   /**
    * @brief Getter property for PipelineGroupId
    * @return Value of PipelineGroupId

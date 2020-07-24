@@ -1096,7 +1096,7 @@ QString DataArray<T>::getTypeAsString() const
 
 // -----------------------------------------------------------------------------
 template <typename T>
-int32_t DataArray<T>::writeH5Data(const hid_t& parentId, const comp_dims_type& tDims) const
+int32_t DataArray<T>::writeH5Data(hid_t parentId, const comp_dims_type& tDims) const
 {
   if(m_Array == nullptr)
   {
@@ -1225,7 +1225,7 @@ QString DataArray<T>::getInfoString(SIMPL::InfoStringFormat format) const
 
 // -----------------------------------------------------------------------------
 template <typename T>
-int32_t DataArray<T>::readH5Data(const hid_t& parentId)
+int32_t DataArray<T>::readH5Data(hid_t parentId)
 {
   int32_t err = 0;
 

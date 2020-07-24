@@ -118,9 +118,9 @@ public:
 
   TransformContainer& operator=(const TransformContainer&);
 
-  int writeTransformContainerToHDF5(const hid_t& parentId, const std::string& transformContainerName) override;
+  int writeTransformContainerToHDF5(hid_t parentId, const std::string& transformContainerName) override;
 
-  int readTransformContainerFromHDF5(const hid_t& parentId, bool metaDataOnly, const std::string& transformContainerName) override;
+  int readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformContainerName) override;
 
 private:
   TransformContainer::TransformParametersType m_Parameters = {};

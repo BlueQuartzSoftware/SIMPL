@@ -254,14 +254,14 @@ public:
    * @param tDims
    * @return
    */
-  virtual int32_t writeH5Data(const hid_t& parentId, const std::vector<size_t>& tDims) const = 0;
+  virtual int32_t writeH5Data(hid_t parentId, const std::vector<size_t>& tDims) const = 0;
 
   /**
    * @brief readH5Data
    * @param parentId
    * @return
    */
-  virtual int32_t readH5Data(const hid_t& parentId) = 0;
+  virtual int32_t readH5Data(hid_t parentId) = 0;
 
   /**
    * @brief writeXdmfAttribute

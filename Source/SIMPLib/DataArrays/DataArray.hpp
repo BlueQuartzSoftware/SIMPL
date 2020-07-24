@@ -501,7 +501,7 @@ public:
    * @param parentId
    * @return
    */
-  int32_t writeH5Data(const hid_t& parentId, const comp_dims_type& tDims) const override;
+  int32_t writeH5Data(hid_t parentId, const comp_dims_type& tDims) const override;
 
   /**
    * @brief writeXdmfAttribute
@@ -555,7 +555,7 @@ public:
    * @param parentId
    * @return
    */
-  int32_t readH5Data(const hid_t& parentId) override;
+  int32_t readH5Data(hid_t parentId) override;
 
   /**
    * @brief

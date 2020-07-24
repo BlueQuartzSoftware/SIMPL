@@ -130,7 +130,7 @@ public:
    * @param groupId
    * @return error code
    */
-  virtual int writeH5Data(const hid_t& groupId) const = 0;
+  virtual int writeH5Data(hid_t groupId) const = 0;
 
   /* -------- Begin iterator support -------- */
   /**

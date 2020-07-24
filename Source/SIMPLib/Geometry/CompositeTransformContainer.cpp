@@ -48,7 +48,7 @@ CompositeTransformContainer::CompositeTransformContainer() = default;
 // -----------------------------------------------------------------------------
 CompositeTransformContainer::~CompositeTransformContainer() = default;
 
-int CompositeTransformContainer::writeTransformContainerToHDF5(const hid_t& parentId, const std::string& transformContainerName)
+int CompositeTransformContainer::writeTransformContainerToHDF5(hid_t parentId, const std::string& transformContainerName)
 {
   herr_t err = 0;
 
@@ -85,7 +85,7 @@ int CompositeTransformContainer::writeTransformContainerToHDF5(const hid_t& pare
   return err;
 }
 
-int CompositeTransformContainer::readTransformContainerFromHDF5(const hid_t& parentId, bool metaDataOnly, const std::string& transformContainerName)
+int CompositeTransformContainer::readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformContainerName)
 {
   herr_t err = 0;
 

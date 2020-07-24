@@ -594,7 +594,7 @@ public:
    * @param parentId
    * @return
    */
-  virtual int writeAttributeArraysToHDF5(const hid_t& parentId) const;
+  virtual int writeAttributeArraysToHDF5(hid_t parentId) const;
 
   /**
    * @brief addAttributeArrayFromHDF5Path

@@ -152,7 +152,7 @@ public:
    * @param dataArrays
    * @param h5InternalPath
    */
-  static void ReadDataArrayStructure(const hid_t& attrMatGid, QMap<QString, DataArrayProxy>& dataArrays, SIMPLH5DataReaderRequirements* req, QString h5InternalPath);
+  static void ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, DataArrayProxy>& dataArrays, SIMPLH5DataReaderRequirements* req, QString h5InternalPath);
 
   /**
    * @brief Updates the proxy to match a renamed DataArrayPath
