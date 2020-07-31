@@ -105,7 +105,7 @@ void LinkFeatureMapToElementArray::updateFeatureInstancePointers()
   clearErrorCode();
   clearWarningCode();
 
-  if(nullptr != m_ActivePtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_ActivePtr.lock()) 
   {
     m_Active = m_ActivePtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -138,8 +138,8 @@ void LinkFeatureMapToElementArray::dataCheck()
 
   std::vector<size_t> cDims(1, 1);
   m_SelectedCellDataPtr =
-      getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>>(this, getSelectedCellArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_SelectedCellDataPtr.lock())                                                                       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+      getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>>(this, getSelectedCellArrayPath(), cDims); 
+  if(nullptr != m_SelectedCellDataPtr.lock())                                                                       
   {
     m_SelectedCellData = m_SelectedCellDataPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -151,7 +151,7 @@ void LinkFeatureMapToElementArray::dataCheck()
 
   tempPath.update(getSelectedCellArrayPath().getDataContainerName(), getCellFeatureAttributeMatrixName(), getActiveArrayName());
   m_ActivePtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>>(this, tempPath, false, cDims, "", DataArrayID);
-  if(nullptr != m_ActivePtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_ActivePtr.lock()) 
   {
     m_Active = m_ActivePtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */

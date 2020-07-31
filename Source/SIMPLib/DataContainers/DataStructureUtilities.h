@@ -206,7 +206,7 @@ public:
       return dataArray;
     }
 
-    dataArray = attrMat->getPrereqArray<ArrayType, Filter>(filter, daName, -80002, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+    dataArray = attrMat->getPrereqArray<ArrayType, Filter>(filter, daName, -80002, cDims); 
     return dataArray;
   }
 
@@ -271,7 +271,7 @@ public:
       return dataArray;
     }
 
-    dataArray = std::dynamic_pointer_cast<ArrayType>(attrMat->getPrereqIDataArray(filter, daName, -90002)); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+    dataArray = std::dynamic_pointer_cast<ArrayType>(attrMat->getPrereqIDataArray(filter, daName, -90002)); 
     return dataArray;
   }
 

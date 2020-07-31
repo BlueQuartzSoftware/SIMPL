@@ -924,6 +924,6 @@ IDataArray::Pointer DataContainerArray::getPrereqIDataArrayFromPath(AbstractFilt
     return dataArray;
   }
 
-  dataArray = attrMat->getPrereqIDataArray(filter, daName, -90002); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  dataArray = attrMat->getPrereqIDataArray(filter, daName, -90002); 
   return dataArray;
 }

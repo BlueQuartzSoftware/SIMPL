@@ -140,7 +140,7 @@ void MultiThresholdObjects2::dataCheck()
     std::vector<size_t> cDims(1, 1);
     DataArrayPath tempPath(dcName, amName, getDestinationArrayName());
     m_DestinationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>>(this, tempPath, true, cDims, "", ThresholdArrayID);
-    if(nullptr != m_DestinationPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+    if(nullptr != m_DestinationPtr.lock()) 
     {
       m_Destination = m_DestinationPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */

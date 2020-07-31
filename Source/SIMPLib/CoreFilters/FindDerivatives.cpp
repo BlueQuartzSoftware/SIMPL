@@ -371,8 +371,8 @@ void FindDerivatives::dataCheck()
   std::vector<size_t> dims(1, cDims);
 
   m_DerivativesArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>>(this, getDerivativesArrayPath(), 0, dims, "",
-                                                                                                   DerivativesArrayID); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_DerivativesArrayPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+                                                                                                   DerivativesArrayID); 
+  if(nullptr != m_DerivativesArrayPtr.lock()) 
   {
     m_DerivativesArray = m_DerivativesArrayPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
