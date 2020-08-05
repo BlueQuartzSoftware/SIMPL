@@ -55,8 +55,6 @@ public:
   template <typename T>
   herr_t writePointer1DArrayDataset(hid_t loc_id)
   {
-
-    T value = 0x0;
     herr_t err = 1;
     int32_t rank = 1;
     // Create the Dimensions
@@ -72,7 +70,7 @@ public:
       data[i] = static_cast<T>(i * 5);
     }
 
-    QString dsetName = QH5Lite::HDFTypeForPrimitiveAsStr(value);
+    QString dsetName = QH5Lite::HDFTypeForPrimitiveAsStr<T>();
     dsetName = "Pointer1DArrayDataset<" + dsetName + ">";
     err = QH5Lite::writePointerDataset(loc_id, dsetName, rank, dims, &(data.front()));
     DREAM3D_REQUIRE(err >= 0);
@@ -86,8 +84,6 @@ public:
   template <typename T>
   herr_t writePointer2DArrayDataset(hid_t loc_id)
   {
-
-    T value = 0x0;
     herr_t err = 1;
     int32_t rank = 2;
     // Create the Dimensions
@@ -104,7 +100,7 @@ public:
       data[i] = static_cast<T>(i * 5);
     }
 
-    QString dsetName = QH5Lite::HDFTypeForPrimitiveAsStr(value);
+    QString dsetName = QH5Lite::HDFTypeForPrimitiveAsStr<T>();
     dsetName = "Pointer2DArrayDataset<" + dsetName + ">";
     err = QH5Lite::writePointerDataset(loc_id, dsetName, rank, dims, &(data.front()));
     DREAM3D_REQUIRE(err >= 0);
@@ -118,8 +114,6 @@ public:
   template <typename T>
   herr_t writePointer3DArrayDataset(hid_t loc_id)
   {
-
-    T value = 0x0;
     herr_t err = 1;
     int32_t rank = 3;
     // Create the Dimensions
@@ -137,7 +131,7 @@ public:
       data[i] = static_cast<T>(i * 5);
     }
 
-    QString dsetName = QH5Lite::HDFTypeForPrimitiveAsStr(value);
+    QString dsetName = QH5Lite::HDFTypeForPrimitiveAsStr<T>();
     dsetName = "Pointer3DArrayDataset<" + dsetName + ">";
     err = QH5Lite::writePointerDataset(loc_id, dsetName, rank, dims, &(data.front()));
     DREAM3D_REQUIRE(err >= 0);
@@ -151,8 +145,6 @@ public:
   template <typename T>
   herr_t writePointer4DArrayDataset(hid_t loc_id)
   {
-
-    T value = 0x0;
     herr_t err = 1;
     int32_t rank = 4;
     // Create the Dimensions
@@ -171,7 +163,7 @@ public:
       data[i] = static_cast<T>(i * 5);
     }
 
-    QString dsetName = QH5Lite::HDFTypeForPrimitiveAsStr(value);
+    QString dsetName = QH5Lite::HDFTypeForPrimitiveAsStr<T>();
     dsetName = "Pointer4DArrayDataset<" + dsetName + ">";
     err = QH5Lite::writePointerDataset(loc_id, dsetName, rank, dims, &(data.front()));
     DREAM3D_REQUIRE(err >= 0);
@@ -299,8 +291,7 @@ public:
 
     // Fill in Dataset Path with a valid path so that we can continue our error checks
     importInfoList.clear();
-    int8_t dummyVal = 0x0;
-    QString typeStr = QH5Lite::HDFTypeForPrimitiveAsStr(dummyVal);
+    QString typeStr = QH5Lite::HDFTypeForPrimitiveAsStr<int8_t>();
     importInfo.dataSetPath = "Pointer/Pointer1DArrayDataset<" + typeStr + ">";
     importInfoList.push_back(importInfo);
     filter->setDatasetImportInfoList(importInfoList);
@@ -370,8 +361,7 @@ public:
       return;
     }
 
-    T value = 0x0;
-    QString typeStr = QH5Lite::HDFTypeForPrimitiveAsStr(value);
+    QString typeStr = QH5Lite::HDFTypeForPrimitiveAsStr<T>();
 
     DataContainerArray::Pointer dca = createDataContainerArray(amDims);
     filter->setDataContainerArray(dca);
