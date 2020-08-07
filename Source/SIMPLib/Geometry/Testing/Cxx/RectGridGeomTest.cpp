@@ -1,12 +1,5 @@
 
-#include <cstdlib>
-
-#include <iostream>
-
-#include <QtCore/QFile>
-
 #include "SIMPLib/Geometry/RectGridGeom.h"
-#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class RectGridGeomTest
