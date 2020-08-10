@@ -45,6 +45,8 @@
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
 
+#include "H5Support/H5SupportTypeDefs.h"
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataArrays/IDataArray.h"

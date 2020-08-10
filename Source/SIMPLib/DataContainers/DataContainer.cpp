@@ -39,10 +39,12 @@
 
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
+#include "SIMPLib/Geometry/GeometryHelpers.h"
 #include "SIMPLib/Geometry/HexahedralGeom.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
@@ -52,9 +54,9 @@
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include "H5Support/H5ScopedSentinel.h"
+#include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 
 // -----------------------------------------------------------------------------

@@ -44,6 +44,7 @@
 
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/Geometry/GeometryHelpers.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 
 // -----------------------------------------------------------------------------

@@ -36,6 +36,8 @@
 
 #include <QtCore/QTextStream>
 
+#include "H5Support/H5Lite.h"
+
 #include "SIMPLib/HDF5/H5DataArrayReader.h"
 #include "SIMPLib/HDF5/H5DataArrayWriter.hpp"
 

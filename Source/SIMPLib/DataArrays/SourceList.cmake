@@ -19,11 +19,11 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataArrayFilter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StatsDataArray.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringDataArray.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/NeighborList.cpp
 )
 cmp_IDE_SOURCE_PROPERTIES( "${SUBDIR_NAME}" "${SIMPLib_${SUBDIR_NAME}_HDRS};${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}" "${SIMPLib_${SUBDIR_NAME}_SRCS}" "${PROJECT_INSTALL_HEADERS}")
 cmp_IDE_SOURCE_PROPERTIES( "Generated/${SUBDIR_NAME}" "" "${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS}" "0")
 
-message(STATUS "SIMPL_BUILD_TESTING: ${SIMPL_BUILD_TESTING}")
 #-------------------------------------------------------------------------------
 # Add the unit testing sources
 # -------------------------------------------------------------------- 

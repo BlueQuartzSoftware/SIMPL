@@ -42,7 +42,6 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Geometry/IGeometry.h"
-#include "SIMPLib/Geometry/GeometryHelpers.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 

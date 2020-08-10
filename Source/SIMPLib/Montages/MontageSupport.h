@@ -34,8 +34,7 @@
 
 #include <memory>
 
-#include "H5Support/QH5Lite.h"
-#include "H5Support/H5ScopedErrorHandler.h"
+#include "H5Support/H5SupportTypeDefs.h"
 
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 
