@@ -678,14 +678,6 @@ void ImageGeom::getCoords(size_t idx, double coords[3]) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::optional<size_t> ImageGeom::getIndex(float coords[3]) const
-{
-  return getIndex(coords[0], coords[1], coords[2]);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 std::optional<size_t> ImageGeom::getIndex(float xCoord, float yCoord, float zCoord) const
 {
   size_t x = (xCoord - (0.5f * m_Spacing[0]) - m_Origin[0]) / m_Spacing[0];
@@ -693,14 +685,6 @@ std::optional<size_t> ImageGeom::getIndex(float xCoord, float yCoord, float zCoo
   size_t z = (zCoord - (0.5f * m_Spacing[2]) - m_Origin[2]) / m_Spacing[2];
 
   return (m_Dimensions[1] * m_Dimensions[0] * z) + (m_Dimensions[0] * y) + x;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-std::optional<size_t> ImageGeom::getIndex(double coords[3]) const
-{
-  return getIndex(coords[0], coords[1], coords[2]);
 }
 
 // -----------------------------------------------------------------------------

@@ -713,14 +713,6 @@ void RectGridGeom::getCoords(size_t idx, double coords[3]) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::optional<size_t> RectGridGeom::getIndex(float coords[3]) const
-{
-  return getIndex(coords[0], coords[1], coords[2]);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 std::optional<size_t> RectGridGeom::getIndex(float xCoord, float yCoord, float zCoord) const
 {
   FloatArrayType& xBnds = *m_xBounds;
@@ -754,14 +746,6 @@ std::optional<size_t> RectGridGeom::getIndex(float xCoord, float yCoord, float z
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::optional<size_t> RectGridGeom::getIndex(double coords[3]) const
-{
-  return getIndex(coords[0], coords[1], coords[2]);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 std::optional<size_t> RectGridGeom::getIndex(double xCoord, double yCoord, double zCoord) const
 {
   FloatArrayType& xBnds = *m_xBounds;
@@ -783,6 +767,7 @@ std::optional<size_t> RectGridGeom::getIndex(double xCoord, double yCoord, doubl
     return {};
   }
 
+  // Use standard distance to get the index of the returned iterator from adjacent_find
   size_t x = std::distance(xBnds.cbegin(), std::adjacent_find(xBnds.cbegin(), xBnds.cend(), [xCoord](const float a, const float b) { return (xCoord >= a && xCoord < b); }));
   size_t y = std::distance(yBnds.cbegin(), std::adjacent_find(yBnds.cbegin(), yBnds.cend(), [yCoord](const float a, const float b) { return (yCoord >= a && yCoord < b); }));
   size_t z = std::distance(zBnds.cbegin(), std::adjacent_find(zBnds.cbegin(), zBnds.cend(), [zCoord](const float a, const float b) { return (zCoord >= a && zCoord < b); }));
