@@ -261,6 +261,9 @@ public:
   void getCoords(size_t x, size_t y, size_t z, double coords[3]) const override;
   void getCoords(size_t idx, double coords[3]) const override;
 
+  std::optional<size_t> getIndex(float xCoord, float yCoord, float zCoord) const override;
+  std::optional<size_t> getIndex(double xCoord, double yCoord, double zCoord) const override;
+
 protected:
   RectGridGeom();
 

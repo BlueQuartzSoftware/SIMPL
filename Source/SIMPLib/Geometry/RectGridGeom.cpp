@@ -713,6 +713,73 @@ void RectGridGeom::getCoords(size_t idx, double coords[3]) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+std::optional<size_t> RectGridGeom::getIndex(float xCoord, float yCoord, float zCoord) const
+{
+  FloatArrayType& xBnds = *m_xBounds;
+  FloatArrayType& yBnds = *m_yBounds;
+  FloatArrayType& zBnds = *m_zBounds;
+
+  if(xCoord < xBnds.front() || xCoord >= xBnds.back())
+  {
+    return {};
+  }
+
+  if(yCoord < yBnds.front() || yCoord >= yBnds.back())
+  {
+    return {};
+  }
+
+  if(zCoord < zBnds.front() || zCoord >= zBnds.back())
+  {
+    return {};
+  }
+
+  size_t x = std::distance(xBnds.cbegin(), std::adjacent_find(xBnds.cbegin(), xBnds.cend(), [xCoord](const float a, const float b) { return (xCoord >= a && xCoord < b); }));
+  size_t y = std::distance(yBnds.cbegin(), std::adjacent_find(yBnds.cbegin(), yBnds.cend(), [yCoord](const float a, const float b) { return (yCoord >= a && yCoord < b); }));
+  size_t z = std::distance(zBnds.cbegin(), std::adjacent_find(zBnds.cbegin(), zBnds.cend(), [zCoord](const float a, const float b) { return (zCoord >= a && zCoord < b); }));
+
+  size_t xSize = xBnds.size() - 1;
+  size_t ySize = yBnds.size() - 1;
+  return (ySize * xSize * z) + (xSize * y) + x;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+std::optional<size_t> RectGridGeom::getIndex(double xCoord, double yCoord, double zCoord) const
+{
+  FloatArrayType& xBnds = *m_xBounds;
+  FloatArrayType& yBnds = *m_yBounds;
+  FloatArrayType& zBnds = *m_zBounds;
+
+  if(xCoord < xBnds.front() || xCoord >= xBnds.back())
+  {
+    return {};
+  }
+
+  if(yCoord < yBnds.front() || yCoord >= yBnds.back())
+  {
+    return {};
+  }
+
+  if(zCoord < zBnds.front() || zCoord >= zBnds.back())
+  {
+    return {};
+  }
+
+  // Use standard distance to get the index of the returned iterator from adjacent_find
+  size_t x = std::distance(xBnds.cbegin(), std::adjacent_find(xBnds.cbegin(), xBnds.cend(), [xCoord](const float a, const float b) { return (xCoord >= a && xCoord < b); }));
+  size_t y = std::distance(yBnds.cbegin(), std::adjacent_find(yBnds.cbegin(), yBnds.cend(), [yCoord](const float a, const float b) { return (yCoord >= a && yCoord < b); }));
+  size_t z = std::distance(zBnds.cbegin(), std::adjacent_find(zBnds.cbegin(), zBnds.cend(), [zCoord](const float a, const float b) { return (zCoord >= a && zCoord < b); }));
+
+  size_t xSize = xBnds.size() - 1;
+  size_t ySize = yBnds.size() - 1;
+  return (ySize * xSize * z) + (xSize * y) + x;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void RectGridGeom::initializeWithZeros()
 {
   for(size_t i = 0; i < 3; i++)
