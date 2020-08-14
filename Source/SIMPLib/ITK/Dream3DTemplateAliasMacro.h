@@ -77,8 +77,8 @@
 #pragma once
 
 #include <itkConfigure.h>
-#define ITK_VERSION_CHECK ((ITK_VERSION_MAJOR == 5) && (ITK_VERSION_MINOR >= 1))
-#if ITK_VERSION_CHECK
+#define SIMPL_ITK_VERSION_CHECK ((ITK_VERSION_MAJOR == 5) && (ITK_VERSION_MINOR >= 1))
+#if SIMPL_ITK_VERSION_CHECK
 #include <itkCommonEnums.h>
 #else
 #ifdef __clang__
@@ -539,8 +539,9 @@
     }                                                                                                                                                                                                  \
   }
 
-#if !ITK_VERSION_CHECK
+#if !SIMPL_ITK_VERSION_CHECK
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
 #endif
+#undef SIMPL_ITK_VERSION_CHECK
