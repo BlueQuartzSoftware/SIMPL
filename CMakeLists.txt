@@ -468,6 +468,8 @@ include(${SIMPLProj_SOURCE_DIR}/Support/Support.cmake)
 # Find the Pybind11 installation
 option(SIMPL_ENABLE_PYTHON "Generate and Compile Python wrapping codes" OFF)
 if(SIMPL_ENABLE_PYTHON)
+  set(SIMPL_PYTHON_TEST_ENV ${SIMPL_PYTHON_TEST_ENV} CACHE STRING "A semicolon delimited list of environment variables used for Python tests")
+
   option(SIMPL_USE_ANACONDA_PYTHON "Whether the selected Python executable is part of an Anaconda environment" OFF)
 
   mark_as_advanced(CLEAR PYTHON_EXECUTABLE)

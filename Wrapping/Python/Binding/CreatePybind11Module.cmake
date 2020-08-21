@@ -54,6 +54,7 @@ function(AddPythonTest)
     PROPERTY
       ENVIRONMENT
       "PYTHONPATH=${ARGS_PYTHONPATH}"
+      "${SIMPL_PYTHON_TEST_ENV}"
   )
 endfunction()
 
