@@ -219,7 +219,7 @@ public:
    * @brief Returns the list of deleted data paths.
    * @return
    */
-  std::list<DataArrayPath> getDeletedPaths();
+  std::list<DataArrayPath> getDeletedPaths() override;
 
 protected:
   CombineAttributeMatrices();

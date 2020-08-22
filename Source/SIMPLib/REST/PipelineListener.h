@@ -49,7 +49,7 @@ public:
   QString getStatusLog();
 
 public slots:
-  void processPipelineMessage(const AbstractMessage::Pointer& pm);
+  void processPipelineMessage(const AbstractMessage::Pointer& pm) override;
 
 private:
   std::vector<AbstractMessage::Pointer> m_SharedMessages;

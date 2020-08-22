@@ -133,7 +133,7 @@ public:
   /**
    * @brief Returns the name of the class for AbstractMessage
    */
-  virtual QString getNameOfClass() const
+  QString getNameOfClass() const override
   {
     return QString("Parser<ArrayType, F>");
   }
