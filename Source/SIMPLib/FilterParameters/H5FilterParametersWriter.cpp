@@ -126,14 +126,14 @@ int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeli
   // This will make sure if we return early from this method that the HDF5 File is properly closed.
   // This will also take care of making sure all groups and file ids are closed
   // before this method returns.
-  H5ScopedFileSentinel scopedFileSentinel(&fileId, true);
+  H5ScopedFileSentinel scopedFileSentinel(fileId, true);
 
   // Write our File Version string to the Root "/" group
   QH5Lite::writeStringAttribute(fileId, "/", SIMPL::HDF5::FileVersionName, SIMPL::HDF5::FileVersion);
   QH5Lite::writeStringAttribute(fileId, "/", SIMPL::HDF5::DREAM3DVersion, SIMPLib::Version::Complete());
 
   hid_t pipelineGroupId = QH5Utilities::createGroup(fileId, SIMPL::StringConstants::PipelineGroupName);
-  scopedFileSentinel.addGroupId(&pipelineGroupId);
+  scopedFileSentinel.addGroupId(pipelineGroupId);
   setGroupId(pipelineGroupId);
 
   QH5Lite::writeScalarAttribute(pipelineGroupId, "/" + SIMPL::StringConstants::PipelineGroupName, SIMPL::StringConstants::PipelineVersionName, 2);

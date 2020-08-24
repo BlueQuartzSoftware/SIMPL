@@ -187,11 +187,11 @@ public:
 
     hid_t file_id = QH5Utilities::createFile(m_FilePath);
     DREAM3D_REQUIRE(file_id > 0);
-    H5ScopedFileSentinel sentinel(&file_id, false);
+    H5ScopedFileSentinel sentinel(file_id, false);
 
     // Create the Pointer group
     hid_t ptrId = QH5Utilities::createGroup(file_id, "Pointer");
-    sentinel.addGroupId(&ptrId);
+    sentinel.addGroupId(ptrId);
     DREAM3D_REQUIRED(ptrId, >, 0);
 
     DREAM3D_REQUIRE(writePointer1DArrayDataset<int8_t>(ptrId) >= 0);

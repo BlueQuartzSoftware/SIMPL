@@ -111,7 +111,7 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(hid_t fid
     return FilterPipeline::NullPointer();
   }
 
-  H5ScopedGroupSentinel sentinel(&pipelineGroupId, true);
+  H5ScopedGroupSentinel sentinel(pipelineGroupId, true);
 
   setPipelineGroupId(pipelineGroupId);
 
@@ -196,7 +196,7 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString f
     return FilterPipeline::NullPointer();
   }
 
-  H5ScopedFileSentinel sentinel(&fid, true);
+  H5ScopedFileSentinel sentinel(fid, true);
 
   FilterPipeline::Pointer pipeline = readPipelineFromFile(fid, obs);
   return pipeline;
@@ -214,7 +214,7 @@ QString H5FilterParametersReader::getJsonFromFile(QString filePath, IObserver* o
     return QString();
   }
 
-  H5ScopedFileSentinel sentinel(&fid, true);
+  H5ScopedFileSentinel sentinel(fid, true);
 
   // Open the Pipeline Group
   hid_t pipelineGroupId = H5Gopen(fid, SIMPL::StringConstants::PipelineGroupName.toLatin1().data(), H5P_DEFAULT);
@@ -225,7 +225,7 @@ QString H5FilterParametersReader::getJsonFromFile(QString filePath, IObserver* o
     return QString();
   }
 
-  sentinel.addGroupId(&pipelineGroupId);
+  sentinel.addGroupId(pipelineGroupId);
 
   setPipelineGroupId(pipelineGroupId);
 
@@ -1104,7 +1104,7 @@ DataContainerArrayProxy H5FilterParametersReader::readDataContainerArrayProxy(co
   DataContainerArrayProxy dcaProxy;
   // Open the top level group that holds all the values for this filter parameter
   hid_t dcaGid = QH5Utilities::openHDF5Object(m_CurrentGroupId, name);
-  H5ScopedGroupSentinel sentinel(&dcaGid, true);
+  H5ScopedGroupSentinel sentinel(dcaGid, true);
   if(dcaGid < 0)
   {
     return defValue;
@@ -1119,7 +1119,7 @@ DataContainerArrayProxy H5FilterParametersReader::readDataContainerArrayProxy(co
   for(const auto& dcName : dcaNames)
   {
     hid_t dcGid = QH5Utilities::openHDF5Object(dcaGid, dcName);
-    H5ScopedGroupSentinel sentinal_dc(&dcGid, false);
+    H5ScopedGroupSentinel sentinal_dc(dcGid, false);
     DataContainerProxy dcProxy;
     dcProxy.setName(dcName);
     dcProxy.setFlag(Qt::Checked);
@@ -1134,7 +1134,7 @@ DataContainerArrayProxy H5FilterParametersReader::readDataContainerArrayProxy(co
     for(const auto& amName : amNames)
     {
       hid_t amGid = QH5Utilities::openHDF5Object(dcGid, amName);
-      H5ScopedGroupSentinel sentinal_am(&amGid, false);
+      H5ScopedGroupSentinel sentinal_am(amGid, false);
       AttributeMatrixProxy amProxy(amName, 1u);
       amProxy.setFlag(Qt::Checked);
       QString data; // Output will be read into this object

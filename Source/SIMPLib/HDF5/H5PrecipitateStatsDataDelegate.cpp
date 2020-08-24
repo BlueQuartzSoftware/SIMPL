@@ -537,7 +537,7 @@ int H5PrecipitateStatsDataDelegate::writeRDFDistributionData(hid_t pid, RdfData:
     hid_t disId = QH5Utilities::createGroup(pid, hdf5GroupName);
     if(disId > 0)
     {
-      H5ScopedGroupSentinel sentinel(&disId, false);
+      H5ScopedGroupSentinel sentinel(disId, false);
       std::vector<hsize_t> dims(1);
       // Write the Frequencies
       std::vector<float> freqs = rdfData->getFrequencies();
@@ -652,7 +652,7 @@ int H5PrecipitateStatsDataDelegate::readRDFDistributionData(hid_t pid, const QSt
   {
     return -1;
   }
-  H5ScopedGroupSentinel sentinel(&disId, false);
+  H5ScopedGroupSentinel sentinel(disId, false);
 
   std::vector<float> freqs;
   err = H5Lite::readVectorDataset(disId, SIMPL::StringConstants::Frequencies.toStdString(), freqs);

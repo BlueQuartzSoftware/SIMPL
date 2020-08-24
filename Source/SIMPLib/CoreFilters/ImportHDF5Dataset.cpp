@@ -168,7 +168,7 @@ void ImportHDF5Dataset::dataCheck()
     std::cout << "Error Reading HDF5 file: " << m_HDF5FilePath.toStdString() << std::endl;
     return;
   }
-  H5ScopedFileSentinel sentinel(&fileId, true);
+  H5ScopedFileSentinel sentinel(fileId, true);
 
   QMap<QString, hid_t> openedParentPathsMap;
   for(int i = 0; i < m_DatasetImportInfoList.size(); i++)
@@ -186,7 +186,7 @@ void ImportHDF5Dataset::dataCheck()
       if(!openedParentPathsMap.contains(parentPath))
       {
         parentId = QH5Utilities::openHDF5Object(fileId, parentPath);
-        sentinel.addGroupId(&parentId);
+        sentinel.addGroupId(parentId);
         openedParentPathsMap.insert(parentPath, parentId);
       }
       else

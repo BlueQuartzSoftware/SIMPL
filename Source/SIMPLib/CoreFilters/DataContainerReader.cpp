@@ -268,7 +268,7 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
     setErrorCondition(-150, ss);
     return DataContainerArray::NullPointer();
   }
-  H5ScopedFileSentinel sentinel(&fileId, true);
+  H5ScopedFileSentinel sentinel(fileId, true);
 
   if(!getInPreflight())
   {
@@ -296,10 +296,10 @@ DataContainerArray::MontageCollection DataContainerReader::readMontageGroup(cons
     setErrorCondition(-155, ss);
     return DataContainerArray::MontageCollection();
   }
-  H5ScopedFileSentinel sentinel(&fileId, true);
+  H5ScopedFileSentinel sentinel(fileId, true);
 
   hid_t groupId = QH5Utilities::openHDF5Object(fileId, SIMPL::StringConstants::MontageGroupName);
-  sentinel.addGroupId(&groupId);
+  sentinel.addGroupId(groupId);
   int err = 0;
   DataContainerArray::MontageCollection montages = MontageSupport::IO::ReadMontagesFromHDF5(groupId, dca, err);
   if(err < 0)

@@ -64,7 +64,7 @@ int TransformContainer::writeTransformContainerToHDF5(hid_t parentId, const std:
   {
     return -1;
   }
-  H5ScopedGroupSentinel gSentinel(&transformId, false);
+  H5ScopedGroupSentinel gSentinel(transformId, false);
   std::vector<hsize_t> dims(1);
   TransformParametersType parameters = this->getParameters();
   dims[0] = parameters.size();
@@ -116,7 +116,7 @@ int TransformContainer::readTransformContainerFromHDF5(hid_t parentId, bool meta
   {
     return -1;
   }
-  H5ScopedGroupSentinel gSentinel(&transformId, false);
+  H5ScopedGroupSentinel gSentinel(transformId, false);
   TransformParametersType parameters;
   err = H5Lite::readVectorDataset(transformId, SIMPL::Geometry::TransformContainerParameters.toLatin1().data(), parameters);
   if(err < 0)

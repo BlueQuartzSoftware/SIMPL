@@ -244,7 +244,7 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
       {
         continue;
       }
-      H5ScopedGroupSentinel sentinel(&attrMatGid, true);
+      H5ScopedGroupSentinel sentinel(attrMatGid, true);
 
       AttributeMatrixProxy amProxy(attributeMatrixName);
       amProxy.setName(attributeMatrixName);

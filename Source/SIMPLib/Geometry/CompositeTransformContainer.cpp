@@ -63,7 +63,7 @@ int CompositeTransformContainer::writeTransformContainerToHDF5(hid_t parentId, c
   {
     return -1;
   }
-  H5ScopedGroupSentinel gSentinel(&transformContainerId, false);
+  H5ScopedGroupSentinel gSentinel(transformContainerId, false);
 
   err = QH5Lite::writeStringAttribute(parentId, transformContainerName.c_str(), SIMPL::Geometry::TransformContainerTypeName, SIMPL::Geometry::CompositeTransformContainer);
   if(err < 0)
@@ -94,7 +94,7 @@ int CompositeTransformContainer::readTransformContainerFromHDF5(hid_t parentId, 
   {
     return -1;
   }
-  H5ScopedGroupSentinel gSentinel(&transformContainerGrpId, false);
+  H5ScopedGroupSentinel gSentinel(transformContainerGrpId, false);
 
   hsize_t idx = 0;
   H5Gget_num_objs(transformContainerGrpId, &idx);

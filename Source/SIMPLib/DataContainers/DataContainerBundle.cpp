@@ -226,7 +226,7 @@ int DataContainerBundle::writeH5Data(hid_t groupId)
 {
   hid_t bundleId = QH5Utilities::createGroup(groupId, getName());
   // This object will make sure the HDF5 Group id is closed when it goes out of scope.
-  H5GroupAutoCloser bundleIdClose(&bundleId);
+  H5GroupAutoCloser bundleIdClose(bundleId);
 
   size_t count = static_cast<size_t>(m_DataContainers.size());
   QStringList dcNameList;

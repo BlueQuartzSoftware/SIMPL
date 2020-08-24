@@ -578,7 +578,7 @@ int GridMontage::writeH5Data(hid_t groupId) const
 {
   hid_t montageId = QH5Utilities::createGroup(groupId, getName());
   // This object will make sure the HDF5 Group id is closed when it goes out of scope.
-  H5GroupAutoCloser bundleIdClose(&montageId);
+  H5GroupAutoCloser bundleIdClose(montageId);
 
   int err = QH5Lite::writeStringDataset(montageId, "Montage Type", "GridMontage");
   if(err < 0)

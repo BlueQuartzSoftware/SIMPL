@@ -168,7 +168,7 @@ void DataContainerWriter::execute()
   // qDebug() << "DREAM3D File: " << m_OutputFile;
 
   // This will make sure if we return early from this method that the HDF5 File is properly closed.
-  H5ScopedFileSentinel scopedFileSentinel(&m_FileId, true);
+  H5ScopedFileSentinel scopedFileSentinel(m_FileId, true);
 
   // Write our File Version string to the Root "/" group
   QH5Lite::writeStringAttribute(m_FileId, "/", SIMPL::HDF5::FileVersionName, SIMPL::HDF5::FileVersion);
@@ -205,7 +205,7 @@ void DataContainerWriter::execute()
     return;
   }
   hid_t dcaGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), H5P_DEFAULT);
-  scopedFileSentinel.addGroupId(&dcaGid);
+  scopedFileSentinel.addGroupId(dcaGid);
 
   QList<QString> dcNames = getDataContainerArray()->getDataContainerNames();
   for(int iter = 0; iter < getDataContainerArray()->getNumDataContainers(); iter++)
@@ -221,7 +221,7 @@ void DataContainerWriter::execute()
     }
 
     hid_t dcGid = H5Gopen(dcaGid, dcNames[iter].toLatin1().data(), H5P_DEFAULT);
-    H5ScopedGroupSentinel groupSentinel(&dcGid, false);
+    H5ScopedGroupSentinel groupSentinel(dcGid, false);
     // QString ss = QObject::tr("Writing %2 DataContainer").arg(dcNames[iter]);
 
     // Have the DataContainer write all of its Attribute Matrices and its Mesh
@@ -303,7 +303,7 @@ int DataContainerWriter::writeDataContainerBundles(hid_t fileId)
   }
   hid_t dcbGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().data(), H5P_DEFAULT);
 
-  H5GroupAutoCloser groupCloser(&dcbGid);
+  H5GroupAutoCloser groupCloser(dcbGid);
 
   QMap<QString, IDataContainerBundle::Pointer>& bundles = getDataContainerArray()->getDataContainerBundles();
   QMapIterator<QString, IDataContainerBundle::Pointer> iter(bundles);
@@ -336,7 +336,7 @@ int DataContainerWriter::writeMontages(hid_t fileId)
   }
   hid_t dcbGid = H5Gopen(m_FileId, SIMPL::StringConstants::MontageGroupName.toLatin1().data(), H5P_DEFAULT);
 
-  H5GroupAutoCloser groupCloser(&dcbGid);
+  H5GroupAutoCloser groupCloser(dcbGid);
 
   DataContainerArray::MontageCollection montages = getDataContainerArray()->getMontageCollection();
   for(const auto& montage : montages)
