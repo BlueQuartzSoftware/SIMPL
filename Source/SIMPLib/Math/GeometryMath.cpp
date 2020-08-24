@@ -46,16 +46,6 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GeometryMath::GeometryMath() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-GeometryMath::~GeometryMath() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 float GeometryMath::CosThetaBetweenVectors(const float a[3], const float b[3])
 {
   float norm1 = sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
@@ -1238,22 +1228,4 @@ char GeometryMath::PointInPolyhedron(TriangleGeom* faces, const Int32Int32Dynami
   }
 
   return 'o';
-}
-
-// -----------------------------------------------------------------------------
-GeometryMath::Pointer GeometryMath::NullPointer()
-{
-  return Pointer(static_cast<Self*>(nullptr));
-}
-
-// -----------------------------------------------------------------------------
-QString GeometryMath::getNameOfClass() const
-{
-  return QString("GeometryMath");
-}
-
-// -----------------------------------------------------------------------------
-QString GeometryMath::ClassName()
-{
-  return QString("GeometryMath");
 }
