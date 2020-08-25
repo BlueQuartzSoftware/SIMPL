@@ -57,9 +57,6 @@
 extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 #endif
 
-#define APPEND_DATA_TRUE 1
-#define APPEND_DATA_FALSE 0
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -69,17 +66,13 @@ DataContainerWriter::DataContainerWriter()
 , m_WriteXdmfFile(true)
 , m_WriteTimeSeries(false)
 , m_AppendToExisting(false)
-, m_FileId(-1)
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerWriter::~DataContainerWriter()
-{
-  closeFile();
-}
+DataContainerWriter::~DataContainerWriter() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -111,7 +104,6 @@ void DataContainerWriter::readFilterParameters(AbstractFilterParametersReader* r
 // -----------------------------------------------------------------------------
 void DataContainerWriter::initialize()
 {
-  m_FileId = -1;
 }
 
 // -----------------------------------------------------------------------------
@@ -144,8 +136,6 @@ void DataContainerWriter::execute()
     return;
   }
 
-  int err = 0;
-
   // Make sure any directory path is also available as the user may have just typed
   // in a path without actually creating the full path
   QFileInfo fi(m_OutputFile);
@@ -158,8 +148,20 @@ void DataContainerWriter::execute()
     return;
   }
 
-  err = openFile(m_AppendToExisting); // Do NOT append to any existing file
-  if(err < 0)
+  hid_t fileId = -1;
+
+  // Try to open a file to append data into
+  if(m_AppendToExisting)
+  {
+    fileId = QH5Utilities::openFile(m_OutputFile, false);
+  }
+  // No file was found or we are writing new data only to a clean file
+  if(!m_AppendToExisting || fileId < 0)
+  {
+    fileId = QH5Utilities::createFile(m_OutputFile);
+  }
+
+  if(fileId < 0)
   {
     QString ss = QObject::tr("The HDF5 file could not be opened or created.\n The given filename was:\n\t[%1]").arg(m_OutputFile);
     setErrorCondition(-11112, ss);
@@ -168,11 +170,11 @@ void DataContainerWriter::execute()
   // qDebug() << "DREAM3D File: " << m_OutputFile;
 
   // This will make sure if we return early from this method that the HDF5 File is properly closed.
-  H5ScopedFileSentinel scopedFileSentinel(m_FileId, true);
+  H5ScopedFileSentinel scopedFileSentinel(fileId, true);
 
   // Write our File Version string to the Root "/" group
-  QH5Lite::writeStringAttribute(m_FileId, "/", SIMPL::HDF5::FileVersionName, SIMPL::HDF5::FileVersion);
-  QH5Lite::writeStringAttribute(m_FileId, "/", SIMPL::HDF5::DREAM3DVersion, SIMPLib::Version::Complete());
+  QH5Lite::writeStringAttribute(fileId, "/", SIMPL::HDF5::FileVersionName, SIMPL::HDF5::FileVersion);
+  QH5Lite::writeStringAttribute(fileId, "/", SIMPL::HDF5::DREAM3DVersion, SIMPLib::Version::Complete());
   QFile xdmfFile;
   QTextStream xdmfOut(&xdmfFile);
   if(m_WriteXdmfFile)
@@ -195,16 +197,16 @@ void DataContainerWriter::execute()
   }
 
   // Write the Pipeline to the File
-  err = writePipeline();
+  int err = writePipeline();
 
-  err = H5Utilities::createGroupsFromPath(SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), m_FileId);
+  err = H5Utilities::createGroupsFromPath(SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), fileId);
   if(err < 0)
   {
     QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
     setErrorCondition(-60, ss);
     return;
   }
-  hid_t dcaGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), H5P_DEFAULT);
+  hid_t dcaGid = H5Gopen(fileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), H5P_DEFAULT);
   scopedFileSentinel.addGroupId(dcaGid);
 
   QList<QString> dcNames = getDataContainerArray()->getDataContainerNames();
@@ -250,7 +252,7 @@ void DataContainerWriter::execute()
       dc->getGeometry()->setTemporalDataPath(DataArrayPath(dc->getName(), SIMPL::StringConstants::MetaData, "Step #"));
 #endif
 
-      QString hdfFileName = QH5Utilities::fileNameFromFileId(m_FileId);
+      QString hdfFileName = QH5Utilities::fileNameFromFileId(fileId);
       err = dc->writeXdmf(xdmfOut, hdfFileName);
       if(err < 0)
       {
@@ -261,7 +263,7 @@ void DataContainerWriter::execute()
   }
 
   // Write the Data ContainerBundles
-  err = writeDataContainerBundles(m_FileId);
+  err = writeDataContainerBundles(fileId);
   if(err < 0)
   {
     QString ss = QObject::tr("Error writing DataContainerBundles");
@@ -270,7 +272,7 @@ void DataContainerWriter::execute()
   }
 
   // Write Montages
-  err = writeMontages(m_FileId);
+  err = writeMontages(fileId);
   if(err < 0)
   {
     QString ss = QObject::tr("Error writing montages");
@@ -283,10 +285,6 @@ void DataContainerWriter::execute()
   {
     writeXdmfFooter(xdmfOut);
   }
-
-  H5Gclose(dcaGid);
-
-  dcaGid = -1;
 }
 
 // -----------------------------------------------------------------------------
@@ -294,14 +292,14 @@ void DataContainerWriter::execute()
 // -----------------------------------------------------------------------------
 int DataContainerWriter::writeDataContainerBundles(hid_t fileId)
 {
-  int err = QH5Utilities::createGroupsFromPath(SIMPL::StringConstants::DataContainerBundleGroupName, m_FileId);
+  int err = QH5Utilities::createGroupsFromPath(SIMPL::StringConstants::DataContainerBundleGroupName, fileId);
   if(err < 0)
   {
     QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerBundleGroupName);
     setErrorCondition(-61, ss);
     return -1;
   }
-  hid_t dcbGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().data(), H5P_DEFAULT);
+  hid_t dcbGid = H5Gopen(fileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().data(), H5P_DEFAULT);
 
   H5GroupAutoCloser groupCloser(dcbGid);
 
@@ -317,8 +315,6 @@ int DataContainerWriter::writeDataContainerBundles(hid_t fileId)
       return err;
     }
   }
-  H5Gclose(dcbGid);
-  dcbGid = -1;
   return 0;
 }
 
@@ -327,14 +323,14 @@ int DataContainerWriter::writeDataContainerBundles(hid_t fileId)
 // -----------------------------------------------------------------------------
 int DataContainerWriter::writeMontages(hid_t fileId)
 {
-  int err = QH5Utilities::createGroupsFromPath(SIMPL::StringConstants::MontageGroupName, m_FileId);
+  int err = QH5Utilities::createGroupsFromPath(SIMPL::StringConstants::MontageGroupName, fileId);
   if(err < 0)
   {
     QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(SIMPL::StringConstants::MontageGroupName);
     setErrorCondition(-62, ss);
     return -1;
   }
-  hid_t dcbGid = H5Gopen(m_FileId, SIMPL::StringConstants::MontageGroupName.toLatin1().data(), H5P_DEFAULT);
+  hid_t dcbGid = H5Gopen(fileId, SIMPL::StringConstants::MontageGroupName.toLatin1().data(), H5P_DEFAULT);
 
   H5GroupAutoCloser groupCloser(dcbGid);
 
@@ -347,8 +343,7 @@ int DataContainerWriter::writeMontages(hid_t fileId)
       return err;
     }
   }
-  H5Gclose(dcbGid);
-  dcbGid = -1;
+
   return 0;
 }
 
@@ -420,37 +415,6 @@ int DataContainerWriter::writePipeline()
   }
 
   return writer->writePipelineToFile(pipeline, m_OutputFile, SIMPL::StringConstants::PipelineGroupName, true);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-hid_t DataContainerWriter::openFile(bool appendData)
-{
-  // Try to open a file to append data into
-  if(APPEND_DATA_TRUE == static_cast<int>(appendData))
-  {
-    m_FileId = QH5Utilities::openFile(m_OutputFile, false);
-  }
-  // No file was found or we are writing new data only to a clean file
-  if(APPEND_DATA_FALSE == static_cast<int>(appendData) || m_FileId < 0)
-  {
-    m_FileId = QH5Utilities::createFile(m_OutputFile);
-  }
-  return m_FileId;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-herr_t DataContainerWriter::closeFile()
-{
-  // Close the file when we are finished with it
-  if(m_FileId > 0)
-  {
-    return QH5Utilities::closeFile(m_FileId);
-  }
-  return 1;
 }
 
 // -----------------------------------------------------------------------------

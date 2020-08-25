@@ -214,19 +214,6 @@ protected:
   void initialize();
 
   /**
-   * @brief openFile Opens or creates an HDF5 file to write data into
-   * @param append Should a new file be created or append data to a currently existing file
-   * @return
-   */
-  hid_t openFile(bool append = false);
-
-  /**
-   * @brief closeFile Closes the currently open file
-   * @return Integer error value
-   */
-  herr_t closeFile();
-
-  /**
    * @brief writePipeline Writes the existing pipeline to the HDF5 file
    * @return
    */
@@ -264,8 +251,6 @@ private:
   bool m_WriteXdmfFile = {};
   bool m_WriteTimeSeries = {};
   bool m_AppendToExisting = {};
-
-  hid_t m_FileId;
 
 public:
   DataContainerWriter(const DataContainerWriter&) = delete;            // Copy Constructor Not Implemented
