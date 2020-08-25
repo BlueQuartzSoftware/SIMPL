@@ -38,59 +38,60 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedDataPath::GetterCallbackType callback, DataArrayPathHelper::DataType dataType)
+std::unique_ptr<LinkedPathCreationFilterParameter::ILinkedPath> LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedDataPath::GetterCallbackType callback, DataArrayPathHelper::DataType dataType)
 {
-  return new LinkedDataPath(callback, dataType);
+  return std::make_unique<LinkedDataPath>(callback, dataType);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedStringPath::GetterCallbackType dcCallback)
+std::unique_ptr<LinkedPathCreationFilterParameter::ILinkedPath> LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedStringPath::GetterCallbackType dcCallback)
 {
-  return new LinkedStringPath(dcCallback);
+  return std::make_unique<LinkedStringPath>(dcCallback);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedStringPath::GetterCallbackType dcCallback, LinkedStringPath::GetterCallbackType amCallback)
+std::unique_ptr<LinkedPathCreationFilterParameter::ILinkedPath> LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedStringPath::GetterCallbackType dcCallback,
+                                                                                                                    LinkedStringPath::GetterCallbackType amCallback)
 {
-  return new LinkedStringPath(dcCallback, amCallback);
+  return std::make_unique<LinkedStringPath>(dcCallback, amCallback);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcCallback,
+std::unique_ptr<LinkedPathCreationFilterParameter::ILinkedPath> LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcCallback,
                                                                                                     LinkedMixedPath::PathGetterCallbackType amCallback)
 {
-  return new LinkedMixedPath(dcCallback, amCallback);
+  return std::make_unique<LinkedMixedPath>(dcCallback, amCallback);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcCallback,
+std::unique_ptr<LinkedPathCreationFilterParameter::ILinkedPath> LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcCallback,
                                                                                                     LinkedMixedPath::StringGetterCallbackType amCallback)
 {
-  return new LinkedMixedPath(dcCallback, amCallback);
+  return std::make_unique<LinkedMixedPath>(dcCallback, amCallback);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType pathCallback)
+std::unique_ptr<LinkedPathCreationFilterParameter::ILinkedPath> LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType pathCallback)
 {
-  return new LinkedDataPath(pathCallback, DataArrayPathHelper::DataType::DataContainer);
+  return std::make_unique<LinkedDataPath>(pathCallback, DataArrayPathHelper::DataType::DataContainer);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedAdvComparisonPath::GetterCallbackType callback)
+std::unique_ptr<LinkedPathCreationFilterParameter::ILinkedPath> LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedAdvComparisonPath::GetterCallbackType callback)
 {
-  return new LinkedAdvComparisonPath(callback);
+  return std::make_unique<LinkedAdvComparisonPath>(callback);
 }
 
 // -----------------------------------------------------------------------------
@@ -107,7 +108,8 @@ LinkedPathCreationFilterParameter::~LinkedPathCreationFilterParameter() = defaul
 //
 // -----------------------------------------------------------------------------
 LinkedPathCreationFilterParameter::Pointer LinkedPathCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                                  const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, ILinkedPath* linkedPath,
+                                                                                  const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                                                                                  std::unique_ptr<ILinkedPath> linkedPath,
                                                                                   int groupIndex)
 {
 
@@ -115,7 +117,7 @@ LinkedPathCreationFilterParameter::Pointer LinkedPathCreationFilterParameter::Ne
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
-  ptr->setLinkedPath(linkedPath);
+  ptr->setLinkedPath(std::move(linkedPath));
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
   ptr->setSetterCallback(setterCallback);
@@ -307,10 +309,9 @@ DataArrayPath LinkedPathCreationFilterParameter::LinkedAdvComparisonPath::genera
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LinkedPathCreationFilterParameter::setLinkedPath(ILinkedPath* linkedPath)
+void LinkedPathCreationFilterParameter::setLinkedPath(std::unique_ptr<ILinkedPath> linkedPath)
 {
-  delete m_LinkedPath;
-  m_LinkedPath = linkedPath;
+  m_LinkedPath = std::move(linkedPath);
 }
 
 // -----------------------------------------------------------------------------

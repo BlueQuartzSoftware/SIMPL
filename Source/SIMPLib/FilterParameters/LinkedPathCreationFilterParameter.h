@@ -247,14 +247,14 @@ public:
    * @param DataType
    * @return
    */
-  static ILinkedPath* CreateLinkedPath(LinkedDataPath::GetterCallbackType, DataArrayPathHelper::DataType);
+  static std::unique_ptr<ILinkedPath> CreateLinkedPath(LinkedDataPath::GetterCallbackType, DataArrayPathHelper::DataType);
 
   /**
    * @brief Create and return an ILinkedPath based on the given Parameters
    * @param QString getter
    * @return
    */
-  static ILinkedPath* CreateLinkedPath(LinkedStringPath::GetterCallbackType);
+  static std::unique_ptr<ILinkedPath> CreateLinkedPath(LinkedStringPath::GetterCallbackType);
 
   /**
    * @brief Create and return an ILinkedPath based on the given Parameters
@@ -262,37 +262,37 @@ public:
    * @param QString getter
    * @return
    */
-  static ILinkedPath* CreateLinkedPath(LinkedStringPath::GetterCallbackType, LinkedStringPath::GetterCallbackType);
-
-  /**
-   * @brief Create and return an ILinkedPath based on the given Parameters
-   * @param DataArrayPath getter
-   * @param DataArrayPath getter
-   * @return
-   */
-  static ILinkedPath* CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType, LinkedMixedPath::PathGetterCallbackType);
+  static std::unique_ptr<ILinkedPath> CreateLinkedPath(LinkedStringPath::GetterCallbackType, LinkedStringPath::GetterCallbackType);
 
   /**
    * @brief Create and return an ILinkedPath based on the given Parameters
    * @param DataArrayPath getter
+   * @param DataArrayPath getter
+   * @return
+   */
+  static std::unique_ptr<ILinkedPath> CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType, LinkedMixedPath::PathGetterCallbackType);
+
+  /**
+   * @brief Create and return an ILinkedPath based on the given Parameters
+   * @param DataArrayPath getter
    * @param QString getter
    * @return
    */
-  static ILinkedPath* CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType, LinkedMixedPath::StringGetterCallbackType);
+  static std::unique_ptr<ILinkedPath> CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType, LinkedMixedPath::StringGetterCallbackType);
 
   /**
    * @brief Create and return an ILinkedPath based on the given Parameters
    * @param DataArrayPath dcGetter
    * @return
    */
-  static ILinkedPath* CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcGetter);
+  static std::unique_ptr<ILinkedPath> CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcGetter);
 
   /**
    * @brief Create and return an ILinkedPath based on the given Parameters
    * @param AdvancedComparison getter
    * @return
    */
-  static ILinkedPath* CreateLinkedPath(LinkedAdvComparisonPath::GetterCallbackType);
+  static std::unique_ptr<ILinkedPath> CreateLinkedPath(LinkedAdvComparisonPath::GetterCallbackType);
 
   /**
    * @brief New This function instantiates an instance of the LinkedPathCreationFilterParameter. Although this function is available to be used,
@@ -311,7 +311,7 @@ public:
    * @return
    */
   static Pointer New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, ILinkedPath* linkedPath, int groupIndex = -1);
+                     const GetterCallbackType& getterCallback, std::unique_ptr<ILinkedPath> linkedPath, int groupIndex = -1);
 
   ~LinkedPathCreationFilterParameter() override;
 
@@ -368,7 +368,7 @@ public:
    * @brief Set the ILinkedPath for determining what the parent container is
    * @param linkedPath
    */
-  void setLinkedPath(ILinkedPath* linkedPath);
+  void setLinkedPath(std::unique_ptr<ILinkedPath> linkedPath);
 
   /**
    * @brief Returned the linked DataArrayPath
@@ -387,7 +387,7 @@ private:
   LinkedPathCreationFilterParameter::SetterCallbackType m_SetterCallback = {};
   LinkedPathCreationFilterParameter::GetterCallbackType m_GetterCallback = {};
 
-  ILinkedPath* m_LinkedPath = nullptr;
+  std::unique_ptr<ILinkedPath> m_LinkedPath = nullptr;
 
 public:
   LinkedPathCreationFilterParameter(const LinkedPathCreationFilterParameter&) = delete;            // Copy Constructor Not Implemented
