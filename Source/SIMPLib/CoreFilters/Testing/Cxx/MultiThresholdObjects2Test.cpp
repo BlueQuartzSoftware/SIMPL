@@ -33,6 +33,8 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <array>
+
 #include <QtCore/QString>
 
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -102,7 +104,7 @@ public:
     // Set up geometry for tuples, a cuboid with dimensions 20, 10, 1
     ImageGeom::Pointer image = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
     vdc->setGeometry(image);
-    size_t dims[1] = {20};
+    std::array<size_t, 3> dims = {20, 1, 1};
     image->setDimensions(dims);
 
     std::vector<size_t> tDims(1, 0);
