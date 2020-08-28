@@ -191,6 +191,10 @@ if(APPLE AND "${ITK_VERSION_MAJOR}" STREQUAL "5" AND SIMPL_USE_ITK)
   list(APPEND ${PROJECT_NAME}_LINK_LIBS SimpleITKExplicit)
 endif()
 
+if(SIMPL_USE_GHC_FILESYSTEM)
+  list(APPEND ${PROJECT_NAME}_LINK_LIBS ghcFilesystem::ghc_filesystem)
+endif()
+
 #-------------------------------------------------------------------------------
 # Add the SIMPLib Library
 add_library(${PROJECT_NAME} ${LIB_TYPE} ${Project_SRCS} )

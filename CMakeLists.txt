@@ -419,6 +419,20 @@ if(SIMPL_USE_ITK)
   endif()
 endif()
 
+if(NOT DEFINED SIMPL_USE_GHC_FILESYSTEM)
+  set(SIMPL_USE_GHC_FILESYSTEM OFF)
+
+  if(APPLE OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+    set(SIMPL_USE_GHC_FILESYSTEM ON)
+  elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" AND "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
+    set(SIMPL_USE_GHC_FILESYSTEM ON)
+  endif()
+endif()
+
+if(SIMPL_USE_GHC_FILESYSTEM)
+  find_package(ghcFilesystem REQUIRED)
+endif()
+
 # -----------------------------------------------------------------------
 # -- Add in the SIMPL Sources into a library
 add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib ${PROJECT_BINARY_DIR}/SIMPLib)
