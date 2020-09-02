@@ -1,43 +1,44 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFile>
+#include <QtCore/QDebug>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/CoreFilters/ConditionalSetValue.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
@@ -54,7 +55,7 @@
 
 #define CREATE_DATA_ARRAY(type, attrMat, tDims, cDims, initVal, comps, err)                                                                                                                            \
   DataArray<type>::Pointer _##type##_##comps##_##attrMat##Array = DataArray<type>::CreateArray(tDims, cDims, #type #comps, true);                                                                      \
-  err = attrMat->addAttributeArray(#type #comps, _##type##_##comps##_##attrMat##Array);                                                                                                                \
+  err = attrMat->addAttributeArray(_##type##_##comps##_##attrMat##Array->getName(), _##type##_##comps##_##attrMat##Array);                                                                             \
   _##type##_##comps##_##attrMat##Array->initializeWithValue(initVal);                                                                                                                                  \
   DREAM3D_REQUIRE(err >= 0);
 
@@ -82,7 +83,7 @@
     qDebug() << "Unable to set property ReplaceValue";                                                                                                                                                 \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCondition();                                                                                                                                                                   \
+  err = filter->getErrorCode();                                                                                                                                                                        \
   DREAM3D_REQUIRE_EQUAL(err, errVal);
 
 #ifdef SET_PROPERTIES_AND_CHECK_EQ
@@ -109,7 +110,7 @@
     qDebug() << "Unable to set property ReplaceValue";                                                                                                                                                 \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCondition();                                                                                                                                                                   \
+  err = filter->getErrorCode();                                                                                                                                                                        \
   DREAM3D_REQUIRE_EQUAL(err, 0);                                                                                                                                                                       \
   dataArray = dc->getAttributeMatrix(selectedArray.getAttributeMatrixName())->getAttributeArray(selectedArray.getDataArrayName());                                                                     \
   DREAM3D_REQUIRE_EQUAL(err, 0);                                                                                                                                                                       \
@@ -156,7 +157,7 @@ public:
     QVector<size_t> tDims(1, 10);
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "ConditionalSetValueAttrMat", AttributeMatrix::Type::Cell);
 
-    m->addAttributeMatrix("ConditionalSetValueAttrMat", attrMat);
+    m->addAttributeMatrix(attrMat->getName(), attrMat);
 
     dca->addDataContainer(m);
 
@@ -191,8 +192,8 @@ public:
 
     // this is the conditional array
     QString name = "ConditionalArray";
-    BoolArrayType::Pointer condArrayPtr = BoolArrayType::CreateArray(tDims, cDims, name);
-    attrMat->addAttributeArray(name, condArrayPtr);
+    BoolArrayType::Pointer condArrayPtr = BoolArrayType::CreateArray(tDims, cDims, name, true);
+    attrMat->addAttributeArray(condArrayPtr->getName(), condArrayPtr);
     condArrayPtr->initializeWithValue(true);
     // Set some of the values to false int he conditional array
     bool* condArray = condArrayPtr->getPointer(0);
@@ -208,7 +209,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void validateReplacedValues(IDataArray::Pointer iArray, IDataArray::Pointer cArray)
+  template <typename T>
+  void validateReplacedValues(IDataArray::Pointer iArray, IDataArray::Pointer cArray)
   {
     typename DataArray<T>::Pointer dataArrayPtr = std::dynamic_pointer_cast<DataArray<T>>(iArray);
     typename DataArray<bool>::Pointer condArrayPtr = std::dynamic_pointer_cast<DataArray<bool>>(cArray);
@@ -238,14 +240,42 @@ public:
   }
 
   // -----------------------------------------------------------------------------
+  void setPropertyAndCheckNE(ConditionalSetValue* filter, double replaceValue, const DataArrayPath& selectedArrayPath, const DataArrayPath& conditionalArrayPath, int32_t errCompare)
+  {
+    filter->setSelectedArrayPath(selectedArrayPath);
+
+    filter->setConditionalArrayPath(conditionalArrayPath);
+
+    filter->setReplaceValue(replaceValue);
+
+    filter->execute();
+    int32_t err = filter->getErrorCondition();
+    DREAM3D_REQUIRE_EQUAL(err, errCompare);
+  }
+
+  // -----------------------------------------------------------------------------
+  template <typename T>
+  void setPropertyAndCheckEQ(ConditionalSetValue* filter, DataContainer::Pointer dc, double replaceValue, const DataArrayPath& selectedArrayPath, const DataArrayPath& conditionalArrayPath)
+  {
+    filter->setSelectedArrayPath(selectedArrayPath);
+
+    filter->setConditionalArrayPath(conditionalArrayPath);
+
+    filter->setReplaceValue(replaceValue);
+    filter->execute();
+    int32_t err = filter->getErrorCondition();
+    DREAM3D_REQUIRE_EQUAL(err, 0);
+
+    IDataArray::Pointer dataArray = dc->getAttributeMatrix(selectedArrayPath.getAttributeMatrixName())->getAttributeArray(selectedArrayPath.getDataArrayName());
+    IDataArray::Pointer condArray = dc->getAttributeMatrix(conditionalArrayPath.getAttributeMatrixName())->getAttributeArray(conditionalArrayPath.getDataArrayName());
+    validateReplacedValues<T>(dataArray, condArray);
+  }
+
+  // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void validateReplaceValue(AbstractFilter::Pointer filter, DataContainerArray::Pointer dca)
+  void validateReplaceValue(ConditionalSetValue* filter, DataContainerArray::Pointer dca)
   {
-    QVariant var;
-    bool propWasSet;
-    int err = 0;
-
     DataContainer::Pointer dc = dca->getDataContainer("ConditionalSetValueTest");
     IDataArray::Pointer dataArray;
     IDataArray::Pointer condArray;
@@ -276,32 +306,29 @@ public:
 
     DataArrayPath conditionalArray("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "ConditionalArray");
 
-    // Fail if an input array is not scalar
-    SET_PROPERTIES_AND_CHECK_NE(filter, 5.0, attrMat_uint8_3, conditionalArray, -11002)
-
     // Fail if the replace value is out of range
-    SET_PROPERTIES_AND_CHECK_NE(filter, 256.0, attrMat_uint8_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 128.0, attrMat_int8_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 65536.0, attrMat_uint16_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 32768.0, attrMat_int16_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 4294967296.0, attrMat_uint32_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 2147483648.0, attrMat_int32_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 20000000000000000000.0, attrMat_uint64_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 10000000000000000000.0, attrMat_int64_1, conditionalArray, -100)
-    SET_PROPERTIES_AND_CHECK_NE(filter, 3.41e38, attrMat_float_1, conditionalArray, -101)
+    setPropertyAndCheckNE(filter, 256.0, attrMat_uint8_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 128.0, attrMat_int8_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 65536.0, attrMat_uint16_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 32768.0, attrMat_int16_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 4294967296.0, attrMat_uint32_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 2147483648.0, attrMat_int32_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 20000000000000000000.0, attrMat_uint64_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 10000000000000000000.0, attrMat_int64_1, conditionalArray, -100);
+    setPropertyAndCheckNE(filter, 3.41e38, attrMat_float_1, conditionalArray, -101);
     // not checking double, because cannot make a value outside of the range
 
     // Succeed for all possible test combinations
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint8_1, conditionalArray, dataArray, condArray, uint8_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int8_1, conditionalArray, dataArray, condArray, int8_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint16_1, conditionalArray, dataArray, condArray, uint16_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int16_1, conditionalArray, dataArray, condArray, int16_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint32_1, conditionalArray, dataArray, condArray, uint32_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int32_1, conditionalArray, dataArray, condArray, int32_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint64_1, conditionalArray, dataArray, condArray, uint64_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int64_1, conditionalArray, dataArray, condArray, int64_t)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_float_1, conditionalArray, dataArray, condArray, float)
-    SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_double_1, conditionalArray, dataArray, condArray, double)
+    setPropertyAndCheckEQ<uint8_t>(filter, dc, 5.0, attrMat_uint8_1, conditionalArray);
+    setPropertyAndCheckEQ<int8_t>(filter, dc, 5.0, attrMat_int8_1, conditionalArray);
+    setPropertyAndCheckEQ<uint16_t>(filter, dc, 5.0, attrMat_uint16_1, conditionalArray);
+    setPropertyAndCheckEQ<int16_t>(filter, dc, 5.0, attrMat_int16_1, conditionalArray);
+    setPropertyAndCheckEQ<uint32_t>(filter, dc, 5.0, attrMat_uint32_1, conditionalArray);
+    setPropertyAndCheckEQ<int32_t>(filter, dc, 5.0, attrMat_int32_1, conditionalArray);
+    setPropertyAndCheckEQ<uint64_t>(filter, dc, 5.0, attrMat_uint64_1, conditionalArray);
+    setPropertyAndCheckEQ<int64_t>(filter, dc, 5.0, attrMat_int64_1, conditionalArray);
+    setPropertyAndCheckEQ<float>(filter, dc, 5.0, attrMat_float_1, conditionalArray);
+    setPropertyAndCheckEQ<double>(filter, dc, 5.0, attrMat_double_1, conditionalArray);
   }
 
   // -----------------------------------------------------------------------------
@@ -311,17 +338,12 @@ public:
   {
     DataContainerArray::Pointer dca = initializeDataContainerArray();
 
-    QString filtName = "ConditionalSetValue";
-    FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer factory = fm->getFactoryFromClassName(filtName);
-    DREAM3D_REQUIRE(factory.get() != nullptr)
-
-    AbstractFilter::Pointer conditionalSetValueFilter = factory->create();
+    ConditionalSetValue::Pointer conditionalSetValueFilter = ConditionalSetValue::New();
     DREAM3D_REQUIRE(conditionalSetValueFilter.get() != nullptr)
 
     conditionalSetValueFilter->setDataContainerArray(dca);
 
-    validateReplaceValue(conditionalSetValueFilter, dca);
+    validateReplaceValue(conditionalSetValueFilter.get(), dca);
 
     return EXIT_SUCCESS;
   }

@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <array>
+
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometryGrid.h"
 
@@ -103,6 +105,10 @@ public:
    * @brief Sets/Gets the Resolution property
    */
   SIMPL_INSTANCE_VEC3_PROPERTY(float, Resolution)
+  std::array<float, 3> getSpacing()
+  {
+    return {m_Resolution[0], m_Resolution[1], m_Resolution[2]};
+  }
 
   /**
    * @brief Sets/Gets the Origin property
@@ -275,6 +281,10 @@ public:
 
   SIMPL_INSTANCE_VEC3_PROPERTY_VO(size_t, Dimensions)
 
+  std::array<size_t, 3> getDimensions()
+  {
+    return {m_Dimensions[0], m_Dimensions[1], m_Dimensions[2]};
+  }
   size_t getXPoints() override;
   size_t getYPoints() override;
   size_t getZPoints() override;

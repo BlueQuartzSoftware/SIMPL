@@ -419,7 +419,7 @@ public:
 
   /**
    * @brief WrapPointer Creates a DataArray<T> object that references the pointer. The original caller can
-   * set if the memory should be "free()'ed" when the object goes away. The original memory MUST have been
+   * set if the memory should be "deleted 'ed" when the object goes away. The original memory MUST have been
    * "alloc()'ed" and <b>NOT</b> new 'ed.
    * @param data
    * @param numTuples
@@ -640,7 +640,7 @@ public:
    */
   virtual int32_t allocate()
   {
-    if((nullptr != m_Array) && (true == m_OwnsData))
+    if((nullptr != m_Array) && m_OwnsData)
     {
       _deallocate();
     }
@@ -654,11 +654,7 @@ public:
     }
 
     size_t newSize = m_Size;
-#if defined(AIM_USE_SSE) && defined(__SSE2__)
-    m_Array = static_cast<T*>(_mm_malloc(newSize * sizeof(T), 16));
-#else
-    m_Array = (T*)malloc(newSize * sizeof(T));
-#endif
+    m_Array = new(std::nothrow) T[newSize]();
     if(!m_Array)
     {
       qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. ";
@@ -1571,6 +1567,7 @@ protected:
    */
   void _deallocate()
   {
+#ifndef NDEBUG
     // We are going to splat 0xABABAB across the first value of the array as a debugging aid
     auto cptr = reinterpret_cast<unsigned char*>(m_Array);
     if(nullptr != cptr)
@@ -1599,6 +1596,7 @@ protected:
         }
       }
     }
+#endif
 #if 0
       if (MUD_FLAP_0 != 0xABABABABABABABABul
           || MUD_FLAP_1 != 0xABABABABABABABABul
@@ -1611,11 +1609,8 @@ protected:
       }
 #endif
 
-#if defined(AIM_USE_SSE) && defined(__SSE2__)
-    _mm_free(m_buffer);
-#else
-    free(m_Array);
-#endif
+    delete[](m_Array);
+
     m_Array = nullptr;
     m_IsAllocated = false;
   }
