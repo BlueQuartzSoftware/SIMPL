@@ -91,7 +91,7 @@ public:
     std::vector<double> dValuesdZeta(numComps);
 
     std::array<size_t, 3> dims = {0, 0, 0};
-    dims = m_Image->getDimensions();
+    dims = m_Image->getDimensions_as_array();
 
     int64_t counter = 0;
     size_t totalElements = m_Image->getNumberOfElements();

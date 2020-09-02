@@ -281,7 +281,7 @@ public:
 
   SIMPL_INSTANCE_VEC3_PROPERTY_VO(size_t, Dimensions)
 
-  std::array<size_t, 3> getDimensions()
+  std::array<size_t, 3> getDimensions_as_array()
   {
     return {m_Dimensions[0], m_Dimensions[1], m_Dimensions[2]};
   }
