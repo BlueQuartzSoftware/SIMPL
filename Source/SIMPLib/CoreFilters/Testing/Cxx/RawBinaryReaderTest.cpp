@@ -560,10 +560,10 @@ public:
     std::vector<T> junkArray(junkArraySize, 0xAB);
     
     // Write a pattern into junkArray
-    ::memset(reinterpret_cast<uint8_t*>(junkArray.data()), 0xAB, junkArraySize * sizeof(T))
+    std::memset(junkArray.data(), 0xAB, junkArray.size() * sizeof(T));
 
     // Create the file and write to it.  If any of the information is wrong, the result will be false
-    bool result = createAndWriteToFile(dataArray, dataArraySize, junkArray, junkArraySize, Detail::Start);
+    bool result = createAndWriteToFile(dataArray, dataArraySize, junkArray.data(), junkArray.size(), Detail::Start);
 
     // Test to make sure that the file was created and written to successfully
     DREAM3D_REQUIRED(result, ==, true)
@@ -698,10 +698,10 @@ public:
     std::vector<T> junkArray(junkArraySize, 0xAB);
     
     // Write a pattern into junkArray
-    ::memset(reinterpret_cast<uint8_t*>(junkArray.data()), 0xAB, junkArraySize * sizeof(T))
+    std::memset(junkArray.data(), 0xAB, junkArray.size() * sizeof(T));
 
     // Create the file and write to it.  If any of the information is wrong, the result will be false
-    bool result = createAndWriteToFile(dataArray, dataArraySize, junkArray, junkArraySize, Detail::Both);
+    bool result = createAndWriteToFile(dataArray, dataArraySize, junkArray.data(), junkArray.size(), Detail::Both);
 
     // Test to make sure that the file was created and written to successfully
     DREAM3D_REQUIRED(result, ==, true)
