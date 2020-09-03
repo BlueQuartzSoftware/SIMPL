@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
 {
 
   // Instantiate the QCoreApplication that we need to get the current path and load plugins.
-  QCoreApplication* app = new QCoreApplication(argc, argv);
+  QCoreApplication app(argc, argv);
   QCoreApplication::setOrganizationName("BlueQuartz Software");
   QCoreApplication::setOrganizationDomain("bluequartz.net");
   QCoreApplication::setApplicationName("PipelineRunner");
@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
   parser.addOption(pipelineFileArg);
 
   // Process the actual command line arguments given by the user
-  parser.process(*app);
+  parser.process(app);
 
   QString pipelineFile = parser.value(pipelineFileArg);
 
