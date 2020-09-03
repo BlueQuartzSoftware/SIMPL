@@ -34,14 +34,8 @@
 
 #include <memory>
 
-#include <QtCore/QWaitCondition>
-#include <QtCore/QMutex>
-
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-
-class QNetworkAccessManager;
-class QNetworkReply;
 
 /**
  * @brief The PostSlackMessage class. See [Filter documentation](@ref postslackmessage) for details.
@@ -213,10 +207,6 @@ private:
   QString m_SlackUrl = {};
   QString m_SlackMessage = {};
   bool m_WarningsAsError = {};
-
-  QWaitCondition m_WaitCondition;
-  QMutex m_Mutex;
-  QNetworkAccessManager* m_NetworkManager;
 
 public:
   PostSlackMessage(const PostSlackMessage&) = delete;            // Copy Constructor Not Implemented

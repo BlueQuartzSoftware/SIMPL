@@ -57,16 +57,12 @@ PostSlackMessage::PostSlackMessage()
 {
   m_SlackUser = "[DREAM.3D@" + QSysInfo::machineHostName() + "]";
   initialize();
-  m_NetworkManager = new QNetworkAccessManager(this);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PostSlackMessage::~PostSlackMessage()
-{
-  delete m_NetworkManager;
-}
+PostSlackMessage::~PostSlackMessage() = default;
 
 // -----------------------------------------------------------------------------
 //
