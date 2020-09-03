@@ -557,13 +557,10 @@ public:
     }
 
     // Create junkArray
-    T* junkArray = new T[junkArraySize];
-
+    std::vector<T> junkArray(junkArraySize, 0xAB);
+    
     // Write a pattern into junkArray
-    for(size_t i = 0; i < junkArraySize; ++i)
-    {
-      junkArray[i] = (unsigned)0xAB;
-    }
+    ::memset(reinterpret_cast<uint8_t*>(junkArray.data()), 0xAB, junkArraySize * sizeof(T))
 
     // Create the file and write to it.  If any of the information is wrong, the result will be false
     bool result = createAndWriteToFile(dataArray, dataArraySize, junkArray, junkArraySize, Detail::Start);
@@ -698,13 +695,10 @@ public:
     }
 
     // Create junkArray
-    T* junkArray = new T[junkArraySize];
-
+    std::vector<T> junkArray(junkArraySize, 0xAB);
+    
     // Write a pattern into junkArray
-    for(size_t i = 0; i < junkArraySize; ++i)
-    {
-      junkArray[i] = (unsigned)0xAB;
-    }
+    ::memset(reinterpret_cast<uint8_t*>(junkArray.data()), 0xAB, junkArraySize * sizeof(T))
 
     // Create the file and write to it.  If any of the information is wrong, the result will be false
     bool result = createAndWriteToFile(dataArray, dataArraySize, junkArray, junkArraySize, Detail::Both);
