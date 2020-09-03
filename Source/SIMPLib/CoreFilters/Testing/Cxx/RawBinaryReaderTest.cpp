@@ -791,10 +791,10 @@ public:
   // -----------------------------------------------------------------------------
   // testCase6: This tests when skipHeaderBytes equals the file size
   template <typename T, size_t N>
-  void testCase6_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  void testCase6_Execute(SIMPL::NumericTypes::Type scalarType)
   {
-    int dataArraySize = 1000;
-    int junkArraySize = k_ArraySize * N;
+    size_t dataArraySize = 1000;
+    size_t junkArraySize = k_ArraySize * N;
     int skipHeaderBytes = junkArraySize * sizeof(T);
     int err = 0;
     // qDebug() << "Testing case 6: " << name << " with num comps " << N;
@@ -811,16 +811,10 @@ public:
     }
 
     // Create junkArray
-    T* junkArray = new T[junkArraySize];
-
-    // Write a pattern into junkArray
-    for(size_t i = 0; i < junkArraySize; ++i)
-    {
-      junkArray[i] = (unsigned)0xAB;
-    }
+    std::vector<T> junkArray(junkArraySize, 0xAB);
 
     // Create the file and write to it.  If any of the information is wrong, the result will be false
-    bool result = createAndWriteToFile(dataArray, dataArraySize, junkArray, junkArraySize, Detail::Start);
+    bool result = createAndWriteToFile(dataArray, dataArraySize, junkArray.data(), junkArraySize, Detail::Start);
 
     // Test to make sure that the file was created and written to successfully
     DREAM3D_REQUIRED(result, ==, true)
@@ -854,11 +848,11 @@ public:
   //
   // -----------------------------------------------------------------------------
   template <typename T>
-  void testCase6_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  void testCase6_TestPrimitives(SIMPL::NumericTypes::Type scalarType)
   {
-    testCase6_Execute<T, 1>(name, scalarType);
-    testCase6_Execute<T, 2>(name, scalarType);
-    testCase6_Execute<T, 3>(name, scalarType);
+    testCase6_Execute<T, 1>(scalarType);
+    testCase6_Execute<T, 2>(scalarType);
+    testCase6_Execute<T, 3>(scalarType);
   }
 
   // -----------------------------------------------------------------------------
@@ -875,16 +869,16 @@ public:
       return;
     }
 
-    testCase6_TestPrimitives<int8_t>("int8_t", SIMPL::NumericTypes::Type::Int8);
-    testCase6_TestPrimitives<uint8_t>("uint8_t", SIMPL::NumericTypes::Type::UInt8);
-    testCase6_TestPrimitives<int16_t>("int16_t", SIMPL::NumericTypes::Type::Int16);
-    testCase6_TestPrimitives<uint16_t>("uint16_t", SIMPL::NumericTypes::Type::UInt16);
-    testCase6_TestPrimitives<int32_t>("int32_t", SIMPL::NumericTypes::Type::Int32);
-    testCase6_TestPrimitives<uint32_t>("uint32_t", SIMPL::NumericTypes::Type::UInt32);
-    testCase6_TestPrimitives<int64_t>("int64_t", SIMPL::NumericTypes::Type::Int64);
-    testCase6_TestPrimitives<uint64_t>("uint64_t", SIMPL::NumericTypes::Type::UInt64);
-    testCase6_TestPrimitives<float>("float", SIMPL::NumericTypes::Type::Float);
-    testCase6_TestPrimitives<double>("double", SIMPL::NumericTypes::Type::Double);
+    testCase6_TestPrimitives<int8_t>(SIMPL::NumericTypes::Type::Int8);
+    testCase6_TestPrimitives<uint8_t>(SIMPL::NumericTypes::Type::UInt8);
+    testCase6_TestPrimitives<int16_t>(SIMPL::NumericTypes::Type::Int16);
+    testCase6_TestPrimitives<uint16_t>(SIMPL::NumericTypes::Type::UInt16);
+    testCase6_TestPrimitives<int32_t>(SIMPL::NumericTypes::Type::Int32);
+    testCase6_TestPrimitives<uint32_t>(SIMPL::NumericTypes::Type::UInt32);
+    testCase6_TestPrimitives<int64_t>(SIMPL::NumericTypes::Type::Int64);
+    testCase6_TestPrimitives<uint64_t>(SIMPL::NumericTypes::Type::UInt64);
+    testCase6_TestPrimitives<float>(SIMPL::NumericTypes::Type::Float);
+    testCase6_TestPrimitives<double>(SIMPL::NumericTypes::Type::Double);
   }
 
   // -----------------------------------------------------------------------------
