@@ -43,8 +43,7 @@
 #include "SIMPLib/SIMPLib.h"
 
 /**
- * @brief The MeshFaceNeighbors class contains arrays of Faces for each Node in the mesh. This allows quick query to the node
- * to determine what Cells the node is a part of.
+ * @brief
  */
 template <typename T, typename K>
 class DynamicListArray
@@ -274,24 +273,11 @@ public:
   }
 
   /**
-   * @brief allocateLists
+   * @brief
    * @param linkCounts
    */
-  void allocateLists(QVector<T>& linkCounts)
-  {
-    allocate(linkCounts.size());
-    for(typename std::vector<T>::size_type i = 0; i < linkCounts.size(); i++)
-    {
-      this->m_Array[i].ncells = linkCounts[i];
-      this->m_Array[i].cells = new K[this->m_Array[i].ncells];
-    }
-  }
-
-  /**
-   * @brief allocateLists
-   * @param linkCounts
-   */
-  void allocateLists(std::vector<T>& linkCounts)
+  template <typename Container>
+  void allocateLists(const Container& linkCounts)
   {
     allocate(linkCounts.size());
     for(typename std::vector<T>::size_type i = 0; i < linkCounts.size(); i++)
@@ -307,7 +293,7 @@ protected:
   //----------------------------------------------------------------------------
   // This will allocate memory to hold all the NeighborList structures where each
   // structure is initialized to Zero Entries and a nullptr Pointer
-  void allocate(size_t sz, size_t ext = 1000)
+  void allocate(size_t sz)
   {
     static typename DynamicListArray<T, K>::ElementList linkInit = {0, nullptr};
 

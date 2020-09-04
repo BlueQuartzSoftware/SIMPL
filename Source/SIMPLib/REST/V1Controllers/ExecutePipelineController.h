@@ -54,6 +54,7 @@ class SIMPLib_EXPORT ExecutePipelineController : public HttpRequestHandler
 public:
   /** Constructor */
   ExecutePipelineController(const QHostAddress& hostAddress, const int hostPort);
+  ~ExecutePipelineController() override;
 
   /** Generates the response */
   void service(HttpRequest& request, HttpResponse& response);

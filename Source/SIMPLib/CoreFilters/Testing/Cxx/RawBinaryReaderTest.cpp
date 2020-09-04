@@ -220,13 +220,12 @@ public:
   // -----------------------------------------------------------------------------
   // testCase1: This tests when the file size is equal to the allocated size, and checks to see if the data read is the same as the data written.
   template <typename T, size_t N>
-  int testCase1_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  int testCase1_Execute(SIMPL::NumericTypes::Type scalarType)
   {
+    size_t dataArraySize = k_ArraySize * N;
+    size_t junkArraySize = 0;
+    size_t skipHeaderBytes = 0;
     int err = 0;
-    int dataArraySize = k_ArraySize * N;
-    int junkArraySize = 0;
-    int skipHeaderBytes = 0;
-    //// qDebug() << "Testing case 1: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
     typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, std::string("_Temp_"), true);
@@ -289,11 +288,11 @@ public:
   //
   // -----------------------------------------------------------------------------
   template <typename T>
-  void testCase1_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  void testCase1_TestPrimitives(SIMPL::NumericTypes::Type scalarType)
   {
-    testCase1_Execute<T, 1>(name, scalarType);
-    testCase1_Execute<T, 2>(name, scalarType);
-    testCase1_Execute<T, 3>(name, scalarType);
+    testCase1_Execute<T, 1>(scalarType);
+    testCase1_Execute<T, 2>(scalarType);
+    testCase1_Execute<T, 3>(scalarType);
   }
 
   // -----------------------------------------------------------------------------
@@ -310,16 +309,16 @@ public:
       return;
     }
 
-    testCase1_TestPrimitives<int8_t>("int8_t", SIMPL::NumericTypes::Type::Int8);
-    testCase1_TestPrimitives<uint8_t>("uint8_t", SIMPL::NumericTypes::Type::UInt8);
-    testCase1_TestPrimitives<int16_t>("int16_t", SIMPL::NumericTypes::Type::Int16);
-    testCase1_TestPrimitives<uint16_t>("uint16_t", SIMPL::NumericTypes::Type::UInt16);
-    testCase1_TestPrimitives<int32_t>("int32_t", SIMPL::NumericTypes::Type::Int32);
-    testCase1_TestPrimitives<uint32_t>("uint32_t", SIMPL::NumericTypes::Type::UInt32);
-    testCase1_TestPrimitives<int64_t>("int64_t", SIMPL::NumericTypes::Type::Int64);
-    testCase1_TestPrimitives<uint64_t>("uint64_t", SIMPL::NumericTypes::Type::UInt64);
-    testCase1_TestPrimitives<float>("float", SIMPL::NumericTypes::Type::Float);
-    testCase1_TestPrimitives<double>("double", SIMPL::NumericTypes::Type::Double);
+    testCase1_TestPrimitives<int8_t>(SIMPL::NumericTypes::Type::Int8);
+    testCase1_TestPrimitives<uint8_t>(SIMPL::NumericTypes::Type::UInt8);
+    testCase1_TestPrimitives<int16_t>(SIMPL::NumericTypes::Type::Int16);
+    testCase1_TestPrimitives<uint16_t>(SIMPL::NumericTypes::Type::UInt16);
+    testCase1_TestPrimitives<int32_t>(SIMPL::NumericTypes::Type::Int32);
+    testCase1_TestPrimitives<uint32_t>(SIMPL::NumericTypes::Type::UInt32);
+    testCase1_TestPrimitives<int64_t>(SIMPL::NumericTypes::Type::Int64);
+    testCase1_TestPrimitives<uint64_t>(SIMPL::NumericTypes::Type::UInt64);
+    testCase1_TestPrimitives<float>(SIMPL::NumericTypes::Type::Float);
+    testCase1_TestPrimitives<double>(SIMPL::NumericTypes::Type::Double);
   }
 
   // -----------------------------------------------------------------------------
@@ -327,12 +326,12 @@ public:
   // -----------------------------------------------------------------------------
   // testCase2: This tests when the file size is smaller than the allocated size. (Reading past the end of the file)
   template <typename T, size_t N>
-  void testCase2_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  void testCase2_Execute(SIMPL::NumericTypes::Type scalarType)
   {
+    size_t dataArraySize = k_ArraySize * N / 2; // We don't care what is written...we just need the data array size to be less than the file size
+    size_t junkArraySize = 0;
+    size_t skipHeaderBytes = junkArraySize * sizeof(T);
     int err = 0;
-    int dataArraySize = k_ArraySize * N / 2; // We don't care what is written...we just need the data array size to be less than the file size
-    int junkArraySize = 0;
-    int skipHeaderBytes = junkArraySize * sizeof(T);
     // qDebug() << "Testing case 2: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
@@ -386,11 +385,11 @@ public:
   //
   // -----------------------------------------------------------------------------
   template <typename T>
-  void testCase2_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  void testCase2_TestPrimitives(SIMPL::NumericTypes::Type scalarType)
   {
-    testCase2_Execute<T, 1>(name, scalarType);
-    testCase2_Execute<T, 2>(name, scalarType);
-    testCase2_Execute<T, 3>(name, scalarType);
+    testCase2_Execute<T, 1>(scalarType);
+    testCase2_Execute<T, 2>(scalarType);
+    testCase2_Execute<T, 3>(scalarType);
   }
 
   // -----------------------------------------------------------------------------
@@ -407,16 +406,16 @@ public:
       return;
     }
 
-    testCase2_TestPrimitives<int8_t>("int8_t", SIMPL::NumericTypes::Type::Int8);
-    testCase2_TestPrimitives<uint8_t>("uint8_t", SIMPL::NumericTypes::Type::UInt8);
-    testCase2_TestPrimitives<int16_t>("int16_t", SIMPL::NumericTypes::Type::Int16);
-    testCase2_TestPrimitives<uint16_t>("uint16_t", SIMPL::NumericTypes::Type::UInt16);
-    testCase2_TestPrimitives<int32_t>("int32_t", SIMPL::NumericTypes::Type::Int32);
-    testCase2_TestPrimitives<uint32_t>("uint32_t", SIMPL::NumericTypes::Type::UInt32);
-    testCase2_TestPrimitives<int64_t>("int64_t", SIMPL::NumericTypes::Type::Int64);
-    testCase2_TestPrimitives<uint64_t>("uint64_t", SIMPL::NumericTypes::Type::UInt64);
-    testCase2_TestPrimitives<float>("float", SIMPL::NumericTypes::Type::Float);
-    testCase2_TestPrimitives<double>("double", SIMPL::NumericTypes::Type::Double);
+    testCase2_TestPrimitives<int8_t>(SIMPL::NumericTypes::Type::Int8);
+    testCase2_TestPrimitives<uint8_t>(SIMPL::NumericTypes::Type::UInt8);
+    testCase2_TestPrimitives<int16_t>(SIMPL::NumericTypes::Type::Int16);
+    testCase2_TestPrimitives<uint16_t>(SIMPL::NumericTypes::Type::UInt16);
+    testCase2_TestPrimitives<int32_t>(SIMPL::NumericTypes::Type::Int32);
+    testCase2_TestPrimitives<uint32_t>(SIMPL::NumericTypes::Type::UInt32);
+    testCase2_TestPrimitives<int64_t>(SIMPL::NumericTypes::Type::Int64);
+    testCase2_TestPrimitives<uint64_t>(SIMPL::NumericTypes::Type::UInt64);
+    testCase2_TestPrimitives<float>(SIMPL::NumericTypes::Type::Float);
+    testCase2_TestPrimitives<double>(SIMPL::NumericTypes::Type::Double);
   }
 
   // -----------------------------------------------------------------------------
@@ -424,11 +423,11 @@ public:
   // -----------------------------------------------------------------------------
   // testCase3: This tests when the file size is larger than the allocated size and there is junk at the end of the file.
   template <typename T, size_t N>
-  void testCase3_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  void testCase3_Execute(SIMPL::NumericTypes::Type scalarType)
   {
-    int dataArraySize = k_ArraySize * N;
-    int junkArraySize = 10;
-    int skipHeaderBytes = 0;
+    size_t dataArraySize = k_ArraySize * N;
+    size_t junkArraySize = 10;
+    size_t skipHeaderBytes = 0;
     int err = 0;
     // qDebug() << "Testing case 3: " << name << " with num comps " << N;
 
@@ -444,16 +443,13 @@ public:
     }
 
     // Create junkArray
-    T* junkArray = new T[junkArraySize];
+    std::vector<T> junkArray(junkArraySize);
 
     // Write a pattern into junkArray
-    for(size_t i = 0; i < junkArraySize; ++i)
-    {
-      junkArray[i] = (unsigned)0xAB;
-    }
+    std::memset(junkArray.data(), 0xAB, junkArray.size() * sizeof(T));
 
     // Create the file and write to it.  If any of the information is wrong, the result will be false
-    bool result = createAndWriteToFile(dataArray, dataArraySize, junkArray, junkArraySize, Detail::End);
+    bool result = createAndWriteToFile(dataArray, dataArraySize, junkArray.data(), junkArraySize, Detail::End);
 
     // Test to make sure that the file was created and written to successfully
     DREAM3D_REQUIRED(result, ==, true)
@@ -499,11 +495,11 @@ public:
   //
   // -----------------------------------------------------------------------------
   template <typename T>
-  void testCase3_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  void testCase3_TestPrimitives(SIMPL::NumericTypes::Type scalarType)
   {
-    testCase3_Execute<T, 1>(name, scalarType);
-    testCase3_Execute<T, 2>(name, scalarType);
-    testCase3_Execute<T, 3>(name, scalarType);
+    testCase3_Execute<T, 1>(scalarType);
+    testCase3_Execute<T, 2>(scalarType);
+    testCase3_Execute<T, 3>(scalarType);
   }
 
   // -----------------------------------------------------------------------------
@@ -520,16 +516,16 @@ public:
       return;
     }
 
-    testCase3_TestPrimitives<int8_t>("int8_t", SIMPL::NumericTypes::Type::Int8);
-    testCase3_TestPrimitives<uint8_t>("uint8_t", SIMPL::NumericTypes::Type::UInt8);
-    testCase3_TestPrimitives<int16_t>("int16_t", SIMPL::NumericTypes::Type::Int16);
-    testCase3_TestPrimitives<uint16_t>("uint16_t", SIMPL::NumericTypes::Type::UInt16);
-    testCase3_TestPrimitives<int32_t>("int32_t", SIMPL::NumericTypes::Type::Int32);
-    testCase3_TestPrimitives<uint32_t>("uint32_t", SIMPL::NumericTypes::Type::UInt32);
-    testCase3_TestPrimitives<int64_t>("int64_t", SIMPL::NumericTypes::Type::Int64);
-    testCase3_TestPrimitives<uint64_t>("uint64_t", SIMPL::NumericTypes::Type::UInt64);
-    testCase3_TestPrimitives<float>("float", SIMPL::NumericTypes::Type::Float);
-    testCase3_TestPrimitives<double>("double", SIMPL::NumericTypes::Type::Double);
+    testCase3_TestPrimitives<int8_t>(SIMPL::NumericTypes::Type::Int8);
+    testCase3_TestPrimitives<uint8_t>(SIMPL::NumericTypes::Type::UInt8);
+    testCase3_TestPrimitives<int16_t>(SIMPL::NumericTypes::Type::Int16);
+    testCase3_TestPrimitives<uint16_t>(SIMPL::NumericTypes::Type::UInt16);
+    testCase3_TestPrimitives<int32_t>(SIMPL::NumericTypes::Type::Int32);
+    testCase3_TestPrimitives<uint32_t>(SIMPL::NumericTypes::Type::UInt32);
+    testCase3_TestPrimitives<int64_t>(SIMPL::NumericTypes::Type::Int64);
+    testCase3_TestPrimitives<uint64_t>(SIMPL::NumericTypes::Type::UInt64);
+    testCase3_TestPrimitives<float>(SIMPL::NumericTypes::Type::Float);
+    testCase3_TestPrimitives<double>(SIMPL::NumericTypes::Type::Double);
   }
 
   // -----------------------------------------------------------------------------
@@ -537,17 +533,16 @@ public:
   // -----------------------------------------------------------------------------
   // testCase4: This tests when the file size is larger than the allocated size and there is junk at the beginning of the file.
   template <typename T, size_t N>
-  void testCase4_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  void testCase4_Execute(SIMPL::NumericTypes::Type scalarType)
   {
-    int dataArraySize = k_ArraySize * N;
-    int junkArraySize = 5;
-    int skipHeaderBytes = junkArraySize * sizeof(T);
+    size_t dataArraySize = k_ArraySize * N;
+    size_t junkArraySize = 5;
+    size_t skipHeaderBytes = junkArraySize * sizeof(T);
     int err = 0;
     // qDebug() << "Testing case 4: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
-    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, std::string("_Temp_"),
-                                                                     true); // This makes sure our allocated array is deleted when we leave
+    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, std::string("_Temp_"), true);
     T* dataArray = array->getPointer(0);
 
     // Write some data into the data array
@@ -637,11 +632,11 @@ public:
   //
   // -----------------------------------------------------------------------------
   template <typename T>
-  void testCase4_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  void testCase4_TestPrimitives(SIMPL::NumericTypes::Type scalarType)
   {
-    testCase4_Execute<T, 1>(name, scalarType);
-    testCase4_Execute<T, 2>(name, scalarType);
-    testCase4_Execute<T, 3>(name, scalarType);
+    testCase4_Execute<T, 1>(scalarType);
+    testCase4_Execute<T, 2>(scalarType);
+    testCase4_Execute<T, 3>(scalarType);
   }
 
   // -----------------------------------------------------------------------------
@@ -658,16 +653,16 @@ public:
       return;
     }
 
-    testCase4_TestPrimitives<int8_t>("int8_t", SIMPL::NumericTypes::Type::Int8);
-    testCase4_TestPrimitives<uint8_t>("uint8_t", SIMPL::NumericTypes::Type::UInt8);
-    testCase4_TestPrimitives<int16_t>("int16_t", SIMPL::NumericTypes::Type::Int16);
-    testCase4_TestPrimitives<uint16_t>("uint16_t", SIMPL::NumericTypes::Type::UInt16);
-    testCase4_TestPrimitives<int32_t>("int32_t", SIMPL::NumericTypes::Type::Int32);
-    testCase4_TestPrimitives<uint32_t>("uint32_t", SIMPL::NumericTypes::Type::UInt32);
-    testCase4_TestPrimitives<int64_t>("int64_t", SIMPL::NumericTypes::Type::Int64);
-    testCase4_TestPrimitives<uint64_t>("uint64_t", SIMPL::NumericTypes::Type::UInt64);
-    testCase4_TestPrimitives<float>("float", SIMPL::NumericTypes::Type::Float);
-    testCase4_TestPrimitives<double>("double", SIMPL::NumericTypes::Type::Double);
+    testCase4_TestPrimitives<int8_t>(SIMPL::NumericTypes::Type::Int8);
+    testCase4_TestPrimitives<uint8_t>(SIMPL::NumericTypes::Type::UInt8);
+    testCase4_TestPrimitives<int16_t>(SIMPL::NumericTypes::Type::Int16);
+    testCase4_TestPrimitives<uint16_t>(SIMPL::NumericTypes::Type::UInt16);
+    testCase4_TestPrimitives<int32_t>(SIMPL::NumericTypes::Type::Int32);
+    testCase4_TestPrimitives<uint32_t>(SIMPL::NumericTypes::Type::UInt32);
+    testCase4_TestPrimitives<int64_t>(SIMPL::NumericTypes::Type::Int64);
+    testCase4_TestPrimitives<uint64_t>(SIMPL::NumericTypes::Type::UInt64);
+    testCase4_TestPrimitives<float>(SIMPL::NumericTypes::Type::Float);
+    testCase4_TestPrimitives<double>(SIMPL::NumericTypes::Type::Double);
   }
 
   // -----------------------------------------------------------------------------
@@ -675,11 +670,11 @@ public:
   // -----------------------------------------------------------------------------
   // testCase5: This tests when the file size is larger than the allocated size and there is junk both at the beginning and end of the file.
   template <typename T, size_t N>
-  void testCase5_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  void testCase5_Execute(SIMPL::NumericTypes::Type scalarType)
   {
-    int dataArraySize = k_ArraySize * N;
-    int junkArraySize = 10;
-    int skipHeaderBytes = junkArraySize * sizeof(T);
+    size_t dataArraySize = k_ArraySize * N;
+    size_t junkArraySize = 10;
+    size_t skipHeaderBytes = junkArraySize * sizeof(T);
     int err = 0;
     // qDebug() << "Testing case 5: " << name << " with num comps " << N;
 
@@ -747,11 +742,11 @@ public:
   //
   // -----------------------------------------------------------------------------
   template <typename T>
-  void testCase5_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
+  void testCase5_TestPrimitives(SIMPL::NumericTypes::Type scalarType)
   {
-    testCase5_Execute<T, 1>(name, scalarType);
-    testCase5_Execute<T, 2>(name, scalarType);
-    testCase5_Execute<T, 3>(name, scalarType);
+    testCase5_Execute<T, 1>(scalarType);
+    testCase5_Execute<T, 2>(scalarType);
+    testCase5_Execute<T, 3>(scalarType);
   }
 
   // -----------------------------------------------------------------------------
@@ -768,16 +763,16 @@ public:
       return;
     }
 
-    testCase5_TestPrimitives<int8_t>("int8_t", SIMPL::NumericTypes::Type::Int8);
-    testCase5_TestPrimitives<uint8_t>("uint8_t", SIMPL::NumericTypes::Type::UInt8);
-    testCase5_TestPrimitives<int16_t>("int16_t", SIMPL::NumericTypes::Type::Int16);
-    testCase5_TestPrimitives<uint16_t>("uint16_t", SIMPL::NumericTypes::Type::UInt16);
-    testCase5_TestPrimitives<int32_t>("int32_t", SIMPL::NumericTypes::Type::Int32);
-    testCase5_TestPrimitives<uint32_t>("uint32_t", SIMPL::NumericTypes::Type::UInt32);
-    testCase5_TestPrimitives<int64_t>("int64_t", SIMPL::NumericTypes::Type::Int64);
-    testCase5_TestPrimitives<uint64_t>("uint64_t", SIMPL::NumericTypes::Type::UInt64);
-    testCase5_TestPrimitives<float>("float", SIMPL::NumericTypes::Type::Float);
-    testCase5_TestPrimitives<double>("double", SIMPL::NumericTypes::Type::Double);
+    testCase5_TestPrimitives<int8_t>(SIMPL::NumericTypes::Type::Int8);
+    testCase5_TestPrimitives<uint8_t>(SIMPL::NumericTypes::Type::UInt8);
+    testCase5_TestPrimitives<int16_t>(SIMPL::NumericTypes::Type::Int16);
+    testCase5_TestPrimitives<uint16_t>(SIMPL::NumericTypes::Type::UInt16);
+    testCase5_TestPrimitives<int32_t>(SIMPL::NumericTypes::Type::Int32);
+    testCase5_TestPrimitives<uint32_t>(SIMPL::NumericTypes::Type::UInt32);
+    testCase5_TestPrimitives<int64_t>(SIMPL::NumericTypes::Type::Int64);
+    testCase5_TestPrimitives<uint64_t>(SIMPL::NumericTypes::Type::UInt64);
+    testCase5_TestPrimitives<float>(SIMPL::NumericTypes::Type::Float);
+    testCase5_TestPrimitives<double>(SIMPL::NumericTypes::Type::Double);
   }
 
   // -----------------------------------------------------------------------------
@@ -806,6 +801,9 @@ public:
 
     // Create junkArray
     std::vector<T> junkArray(junkArraySize, 0xAB);
+
+    // Write a pattern into junkArray
+    std::memset(junkArray.data(), 0xAB, junkArray.size() * sizeof(T));
 
     // Create the file and write to it.  If any of the information is wrong, the result will be false
     bool result = createAndWriteToFile(dataArray, dataArraySize, junkArray.data(), junkArraySize, Detail::Start);

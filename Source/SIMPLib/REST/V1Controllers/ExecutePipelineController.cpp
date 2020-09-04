@@ -61,6 +61,12 @@ ExecutePipelineController::ExecutePipelineController(const QHostAddress& hostAdd
 {
   setListenHost(hostAddress, hostPort);
 }
+// -----------------------------------------------------------------------------
+ExecutePipelineController::~ExecutePipelineController()
+{
+  delete m_TempDir;
+  m_TempDir = nullptr;
+}
 
 // -----------------------------------------------------------------------------
 //
