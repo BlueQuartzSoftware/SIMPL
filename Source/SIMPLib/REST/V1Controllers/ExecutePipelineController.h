@@ -57,7 +57,7 @@ public:
   ~ExecutePipelineController() override;
 
   /** Generates the response */
-  void service(HttpRequest& request, HttpResponse& response);
+  void service(HttpRequest& request, HttpResponse& response) override;
 
   /**
    * @brief Returns the name of the end point that is controller uses
