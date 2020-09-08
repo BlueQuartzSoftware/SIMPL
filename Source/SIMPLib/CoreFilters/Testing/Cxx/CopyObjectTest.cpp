@@ -37,17 +37,16 @@
 
 #include <memory>
 
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/CoreFilters/CopyObject.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
-#include "SIMPLib/Plugin/ISIMPLibPlugin.h"
-#include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
-
-#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
-#include "SIMPLib/Testing/UnitTestSupport.hpp"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/HexahedralGeom.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
@@ -56,9 +55,10 @@
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
-#include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/Plugin/ISIMPLibPlugin.h"
+#include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class CopyObjectTest
 {
@@ -70,23 +70,6 @@ public:
   CopyObjectTest(CopyObjectTest&&) = delete;                 // Move Constructor
   CopyObjectTest& operator=(const CopyObjectTest&) = delete; // Copy Assignment
   CopyObjectTest& operator=(CopyObjectTest&&) = delete;      // Move Assignment
-
-  // -----------------------------------------------------------------------------
-  //
-  // -----------------------------------------------------------------------------
-  int TestFilterAvailability()
-  {
-    // Now instantiate the CopyObjectTest Filter from the FilterManager
-    FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(m_FilterName);
-    if(nullptr == filterFactory.get())
-    {
-      std::stringstream ss;
-      ss << "The CopyObjectTest Requires the use of the " << m_FilterName.toStdString() << " filter which is found in Core Filters";
-      DREAM3D_TEST_THROW_EXCEPTION(ss.str())
-    }
-    return 0;
-  }
 
   // -----------------------------------------------------------------------------
   //
@@ -557,47 +540,33 @@ public:
       std::cout << "   " << dca->getDataContainer(dap)->getGeometry()->getName().toStdString();
     }
     std::cout << std::endl;
-    FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(m_FilterName);
-    AbstractFilter::Pointer extractAttributeArraysFromGeometry = filterFactory->create();
 
-    extractAttributeArraysFromGeometry->setDataContainerArray(dca);
+    CopyObject::Pointer copyObject = CopyObject::New();
+
+    copyObject->setDataContainerArray(dca);
 
     // Setup Filter
+    copyObject->setObjectToCopy(objectToCopy);
 
-    QVariant var;
-
-    var.setValue(objectToCopy);
-    bool propWasSet = extractAttributeArraysFromGeometry->setProperty("ObjectToCopy", var);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-    var.setValue(copyName);
-    propWasSet = extractAttributeArraysFromGeometry->setProperty("CopiedObjectName", var);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    copyObject->setCopiedObjectName(copyName);
 
     if(objectToCopy == 0) // DataContainer
     {
-      var.setValue(dap);
-      propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerToCopy", var);
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+      copyObject->setDataContainerToCopy(dap);
     }
     else if(objectToCopy == 1) // AttributeMatrix
     {
-      var.setValue(dap);
-      propWasSet = extractAttributeArraysFromGeometry->setProperty("AttributeMatrixToCopy", var);
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+      copyObject->setAttributeMatrixToCopy(dap);
     }
     else if(objectToCopy == 2) // DataArray
     {
-      var.setValue(dap);
-      propWasSet = extractAttributeArraysFromGeometry->setProperty("AttributeArrayToCopy", var);
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+      copyObject->setAttributeArrayToCopy(dap);
     }
 
     // Run Filter
 
-    extractAttributeArraysFromGeometry->execute();
-    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCode(), >=, 0);
+    copyObject->execute();
+    DREAM3D_REQUIRED(copyObject->getErrorCode(), >=, 0);
 
     // Check Filter Results
 
@@ -900,10 +869,10 @@ public:
     hexGeom->findUnsharedEdges();
     hexGeom->findUnsharedFaces();
     emptyDC->setGeometry(hexGeom);
+
     TestCase(dca, DataArrayPath(k_EmptyDataContainerName), 0, k_CopiedObjectName);
 
     // Test Copy AttributeMatrices
-
     TestCase(dca, DataArrayPath(k_DataContainerName, k_AttributeMatrix1Name, ""), 1, k_CopiedObjectName);
 
     TestCase(dca, DataArrayPath(k_DataContainerName, k_AttributeMatrix2Name, ""), 1, k_CopiedObjectName);
@@ -912,7 +881,6 @@ public:
     TestCase(dca, DataArrayPath(k_EmptyDataContainerName, k_EmptyAttributeMatrixName, ""), 1, k_CopiedObjectName);
 
     // Test Copy DataArrays
-
     TestCase(dca, DataArrayPath(k_DataContainerName, k_AttributeMatrix1Name, k_uint8ArrayName), 2, k_CopiedObjectName);
 
     TestCase(dca, DataArrayPath(k_DataContainerName, k_AttributeMatrix1Name, k_int8ArrayName), 2, k_CopiedObjectName);
@@ -932,24 +900,47 @@ public:
     TestCase(dca, DataArrayPath(k_DataContainerName, k_AttributeMatrix2Name, k_floatArrayName), 2, k_CopiedObjectName);
 
     TestCase(dca, DataArrayPath(k_DataContainerName, k_AttributeMatrix2Name, k_doubleArrayName), 2, k_CopiedObjectName);
+  
   }
 
   // -----------------------------------------------------------------------------
-  //
+  void TestHexahedralGeometry()
+  {
+    static const QString k_VerticesDAName("VertexCoordinates");
+    static const QString k_ElementListDAName("Connectivity");
+
+    std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 1.55f}, {3.0f, 1.0f, 1.55f}, {2.0f, 3.0f, 1.55f}, {2.0f, 2.0f, 3.55f}, {2.5f, 1.0f, 1.55f}, {4.3f, 1.0f, 1.55f}, {5.1f, 3.0f, 1.55f}, {7.63f, 2.0f, 3.55f}};
+
+    std::vector<std::vector<MeshIndexType>>  elements = {{0, 1, 2, 3, 4, 5, 6, 7}};
+
+    DataArray<float>::Pointer daHexVert = createDataArray<float>(k_VerticesDAName, vertices, m_Dims8, m_Dims3);
+    SharedHexList::Pointer daHexList = createDataArray<MeshIndexType>(k_ElementListDAName, elements, m_Dims1, m_Dims8);
+
+    HexahedralGeom::Pointer hexGeom = HexahedralGeom::CreateGeometry(daHexList, daHexVert, SIMPL::Geometry::HexahedralGeometry);
+    hexGeom->setName("hexGeom");
+
+    hexGeom->findEdges();
+    hexGeom->findElementCentroids();
+    hexGeom->findElementNeighbors();
+    hexGeom->findElementsContainingVert();
+    hexGeom->findElementSizes();
+    hexGeom->findFaces();
+    hexGeom->findUnsharedEdges();
+    hexGeom->findUnsharedFaces();
+  }
+
   // -----------------------------------------------------------------------------
   void operator()()
   {
     int err = EXIT_SUCCESS;
 
     std::cout << "#### CopyObjectTest Starting ####" << std::endl;
-
-    DREAM3D_REGISTER_TEST(TestFilterAvailability());
+    DREAM3D_REGISTER_TEST(TestHexahedralGeometry())
 
     DREAM3D_REGISTER_TEST(TestCopyObjectTest())
   }
 
 private:
-  QString m_FilterName = QString("CopyObject");
   std::vector<size_t> m_Dims1 = {1};
   std::vector<size_t> m_Dims2 = {2};
   std::vector<size_t> m_Dims3 = {3};

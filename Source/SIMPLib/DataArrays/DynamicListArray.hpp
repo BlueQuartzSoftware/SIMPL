@@ -35,8 +35,9 @@
 
 #pragma once
 
-#include <vector>
+#include <iostream>
 #include <memory>
+#include <vector>
 
 #include <QtCore/QString>
 
@@ -108,7 +109,7 @@ public:
         delete[] this->m_Array[i].cells;
       }
     }
-    // Now delete all the "NeighborLists" structures
+    // Now delete all the "ElementList" structures
     if(this->m_Array != nullptr)
     {
       delete[] this->m_Array;
@@ -191,6 +192,7 @@ public:
     }
     if(nullptr != m_Array[ptId].cells && m_Array[ptId].ncells > 0)
     {
+      delete[] this->m_Array[ptId].cells;
       m_Array[ptId].cells = nullptr;
       m_Array[ptId].ncells = 0;
     }
@@ -217,6 +219,7 @@ public:
     }
     if(nullptr != m_Array[ptId].cells && m_Array[ptId].ncells > 0)
     {
+      delete[] this->m_Array[ptId].cells;
       m_Array[ptId].cells = nullptr;
       m_Array[ptId].ncells = 0;
     }
@@ -283,7 +286,10 @@ public:
     for(typename std::vector<T>::size_type i = 0; i < linkCounts.size(); i++)
     {
       this->m_Array[i].ncells = linkCounts[i];
-      this->m_Array[i].cells = new K[this->m_Array[i].ncells];
+      if(linkCounts[i] > 0)
+      {
+        this->m_Array[i].cells = new K[this->m_Array[i].ncells];
+      }
     }
   }
 
@@ -305,7 +311,7 @@ protected:
         delete[] this->m_Array[i].cells;
       }
     }
-    // Now delete all the "NeighborLists" structures
+    // Now delete all the "ElementList" structures
     if(this->m_Array != nullptr)
     {
       delete[] this->m_Array;
