@@ -1675,11 +1675,11 @@ public:
     QString configFileName = UnitTest::RestUnitTest::RestServerConfigFilePath;
     QSettings settings(configFileName, QSettings::IniFormat);
     // Configure session store
-    ServerSettings* sessionSettings = new ServerSettings(settings);
-    m_SessionStore = QSharedPointer<HttpSessionStore>(HttpSessionStore::CreateInstance(sessionSettings));
+    m_SessionSettings = new ServerSettings(settings);
+    m_SessionStore = QSharedPointer<HttpSessionStore>(HttpSessionStore::CreateInstance(m_SessionSettings));
 
     // Configure static file controller
-    SIMPLStaticFileController::CreateInstance(sessionSettings);
+    SIMPLStaticFileController::CreateInstance(m_SessionSettings);
 
     // Configure and start the TCP listener
     for(const QHostAddress& address : QNetworkInterface::allAddresses())
@@ -1687,12 +1687,12 @@ public:
       if(address.protocol() == QAbstractSocket::IPv4Protocol && address.isLoopback() == false)
       {
         QString localhostIP = address.toString();
-        sessionSettings->host = localhostIP;
+        m_SessionSettings->host = localhostIP;
         break;
       }
     }
 
-    m_HttpListener = QSharedPointer<HttpListener>(new HttpListener(sessionSettings, new SIMPLRequestMapper()));
+    m_HttpListener = QSharedPointer<HttpListener>(new HttpListener(m_SessionSettings, new SIMPLRequestMapper()));
   }
 
   // -----------------------------------------------------------------------------
@@ -1700,8 +1700,9 @@ public:
   // -----------------------------------------------------------------------------
   void endServer()
   {
-    m_SessionStore = QSharedPointer<HttpSessionStore>();
-    m_HttpListener = QSharedPointer<HttpListener>();
+    m_SessionStore.clear();
+    m_HttpListener.clear();
+    delete m_SessionSettings;
   }
 
   // -----------------------------------------------------------------------------
@@ -1753,6 +1754,7 @@ private:
   RESTUnitTestObserver m_Observer;
 
   bool m_RunDREAM3DTests = true;
+  ServerSettings* m_SessionSettings = nullptr;
 
   RESTUnitTest(const RESTUnitTest&);   // Copy Constructor Not Implemented
   void operator=(const RESTUnitTest&); // Move assignment Not Implemented

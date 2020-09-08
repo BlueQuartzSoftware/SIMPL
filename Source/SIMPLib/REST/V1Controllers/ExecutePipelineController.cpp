@@ -544,12 +544,12 @@ void ExecutePipelineController::replaceInputFileParametersUsingMetadata(const QS
       QDir dir;
       dir.mkpath(fi.path());
 
-      QFile* tempFile = new QFile(tempFilePath);
-      if(tempFile->open(QFile::ReadWrite))
+      QFile tempFile(tempFilePath);
+      if(tempFile.open(QFile::ReadWrite))
       {
         // Write out the file data to the temporary file we created on the server
-        tempFile->write(parameterData);
-        tempFile->close();
+        tempFile.write(parameterData);
+        tempFile.close();
 
         // Update the pipeline json with the file path that we just wrote out to
         QString tempPropertyValue = m_TempDir->path();

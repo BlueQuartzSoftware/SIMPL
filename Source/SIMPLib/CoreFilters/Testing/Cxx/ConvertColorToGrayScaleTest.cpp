@@ -42,6 +42,7 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
+#include "SIMPLib/CoreFilters/ConvertColorToGrayScale.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
@@ -65,7 +66,7 @@ class ConvertColorToGrayScaleTest
   const QString m_filtName = "ConvertColorToGrayScale";
   const QString m_outputArrayPrefix = "grayTestImage";
   const QString m_outputAMName = "grayTestAM";
-  AbstractFilter::Pointer m_colorToGrayscaleFilter;
+  ConvertColorToGrayScale::Pointer m_colorToGrayscaleFilter;
   DataContainerArray::Pointer m_dca;
 
   enum Algorithms
@@ -366,7 +367,7 @@ class ConvertColorToGrayScaleTest
    of the desired geometry is passed in here this method will sort out the input
    data array path and should work as expected
    */
-  void SetUp(const QVariant& algorithm, const DataContainer::Pointer& dc, const FloatVec3Type& colorWeights = {0.2125f, 0.7154f, 0.0721f}, const uint8_t& colorChannel = 0)
+  void SetUp(const Algorithms& algorithm, const DataContainer::Pointer& dc, const FloatVec3Type& colorWeights = {0.2125f, 0.7154f, 0.0721f}, const uint8_t& colorChannel = 0)
   {
     m_dca = DataContainerArray::New();
     m_dca->setName("TEST DATA CONTAINER ARRAY");
@@ -385,26 +386,23 @@ class ConvertColorToGrayScaleTest
       }
     }
 
-    QVariant dataArrayVector{};
-    dataArrayVector.setValue(daps);
+    m_colorToGrayscaleFilter = ConvertColorToGrayScale::New();
+    DREAM3D_REQUIRE(m_colorToGrayscaleFilter.get() != nullptr);
 
-    QVariant cw{};
-    cw.setValue(colorWeights);
-
-    m_colorToGrayscaleFilter->setProperty("ConversionAlgorithm", algorithm);
-    m_colorToGrayscaleFilter->setProperty("OutputArrayPrefix", static_cast<QVariant>(m_outputArrayPrefix));
-    m_colorToGrayscaleFilter->setProperty("ColorWeights", cw);
-    m_colorToGrayscaleFilter->setProperty("ColorChannel", colorChannel);
-    m_colorToGrayscaleFilter->setProperty("CreateNewAttributeMatrix", m_createNewAM);
-    m_colorToGrayscaleFilter->setProperty("OutputAttributeMatrixName", static_cast<QVariant>(m_outputAMName));
-    m_colorToGrayscaleFilter->setProperty("InputDataArrayVector", dataArrayVector);
+    m_colorToGrayscaleFilter->setConversionAlgorithm(algorithm);
+    m_colorToGrayscaleFilter->setOutputArrayPrefix(m_outputArrayPrefix);
+    m_colorToGrayscaleFilter->setColorWeights(colorWeights);
+    m_colorToGrayscaleFilter->setColorChannel(colorChannel);
+    m_colorToGrayscaleFilter->setCreateNewAttributeMatrix(m_createNewAM);
+    m_colorToGrayscaleFilter->setOutputAttributeMatrixName(m_outputAMName);
+    m_colorToGrayscaleFilter->setInputDataArrayVector(daps);
     m_colorToGrayscaleFilter->setDataContainerArray(m_dca);
 
     int wrongParameters = CheckFilterParameters(algorithm, colorWeights, colorChannel);
     DREAM3D_REQUIRE_EQUAL(0, wrongParameters)
   }
 
-  void SetUp(const QVariant& algorithm, const DataContainer::Pointer& dc, const uint8_t& colorChannel)
+  void SetUp(const Algorithms& algorithm, const DataContainer::Pointer& dc, const uint8_t& colorChannel)
   {
     SetUp(algorithm, dc, m_defaultWeights, colorChannel);
   }
@@ -424,7 +422,7 @@ class ConvertColorToGrayScaleTest
   /**
    * @brief Resets the environment for another test
    */
-  void TearDown(const DataContainer::Pointer& dc) const
+  void TearDown(const DataContainer::Pointer& dc)
   {
     for(const auto& eachDC : m_dca->getDataContainers())
     {
@@ -447,6 +445,8 @@ class ConvertColorToGrayScaleTest
     }
 
     m_dca->removeDataContainer(dc->getName());
+    m_dca = DataContainerArray::NullPointer();
+    m_colorToGrayscaleFilter = ConvertColorToGrayScale::NullPointer();
 
 #if REMOVE_TEST_FILES
 //    QFile::remove(UnitTest::ConvertColorToGrayScale::TestOutputPath);
@@ -460,13 +460,7 @@ public:
   ConvertColorToGrayScaleTest& operator=(ConvertColorToGrayScaleTest&&) = delete;      // Move Assignment
 
   ConvertColorToGrayScaleTest()
-  : m_dca{DataContainerArray::New()}
   {
-    IFilterFactory::Pointer colorToGrayscaleFactory = FilterManager::Instance()->getFactoryFromClassName(m_filtName);
-    DREAM3D_REQUIRE(colorToGrayscaleFactory.get() != nullptr);
-
-    m_colorToGrayscaleFilter = colorToGrayscaleFactory->create();
-    DREAM3D_REQUIRE(m_colorToGrayscaleFilter.get() != nullptr);
   }
   ~ConvertColorToGrayScaleTest() = default;
 
