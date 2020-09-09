@@ -1676,6 +1676,7 @@ public:
     QSettings settings(configFileName, QSettings::IniFormat);
     // Configure session store
     m_SessionSettings = new ServerSettings(settings);
+    m_RequestMapper = new SIMPLRequestMapper();
     m_SessionStore = QSharedPointer<HttpSessionStore>(HttpSessionStore::CreateInstance(m_SessionSettings));
 
     // Configure static file controller
@@ -1692,7 +1693,7 @@ public:
       }
     }
 
-    m_HttpListener = QSharedPointer<HttpListener>(new HttpListener(m_SessionSettings, new SIMPLRequestMapper()));
+    m_HttpListener = QSharedPointer<HttpListener>(new HttpListener(m_SessionSettings, m_RequestMapper));
   }
 
   // -----------------------------------------------------------------------------
@@ -1703,6 +1704,9 @@ public:
     m_SessionStore.clear();
     m_HttpListener.clear();
     delete m_SessionSettings;
+    m_SessionSettings = nullptr;
+    delete m_RequestMapper;
+    m_RequestMapper = nullptr;
   }
 
   // -----------------------------------------------------------------------------
@@ -1746,6 +1750,9 @@ public:
   }
 
 private:
+  ServerSettings* m_SessionSettings = nullptr;
+  SIMPLRequestMapper* m_RequestMapper = nullptr;
+
   QSharedPointer<HttpSessionStore> m_SessionStore;
   QSharedPointer<HttpListener> m_HttpListener;
 
@@ -1754,7 +1761,6 @@ private:
   RESTUnitTestObserver m_Observer;
 
   bool m_RunDREAM3DTests = true;
-  ServerSettings* m_SessionSettings = nullptr;
 
   RESTUnitTest(const RESTUnitTest&);   // Copy Constructor Not Implemented
   void operator=(const RESTUnitTest&); // Move assignment Not Implemented
