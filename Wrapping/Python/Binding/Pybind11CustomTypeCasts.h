@@ -580,15 +580,15 @@ public:
           std::vector<float> floatArrayVector;
           size_t index = 0;
           QString name;
-          for(auto value : floatArray)
+          for(auto item : floatArray)
           {
             if(index == 0)
             {
-              name = py::cast<QString>(value);
+              name = py::cast<QString>(item);
             }
             else
             {
-              floatArrayVector.push_back(py::cast<float>(value));
+              floatArrayVector.push_back(py::cast<float>(item));
             }
             index++;
           }
