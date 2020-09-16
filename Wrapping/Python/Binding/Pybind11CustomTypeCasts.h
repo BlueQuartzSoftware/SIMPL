@@ -599,7 +599,6 @@ public:
         {
           PyObject* floatArrayPy = floatArray.ptr();
           floatArrays.push_back(py::cast<FloatArrayType::Pointer>(floatArray));
-          Py_XDECREF(floatArrayPy);
         }
         else
         {
@@ -608,7 +607,6 @@ public:
       }
 
       value = floatArrays;
-      Py_XDECREF(source);
       return true;
     }
     return false;
