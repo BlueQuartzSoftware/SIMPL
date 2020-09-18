@@ -22,6 +22,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   DataContainerTest
   ErrorMessageTest
   ExecuteProcessTest
+  ExportDataTest
   ExtractAttributeArraysFromGeometryTest
   ExtractComponentAsArrayTest
   ExtractVertexGeometryTest

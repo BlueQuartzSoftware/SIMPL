@@ -19,6 +19,10 @@ namespace UnitTest
   inline const QString TestTempDir("@TEST_TEMP_DIR@");
   inline const QString DREAM3DProjDir("@DREAM3DProj_SOURCE_DIR@");
 
+  namespace ExportDataTest
+  {
+    inline const QString TestTempDir("@TEST_TEMP_DIR@");
+  }
 
   namespace GenerateTiltSeriesTest
   {
