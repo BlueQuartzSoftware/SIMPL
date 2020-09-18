@@ -15,227 +15,227 @@
 
 namespace UnitTest
 {
+  inline const QString DataDir("@DREAM3D_DATA_DIR@");
+  inline const QString TestTempDir("@TEST_TEMP_DIR@");
+  inline const QString DREAM3DProjDir("@DREAM3DProj_SOURCE_DIR@");
 
-  const QString DataDir("@DREAM3D_DATA_DIR@");
-  const QString TestTempDir("@TEST_TEMP_DIR@");
-  const QString DREAM3DProjDir("@DREAM3DProj_SOURCE_DIR@");
 
   namespace GenerateTiltSeriesTest
   {
-  const QString TestFile1("@DREAM3D_DATA_DIR@/Data/GenerateTiltSeries/GenerateTiltSeriesTest.dream3d");
+    inline const QString TestFile1("@DREAM3D_DATA_DIR@/Data/GenerateTiltSeries/GenerateTiltSeriesTest.dream3d");
   } // namespace GenerateTiltSeriesTest
 
   namespace RecursivePipelineTest
   {
-    const QString TestDir("@TEST_TEMP_DIR@");
-    const QString InputDREAM3DFile("@TEST_TEMP_DIR@/InputDREAM3DFile.dream3d");
-    const QString OutputDREAM3DFile("@TEST_TEMP_DIR@/OutputDREAM3DFile.dream3d");
+    inline const QString TestDir("@TEST_TEMP_DIR@");
+    inline const QString InputDREAM3DFile("@TEST_TEMP_DIR@/InputDREAM3DFile.dream3d");
+    inline const QString OutputDREAM3DFile("@TEST_TEMP_DIR@/OutputDREAM3DFile.dream3d");
   }
 
   namespace ExtractVertexGeometryTest
   {
-   const QString TestFile("@TEST_TEMP_DIR@/TestFile1.dream3d");
-   const QString TestFileXdmf("@TEST_TEMP_DIR@/TestFile1.xdmf");
+    inline const QString TestFile("@TEST_TEMP_DIR@/TestFile1.dream3d");
+    inline const QString TestFileXdmf("@TEST_TEMP_DIR@/TestFile1.xdmf");
   }
 
   namespace DataArrayTest
   {
-    const QString TestDir("@TEST_TEMP_DIR@/DataArrayTest");
-    const QString TestFile("@TEST_TEMP_DIR@/DataArrayTest/DataArrayTest.h5");
+    inline const QString TestDir("@TEST_TEMP_DIR@/DataArrayTest");
+    inline const QString TestFile("@TEST_TEMP_DIR@/DataArrayTest/DataArrayTest.h5");
   }
 
   namespace DataContainerBundleTest
   {
-    const QString TestDir("@TEST_TEMP_DIR@/DataContainerBundleTest");
-    const QString TestFile("@TEST_TEMP_DIR@/DataContainerBundleTest/DataContainerBundleTest.h5");
+    inline const QString TestDir("@TEST_TEMP_DIR@/DataContainerBundleTest");
+    inline const QString TestFile("@TEST_TEMP_DIR@/DataContainerBundleTest/DataContainerBundleTest.h5");
   }
 
   namespace FeatureIdsTest
   {
-    static const size_t XSize = 3;
-    static const size_t YSize = 4;
-    static const size_t ZSize = 5;
-    static const size_t Offset = 200;
+    inline constexpr size_t XSize = 3;
+    inline constexpr size_t YSize = 4;
+    inline constexpr size_t ZSize = 5;
+    inline constexpr size_t Offset = 200;
   }
   
   namespace FindDerivativesFilterTest
   {
-   const QString TestFile1("@TEST_TEMP_DIR@/TestFile1.txt");
-   const QString TestFile2("@TEST_TEMP_DIR@/TestFile2.txt");
+    inline const QString TestFile1("@TEST_TEMP_DIR@/TestFile1.txt");
+    inline const QString TestFile2("@TEST_TEMP_DIR@/TestFile2.txt");
   }
 
   namespace GenerateColorTableTest
   {
-    const QString ImageFilePath("@TEST_TESTFILES_DIR@/GenerateColorTable/ColorTableTestFile.txt");
-    const QString TestFilesDir("@TEST_TESTFILES_DIR@");
-    const QString BlackBlueWhiteFile("@TEST_TESTFILES_DIR@/GenerateColorTable/BlackBlueWhite.txt");
-    const QString BlackBodyRadiationFile("@TEST_TESTFILES_DIR@/GenerateColorTable/BlackBodyRadiation.txt");
-    const QString BlackOrangeWhiteFile("@TEST_TESTFILES_DIR@/GenerateColorTable/BlackOrangeWhite.txt");
-    const QString BlueToYellowFile("@TEST_TESTFILES_DIR@/GenerateColorTable/BlueToYellow.txt");
-    const QString ColdAndHotFile("@TEST_TESTFILES_DIR@/GenerateColorTable/ColdAndHot.txt");
-    const QString GrayscaleFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Grayscale.txt");
-    const QString HazeFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Haze.txt");
-    const QString HsvFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Hsv.txt");
-    const QString JetFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Jet.txt");
-    const QString RainbowFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Rainbow.txt");
-    const QString RainbowBlendedBlackFile("@TEST_TESTFILES_DIR@/GenerateColorTable/RainbowBlendedBlack.txt");
-    const QString RainbowBlendedGreyFile("@TEST_TESTFILES_DIR@/GenerateColorTable/RainbowBlendedGrey.txt");
-    const QString RainbowBlendedWhiteFile("@TEST_TESTFILES_DIR@/GenerateColorTable/RainbowBlendedWhite.txt");
-    const QString RainbowDesaturatedFile("@TEST_TESTFILES_DIR@/GenerateColorTable/RainbowDesaturated.txt");
-    const QString XRayFile("@TEST_TESTFILES_DIR@/GenerateColorTable/XRay.txt");
+    inline const QString ImageFilePath("@TEST_TESTFILES_DIR@/GenerateColorTable/ColorTableTestFile.txt");
+    inline const QString TestFilesDir("@TEST_TESTFILES_DIR@");
+    inline const QString BlackBlueWhiteFile("@TEST_TESTFILES_DIR@/GenerateColorTable/BlackBlueWhite.txt");
+    inline const QString BlackBodyRadiationFile("@TEST_TESTFILES_DIR@/GenerateColorTable/BlackBodyRadiation.txt");
+    inline const QString BlackOrangeWhiteFile("@TEST_TESTFILES_DIR@/GenerateColorTable/BlackOrangeWhite.txt");
+    inline const QString BlueToYellowFile("@TEST_TESTFILES_DIR@/GenerateColorTable/BlueToYellow.txt");
+    inline const QString ColdAndHotFile("@TEST_TESTFILES_DIR@/GenerateColorTable/ColdAndHot.txt");
+    inline const QString GrayscaleFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Grayscale.txt");
+    inline const QString HazeFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Haze.txt");
+    inline const QString HsvFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Hsv.txt");
+    inline const QString JetFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Jet.txt");
+    inline const QString RainbowFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Rainbow.txt");
+    inline const QString RainbowBlendedBlackFile("@TEST_TESTFILES_DIR@/GenerateColorTable/RainbowBlendedBlack.txt");
+    inline const QString RainbowBlendedGreyFile("@TEST_TESTFILES_DIR@/GenerateColorTable/RainbowBlendedGrey.txt");
+    inline const QString RainbowBlendedWhiteFile("@TEST_TESTFILES_DIR@/GenerateColorTable/RainbowBlendedWhite.txt");
+    inline const QString RainbowDesaturatedFile("@TEST_TESTFILES_DIR@/GenerateColorTable/RainbowDesaturated.txt");
+    inline const QString XRayFile("@TEST_TESTFILES_DIR@/GenerateColorTable/XRay.txt");
   }
 
   namespace VtkGrainIdIOTest
   {
-    const QString TestFile("@TEST_TEMP_DIR@/VtkGrainIdIOTest.vtk");
-    static const size_t XSize = 5;
-    static const size_t YSize = 4;
-    static const size_t ZSize = 3;
-    static const size_t Offset = 300;
+    inline const QString TestFile("@TEST_TEMP_DIR@/VtkGrainIdIOTest.vtk");
+    inline constexpr size_t XSize = 5;
+    inline constexpr size_t YSize = 4;
+    inline constexpr size_t ZSize = 3;
+    inline constexpr size_t Offset = 300;
   }
 
   namespace VTKFileWritersTest
   {
-    static const QString TestFile("@TEST_TEMP_DIR@/VtkIOTest.vtk");
-    static const size_t XSize = 2;
-    static const size_t YSize = 10;
-    static const size_t ZSize = 5;
-    static const size_t Offset = 66;
+    inline const QString TestFile("@TEST_TEMP_DIR@/VtkIOTest.vtk");
+    inline constexpr size_t XSize = 2;
+    inline constexpr size_t YSize = 10;
+    inline constexpr size_t ZSize = 5;
+    inline constexpr size_t Offset = 66;
   }
 
   namespace NeighborListTest
   {
-    const QString TestDir("@TEST_TEMP_DIR@/NeighborListTest");
+    inline const QString TestDir("@TEST_TEMP_DIR@/NeighborListTest");
   }
 
   namespace SyntheticBuilderTest
   {
-    const QString TestDir("@TEST_TEMP_DIR@/SyntheticBuilderTest");
-    const QString CsvFile("@TEST_TEMP_DIR@/SyntheticBuilderTest/SyntheticBuilderTest.csv");
-    const QString OutputFile("@TEST_TEMP_DIR@/SyntheticBuilderTest/SyntheticBuilderTest.h5");
-    const QString VtkOutputFile("@TEST_TEMP_DIR@/SyntheticBuilderTest/SyntheticBuilderTest.vtk");
+    inline const QString TestDir("@TEST_TEMP_DIR@/SyntheticBuilderTest");
+    inline const QString CsvFile("@TEST_TEMP_DIR@/SyntheticBuilderTest/SyntheticBuilderTest.csv");
+    inline const QString OutputFile("@TEST_TEMP_DIR@/SyntheticBuilderTest/SyntheticBuilderTest.h5");
+    inline const QString VtkOutputFile("@TEST_TEMP_DIR@/SyntheticBuilderTest/SyntheticBuilderTest.vtk");
 
   }
 
   namespace FindNeighborTest
   {
-    const QString TestDir("@TEST_TEMP_DIR@/FindNeighborTest");
-    const QString OutputFile("@TEST_TEMP_DIR@/FindNeighborTest/FindNeighborTest.h5");
-    const QString StatsFile("@TEST_TEMP_DIR@/FindNeighborTest/FindNeighborTest_Stats.h5");
-    const QString OutputFile2("@TEST_TEMP_DIR@/FindNeighborTest/OtherTestOutput.h5");
-    const QString VtkOutputFile("@TEST_TEMP_DIR@/FindNeighborTest/FindNeighborTest.vtk");
+    inline const QString TestDir("@TEST_TEMP_DIR@/FindNeighborTest");
+    inline const QString OutputFile("@TEST_TEMP_DIR@/FindNeighborTest/FindNeighborTest.h5");
+    inline const QString StatsFile("@TEST_TEMP_DIR@/FindNeighborTest/FindNeighborTest_Stats.h5");
+    inline const QString OutputFile2("@TEST_TEMP_DIR@/FindNeighborTest/OtherTestOutput.h5");
+    inline const QString VtkOutputFile("@TEST_TEMP_DIR@/FindNeighborTest/FindNeighborTest.vtk");
   }
 
   namespace DREAM3DSettingsTest
   {
-    const QString TestFile("@TEST_TEMP_DIR@/DREAM3DSettingsTest/DREAM3DSettingsTest.json");
+    inline const QString TestFile("@TEST_TEMP_DIR@/DREAM3DSettingsTest/DREAM3DSettingsTest.json");
   }
 
   namespace StatsDataTest
   {
-    const QString TestDir("@TEST_TEMP_DIR@/StatsDataTest");
-    const QString TestFile("@TEST_TEMP_DIR@/StatsDataTest/StatsDataTest.h5");
-    const QString TestFile2("@TEST_TEMP_DIR@/StatsDataTest/StatsDataTest_rewrite.h5");
+    inline const QString TestDir("@TEST_TEMP_DIR@/StatsDataTest");
+    inline const QString TestFile("@TEST_TEMP_DIR@/StatsDataTest/StatsDataTest.h5");
+    inline const QString TestFile2("@TEST_TEMP_DIR@/StatsDataTest/StatsDataTest_rewrite.h5");
   }
 
   namespace RawBinaryReaderTest
   {
-    const QString TestDir("@TEST_TEMP_DIR@/RawBinaryReaderTest");
-    const QString OutputFile("@TEST_TEMP_DIR@/RawBinaryReaderTest/Output.bin");
+    inline const QString TestDir("@TEST_TEMP_DIR@/RawBinaryReaderTest");
+    inline const QString OutputFile("@TEST_TEMP_DIR@/RawBinaryReaderTest/Output.bin");
   }
 
   namespace SyntheticTest
   {
-    const QString TestDir("@TEST_TEMP_DIR@/SyntheticTest");
-    const QString MatrixPrecipitateInputFile("@DREAM3D_SUPPORT_DIR@/Data/2Phase_Matrix_Precipitate.dream3d");
-    const QString OutputFile("@TEST_TEMP_DIR@/SyntheticTestOutput.dream3d");
+    inline const QString TestDir("@TEST_TEMP_DIR@/SyntheticTest");
+    inline const QString MatrixPrecipitateInputFile("@DREAM3D_SUPPORT_DIR@/Data/2Phase_Matrix_Precipitate.dream3d");
+    inline const QString OutputFile("@TEST_TEMP_DIR@/SyntheticTestOutput.dream3d");
   }
 
   namespace FilterParametersRWTest
   {
-    const QString TestDir("@TEST_TEMP_DIR@/FilterParametersRWTest");
-    const QString ArraySelectionFile("@TEST_TEMP_DIR@/FilterParametersRWTest/ArraySelectionFile.h5");
-    const QString ArraySelectionFileQSettings("@TEST_TEMP_DIR@/FilterParametersRWTest/ArraySelectionFile.ini");
-    const QString GenericExampleFile("@TEST_TEMP_DIR@/FilterParametersRWTest/GenericExampleFile.h5");
-    const QString GenericExampleFileQSettings("@TEST_TEMP_DIR@/FilterParametersRWTest/GenericExampleFile.ini");
-    const QString ThresholdFile("@TEST_TEMP_DIR@/FilterParametersRWTest/ThresholdFile.h5");
-    const QString ThresholdFileQSettings("@TEST_TEMP_DIR@/FilterParametersRWTest/ThresholdFile.ini");
-    const QString TestFile_1("@TEST_TEMP_DIR@/FilterParametersRWTest/TestFile_1.h5");
-    const QString TestFile_2("@TEST_TEMP_DIR@/FilterParametersRWTest/TestFile_2.h5");
-    const QString TestFile_3("@TEST_TEMP_DIR@/FilterParametersRWTest/TestFile_3.h5");
+    inline const QString TestDir("@TEST_TEMP_DIR@/FilterParametersRWTest");
+    inline const QString ArraySelectionFile("@TEST_TEMP_DIR@/FilterParametersRWTest/ArraySelectionFile.h5");
+    inline const QString ArraySelectionFileQSettings("@TEST_TEMP_DIR@/FilterParametersRWTest/ArraySelectionFile.ini");
+    inline const QString GenericExampleFile("@TEST_TEMP_DIR@/FilterParametersRWTest/GenericExampleFile.h5");
+    inline const QString GenericExampleFileQSettings("@TEST_TEMP_DIR@/FilterParametersRWTest/GenericExampleFile.ini");
+    inline const QString ThresholdFile("@TEST_TEMP_DIR@/FilterParametersRWTest/ThresholdFile.h5");
+    inline const QString ThresholdFileQSettings("@TEST_TEMP_DIR@/FilterParametersRWTest/ThresholdFile.ini");
+    inline const QString TestFile_1("@TEST_TEMP_DIR@/FilterParametersRWTest/TestFile_1.h5");
+    inline const QString TestFile_2("@TEST_TEMP_DIR@/FilterParametersRWTest/TestFile_2.h5");
+    inline const QString TestFile_3("@TEST_TEMP_DIR@/FilterParametersRWTest/TestFile_3.h5");
   }
 
   namespace PFTest
   {
-    const QString TestDir("@TEST_TEMP_DIR@/PoleFigureTest/");
+    inline const QString TestDir("@TEST_TEMP_DIR@/PoleFigureTest/");
   }
 
   namespace AngleFileLoaderTest
   {
-    const QString TestDir("@TEST_TEMP_DIR@/AngleFileLoaderTest");
-    const QString OutputFile("@TEST_TEMP_DIR@/AngleFileLoaderTest/AngleTestFile.txt");
+    inline const QString TestDir("@TEST_TEMP_DIR@/AngleFileLoaderTest");
+    inline const QString OutputFile("@TEST_TEMP_DIR@/AngleFileLoaderTest/AngleTestFile.txt");
   }
 
   namespace LambertRWTest
   {
-    const QString TestFile("@TEST_TEMP_DIR@/LambertRWTest.h5");
+    inline const QString TestFile("@TEST_TEMP_DIR@/LambertRWTest.h5");
   }
 
 
   namespace FilterParametersRWTest
   {
-    const QString OutputFile("@TEST_TEMP_DIR@/FilterParametersRWTest/OutputFile.json");
-    const QString OutputDir("@TEST_TEMP_DIR@/FilterParametersRWTest/");
+    inline const QString OutputFile("@TEST_TEMP_DIR@/FilterParametersRWTest/OutputFile.json");
+    inline const QString OutputDir("@TEST_TEMP_DIR@/FilterParametersRWTest/");
   }
 
   namespace ExecuteProcessTest
   {
-    const QString QMakeVersionString("@QMAKE_VERSION@");
-    const QString QMakeLocation("@QtQMake_location@");
+    inline const QString QMakeVersionString("@QMAKE_VERSION@");
+    inline const QString QMakeLocation("@QtQMake_location@");
 
-    const QString CMakeLocation("@CMAKE_COMMAND@");
-    const QString CMakeVersionString("@CMake_VersionString@");
+    inline const QString CMakeLocation("@CMAKE_COMMAND@");
+    inline const QString CMakeVersionString("@CMake_VersionString@");
   }
 
   namespace ReadASCIIDataTest
   {
-   const QString TestFile1("@TEST_TEMP_DIR@/TestFile1.txt");
-   const QString TestFile2("@TEST_TEMP_DIR@/TestFile2.txt");
+    inline const QString TestFile1("@TEST_TEMP_DIR@/TestFile1.txt");
+    inline const QString TestFile2("@TEST_TEMP_DIR@/TestFile2.txt");
   }
 
   namespace WriteTriangleGeometryTest
   {
-    const QString NodesFile("@TEST_TEMP_DIR@/WriteTriangleGeometryNodesFile.txt");
-    const QString TrianglesFile("@TEST_TEMP_DIR@/WriteTriangleGeometryTrianglesFile.txt");
+    inline const QString NodesFile("@TEST_TEMP_DIR@/WriteTriangleGeometryNodesFile.txt");
+    inline const QString TrianglesFile("@TEST_TEMP_DIR@/WriteTriangleGeometryTrianglesFile.txt");
   }
   
   namespace FeatureDataCSVWriterTest
   {
-   const QString OutputFile("@TEST_TEMP_DIR@/FeatureDataCSVOutputTestFile.txt");
+   inline const QString OutputFile("@TEST_TEMP_DIR@/FeatureDataCSVOutputTestFile.txt");
   }
 
   namespace RotateSampleRefFrameTest
   {
-    const QString TestFile1("@DREAM3D_DATA_DIR@/Data/RotateSampleRefFrame/RotateSampleRefFrameTest.dream3d");
+    inline const QString TestFile1("@DREAM3D_DATA_DIR@/Data/RotateSampleRefFrame/RotateSampleRefFrameTest.dream3d");
   }
 
   namespace RestUnitTest
   {
     // Server Configuration File
-    const QString RestServerConfigFilePath("@CMAKE_RUNTIME_OUTPUT_DIRECTORY@/RESTServer.ini");
+    inline const QString RestServerConfigFilePath("@CMAKE_RUNTIME_OUTPUT_DIRECTORY@/RESTServer.ini");
     // Test Pipeline File
-    const QString SmallIN100ArchivePipeline("@DREAM3DProj_SOURCE_DIR@/Support/PrebuiltPipelines/Workshop/EBSD Reconstruction/(01) SmallIN100 Archive.json");
+    inline const QString SmallIN100ArchivePipeline("@DREAM3DProj_SOURCE_DIR@/Support/PrebuiltPipelines/Workshop/EBSD Reconstruction/(01) SmallIN100 Archive.json");
     // Location of Test Data
-    const QString SmallIN100ArchiveInputFolderPath("@DREAM3D_DATA_DIR@/Data/SmallIN100");
+    inline const QString SmallIN100ArchiveInputFolderPath("@DREAM3D_DATA_DIR@/Data/SmallIN100");
     // Output File Location
-    const QString SmallIN100ArchiveOutputFilePath("@TEST_TEMP_DIR@/SmallIN100.h5ebsd");
+    inline const QString SmallIN100ArchiveOutputFilePath("@TEST_TEMP_DIR@/SmallIN100.h5ebsd");
 
     // Additional Pipeline file locations
-    const QString RESTErrorPipelineFilePath("@SIMPLib_SOURCE_DIR@/REST/Testing/Cxx/RESTErrorPipeline.json");
-    const QString RESTFileIOPipelineFilePath("@SIMPLib_SOURCE_DIR@/REST/Testing/Cxx/RESTFileIOPipeline.json");
-    const QString RESTPipelineFilePath("@SIMPLib_SOURCE_DIR@/REST/Testing/Cxx/RESTPipeline.json");
+    inline const QString RESTErrorPipelineFilePath("@SIMPLib_SOURCE_DIR@/REST/Testing/Cxx/RESTErrorPipeline.json");
+    inline const QString RESTFileIOPipelineFilePath("@SIMPLib_SOURCE_DIR@/REST/Testing/Cxx/RESTFileIOPipeline.json");
+    inline const QString RESTPipelineFilePath("@SIMPLib_SOURCE_DIR@/REST/Testing/Cxx/RESTPipeline.json");
     // Output/Temp .dream3d files to write and read
-    const QString RESTFileIOInputDataFilePath("@TEST_TEMP_DIR@/RESTFileIOInputData.dream3d");
-    const QString RESTFileIOOutputDataFilePath("@TEST_TEMP_DIR@/RESTFileIOOutputData.dream3d");
+    inline const QString RESTFileIOInputDataFilePath("@TEST_TEMP_DIR@/RESTFileIOInputData.dream3d");
+    inline const QString RESTFileIOOutputDataFilePath("@TEST_TEMP_DIR@/RESTFileIOOutputData.dream3d");
   }
 }
