@@ -568,8 +568,6 @@ public:
     }
     if(py::isinstance<py::list>(src))
     {
-      /* Extract PyObject from handle */
-      PyObject* source = src.ptr();
       /* Try converting into a Python integer value */
       VectorOfFloatArray floatArrays;
       for(auto floatArray : src)
@@ -597,7 +595,6 @@ public:
         }
         else if(py::isinstance<FloatArrayType>(floatArray))
         {
-          PyObject* floatArrayPy = floatArray.ptr();
           floatArrays.push_back(py::cast<FloatArrayType::Pointer>(floatArray));
         }
         else
