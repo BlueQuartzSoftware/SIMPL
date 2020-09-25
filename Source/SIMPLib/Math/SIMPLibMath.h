@@ -186,89 +186,77 @@ static const double k_Sin_ThreeEightPi = sin(3.0 * k_PiOver8);
 } // namespace Constants
 } // namespace SIMPLib
 
-class SIMPLibMath
+namespace SIMPLibMath
 {
-public:
-  virtual ~SIMPLibMath();
+SIMPLib_EXPORT float Gamma(float);
 
-  static SIMPLib_EXPORT float Gamma(float);
-
-  template <typename T>
-  static void bound(T& val, T min, T max)
+template <typename T>
+void bound(T& val, T min, T max)
+{
+  if(val < min)
   {
-    if(val < min)
-    {
-      val = min;
-    }
-    else if(val > max)
-    {
-      val = max;
-    }
+    val = min;
   }
-
-  static SIMPLib_EXPORT float erf(float);
-  static SIMPLib_EXPORT float erfc(float);
-  static SIMPLib_EXPORT float gammastirf(float);
-  static SIMPLib_EXPORT float LnGamma(float, float&);
-  static SIMPLib_EXPORT float incompletebeta(float, float, float);
-  static SIMPLib_EXPORT float incompletebetafe(float, float, float, float, float);
-  static SIMPLib_EXPORT float incompletebetafe2(float, float, float, float, float);
-  static SIMPLib_EXPORT float incompletebetaps(float, float, float, float);
-
-  /**
-   * @brief generates a linearly space array between 2 numbers (inclusive, assumes first number <= second number) [as matlabs linspace]
-   * @param first number
-   * @param second number
-   * @param length of return array
-   * @return
-   */
-  static SIMPLib_EXPORT std::vector<double> linspace(double first, double second, int length);
-
-  /**
-   * @brief closeEnough
-   * @param a
-   * @param b
-   * @param epsilon
-   * @return
-   */
-  template <typename K>
-  static bool closeEnough(const K& a, const K& b, const K& epsilon = std::numeric_limits<K>::epsilon())
+  else if(val > max)
   {
-    return (epsilon > fabs(a - b));
+    val = max;
   }
+}
 
-  /**
-   * @brief transfer_sign
-   * @param a
-   * @param b
-   * @return
-   */
-  template <typename K>
-  static K transfer_sign(K a, K b)
+SIMPLib_EXPORT float erf(float);
+SIMPLib_EXPORT float erfc(float);
+SIMPLib_EXPORT float gammastirf(float);
+SIMPLib_EXPORT float LnGamma(float, float&);
+SIMPLib_EXPORT float incompletebeta(float, float, float);
+SIMPLib_EXPORT float incompletebetafe(float, float, float, float, float);
+SIMPLib_EXPORT float incompletebetafe2(float, float, float, float, float);
+SIMPLib_EXPORT float incompletebetaps(float, float, float, float);
+
+/**
+ * @brief generates a linearly space array between 2 numbers (inclusive, assumes first number <= second number) [as matlabs linspace]
+ * @param first number
+ * @param second number
+ * @param length of return array
+ * @return
+ */
+SIMPLib_EXPORT std::vector<double> linspace(double first, double second, int length);
+
+/**
+ * @brief closeEnough
+ * @param a
+ * @param b
+ * @param epsilon
+ * @return
+ */
+template <typename K>
+bool closeEnough(const K& a, const K& b, const K& epsilon = std::numeric_limits<K>::epsilon())
+{
+  return (epsilon > fabs(a - b));
+}
+
+/**
+ * @brief transfer_sign
+ * @param a
+ * @param b
+ * @return
+ */
+template <typename K>
+K transfer_sign(K a, K b)
+{
+  if(a > 0.0 && b > 0.0)
   {
-    if(a > 0.0 && b > 0.0)
-    {
-      return a;
-    }
-    if(a < 0.0 && b > 0.0)
-    {
-      return -1 * a;
-    }
-
-    if(a < 0.0 && b < 0.0)
-    {
-      return a;
-    }
-
+    return a;
+  }
+  if(a < 0.0 && b > 0.0)
+  {
     return -1 * a;
   }
 
-protected:
-  SIMPLibMath();
+  if(a < 0.0 && b < 0.0)
+  {
+    return a;
+  }
 
-public:
-  SIMPLibMath(const SIMPLibMath&) = delete;            // Copy Constructor Not Implemented
-  SIMPLibMath(SIMPLibMath&&) = delete;                 // Move Constructor Not Implemented
-  SIMPLibMath& operator=(const SIMPLibMath&) = delete; // Copy Assignment Not Implemented
-  SIMPLibMath& operator=(SIMPLibMath&&) = delete;      // Move Assignment Not Implemented
-};
+  return -1 * a;
+}
+} // namespace SIMPLibMath
