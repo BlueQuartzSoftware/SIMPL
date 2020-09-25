@@ -1313,7 +1313,7 @@ public:
         minAng = ang6;
       }
 
-      minAnglesPtr[i] = SIMPLib::Constants::k_180OverPi * acosf(minAng);
+      minAnglesPtr[i] = SIMPLib::Constants::k_180OverPiD * acosf(minAng);
     }
   }
 };

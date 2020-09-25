@@ -422,7 +422,7 @@ public:
         // Set properties
 
         Eigen::Vector3f axis(x, y, z);
-        float angleRadians = angle * static_cast<float>(SIMPLib::Constants::k_DegToRad);
+        float angleRadians = angle * SIMPLib::Constants::k_DegToRadF;
         Eigen::AngleAxisf axisAngle(angleRadians, axis);
 
         Eigen::Matrix3f rotationMatrix = axisAngle.toRotationMatrix();

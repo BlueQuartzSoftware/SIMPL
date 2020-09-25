@@ -483,7 +483,7 @@ void GenerateTiltSeries::execute()
     DataContainer::Pointer gridDC = dca->getDataContainer(gridDCName);
 
     std::array<float, 4> rotationAxis = {0.0f, 0.0f, 0.0f, 0.0f};
-    float radians = currentDeg * SIMPLib::Constants::k_PiOver180;
+    float radians = currentDeg * SIMPLib::Constants::k_PiOver180D;
     if(k_XAxis == rotAxisSelection)
     {
       rotationAxis = {1.0f, 0.0f, 0.0f, radians};

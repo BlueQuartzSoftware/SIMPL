@@ -1171,7 +1171,7 @@ true);
   void TestPrintDataArray()
   {
     FloatArrayType::Pointer floats = FloatArrayType::CreateArray(1, std::string("Test_Float"), true);
-    floats->setValue(0, SIMPLib::Constants::k_Pif);
+    floats->setValue(0, SIMPLib::Constants::k_PiF);
     QString outStr;
     QTextStream out(&outStr);
     floats->printTuple(out, 0);
@@ -1184,7 +1184,7 @@ true);
 
     outStr.clear();
     DoubleArrayType::Pointer doubles = DoubleArrayType::CreateArray(1, std::string("Test_Double"), true);
-    doubles->setValue(0, SIMPLib::Constants::k_Pi);
+    doubles->setValue(0, SIMPLib::Constants::k_PiD);
     doubles->printTuple(out, 0);
     matchString = "3.141592653589793";
     length = outStr.length();
