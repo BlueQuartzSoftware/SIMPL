@@ -1464,10 +1464,10 @@ true);
   void TestByteSwapElements()
   {
     TestByteSwapElementType<uint8_t>(0xAB);
-    TestByteSwapElementType<int8_t>(0xAB);
+    TestByteSwapElementType<int8_t>(static_cast<int8_t>(0xAB));
 
     TestByteSwapElementType<uint16_t>(0xABCD);
-    TestByteSwapElementType<int16_t>(0xABCD);
+    TestByteSwapElementType<int16_t>(static_cast<int16_t>(0xABCD));
 
     TestByteSwapElementType<uint32_t>(0x55ABCDEF);
     TestByteSwapElementType<int32_t>(0x55ABCDEF);
