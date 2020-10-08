@@ -90,6 +90,11 @@ ReadASCIIDataWidget::~ReadASCIIDataWidget()
   {
     m_LineCounter->deleteLater();
   }
+
+  if(nullptr != m_WorkerThread)
+  {
+    m_WorkerThread->deleteLater();
+  }
 }
 
 // -----------------------------------------------------------------------------
