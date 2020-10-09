@@ -418,31 +418,6 @@ class ConvertColorToGrayScaleTest
     int wrongValues = CompareResults(algoMapIndex, dc);
     DREAM3D_REQUIRE_EQUAL(wrongValues, 0)
     return erred + wrongValues;
-
-    // Tear Down Tests
-    for(const auto& eachDC : m_dca->getDataContainers())
-    {
-      for(const auto& eachAM : eachDC->getAttributeMatrices())
-      {
-        for(const auto& eachAAName : eachAM->getAttributeArrayNames())
-        {
-          if(eachAAName.contains(m_outputArrayPrefix))
-          {
-            eachAM->getAttributeArray(eachAAName)->releaseOwnership();
-            eachAM->removeAttributeArray(eachAAName);
-            bool doesAAStillExist = m_dca->doesAttributeArrayExist(DataArrayPath(eachDC->getName(), eachAM->getName(), eachAAName));
-            DREAM3D_REQUIRE_EQUAL(false, doesAAStillExist)
-          }
-        }
-        eachDC->removeAttributeMatrix(m_outputAMName);
-        bool doesAMStillExist = eachDC->doesAttributeMatrixExist(m_outputAMName);
-        DREAM3D_REQUIRE_EQUAL(false, doesAMStillExist)
-      }
-    }
-
-    m_dca->removeDataContainer(dc->getName());
-    m_dca = DataContainerArray::NullPointer();
-    m_colorToGrayscaleFilter = ConvertColorToGrayScale::NullPointer();
   }
 
 public:
