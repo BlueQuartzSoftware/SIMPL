@@ -456,6 +456,13 @@ public:
   void initializeTuple(size_t i, const void* p) override;
 
   /**
+   * @brief Sets all the components of tuple i to value
+   * @param i
+   * @param value
+   */
+  void fillTuple(size_t i, T value);
+
+  /**
    * @brief getTuplePointer Returns the pointer to a specific tuple
    * @param tupleIndex The index of tuple
    */

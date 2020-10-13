@@ -959,6 +959,18 @@ void DataArray<T>::setTuple(size_t tupleIndex, const std::vector<T>& data)
 template <typename T>
 void DataArray<T>::initializeTuple(size_t i, const void* p)
 {
+  if(p == nullptr)
+  {
+    return;
+  }
+  const T* c = reinterpret_cast<const T*>(p);
+  fillTuple(i, *c);
+}
+
+// -----------------------------------------------------------------------------
+template <typename T>
+void DataArray<T>::fillTuple(size_t i, T value)
+{
   if(!m_IsAllocated)
   {
     return;
@@ -969,12 +981,7 @@ void DataArray<T>::initializeTuple(size_t i, const void* p)
     Q_ASSERT(i * m_NumComponents < m_Size);
   }
 #endif
-  if(nullptr == p)
-  {
-    return;
-  }
-  const T* c = reinterpret_cast<const T*>(p);
-  std::fill_n(begin() + (i * m_NumComponents), m_NumComponents, *c);
+  std::fill_n(begin() + (i * m_NumComponents), m_NumComponents, value);
 }
 
 // -----------------------------------------------------------------------------
