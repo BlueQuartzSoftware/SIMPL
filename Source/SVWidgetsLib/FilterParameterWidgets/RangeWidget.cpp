@@ -66,8 +66,9 @@ void RangeWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-
-    QPair<double, double> range = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QPair<double, double>>();
+    // Get the "Getter Callback" standard function and use it to get the values from the filter
+    RangeFilterParameter::GetterCallbackType fpGetter = m_FilterParameter->getGetterCallback();
+    FPRangePair range = fpGetter();
     minValue->setText(QString::number(range.first));
     maxValue->setText(QString::number(range.second));
   }

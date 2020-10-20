@@ -37,11 +37,10 @@
 
 #include <QtWidgets/QWidget>
 
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
-
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
+#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
