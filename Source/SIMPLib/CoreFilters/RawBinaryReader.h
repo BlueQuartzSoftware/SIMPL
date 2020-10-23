@@ -39,8 +39,8 @@
 #include <memory>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 class IDataArray;
 using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
@@ -59,8 +59,8 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
   PYB11_FILTER_NEW_MACRO(RawBinaryReader)
   PYB11_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)
   PYB11_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
-  PYB11_PROPERTY(int Endian READ getEndian WRITE setEndian)
-  PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
+  PYB11_PROPERTY(int32_t Endian READ getEndian WRITE setEndian)
+  PYB11_PROPERTY(int32_t NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
   PYB11_PROPERTY(uint64_t SkipHeaderBytes READ getSkipHeaderBytes WRITE setSkipHeaderBytes)
   PYB11_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
   PYB11_END_BINDINGS()
@@ -72,14 +72,16 @@ public:
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
   using ConstWeakPointer = std::weak_ptr<const Self>;
+
   static Pointer NullPointer();
 
-  static std::shared_ptr<RawBinaryReader> New();
+  static Pointer New();
 
   /**
    * @brief Returns the name of the class for RawBinaryReader
    */
   QString getNameOfClass() const override;
+
   /**
    * @brief Returns the name of the class for RawBinaryReader
    */
@@ -91,6 +93,7 @@ public:
    * @brief Setter property for CreatedAttributeArrayPath
    */
   void setCreatedAttributeArrayPath(const DataArrayPath& value);
+
   /**
    * @brief Getter property for CreatedAttributeArrayPath
    * @return Value of CreatedAttributeArrayPath
@@ -103,6 +106,7 @@ public:
    * @brief Setter property for ScalarType
    */
   void setScalarType(SIMPL::NumericTypes::Type value);
+
   /**
    * @brief Getter property for ScalarType
    * @return Value of ScalarType
@@ -114,31 +118,34 @@ public:
   /**
    * @brief Setter property for Endian
    */
-  void setEndian(int value);
+  void setEndian(int32_t value);
+
   /**
    * @brief Getter property for Endian
    * @return Value of Endian
    */
-  int getEndian() const;
+  int32_t getEndian() const;
 
-  Q_PROPERTY(int Endian READ getEndian WRITE setEndian)
+  Q_PROPERTY(int32_t Endian READ getEndian WRITE setEndian)
 
   /**
    * @brief Setter property for NumberOfComponents
    */
-  void setNumberOfComponents(int value);
+  void setNumberOfComponents(int32_t value);
+
   /**
    * @brief Getter property for NumberOfComponents
    * @return Value of NumberOfComponents
    */
-  int getNumberOfComponents() const;
+  int32_t getNumberOfComponents() const;
 
-  Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
+  Q_PROPERTY(int32_t NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
 
   /**
    * @brief Setter property for SkipHeaderBytes
    */
   void setSkipHeaderBytes(uint64_t value);
+
   /**
    * @brief Getter property for SkipHeaderBytes
    * @return Value of SkipHeaderBytes
@@ -151,6 +158,7 @@ public:
    * @brief Setter property for InputFile
    */
   void setInputFile(const QString& value);
+
   /**
    * @brief Getter property for InputFile
    * @return Value of InputFile
@@ -227,20 +235,13 @@ protected:
    */
   void dataCheck() override;
 
-  /**
-   * @brief Initializes all the private instance variables.
-   */
-  void initialize();
-
 private:
   DataArrayPath m_CreatedAttributeArrayPath = {};
   SIMPL::NumericTypes::Type m_ScalarType = {};
-  int m_Endian = {};
-  int m_NumberOfComponents = {};
+  int32_t m_Endian = {};
+  int32_t m_NumberOfComponents = {};
   uint64_t m_SkipHeaderBytes = {};
   QString m_InputFile = {};
-
-  IDataArrayShPtrType m_Array;
 
 public:
   RawBinaryReader(const RawBinaryReader&) = delete;            // Copy Constructor Not Implemented
