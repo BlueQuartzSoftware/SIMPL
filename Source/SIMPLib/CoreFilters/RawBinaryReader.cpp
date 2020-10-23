@@ -137,9 +137,9 @@ int32_t readBinaryFile(RawBinaryReader* filter, const std::vector<size_t>& cDims
   }
   numRead = 0;
   // Now start reading the data in chunks if needed.
-  size_t chunkSize = DEFAULT_BLOCKSIZE;
+  size_t chunkSize = SIMPL::DEFAULT_BLOCKSIZE;
 
-  if(numBytesToRead < DEFAULT_BLOCKSIZE)
+  if(numBytesToRead < SIMPL::DEFAULT_BLOCKSIZE)
   {
     chunkSize = numBytesToRead;
   }

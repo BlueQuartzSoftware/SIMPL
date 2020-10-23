@@ -57,13 +57,12 @@
 
 #include "SIMPLib/SIMPLib.h"
 
-#define DEFAULT_BLOCKSIZE 1048576
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 namespace SIMPL
 {
+inline constexpr size_t DEFAULT_BLOCKSIZE = 1048576;
 
 using Rgb = uint32_t;
 inline constexpr Rgb RGB_MASK = 0x00ffffff; // masks RGB values
