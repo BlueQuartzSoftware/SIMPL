@@ -35,7 +35,7 @@
 
 #pragma once
 
-#include <stdio.h>
+#include <cstdio>
 
 /**
  * @brief The ScopedFileMonitor class will automatically close an open FILE pointer
@@ -48,14 +48,23 @@ public:
   : m_File(f)
   {
   }
-  virtual ~ScopedFileMonitor()
+
+  ~ScopedFileMonitor() noexcept
   {
-    if(nullptr != m_File)
-      fclose(m_File);
+    if(m_File != nullptr)
+    {
+      [[maybe_unused]] auto result = std::fclose(m_File);
+    }
   }
+
+  ScopedFileMonitor() = delete;
+
+  ScopedFileMonitor(const ScopedFileMonitor&) = delete;
+  ScopedFileMonitor& operator=(const ScopedFileMonitor&) = delete;
+
+  ScopedFileMonitor(ScopedFileMonitor&&) noexcept = delete;
+  ScopedFileMonitor& operator=(ScopedFileMonitor&&) noexcept = delete;
 
 private:
   FILE* m_File;
-  ScopedFileMonitor(const ScopedFileMonitor&); // Copy Constructor Not Implemented
-  void operator=(const ScopedFileMonitor&);    // Move assignment Not Implemented
 };
