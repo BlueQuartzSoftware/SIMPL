@@ -40,11 +40,11 @@
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "SVWidgetsLib/ui_MultiAttributeMatrixSelectionWidget.h"
 

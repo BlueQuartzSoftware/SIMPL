@@ -36,8 +36,8 @@
 
 #include <QtCore/QDir>
 
-#include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Common/Constants.h"
 
 // -----------------------------------------------------------------------------
 //

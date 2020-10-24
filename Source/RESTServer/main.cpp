@@ -51,6 +51,8 @@
 #include "QtWebApp/logging/filelogger.h"
 
 // DREAM3DLib includes
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
@@ -62,8 +64,6 @@
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/REST/SIMPLRequestMapper.h"
 #include "SIMPLib/REST/V1Controllers/SIMPLStaticFileController.h"
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/SIMPLibVersion.h"
 
 // -----------------------------------------------------------------------------
 // Search the configuration file

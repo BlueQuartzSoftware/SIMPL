@@ -33,9 +33,9 @@
 
 #include "RenameDataPath.h"
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 // -----------------------------------------------------------------------------
 //

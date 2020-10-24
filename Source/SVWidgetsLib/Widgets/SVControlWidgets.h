@@ -1,16 +1,16 @@
 #pragma once
 
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QSpinBox>
+#include <QtWidgets/QDialog>
 #include <QtWidgets/QDoubleSpinBox>
-#include <QtWidgets/QToolButton>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QTreeView>
 #include <QtWidgets/QListView>
 #include <QtWidgets/QListWidget>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpinBox>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QTreeView>
 #include <QtWidgets/QTreeWidget>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QDialog>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

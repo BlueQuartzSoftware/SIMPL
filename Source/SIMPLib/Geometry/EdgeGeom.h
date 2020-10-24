@@ -39,9 +39,9 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Geometry/IGeometry.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Geometry/IGeometry.h"
 
 /**
  * @brief The EdgeGeom class represents a collection of line segments

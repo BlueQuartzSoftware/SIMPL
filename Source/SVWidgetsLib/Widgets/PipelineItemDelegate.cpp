@@ -29,8 +29,8 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtGui/QPainter>
 #include <QtGui/QMouseEvent>
+#include <QtGui/QPainter>
 
 #include "SVWidgetsLib/Widgets/PipelineItem.h"
 #include "SVWidgetsLib/Widgets/PipelineItemDelegate.h"

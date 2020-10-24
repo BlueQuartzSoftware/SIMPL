@@ -35,12 +35,12 @@
 
 #include "FilterManager.h"
 
-#include <QtCore/QJsonObject>
 #include <QtCore/QDebug>
+#include <QtCore/QJsonObject>
 #include <QtCore/QSet>
 
-#include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/CorePlugin.h"
+#include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 
 FilterManager* FilterManager::s_Self = nullptr;

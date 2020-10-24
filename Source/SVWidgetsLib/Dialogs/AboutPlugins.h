@@ -37,9 +37,9 @@
 
 #include <QtWidgets/QCheckBox>
 
-#include "SIMPLib/Plugin/PluginProxy.h"
-#include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
+#include "SIMPLib/Plugin/PluginManager.h"
+#include "SIMPLib/Plugin/PluginProxy.h"
 #include "SIMPLib/Plugin/SIMPLibPlugin.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"

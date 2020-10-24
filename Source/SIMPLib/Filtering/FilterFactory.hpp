@@ -35,9 +35,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
-#include "SIMPLib/SIMPLib.h"
 
 template <class T>
 class FilterFactory : public IFilterFactory

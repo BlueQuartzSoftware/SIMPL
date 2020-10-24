@@ -5,12 +5,12 @@
 
 #pragma once
 
-#include "template.h"
-#include "templateglobal.h"
 #include <QMutex>
 #include <QSettings>
 #include <QString>
 #include <QTextCodec>
+#include "template.h"
+#include "templateglobal.h"
 
 /**
   Loads localized versions of template files. If the caller requests a file with the

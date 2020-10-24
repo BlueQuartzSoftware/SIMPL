@@ -44,11 +44,11 @@
 #include <QtWidgets/QListView>
 
 #include "SIMPLib/Common/Observer.h"
-#include "SIMPLib/Messages/AbstractMessage.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
+#include "SIMPLib/Messages/AbstractMessage.h"
 class DataContainerArray;
 using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
 

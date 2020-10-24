@@ -43,15 +43,17 @@
 // Qt Includes
 #include <QtCore/QCommandLineOption>
 #include <QtCore/QCommandLineParser>
-#include <QtCore/QFileInfo>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtCore/QString>
 
 // DREAM3DLib includes
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
@@ -61,8 +63,6 @@
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/SIMPLibVersion.h"
 
 // -----------------------------------------------------------------------------
 //

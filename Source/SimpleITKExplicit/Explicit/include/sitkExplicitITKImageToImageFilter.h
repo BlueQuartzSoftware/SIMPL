@@ -17,8 +17,8 @@
  *=========================================================================*/
 #ifndef sitkExplicitITKImageToImageFilter_h__
 #define sitkExplicitITKImageToImageFilter_h__
-#include "sitkExplicit.h"
 #include "itkImageToImageFilter.h"
+#include "sitkExplicit.h"
 
 #ifndef SITK_TEMPLATE_EXPLICIT_EXPLICITITK
 extern template class SITKExplicit_EXPORT_EXPLICIT itk::ImageToImageFilter<itk::Image<bool, 2u>, itk::Image<bool, 2u>>;

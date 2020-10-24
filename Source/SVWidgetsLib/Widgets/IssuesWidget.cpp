@@ -43,8 +43,8 @@
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
-#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Widgets/IssuesWidgetMessageHandler.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "ui_IssuesWidget.h"
 

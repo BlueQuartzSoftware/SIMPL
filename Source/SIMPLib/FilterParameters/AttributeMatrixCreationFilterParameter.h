@@ -39,8 +39,8 @@
 
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
 class AbstractFilter;

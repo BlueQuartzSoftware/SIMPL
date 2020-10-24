@@ -32,8 +32,8 @@
 
 #include "GenerateTiltSeries.h"
 
-#include <thread>
 #include <cmath>
+#include <thread>
 
 #define GTS_GENERATE_DEBUG_ARRAYS 0
 // If we are writing out all the arrays for debugging then we MUST be single threaded.
@@ -45,20 +45,20 @@
 #include <tbb/task_group.h>
 #endif
 
+#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
-#include "SIMPLib/SIMPLibVersion.h"
 
 #ifndef DREAM3D_PASSIVE_ROTATION
 #define DREAM3D_PASSIVE_ROTATION 1

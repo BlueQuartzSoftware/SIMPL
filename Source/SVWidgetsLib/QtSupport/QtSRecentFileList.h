@@ -35,13 +35,13 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QStringList>
-#include <QtCore/QSettings>
 #include <QtCore/QFileSystemWatcher>
+#include <QtCore/QObject>
+#include <QtCore/QSettings>
+#include <QtCore/QStringList>
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 enum AddType
 {

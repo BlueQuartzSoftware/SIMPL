@@ -32,8 +32,8 @@
 #pragma once
 
 #include <array>
-#include <tuple>
 #include <cassert>
+#include <tuple>
 #include <vector>
 
 /**

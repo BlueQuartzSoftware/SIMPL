@@ -35,9 +35,9 @@
 
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
-#include "SIMPLib/SIMPLibVersion.h"
 
 // -----------------------------------------------------------------------------
 //

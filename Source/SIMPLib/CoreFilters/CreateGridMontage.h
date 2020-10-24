@@ -34,10 +34,10 @@
 
 #include <QtCore/QString>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Montages/DataContainerGrid.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CreateGridMontage class. See [Filter documentation](@ref CreateGridMontage) for details.

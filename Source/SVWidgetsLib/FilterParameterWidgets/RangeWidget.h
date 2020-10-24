@@ -40,9 +40,9 @@
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
-#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
 #include "SVWidgetsLib/ui_RangeWidget.h"
 

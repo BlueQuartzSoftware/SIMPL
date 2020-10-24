@@ -36,9 +36,9 @@
 #pragma once
 
 #include <QtCore/QAbstractTableModel>
-#include <QtCore/QVector>
-#include <QtCore/QVariant>
 #include <QtCore/QStringList>
+#include <QtCore/QVariant>
+#include <QtCore/QVector>
 
 #include "SIMPLib/Filtering/ComparisonInputs.h"
 

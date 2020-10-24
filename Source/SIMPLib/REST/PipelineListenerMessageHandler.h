@@ -36,8 +36,8 @@
 
 #pragma once
 
-#include "SIMPLib/Messages/AbstractMessageHandler.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
 
 class QFile;
 class PipelineListener;

@@ -32,8 +32,8 @@
 
 #include "SIMPLDataPathValidator.h"
 
-#include <QtCore/QDir>
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDir>
 
 SIMPLDataPathValidator* SIMPLDataPathValidator::m_Self = nullptr;
 

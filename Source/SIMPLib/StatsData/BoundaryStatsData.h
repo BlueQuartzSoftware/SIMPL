@@ -39,9 +39,9 @@
 #include <hdf5.h>
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/StatsData/StatsData.h"
-#include "SIMPLib/Common/PhaseType.h"
 
 typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
 

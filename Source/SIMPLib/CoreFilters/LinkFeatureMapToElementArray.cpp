@@ -36,15 +36,15 @@
 
 #include <QtCore/QTextStream>
 
-#include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t
 {
@@ -105,7 +105,7 @@ void LinkFeatureMapToElementArray::updateFeatureInstancePointers()
   clearErrorCode();
   clearWarningCode();
 
-  if(nullptr != m_ActivePtr.lock()) 
+  if(nullptr != m_ActivePtr.lock())
   {
     m_Active = m_ActivePtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -137,9 +137,8 @@ void LinkFeatureMapToElementArray::dataCheck()
   m->createNonPrereqAttributeMatrix(this, getCellFeatureAttributeMatrixName(), tDims, AttributeMatrix::Type::CellFeature, AttributeMatrixID);
 
   std::vector<size_t> cDims(1, 1);
-  m_SelectedCellDataPtr =
-      getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>>(this, getSelectedCellArrayPath(), cDims); 
-  if(nullptr != m_SelectedCellDataPtr.lock())                                                                       
+  m_SelectedCellDataPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>>(this, getSelectedCellArrayPath(), cDims);
+  if(nullptr != m_SelectedCellDataPtr.lock())
   {
     m_SelectedCellData = m_SelectedCellDataPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -151,7 +150,7 @@ void LinkFeatureMapToElementArray::dataCheck()
 
   tempPath.update(getSelectedCellArrayPath().getDataContainerName(), getCellFeatureAttributeMatrixName(), getActiveArrayName());
   m_ActivePtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>>(this, tempPath, false, cDims, "", DataArrayID);
-  if(nullptr != m_ActivePtr.lock()) 
+  if(nullptr != m_ActivePtr.lock())
   {
     m_Active = m_ActivePtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */

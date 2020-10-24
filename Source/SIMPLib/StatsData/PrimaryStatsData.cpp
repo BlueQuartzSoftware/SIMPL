@@ -37,9 +37,9 @@
 
 #include <vector>
 
+#include <QtCore/QDebug>
 #include <QtCore/QJsonArray>
 #include <QtCore/QString>
-#include <QtCore/QDebug>
 
 #include "H5Support/H5Utilities.h"
 

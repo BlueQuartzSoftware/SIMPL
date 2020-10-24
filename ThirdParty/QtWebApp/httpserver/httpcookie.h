@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include "httpglobal.h"
 #include <QByteArray>
 #include <QList>
+#include "httpglobal.h"
 
 /**
   HTTP cookie as defined in RFC 2109. This class can also parse

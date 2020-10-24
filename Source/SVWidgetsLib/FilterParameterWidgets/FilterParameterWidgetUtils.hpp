@@ -3,16 +3,16 @@
 #include <cassert>
 
 #include <QtCore/QString>
+#include <QtGui/QStandardItemModel>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QListWidgetItem>
-#include <QtGui/QStandardItemModel>
 
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 /**
  * @brief The FilterParameterWidgetUtils class implements some common methods that

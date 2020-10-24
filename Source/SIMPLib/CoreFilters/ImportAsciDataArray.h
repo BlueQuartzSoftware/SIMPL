@@ -40,8 +40,8 @@
 #include <QtCore/QScopedPointer>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 class IDataArray;
 using IDataArrayShPtrType = std::shared_ptr<IDataArray>;

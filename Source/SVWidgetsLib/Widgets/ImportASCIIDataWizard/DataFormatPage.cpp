@@ -35,20 +35,20 @@
 
 #include "DataFormatPage.h"
 
-#include <QtCore/QSignalMapper>
 #include <QtCore/QDebug>
+#include <QtCore/QSignalMapper>
 
 #include <QtGui/QScreen>
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QMenu>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Utilities/StringOperations.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Utilities/StringOperations.h"
 
-#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "ASCIIDataModel.h"
 #include "EditHeadersDialog.h"

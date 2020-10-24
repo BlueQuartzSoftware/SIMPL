@@ -39,7 +39,6 @@ private:                                                                        
   template <typename TPixel, unsigned int dimensions>                                                                                                                                                  \
   void readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Image<TPixel, dimensions>>::Pointer& reader, DataContainer::Pointer& container);
 
-
 #if SIMPL_ITK_VERSION_CHECK
 #ifdef __clang__
 #pragma clang diagnostic pop

@@ -35,8 +35,8 @@
 
 #include "CalculatorFilterParameter.h"
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 // -----------------------------------------------------------------------------
 //

@@ -34,8 +34,8 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
+#include "SIMPLib/Plugin/PluginManager.h"
 
 #include "SVWidgetsLib/Widgets/SVControlWidgets.h"
 

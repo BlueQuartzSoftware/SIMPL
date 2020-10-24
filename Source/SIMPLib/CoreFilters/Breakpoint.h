@@ -37,8 +37,8 @@
 
 #include <memory>
 
-#include <QtCore/QWaitCondition>
 #include <QtCore/QMutex>
+#include <QtCore/QWaitCondition>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"

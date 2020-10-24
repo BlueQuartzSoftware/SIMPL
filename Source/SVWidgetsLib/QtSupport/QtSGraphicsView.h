@@ -38,8 +38,8 @@
 #include <iostream>
 
 #include <QtCore/QVector>
-#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QGraphicsView>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

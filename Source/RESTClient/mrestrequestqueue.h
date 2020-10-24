@@ -23,8 +23,8 @@ SOFTWARE.
 
 #pragma once
 
-#include "mrestrequestptr.h"
 #include <QQueue>
+#include "mrestrequestptr.h"
 
 #include "RESTClient/RESTClient.h"
 

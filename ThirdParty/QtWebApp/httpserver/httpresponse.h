@@ -5,11 +5,11 @@
 
 #pragma once
 
-#include "httpcookie.h"
-#include "httpglobal.h"
 #include <QMap>
 #include <QString>
 #include <QTcpSocket>
+#include "httpcookie.h"
+#include "httpglobal.h"
 
 /**
   This object represents a HTTP response, used to return something to the web client.

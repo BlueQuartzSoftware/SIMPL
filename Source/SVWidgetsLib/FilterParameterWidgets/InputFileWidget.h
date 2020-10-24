@@ -37,8 +37,8 @@
 
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/AbstractIOFileWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 class InputFileFilterParameter;
 

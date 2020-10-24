@@ -35,13 +35,13 @@
 
 #pragma once
 
-#include <QtCore/QString>
 #include <QtCore/QDateTime>
+#include <QtCore/QString>
 #include <QtWidgets/QWidget>
 
+#include "SVWidgetsLib/Dialogs/UpdateCheck.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
-#include "SVWidgetsLib/Dialogs/UpdateCheck.h"
 #include "SVWidgetsLib/Widgets/SVControlWidgets.h"
 
 #include "ui_UpdateCheckDialog.h"

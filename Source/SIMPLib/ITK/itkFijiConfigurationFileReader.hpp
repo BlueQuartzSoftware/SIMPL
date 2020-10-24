@@ -39,11 +39,11 @@
 #error This file can ONLY be used if ITK Version 5 with the Montage module is being used.
 #endif
 
-#include <QtCore/QObject>
-#include <QtCore/QString>
-#include <QtCore/QPointF>
-#include <QtCore/QFileInfo>
 #include <QtCore/QDir>
+#include <QtCore/QFileInfo>
+#include <QtCore/QObject>
+#include <QtCore/QPointF>
+#include <QtCore/QString>
 
 #include "itkParseTileConfiguration.h"
 

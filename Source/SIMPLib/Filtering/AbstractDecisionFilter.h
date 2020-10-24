@@ -37,8 +37,8 @@
 
 #include <memory>
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The AbstractDecisionFilter class. This class serves as a superclass for other classes

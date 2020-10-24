@@ -35,11 +35,11 @@
 
 #include "IssuesWidgetMessageHandler.h"
 
-#include <QtCore/QUrl>
 #include <QtCore/QTextStream>
+#include <QtCore/QUrl>
 
-#include <QtWidgets/QTableWidgetItem>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QTableWidgetItem>
 
 #include "SIMPLib/Messages/FilterErrorMessage.h"
 #include "SIMPLib/Messages/FilterWarningMessage.h"

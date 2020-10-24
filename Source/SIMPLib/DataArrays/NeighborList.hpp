@@ -36,8 +36,8 @@
 #pragma once
 
 #include <cstdint>
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include <QtCore/QString>
 
@@ -154,7 +154,6 @@ public:
    * @return
    */
   IDataArray::Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) const override;
-
 
   using VectorType = std::vector<T>;
   using SharedVectorType = std::shared_ptr<VectorType>;

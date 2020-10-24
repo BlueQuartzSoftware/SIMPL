@@ -28,9 +28,9 @@
 
 #include "sitkExplicitITKDefaultPixelAccessor.h"
 #include "sitkExplicitITKDefaultVectorPixelAccessor.h"
-#include "sitkExplicitITKImportImageContainer.h"
-#include "sitkExplicitITKImageBase.h"
 #include "sitkExplicitITKImage.h"
+#include "sitkExplicitITKImageBase.h"
+#include "sitkExplicitITKImportImageContainer.h"
 #include "sitkExplicitITKLabelMap.h"
 #include "sitkExplicitITKVectorImage.h"
 

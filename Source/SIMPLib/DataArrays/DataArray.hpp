@@ -35,12 +35,11 @@
 
 #pragma once
 
-
 // STL Includes
 #include <cassert>
-#include <vector>
 #include <iterator>
 #include <memory>
+#include <vector>
 
 #include <QtCore/QString>
 #include <QtCore/QTextStream>

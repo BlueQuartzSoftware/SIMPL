@@ -39,8 +39,8 @@
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
-#include "FilterWidgetsLib/QFilterParameterWidget.h"
 #include "FilterWidgetsLib/FilterWidgetsLib.h"
+#include "FilterWidgetsLib/QFilterParameterWidget.h"
 
 #include "FilterWidgetsLib/ui_CustomWidget.h"
 

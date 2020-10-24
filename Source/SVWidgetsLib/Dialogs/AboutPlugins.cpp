@@ -37,9 +37,9 @@
 #include <QtCore/QPluginLoader>
 #include <QtCore/QTextStream>
 
+#include <QtWidgets/QAction>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
-#include <QtWidgets/QAction>
 
 #include <QtCore/QDebug>
 

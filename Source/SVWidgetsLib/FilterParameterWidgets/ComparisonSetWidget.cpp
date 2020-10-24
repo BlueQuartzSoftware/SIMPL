@@ -1,7 +1,7 @@
 #include "ComparisonSetWidget.h"
 
-#include <QtWidgets/QMenu>
 #include <QtWidgets/QAction>
+#include <QtWidgets/QMenu>
 
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonContainerWidget.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"

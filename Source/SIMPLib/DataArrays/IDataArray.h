@@ -18,8 +18,8 @@
 
 //--Qt Includes
 #include <QtCore/QString>
-#include <QtCore/QtDebug>
 #include <QtCore/QTextStream>
+#include <QtCore/QtDebug>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/IDataStructureNode.h"

@@ -44,10 +44,10 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QTreeWidgetItem>
 
+#include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
-#include "SIMPLib/Common/Constants.h"
 
 #include "SVWidgetsLib/QtSupport/QtSBookmarkMissingDialog.h"
 

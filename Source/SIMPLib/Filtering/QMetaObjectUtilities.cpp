@@ -43,7 +43,6 @@
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-#include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
@@ -52,6 +51,7 @@
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/Filtering/ComparisonInputs.h"
 #include "SIMPLib/Filtering/ComparisonInputsAdvanced.h"
+#include "SIMPLib/Filtering/FilterPipeline.h"
 
 // These Streams need to be implemented so that our 3 Element Vectors can be read/write to disk/prefs files
 QDataStream& operator<<(QDataStream& out, const IntVec3Type& v)

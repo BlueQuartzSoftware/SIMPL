@@ -45,8 +45,8 @@
 #include "SIMPLib/FilterParameters/ComparisonSelectionAdvancedFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "SIMPLib/Filtering/AbstractComparison.h"
 #include "SIMPLib/Filtering/ComparisonInputsAdvanced.h"

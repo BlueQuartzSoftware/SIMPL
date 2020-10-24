@@ -38,9 +38,9 @@
 //-- Qt Includes
 #include <QtCore/QObject>
 #include <QtCore/QString>
-#include <QtWidgets/QGraphicsPixmapItem>
-#include <QtGui/QPainter>
 #include <QtGui/QImage>
+#include <QtGui/QPainter>
+#include <QtWidgets/QGraphicsPixmapItem>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

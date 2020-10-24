@@ -46,9 +46,9 @@
 
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/AppVersion.h"
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 

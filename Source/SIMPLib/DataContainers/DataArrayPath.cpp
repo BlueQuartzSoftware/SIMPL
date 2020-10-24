@@ -39,8 +39,8 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //

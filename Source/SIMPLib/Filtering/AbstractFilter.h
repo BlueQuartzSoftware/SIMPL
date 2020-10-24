@@ -35,12 +35,12 @@
 
 #pragma once
 
-#include <memory>
 #include <map>
+#include <memory>
 
+#include <QtCore/QJsonObject>
 #include <QtCore/QString>
 #include <QtCore/QUuid>
-#include <QtCore/QJsonObject>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observable.h"

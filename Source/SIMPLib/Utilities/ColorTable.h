@@ -40,8 +40,8 @@
 
 #include <QtCore/QVector>
 
-#include "SIMPLib/Common/SIMPLibDLLExport.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Common/SIMPLibDLLExport.h"
 
 class SIMPLib_EXPORT RgbColor
 {

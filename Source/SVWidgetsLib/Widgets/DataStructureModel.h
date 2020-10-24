@@ -40,8 +40,8 @@
 #include <QtGui/QStandardItemModel>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
-#include "SVWidgetsLib/Widgets/FilterLibraryTreeWidget.h"
 #include "SVWidgetsLib/Widgets/DataStructureItem.h"
+#include "SVWidgetsLib/Widgets/FilterLibraryTreeWidget.h"
 
 class QtSSettings;
 class DataStructureItem;

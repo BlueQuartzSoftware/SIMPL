@@ -38,9 +38,9 @@
 #include <memory>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/Filtering/AbstractDecisionFilter.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/Filtering/AbstractDecisionFilter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The FeatureCountDecision class. See [Filter documentation](@ref featurecountdecision) for details.

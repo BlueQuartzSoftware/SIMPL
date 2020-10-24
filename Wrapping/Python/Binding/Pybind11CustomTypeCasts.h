@@ -9,12 +9,12 @@
 
 namespace py = pybind11;
 
+#include "SIMPLib/Common/PhaseType.h"
+#include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
-#include "SIMPLib/Common/ShapeType.h"
-#include "SIMPLib/Common/PhaseType.h"
 
 using DataContainersMap = QMap<QString, DataContainerProxy>;
 using AttributeMatricesMap = QMap<QString, AttributeMatrixProxy>;

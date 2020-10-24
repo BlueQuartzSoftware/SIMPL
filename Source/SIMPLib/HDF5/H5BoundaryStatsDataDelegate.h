@@ -40,8 +40,8 @@
 #include <hdf5.h>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/StatsData/BoundaryStatsData.h"
 #include "SIMPLib/HDF5/H5StatsDataDelegate.h"
+#include "SIMPLib/StatsData/BoundaryStatsData.h"
 
 /**
  * @class H5BoundaryStatsDataDelegate H5BoundaryStatsDataDelegate.h DREAM3DLib/HDF5/H5BoundaryStatsDataDelegate.h

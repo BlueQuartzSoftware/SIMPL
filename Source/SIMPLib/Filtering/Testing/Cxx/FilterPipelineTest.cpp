@@ -37,11 +37,11 @@
 
 //#include "Applications/DREAM3D/DREAM3DApplication.h"
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
-#include "SIMPLib/SIMPLib.h"
 
 #ifdef SIMPL_BUILD_TEST_FILTERS
 #include "SIMPLib/TestFilters/ArraySelectionExample.h"
@@ -51,9 +51,9 @@
 #include "SIMPLib/TestFilters/ThresholdExample.h"
 #endif
 
+#include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
-#include "SIMPLib/DataContainers/DataContainer.h"
 
 class FilterPipelineTest
 {

@@ -37,11 +37,11 @@
 #include <QtGui/QPainter>
 #include <QtGui/QPalette>
 
-#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 #include "SVWidgetsLib/Widgets/DataStructureItem.h"
 #include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
 #include "SVWidgetsLib/Widgets/DataStructureModel.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 namespace Detail
 {

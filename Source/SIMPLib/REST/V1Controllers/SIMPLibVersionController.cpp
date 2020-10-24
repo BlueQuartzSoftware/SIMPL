@@ -35,8 +35,8 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 
 // -----------------------------------------------------------------------------
 //

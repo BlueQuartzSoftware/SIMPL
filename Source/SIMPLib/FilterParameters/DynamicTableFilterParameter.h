@@ -39,8 +39,8 @@
 
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
+#include "SIMPLib/FilterParameters/FilterParameter.h"
 
 /**
  * @brief SIMPL_NEW_DYN_TABLE_FP This macro is a short-form way of instantiating an instance of

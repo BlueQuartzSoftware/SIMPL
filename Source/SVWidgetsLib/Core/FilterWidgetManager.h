@@ -35,11 +35,11 @@
 
 #pragma once
 
-#include <QtCore/QString>
 #include <QtCore/QMap>
+#include <QtCore/QString>
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Core/IFilterWidgetFactory.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 /**
  * @class FilterWidgetManager FilterWidgetManager.h FilterWidgets/FilterWidgetManager.h

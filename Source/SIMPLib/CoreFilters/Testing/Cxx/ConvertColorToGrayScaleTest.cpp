@@ -286,7 +286,7 @@ class ConvertColorToGrayScaleTest
                                                        checkGChannelColors,
                                                        checkBChannelColors};
 
-//------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------
   void SetDataArrayTestValues(DataArray<uint8_t>::Pointer& aa)
   {
     aa->initializeWithValue(0);
@@ -297,7 +297,7 @@ class ConvertColorToGrayScaleTest
     }
   }
 
-//------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------
   static DataContainer::Pointer createVertexGeometryDataContainer(const DataArray<uint8_t>::Pointer& aa, const std::vector<size_t>& tDims)
   {
     AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
@@ -309,7 +309,7 @@ class ConvertColorToGrayScaleTest
     return dc;
   }
 
-//------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------
   int CheckFilterParameters(ConvertColorToGrayScale::Pointer filter, const QVariant& algorithm, const FloatVec3Type& cws, const uint8_t& cc)
   {
     QVariant conversionAlgorithm{filter->property("ConversionAlgorithm")};
@@ -331,7 +331,7 @@ class ConvertColorToGrayScaleTest
     return wrongParameters;
   }
 
-//------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------
   int CompareResults(const uint8_t& algoMapIndex, DataContainer::Pointer dc) const
   {
     QString amName = m_outputAMName;
@@ -360,7 +360,6 @@ class ConvertColorToGrayScaleTest
 
     return wrongValues;
   }
-
 
   //------------------------------------------------------------------------------
   int RunTest(const uint8_t& algoMapIndex, const Algorithms& algorithm, const FloatVec3Type& colorWeights, const uint8_t& colorChannel)
@@ -429,7 +428,7 @@ public:
   ConvertColorToGrayScaleTest() = default;
   ~ConvertColorToGrayScaleTest() = default;
 
-//------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------
   void operator()()
   {
     std::cout << "#### ConvertColorToGrayScaleTest Starting ####" << std::endl;

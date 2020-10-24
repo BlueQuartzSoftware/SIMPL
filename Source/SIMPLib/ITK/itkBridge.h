@@ -38,12 +38,11 @@
 #include <memory>
 
 // DREAM3D Includes next
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
-#include "SIMPLib/SIMPLib.h"
-
 
 #include <itkConfigure.h>
 #define SIMPL_ITK_VERSION_CHECK (ITK_VERSION_MAJOR == 4)

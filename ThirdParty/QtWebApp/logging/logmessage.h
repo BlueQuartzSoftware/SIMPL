@@ -5,10 +5,10 @@
 
 #pragma once
 
-#include "logglobal.h"
 #include <QHash>
 #include <QtCore/QDateTime>
 #include <QtGlobal>
+#include "logglobal.h"
 
 /**
   Represents a single log message together with some data

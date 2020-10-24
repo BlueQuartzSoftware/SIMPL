@@ -35,13 +35,14 @@
 
 #include "CreateDataArray.h"
 
+#include <chrono>
 #include <limits>
 #include <random>
-#include <chrono>
 #include <utility>
 
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
@@ -51,7 +52,6 @@
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/ScalarTypeFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
-#include "SIMPLib/SIMPLibVersion.h"
 
 enum createdPathID : RenameDataPath::DataID_t
 {

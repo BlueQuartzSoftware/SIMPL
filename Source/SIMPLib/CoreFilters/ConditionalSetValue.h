@@ -38,9 +38,9 @@
 #include <memory>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The ConditionalSetValue class. See [Filter documentation](@ref conditionalsetvalue) for details.

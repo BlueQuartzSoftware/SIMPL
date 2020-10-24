@@ -33,8 +33,8 @@
 
 #pragma once
 
-#include <QtGui/QColor>
 #include <QtCore/QRect>
+#include <QtGui/QColor>
 #include <QtWidgets/QLabel>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"

@@ -37,12 +37,12 @@
 
 #include <QtWidgets/QWidget>
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/ui_AxisAngleWidget.h"
 
 /**

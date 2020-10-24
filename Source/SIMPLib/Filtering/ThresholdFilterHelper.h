@@ -35,11 +35,11 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/IDataArrayFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ThresholdFilterHelper class

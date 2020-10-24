@@ -49,7 +49,6 @@
 
 class SIMPLH5DataReaderRequirements;
 
-
 /**
  * @brief The DataArrayProxy class
  */

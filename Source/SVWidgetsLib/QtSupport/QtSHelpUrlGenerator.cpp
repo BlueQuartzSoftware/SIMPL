@@ -37,9 +37,9 @@
 
 #include <iostream>
 
-#include <QtCore/QTextStream>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
+#include <QtCore/QTextStream>
 
 #include <QtGui/QDesktopServices>
 
@@ -93,9 +93,9 @@ QUrl QtSHelpUrlGenerator::GenerateHTMLUrl(QString htmlName)
   }
 #endif
 
-    FilterManager* fm = FilterManager::Instance();
+  FilterManager* fm = FilterManager::Instance();
 
-    IFilterFactory::Pointer factory = fm->getFactoryFromClassName(htmlName);
+  IFilterFactory::Pointer factory = fm->getFactoryFromClassName(htmlName);
 
 #ifdef SIMPL_USE_MKDOCS
   {

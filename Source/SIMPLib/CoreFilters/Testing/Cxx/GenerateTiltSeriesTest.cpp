@@ -32,17 +32,17 @@
 
 #pragma once
 
-#include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/CoreFilters/GenerateTiltSeries.h"
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/SIMPLib.h"
 
 // These Headers are generated into the build directory
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"

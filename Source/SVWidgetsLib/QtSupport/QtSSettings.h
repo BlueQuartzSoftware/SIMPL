@@ -35,12 +35,12 @@
 
 #pragma once
 
-#include <QtCore/QSharedPointer>
-#include <QtCore/QString>
-#include <QtCore/QObject>
-#include <QtCore/QVariant>
 #include <QtCore/QJsonObject>
+#include <QtCore/QObject>
+#include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
+#include <QtCore/QString>
+#include <QtCore/QVariant>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/FilterLibraryTreeWidget.h"

@@ -31,15 +31,15 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include <memory>
 #include <cmath>
 #include <map>
+#include <memory>
 #include <set>
 
 #include <QtCore/QString>
 
-#include "H5Support/QH5Lite.h"
 #include "H5Support/H5ScopedErrorHandler.h"
+#include "H5Support/QH5Lite.h"
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"

@@ -39,9 +39,9 @@
 #include <Eigen/Dense>
 #include <Eigen/Eigen>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Math/MatrixMath.h"
 #include "SIMPLib/Math/QuaternionMath.hpp"
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 

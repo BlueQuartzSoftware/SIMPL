@@ -36,17 +36,17 @@
 #pragma once
 
 #include <QtCore/QPoint>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QToolButton>
 #include <QtGui/QDragEnterEvent>
 #include <QtGui/QDragLeaveEvent>
 #include <QtGui/QDropEvent>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QToolButton>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 

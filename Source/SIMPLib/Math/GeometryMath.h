@@ -182,8 +182,8 @@ SIMPLib_EXPORT bool PointInBox(const float p[3], const float ll[3], const float 
  * @param radius
  * @return
  */
-SIMPLib_EXPORT char PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* vertices, const float* point, const float* lowerLeft, const float* upperRight,
-                              float radius);
+SIMPLib_EXPORT char PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* vertices, const float* point, const float* lowerLeft,
+                                      const float* upperRight, float radius);
 
 /**
  * @brief Determines if a point is inside of a polyhedron defined by a set of faces
@@ -197,8 +197,8 @@ SIMPLib_EXPORT char PointInPolyhedron(TriangleGeom* faces, const Int32Int32Dynam
  * @param distToBoundary
  * @return
  */
-SIMPLib_EXPORT char PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* vertices, const float* point, const float* lowerLeft, const float* upperRight,
-                              float radius, float& distToBoundary);
+SIMPLib_EXPORT char PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* vertices, const float* point, const float* lowerLeft,
+                                      const float* upperRight, float radius, float& distToBoundary);
 
 /**
  * @brief Determines if a point is inside of a triangle defined by 3 points

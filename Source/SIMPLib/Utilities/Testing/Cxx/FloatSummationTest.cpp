@@ -35,8 +35,8 @@
 
 #include <cmath>
 
-#include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/Observer.h"
 
 #ifdef SIMPL_BUILD_TEST_FILTERS
 #include "SIMPLib/TestFilters/ArraySelectionExample.h"
@@ -46,9 +46,9 @@
 #include "SIMPLib/TestFilters/ThresholdExample.h"
 #endif
 
-#include "SIMPLib/Utilities/FloatSummation.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
+#include "SIMPLib/Utilities/FloatSummation.h"
 
 class FloatSummationTest
 {

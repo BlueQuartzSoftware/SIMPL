@@ -36,10 +36,10 @@
 
 #include <QtGui/QPainter>
 
-#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Widgets/BookmarksItem.h"
 #include "SVWidgetsLib/Widgets/BookmarksItemDelegate.h"
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // -----------------------------------------------------------------------------
 //

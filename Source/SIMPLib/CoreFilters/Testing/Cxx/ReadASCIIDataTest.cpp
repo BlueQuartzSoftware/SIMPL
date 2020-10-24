@@ -37,7 +37,12 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/CoreFilters/ReadASCIIData.h"
+#include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
@@ -45,13 +50,8 @@
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
-#include "SIMPLib/CoreFilters/ReadASCIIData.h"
-#include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
 
 const QString DataContainerName = "DataContainer";
 const QString AttributeMatrixName = "AttributeMatrix";

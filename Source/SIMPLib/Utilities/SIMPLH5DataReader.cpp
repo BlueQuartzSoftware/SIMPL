@@ -36,15 +36,15 @@
 
 #include <QtCore/QDebug>
 
+#include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/H5ScopedSentinel.h"
 
 #include "SIMPLib/Common/IObserver.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainerBundle.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
 
 const QString Title = "HDF5 Read Error";
 

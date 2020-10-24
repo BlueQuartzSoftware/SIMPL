@@ -38,8 +38,8 @@
 #include <memory>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The ConvertData class. See [Filter documentation](@ref convertdata) for details.

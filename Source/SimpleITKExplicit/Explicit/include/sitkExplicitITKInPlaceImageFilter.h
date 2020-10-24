@@ -17,8 +17,8 @@
  *=========================================================================*/
 #ifndef sitkExplicitITKInPlaceImageFilter_h__
 #define sitkExplicitITKInPlaceImageFilter_h__
-#include "sitkExplicit.h"
 #include "itkInPlaceImageFilter.h"
+#include "sitkExplicit.h"
 
 #ifndef SITK_TEMPLATE_EXPLICIT_EXPLICITITK
 extern template class SITKExplicit_EXPORT_EXPLICIT itk::InPlaceImageFilter<itk::Image<double, 2u>, itk::Image<double, 2u>>;

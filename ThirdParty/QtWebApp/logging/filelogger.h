@@ -5,13 +5,13 @@
 
 #pragma once
 
-#include "logger.h"
-#include "logglobal.h"
 #include <QBasicTimer>
 #include <QFile>
 #include <QMutex>
 #include <QSettings>
 #include <QtGlobal>
+#include "logger.h"
+#include "logglobal.h"
 
 /**
   Logger that uses a text file for output. Settings are read from a

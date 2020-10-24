@@ -1,12 +1,12 @@
 #include "StatusBarButton.h"
 
 #include <QtCore/QDebug>
-#include <QtGui/QPainter>
 #include <QtGui/QMouseEvent>
+#include <QtGui/QPainter>
 #include <QtWidgets/QStyleOption>
 
-#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // -----------------------------------------------------------------------------
 //

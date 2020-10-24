@@ -35,8 +35,8 @@
 
 #include <array>
 
-#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLArray.hpp"
 
 // SIMPLib.h MUST be included before this or the guard will block the include but not its uses below.
 // This is consistent with previous behavior, only earlier parallelization split the includes between

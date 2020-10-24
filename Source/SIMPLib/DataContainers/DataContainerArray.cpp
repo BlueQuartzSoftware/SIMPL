@@ -39,9 +39,9 @@
 
 #include <hdf5.h>
 
+#include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Montages/AbstractMontage.h"
 #include "SIMPLib/Montages/GridMontage.h"
@@ -924,6 +924,6 @@ IDataArray::Pointer DataContainerArray::getPrereqIDataArrayFromPath(AbstractFilt
     return dataArray;
   }
 
-  dataArray = attrMat->getPrereqIDataArray(filter, daName, -90002); 
+  dataArray = attrMat->getPrereqIDataArray(filter, daName, -90002);
   return dataArray;
 }

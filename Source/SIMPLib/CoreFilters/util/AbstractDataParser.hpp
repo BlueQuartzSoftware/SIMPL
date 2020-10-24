@@ -31,10 +31,10 @@
 
 #include <QtCore/QString>
 
-#include "SIMPLib/DataArrays/DataArray.hpp"
-#include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/CoreFilters/util/ParserFunctors.hpp"
+#include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataArrays/StringDataArray.h"
 
 class AbstractDataParser
 {

@@ -36,14 +36,14 @@
 #include "DataArrayPathSelectionWidget.h"
 
 #include <QtCore/QMimeData>
+#include <QtCore/QTextStream>
 #include <QtGui/QDrag>
 #include <QtGui/QPainter>
 #include <QtGui/QTextDocument>
 #include <QtWidgets/QApplication>
-#include <QtCore/QTextStream>
 
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetUtils.hpp"

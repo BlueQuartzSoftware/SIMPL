@@ -40,9 +40,9 @@
 
 #include <QtCore/QDebug>
 
-#include "SIMPLib/Utilities/StringOperations.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
+#include "SIMPLib/Utilities/StringOperations.h"
 
 /**
  * @brief The StringOperationsTest class

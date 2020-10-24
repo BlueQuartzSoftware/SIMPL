@@ -51,13 +51,12 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/Observable.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
-#include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Utilities/ToolTipGenerator.h"
-#include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Utilities/ToolTipGenerator.h"
 
 class AttributeMatrixProxy;
 class DataContainerProxy;

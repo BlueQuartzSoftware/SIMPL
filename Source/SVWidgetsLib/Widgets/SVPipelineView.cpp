@@ -60,14 +60,14 @@
 
 #include <QtCore/QDebug>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/DocRequestManager.h"
 #include "SIMPLib/CoreFilters/Breakpoint.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "SVWidgetsLib/QtSupport/QtSDroppableScrollArea.h"
 
@@ -79,19 +79,16 @@
 #include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 #include "SVWidgetsLib/Widgets/DataStructureWidget.h"
 #include "SVWidgetsLib/Widgets/FilterInputWidget.h"
+#include "SVWidgetsLib/Widgets/IssuesWidget.h"
 #include "SVWidgetsLib/Widgets/PipelineFilterMimeData.h"
 #include "SVWidgetsLib/Widgets/PipelineItemDelegate.h"
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
 #include "SVWidgetsLib/Widgets/ProgressDialog.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
+#include "SVWidgetsLib/Widgets/StandardOutputWidget.h"
 #include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
-#include "SVWidgetsLib/Widgets/DataStructureWidget.h"
-#include "SVWidgetsLib/Widgets/IssuesWidget.h"
-#include "SVWidgetsLib/Widgets/ProgressDialog.h"
-#include "SVWidgetsLib/Widgets/StandardOutputWidget.h"
-#include "SVWidgetsLib/Widgets/SVStyle.h"
-#include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 
 class ExecutionResultInvalidException : public std::exception
 {

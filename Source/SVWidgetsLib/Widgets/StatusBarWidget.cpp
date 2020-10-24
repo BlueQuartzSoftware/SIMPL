@@ -40,8 +40,8 @@
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QMenu>
 
-#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // -----------------------------------------------------------------------------
 //

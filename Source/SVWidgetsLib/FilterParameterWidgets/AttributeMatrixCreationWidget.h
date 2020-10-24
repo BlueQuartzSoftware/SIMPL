@@ -35,8 +35,8 @@
 
 #pragma once
 
-#include <QtCore/QSharedPointer>
 #include <QtCore/QObject>
+#include <QtCore/QSharedPointer>
 #include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
@@ -45,8 +45,8 @@
 #include "SIMPLib/FilterParameters/AttributeMatrixCreationFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "SVWidgetsLib/ui_AttributeMatrixCreationWidget.h"
 

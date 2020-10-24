@@ -36,19 +36,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <QtCore/QDebug>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QString>
 #include <QtCore/QVector>
-#include <QtCore/QDebug>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/ScopedFileMonitor.hpp"
 #include "SIMPLib/CoreFilters/RawBinaryReader.h"
-#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
 
 /* Testing Notes:
  *
@@ -553,7 +553,7 @@ public:
 
     // Create junkArray
     std::vector<T> junkArray(junkArraySize, 0xAB);
-    
+
     // Write a pattern into junkArray
     std::memset(junkArray.data(), 0xAB, junkArray.size() * sizeof(T));
 
@@ -691,7 +691,7 @@ public:
 
     // Create junkArray
     std::vector<T> junkArray(junkArraySize, 0xAB);
-    
+
     // Write a pattern into junkArray
     std::memset(junkArray.data(), 0xAB, junkArray.size() * sizeof(T));
 

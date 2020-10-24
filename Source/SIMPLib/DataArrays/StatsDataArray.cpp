@@ -35,21 +35,21 @@
 
 #include "StatsDataArray.h"
 
+#include <QtCore/QDebug>
 #include <QtCore/QList>
 #include <QtCore/QTextStream>
-#include <QtCore/QDebug>
 
 #include "H5Support/H5ScopedSentinel.h"
-#include "H5Support/QH5Utilities.h"
 #include "H5Support/QH5Lite.h"
+#include "H5Support/QH5Utilities.h"
 
 #include "SIMPLib/Common/PhaseType.h"
+#include "SIMPLib/HDF5/H5DataArrayWriter.hpp"
 #include "SIMPLib/StatsData/BoundaryStatsData.h"
 #include "SIMPLib/StatsData/MatrixStatsData.h"
 #include "SIMPLib/StatsData/PrecipitateStatsData.h"
 #include "SIMPLib/StatsData/PrimaryStatsData.h"
 #include "SIMPLib/StatsData/TransformationStatsData.h"
-#include "SIMPLib/HDF5/H5DataArrayWriter.hpp"
 
 // -----------------------------------------------------------------------------
 //

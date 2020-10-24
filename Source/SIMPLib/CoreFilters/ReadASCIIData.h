@@ -36,8 +36,8 @@
 #include <memory>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 class IDataArray;
 using IDataArrayShPtrType = std::shared_ptr<IDataArray>;

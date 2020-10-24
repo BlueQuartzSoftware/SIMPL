@@ -45,11 +45,11 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Utilities/FilePathGenerator.h"
-#include "SIMPLib/Utilities/StringOperations.h"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
+#include "SIMPLib/Utilities/StringOperations.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"

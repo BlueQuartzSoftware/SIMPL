@@ -40,8 +40,8 @@
 #include <hdf5.h>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/StatsData/MatrixStatsData.h"
 #include "SIMPLib/HDF5/H5StatsDataDelegate.h"
+#include "SIMPLib/StatsData/MatrixStatsData.h"
 
 /**
  * @class H5MatrixStatsDataDelegate H5MatrixStatsDataDelegate.h DREAM3DLib/HDF5/H5MatrixStatsDataDelegate.h

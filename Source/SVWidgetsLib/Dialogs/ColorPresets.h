@@ -48,8 +48,8 @@
 
 #include <memory>
 
-#include <QtCore/QString>
 #include <QtCore/QJsonObject>
+#include <QtCore/QString>
 
 class QPixmap;
 class vtkPVXMLElement;

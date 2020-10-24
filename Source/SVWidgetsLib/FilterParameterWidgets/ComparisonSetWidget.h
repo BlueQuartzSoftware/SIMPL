@@ -35,10 +35,10 @@
 
 #pragma once
 
-#include <QtWidgets/QWidget>
 #include <QtGui/QDragEnterEvent>
 #include <QtGui/QDragMoveEvent>
 #include <QtGui/QDropEvent>
+#include <QtWidgets/QWidget>
 
 #include <vector>
 

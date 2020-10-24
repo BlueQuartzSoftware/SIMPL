@@ -39,8 +39,8 @@
 
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/Common/ShapeType.h"
+#include "SIMPLib/FilterParameters/FilterParameter.h"
 
 /**
  * @brief SIMPL_NEW_SHAPETYPE_SELECTION_FP This macro is a short-form way of instantiating an instance of

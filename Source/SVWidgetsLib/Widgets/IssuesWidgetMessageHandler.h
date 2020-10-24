@@ -35,8 +35,8 @@
 
 #pragma once
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SIMPLib/Messages/AbstractMessageHandler.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 class IssuesWidget;
 class QLabel;

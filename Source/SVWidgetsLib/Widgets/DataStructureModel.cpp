@@ -35,12 +35,12 @@
 
 #include <QtCore/QVector>
 
-#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 
+#include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/Widgets/DataStructureModel.h"
 #include "SVWidgetsLib/Widgets/DataStructureTreeView.h"
-#include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 // -----------------------------------------------------------------------------
 //

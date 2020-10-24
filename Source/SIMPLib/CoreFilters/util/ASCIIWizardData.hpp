@@ -37,9 +37,9 @@
 
 #include <QtCore/QDebug>
 #include <QtCore/QList>
-#include <QtCore/QVector>
-#include <QtCore/QStringList>
 #include <QtCore/QMetaType>
+#include <QtCore/QStringList>
+#include <QtCore/QVector>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 

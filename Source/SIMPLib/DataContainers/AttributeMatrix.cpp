@@ -49,13 +49,13 @@
 #include <QtCore/QTextStream>
 
 // DREAM3D Includes
-#include "SIMPLib/DataArrays/StatsDataArray.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataArrays/StatsDataArray.h"
+#include "SIMPLib/DataContainers/AttributeMatrixProxy.h"
+#include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/HDF5/H5DataArrayReader.h"
 #include "SIMPLib/HDF5/VTKH5Constants.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
-#include "SIMPLib/DataContainers/AttributeMatrixProxy.h"
-#include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
 // -----------------------------------------------------------------------------

@@ -33,8 +33,8 @@
 
 #include <memory>
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The FilterGroup00 class. See [Filter documentation](@ref FilterGroup00) for details.

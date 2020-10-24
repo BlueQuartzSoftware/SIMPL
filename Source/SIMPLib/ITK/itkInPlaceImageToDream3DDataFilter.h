@@ -16,8 +16,8 @@
 #include <itkProcessObject.h>
 #include <itkSimpleDataObjectDecorator.h>
 
-#include "SIMPLib/ITK/itkGetComponentsDimensions.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/ITK/itkGetComponentsDimensions.h"
 #include "SIMPLib/ITK/itkSupportConstants.h"
 
 namespace itk

@@ -40,12 +40,12 @@
 #include <cmath>
 #include <functional>
 
-#include <QtCore/QString>
 #include <QtCore/QJsonObject>
+#include <QtCore/QString>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief SIMPL_NEW_FLOAT_VEC3_FP This macro is a short-form way of instantiating an instance of

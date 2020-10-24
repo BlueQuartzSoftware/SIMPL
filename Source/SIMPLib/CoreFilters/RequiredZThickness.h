@@ -38,9 +38,9 @@
 #include <memory>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/Filtering/AbstractDecisionFilter.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/Filtering/AbstractDecisionFilter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The RequiredZThickness class. See [Filter documentation](@ref requiredzthickness) for details.

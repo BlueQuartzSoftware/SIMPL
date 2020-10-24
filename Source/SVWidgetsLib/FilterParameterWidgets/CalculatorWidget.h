@@ -41,9 +41,9 @@
 #include "SIMPLib/FilterParameters/CalculatorFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/ui_CalculatorWidget.h"
 
 /**

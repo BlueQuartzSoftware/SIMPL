@@ -38,8 +38,8 @@
 #include <memory>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The CreateStringArray class. See [Filter documentation](@ref CreateStringArray) for details.

@@ -17,8 +17,8 @@
  *=========================================================================*/
 #ifndef sitkExplicitITKVectorImage_h__
 #define sitkExplicitITKVectorImage_h__
-#include "sitkExplicit.h"
 #include "itkVectorImage.h"
+#include "sitkExplicit.h"
 
 #ifndef SITK_TEMPLATE_EXPLICIT_EXPLICITITK
 extern template class SITKExplicit_EXPORT_EXPLICIT itk::VectorImage<double, 2u>;

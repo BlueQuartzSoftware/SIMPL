@@ -39,8 +39,8 @@
 #include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @class ReadOrientationData ReadOrientationData.h /FilterCategoryFilters/ReadOrientationData.h

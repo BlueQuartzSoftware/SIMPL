@@ -43,14 +43,14 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/NamedCollection.hpp"
-#include "SIMPLib/DataContainers/IDataContainerBundle.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/IDataContainerBundle.h"
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Montages/AbstractMontage.h"
 #include "SIMPLib/Montages/GridMontage.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 
 class DataContainer;
 using DataContainerShPtr = std::shared_ptr<DataContainer>;
@@ -509,7 +509,7 @@ public:
       return dataArray;
     }
 
-    dataArray = attrMat->getPrereqArray<ArrayType>(filter, daName, -80002, cDims); 
+    dataArray = attrMat->getPrereqArray<ArrayType>(filter, daName, -80002, cDims);
     return dataArray;
   }
 

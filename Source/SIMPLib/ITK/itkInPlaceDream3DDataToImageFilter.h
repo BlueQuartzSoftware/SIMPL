@@ -16,8 +16,8 @@
 #include <itkNumericTraitsRGBPixel.h>
 #include <itkNumericTraitsVectorPixel.h>
 
-#include "SIMPLib/ITK/itkImportDream3DImageContainer.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/ITK/itkImportDream3DImageContainer.h"
 
 class DataContainer;
 using DataContainerShPtrType = std::shared_ptr<DataContainer>;

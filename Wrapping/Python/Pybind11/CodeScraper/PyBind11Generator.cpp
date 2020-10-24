@@ -7,8 +7,8 @@
 #include "PythonBindingClass.h"
 
 #include "CodeScraper/CodeScraperConstants.h"
-#include "CodeScraper/SIMPLPyBind11Config.h"
 #include "CodeScraper/PythonUtils.h"
+#include "CodeScraper/SIMPLPyBind11Config.h"
 
 #define PYB11_TRUE 0
 //-----------------------------------------------------------------------------

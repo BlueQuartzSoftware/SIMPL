@@ -37,18 +37,18 @@
 
 #include <QtCore/QPointer>
 
+#include <QtWidgets/QFrame>
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QWidget>
-#include <QtWidgets/QFrame>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
 namespace Detail

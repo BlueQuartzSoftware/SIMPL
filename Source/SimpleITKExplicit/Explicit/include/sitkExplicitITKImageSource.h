@@ -17,8 +17,8 @@
  *=========================================================================*/
 #ifndef sitkExplicitITKImageSource_h__
 #define sitkExplicitITKImageSource_h__
-#include "sitkExplicit.h"
 #include "itkImageSource.h"
+#include "sitkExplicit.h"
 
 #ifndef SITK_TEMPLATE_EXPLICIT_EXPLICITITK
 extern template class SITKExplicit_EXPORT_EXPLICIT itk::ImageSource<itk::Image<bool, 2u>>;

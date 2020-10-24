@@ -5,14 +5,14 @@
 
 #pragma once
 
-#include "logglobal.h"
-#include "logmessage.h"
 #include <QHash>
 #include <QMutex>
 #include <QObject>
 #include <QStringList>
 #include <QThreadStorage>
 #include <QtGlobal>
+#include "logglobal.h"
+#include "logmessage.h"
 
 /**
   Decorates and writes log messages to the console, stderr.

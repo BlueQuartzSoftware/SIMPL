@@ -54,7 +54,7 @@ class SIMPLib_EXPORT Observer : public QObject, public IObserver
 {
   Q_OBJECT
 
-   // Start Python bindings declarations
+  // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(Observer SUPERCLASS IObserver)
   PYB11_SHARED_POINTERS(Observer)
   PYB11_CREATION()

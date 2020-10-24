@@ -54,13 +54,13 @@
 #include <Eigen/Eigenvalues>
 #include <Eigen/LU>
 
-#include "SIMPLib/Math/GeometryMath.h"
-#include "SIMPLib/Math/MatrixMath.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/HexahedralGeom.h"
 #include "SIMPLib/Geometry/QuadGeom.h"
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
+#include "SIMPLib/Math/GeometryMath.h"
+#include "SIMPLib/Math/MatrixMath.h"
 
 // -----------------------------------------------------------------------------
 //

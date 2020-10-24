@@ -35,8 +35,8 @@
 
 #include <memory>
 
-#include "SIMPLib/Geometry/ITransformContainer.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Geometry/ITransformContainer.h"
 
 class SIMPLib_EXPORT TransformContainer : public ITransformContainer
 {

@@ -38,8 +38,8 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-#include "SIMPLib/Common/INamedCollection.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/INamedCollection.h"
 
 /**
  * @class INamedObject INamedObject.h SIMPLib/Common/INamedObject.h

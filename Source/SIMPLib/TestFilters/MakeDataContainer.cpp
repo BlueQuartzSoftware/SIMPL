@@ -38,14 +38,14 @@
 #include "MakeDataContainer.h"
 
 #include "SIMPLib/DataArrays/StringDataArray.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t
 {
@@ -131,8 +131,8 @@ void MakeDataContainer::dataCheck()
   //  }
 
   std::vector<size_t> dims(1, 1);
-  m_FeatureIdsPtr = cellAttrMat->createNonPrereqArray<DataArray<int32_t>>(this, m_FeatureIdsArrayName, 0, dims); 
-  if(nullptr != m_FeatureIdsPtr.lock())                                                                          
+  m_FeatureIdsPtr = cellAttrMat->createNonPrereqArray<DataArray<int32_t>>(this, m_FeatureIdsArrayName, 0, dims);
+  if(nullptr != m_FeatureIdsPtr.lock())
   {
     m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); /* Now assign the raw pointer to data from the DataArray<T> object */
   }

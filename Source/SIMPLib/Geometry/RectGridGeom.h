@@ -39,9 +39,9 @@
 
 #include <QtCore/QTextStream>
 
-#include "SIMPLib/Geometry/IGeometryGrid.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Geometry/IGeometryGrid.h"
 
 /**
  * @brief The RectGridGeom class represents a structured rectlinear grid

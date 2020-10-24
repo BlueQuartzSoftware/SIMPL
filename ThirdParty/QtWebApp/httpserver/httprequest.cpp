@@ -4,9 +4,9 @@
 */
 
 #include "httprequest.h"
-#include "httpcookie.h"
 #include <QDir>
 #include <QList>
+#include "httpcookie.h"
 
 HttpRequest::HttpRequest(ServerSettings* settings)
 {

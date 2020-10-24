@@ -38,18 +38,18 @@
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 
-#include <QtGui/QPainter>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QPainter>
 
 #include <QtWidgets/QMenu>
 
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
-#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
 #include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 

@@ -34,8 +34,8 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include <QtCore/QUrl>
 #include <QtCore/QString>
+#include <QtCore/QUrl>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

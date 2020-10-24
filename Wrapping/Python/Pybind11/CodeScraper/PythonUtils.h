@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtCore/QString>
 #include <QtCore/QRegularExpression>
+#include <QtCore/QString>
 
 namespace SIMPL
 {

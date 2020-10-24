@@ -38,8 +38,6 @@
 **
 ****************************************************************************/
 
-#include "qtservice.h"
-#include "qtservice_p.h"
 #include <QAbstractEventDispatcher>
 #include <QCoreApplication>
 #include <QDateTime>
@@ -54,6 +52,8 @@
 #include <QVector>
 #include <QWaitCondition>
 #include <qt_windows.h>
+#include "qtservice.h"
+#include "qtservice_p.h"
 #if QT_VERSION >= 0x050000
 #include <QAbstractNativeEventFilter>
 #endif

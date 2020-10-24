@@ -37,8 +37,8 @@
 
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/AbstractIOFileWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 /**
  * @brief

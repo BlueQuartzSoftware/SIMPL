@@ -34,11 +34,11 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "FilterParameterWidget.h"
 
-#include <QtCore/QPropertyAnimation>
-#include <QtCore/QTimer>
-#include <QtCore/QFileInfo>
-#include <QtCore/QTextStream>
 #include <QtCore/QDebug>
+#include <QtCore/QFileInfo>
+#include <QtCore/QPropertyAnimation>
+#include <QtCore/QTextStream>
+#include <QtCore/QTimer>
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>

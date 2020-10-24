@@ -5,10 +5,10 @@
 
 #pragma once
 
-#include "httpglobal.h"
 #include <QByteArray>
 #include <QReadWriteLock>
 #include <QtCore/QVariant>
+#include "httpglobal.h"
 
 /**
   This class stores data for a single HTTP session.

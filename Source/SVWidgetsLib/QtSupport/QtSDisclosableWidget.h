@@ -35,11 +35,11 @@
 
 #include <QtCore/QParallelAnimationGroup>
 
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QFrame>
-#include <QtWidgets/QToolButton>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QScrollArea>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

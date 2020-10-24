@@ -36,8 +36,8 @@
 
 #include <array>
 
-#include "SIMPLib/Common/SIMPLRange2D.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLRange2D.h"
 
 // SIMPLib.h MUST be included before this or the guard will block the include but not its uses below.
 // This is consistent with previous behavior, only earlier parallelization split the includes between

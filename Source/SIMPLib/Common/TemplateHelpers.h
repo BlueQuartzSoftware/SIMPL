@@ -40,9 +40,9 @@
 
 #include <QtCore/QString>
 
+#include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
-#include "SIMPLib/DataArrays/DataArray.hpp"
 
 class AbstractFilter;
 

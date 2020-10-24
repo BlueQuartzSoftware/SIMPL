@@ -32,8 +32,8 @@
 
 #pragma once
 
-#include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @brief This class is here for the sole reason of fixing dynamic_pointer_cast across library boundaries when the python

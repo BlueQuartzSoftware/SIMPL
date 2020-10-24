@@ -40,9 +40,9 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
-#include "SIMPLib/Geometry/IGeometryGrid.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Geometry/IGeometryGrid.h"
 
 /**
  * @brief The ImageGeom class represents a structured rectlinear grid

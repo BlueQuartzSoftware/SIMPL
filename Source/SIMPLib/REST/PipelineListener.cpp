@@ -3,8 +3,8 @@
 #include "REST/PipelineListenerMessageHandler.h"
 
 #include "SIMPLib/Messages/AbstractErrorMessage.h"
-#include "SIMPLib/Messages/AbstractWarningMessage.h"
 #include "SIMPLib/Messages/AbstractStatusMessage.h"
+#include "SIMPLib/Messages/AbstractWarningMessage.h"
 
 // -----------------------------------------------------------------------------
 //

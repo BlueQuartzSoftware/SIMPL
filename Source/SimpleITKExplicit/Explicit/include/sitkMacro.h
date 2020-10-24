@@ -18,11 +18,11 @@
 #ifndef __sitkMacro_h
 #define __sitkMacro_h
 
-#include <stdint.h>
-#include <stddef.h>
 #include <cassert>
-#include <sstream>
 #include <limits>
+#include <sstream>
+#include <stddef.h>
+#include <stdint.h>
 
 #include "sitkConfigure.h"
 

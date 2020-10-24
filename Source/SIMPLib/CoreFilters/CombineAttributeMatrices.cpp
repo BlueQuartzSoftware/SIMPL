@@ -37,17 +37,17 @@
 
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
-#include "SIMPLib/SIMPLibVersion.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
 
 enum createdPathID : RenameDataPath::DataID_t
 {
@@ -211,9 +211,8 @@ void CombineAttributeMatrices::dataCheck()
   AttributeMatrix::Pointer combinedAttrMat = m->getAttributeMatrix(getCombinedAttributeMatrixName());
 
   std::vector<size_t> cDims(1, 1);
-  m_FirstIndexPtr =
-      getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>>(this, getFirstIndexArrayPath(), cDims); 
-  if(nullptr != m_FirstIndexPtr.lock())                                                                           
+  m_FirstIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>>(this, getFirstIndexArrayPath(), cDims);
+  if(nullptr != m_FirstIndexPtr.lock())
   {
     m_FirstIndex = m_FirstIndexPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -222,9 +221,8 @@ void CombineAttributeMatrices::dataCheck()
     return;
   }
 
-  m_SecondIndexPtr =
-      getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>>(this, getSecondIndexArrayPath(), cDims); 
-  if(nullptr != m_SecondIndexPtr.lock())                                                                           
+  m_SecondIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>>(this, getSecondIndexArrayPath(), cDims);
+  if(nullptr != m_SecondIndexPtr.lock())
   {
     m_SecondIndex = m_SecondIndexPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -262,7 +260,7 @@ void CombineAttributeMatrices::dataCheck()
 
   tempPath.update(getFirstIndexArrayPath().getDataContainerName(), getFirstIndexArrayPath().getAttributeMatrixName(), getNewIndexArrayName());
   m_NewIndexPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>>(this, tempPath, 0, cDims);
-  if(nullptr != m_NewIndexPtr.lock()) 
+  if(nullptr != m_NewIndexPtr.lock())
   {
     m_NewIndex = m_NewIndexPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */

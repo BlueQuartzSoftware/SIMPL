@@ -35,13 +35,13 @@
 
 #pragma once
 
-#include <QtWidgets/QFrame>
 #include <QtGui/QMouseEvent>
+#include <QtWidgets/QFrame>
 
 #include "SIMPLib/Filtering/AbstractComparison.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/IComparisonWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "ui_ComparisonContainerWidget.h"
 

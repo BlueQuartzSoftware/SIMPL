@@ -39,12 +39,12 @@
 ****************************************************************************/
 
 #include "qtservice.h"
-#include "qtservice_p.h"
 #include <QCoreApplication>
 #include <QProcess>
 #include <QTimer>
 #include <QVector>
 #include <stdio.h>
+#include "qtservice_p.h"
 
 #if defined(QTSERVICE_DEBUG)
 #include <QDebug>

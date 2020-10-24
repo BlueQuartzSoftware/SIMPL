@@ -36,14 +36,14 @@
 
 #include "AbstractMessageHandler.h"
 
-#include "SIMPLib/Messages/GenericErrorMessage.h"
-#include "SIMPLib/Messages/GenericProgressMessage.h"
-#include "SIMPLib/Messages/GenericStatusMessage.h"
-#include "SIMPLib/Messages/GenericWarningMessage.h"
 #include "SIMPLib/Messages/FilterErrorMessage.h"
 #include "SIMPLib/Messages/FilterProgressMessage.h"
 #include "SIMPLib/Messages/FilterStatusMessage.h"
 #include "SIMPLib/Messages/FilterWarningMessage.h"
+#include "SIMPLib/Messages/GenericErrorMessage.h"
+#include "SIMPLib/Messages/GenericProgressMessage.h"
+#include "SIMPLib/Messages/GenericStatusMessage.h"
+#include "SIMPLib/Messages/GenericWarningMessage.h"
 
 // -----------------------------------------------------------------------------
 //

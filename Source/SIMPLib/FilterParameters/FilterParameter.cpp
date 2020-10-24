@@ -37,8 +37,8 @@
 
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 // -----------------------------------------------------------------------------
 //

@@ -17,8 +17,8 @@
  *=========================================================================*/
 #ifndef sitkExplicitITKVectorIndexSelectionCastImageFilter_h__
 #define sitkExplicitITKVectorIndexSelectionCastImageFilter_h__
-#include "sitkExplicit.h"
 #include "itkVectorIndexSelectionCastImageFilter.h"
+#include "sitkExplicit.h"
 
 #ifndef SITK_TEMPLATE_EXPLICIT_EXPLICITITK
 extern template class SITKExplicit_EXPORT_EXPLICIT itk::VectorIndexSelectionCastImageFilter<itk::VectorImage<double, 2u>, itk::Image<double, 2u>>;

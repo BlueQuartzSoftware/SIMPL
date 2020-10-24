@@ -35,6 +35,8 @@
 
 #include <QtCore/QObject>
 
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/CoreFilters/ExecuteProcess.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
@@ -43,13 +45,10 @@
 #include "SIMPLib/Messages/AbstractMessageHandler.h"
 #include "SIMPLib/Messages/FilterStatusMessage.h"
 #include "SIMPLib/Messages/PipelineStatusMessage.h"
-#include "SIMPLib/Messages/AbstractMessageHandler.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
-#include "SIMPLib/CoreFilters/ExecuteProcess.h"
 
 /**
  * @brief This message handler is used by the ExecuteProcessTest to append filter and pipeline status messages

@@ -36,13 +36,13 @@
 #include "SVStyle.h"
 
 #include <QtCore/QDebug>
-#include <QtCore/QMetaProperty>
-#include <QtCore/QJsonDocument>
-#include <QtCore/QJsonObject>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
-#include <QtCore/QTextStream>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
 #include <QtCore/QJsonValue>
+#include <QtCore/QMetaProperty>
+#include <QtCore/QTextStream>
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>

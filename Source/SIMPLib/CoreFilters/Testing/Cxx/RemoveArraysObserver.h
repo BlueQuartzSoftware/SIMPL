@@ -5,9 +5,9 @@
 #include <QtCore/QList>
 #include <QtCore/QObject>
 
-#include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Common/PipelineMessage.h"
 
 class RemoveArraysObserver : public QObject
 {

@@ -46,9 +46,9 @@
 
 #include <QtCore/QTextStream>
 
-#include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
 #include "SIMPLib/Geometry/GeometryHelpers.h"
+#include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Utilities/ParallelDataAlgorithm.h"
 
 /**

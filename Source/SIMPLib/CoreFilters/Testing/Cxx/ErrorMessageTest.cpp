@@ -35,12 +35,12 @@
 
 #include <string>
 
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/BadFilter.h"
 #include "SIMPLib/Messages/FilterErrorMessage.h"
 #include "SIMPLib/Messages/FilterProgressMessage.h"
 #include "SIMPLib/Messages/FilterStatusMessage.h"
 #include "SIMPLib/Messages/FilterWarningMessage.h"
-#include "SIMPLib/Filtering/BadFilter.h"
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 

@@ -38,8 +38,8 @@
 #include <functional>
 #include <memory>
 
-#include <QtCore/QVariant>
 #include <QtCore/QString>
+#include <QtCore/QVariant>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"

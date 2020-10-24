@@ -1,9 +1,9 @@
 
 
-#include <QtCore/QString>
-#include <QtCore/QUuid>
-#include <QtCore/QTextStream>
 #include <QtCore/QDebug>
+#include <QtCore/QString>
+#include <QtCore/QTextStream>
+#include <QtCore/QUuid>
 
 /**
  * @brief main

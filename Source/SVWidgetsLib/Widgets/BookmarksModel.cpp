@@ -35,17 +35,17 @@
 
 #include <QtCore/QDebug>
 
-#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>
 
+#include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
 #include "SVWidgetsLib/Widgets/BookmarksTreeView.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
-#include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 #define PREBUILT_PIPELINES_DIR "PrebuiltPipelines"
 

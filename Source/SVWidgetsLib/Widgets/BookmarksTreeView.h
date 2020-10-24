@@ -35,8 +35,8 @@
 
 #pragma once
 
-#include <QtWidgets/QMenu>
 #include <QtGui/QMouseEvent>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QTreeWidgetItem>
 

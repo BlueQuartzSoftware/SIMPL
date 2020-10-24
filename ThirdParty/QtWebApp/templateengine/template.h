@@ -5,13 +5,12 @@
 
 #pragma once
 
-#include "templateglobal.h"
 #include <QFile>
 #include <QIODevice>
 #include <QRegExp>
 #include <QString>
-#include <QString>
 #include <QTextCodec>
+#include "templateglobal.h"
 
 /**
  Enhanced version of QString for template processing. Templates

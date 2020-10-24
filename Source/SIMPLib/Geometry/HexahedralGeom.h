@@ -5,9 +5,9 @@
 
 #include <QtCore/QTextStream>
 
-#include "SIMPLib/Geometry/IGeometry3D.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Geometry/IGeometry3D.h"
 
 /**
  * @brief The HexahedralGeom class represents a collection of hexahedra

@@ -37,8 +37,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLArray.hpp"
 
 class SIMPLib_EXPORT DataContainerGrid : public QObject
 {

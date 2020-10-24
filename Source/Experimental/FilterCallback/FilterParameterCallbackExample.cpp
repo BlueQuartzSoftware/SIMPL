@@ -9,8 +9,8 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
-#include "IFilter.h"
 #include "FilterWidget.h"
+#include "IFilter.h"
 
 //#define ADD_NEW_FILTER_PARAMETER(Params, Class, Desc, Prop, Category, Type)                                                                                                                                             \
 //  Class::SetterCallbackType _##Prop##_ParamSetter = [this](Type i) { return this->set##Prop(i); };                                                                                                       \

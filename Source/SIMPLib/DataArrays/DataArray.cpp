@@ -60,11 +60,11 @@
 #define SIMPL_BYTE_SWAP_64(x) bswap_64(x)
 #endif
 
-#include <string>
 #include <cstring>
 #include <functional>
 #include <iostream>
 #include <numeric>
+#include <string>
 
 #include <hdf5.h>
 

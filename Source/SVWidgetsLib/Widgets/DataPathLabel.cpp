@@ -35,8 +35,8 @@
 
 #include <algorithm>
 
-#include <QtWidgets/QStyleOptionFrame>
 #include <QtGui/QPainter>
+#include <QtWidgets/QStyleOptionFrame>
 
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 

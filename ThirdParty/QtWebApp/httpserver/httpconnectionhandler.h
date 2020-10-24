@@ -13,10 +13,10 @@
 #include <QSslConfiguration>
 #endif
 
+#include "ServerSettings.h"
 #include "httpglobal.h"
 #include "httprequest.h"
 #include "httprequesthandler.h"
-#include "ServerSettings.h"
 
 /** Alias type definition, for compatibility to different Qt versions */
 #if QT_VERSION >= 0x050000

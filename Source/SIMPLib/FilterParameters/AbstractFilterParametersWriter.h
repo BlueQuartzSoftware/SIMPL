@@ -39,6 +39,7 @@
 
 #include <QtCore/QString>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
@@ -51,7 +52,6 @@
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
 #include "SIMPLib/Filtering/ComparisonInputs.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
-#include "SIMPLib/SIMPLib.h"
 
 class AbstractFilter;
 

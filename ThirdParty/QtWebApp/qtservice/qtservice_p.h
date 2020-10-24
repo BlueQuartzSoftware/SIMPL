@@ -40,8 +40,8 @@
 
 #pragma once
 
-#include "qtservice.h"
 #include <QStringList>
+#include "qtservice.h"
 
 class QtServiceControllerPrivate
 {

@@ -35,13 +35,13 @@
 
 #include "PluginManager.h"
 
+#include <QtCore/QDebug>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
-#include <QtCore/QDebug>
 
+#include "ISIMPLibPlugin.h"
 #include "SIMPLib/Filtering/CorePlugin.h"
 #include "SIMPLib/Plugin/SIMPLPluginConstants.h"
-#include "ISIMPLibPlugin.h"
 
 PluginManager* PluginManager::m_Self = nullptr;
 

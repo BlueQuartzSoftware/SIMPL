@@ -17,8 +17,8 @@
  *=========================================================================*/
 #ifndef sitkExplicitITKComposeImageFilter_h__
 #define sitkExplicitITKComposeImageFilter_h__
-#include "sitkExplicit.h"
 #include "itkComposeImageFilter.h"
+#include "sitkExplicit.h"
 
 #ifndef SITK_TEMPLATE_EXPLICIT_EXPLICITITK
 extern template class SITKExplicit_EXPORT_EXPLICIT itk::ComposeImageFilter<itk::Image<double, 2u>, itk::VectorImage<double, 2u>>;

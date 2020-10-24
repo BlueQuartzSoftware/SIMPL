@@ -50,9 +50,9 @@
 #include <QtWidgets/QMessageBox>
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+#include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
 #include "SVWidgetsLib/Widgets/BookmarksItemDelegate.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
-#include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
 
 // -----------------------------------------------------------------------------
 //

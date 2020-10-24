@@ -35,14 +35,14 @@
 
 #include "MaskCountDecision.h"
 
-#include <QtCore/QJsonDocument>
 #include <QtCore/QDebug>
+#include <QtCore/QJsonDocument>
 
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -99,8 +99,8 @@ void MaskCountDecision::dataCheck()
 
   std::vector<size_t> cDims(1, 1);
 
-  m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>>(this, getMaskArrayPath(), cDims); 
-  if(nullptr != m_MaskPtr.lock())                                                                                
+  m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>>(this, getMaskArrayPath(), cDims);
+  if(nullptr != m_MaskPtr.lock())
   {
     m_Mask = m_MaskPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */

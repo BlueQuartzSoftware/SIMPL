@@ -39,8 +39,8 @@
 #include <QtCore/QString>
 #include <QtCore/QVector>
 
-#include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/Constants.h"
 
 /**
  * @class ShapeType ShapeType.h PathToHeader/ShapeType.h

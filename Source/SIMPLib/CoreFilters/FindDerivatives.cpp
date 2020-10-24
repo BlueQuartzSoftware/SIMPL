@@ -36,7 +36,10 @@
 
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/TemplateHelpers.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
@@ -49,13 +52,10 @@
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Math/SIMPLibRandom.h"
 #include "SIMPLib/Messages/AbstractMessageHandler.h"
+#include "SIMPLib/Messages/GenericErrorMessage.h"
 #include "SIMPLib/Messages/GenericProgressMessage.h"
 #include "SIMPLib/Messages/GenericStatusMessage.h"
-#include "SIMPLib/Messages/GenericErrorMessage.h"
 #include "SIMPLib/Messages/GenericWarningMessage.h"
-#include "SIMPLib/SIMPLibVersion.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
 
 /**
  * @brief This message handler is used by the FindDerivatives filter to re-emit incoming generic
@@ -370,9 +370,8 @@ void FindDerivatives::dataCheck()
   cDims *= 3;
   std::vector<size_t> dims(1, cDims);
 
-  m_DerivativesArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>>(this, getDerivativesArrayPath(), 0, dims, "",
-                                                                                                   DerivativesArrayID); 
-  if(nullptr != m_DerivativesArrayPtr.lock()) 
+  m_DerivativesArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>>(this, getDerivativesArrayPath(), 0, dims, "", DerivativesArrayID);
+  if(nullptr != m_DerivativesArrayPtr.lock())
   {
     m_DerivativesArray = m_DerivativesArrayPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */

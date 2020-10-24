@@ -41,8 +41,8 @@
 
 #include <QString>
 
-#include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 
 class AbstractDataStructureContainer;
 

@@ -41,12 +41,12 @@
 #include <QtCore/QVector>
 
 #include <list>
+#include <memory>
 #include <set>
 #include <utility>
-#include <memory>
 
-#include "SIMPLib/Common/SIMPLibDLLExport.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLibDLLExport.h"
 
 class DataContainerArray;
 using DataContainerArrayShPtr = std::shared_ptr<DataContainerArray>;

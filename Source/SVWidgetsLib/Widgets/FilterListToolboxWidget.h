@@ -35,17 +35,17 @@
 
 #pragma once
 
-#include <QtWidgets/QWidget>
 #include <QtWidgets/QMenu>
+#include <QtWidgets/QWidget>
 
-#include <QtCore/QSignalMapper>
 #include <QtCore/QList>
+#include <QtCore/QSignalMapper>
 
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "ui_FilterListToolboxWidget.h"
 

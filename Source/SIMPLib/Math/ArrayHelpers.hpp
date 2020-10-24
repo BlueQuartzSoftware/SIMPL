@@ -1,10 +1,10 @@
 #pragma once
 
-#include <stdio.h>
-#include <iostream>
 #include <algorithm>
-#include <limits>
 #include <iomanip>
+#include <iostream>
+#include <limits>
+#include <stdio.h>
 
 #include "SIMPLib/Math/SIMPLibMath.h"
 

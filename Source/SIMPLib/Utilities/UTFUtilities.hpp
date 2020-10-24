@@ -31,11 +31,11 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
+#include <array>
+#include <cstdint>
 #include <cstdio>
 #include <string>
 #include <tuple>
-#include <cstdint>
-#include <array>
 
 namespace UTFUtilities
 {

@@ -38,15 +38,15 @@
 #include <QtCore/QSignalMapper>
 #include <QtWidgets/QMenu>
 
-#include "SIMPLib/Geometry/IGeometry.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Geometry/IGeometry.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetUtils.hpp"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // -----------------------------------------------------------------------------
 //

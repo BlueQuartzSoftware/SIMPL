@@ -37,8 +37,8 @@
 
 #include <memory>
 
-#include <QtCore/QPointer>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 

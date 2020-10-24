@@ -35,8 +35,8 @@
 
 #include "RdfData.h"
 
-#include "SIMPLib/Math/RadialDistributionFunction.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Math/RadialDistributionFunction.h"
 #include "SIMPLib/StatsData/StatsData.h"
 
 // -----------------------------------------------------------------------------

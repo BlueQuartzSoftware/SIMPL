@@ -35,14 +35,14 @@
 
 #pragma once
 
+#include <QtCore/QJsonArray>
 #include <QtCore/QMap>
 #include <QtCore/QMapIterator>
 #include <QtCore/QString>
 #include <QtCore/QUuid>
-#include <QtCore/QJsonArray>
 
-#include "SIMPLib/Filtering/IFilterFactory.hpp"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/IFilterFactory.hpp"
 
 /**
  * @brief The FilterManager class manages instances of filters and is mainly used to instantiate

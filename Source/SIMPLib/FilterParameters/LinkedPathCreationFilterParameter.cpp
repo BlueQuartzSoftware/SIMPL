@@ -64,7 +64,7 @@ std::unique_ptr<LinkedPathCreationFilterParameter::ILinkedPath> LinkedPathCreati
 //
 // -----------------------------------------------------------------------------
 std::unique_ptr<LinkedPathCreationFilterParameter::ILinkedPath> LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcCallback,
-                                                                                                    LinkedMixedPath::PathGetterCallbackType amCallback)
+                                                                                                                    LinkedMixedPath::PathGetterCallbackType amCallback)
 {
   return std::make_unique<LinkedMixedPath>(dcCallback, amCallback);
 }
@@ -73,7 +73,7 @@ std::unique_ptr<LinkedPathCreationFilterParameter::ILinkedPath> LinkedPathCreati
 //
 // -----------------------------------------------------------------------------
 std::unique_ptr<LinkedPathCreationFilterParameter::ILinkedPath> LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcCallback,
-                                                                                                    LinkedMixedPath::StringGetterCallbackType amCallback)
+                                                                                                                    LinkedMixedPath::StringGetterCallbackType amCallback)
 {
   return std::make_unique<LinkedMixedPath>(dcCallback, amCallback);
 }
@@ -109,8 +109,7 @@ LinkedPathCreationFilterParameter::~LinkedPathCreationFilterParameter() = defaul
 // -----------------------------------------------------------------------------
 LinkedPathCreationFilterParameter::Pointer LinkedPathCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
                                                                                   const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                  std::unique_ptr<ILinkedPath> linkedPath,
-                                                                                  int groupIndex)
+                                                                                  std::unique_ptr<ILinkedPath> linkedPath, int groupIndex)
 {
 
   LinkedPathCreationFilterParameter::Pointer ptr = LinkedPathCreationFilterParameter::New();

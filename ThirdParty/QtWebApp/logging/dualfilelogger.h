@@ -5,12 +5,12 @@
 
 #pragma once
 
-#include "filelogger.h"
-#include "logger.h"
-#include "logglobal.h"
 #include <QSettings>
 #include <QString>
 #include <QtGlobal>
+#include "filelogger.h"
+#include "logger.h"
+#include "logglobal.h"
 
 /**
   Logs messages into two log files simultaneously.

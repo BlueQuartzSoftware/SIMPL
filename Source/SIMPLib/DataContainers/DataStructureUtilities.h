@@ -35,8 +35,8 @@
 #include <memory>
 #include <vector>
 
-#include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 
 class IDataArray;
 using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
@@ -206,7 +206,7 @@ public:
       return dataArray;
     }
 
-    dataArray = attrMat->getPrereqArray<ArrayType, Filter>(filter, daName, -80002, cDims); 
+    dataArray = attrMat->getPrereqArray<ArrayType, Filter>(filter, daName, -80002, cDims);
     return dataArray;
   }
 
@@ -271,7 +271,7 @@ public:
       return dataArray;
     }
 
-    dataArray = std::dynamic_pointer_cast<ArrayType>(attrMat->getPrereqIDataArray(filter, daName, -90002)); 
+    dataArray = std::dynamic_pointer_cast<ArrayType>(attrMat->getPrereqIDataArray(filter, daName, -90002));
     return dataArray;
   }
 

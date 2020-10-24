@@ -35,10 +35,9 @@
 
 #include "CalculatorWidget.h"
 
-#include <QtWidgets/QMenu>
 #include <QtCore/QDebug>
+#include <QtWidgets/QMenu>
 
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"

@@ -35,8 +35,8 @@
 
 #pragma once
 
-#include <QtCore/QString>
 #include <QtCore/QObject>
+#include <QtCore/QString>
 
 #include "SIMPLib/Messages/AbstractMessage.h"
 

@@ -36,9 +36,9 @@
 #include "SIMPLib/Geometry/IGeometry.h"
 #include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Utilities.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/CompositeTransformContainer.h"
 #include "SIMPLib/Geometry/TransformContainer.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 // -----------------------------------------------------------------------------
 //

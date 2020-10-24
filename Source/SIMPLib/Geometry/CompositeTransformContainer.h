@@ -37,8 +37,8 @@
 
 #include "H5Support/H5SupportTypeDefs.h"
 
-#include "SIMPLib/Geometry/ITransformContainer.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Geometry/ITransformContainer.h"
 
 class SIMPLib_EXPORT CompositeTransformContainer : public ITransformContainer
 {

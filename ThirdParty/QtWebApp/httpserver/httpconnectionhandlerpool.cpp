@@ -4,8 +4,8 @@
 #include <QSslKey>
 #include <QSslSocket>
 #endif
-#include "httpconnectionhandlerpool.h"
 #include <QDir>
+#include "httpconnectionhandlerpool.h"
 
 HttpConnectionHandlerPool::HttpConnectionHandlerPool(ServerSettings* settings, HttpRequestHandler* requestHandler)
 {

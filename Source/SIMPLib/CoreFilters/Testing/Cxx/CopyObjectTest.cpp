@@ -900,7 +900,6 @@ public:
     TestCase(dca, DataArrayPath(k_DataContainerName, k_AttributeMatrix2Name, k_floatArrayName), 2, k_CopiedObjectName);
 
     TestCase(dca, DataArrayPath(k_DataContainerName, k_AttributeMatrix2Name, k_doubleArrayName), 2, k_CopiedObjectName);
-  
   }
 
   // -----------------------------------------------------------------------------
@@ -909,9 +908,10 @@ public:
     static const QString k_VerticesDAName("VertexCoordinates");
     static const QString k_ElementListDAName("Connectivity");
 
-    std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 1.55f}, {3.0f, 1.0f, 1.55f}, {2.0f, 3.0f, 1.55f}, {2.0f, 2.0f, 3.55f}, {2.5f, 1.0f, 1.55f}, {4.3f, 1.0f, 1.55f}, {5.1f, 3.0f, 1.55f}, {7.63f, 2.0f, 3.55f}};
+    std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 1.55f}, {3.0f, 1.0f, 1.55f}, {2.0f, 3.0f, 1.55f}, {2.0f, 2.0f, 3.55f},
+                                                {2.5f, 1.0f, 1.55f}, {4.3f, 1.0f, 1.55f}, {5.1f, 3.0f, 1.55f}, {7.63f, 2.0f, 3.55f}};
 
-    std::vector<std::vector<MeshIndexType>>  elements = {{0, 1, 2, 3, 4, 5, 6, 7}};
+    std::vector<std::vector<MeshIndexType>> elements = {{0, 1, 2, 3, 4, 5, 6, 7}};
 
     DataArray<float>::Pointer daHexVert = createDataArray<float>(k_VerticesDAName, vertices, m_Dims8, m_Dims3);
     SharedHexList::Pointer daHexList = createDataArray<MeshIndexType>(k_ElementListDAName, elements, m_Dims1, m_Dims8);

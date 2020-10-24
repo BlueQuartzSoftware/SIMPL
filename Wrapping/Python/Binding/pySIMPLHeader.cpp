@@ -7,17 +7,17 @@
 
 #include "pybind11/numpy.h"
 #include "pybind11/pybind11.h"
-#include "pybind11/stl_bind.h"
 #include "pybind11/stl.h"
+#include "pybind11/stl_bind.h"
 
 #include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/Common/ShapeType.h"
-#include "SIMPLib/Utilities/PythonSupport.h"
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 #include "SIMPLib/FilterParameters/AxisAngleInput.h"
 #include "SIMPLib/FilterParameters/StackFileListInfo.h"
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomial.h"
+#include "SIMPLib/Utilities/PythonSupport.h"
 
 namespace py = pybind11;
 using namespace py::literals;

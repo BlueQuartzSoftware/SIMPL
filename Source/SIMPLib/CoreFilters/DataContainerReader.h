@@ -40,8 +40,8 @@
 #include <QtCore/QDateTime>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReader.h"

@@ -38,12 +38,12 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 
-#include "JsonFilterParametersWriter.h"
 #include <QtCore/QTextStream>
+#include "JsonFilterParametersWriter.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Filtering/BadFilter.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
+#include "SIMPLib/Filtering/BadFilter.h"
 #include "SIMPLib/Messages/PipelineErrorMessage.h"
 
 // -----------------------------------------------------------------------------

@@ -13,8 +13,8 @@
 #include <QTemporaryFile>
 #include <QUuid>
 
-#include "httpglobal.h"
 #include "ServerSettings.h"
+#include "httpglobal.h"
 
 /**
   This object represents a single HTTP request. It reads the request

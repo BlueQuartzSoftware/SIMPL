@@ -41,10 +41,10 @@
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

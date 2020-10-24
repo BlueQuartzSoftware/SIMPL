@@ -7,18 +7,18 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/ReadASCIIDataFilterParameter.h"
-#include "SIMPLib/Utilities/StringOperations.h"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
-#include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Utilities/StringOperations.h"
 
 #include "SIMPLib/CoreFilters/util/AbstractDataParser.hpp"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 namespace
 {

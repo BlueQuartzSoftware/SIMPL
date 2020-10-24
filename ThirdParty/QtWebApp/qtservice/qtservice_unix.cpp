@@ -38,10 +38,6 @@
 **
 ****************************************************************************/
 
-#include "qtservice.h"
-#include "qtservice_p.h"
-#include "qtunixserversocket.h"
-#include "qtunixsocket.h"
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
@@ -58,6 +54,10 @@
 #include <sys/stat.h>
 #include <syslog.h>
 #include <unistd.h>
+#include "qtservice.h"
+#include "qtservice_p.h"
+#include "qtunixserversocket.h"
+#include "qtunixsocket.h"
 
 /** Alias type definition, for compatibility to different Qt versions */
 #if QT_VERSION >= 0x050000

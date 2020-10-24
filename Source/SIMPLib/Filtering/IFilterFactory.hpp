@@ -37,8 +37,8 @@
 
 #include <QtCore/QUuid>
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief This class serves as a base class to create Factory classes that can

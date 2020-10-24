@@ -35,10 +35,10 @@
 #include <memory>
 #include <utility>
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Geometry/ImageGeom.h"
 
 /**
  * @brief The GenerateTiltSeries class. See [Filter documentation](@ref GenerateTiltSeries) for details.

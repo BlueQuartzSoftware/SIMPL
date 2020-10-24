@@ -31,15 +31,15 @@
 
 #include "PipelineModel.h"
 
-#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
-#include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
+#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/Widgets/PipelineItem.h"
-#include "SVWidgetsLib/Widgets/PipelineFilterMimeData.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
+#include "SVWidgetsLib/Widgets/PipelineFilterMimeData.h"
+#include "SVWidgetsLib/Widgets/PipelineItem.h"
 
 // -----------------------------------------------------------------------------
 //

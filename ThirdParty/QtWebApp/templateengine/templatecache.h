@@ -1,8 +1,8 @@
 #pragma once
 
+#include <QCache>
 #include "templateglobal.h"
 #include "templateloader.h"
-#include <QCache>
 
 /**
   Caching template loader, reduces the amount of I/O and improves performance

@@ -52,10 +52,15 @@
 #include "QtWebApp/httpserver/httplistener.h"
 #include "QtWebApp/httpserver/httpsessionstore.h"
 
-#include <QtCore/QTextStream>
 #include <QtCore/QDebug>
+#include <QtCore/QTextStream>
 
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/CoreFilters/CreateAttributeMatrix.h"
+#include "SIMPLib/CoreFilters/CreateDataArray.h"
+#include "SIMPLib/CoreFilters/CreateDataContainer.h"
+#include "SIMPLib/CoreFilters/DataContainerWriter.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
@@ -69,19 +74,13 @@
 #include "SIMPLib/REST/PipelineListener.h"
 #include "SIMPLib/REST/SIMPLRequestMapper.h"
 #include "SIMPLib/REST/V1Controllers/SIMPLStaticFileController.h"
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
-#include "SIMPLib/CoreFilters/CreateAttributeMatrix.h"
-#include "SIMPLib/CoreFilters/CreateDataArray.h"
-#include "SIMPLib/CoreFilters/CreateDataContainer.h"
-#include "SIMPLib/CoreFilters/DataContainerWriter.h"
 
 #include "RESTClient/SIMPLRestClient.h"
 
-#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 
 /**
  * @brief

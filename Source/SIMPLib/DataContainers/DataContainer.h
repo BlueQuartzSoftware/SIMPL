@@ -41,19 +41,18 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QString>
-#include <QtCore/QVector>
 #include <QtCore/QTextStream>
+#include <QtCore/QVector>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Geometry/IGeometry.h"
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Utilities/ToolTipGenerator.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 class IDataArray;
 using IDataArrayShPtrType = std::shared_ptr<IDataArray>;

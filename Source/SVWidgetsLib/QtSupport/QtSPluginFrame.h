@@ -35,11 +35,11 @@
 
 #pragma once
 
+#include <QtCore/QSettings>
 #include <QtCore/QString>
 #include <QtWidgets/QFrame>
-#include <QtCore/QSettings>
-#include <QtWidgets/QStatusBar>
 #include <QtWidgets/QMessageBox>
+#include <QtWidgets/QStatusBar>
 
 #include "SIMPLib/Messages/AbstractMessage.h"
 

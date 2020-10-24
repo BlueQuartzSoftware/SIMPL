@@ -42,8 +42,8 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 
-#include <QtCore/QTextStream>
 #include <QtCore/QDebug>
+#include <QtCore/QTextStream>
 
 #include "SIMPLib/Common/DocRequestManager.h"
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"

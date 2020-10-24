@@ -36,14 +36,14 @@
 #pragma once
 
 #include <QtCore/QAbstractItemModel>
-#include <QtCore/QModelIndex>
-#include <QtCore/QVariant>
 #include <QtCore/QDir>
 #include <QtCore/QFileSystemWatcher>
+#include <QtCore/QModelIndex>
+#include <QtCore/QVariant>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
-#include "SVWidgetsLib/Widgets/FilterLibraryTreeWidget.h"
 #include "SVWidgetsLib/Widgets/BookmarksItem.h"
+#include "SVWidgetsLib/Widgets/FilterLibraryTreeWidget.h"
 
 enum IndexState
 {

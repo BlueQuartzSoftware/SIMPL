@@ -37,8 +37,15 @@
 
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/CoreFilters/DataContainerReader.h"
+#include "SIMPLib/CoreFilters/EmptyFilter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/RenameDataPath.h"
+#include "SIMPLib/Filtering/BadFilter.h"
+#include "SIMPLib/Filtering/FilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Messages/AbstractMessageHandler.h"
-#include "SIMPLib/Messages/FilterProgressMessage.h"
 #include "SIMPLib/Messages/FilterErrorMessage.h"
 #include "SIMPLib/Messages/FilterProgressMessage.h"
 #include "SIMPLib/Messages/FilterStatusMessage.h"
@@ -47,15 +54,7 @@
 #include "SIMPLib/Messages/PipelineProgressMessage.h"
 #include "SIMPLib/Messages/PipelineStatusMessage.h"
 #include "SIMPLib/Messages/PipelineWarningMessage.h"
-#include "SIMPLib/CoreFilters/DataContainerReader.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Utilities/StringOperations.h"
-#include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Filtering/BadFilter.h"
-#include "SIMPLib/Filtering/FilterManager.h"
-#include "SIMPLib/Filtering/FilterFactory.hpp"
-#include "SIMPLib/CoreFilters/EmptyFilter.h"
 
 #define RENAME_ENABLED 1
 
@@ -706,7 +705,6 @@ void FilterPipeline::removeObserver(Observer* obj)
   disconnect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), obj, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
   m_MessageReceivers.removeAll(obj);
 }
-
 
 // -----------------------------------------------------------------------------
 //

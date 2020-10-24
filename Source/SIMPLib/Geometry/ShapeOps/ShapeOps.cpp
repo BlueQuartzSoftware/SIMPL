@@ -35,13 +35,13 @@
 
 #include "ShapeOps.h"
 
-#include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/Geometry/ShapeOps/CubeOctohedronOps.h"
 #include "SIMPLib/Geometry/ShapeOps/CylinderAOps.h"
 #include "SIMPLib/Geometry/ShapeOps/CylinderBOps.h"
 #include "SIMPLib/Geometry/ShapeOps/CylinderCOps.h"
 #include "SIMPLib/Geometry/ShapeOps/EllipsoidOps.h"
 #include "SIMPLib/Geometry/ShapeOps/SuperEllipsoidOps.h"
+#include "SIMPLib/Math/SIMPLibMath.h"
 
 static const float cube_root_of_one = powf(1.0f, 0.333333333f);
 

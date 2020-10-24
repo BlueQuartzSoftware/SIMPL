@@ -37,9 +37,9 @@
 
 #include "SIMPLib/FilterParameters/InputPathFilterParameter.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
-#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/AbstractIOFileWidget.h"
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 class InputPathFilterParameter;
 

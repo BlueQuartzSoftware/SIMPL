@@ -41,16 +41,16 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 
-#include <QtGui/QStandardItemModel>
 #include <QtGui/QPainter>
+#include <QtGui/QStandardItemModel>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMenu>
 
 #include <QtCore/QDebug>
 
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
-#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"

@@ -38,8 +38,8 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QMimeData>
 
-#include <QtGui/QMouseEvent>
 #include <QtGui/QDrag>
+#include <QtGui/QMouseEvent>
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMenu>
@@ -48,10 +48,10 @@
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 
-#include "SVWidgetsLib/Widgets/SVStyle.h"
-#include "SVWidgetsLib/Widgets/FilterListModel.h"
-#include "SVWidgetsLib/Widgets/FilterListItem.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
+#include "SVWidgetsLib/Widgets/FilterListItem.h"
+#include "SVWidgetsLib/Widgets/FilterListModel.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // -----------------------------------------------------------------------------
 //

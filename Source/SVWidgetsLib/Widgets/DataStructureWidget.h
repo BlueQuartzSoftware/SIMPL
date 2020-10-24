@@ -40,12 +40,12 @@
 #include <QtGui/QIcon>
 #include <QtWidgets/QWidget>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/IObserver.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
-#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 class DataContainerArray;
 using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
 

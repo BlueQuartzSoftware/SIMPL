@@ -82,7 +82,6 @@ struct ComparisonInput_t
     }
     return false;
   }
-
 };
 
 /**

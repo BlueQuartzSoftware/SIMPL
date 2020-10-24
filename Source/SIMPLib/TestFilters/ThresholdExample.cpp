@@ -37,9 +37,9 @@
 
 #include "ThresholdExample.h"
 
-#include "SIMPLib/FilterParameters/ComparisonSelectionFilterParameter.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/FilterParameters/ComparisonSelectionFilterParameter.h"
 
 // -----------------------------------------------------------------------------
 //

@@ -37,12 +37,12 @@
 
 #include <memory>
 
-#include <QtCore/QString>
 #include <QtCore/QJsonObject>
+#include <QtCore/QString>
 
-#include "SIMPLib/FilterParameters/StackFileListInfo.h"
-#include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/FilterParameters/StackFileListInfo.h"
 
 /**
  * @brief SIMPL_NEW_FILELISTINFO_FP This macro is a short-form way of instantiating an instance of

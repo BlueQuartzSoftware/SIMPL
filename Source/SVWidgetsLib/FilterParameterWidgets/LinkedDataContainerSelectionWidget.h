@@ -42,9 +42,9 @@
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
-#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
 #include "SIMPLib/FilterParameters/LinkedDataContainerSelectionFilterParameter.h"
 

@@ -42,10 +42,10 @@
 #include "SIMPLib/SIMPLib.h"
 
 #include "CalculatorArray.hpp"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/DataArrays/DataArray.hpp"
 
 class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 {

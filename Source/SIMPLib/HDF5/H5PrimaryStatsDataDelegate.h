@@ -42,8 +42,8 @@
 #include <hdf5.h>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/StatsData/PrimaryStatsData.h"
 #include "SIMPLib/HDF5/H5StatsDataDelegate.h"
+#include "SIMPLib/StatsData/PrimaryStatsData.h"
 
 /**
  * @class H5PrimaryStatsDataDelegate H5PrimaryStatsDataDelegate.h DREAM3DLib/HDF5/H5PrimaryStatsDataDelegate.h

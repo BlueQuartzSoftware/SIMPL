@@ -39,8 +39,8 @@
 
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
+#include "SIMPLib/FilterParameters/FilterParameter.h"
 
 /**
  * @brief The LinkedChoicesFilterParameter class is used by filters to instantiate an LinkedChoicesWidget.  By instantiating an instance of

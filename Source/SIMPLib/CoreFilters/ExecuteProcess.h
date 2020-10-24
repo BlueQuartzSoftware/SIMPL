@@ -37,10 +37,10 @@
 
 #include <memory>
 
-#include <QtCore/QProcess>
-#include <QtCore/QWaitCondition>
 #include <QtCore/QMutex>
+#include <QtCore/QProcess>
 #include <QtCore/QSharedPointer>
+#include <QtCore/QWaitCondition>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"

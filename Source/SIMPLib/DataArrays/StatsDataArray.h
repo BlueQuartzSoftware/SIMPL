@@ -39,9 +39,9 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QTextStream>
 
-#include "SIMPLib/StatsData/StatsData.h"
-#include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/StatsData/StatsData.h"
 
 /**
  * @brief The StatsDataArray class

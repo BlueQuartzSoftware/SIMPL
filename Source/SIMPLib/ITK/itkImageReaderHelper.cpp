@@ -9,11 +9,11 @@
 #ifndef ITK_IMAGE_READER_CLASS_NAME
 #define ITK_IMAGE_READER_CLASS_NAME Foo
 #include "SIMPLib/ITK/itkImageReaderHelper.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/ITK/itkGetComponentsDimensions.h"
 #include "SIMPLib/ITK/itkInPlaceImageToDream3DDataFilter.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
 
 #include <itkImageFileReader.h>
 

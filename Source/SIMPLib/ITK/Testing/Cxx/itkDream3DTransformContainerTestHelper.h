@@ -33,7 +33,6 @@
 
 #pragma once
 
-
 #include "SIMPLib/Geometry/CompositeTransformContainer.h"
 #include "SIMPLib/Geometry/TransformContainer.h"
 

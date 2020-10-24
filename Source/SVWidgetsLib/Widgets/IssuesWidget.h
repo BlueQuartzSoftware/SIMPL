@@ -39,8 +39,8 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/IObserver.h"
-#include "SIMPLib/Messages/AbstractMessageHandler.h"
 #include "SIMPLib/Messages/AbstractMessage.h"
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 

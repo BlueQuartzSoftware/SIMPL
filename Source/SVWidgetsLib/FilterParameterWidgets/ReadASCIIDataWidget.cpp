@@ -44,10 +44,10 @@
 #include "SIMPLib/CoreFilters/ReadASCIIData.h"
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
 #include "SIMPLib/CoreFilters/util/AbstractDataParser.hpp"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/ReadASCIIDataFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "Widgets/ImportASCIIDataWizard/DataFormatPage.h"
 #include "Widgets/ImportASCIIDataWizard/ImportASCIIDataWizard.h"
