@@ -6,8 +6,6 @@
  * The developer can use the SIMPLib/ITK/ITKImageReaderHelper.h file in thier header file
  */
 
-#ifndef ITK_IMAGE_READER_CLASS_NAME
-#define ITK_IMAGE_READER_CLASS_NAME Foo
 #include "SIMPLib/ITK/itkImageReaderHelper.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
@@ -16,6 +14,9 @@
 #include "SIMPLib/ITK/itkInPlaceImageToDream3DDataFilter.h"
 
 #include <itkImageFileReader.h>
+
+#ifndef ITK_IMAGE_READER_CLASS_NAME
+#define ITK_IMAGE_READER_CLASS_NAME Foo
 
 class ITK_IMAGE_READER_CLASS_NAME : public AbstractFilter
 {
