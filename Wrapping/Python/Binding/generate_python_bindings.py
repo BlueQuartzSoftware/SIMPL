@@ -149,21 +149,23 @@ class PyClass():
 
   def generate_python_interface(self, module_name: str) -> str:
     arg_list = [replace_python_keywords(camel_to_snake(prop.name)) for prop in self.properties]
-    args_text = ', '.join(arg_list)
+    parameter_list = [f'{prop} = None' for prop in arg_list]
+    args_text = ', '.join(parameter_list)
     if args_text:
       args_text = ', ' + args_text
     code = f'def {camel_to_snake(self.name)}(data_container_array{args_text}):\n'
     code += '  \"\"\"\n'
     code += f'  {self.name}\n\n'
-    code += '  :param DataContainerArray data_container_array\n'
-    for prop in self.properties:
-      code += f'  :param {prop.type} {prop.name}\n'
+    code += '  :param data_container_array | DataContainerArray\n'
+    for prop, arg in zip(self.properties, arg_list):
+      code += f'  :param {arg} | {prop.type} {prop.name}\n'
     code += ' \"\"\"\n\n'
     code += f'  filter = {module_name}.{self.name}()\n'
     code += f'  filter.setDataContainerArray(data_container_array)\n'
 
     for prop, arg in zip(self.properties, arg_list):
-      code += f'  filter.{prop.name} = {arg}\n'
+      code += f'  if {arg} is not None:\n'
+      code += f'    filter.{prop.name} = {arg}\n'
 
     code += '  filter.execute()\n'
     code += '  return filter.ErrorCode\n\n'
@@ -173,8 +175,7 @@ class PyClass():
     code = f'  print(\'# --- {self.name}\')\n'
     code += f'  filter = {module_name}.{self.name}()\n'
     code += f'  filter.preflight()\n'
-    code += f'  if filter.NameOfClass != \'{self.name}\':\n'
-    code += f'    print(\'  Error: Filter class name is not correct. %s != {self.name}\' % filter.NameOfClass)\n\n'
+    code += f'  assert filter.NameOfClass == \'{self.name}\', f\'Error: Filter class name is not correct. {{filter.NameOfClass}} != {self.name}\'\n\n'
     return code
 
 def replace_python_keywords(text: str) -> str:
