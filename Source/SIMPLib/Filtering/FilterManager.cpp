@@ -108,7 +108,7 @@ FilterManager::Collection FilterManager::getFactories() const
 void FilterManager::printFactoryNames() const
 {
   QList<QString> keys = m_Factories.keys();
-  for(auto const key : keys)
+  for(const auto& key : keys)
   {
     qDebug() << "Name: " << key << "\n";
   }

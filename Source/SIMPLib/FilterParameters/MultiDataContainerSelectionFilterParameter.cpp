@@ -175,7 +175,7 @@ void MultiDataContainerSelectionFilterParameter::readJson(const QJsonObject& jso
   {
     QJsonArray arrayObj = jsonValue.toArray();
     QStringList dcList;
-    for(const auto& obj : arrayObj)
+    for(const auto obj : arrayObj)
     {
       QString dcName = obj.toString();
       dcList.push_back(dcName);

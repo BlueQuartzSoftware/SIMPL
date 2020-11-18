@@ -96,7 +96,7 @@ private:
       }
 
       QJsonArray allPresets = doc.array();
-      for(const auto& preset : allPresets)
+      for(const auto preset : allPresets)
       {
         QJsonObject obj = preset.toObject();
         if((obj["ColorSpace"].toString() == "RGB")

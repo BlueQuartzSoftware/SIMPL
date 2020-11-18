@@ -134,7 +134,7 @@ QJsonArray AttributeMatrixProxy::writeMap(const QMap<QString, DataArrayProxy>& m
 QMap<QString, DataArrayProxy> AttributeMatrixProxy::readMap(QJsonArray jsonArray)
 {
   QMap<QString, DataArrayProxy> map;
-  for(const auto& val : jsonArray)
+  for(const auto val : jsonArray)
   {
     if(val.isObject())
     {

@@ -214,7 +214,7 @@ QJsonArray DataArrayProxy::writeVector(const std::vector<size_t>& vector) const
 std::vector<size_t> DataArrayProxy::readVector(QJsonArray jsonArray)
 {
   std::vector<size_t> vector;
-  for(const auto& val : jsonArray)
+  for(const auto val : jsonArray)
   {
     if(val.isDouble())
     {

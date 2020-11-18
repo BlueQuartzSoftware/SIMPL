@@ -520,7 +520,7 @@ QJsonArray DataContainerArrayProxy::writeMap(const QMap<QString, DataContainerPr
 QMap<QString, DataContainerProxy> DataContainerArrayProxy::readMap(QJsonArray jsonArray)
 {
   QMap<QString, DataContainerProxy> map;
-  for(const auto& val : jsonArray)
+  for(const auto val : jsonArray)
   {
     if(val.isObject())
     {
