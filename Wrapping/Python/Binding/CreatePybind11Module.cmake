@@ -75,6 +75,7 @@ function(CreatePybind11Module)
   set(multiValueArgs LINK_LIBRARIES INCLUDE_DIRS)
   cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
+  set(pybind11_FIND_QUIETLY TRUE)
   find_package(pybind11 REQUIRED)
 
   set(PLUGIN_ARG "")
