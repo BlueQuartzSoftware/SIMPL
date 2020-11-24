@@ -75,6 +75,8 @@ public:
 
 protected slots:
   void on_licenseCombo_currentIndexChanged(int index);
+  
+  void on_okButton_clicked();
 
 protected:
   /**

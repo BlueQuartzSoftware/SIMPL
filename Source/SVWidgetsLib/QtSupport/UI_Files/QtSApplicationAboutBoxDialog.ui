@@ -138,22 +138,4 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>okButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ApplicationAboutBoxDialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>243</x>
-     <y>222</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>444</x>
-     <y>221</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
 </ui>

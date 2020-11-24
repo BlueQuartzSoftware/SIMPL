@@ -95,6 +95,12 @@ void QtSApplicationAboutBoxDialog::on_licenseCombo_currentIndexChanged(int index
 }
 
 // -----------------------------------------------------------------------------
+void QtSApplicationAboutBoxDialog::on_okButton_clicked()
+{
+  this->close();
+}
+
+// -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void QtSApplicationAboutBoxDialog::loadResourceFile(const QString qresourceFile)
