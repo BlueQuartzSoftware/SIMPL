@@ -26,6 +26,9 @@
     <file>SIMPL/StyleSheets/Default.css</file>
     <file>SIMPL/StyleSheets/Default.json</file>
 
+    <file>SIMPL/StyleSheets/Default_DarkMode.css</file>
+    <file>SIMPL/StyleSheets/Default_DarkMode.json</file>
+
     <!-- Icon Resources -->
     <file>SIMPL/icons/images/expand_all.png</file>
     <file>SIMPL/icons/images/expand_all@2x.png</file>

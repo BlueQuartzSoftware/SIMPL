@@ -1,0 +1,334 @@
+/* STYLESHEET=DEFAULT */
+
+/* ----------------------------------------------------------------------------
+* QGroupBox Section
+* ----------------------------------------------------------------------------*/
+QGroupBox::title
+{
+    /* height: 185px; */
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 0px;
+}
+
+QGroupBox
+{
+    font-family: "Lato-Bold";
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+/* ----------------------------------------------------------------------------
+* Section
+* ----------------------------------------------------------------------------*/
+SVSmallLabel
+{
+    font-style:italic;
+    font-size: Font_Size_Small;
+}
+
+DataArrayPathSelectionWidget 
+{
+    /* font-family: "Lato";
+    font-weight: normal; */
+    font-size: Font_Size_Small;
+    border: 1px solid QLineEdit_border_color;
+    border-radius: 5px;
+    background-color: QToolButton_background_color;
+    padding-left: 0px;
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+DataArrayPathSelectionWidget:disabled
+{
+  background-color: QToolButtonDisabled_background_color;
+}
+
+/*
+ * State: { Normal, Active, NotFound, DragEnabled, DragDisabled }
+ * PathType: { DataContainer, AttributeMatrix, DataArray, None }
+ */
+DataArrayPathSelectionWidget[State="0"]
+{ 
+  border-color: DataArrayPath_border_normal;
+}
+DataArrayPathSelectionWidget[State="1"][PathType="0"]
+{ 
+  border-color: DataArrayPath_DataContainer_color;
+}
+DataArrayPathSelectionWidget[State="1"][PathType="1"]
+{ 
+  border-color: DataArrayPath_AttributeMatrix_color;
+}
+DataArrayPathSelectionWidget[State="1"][PathType="2"]
+{ 
+  border-color: DataArrayPath_DataArray_color;
+}
+DataArrayPathSelectionWidget[State="2"]
+{ 
+  border-color : DataArrayPath_border_not_found;
+}
+DataArrayPathSelectionWidget[State="3"]
+{ 
+  border-color: DataArrayPath_border_drag_enabled;
+}
+DataArrayPathSelectionWidget[State="4"]
+{ 
+  border-color: DataArrayPath_border_drag_disabled;
+}
+
+DataArrayPathSelectionWidget:checked[PathType="0"]
+{ 
+  background-color: DataArrayPath_DataContainer_background_color;
+}
+DataArrayPathSelectionWidget:checked[PathType="1"]
+{ 
+  background-color: DataArrayPath_AttributeMatrix_background_color;
+}
+DataArrayPathSelectionWidget:checked[PathType="2"]
+{ 
+  background-color: DataArrayPath_DataArray_background_color;
+}
+
+DataArrayPathSelectionWidget::menu-indicator {
+ subcontrol-origin: content;
+ subcontrol-position:  right; /* */
+}
+DataArrayPathSelectionWidget::menu-indicator:pressed, DataArrayPathSelectionWidget::menu-indicator:open {
+ position: relative;
+}
+DataArrayPathSelectionWidget:flat {
+ border: none;
+}
+
+DataArrayPathSelectionWidget > QToolTip {
+  border: 2px solid #434343;
+  padding: 2px;
+  border-radius: 3px;
+  opacity: 255;
+  background-color: #FFFCEA;
+  color: #000000;
+ }
+
+DataPathLabel {
+    font-family: "Lato-Bold";
+    font-weight: bold;
+    font-size: Font_Size_Small;
+    border-radius: 4px;
+}
+DataPathLabel:disabled {
+    color: DataPathLabel_Disabled_color;
+}
+DataPathLabel:enabled[DataTypei="0"] {
+    color: DataArrayPath_DataContainer_color;
+}
+DataPathLabel:enabled[DataTypei="1"] {
+    color: DataArrayPath_AttributeMatrix_color;
+}
+DataPathLabel:enabled[DataTypei="2"] {
+    color: DataArrayPath_DataArray_color;
+}
+
+/* ----------------------------------------------------------------------------
+* SVPushButton Section
+* ----------------------------------------------------------------------------*/
+SVIconPushButton 
+{
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding-left: 0px;
+    padding-top: 0px;
+}
+
+SVIconPushButton:hover 
+{
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: rgb(190, 190, 190);
+    background-color: rgb(190, 190, 190);
+}
+
+SVIconPushButton:pressed
+{
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: rgb(170, 170, 170);
+    background-color: rgb(170, 170, 170);
+    padding-left: 2px;
+    padding-top: 2px;
+}
+
+SVIconPushButton:disabled
+{
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: rgb(130, 130, 130);
+    background-color: rgb(130, 130, 130);
+    padding-left: 0px;
+    padding-top: 0px; 
+}
+
+FilterParameterWidget
+{
+    margin: 2px;
+    background-position: top left;
+    background-origin: content;
+    background-clip: margin;
+}
+
+/* This is here for the search box at the top of the FilterLibrary */
+QtSLineEdit#filterSearch
+{
+    border-radius: 0;
+    min-height: 24;
+}
+
+/* ****************************************************************************
+*
+******************************************************************************/
+QwtPlot
+{
+    background-color: white;
+    border: 1px solid #6b6b6b;
+    border-radius: 5px;
+}
+
+QwtPlotCanvas
+{
+    background-color: white;
+}
+
+QwtPlotGLCanvas
+{
+    border: 1px solid white;
+    background-color: #616d7e;
+}
+
+QwtScaleWidget
+{
+    color: black;
+}
+
+QwtTextLabel#QwtPlotTitle
+{
+    color: black;
+    padding: 0px;
+    margin: 0px;
+}
+
+QwtTextLabel#QwtPlotFooter
+{
+    color: black;
+}
+
+QwtLegend
+{
+    border: 1px solid black;
+    border-radius: 0px;
+    padding: 2px;
+    background: #616d7e;
+}
+
+QwtLegendLabel
+{
+    color: black;
+}
+
+/* ----------------------------------------------------------------------------
+* QTableView Section
+* ----------------------------------------------------------------------------*/
+QTableView
+{
+    font-family: "Lato";
+    color: #b1b1b1;
+    font-size: Font_Size_Small;
+    background: rgb-primary-2;
+    outline: none;  /* removes the "focus rect" */
+    border: 1px solid rgb( 68,  89, 100);
+}
+QTableView::item 
+{
+   padding: 2 0 2 0px;
+   border-top-color: transparent;
+   border-bottom-color: transparent;
+   border: 0px solid transparent;
+   color: #b1b1b1;
+}
+
+QTableView::item:selected 
+{
+    background:  rgb-primary-2;
+    color: rgb-primary-0;
+}
+
+/* ----------------------------------------------------------------------------
+* QTableWidget Section
+* ----------------------------------------------------------------------------*/
+
+/* See QHeaderView on how to style the QTableWidget header */
+QTableWidget
+{
+    font-family: "Lato";
+    color: #b1b1b1;
+    font-size: Font_Size_Small;
+    background: rgb-primary-2;
+    outline: none;  /* removes the "focus rect" */
+    border: 1px solid rgb-primary-3;
+}
+
+QTableWidget::item:selected 
+{
+    background:  rgb-primary-3;
+    color: #F1F1F1;
+}
+
+QTableWidget::item 
+{
+}
+
+QTableWidget::item:hover 
+{
+    background:  rgb-primary-3;
+    border: 0px;
+}
+
+QTableWidget::item:selected:hover 
+{
+    background:  rgb-primary-3;
+    color: #F1F1F1;
+}
+
+QTableView QTableCornerButton::section 
+{
+    background-color: QHeaderView_background_color;
+}
+
+/* ----------------------------------------------------------------------------
+* QTextEdit Section
+* ----------------------------------------------------------------------------*/
+QTextEdit
+{
+    background-color: QLineEdit_background_color;
+    color: QLineEdit_color;
+}
+
+QTextEdit:focus
+{
+    /* border: 1px solid rgb-primary-0;
+    background-color: #3F3F3F; */
+}
+
+QTextEdit:disabled
+{
+    color: QLineEdit_color;
+    background-color: QLineEditDisabled_background_color;
+}
+
+StandardOutputWidget
+{
+  background-color: QLineEdit_background_color;
+  color: QLineEdit_color;
+}

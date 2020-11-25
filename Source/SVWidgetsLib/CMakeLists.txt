@@ -90,6 +90,7 @@ cmp_IDE_GENERATED_PROPERTIES("Generated" "${${PROJECT_NAME}_Generated_HDRS}" "${
 # -- Add the resources into the resource system
 QT5_ADD_RESOURCES( SVWidgetsLib_Generated_RC_SRCS "${SIMPLProj_SOURCE_DIR}/Resources/SIMPL.qrc")
 
+
 foreach(h ${SVWidgetsLib_Generated_RC_SRCS})
   set_property(SOURCE ${h} PROPERTY SKIP_AUTOMOC ON)
 endforeach()
