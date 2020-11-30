@@ -25,6 +25,9 @@
     <!-- StyleSheet Resources -->
     <file>SIMPL/StyleSheets/Default.css</file>
     <file>SIMPL/StyleSheets/Default.json</file>
+    
+    <file>SIMPL/StyleSheets/Default_DarkMode.css</file>
+    <file>SIMPL/StyleSheets/Default_DarkMode.json</file>
 
     <!-- Icon Resources -->
     <file>SIMPL/icons/images/add.png</file>
