@@ -17,6 +17,11 @@
  *=========================================================================*/
 #pragma once
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wself-assign-field"
+#endif
+
 #include "itkDefaultPixelAccessor.h"
 #include "itkDefaultPixelAccessorFunctor.h"
 #include "itkFixedArray.h"
