@@ -286,9 +286,63 @@ void NeighborList<T>::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) 
 
 // -----------------------------------------------------------------------------
 template <typename T>
+QString NeighborList<T>::getFullNameOfClass() const
+{
+  QString theType = getTypeAsString();
+  theType = "NeighborList<" + theType + ">";
+  return theType;
+}
+
+// -----------------------------------------------------------------------------
+template <typename T>
 QString NeighborList<T>::getTypeAsString() const
 {
-  return NeighborList<T>::ClassName();
+  if constexpr(std::is_same_v<T, int8_t>)
+  {
+    return "int8_t";
+  }
+  else if constexpr(std::is_same_v<T, uint8_t>)
+  {
+    return "uint8_t";
+  }
+  else if constexpr(std::is_same_v<T, int16_t>)
+  {
+    return "int16_t";
+  }
+  else if constexpr(std::is_same_v<T, uint16_t>)
+  {
+    return "uint16_t";
+  }
+  else if constexpr(std::is_same_v<T, int32_t>)
+  {
+    return "int32_t";
+  }
+  else if constexpr(std::is_same_v<T, uint32_t>)
+  {
+    return "uint32_t";
+  }
+  else if constexpr(std::is_same_v<T, int64_t>)
+  {
+    return "int64_t";
+  }
+  else if constexpr(std::is_same_v<T, uint64_t>)
+  {
+    return "uint64_t";
+  }
+  else if constexpr(std::is_same_v<T, float>)
+  {
+    return "float";
+  }
+  else if constexpr(std::is_same_v<T, double>)
+  {
+    return "double";
+  }
+  else if constexpr(std::is_same_v<T, bool>)
+  {
+    return "bool";
+  }
+
+  return "UnknownType";
 }
 
 // -----------------------------------------------------------------------------
@@ -762,14 +816,40 @@ ToolTipGenerator NeighborList<T>::getToolTipGenerator() const
 template <typename T>
 QString NeighborList<T>::getInfoString(SIMPL::InfoStringFormat format) const
 {
+  QLocale usa(QLocale::English, QLocale::UnitedStates);
+
+  QString info;
+  QTextStream ss(&info);
+
   if(format == SIMPL::HtmlFormat)
   {
-    return getToolTipGenerator().generateHTML();
+    ss << "<html><head></head>\n";
+    ss << "<body>\n";
+    ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
+    ss << "<tbody>\n";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Array Info</th></tr>";
+
+    ss << R"(<tr bgcolor="#E9E7D6"><th align="right">Name:</th><td>)" << getName() << "</td></tr>";
+
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type:</th><td> NeighborList&lt;)" << getTypeAsString() << "&gt;</td></tr>";
+    QString numStr = usa.toString(static_cast<qlonglong>(getNumberOfTuples()));
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Tuples:</th><td>)" << numStr << "</td></tr>";
+
+    ss << "</tbody></table>\n";
+    ss << "</body></html>";
   }
-  else
+  else if(format == SIMPL::MarkDown)
   {
+    ss << "+ Name: " << getName() << "\n";
+    ss << "+ Type: " << getTypeAsString() << "\n";
+    ss << "+ Num. Tuple: " << getNumberOfTuples() << "\n";
+    QString compDimStr = "(variable)";
+
+    ss << "+ Comp. Dims: " << compDimStr << "\n";
+    ss << "+ Total Elements:  " << m_Array.size() << "\n";
+    ss << "+ Minimum Memory: " << (m_Array.size() * sizeof(T)) << "\n";
   }
-  return QString();
+  return info;
 }
 
 // -----------------------------------------------------------------------------

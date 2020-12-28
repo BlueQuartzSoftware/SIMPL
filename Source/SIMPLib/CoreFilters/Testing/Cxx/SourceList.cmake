@@ -2,6 +2,7 @@
 set(TEST_TESTFILES_DIR ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx/TestFiles)
 
 set(TEST_${SUBDIR_NAME}_NAMES
+  WriteASCIIDataTest
   ApplyImageTransformsTest
   ArrayCalculatorTest
   CombineAttributeArraysTest
@@ -50,7 +51,6 @@ set(TEST_${SUBDIR_NAME}_NAMES
   ScaleVolumeTest
   SetOriginResolutionImageGeomTest
   SplitAttributeArrayTest
-  WriteASCIIDataTest
   WriteTriangleGeometryTest
 )
 

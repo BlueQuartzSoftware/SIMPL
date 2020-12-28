@@ -42,6 +42,7 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/CoreFilters/WriteASCIIData.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
@@ -147,7 +148,7 @@ public:
     writer->setSelectedDataArrayPaths(paths);
     writer->preflight();
     err = writer->getErrorCode();
-    DREAM3D_REQUIRE(err < 0)
+    DREAM3D_REQUIRED(err, ==, TemplateHelpers::Errors::UnsupportedDataType)
 
     writer->execute();
     err = writer->getErrorCode();
@@ -159,7 +160,7 @@ public:
     writer->setSelectedDataArrayPaths(paths);
     writer->preflight();
     err = writer->getErrorCode();
-    DREAM3D_REQUIRE(err < 0)
+    DREAM3D_REQUIRED(err, ==, TemplateHelpers::Errors::UnsupportedDataType)
 
     writer->execute();
     err = writer->getErrorCode();
@@ -171,7 +172,7 @@ public:
     writer->setSelectedDataArrayPaths(paths);
     writer->preflight();
     err = writer->getErrorCode();
-    DREAM3D_REQUIRE(err < 0)
+    DREAM3D_REQUIRED(err, ==, TemplateHelpers::Errors::UnsupportedDataType)
 
     writer->execute();
     err = writer->getErrorCode();

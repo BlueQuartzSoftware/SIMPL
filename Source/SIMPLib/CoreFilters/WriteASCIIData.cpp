@@ -303,15 +303,15 @@ void WriteASCIIData::dataCheck()
       return;
     }
 
-    if(ptr.lock()->getTypeAsString().compare("NeighborList<T>") == 0)
+    if(ptr.lock()->getNameOfClass() == "NeighborList<T>")
     {
       setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "NeighborList is unsupported when writing ASCII Data.");
     }
-    else if(ptr.lock()->getTypeAsString().compare("struct") == 0)
+    else if(ptr.lock()->getTypeAsString() == "struct")
     {
       setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StructArray is unsupported when writing ASCII Data.");
     }
-    else if(ptr.lock()->getTypeAsString().compare("StatsDataArray") == 0)
+    else if(ptr.lock()->getTypeAsString() == "StatsDataArray")
     {
       setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StatsDataArray is unsupported when writing ASCII Data.");
     }

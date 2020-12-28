@@ -185,6 +185,14 @@ public:
   void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const override;
 
   /**
+   * @brief Returns the HDF Type for a given primitive value.
+   * @param value A value to use. Can be anything. Just used to get the type info
+   * from
+   * @return The HDF5 native type for the value
+   */
+  QString getFullNameOfClass() const;
+
+  /**
    * @brief getTypeAsString
    * @return
    */
