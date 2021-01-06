@@ -1463,11 +1463,11 @@ true);
   // -----------------------------------------------------------------------------
   void TestByteSwapElements()
   {
-    TestByteSwapElementType<uint8_t>(0xAB);
-    TestByteSwapElementType<int8_t>(static_cast<int8_t>(0xAB));
+    TestByteSwapElementType<uint8_t>(0x7F);
+    TestByteSwapElementType<int8_t>(static_cast<int8_t>(0x7F));
 
     TestByteSwapElementType<uint16_t>(0xABCD);
-    TestByteSwapElementType<int16_t>(static_cast<int16_t>(0xABCD));
+    TestByteSwapElementType<int16_t>(static_cast<int16_t>(0x8ACF));
 
     TestByteSwapElementType<uint32_t>(0x55ABCDEF);
     TestByteSwapElementType<int32_t>(0x55ABCDEF);
@@ -1476,7 +1476,7 @@ true);
     TestByteSwapElementType<int64_t>(0x5566778899ABCDEF);
 
     TestByteSwapElementType<float>(-151057.0f);
-    TestByteSwapElementType<double>(0x412abe865d8413c8);
+    TestByteSwapElementType<double>(0x412ABE865D841400);
   }
 
   // -----------------------------------------------------------------------------
