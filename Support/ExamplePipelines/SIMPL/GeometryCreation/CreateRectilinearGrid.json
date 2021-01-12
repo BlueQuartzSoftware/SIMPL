@@ -26,9 +26,9 @@
             "float"
         ],
         "Wizard_Delimiters": ",",
-        "Wizard_HeaderIsCustom": true,
-        "Wizard_HeaderLine": -1,
-        "Wizard_HeaderUseDefaults": false,
+        "Wizard_HeaderIsCustom": false,
+        "Wizard_HeaderLine": 1,
+        "Wizard_HeaderUseDefaults": true,
         "Wizard_InputFilePath": "Data/SIMPL/RectilinearGrid.csv",
         "Wizard_NumberOfLines": 15,
         "Wizard_SelectedPath": {
