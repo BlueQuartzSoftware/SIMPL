@@ -1,7 +1,10 @@
 #include "StatusBarIssuesButton.h"
 
 #include <QtCore/QDebug>
+
 #include <QtGui/QPainter>
+#include <QtGui/QPainterPath>
+
 #include <QtWidgets/QStyleOption>
 
 #include "SIMPLib/Common/QtBackwardCompatibilityMacro.h"

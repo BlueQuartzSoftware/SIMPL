@@ -32,6 +32,7 @@
 #include "PopUpWidget.h"
 
 #include <QtGui/QPainter>
+#include <QtGui/QPainterPath>
 
 #include "moc_PopUpWidget.cpp"
 

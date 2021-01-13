@@ -2,7 +2,10 @@
 
 #include <QtCore/QDebug>
 #include <QtGui/QMouseEvent>
+
 #include <QtGui/QPainter>
+#include <QtGui/QPainterPath>
+
 #include <QtWidgets/QStyleOption>
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"

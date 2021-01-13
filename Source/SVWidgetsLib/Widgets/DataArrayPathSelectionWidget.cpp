@@ -39,6 +39,7 @@
 #include <QtCore/QTextStream>
 #include <QtGui/QDrag>
 #include <QtGui/QPainter>
+#include <QtGui/QPainterPath>
 #include <QtGui/QTextDocument>
 #include <QtWidgets/QApplication>
 
