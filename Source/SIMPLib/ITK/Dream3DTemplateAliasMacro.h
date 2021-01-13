@@ -76,6 +76,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
+
+#if defined(SIMPL_USE_ITK)
 #include <itkConfigure.h>
 #define SIMPL_ITK_VERSION_CHECK ((ITK_VERSION_MAJOR == 5) && (ITK_VERSION_MINOR >= 1))
 #if SIMPL_ITK_VERSION_CHECK
@@ -86,6 +89,8 @@
 #pragma clang diagnostic ignored "-Wself-assign-field"
 #endif
 #include <itkImageIOBase.h>
+#endif
+
 #endif
 
 //--------------------------------------------------------------------------
