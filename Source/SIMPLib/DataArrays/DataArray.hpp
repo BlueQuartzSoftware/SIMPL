@@ -1085,11 +1085,13 @@ public:
 
   inline reference operator[](size_type index)
   {
+    assert(index < m_Size);
     return m_Array[index];
   }
 
   inline const T& operator[](size_type index) const
   {
+    assert(index < m_Size);
     return m_Array[index];
   }
 
