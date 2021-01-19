@@ -11,6 +11,7 @@
 #include "pybind11/stl_bind.h"
 
 #include "SIMPLib/Common/PhaseType.h"
+#include "SIMPLib/Common/QtBackwardCompatibilityMacro.h"
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"

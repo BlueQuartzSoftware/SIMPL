@@ -63,7 +63,11 @@ py::class_<QSet<QString>>(mod, "StringSet").def(py::init<>([](py::set stringSet)
 }));
 
 py::class_<QDateTime>(mod, "DateTime").def(py::init<>([](int year, int month, int day, int seconds) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
   QDateTime dateTime(QDate(year, month, day));
+#else
+  QDateTime dateTime = QDate(year, month, day).startOfDay();
+#endif
   dateTime.setTime_t(seconds);
   return dateTime;
 }));
