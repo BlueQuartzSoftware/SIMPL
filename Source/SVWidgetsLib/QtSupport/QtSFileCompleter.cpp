@@ -34,17 +34,17 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "QtSFileCompleter.h"
 
-#include <QtWidgets/QDirModel>
+#include <QtWidgets/QFileSystemModel>
 
 // -----------------------------------------------------------------------------
-// use same QDirModel for all completers
+// use same QFileSystemModel for all completers
 // -----------------------------------------------------------------------------
-static QDirModel* fileDirModel()
+static QFileSystemModel* fileDirModel()
 {
-  static QDirModel* m = nullptr;
+  static QFileSystemModel* m = nullptr;
   if(m == nullptr)
   {
-    m = new QDirModel();
+    m = new QFileSystemModel();
     QStringList nameFilters;
     nameFilters << "*.*";
     m->setNameFilters(nameFilters);
@@ -56,12 +56,12 @@ static QDirModel* fileDirModel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-static QDirModel* pathDirModel()
+static QFileSystemModel* pathDirModel()
 {
-  static QDirModel* m = nullptr;
+  static QFileSystemModel* m = nullptr;
   if(m == nullptr)
   {
-    m = new QDirModel();
+    m = new QFileSystemModel();
     m->setFilter(QDir::AllDirs | QDir::Drives | QDir::NoDotAndDotDot);
   }
   return m;
@@ -73,7 +73,7 @@ static QDirModel* pathDirModel()
 QtSFileCompleter::QtSFileCompleter(QObject* o, bool dirs)
 : QCompleter(o)
 {
-  QDirModel* m = dirs ? pathDirModel() : fileDirModel();
+  QFileSystemModel* m = dirs ? pathDirModel() : fileDirModel();
   this->setModel(m);
 }
 

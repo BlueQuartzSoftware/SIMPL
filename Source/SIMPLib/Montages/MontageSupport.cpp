@@ -40,6 +40,7 @@
 #include "H5Support/QH5Utilities.h"
 
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Common/QtBackwardCompatibilityMacro.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Montages/GridMontage.h"
 
@@ -82,7 +83,7 @@ GridMontage::Pointer readGridMontageFromHDF5(hid_t parentId, const DataContainer
   char sep = 0x1E; // Use the ASCII 'record separator' value (Decimal value 30) to separate the names
   QString dcNameCollection;
   err = QH5Lite::readStringDataset(parentId, SIMPL::StringConstants::DataContainerNames, dcNameCollection);
-  QStringList dcNames = dcNameCollection.split(sep, QString::KeepEmptyParts);
+  QStringList dcNames = dcNameCollection.split(sep, QSTRING_KEEP_EMPTY_PARTS);
 
   std::vector<DataContainerShPtr> dataContainers;
   for(const QString& dcName : dcNames)

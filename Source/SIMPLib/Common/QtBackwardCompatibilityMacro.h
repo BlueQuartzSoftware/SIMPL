@@ -4,6 +4,14 @@
 
 #include <QtCore/QtGlobal>
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+#define QSTRING_KEEP_EMPTY_PARTS QString::KeepEmptyParts
+#define QSTRING_SKIP_EMPTY_PARTS QString::SkipEmptyParts
+#else
+#define QSTRING_KEEP_EMPTY_PARTS Qt::KeepEmptyParts
+#define QSTRING_SKIP_EMPTY_PARTS Qt::SkipEmptyParts
+#endif
+
 #if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
 #define QFONTMETRICS_WIDTH width
 #else

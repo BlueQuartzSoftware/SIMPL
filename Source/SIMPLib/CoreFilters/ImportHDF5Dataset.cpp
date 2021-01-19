@@ -42,6 +42,7 @@
 
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Common/QtBackwardCompatibilityMacro.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
@@ -368,7 +369,7 @@ void ImportHDF5Dataset::execute()
 std::vector<size_t> ImportHDF5Dataset::createComponentDimensions(const QString& cDimsStr)
 {
   std::vector<size_t> cDims;
-  QStringList dimsStrVec = cDimsStr.split(',', QString::SkipEmptyParts);
+  QStringList dimsStrVec = cDimsStr.split(',', QSTRING_SKIP_EMPTY_PARTS);
   for(int i = 0; i < dimsStrVec.size(); i++)
   {
     QString dimsStr = dimsStrVec[i];

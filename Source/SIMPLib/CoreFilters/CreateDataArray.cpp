@@ -103,7 +103,7 @@ std::vector<T> createInitVector(AbstractFilter* filter, const QString& initializ
   ConvertOutputType conversionResult;
   std::vector<T> values(numComponents);
 
-  QStringList tokens = initializationValue.split(CDA_SEP, QString::SplitBehavior::KeepEmptyParts);
+  QStringList tokens = initializationValue.split(CDA_SEP, QSTRING_KEEP_EMPTY_PARTS);
 
   for(int32_t i = 0; i < numComponents; i++)
   {

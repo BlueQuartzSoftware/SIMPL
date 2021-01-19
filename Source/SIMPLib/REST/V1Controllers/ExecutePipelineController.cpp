@@ -308,13 +308,14 @@ void ExecutePipelineController::serviceMultiPart()
 
   m_Response->setHeader("Content-Type", QByteArray::fromStdString(tr("multipart/form-data; boundary=\"%1\"").arg(boundary).toStdString()));
 
-  QByteArray body;
+  QString body;
+  QTextStream bodyOut(&body);
 
   // Add pipeline response part to the body
-  body.append(boundary + "\r\n");
-  body.append("Content-Disposition: form-data; name=\"pipelineResponse\"\r\n");
-  body.append("\r\n");
-  body.append(jdoc.toJson() + "\n");
+  bodyOut << boundary << "\r\n";
+  bodyOut << "Content-Disposition: form-data; name=\"pipelineResponse\"\r\n";
+  bodyOut << "\r\n";
+  bodyOut << jdoc.toJson() << "\n";
 
   // Add output file data to the body
   for(int i = 0; i < m_TemporaryOutputFilePaths.size(); i++)
@@ -327,10 +328,10 @@ void ExecutePipelineController::serviceMultiPart()
       QByteArray fileData = file.readAll();
       fileData = fileData.toBase64();
 
-      body.append(boundary + "\r\n");
-      body.append(tr("Content-Disposition: form-data; name=\"%1\"\r\n").arg(filePath));
-      body.append("\r\n");
-      body.append(fileData + "\n");
+      bodyOut << boundary << "\r\n";
+      bodyOut << tr("Content-Disposition: form-data; name=\"%1\"\r\n").arg(filePath);
+      bodyOut << "\r\n";
+      bodyOut << fileData + "\n";
     }
     else
     {
@@ -341,7 +342,7 @@ void ExecutePipelineController::serviceMultiPart()
     }
   }
 
-  m_Response->write(body, true);
+  m_Response->write(body.toUtf8(), true);
 }
 
 // -----------------------------------------------------------------------------

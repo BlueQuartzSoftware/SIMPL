@@ -34,6 +34,8 @@
 #include "ImportHDF5TreeModel.h"
 #include "ImportHDF5TreeModelItem.h"
 
+#include "SIMPLib/Common/QtBackwardCompatibilityMacro.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -149,7 +151,7 @@ Qt::ItemFlags ImportHDF5TreeModel::flags(const QModelIndex& index) const
 {
   if(!index.isValid())
   {
-    return nullptr;
+    return {};
   }
 
   ImportHDF5TreeModelItem* item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
@@ -302,7 +304,7 @@ QString ImportHDF5TreeModel::indexToHDF5Path(const QModelIndex& index)
 // -----------------------------------------------------------------------------
 QModelIndex ImportHDF5TreeModel::hdf5PathToIndex(const QString& hdf5Path)
 {
-  QStringList hdf5PathTokens = hdf5Path.split("/", QString::SplitBehavior::SkipEmptyParts);
+  QStringList hdf5PathTokens = hdf5Path.split("/", QSTRING_SKIP_EMPTY_PARTS);
   if(!hdf5PathTokens.empty())
   {
     QModelIndex rootIndex = index(0, 0);

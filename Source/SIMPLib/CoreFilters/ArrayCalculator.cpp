@@ -232,7 +232,7 @@ void ArrayCalculator::dataCheck()
     return;
   }
 
-  if(m_InfixEquation.isEmpty() || m_InfixEquation.split(" ", QString::SkipEmptyParts).empty())
+  if(m_InfixEquation.isEmpty() || m_InfixEquation.split(" ", QSTRING_SKIP_EMPTY_PARTS).empty())
   {
     QString ss = QObject::tr("The infix expression is empty");
     setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::EMPTY_EQUATION), ss);

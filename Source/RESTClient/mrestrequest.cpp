@@ -208,7 +208,12 @@ void MRestRequest::send()
   connect(mActiveReply, &QNetworkReply::finished, this, &MRestRequest::onReplyFinished);
   connect(mActiveReply, &QNetworkReply::readyRead, mRequestTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
   connect(mActiveReply, &QNetworkReply::readyRead, this, &MRestRequest::onReadyRead);
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
   connect(mActiveReply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), this, &MRestRequest::onReplyError);
+#else
+  connect(mActiveReply, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::errorOccurred), this, &MRestRequest::onReplyError);
+#endif
+
   mRequestTimer->start();
 }
 

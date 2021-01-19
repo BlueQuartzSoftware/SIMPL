@@ -44,6 +44,7 @@
 #include "H5Support/QH5Utilities.h"
 
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Common/QtBackwardCompatibilityMacro.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersConstants.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
@@ -941,7 +942,7 @@ ComparisonInputs H5FilterParametersReader::readComparisonInputs(const QString& n
   // Now read the the attribute that says how many arrays are in the data set.
   err = QH5Lite::readScalarAttribute(m_CurrentGroupId, name, "NumInputs", size);
 
-  QStringList strVector = strData.split('\n', QString::SkipEmptyParts);
+  QStringList strVector = strData.split('\n', QSTRING_SKIP_EMPTY_PARTS);
   qint32 strVecSize = strVector.size();
   if(strVecSize != size)
   {
@@ -954,7 +955,7 @@ ComparisonInputs H5FilterParametersReader::readComparisonInputs(const QString& n
   for(qint32 i = 0; i < size; ++i)
   {
     ComparisonInput_t v;
-    QStringList tokens = strVector[i].split(',', QString::SkipEmptyParts);
+    QStringList tokens = strVector[i].split(',', QSTRING_SKIP_EMPTY_PARTS);
     if(!tokens.empty())
     {
       v.dataContainerName = tokens[0];
@@ -1004,7 +1005,7 @@ ComparisonInputsAdvanced H5FilterParametersReader::readComparisonInputsAdvanced(
   // Now read the the attribute that says how many arrays are in the data set.
   err = QH5Lite::readScalarAttribute(m_CurrentGroupId, name, "NumInputs", size);
 
-  QStringList strVector = strData.split('\n', QString::SkipEmptyParts);
+  QStringList strVector = strData.split('\n', QSTRING_SKIP_EMPTY_PARTS);
   qint32 strVecSize = strVector.size();
   if(strVecSize != size)
   {
@@ -1081,7 +1082,7 @@ QSet<QString> H5FilterParametersReader::readArraySelections(const QString& name,
   // Now read the the attribute that says how many arrays are in the data set.
   err = QH5Lite::readScalarAttribute(m_CurrentGroupId, name, "NumArrays", size);
 
-  QStringList strVector = strData.split('\n', QString::SkipEmptyParts);
+  QStringList strVector = strData.split('\n', QSTRING_SKIP_EMPTY_PARTS);
   qint32 strVecSize = strVector.size();
   if(strVecSize != size)
   {

@@ -121,7 +121,7 @@ Qt::ItemFlags ASCIIDataModel::flags(const QModelIndex& index) const
 {
   if(!index.isValid())
   {
-    return nullptr;
+    return {};
   }
 
   Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);

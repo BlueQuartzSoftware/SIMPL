@@ -57,6 +57,7 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Common/QtBackwardCompatibilityMacro.h"
 #include "SIMPLib/CoreFilters/CreateAttributeMatrix.h"
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/CoreFilters/CreateDataContainer.h"
@@ -468,7 +469,7 @@ public:
 
     QString bodyData = QString::fromStdString(reply->readAll().toStdString());
 
-    QStringList bodyPartDataList = bodyData.split(boundary + "\r\n", QString::SplitBehavior::SkipEmptyParts);
+    QStringList bodyPartDataList = bodyData.split(boundary + "\r\n", QSTRING_SKIP_EMPTY_PARTS);
     DREAM3D_REQUIRE_EQUAL(bodyPartDataList.size(), 2);
 
     for(int i = 0; i < bodyPartDataList.size(); i++)
@@ -718,7 +719,7 @@ public:
 
     QString bodyData = QString::fromStdString(reply->readAll().toStdString());
 
-    QStringList bodyPartDataList = bodyData.split(boundary + "\r\n", QString::SplitBehavior::SkipEmptyParts);
+    QStringList bodyPartDataList = bodyData.split(boundary + "\r\n", QSTRING_SKIP_EMPTY_PARTS);
     DREAM3D_REQUIRE_EQUAL(bodyPartDataList.size(), 2);
 
     for(int i = 0; i < bodyPartDataList.size(); i++)

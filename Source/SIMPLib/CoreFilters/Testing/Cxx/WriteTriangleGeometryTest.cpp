@@ -39,15 +39,15 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/QtBackwardCompatibilityMacro.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
+#include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-
-#include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
@@ -217,7 +217,7 @@ public:
     for(MeshIndexType i = 0; i < triGeom->getNumberOfVertices(); i++)
     {
       line = inFileNodes.readLine();
-      list = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+      list = line.split(QRegExp("\\s+"), QSTRING_SKIP_EMPTY_PARTS);
       for(MeshIndexType j = 0; j < daTriVert->getNumberOfComponents(); j++)
       {
         DREAM3D_REQUIRE(list[j] == QString::number(daTriVert->getComponent(i, j), 'f', 5))
@@ -284,7 +284,7 @@ public:
     for(MeshIndexType i = 0; i < triGeom->getNumberOfTris(); i++)
     {
       line = inFileTriangles.readLine();
-      list = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+      list = line.split(QRegExp("\\s+"), QSTRING_SKIP_EMPTY_PARTS);
       for(MeshIndexType j = 0; j < daTriList->getNumberOfComponents(); j++)
       {
         DREAM3D_REQUIRE(list[j].toULongLong() == daTriList->getComponent(i, j))

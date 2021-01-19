@@ -350,7 +350,7 @@ void ImportHDF5DatasetWidget::initializeHDF5Paths()
     for(const auto& importInfo : importInfoList)
     {
       QString hdf5Path = importInfo.dataSetPath;
-      QStringList hdf5PathTokens = hdf5Path.split("/", QString::SkipEmptyParts);
+      QStringList hdf5PathTokens = hdf5Path.split("/", QSTRING_SKIP_EMPTY_PARTS);
       QModelIndex parentIdx = treeModel->index(0, 0);
       hdfTreeView->expand(parentIdx);
       treeModel->setData(parentIdx, Qt::Checked, Qt::CheckStateRole);
