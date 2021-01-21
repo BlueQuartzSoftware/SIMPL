@@ -1097,7 +1097,10 @@ QString DataArray<T>::getTypeAsString() const
   {
     return "bool";
   }
-
+  else if constexpr(std::is_same_v<T, size_t>)
+  {
+    return "size_t";
+  }
   return "UnknownType";
 }
 
