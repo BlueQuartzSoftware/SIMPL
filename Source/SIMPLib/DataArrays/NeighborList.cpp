@@ -30,7 +30,7 @@ typename NeighborList<T>::Pointer NeighborList<T>::NullPointer()
 template <typename T>
 QString NeighborList<T>::getNameOfClass() const
 {
-  return QString("NeighborList<T>");
+  return ClassName();
 }
 // -----------------------------------------------------------------------------
 template <typename T>

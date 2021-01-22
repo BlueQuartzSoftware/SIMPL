@@ -115,7 +115,7 @@ namespace TemplateHelpers
   {                                                                                                                                                                                                    \
     QString msg;                                                                                                                                                                                       \
     QTextStream out(&msg);                                                                                                                                                                             \
-    out << "The input array " << inputData->getDataArrayPath().serialize("/") << " is not a supported type. Type is: " << inputData->getNameOfClass() << "<" << inputData->getTypeAsString() << ">";   \
+    out << "The input array " << inputData->getDataArrayPath().serialize("/") << " is not a supported type. Type is: " << inputData->getTypeAsString();                                                \
     observableObj->setErrorConditionWithPrefix(TemplateHelpers::Errors::UnsupportedDataType, #templateName, msg);                                                                                      \
   }
 
