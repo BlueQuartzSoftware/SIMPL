@@ -18,7 +18,7 @@ HttpSession::HttpSession(bool canStore)
     dataPtr = new HttpSessionData();
     dataPtr->refCount = 1;
     dataPtr->lastAccess = QDateTime::currentMSecsSinceEpoch();
-#if 1
+#if 0
     uint l = 100;
     ushort w1 = 200;
     ushort w2 = 500;
