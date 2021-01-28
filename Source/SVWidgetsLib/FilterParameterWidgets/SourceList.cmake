@@ -50,6 +50,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     StringWidget
     ThirdOrderPolynomialWidget
     UInt64Widget
+    MultiInputFileWidget
 )
 
 set(SIMPLView_PARAMETER_WIDGETS_NO_UI

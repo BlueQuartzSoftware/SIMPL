@@ -582,14 +582,14 @@ protected slots:
 private:
   DataContainerArrayShPtrType m_DataContainerArray = {};
   FilterParameterVectorType m_FilterParameters = {};
-  bool m_InPreflight = {};
-  bool m_Enabled = {};
-  bool m_Removing = {};
-  int m_PipelineIndex = {};
+  bool m_InPreflight = {false};
+  bool m_Enabled = {true};
+  bool m_Removing = {false};
+  int m_PipelineIndex = {0};
   AbstractFilter::WeakPointer m_PreviousFilter = {};
   AbstractFilter::WeakPointer m_NextFilter = {};
 
-  bool m_Cancel;
+  bool m_Cancel = false;
   int m_ErrorCode = 0;
   int m_WarningCode = 0;
 
