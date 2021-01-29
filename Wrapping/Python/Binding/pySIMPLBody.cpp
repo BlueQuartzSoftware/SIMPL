@@ -204,3 +204,8 @@ py::enum_<SIMPL::NumericTypes::Type>(mod, "NumericTypes")
     .value("UnknownNumType", SIMPL::NumericTypes::Type::UnknownNumType);
 
 py::enum_<SIMPL::InfoStringFormat>(mod, "InfoStringFormat").value("HtmlFormat", SIMPL::InfoStringFormat::HtmlFormat).value("UnknownFormat", SIMPL::InfoStringFormat::UnknownFormat).export_values();
+
+instanceAbstractFilter.def("connectObserver",
+                           [](AbstractFilter& filter, Observer& observer) { QObject::connect(&filter, &AbstractFilter::messageGenerated, &observer, &Observer::processPipelineMessage); });
+instanceAbstractFilter.def("disconnectObserver",
+                           [](AbstractFilter& filter, Observer& observer) { QObject::disconnect(&filter, &AbstractFilter::messageGenerated, &observer, &Observer::processPipelineMessage); });

@@ -86,13 +86,10 @@ class PyClass():
     if self.uses_shared_pointer:
       template_param += f', std::shared_ptr<{self.name}>'
 
-    if self.enums:
-      instance = f'instance{self.name}'
-      code = f'py::class_<{template_param}> {instance}(mod, \"{self.name}\");\n'
+    instance = f'instance{self.name}'
+    code = f'py::class_<{template_param}> {instance}(mod, \"{self.name}\");\n'
 
-      code += f'{instance}\n'
-    else:
-      code = f'py::class_<{template_param}>(mod, \"{self.name}\")\n'
+    code += f'{instance}\n'
 
     for constructor in self.constructors:
       args = ', '.join(constructor.args)
