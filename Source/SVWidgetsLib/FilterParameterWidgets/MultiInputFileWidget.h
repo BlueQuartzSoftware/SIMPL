@@ -67,6 +67,11 @@ public:
 
   ~MultiInputFileWidget() override;
 
+  MultiInputFileWidget(const MultiInputFileWidget&) = delete;            // Copy Constructor Not Implemented
+  MultiInputFileWidget(MultiInputFileWidget&&) = delete;                 // Move Constructor Not Implemented
+  MultiInputFileWidget& operator=(const MultiInputFileWidget&) = delete; // Copy Assignment Not Implemented
+  MultiInputFileWidget& operator=(MultiInputFileWidget&&) = delete;      // Move Assignment Not Implemented
+
   Q_PROPERTY(QPixmap Icon READ getIcon WRITE setIcon)
   void setIcon(const QPixmap& path);
   QPixmap getIcon();
@@ -82,22 +87,8 @@ public slots:
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
 
-  void on_m_LineEdit_fileDropped(const QString& text);
-  void on_m_LineEdit_editingFinished();
-  void on_m_LineEdit_textChanged(const QString& text);
-  void on_m_LineEdit_returnPressed();
-
 protected:
-  /**
-   * @brief
-   * @param event
-   */
-  void keyPressEvent(QKeyEvent* event) override;
-
-  /**
-   * @brief setupMenuField
-   */
-  void setupMenuField();
+  void createSummaryText();
 
 private:
   QSharedPointer<Ui::MultiInputFileWidget> m_Ui;
@@ -108,10 +99,4 @@ private:
   QString m_CurrentText = "";
   QPixmap m_Icon = QPixmap(QLatin1String(":/SIMPL/icons/images/caret-bottom.png"));
   QStringList m_SelectedFiles;
-
-public:
-  MultiInputFileWidget(const MultiInputFileWidget&) = delete;            // Copy Constructor Not Implemented
-  MultiInputFileWidget(MultiInputFileWidget&&) = delete;                 // Move Constructor Not Implemented
-  MultiInputFileWidget& operator=(const MultiInputFileWidget&) = delete; // Copy Assignment Not Implemented
-  MultiInputFileWidget& operator=(MultiInputFileWidget&&) = delete;      // Move Assignment Not Implemented
 };

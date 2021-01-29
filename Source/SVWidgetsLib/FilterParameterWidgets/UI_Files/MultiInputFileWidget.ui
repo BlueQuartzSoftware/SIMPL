@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>519</width>
-    <height>103</height>
+    <width>585</width>
+    <height>32</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -28,6 +28,12 @@
    </property>
    <item row="0" column="0">
     <widget class="QLabel" name="m_HumanLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string>Property</string>
      </property>
@@ -41,14 +47,13 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QtSLineEdit" name="m_LineEdit">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
     <widget class="SVSmallLabel" name="m_SummaryLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="font">
       <font>
        <italic>false</italic>
@@ -68,11 +73,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>QtSLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header location="global">QtSLineEdit.h</header>
-  </customwidget>
   <customwidget>
    <class>SVSmallLabel</class>
    <extends>QLabel</extends>
