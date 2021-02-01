@@ -20,6 +20,7 @@ PYB11_STATIC_NEW_MACRO: str = 'PYB11_STATIC_NEW_MACRO'
 PYB11_FILTER_NEW_MACRO: str = 'PYB11_FILTER_NEW_MACRO'
 PYB11_SHARED_POINTERS: str = 'PYB11_SHARED_POINTERS'
 PYB11_FILTER: str = 'PYB11_FILTER'
+PYB11_CUSTOM: str = 'PYB11_CUSTOM'
 
 PYB11_SUPERCLASS: str = 'SUPERCLASS'
 PYB11_READ: str = 'READ'
@@ -77,6 +78,7 @@ class PyClass():
     self.has_static_new: bool = False
     self.uses_shared_pointer: bool = False
     self.is_filter: bool = False
+    self.is_custom: bool = False
 
   def __repr__(self):
     return self.name
@@ -88,10 +90,13 @@ class PyClass():
     if self.uses_shared_pointer:
       template_param += f', std::shared_ptr<{self.name}>'
 
-    instance = f'instance{self.name}'
-    code = f'py::class_<{template_param}> {instance}(mod, \"{self.name}\");\n'
+    if self.enums or self.is_custom:
+      instance = f'instance{self.name}'
+      code = f'py::class_<{template_param}> {instance}(mod, \"{self.name}\");\n'
 
-    code += f'{instance}\n'
+      code += f'{instance}\n'
+    else:
+      code = f'py::class_<{template_param}>(mod, \"{self.name}\")\n'
 
     for constructor in self.constructors:
       args = ', '.join(constructor.args)
@@ -340,6 +345,9 @@ def parse_shared_pointers(line: str) -> bool:
 def parse_filter(line: str) -> bool:
   return True
 
+def parse_custom(line: str) -> bool:
+  return True
+
 def parse_bindings(class_line: str, file: Generator[str, None, None]) -> PyClass:
   py_class = parse_class(class_line)
   line: str
@@ -365,6 +373,8 @@ def parse_bindings(class_line: str, file: Generator[str, None, None]) -> PyClass
       py_class.uses_shared_pointer = parse_shared_pointers(line)
     elif line.startswith(PYB11_FILTER):
       py_class.is_filter = parse_filter(line)
+    elif line.startswith(PYB11_CUSTOM):
+      py_class.is_custom = parse_custom(line)
   return py_class
 
 def parse_file(file_path: str) -> List[PyClass]:

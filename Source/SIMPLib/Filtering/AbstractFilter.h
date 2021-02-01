@@ -104,6 +104,7 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_METHOD(void notifyProgressMessage ARGS progress messageText)
   PYB11_METHOD(void clearErrorCode)
   PYB11_METHOD(void clearWarningCode)
+  PYB11_CUSTOM()
   PYB11_END_BINDINGS()
   // End Python bindings declarations
 

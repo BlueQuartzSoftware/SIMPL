@@ -199,6 +199,11 @@
  */
 #define PYB11_FILTER(...)
 
+/**
+ * @brief PYB11_CUSTOM This macro is used to allow user created bindings on a per class basis.
+ */
+#define PYB11_CUSTOM(...)
+
 // End of PYBIND11 Macro Definitions
 /* *****************************************************************************
  * *****************************************************************************
