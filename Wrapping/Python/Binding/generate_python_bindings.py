@@ -30,6 +30,8 @@ PYB11_RETURN_VALUE_POLICY: str = 'RETURN_VALUE_POLICY'
 PYB11_ARGS: str = 'ARGS'
 PYB11_OVERLOAD: str = 'OVERLOAD'
 
+OBSERVER_ARG_NAME: str = 'observer'
+
 class PyProperty():
   def __init__(self):
     self.name: str = ''
@@ -146,19 +148,24 @@ class PyClass():
 
   def generate_python_interface(self, module_name: str) -> str:
     arg_list = [replace_python_keywords(camel_to_snake(prop.name)) for prop in self.properties]
+    if OBSERVER_ARG_NAME in arg_list:
+      raise RuntimeError(f'A filter parameter in \"{self.name}\" is called \"{OBSERVER_ARG_NAME}\" which conflicts with the Pythonic interface')
     parameter_list = [f'{prop} = None' for prop in arg_list]
     args_text = ', '.join(parameter_list)
     if args_text:
       args_text = ', ' + args_text
-    code = f'def {camel_to_snake(self.name)}(data_container_array{args_text}):\n'
+    code = f'def {camel_to_snake(self.name)}(data_container_array{args_text}, observer = None):\n'
     code += '  \"\"\"\n'
     code += f'  {self.name}\n\n'
     code += '  :param data_container_array | DataContainerArray\n'
     for prop, arg in zip(self.properties, arg_list):
       code += f'  :param {arg} | {prop.type} {prop.name}\n'
+    code += '  :param observer | Observer\n'
     code += ' \"\"\"\n\n'
     code += f'  filter = {module_name}.{self.name}()\n'
     code += f'  filter.setDataContainerArray(data_container_array)\n'
+    code += '  if observer is not None:\n'
+    code += '    filter.connectObserver(observer)\n'
 
     for prop, arg in zip(self.properties, arg_list):
       code += f'  if {arg} is not None:\n'
