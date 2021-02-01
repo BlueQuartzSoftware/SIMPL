@@ -154,14 +154,14 @@ class PyClass():
     args_text = ', '.join(parameter_list)
     if args_text:
       args_text = ', ' + args_text
-    code = f'def {camel_to_snake(self.name)}(data_container_array{args_text}, observer = None):\n'
+    code = f'def {camel_to_snake(self.name)}(data_container_array{args_text}, observer = None) -> int:\n'
     code += '  \"\"\"\n'
     code += f'  {self.name}\n\n'
     code += '  :param data_container_array | DataContainerArray\n'
     for prop, arg in zip(self.properties, arg_list):
       code += f'  :param {arg} | {prop.type} {prop.name}\n'
     code += '  :param observer | Observer\n'
-    code += ' \"\"\"\n\n'
+    code += '  \"\"\"\n\n'
     code += f'  filter = {module_name}.{self.name}()\n'
     code += f'  filter.setDataContainerArray(data_container_array)\n'
     code += '  if observer is not None:\n'
