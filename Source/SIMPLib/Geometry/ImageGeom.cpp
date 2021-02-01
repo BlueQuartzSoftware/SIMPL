@@ -1109,8 +1109,8 @@ int ImageGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 IGeometry::Pointer ImageGeom::deepCopy(bool forceNoAllocate) const
 {
-  ImageGeom::Pointer imageCopy = ImageGeom::CreateGeometry(getName());
-
+  ImageGeom::Pointer imageCopy = ImageGeom::New();
+  imageCopy->setName(getName());
   SizeVec3Type volDims = getDimensions();
   FloatVec3Type spacing = getSpacing();
   FloatVec3Type origin = getOrigin();
