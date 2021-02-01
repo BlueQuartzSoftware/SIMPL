@@ -35,6 +35,8 @@
 
 #include "MultiInputFileWidget.h"
 
+#include <tuple>
+
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 
@@ -97,22 +99,6 @@ MultiInputFileWidget::MultiInputFileWidget(FilterParameter* parameter, AbstractF
 //
 // -----------------------------------------------------------------------------
 MultiInputFileWidget::~MultiInputFileWidget() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiInputFileWidget::setIcon(const QPixmap& path)
-{
-  m_Icon = path;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QPixmap MultiInputFileWidget::getIcon()
-{
-  return m_Icon;
-}
 
 // -----------------------------------------------------------------------------
 //
@@ -196,6 +182,8 @@ void MultiInputFileWidget::createSummaryText()
 // -----------------------------------------------------------------------------
 void MultiInputFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
+  std::ignore = filter;
+
   std::vector<std::string> files = fromStringList(m_SelectedFiles);
   MultiInputFileFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
 

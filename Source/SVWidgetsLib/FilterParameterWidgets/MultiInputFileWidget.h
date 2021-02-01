@@ -72,10 +72,6 @@ public:
   MultiInputFileWidget& operator=(const MultiInputFileWidget&) = delete; // Copy Assignment Not Implemented
   MultiInputFileWidget& operator=(MultiInputFileWidget&&) = delete;      // Move Assignment Not Implemented
 
-  Q_PROPERTY(QPixmap Icon READ getIcon WRITE setIcon)
-  void setIcon(const QPixmap& path);
-  QPixmap getIcon();
-
   /**
    * @brief This method does additional GUI widget connections
    */
@@ -97,6 +93,5 @@ private:
 
   QAction* m_ShowFileAction = nullptr;
   QString m_CurrentText = "";
-  QPixmap m_Icon = QPixmap(QLatin1String(":/SIMPL/icons/images/caret-bottom.png"));
   QStringList m_SelectedFiles;
 };
