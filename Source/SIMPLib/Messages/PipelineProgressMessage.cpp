@@ -43,10 +43,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineProgressMessage::PipelineProgressMessage()
-: AbstractProgressMessage()
-{
-}
+PipelineProgressMessage::PipelineProgressMessage() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -76,7 +73,7 @@ PipelineProgressMessage::Pointer PipelineProgressMessage::New(const QString& pip
 // -----------------------------------------------------------------------------
 QString PipelineProgressMessage::generateMessageString() const
 {
-  QString ss = QObject::tr("%1 %2%%").arg(getMessageText()).arg(getProgressValue());
+  QString ss = QObject::tr("%1 %2%").arg(getMessageText()).arg(getProgressValue());
   return ss;
 }
 

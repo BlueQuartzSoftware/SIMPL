@@ -43,10 +43,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterProgressMessage::FilterProgressMessage()
-: AbstractProgressMessage()
-{
-}
+FilterProgressMessage::FilterProgressMessage() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -78,7 +75,7 @@ FilterProgressMessage::Pointer FilterProgressMessage::New(const QString& classNa
 // -----------------------------------------------------------------------------
 QString FilterProgressMessage::generateMessageString() const
 {
-  QString ss = QObject::tr("%1 %2%%").arg(getMessageText()).arg(getProgressValue());
+  QString ss = QObject::tr("%1 %2%").arg(getMessageText()).arg(getProgressValue());
   return ss;
 }
 

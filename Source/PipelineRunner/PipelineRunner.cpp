@@ -142,7 +142,7 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  std::cout << "Pipeline Count: " << pipeline->size() << std::endl;
+  std::cout << "Filter Count: " << pipeline->size() << std::endl;
   Observer obs; // Create an Observer to report errors/progress from the executing pipeline
   pipeline->addMessageReceiver(&obs);
   // Preflight the pipeline
