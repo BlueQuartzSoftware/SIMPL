@@ -90,8 +90,6 @@ void AbstractDecisionFilter::dataCheck()
 // -----------------------------------------------------------------------------
 void AbstractDecisionFilter::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

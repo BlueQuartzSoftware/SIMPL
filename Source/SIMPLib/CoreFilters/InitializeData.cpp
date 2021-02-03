@@ -336,8 +336,6 @@ void InitializeData::checkInitialization(IDataArray::Pointer p)
 // -----------------------------------------------------------------------------
 void InitializeData::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

@@ -312,8 +312,6 @@ void CombineAttributeArrays::dataCheck()
 // -----------------------------------------------------------------------------
 void CombineAttributeArrays::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

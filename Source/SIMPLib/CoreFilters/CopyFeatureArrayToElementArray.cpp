@@ -189,8 +189,6 @@ IDataArray::Pointer copyData(IDataArray::Pointer inputData, size_t totalPoints, 
 // -----------------------------------------------------------------------------
 void CopyFeatureArrayToElementArray::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

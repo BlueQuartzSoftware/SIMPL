@@ -119,8 +119,6 @@ void FeatureCountDecision::dataCheck()
 // -----------------------------------------------------------------------------
 void FeatureCountDecision::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

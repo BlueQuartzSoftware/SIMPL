@@ -124,6 +124,7 @@ void ImportHDF5Dataset::setupFilterParameters()
 void ImportHDF5Dataset::dataCheck()
 {
   clearErrorCode();
+  clearWarningCode();
   m_DatasetPathsWithErrors.clear();
 
   if(m_HDF5FilePath.isEmpty())

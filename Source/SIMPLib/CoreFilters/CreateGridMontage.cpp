@@ -100,8 +100,6 @@ void CreateGridMontage::dataCheck()
 // -----------------------------------------------------------------------------
 void CreateGridMontage::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

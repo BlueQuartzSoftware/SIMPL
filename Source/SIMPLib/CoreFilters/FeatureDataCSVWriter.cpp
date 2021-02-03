@@ -161,8 +161,6 @@ void FeatureDataCSVWriter::dataCheck()
 // -----------------------------------------------------------------------------
 void FeatureDataCSVWriter::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

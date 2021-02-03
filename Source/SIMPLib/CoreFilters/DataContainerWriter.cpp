@@ -128,8 +128,6 @@ void DataContainerWriter::dataCheck()
 // -----------------------------------------------------------------------------
 void DataContainerWriter::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

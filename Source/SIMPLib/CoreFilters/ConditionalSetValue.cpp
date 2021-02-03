@@ -245,8 +245,6 @@ void ConditionalSetValue::dataCheck()
 // -----------------------------------------------------------------------------
 void ConditionalSetValue::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

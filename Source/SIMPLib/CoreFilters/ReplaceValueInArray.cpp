@@ -248,8 +248,6 @@ void ReplaceValueInArray::dataCheck()
 // -----------------------------------------------------------------------------
 void ReplaceValueInArray::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

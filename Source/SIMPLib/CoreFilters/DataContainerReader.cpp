@@ -145,6 +145,8 @@ void DataContainerReader::initialize()
 // -----------------------------------------------------------------------------
 void DataContainerReader::dataCheck()
 {
+  clearErrorCode();
+  clearWarningCode();
 
   // Sync the file proxy and cached proxy if the time stamps are different
   QFileInfo fi(getInputFile());

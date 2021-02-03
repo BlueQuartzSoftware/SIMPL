@@ -619,8 +619,6 @@ void CreateGeometry::dataCheck()
 // -----------------------------------------------------------------------------
 void CreateGeometry::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

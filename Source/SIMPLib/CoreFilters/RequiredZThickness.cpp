@@ -153,8 +153,6 @@ void RequiredZThickness::dataCheck()
 // -----------------------------------------------------------------------------
 void RequiredZThickness::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

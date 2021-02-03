@@ -161,8 +161,6 @@ void LinkFeatureMapToElementArray::dataCheck()
 // -----------------------------------------------------------------------------
 void LinkFeatureMapToElementArray::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

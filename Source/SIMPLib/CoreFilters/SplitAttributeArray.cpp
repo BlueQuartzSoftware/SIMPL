@@ -183,8 +183,6 @@ void splitMulticomponentArray(IDataArray::Pointer inputArray, std::vector<IDataA
 // -----------------------------------------------------------------------------
 void SplitAttributeArray::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

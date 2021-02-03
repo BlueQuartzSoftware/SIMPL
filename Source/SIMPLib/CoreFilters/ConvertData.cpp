@@ -326,8 +326,6 @@ void ConvertData::dataCheck()
 // -----------------------------------------------------------------------------
 void ConvertData::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

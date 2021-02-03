@@ -103,8 +103,6 @@ void CreateDataContainer::dataCheck()
 // -----------------------------------------------------------------------------
 void CreateDataContainer::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

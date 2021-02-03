@@ -82,8 +82,6 @@ void PipelineAnnotation::dataCheck()
 // -----------------------------------------------------------------------------
 void PipelineAnnotation::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

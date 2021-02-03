@@ -187,8 +187,6 @@ void extractComponent(IDataArray::Pointer inputData, IDataArray::Pointer newData
 // -----------------------------------------------------------------------------
 void ExtractComponentAsArray::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {
