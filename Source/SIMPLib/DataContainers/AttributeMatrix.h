@@ -150,7 +150,7 @@ public:
     Any = 4294967295U
   };
 
-  using Types = QVector<Type>;
+  using Types = std::vector<Type>;
 
   /**
    * @brief TypeToString Returns a String representation of the AttributeMatrix Type

@@ -257,7 +257,9 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
         if(req != nullptr)
         {
           AttributeMatrix::Types amTypes = req->getAMTypes();
-          if(amTypes.empty() || amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp)))
+          if(amTypes.empty() || std::find(amTypes.begin(), amTypes.end(), static_cast<AttributeMatrix::Type>(amTypeTmp)) != amTypes.end()
+             // amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp))
+          )
           {
             amProxy.setFlag(Qt::Checked);
           }

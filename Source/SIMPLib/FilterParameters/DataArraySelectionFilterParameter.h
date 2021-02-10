@@ -36,6 +36,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include <QtCore/QJsonObject>
 
@@ -94,7 +95,7 @@ public:
   {
     IGeometry::Types dcGeometryTypes;
     AttributeMatrix::Types amTypes;
-    QVector<QString> daTypes;
+    std::vector<QString> daTypes;
     std::vector<std::vector<size_t>> componentDimensions;
   };
 
@@ -212,12 +213,12 @@ public:
   /**
    * @brief Setter property for DefaultAttributeArrayTypes
    */
-  void setDefaultAttributeArrayTypes(const QVector<QString>& value);
+  void setDefaultAttributeArrayTypes(const std::vector<QString>& value);
   /**
    * @brief Getter property for DefaultAttributeArrayTypes
    * @return Value of DefaultAttributeArrayTypes
    */
-  QVector<QString> getDefaultAttributeArrayTypes() const;
+  std::vector<QString> getDefaultAttributeArrayTypes() const;
 
   /**
    * @param DefaultComponentDimensions Default component dimensions required for Attribute Array selections
@@ -284,7 +285,7 @@ public:
 private:
   IGeometry::Types m_DefaultGeometryTypes = {};
   AttributeMatrix::Types m_DefaultAttributeMatrixTypes = {};
-  QVector<QString> m_DefaultAttributeArrayTypes = {};
+  std::vector<QString> m_DefaultAttributeArrayTypes = {};
   std::vector<std::vector<size_t>> m_DefaultComponentDimensions = {};
   DataArraySelectionFilterParameter::SetterCallbackType m_SetterCallback = {};
   DataArraySelectionFilterParameter::GetterCallbackType m_GetterCallback = {};

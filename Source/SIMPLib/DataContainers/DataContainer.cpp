@@ -132,7 +132,7 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
     dcProxy.setName(dataContainerName);
     dcProxy.setFlag(Qt::Unchecked);
 
-    int32_t geometryType;
+    uint32_t geometryType;
     herr_t err = QH5Lite::readScalarAttribute(containerGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, geometryType);
     if(err >= 0)
     {
@@ -140,11 +140,12 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
       if(req != nullptr)
       {
         IGeometry::Types geomTypes = req->getDCGeometryTypes();
-        if(geomTypes.empty() || geomTypes.contains(static_cast<IGeometry::Type>(geometryType)))
-        {
-        }
+        auto result = std::find(std::begin(geomTypes), std::end(geomTypes), static_cast<IGeometry::Type>(geometryType));
 
-        dcProxy.setFlag(Qt::Checked);
+        if(geomTypes.empty() || result != std::end(geomTypes))
+        {
+          dcProxy.setFlag(Qt::Checked);
+        }
       }
     }
 

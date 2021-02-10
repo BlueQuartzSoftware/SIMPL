@@ -56,9 +56,10 @@ public:
       }
       dcCombo->addItem(dcProxy.getName());
 
-      if(!geomTypes.isEmpty())
+      if(!geomTypes.empty())
       {
-        if(!geomTypes.contains(geomType))
+        if(std::find(std::begin(geomTypes), std::end(geomTypes), static_cast<IGeometry::Type>(geomType)) == std::end(geomTypes))
+        // if(!geomTypes.contains(geomType))
         {
           QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dcCombo->model());
           if(nullptr != model)
@@ -107,7 +108,7 @@ public:
     // Loop over the data containers until we find the proper data container
     QList<DataContainerProxy> containers = dcaProxy.getDataContainers().values();
     QListIterator<DataContainerProxy> containerIter(containers);
-    QVector<AttributeMatrix::Type> defVec = fp->getDefaultAttributeMatrixTypes();
+    AttributeMatrix::Types defVec = fp->getDefaultAttributeMatrixTypes();
     while(containerIter.hasNext())
     {
       DataContainerProxy dc = containerIter.next();
@@ -124,7 +125,9 @@ public:
           AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath(dc.getName(), amName, ""));
           amCombo->addItem(amName);
 
-          if(nullptr != am.get() && !defVec.isEmpty() && !defVec.contains(am->getType()))
+          auto result = std::find(std::begin(defVec), std::end(defVec), static_cast<AttributeMatrix::Type>(am->getType()));
+
+          if(nullptr != am.get() && !defVec.empty() && result == std::end(defVec))
           {
             QStandardItemModel* model = qobject_cast<QStandardItemModel*>(amCombo->model());
             if(nullptr != model)

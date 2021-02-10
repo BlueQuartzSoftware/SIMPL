@@ -215,7 +215,10 @@ void LinkedDataContainerSelectionWidget::createSelectionMenu()
     m_MenuMapper->setMapping(action, path);
     menu->addAction(action);
 
-    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
+    auto result = std::find(std::begin(geomTypes), std::end(geomTypes), static_cast<IGeometry::Type>(geomType));
+    auto result1 = std::find(std::begin(geomTypes), std::end(geomTypes), IGeometry::Type::Any);
+
+    if(!geomTypes.empty() && result == std::end(geomTypes) && result1 == std::end(geomTypes))
     {
       action->setDisabled(true);
     }

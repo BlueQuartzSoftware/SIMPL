@@ -366,21 +366,21 @@ protected:
    * @param geomTypes
    * @return
    */
-  QString createGeomReqString(QVector<IGeometry::Type> geomTypes) const;
+  QString createGeomReqString(const IGeometry::Types& geomTypes) const;
 
   /**
    * @brief Create the AttributeMatrix::Type requirements part of the tooltip
    * @param amTypes
    * @return
    */
-  QString createAttrMatrixReqString(QVector<AttributeMatrix::Type> amTypes) const;
+  QString createAttrMatrixReqString(const AttributeMatrix::Types& amTypes) const;
 
   /**
    * @brief Create the DataArray type requirements part of the tooltip
    * @param daTypes
    * @return
    */
-  QString createDataArrayTypeString(QVector<QString> daTypes) const;
+  QString createDataArrayTypeString(const std::vector<QString>& daTypes) const;
 
   /**
    * @brief Create the component requirements part of the tooltip

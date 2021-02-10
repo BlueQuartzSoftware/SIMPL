@@ -36,6 +36,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include <QtCore/QJsonObject>
 
@@ -92,7 +93,7 @@ public:
   {
     IGeometry::Types dcGeometryTypes;
     AttributeMatrix::Types amTypes;
-    QVector<QString> daTypes;
+    std::vector<QString> daTypes;
     std::vector<std::vector<size_t>> componentDimensions;
   };
 
@@ -182,22 +183,22 @@ public:
   /**
    * @brief Setter property for DefaultAttributeMatrixTypes
    */
-  void setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value);
+  void setDefaultAttributeMatrixTypes(const AttributeMatrix::Types& value);
   /**
    * @brief Getter property for DefaultAttributeMatrixTypes
    * @return Value of DefaultAttributeMatrixTypes
    */
-  QVector<AttributeMatrix::Type> getDefaultAttributeMatrixTypes() const;
+  AttributeMatrix::Types getDefaultAttributeMatrixTypes() const;
 
   /**
    * @brief Setter property for DefaultAttributeArrayTypes
    */
-  void setDefaultAttributeArrayTypes(const QVector<QString>& value);
+  void setDefaultAttributeArrayTypes(const std::vector<QString>& value);
   /**
    * @brief Getter property for DefaultAttributeArrayTypes
    * @return Value of DefaultAttributeArrayTypes
    */
-  QVector<QString> getDefaultAttributeArrayTypes() const;
+  std::vector<QString> getDefaultAttributeArrayTypes() const;
 
   /**
    * @brief Setter property for DefaultComponentDimensions
@@ -262,8 +263,8 @@ public:
 private:
   QStringList m_DefaultNames = {};
   IGeometry::Types m_DefaultGeometryTypes = {};
-  QVector<AttributeMatrix::Type> m_DefaultAttributeMatrixTypes = {};
-  QVector<QString> m_DefaultAttributeArrayTypes = {};
+  AttributeMatrix::Types m_DefaultAttributeMatrixTypes = {};
+  std::vector<QString> m_DefaultAttributeArrayTypes = {};
   std::vector<std::vector<size_t>> m_DefaultComponentDimensions = {};
   MultiDataContainerSelectionFilterParameter::SetterCallbackType m_SetterCallback = {};
   MultiDataContainerSelectionFilterParameter::GetterCallbackType m_GetterCallback = {};

@@ -114,7 +114,7 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
   req.amTypes = amTypes;
   if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {
-    req.daTypes = QVector<QString>(1, primitiveType);
+    req.daTypes = std::vector<QString>(1, primitiveType);
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
@@ -137,7 +137,7 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
   DataArraySelectionFilterParameter::RequirementType req;
   if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {
-    req.daTypes = QVector<QString>(1, primitiveType);
+    req.daTypes = std::vector<QString>(1, primitiveType);
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
@@ -305,13 +305,13 @@ AttributeMatrix::Types DataArraySelectionFilterParameter::getDefaultAttributeMat
 }
 
 // -----------------------------------------------------------------------------
-void DataArraySelectionFilterParameter::setDefaultAttributeArrayTypes(const QVector<QString>& value)
+void DataArraySelectionFilterParameter::setDefaultAttributeArrayTypes(const std::vector<QString>& value)
 {
   m_DefaultAttributeArrayTypes = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<QString> DataArraySelectionFilterParameter::getDefaultAttributeArrayTypes() const
+std::vector<QString> DataArraySelectionFilterParameter::getDefaultAttributeArrayTypes() const
 {
   return m_DefaultAttributeArrayTypes;
 }

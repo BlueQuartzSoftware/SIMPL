@@ -199,14 +199,19 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   if(!reqs.dcGeometryTypes.empty())
   {
     // Unknown Geometry gets a pass
-    if(!reqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
+    auto result1 = std::find(std::begin(reqs.dcGeometryTypes), std::end(reqs.dcGeometryTypes), IGeometry::Type::Unknown);
+    if(result1 == std::end(reqs.dcGeometryTypes))
     {
       IGeometry::Pointer geom = dc->getGeometry();
       if(nullptr == geom)
       {
         return false;
       }
-      if(!reqs.dcGeometryTypes.contains(geom->getGeometryType()) && !reqs.dcGeometryTypes.contains(IGeometry::Type::Any))
+
+      auto result = std::find(std::begin(reqs.dcGeometryTypes), std::end(reqs.dcGeometryTypes), geom->getGeometryType());
+      auto result2 = std::find(std::begin(reqs.dcGeometryTypes), std::end(reqs.dcGeometryTypes), IGeometry::Type::Any);
+
+      if(result == std::end(reqs.dcGeometryTypes) && result2 == std::end(reqs.dcGeometryTypes))
       {
         return false;
       }
@@ -245,14 +250,18 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   if(!reqs.dcGeometryTypes.empty())
   {
     // Unknown Geometry gets a pass
-    if(!reqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
+    auto result1 = std::find(std::begin(reqs.dcGeometryTypes), std::end(reqs.dcGeometryTypes), IGeometry::Type::Unknown);
+    if(result1 == std::end(reqs.dcGeometryTypes))
     {
       IGeometry::Pointer geom = dc->getGeometry();
       if(nullptr == geom)
       {
         return false;
       }
-      if(!reqs.dcGeometryTypes.contains(geom->getGeometryType()) && !reqs.dcGeometryTypes.contains(IGeometry::Type::Any))
+      auto result = std::find(std::begin(reqs.dcGeometryTypes), std::end(reqs.dcGeometryTypes), geom->getGeometryType());
+      auto result2 = std::find(std::begin(reqs.dcGeometryTypes), std::end(reqs.dcGeometryTypes), IGeometry::Type::Any);
+
+      if(result == std::end(reqs.dcGeometryTypes) && result2 == std::end(reqs.dcGeometryTypes))
       {
         return false;
       }
@@ -266,9 +275,13 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
     return false;
   }
 
-  if(!reqs.amTypes.contains(AttributeMatrix::Type::Unknown))
+  auto result = std::find(std::begin(reqs.amTypes), std::end(reqs.amTypes), AttributeMatrix::Type::Unknown);
+
+  if(result == std::end(reqs.amTypes))
   {
-    if(!reqs.amTypes.empty() && !(reqs.amTypes.contains(am->getType()) || reqs.amTypes.contains(AttributeMatrix::Type::Any)))
+    auto result1 = std::find(std::begin(reqs.amTypes), std::end(reqs.amTypes), am->getType());
+    auto result2 = std::find(std::begin(reqs.amTypes), std::end(reqs.amTypes), AttributeMatrix::Type::Any);
+    if(!reqs.amTypes.empty() && result1 == std::end(reqs.amTypes) && result2 == std::end(reqs.amTypes))
     {
       return false;
     }
@@ -319,14 +332,19 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   if(!reqs.dcGeometryTypes.empty())
   {
     // Unknown Geometry gets a pass
-    if(!reqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
+    auto result = std::find(std::begin(reqs.dcGeometryTypes), std::end(reqs.dcGeometryTypes), IGeometry::Type::Unknown);
+
+    if(result == std::end(reqs.dcGeometryTypes))
     {
       IGeometry::Pointer geom = dc->getGeometry();
       if(nullptr == geom)
       {
         return false;
       }
-      if(!reqs.dcGeometryTypes.contains(geom->getGeometryType()) && !reqs.dcGeometryTypes.contains(IGeometry::Type::Any))
+
+      auto result1 = std::find(std::begin(reqs.dcGeometryTypes), std::end(reqs.dcGeometryTypes), geom->getGeometryType());
+      auto result2 = std::find(std::begin(reqs.dcGeometryTypes), std::end(reqs.dcGeometryTypes), IGeometry::Type::Any);
+      if(result1 == std::end(reqs.dcGeometryTypes) && result2 == std::end(reqs.dcGeometryTypes))
       {
         return false;
       }
@@ -340,9 +358,13 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
     return false;
   }
 
-  if(!reqs.amTypes.contains(AttributeMatrix::Type::Unknown))
+  auto result = std::find(std::begin(reqs.amTypes), std::end(reqs.amTypes), AttributeMatrix::Type::Unknown);
+
+  if(result == std::end(reqs.amTypes))
   {
-    if(!reqs.amTypes.empty() && !reqs.amTypes.contains(am->getType()) && !reqs.amTypes.contains(AttributeMatrix::Type::Any))
+    auto result1 = std::find(std::begin(reqs.amTypes), std::end(reqs.amTypes), am->getType());
+    auto result2 = std::find(std::begin(reqs.amTypes), std::end(reqs.amTypes), AttributeMatrix::Type::Any);
+    if(!reqs.amTypes.empty() && result1 == std::end(reqs.amTypes) && result2 == std::end(reqs.amTypes))
     {
       return false;
     }
@@ -355,7 +377,8 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
     return false;
   }
 
-  if(!reqs.daTypes.empty() && !reqs.daTypes.contains(da->getTypeAsString()))
+  auto result3 = std::find(std::begin(reqs.daTypes), std::end(reqs.daTypes), da->getTypeAsString());
+  if(result3 == std::end(reqs.daTypes))
   {
     return false;
   }
@@ -498,7 +521,7 @@ QString DataArrayPathSelectionWidget::createTooltipFooter() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPathSelectionWidget::createGeomReqString(QVector<IGeometry::Type> geomTypes) const
+QString DataArrayPathSelectionWidget::createGeomReqString(const IGeometry::Types& geomTypes) const
 {
   QString reqStr = "<tr><td><i>Required Geometries:</i></td>";
   if(geomTypes.empty())
@@ -552,7 +575,7 @@ QString DataArrayPathSelectionWidget::createGeomReqString(QVector<IGeometry::Typ
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPathSelectionWidget::createAttrMatrixReqString(QVector<AttributeMatrix::Type> amTypes) const
+QString DataArrayPathSelectionWidget::createAttrMatrixReqString(const AttributeMatrix::Types& amTypes) const
 {
   QString reqStr = "<tr><td><i>Required Matrix Type:</i></td>";
   if(amTypes.empty())
@@ -624,7 +647,7 @@ QString DataArrayPathSelectionWidget::createAttrMatrixReqString(QVector<Attribut
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPathSelectionWidget::createDataArrayTypeString(QVector<QString> daTypes) const
+QString DataArrayPathSelectionWidget::createDataArrayTypeString(const std::vector<QString>& daTypes) const
 {
   QString reqStr = "<tr><td><i>Required Array Type:</i></td>";
   if(daTypes.empty())
