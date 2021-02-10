@@ -47,7 +47,7 @@
 #include <QtWidgets/QMenu>
 
 #include "SIMPLib/FilterParameters/MultiInputFileFilterParameter.h"
-#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
+#include "SIMPLib/Utilities/QtConverter.hpp"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
@@ -57,29 +57,6 @@
 #include "ui_MultiInputFileWidget.h"
 
 static QString s_LastUsedDir;
-
-// -----------------------------------------------------------------------------
-QStringList toStringList(const std::vector<std::string>& inputFiles)
-{
-  QStringList fileList;
-  for(const auto& inputFile : inputFiles)
-  {
-    fileList << QString::fromStdString(inputFile);
-  }
-  return fileList;
-}
-
-// -----------------------------------------------------------------------------
-std::vector<std::string> fromStringList(const QStringList& selectedFiles)
-{
-  std::vector<std::string> files;
-  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  for(const auto& filePath : selectedFiles)
-  {
-    files.push_back(validator->convertToAbsolutePath(filePath).toStdString());
-  }
-  return files;
-}
 
 // -----------------------------------------------------------------------------
 //
@@ -106,15 +83,15 @@ MultiInputFileWidget::~MultiInputFileWidget() = default;
 void MultiInputFileWidget::setupGui()
 {
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
+  connect(getFilter(), &AbstractFilter::preflightAboutToExecute, this, &MultiInputFileWidget::beforePreflight);
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
+  connect(getFilter(), &AbstractFilter::preflightExecuted, this, &MultiInputFileWidget::afterPreflight);
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &MultiInputFileWidget::filterNeedsInputParameters);
 
-  connect(m_Ui->selectBtn, SIGNAL(clicked()), this, SLOT(selectMultiInputFile()));
+  connect(m_Ui->selectBtn, &QPushButton::clicked, this, &MultiInputFileWidget::selectMultiInputFile);
 
   s_LastUsedDir = QDir::homePath();
 
@@ -122,7 +99,7 @@ void MultiInputFileWidget::setupGui()
   if(getFilter() != nullptr && getFilterParameter() != nullptr)
   {
     MultiInputFileFilterParameter::GetterCallbackType getter = m_FilterParameter->getGetterCallback();
-    m_SelectedFiles = toStringList(getter());
+    m_SelectedFiles = QtConverter::ToQStringList(getter());
     for(const auto& inputFile : m_SelectedFiles)
     {
       if(!inputFile.isEmpty())
@@ -143,7 +120,7 @@ void MultiInputFileWidget::selectMultiInputFile()
 {
   QString Ftype = m_FilterParameter->getFileType();
   QString ext = m_FilterParameter->getFileExtension();
-  QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
+  QString s = QString("%1 Files (%2);;All Files (*.*)").arg(Ftype, ext);
 
   QStringList files = QFileDialog::getOpenFileNames(this, tr("Select Input File(s)"), s_LastUsedDir, s);
 
@@ -184,7 +161,7 @@ void MultiInputFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   std::ignore = filter;
 
-  std::vector<std::string> files = fromStringList(m_SelectedFiles);
+  std::vector<std::string> files = QtConverter::FromQStringFileList(m_SelectedFiles);
   MultiInputFileFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
 
   if(setter)
