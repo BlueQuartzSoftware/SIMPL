@@ -382,8 +382,6 @@ void FindDerivatives::dataCheck()
 // -----------------------------------------------------------------------------
 void FindDerivatives::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

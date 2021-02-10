@@ -162,8 +162,6 @@ void CreateAttributeMatrix::dataCheck()
 // -----------------------------------------------------------------------------
 void CreateAttributeMatrix::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

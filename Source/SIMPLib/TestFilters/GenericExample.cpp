@@ -380,9 +380,9 @@ void GenericExample::initialize()
 // -----------------------------------------------------------------------------
 void GenericExample::dataCheck()
 {
-  DataArrayPath tempPath;
   clearErrorCode();
   clearWarningCode();
+  DataArrayPath tempPath;
 
   FileSystemPathHelper::CheckOutputFile(this, "Output File Name", getOutputFile(), true);
 }

@@ -177,8 +177,6 @@ void SetOriginResolutionImageGeom::dataCheck()
 // -----------------------------------------------------------------------------
 void SetOriginResolutionImageGeom::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

@@ -288,8 +288,6 @@ void copyData(IDataArray::Pointer fromData, IDataArray::Pointer toData, size_t l
 // -----------------------------------------------------------------------------
 void CombineAttributeMatrices::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

@@ -732,7 +732,7 @@ void FilterPipeline::disconnectFilterNotifications(AbstractFilter* filter)
     disconnect(filter, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), messageReceiver, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
   }
 
-  disconnect(filter, &AbstractFilter::messageGenerated, 0, 0);
+  disconnect(filter, &AbstractFilter::messageGenerated, nullptr, nullptr);
 }
 
 // -----------------------------------------------------------------------------

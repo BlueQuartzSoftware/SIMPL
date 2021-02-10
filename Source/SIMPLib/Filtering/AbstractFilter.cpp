@@ -52,11 +52,6 @@
 //
 // -----------------------------------------------------------------------------
 AbstractFilter::AbstractFilter()
-: m_InPreflight(false)
-, m_Enabled(true)
-, m_Removing(false)
-, m_PipelineIndex(0)
-, m_Cancel(false)
 {
   m_DataContainerArray = DataContainerArray::New();
   m_PreviousFilter = NullPointer();
@@ -587,8 +582,7 @@ void AbstractFilter::notifyMissingProperty(FilterParameter* filterParameter)
   QString ss =
       QString("Error occurred transferring the Filter Parameter '%1' in Filter '%2' to the filter instance. The pipeline may run but the underlying filter will NOT be using the values from the GUI."
               " Please report this issue to the developers of this filter.")
-          .arg(filterParameter->getPropertyName())
-          .arg(getHumanLabel());
+          .arg(filterParameter->getPropertyName(), getHumanLabel());
 
   setWarningCondition(-1, ss);
 }
@@ -602,12 +596,14 @@ bool AbstractFilter::checkIfPathRenamed(const RenameDataPath::DataID_t id, const
   {
     return false;
   }
-  else if(m_CreatedPaths.find(id) == m_CreatedPaths.end())
+
+  if(m_CreatedPaths.find(id) == m_CreatedPaths.end())
   {
     m_CreatedPaths[id] = path;
     return false;
   }
-  else if(m_CreatedPaths[id] == path)
+
+  if(m_CreatedPaths[id] == path)
   {
     return false;
   }

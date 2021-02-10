@@ -229,8 +229,6 @@ void ScaleVolume::updateSurfaceMesh()
 // -----------------------------------------------------------------------------
 void ScaleVolume::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

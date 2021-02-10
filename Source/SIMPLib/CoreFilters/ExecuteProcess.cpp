@@ -118,8 +118,6 @@ void ExecuteProcess::dataCheck()
 // -----------------------------------------------------------------------------
 void ExecuteProcess::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

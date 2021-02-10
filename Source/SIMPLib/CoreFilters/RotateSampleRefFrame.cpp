@@ -536,8 +536,6 @@ void RotateSampleRefFrame::dataCheck()
 // -----------------------------------------------------------------------------
 void RotateSampleRefFrame::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

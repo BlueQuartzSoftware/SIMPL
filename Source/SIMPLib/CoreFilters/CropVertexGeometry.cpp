@@ -233,8 +233,6 @@ void copyDataToCroppedGeometry(IDataArray::Pointer inDataPtr, IDataArray::Pointe
 // -----------------------------------------------------------------------------
 void CropVertexGeometry::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

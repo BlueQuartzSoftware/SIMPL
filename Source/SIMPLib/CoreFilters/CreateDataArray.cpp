@@ -432,8 +432,6 @@ void CreateDataArray::dataCheck()
 // -----------------------------------------------------------------------------
 void CreateDataArray::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

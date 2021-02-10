@@ -217,8 +217,6 @@ IDataArray::Pointer copyCellData(AbstractFilter* filter, IDataArray::Pointer inp
 // -----------------------------------------------------------------------------
 void CreateFeatureArrayFromElementArray::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

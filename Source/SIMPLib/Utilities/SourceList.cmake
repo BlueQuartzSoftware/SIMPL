@@ -35,6 +35,7 @@ set(SIMPLib_Utilities_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/TimeUtilities.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ToolTipGenerator.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/UTFUtilities.hpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/QtConverter.hpp
 )
 
 set(SIMPLib_Utilities_SRCS

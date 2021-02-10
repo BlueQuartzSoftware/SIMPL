@@ -336,8 +336,6 @@ void RawBinaryReader::dataCheck()
 // -----------------------------------------------------------------------------
 void RawBinaryReader::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

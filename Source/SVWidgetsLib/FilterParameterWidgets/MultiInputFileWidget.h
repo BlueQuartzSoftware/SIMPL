@@ -35,28 +35,24 @@
 
 #pragma once
 
+#include <QtCore/QString>
 #include <QtWidgets/QWidget>
 
-
-#include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
-
-#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
+#include "SVWidgetsLib/FilterParameterWidgets/AbstractIOFileWidget.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-#include "SVWidgetsLib/ui_AbstractIOFileWidget.h"
-
-class QLineEdit;
-class OutputFileFilterParameter;
-class QKeyEvent;
+namespace Ui
+{
+class MultiInputFileWidget;
+}
+class MultiInputFileFilterParameter;
 
 /**
  * @brief
  * @author
  * @version
  */
-class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, protected Ui::AbstractIOFileWidget
+class SVWidgetsLib_EXPORT MultiInputFileWidget : public FilterParameterWidget
 {
   Q_OBJECT
 
@@ -67,13 +63,14 @@ public:
    * @param filter The instance of the filter that this parameter is a part of
    * @param parent The parent QWidget for this Widget
    */
-  AbstractIOFileWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
+  MultiInputFileWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-  ~AbstractIOFileWidget() override;
+  ~MultiInputFileWidget() override;
 
-  Q_PROPERTY(QPixmap Icon READ getIcon WRITE setIcon)
-  void setIcon(const QPixmap& path);
-  QPixmap getIcon();
+  MultiInputFileWidget(const MultiInputFileWidget&) = delete;            // Copy Constructor Not Implemented
+  MultiInputFileWidget(MultiInputFileWidget&&) = delete;                 // Move Constructor Not Implemented
+  MultiInputFileWidget& operator=(const MultiInputFileWidget&) = delete; // Copy Assignment Not Implemented
+  MultiInputFileWidget& operator=(MultiInputFileWidget&&) = delete;      // Move Assignment Not Implemented
 
   /**
    * @brief This method does additional GUI widget connections
@@ -81,39 +78,20 @@ public:
   void setupGui() override;
 
 public slots:
+  void selectMultiInputFile();
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
 
-  void on_m_LineEdit_fileDropped(const QString& text);
-  void on_m_LineEdit_editingFinished();
-  void on_m_LineEdit_textChanged(const QString& text);
-  void on_m_LineEdit_returnPressed();
-
 protected:
-  void setValue(const QString& val);
-
-  QString getValue();
-
-  /**
-   * @brief
-   * @param event
-   */
-  void keyPressEvent(QKeyEvent* event) override;
-
-  /**
-   * @brief setupMenuField
-   */
-  void setupMenuField();
+  void createSummaryText();
 
 private:
+  QSharedPointer<Ui::MultiInputFileWidget> m_Ui;
+
+  MultiInputFileFilterParameter* m_FilterParameter = nullptr;
+
   QAction* m_ShowFileAction = nullptr;
   QString m_CurrentText = "";
-  QPixmap m_Icon = QPixmap(QLatin1String(":/SIMPL/icons/images/caret-bottom.png"));
-
-public:
-  AbstractIOFileWidget(const AbstractIOFileWidget&) = delete;            // Copy Constructor Not Implemented
-  AbstractIOFileWidget(AbstractIOFileWidget&&) = delete;                 // Move Constructor Not Implemented
-  AbstractIOFileWidget& operator=(const AbstractIOFileWidget&) = delete; // Copy Assignment Not Implemented
-  AbstractIOFileWidget& operator=(AbstractIOFileWidget&&) = delete;      // Move Assignment Not Implemented
+  QStringList m_SelectedFiles;
 };

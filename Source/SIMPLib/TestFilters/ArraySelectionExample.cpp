@@ -117,8 +117,6 @@ void ArraySelectionExample::preflight()
 // -----------------------------------------------------------------------------
 void ArraySelectionExample::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

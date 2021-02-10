@@ -898,8 +898,7 @@ QString AttributeMatrix::writeXdmfAttributeData(const IDataArray::Pointer& array
   array->getXdmfTypeAndSize(xdmfTypeName, precision);
   if(0 == precision)
   {
-    out << "<!-- " << array->getName() << " has unkown type or unsupported type or precision for XDMF to understand"
-        << " -->"
+    out << "<!-- " << array->getName() << " has unkown type or unsupported type or precision for XDMF to understand. " << xdmfTypeName << " of type size " << precision << " -->"
         << "\n";
     return xdmfText;
   }

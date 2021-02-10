@@ -179,8 +179,6 @@ void MultiThresholdObjects::dataCheck()
 // -----------------------------------------------------------------------------
 void MultiThresholdObjects::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

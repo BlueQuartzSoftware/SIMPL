@@ -36,6 +36,8 @@
 #include "QMetaObjectUtilities.h"
 
 #include <cassert>
+#include <string>
+#include <vector>
 
 #include <QtCore/QDataStream>
 
@@ -144,6 +146,7 @@ QMetaObjectUtilities::~QMetaObjectUtilities() = default;
 // -----------------------------------------------------------------------------
 void QMetaObjectUtilities::RegisterMetaTypes()
 {
+  using VectString = std::vector<std::string>;
   qRegisterMetaType<AbstractMessage::Pointer>("AbstractMessage::Pointer");
   qRegisterMetaType<DataContainerArrayProxy>("DataContainerArrayProxy");
   qRegisterMetaType<DataArrayPath>("DataArrayPath");
@@ -157,6 +160,7 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<FPRangePair>("FPRangePair");
   qRegisterMetaType<DynamicTableData>("DynamicTableData");
   qRegisterMetaType<PhaseType::Types>("PhaseType::Types");
+  qRegisterMetaType<VectString>("VectString");
   qRegisterMetaTypeStreamOperators<IntVec3Type>("IntVec3Type");
   qRegisterMetaTypeStreamOperators<FloatVec3Type>("FloatVec3Type");
   qRegisterMetaTypeStreamOperators<PhaseType::Types>("PhaseType::Types");

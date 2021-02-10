@@ -262,8 +262,6 @@ void reduceArrayOnly(IDataArray::Pointer inputData, IDataArray::Pointer reducedD
 // -----------------------------------------------------------------------------
 void RemoveComponentFromArray::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

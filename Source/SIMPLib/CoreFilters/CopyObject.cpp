@@ -230,8 +230,6 @@ void CopyObject::dataCheck()
 // -----------------------------------------------------------------------------
 void CopyObject::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

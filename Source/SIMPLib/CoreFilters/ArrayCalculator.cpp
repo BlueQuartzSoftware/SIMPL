@@ -389,8 +389,6 @@ void ArrayCalculator::dataCheck()
 // -----------------------------------------------------------------------------
 void ArrayCalculator::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

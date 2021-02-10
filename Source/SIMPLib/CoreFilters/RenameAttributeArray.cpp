@@ -158,8 +158,6 @@ void RenameAttributeArray::dataCheck()
 // -----------------------------------------------------------------------------
 void RenameAttributeArray::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck(); // calling the dataCheck will rename the array, so nothing is required here
   if(getErrorCode() < 0)
   {

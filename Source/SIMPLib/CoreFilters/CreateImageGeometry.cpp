@@ -154,8 +154,6 @@ void CreateImageGeometry::dataCheck()
 // -----------------------------------------------------------------------------
 void CreateImageGeometry::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

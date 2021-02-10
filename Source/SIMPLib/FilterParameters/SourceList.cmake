@@ -83,6 +83,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ThirdOrderPolynomialFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/UInt64FilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/UnknownFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiInputFileFilterParameter.h
 )
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
@@ -154,6 +155,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ThirdOrderPolynomialFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/UInt64FilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/UnknownFilterParameter.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiInputFileFilterParameter.cpp
 )
 
 cmp_IDE_SOURCE_PROPERTIES( "${SUBDIR_NAME}" "${SIMPLib_${SUBDIR_NAME}_HDRS};${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}" "${SIMPLib_${SUBDIR_NAME}_SRCS}" "${PROJECT_INSTALL_HEADERS}")

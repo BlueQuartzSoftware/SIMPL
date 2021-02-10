@@ -75,7 +75,7 @@ GenericProgressMessage::Pointer GenericProgressMessage::New(const QString& msgTe
 // -----------------------------------------------------------------------------
 QString GenericProgressMessage::generateMessageString() const
 {
-  QString ss = QObject::tr("%1 %2%%").arg(getMessageText()).arg(getProgressValue());
+  QString ss = QObject::tr("%1 %2%").arg(getMessageText()).arg(getProgressValue());
   return ss;
 }
 
