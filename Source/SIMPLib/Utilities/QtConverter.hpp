@@ -47,7 +47,7 @@ namespace QtConverter
  * @param items The list of strings to convert
  * @return QStringList of Items
  */
-QStringList ToQStringList(const std::vector<std::string>& items)
+static QStringList ToQStringList(const std::vector<std::string>& items)
 {
   QStringList out;
   for(const auto& item : items)
@@ -62,7 +62,7 @@ QStringList ToQStringList(const std::vector<std::string>& items)
  * @param items The file paths to convert
  * @return The converted list
  */
-std::vector<std::string> FromQStringFileList(const QStringList& items)
+static std::vector<std::string> FromQStringFileList(const QStringList& items)
 {
   std::vector<std::string> out;
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
