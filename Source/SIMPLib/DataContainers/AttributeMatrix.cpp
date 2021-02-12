@@ -57,6 +57,7 @@
 #include "SIMPLib/HDF5/VTKH5Constants.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
+#include "SIMPLib/Utilities/STLUtilities.hpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -257,9 +258,7 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
         if(req != nullptr)
         {
           AttributeMatrix::Types amTypes = req->getAMTypes();
-          if(amTypes.empty() || std::find(amTypes.begin(), amTypes.end(), static_cast<AttributeMatrix::Type>(amTypeTmp)) != amTypes.end()
-             // amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp))
-          )
+          if(amTypes.empty() || SIMPL::contains(amTypes, static_cast<AttributeMatrix::Type>(amTypeTmp))) // amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp)))
           {
             amProxy.setFlag(Qt::Checked);
           }
@@ -396,7 +395,7 @@ size_t AttributeMatrix::getNumberOfTuples() const
   }
 
   size_t numTuples = m_TupleDims[0];
-  for(int i = 1; i < m_TupleDims.size(); i++)
+  for(size_t i = 1; i < m_TupleDims.size(); i++)
   {
     numTuples *= m_TupleDims[i];
   }
@@ -482,7 +481,7 @@ void AttributeMatrix::resizeAttributeArrays(const std::vector<size_t>& tDims)
 {
   m_TupleDims = tDims;
   size_t numTuples = m_TupleDims[0];
-  for(int i = 1; i < m_TupleDims.size(); i++)
+  for(size_t i = 1; i < m_TupleDims.size(); i++)
   {
     numTuples *= m_TupleDims[i];
   }
@@ -764,7 +763,7 @@ ToolTipGenerator AttributeMatrix::getToolTipGenerator() const
 
   QLocale usa(QLocale::English, QLocale::UnitedStates);
   QString tupleStr = "(";
-  for(int i = 0; i < m_TupleDims.size(); i++)
+  for(size_t i = 0; i < m_TupleDims.size(); i++)
   {
     QString numStr = usa.toString(static_cast<qlonglong>(m_TupleDims[i]));
     tupleStr = tupleStr + numStr;

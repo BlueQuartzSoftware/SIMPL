@@ -45,6 +45,7 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Utilities/STLUtilities.hpp"
 #include "SIMPLib/Utilities/StringOperations.h"
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
@@ -473,10 +474,7 @@ void DataFormatPage::createAMSelectionMenu()
     QMenu* dcMenu = btnMenu->addMenu(dc->getName()); // BtnMenu owns the new QMenu
     dcMenu->setDisabled(false);
 
-    auto result = std::find(std::begin(geomTypes), std::end(geomTypes), static_cast<IGeometry::Type>(geomType));
-    auto result1 = std::find(std::begin(geomTypes), std::end(geomTypes), IGeometry::Type::Any);
-
-    if(!geomTypes.empty() && result == std::end(geomTypes) && result1 == std::end(geomTypes))
+    if(!geomTypes.empty() && !SIMPL::contains(geomTypes, geomType) && !SIMPL::contains(geomTypes, IGeometry::Type::Any))
     {
       dcMenu->setDisabled(true);
     }
@@ -496,8 +494,7 @@ void DataFormatPage::createAMSelectionMenu()
       m_AMMenuMapper->setMapping(amAction, path);
 
       bool amIsNotNull = nullptr != am.get();
-      auto result2 = std::find(std::begin(amTypes), std::end(amTypes), am->getType());
-      bool amValidType = !amTypes.empty() && result2 == std::end(amTypes);
+      bool amValidType = !amTypes.empty() && !SIMPL::contains(amTypes, am->getType());
 
       if(amIsNotNull && amValidType)
       {
@@ -564,10 +561,7 @@ void DataFormatPage::createDCSelectionMenu()
     connect(dcAction, SIGNAL(triggered(bool)), m_DCMenuMapper, SLOT(map()));
     m_DCMenuMapper->setMapping(dcAction, path);
 
-    auto result = std::find(std::begin(geomTypes), std::end(geomTypes), static_cast<IGeometry::Type>(geomType));
-    auto result1 = std::find(std::begin(geomTypes), std::end(geomTypes), IGeometry::Type::Any);
-
-    if(!geomTypes.empty() && result == std::end(geomTypes) && result1 == std::end(geomTypes))
+    if(!geomTypes.empty() && !SIMPL::contains(geomTypes, geomType) && !SIMPL::contains(geomTypes, IGeometry::Type::Any))
     {
       dcAction->setDisabled(true);
     }
@@ -1151,14 +1145,7 @@ void DataFormatPage::checkHeaders()
 // -----------------------------------------------------------------------------
 void DataFormatPage::checkHeaders(QVector<QString> headers)
 {
-  if(validateHeaders(headers))
-  {
-    m_HeadersHasErrors = false;
-  }
-  else
-  {
-    m_HeadersHasErrors = true;
-  }
+  m_HeadersHasErrors = !validateHeaders(headers);
 }
 
 // -----------------------------------------------------------------------------
