@@ -78,7 +78,7 @@ void CalculatorWidget::setupGui()
   blockSignals(true);
   if(getFilterParameter() != nullptr)
   {
-    QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
+    QString str = m_FilterParameter->getGetterCallback()();
     equation->setText(str);
   }
   blockSignals(false);
@@ -459,7 +459,7 @@ void CalculatorWidget::updateDataArrayPath(QString propertyName, const DataArray
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
 
-  if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
+  if(propertyName == getFilterParameter()->getPropertyName())
   {
     QString inputStr = equation->text();
     inputStr.replace(oldPath.getDataArrayName(), newPath.getDataArrayName());

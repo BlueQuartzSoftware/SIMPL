@@ -78,9 +78,7 @@ void ConstrainedIntWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-
-    int val = getFilter()->property(PROPERTY_NAME_AS_CHAR).toInt();
-    spinBox->setValue(val);
+    spinBox->setValue(m_FilterParameter->getGetterCallback()());
   }
 }
 

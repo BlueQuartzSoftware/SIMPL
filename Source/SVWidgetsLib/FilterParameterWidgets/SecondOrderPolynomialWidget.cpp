@@ -94,7 +94,7 @@ void SecondOrderPolynomialWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    Float2ndOrderPoly_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<Float2ndOrderPoly_t>();
+    Float2ndOrderPoly_t data = m_FilterParameter->getGetterCallback()();
     c20->setText(loc.toString(data.c20));
     c02->setText(loc.toString(data.c02));
     c11->setText(loc.toString(data.c11));

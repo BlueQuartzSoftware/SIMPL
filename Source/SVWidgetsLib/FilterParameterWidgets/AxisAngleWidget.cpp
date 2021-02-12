@@ -90,7 +90,7 @@ void AxisAngleWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    AxisAngleInput_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<AxisAngleInput_t>();
+    AxisAngleInput_t data = m_FilterParameter->getGetterCallback()();
     h->setText(loc.toString(data.h));
     k->setText(loc.toString(data.k));
     l->setText(loc.toString(data.l));

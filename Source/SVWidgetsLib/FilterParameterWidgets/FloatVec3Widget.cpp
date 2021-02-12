@@ -96,7 +96,7 @@ void FloatVec3Widget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    FloatVec3Type data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<FloatVec3Type>();
+    FloatVec3Type data = m_FilterParameter->getGetterCallback()();
 
     xData->setText(loc.toString(data[0]));
     yData->setText(loc.toString(data[1]));

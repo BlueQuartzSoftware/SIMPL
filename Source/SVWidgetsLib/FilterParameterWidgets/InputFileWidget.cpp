@@ -71,11 +71,9 @@ void InputFileWidget::setupGui()
 // -----------------------------------------------------------------------------
 void InputFileWidget::selectInputFile()
 {
-  // QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
   QString Ftype = m_FilterParameter->getFileType();
   QString ext = m_FilterParameter->getFileExtension();
   QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
-  // QString defaultName = m_OpenDialogLastDirectory + QDir::separator() + "Untitled";
   QString file = QFileDialog::getOpenFileName(this, tr("Select Input File"), getValue(), s);
 
   if(file.isEmpty())

@@ -75,14 +75,15 @@ void IntWidget::setupGui()
 
   connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
+  QLocale loc = QLocale::system();
+
   QIntValidator* xVal = new QIntValidator(value);
   value->setValidator(xVal);
 
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-
-    QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
+    QString str = loc.toString(m_FilterParameter->getGetterCallback()());
     value->setText(str);
   }
 }

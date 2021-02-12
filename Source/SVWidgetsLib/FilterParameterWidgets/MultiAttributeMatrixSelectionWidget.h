@@ -37,13 +37,13 @@
 #include <QtCore/QObject>
 #include <QtWidgets/QWidget>
 
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "SVWidgetsLib/ui_MultiAttributeMatrixSelectionWidget.h"
@@ -125,7 +125,7 @@ protected slots:
 private:
   bool m_DidCausePreflight;
 
-  MultiAttributeMatrixSelectionFilterParameter* m_FilterParameter;
+  MultiAttributeMatrixSelectionFilterParameter* m_FilterParameter = nullptr;
 
   void setSelectedPath(QString path);
 

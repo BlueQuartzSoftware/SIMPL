@@ -80,8 +80,8 @@ void UInt64Widget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-
-    QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
+    uint64_t ui64 = m_FilterParameter->getGetterCallback()();
+    QString str = QString::number(ui64);
     value->setText(str);
   }
 }

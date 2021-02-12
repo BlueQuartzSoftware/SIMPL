@@ -63,7 +63,7 @@ void ParagraphWidget::setupGui()
   blockSignals(true);
   if(getFilterParameter() != nullptr)
   {
-    QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
+    QString str = m_FilterParameter->getGetterCallback()();
     textEdit->setText(str);
   }
   blockSignals(false);
@@ -77,15 +77,7 @@ void ParagraphWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &ParagraphWidget::filterNeedsInputParameters);
 
-  connect(textEdit, &QTextEdit::textChanged, [=]() {
-    AbstractFilter* filter = this->getFilter();
-    bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, textEdit->toHtml());
-    if(!ok)
-    {
-      qDebug() << "ParagraphWidget: Could not set value of filter parameter '" << getFilterParameter()->getHumanLabel() << "' of filter '" << filter->getHumanLabel()
-               << "' to the current contents of the QTextEdit widget";
-    }
-  });
+  connect(textEdit, &QTextEdit::textChanged, [=]() { m_FilterParameter->getSetterCallback()(textEdit->toHtml()); });
 }
 
 // -----------------------------------------------------------------------------

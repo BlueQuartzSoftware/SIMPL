@@ -83,7 +83,7 @@ void IntVec2Widget::setupGui()
   {
     IntVec2WidgetLabel->setText(getFilterParameter()->getHumanLabel());
 
-    IntVec2Type data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<IntVec2Type>();
+    IntVec2Type data = m_FilterParameter->getGetterCallback()();
     xData->setText(QString::number(data[0]));
     yData->setText(QString::number(data[1]));
   }

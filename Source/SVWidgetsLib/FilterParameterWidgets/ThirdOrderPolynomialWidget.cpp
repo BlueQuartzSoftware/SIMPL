@@ -91,7 +91,7 @@ void ThirdOrderPolynomialWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    Float3rdOrderPoly_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<Float3rdOrderPoly_t>();
+    Float3rdOrderPoly_t data = m_FilterParameter->getGetterCallback()();
     c30->setText(loc.toString(data.c30));
     c03->setText(loc.toString(data.c03));
     c21->setText(loc.toString(data.c21));

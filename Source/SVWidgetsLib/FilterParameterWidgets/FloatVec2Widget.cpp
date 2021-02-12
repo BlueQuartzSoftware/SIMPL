@@ -92,7 +92,7 @@ void FloatVec2Widget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    FloatVec2Type data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<FloatVec2Type>();
+    FloatVec2Type data = m_FilterParameter->getGetterCallback()();
 
     xData->setText(loc.toString(data[0]));
     yData->setText(loc.toString(data[1]));

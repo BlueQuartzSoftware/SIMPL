@@ -84,12 +84,7 @@ void FloatWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    bool ok = false;
-
-    float d = getFilter()->property(PROPERTY_NAME_AS_CHAR).toFloat(&ok);
-    QString str = loc.toString(d);
-
-    //  QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
+    QString str = loc.toString(m_FilterParameter->getGetterCallback()());
     value->setText(str);
   }
 }

@@ -96,7 +96,7 @@ void FourthOrderPolynomialWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    Float4thOrderPoly_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<Float4thOrderPoly_t>();
+    Float4thOrderPoly_t data = m_FilterParameter->getGetterCallback()();
     c40->setText(loc.toString(data.c40));
     c04->setText(loc.toString(data.c04));
     c31->setText(loc.toString(data.c31));

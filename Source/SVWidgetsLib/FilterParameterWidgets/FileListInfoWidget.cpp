@@ -266,7 +266,7 @@ void FileListInfoWidget::getGuiParametersFromFilter()
 {
   blockSignals(true);
 
-  StackFileListInfo data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<StackFileListInfo>();
+  StackFileListInfo data = m_FilterParameter->getGetterCallback()();
 
   m_Ui->inputDir->setText(data.InputPath);
 
@@ -289,7 +289,7 @@ void FileListInfoWidget::getGuiParametersFromFilter()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::validateInputFile()
 {
-  StackFileListInfo data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<StackFileListInfo>();
+  StackFileListInfo data = m_FilterParameter->getGetterCallback()();
 
   QString currentPath = data.InputPath;
   QFileInfo fi(currentPath);
@@ -312,12 +312,7 @@ void FileListInfoWidget::validateInputFile()
 
     data.InputPath = file;
 
-    QVariant v;
-    v.setValue(data);
-    bool ok = getFilter()->setProperty(PROPERTY_NAME_AS_CHAR, v);
-    if(!ok)
-    {
-    }
+    m_FilterParameter->getSetterCallback()(data);
   }
 }
 

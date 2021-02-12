@@ -71,7 +71,7 @@ void OutputFileWidget::setupGui()
 // -----------------------------------------------------------------------------
 void OutputFileWidget::selectOutputFile()
 {
-  QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
+  QString currentPath = m_FilterParameter->getGetterCallback()();
   if(currentPath.isEmpty())
   {
     currentPath = getValue();

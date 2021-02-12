@@ -133,7 +133,7 @@ void DataContainerArrayProxyWidget::setupGui()
     // Proxy object at which point nothing is going to be put into the lists. But if the Filter was
     // initialized from a pipeline file then it might actually have a proxy so we need to do something
     // with that proxy?
-    m_DcaProxy = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataContainerArrayProxy>();
+    m_DcaProxy = m_FilterParameter->getGetterCallback()();
     // m_DcaProxy.print("DataContainerArrayProxyWidget::setupGui()");
   }
 }
