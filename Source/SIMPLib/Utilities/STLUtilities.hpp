@@ -67,7 +67,7 @@ constexpr bool contains(Iterator first, Iterator last, const T& value)
  * @return If the container has the value
  */
 template <class T, typename K>
-constexpr bool contains(const T& container, const K& value)
+bool contains(const T& container, const K& value)
 {
   auto result = std::find(container.cbegin(), container.cend(), value);
   return result != container.cend();
