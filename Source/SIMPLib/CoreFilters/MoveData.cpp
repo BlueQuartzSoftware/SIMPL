@@ -91,25 +91,25 @@ void MoveData::setupFilterParameters()
     parameter->setChoices(choices);
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameters.push_back(parameter);
   }
 
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix Source", AttributeMatrixSource, FilterParameter::RequiredArray, MoveData, req, 0));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix Source", AttributeMatrixSource, FilterParameter::Category::RequiredArray, MoveData, req, 0));
   }
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Destination", DataContainerDestination, FilterParameter::RequiredArray, MoveData, req, 0));
+    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Destination", DataContainerDestination, FilterParameter::Category::RequiredArray, MoveData, req, 0));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array Source", DataArraySource, FilterParameter::RequiredArray, MoveData, req, 1));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array Source", DataArraySource, FilterParameter::Category::RequiredArray, MoveData, req, 1));
   }
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix Destination", AttributeMatrixDestination, FilterParameter::RequiredArray, MoveData, req, 1));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix Destination", AttributeMatrixDestination, FilterParameter::Category::RequiredArray, MoveData, req, 1));
   }
 
   setFilterParameters(parameters);

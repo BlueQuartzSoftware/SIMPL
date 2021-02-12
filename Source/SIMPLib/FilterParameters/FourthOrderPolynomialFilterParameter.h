@@ -40,73 +40,7 @@
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-
-struct Float4thOrderPoly_t
-{
-  float c40 = 0.0f;
-  float c04 = 0.0f;
-  float c31 = 0.0f;
-  float c13 = 0.0f;
-  float c22 = 0.0f;
-  float c30 = 0.0f;
-  float c03 = 0.0f;
-  float c21 = 0.0f;
-  float c12 = 0.0f;
-  float c20 = 0.0f;
-  float c02 = 0.0f;
-  float c11 = 0.0f;
-  float c10 = 0.0f;
-  float c01 = 0.0f;
-  float c00 = 0.0f;
-
-  void writeJson(QJsonObject& json) const
-  {
-    json["c40"] = static_cast<double>(c40);
-    json["c04"] = static_cast<double>(c04);
-    json["c31"] = static_cast<double>(c31);
-    json["c13"] = static_cast<double>(c13);
-    json["c22"] = static_cast<double>(c22);
-    json["c30"] = static_cast<double>(c30);
-    json["c03"] = static_cast<double>(c03);
-    json["c21"] = static_cast<double>(c21);
-    json["c12"] = static_cast<double>(c12);
-    json["c20"] = static_cast<double>(c20);
-    json["c02"] = static_cast<double>(c02);
-    json["c11"] = static_cast<double>(c11);
-    json["c10"] = static_cast<double>(c10);
-    json["c01"] = static_cast<double>(c01);
-    json["c00"] = static_cast<double>(c00);
-  }
-
-  bool readJson(const QJsonObject& json)
-  {
-    if(json["c40"].isDouble() && json["c04"].isDouble() && json["c31"].isDouble() && json["c13"].isDouble() && json["c22"].isDouble() && json["c30"].isDouble() && json["c03"].isDouble() &&
-       json["c21"].isDouble() && json["c12"].isDouble() && json["c20"].isDouble() && json["c02"].isDouble() && json["c11"].isDouble() && json["c10"].isDouble() && json["c01"].isDouble() &&
-       json["c00"].isDouble())
-    {
-      c40 = static_cast<float>(json["c40"].toDouble());
-      c04 = static_cast<float>(json["c04"].toDouble());
-      c31 = static_cast<float>(json["c31"].toDouble());
-      c13 = static_cast<float>(json["c13"].toDouble());
-      c22 = static_cast<float>(json["c22"].toDouble());
-      c30 = static_cast<float>(json["c30"].toDouble());
-      c03 = static_cast<float>(json["c03"].toDouble());
-      c21 = static_cast<float>(json["c21"].toDouble());
-      c12 = static_cast<float>(json["c12"].toDouble());
-      c20 = static_cast<float>(json["c20"].toDouble());
-      c02 = static_cast<float>(json["c02"].toDouble());
-      c11 = static_cast<float>(json["c11"].toDouble());
-      c10 = static_cast<float>(json["c10"].toDouble());
-      c01 = static_cast<float>(json["c01"].toDouble());
-      c00 = static_cast<float>(json["c00"].toDouble());
-      return true;
-    }
-    return false;
-  }
-};
-
-Q_DECLARE_METATYPE(Float4thOrderPoly_t)
-
+#include "SIMPLib/FilterParameters/Float4thOrderPolynomial.h"
 /**
  * @brief SIMPL_NEW_FourthO_POLY_FP This macro is a short-form way of instantiating an instance of
  * FourthOrderPolynomialFilterParameter. There are 4 required parameters and 1 optional parameter
@@ -128,6 +62,14 @@ Q_DECLARE_METATYPE(Float4thOrderPoly_t)
  */
 class SIMPLib_EXPORT FourthOrderPolynomialFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(FourthOrderPolynomialFilterParameter)
+  PYB11_SHARED_POINTERS(FourthOrderPolynomialFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString Float4thOrderPolynomial FilterParameter::Category FourthOrderPolynomialFilterParameter::SetterCallbackType FourthOrderPolynomialFilterParameter::GetterCallbackType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = FourthOrderPolynomialFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -138,8 +80,8 @@ public:
 
   static Pointer New();
 
-  using SetterCallbackType = std::function<void(Float4thOrderPoly_t)>;
-  using GetterCallbackType = std::function<Float4thOrderPoly_t(void)>;
+  using SetterCallbackType = std::function<void(Float4thOrderPolynomial)>;
+  using GetterCallbackType = std::function<Float4thOrderPolynomial(void)>;
 
   /**
    * @brief New This function instantiates an instance of the FourthOrderPolynomialFilterParameter. Although this function is available to be used,
@@ -157,8 +99,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const Float4thOrderPoly_t& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const Float4thOrderPolynomial& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   /**
    * @brief Returns the name of the class for FourthOrderPolynomialFilterParameter

@@ -76,7 +76,7 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(int MaxIterations READ getMaxIterations WRITE setMaxIterations)
   PYB11_PROPERTY(Float2ndOrderPoly_t SecondOrderACoeff READ getSecondOrderACoeff WRITE setSecondOrderACoeff)
   PYB11_PROPERTY(Float3rdOrderPoly_t ThirdOrderACoeff READ getThirdOrderACoeff WRITE setThirdOrderACoeff)
-  PYB11_PROPERTY(Float4thOrderPoly_t FourthOrderACoeff READ getFourthOrderACoeff WRITE setFourthOrderACoeff)
+  PYB11_PROPERTY(Float4thOrderPolynomial FourthOrderACoeff READ getFourthOrderACoeff WRITE setFourthOrderACoeff)
   PYB11_PROPERTY(double MisorientationTolerance READ getMisorientationTolerance WRITE setMisorientationTolerance)
   PYB11_PROPERTY(DataArrayPath InputPhaseTypesArrayPath READ getInputPhaseTypesArrayPath WRITE setInputPhaseTypesArrayPath)
   PYB11_PROPERTY(ShapeType::Types ShapeTypeData READ getShapeTypeData WRITE setShapeTypeData)
@@ -210,14 +210,14 @@ public:
   /**
    * @brief Setter property for FourthOrderACoeff
    */
-  void setFourthOrderACoeff(const Float4thOrderPoly_t& value);
+  void setFourthOrderACoeff(const Float4thOrderPolynomial& value);
   /**
    * @brief Getter property for FourthOrderACoeff
    * @return Value of FourthOrderACoeff
    */
-  Float4thOrderPoly_t getFourthOrderACoeff() const;
+  Float4thOrderPolynomial getFourthOrderACoeff() const;
 
-  Q_PROPERTY(Float4thOrderPoly_t FourthOrderACoeff READ getFourthOrderACoeff WRITE setFourthOrderACoeff)
+  Q_PROPERTY(Float4thOrderPolynomial FourthOrderACoeff READ getFourthOrderACoeff WRITE setFourthOrderACoeff)
 
   /**
    * @brief Setter property for MisorientationTolerance
@@ -727,7 +727,7 @@ private:
   int m_MaxIterations = {};
   Float2ndOrderPoly_t m_SecondOrderACoeff = {};
   Float3rdOrderPoly_t m_ThirdOrderACoeff = {};
-  Float4thOrderPoly_t m_FourthOrderACoeff = {};
+  Float4thOrderPolynomial m_FourthOrderACoeff = {};
   double m_MisorientationTolerance = {};
   DataArrayPath m_InputPhaseTypesArrayPath = {};
   ShapeType::Types m_ShapeTypeData = {};

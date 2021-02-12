@@ -66,7 +66,7 @@ void EmptyFilter::setupFilterParameters()
   ss << "The original filter '<b><i>" << getOriginalFilterName() << "</i></b>' was not loaded. ";
   ss << "Either a plugin with the original filter was not loaded or the original ";
   ss << "filter has been renamed.";
-  parameters.push_back(UnknownFilterParameter::New(str, "OriginalFilterName", getOriginalFilterName(), FilterParameter::Parameter));
+  parameters.push_back(UnknownFilterParameter::Create(str, "OriginalFilterName", getOriginalFilterName(), FilterParameter::Category::Parameter));
   setFilterParameters(parameters);
 }
 

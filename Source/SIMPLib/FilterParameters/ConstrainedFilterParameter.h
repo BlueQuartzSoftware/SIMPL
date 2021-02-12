@@ -42,6 +42,14 @@
 template <typename T>
 class SIMPLib_EXPORT ConstrainedFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(ConstrainedFilterParameter)
+  PYB11_SHARED_POINTERS(ConstrainedFilterParameter)
+  PYB11_STATIC_CREATION(Create)
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = ConstrainedFilterParameter<T>;
   using Pointer = std::shared_ptr<Self>;

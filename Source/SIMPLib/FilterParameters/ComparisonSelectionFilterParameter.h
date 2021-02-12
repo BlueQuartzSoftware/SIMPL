@@ -65,6 +65,14 @@
  */
 class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(ComparisonSelectionFilterParameter)
+  PYB11_SHARED_POINTERS(ComparisonSelectionFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString ComparisonInputs FilterParameter::Category ComparisonSelectionFilterParameter::SetterCallbackType ComparisonSelectionFilterParameter::GetterCallbackType QVector<QString> bool int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = ComparisonSelectionFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -105,8 +113,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, ComparisonInputs defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, QVector<QString> choices, bool showOperators, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, ComparisonInputs defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, QVector<QString> choices, bool showOperators, int groupIndex = -1);
 
   ~ComparisonSelectionFilterParameter() override;
 

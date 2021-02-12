@@ -838,10 +838,10 @@ Float3rdOrderPoly_t H5FilterParametersReader::readFloat3rdOrderPoly(const QStrin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Float4thOrderPoly_t H5FilterParametersReader::readFloat4thOrderPoly(const QString& name, Float4thOrderPoly_t defaultValue)
+Float4thOrderPolynomial H5FilterParametersReader::readFloat4thOrderPoly(const QString& name, Float4thOrderPolynomial defaultValue)
 {
   int err = 0;
-  Float4thOrderPoly_t v;
+  Float4thOrderPolynomial v;
   err = QH5Lite::readPointerDataset<float>(m_CurrentGroupId, name, reinterpret_cast<float*>(&v));
   if(err < 0)
   {

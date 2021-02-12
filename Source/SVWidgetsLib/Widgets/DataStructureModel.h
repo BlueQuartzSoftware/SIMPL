@@ -63,7 +63,7 @@ public:
   DataStructureModel(QObject* parent = nullptr);
   ~DataStructureModel() override;
 
-  using EnumType = unsigned int;
+  using EnumType = uint32_t;
 
   enum class IndexState : EnumType
   {

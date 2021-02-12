@@ -64,6 +64,14 @@
  */
 class SIMPLib_EXPORT ScalarTypeFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(ScalarTypeFilterParameter)
+  PYB11_SHARED_POINTERS(ScalarTypeFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString SIMPL::ScalarTypes::Type FilterParameter::Category ScalarTypeFilterParameter::SetterCallbackType ScalarTypeFilterParameter::GetterCallbackType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = ScalarTypeFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -104,8 +112,8 @@ public:
   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
   * @return
   */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, SIMPL::ScalarTypes::Type defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, SIMPL::ScalarTypes::Type defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~ScalarTypeFilterParameter() override;
 

@@ -48,6 +48,15 @@
  */
 class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(LinkedChoicesFilterParameter)
+  PYB11_SHARED_POINTERS(LinkedChoicesFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString int FilterParameter::Category LinkedChoicesFilterParameter::SetterCallbackType LinkedChoicesFilterParameter::GetterCallbackType QVector<QString> QStringList int)
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
+
 public:
   using Self = LinkedChoicesFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -85,8 +94,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                     QVector<QString> choices, QStringList linkedProperties, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                        QVector<QString> choices, QStringList linkedProperties, int groupIndex = -1);
 
   ~LinkedChoicesFilterParameter() override;
 

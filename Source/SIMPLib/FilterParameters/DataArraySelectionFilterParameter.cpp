@@ -50,9 +50,9 @@ DataArraySelectionFilterParameter::~DataArraySelectionFilterParameter() = defaul
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category,
-                                                                                  const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, RequirementType req,
-                                                                                  int groupIndex)
+DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category,
+                                                                                     const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, RequirementType req,
+                                                                                     int groupIndex)
 {
 
   DataArraySelectionFilterParameter::Pointer ptr = DataArraySelectionFilterParameter::New();

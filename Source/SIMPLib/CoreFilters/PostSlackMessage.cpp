@@ -81,10 +81,10 @@ void PostSlackMessage::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(SIMPL_NEW_STRING_FP("Slack User", SlackUser, FilterParameter::Parameter, PostSlackMessage));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Slack Url", SlackUrl, FilterParameter::Parameter, PostSlackMessage));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Slack Message", SlackMessage, FilterParameter::Parameter, PostSlackMessage));
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Treat a Warning as an Error", WarningsAsError, FilterParameter::Parameter, PostSlackMessage));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Slack User", SlackUser, FilterParameter::Category::Parameter, PostSlackMessage));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Slack Url", SlackUrl, FilterParameter::Category::Parameter, PostSlackMessage));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Slack Message", SlackMessage, FilterParameter::Category::Parameter, PostSlackMessage));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Treat a Warning as an Error", WarningsAsError, FilterParameter::Category::Parameter, PostSlackMessage));
 
   setFilterParameters(parameters);
 }

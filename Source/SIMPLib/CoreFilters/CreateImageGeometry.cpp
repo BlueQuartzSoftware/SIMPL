@@ -81,15 +81,15 @@ void CreateImageGeometry::setupFilterParameters()
   FilterParameterVectorType parameters;
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Destination", SelectedDataContainer, FilterParameter::Parameter, CreateImageGeometry, req));
+    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Destination", SelectedDataContainer, FilterParameter::Category::Parameter, CreateImageGeometry, req));
   }
-  parameters.push_back(SIMPL_NEW_INT_VEC3_FP("Dimensions", Dimensions, FilterParameter::Parameter, CreateImageGeometry));
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Parameter, CreateImageGeometry));
+  parameters.push_back(SIMPL_NEW_INT_VEC3_FP("Dimensions", Dimensions, FilterParameter::Category::Parameter, CreateImageGeometry));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Category::Parameter, CreateImageGeometry));
 
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Spacing", Spacing, FilterParameter::Parameter, CreateImageGeometry));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Spacing", Spacing, FilterParameter::Category::Parameter, CreateImageGeometry));
   parameters.back()->setLegacyPropertyName("Resolution");
 
-  PreflightUpdatedValueFilterParameter::Pointer param = SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Box Size in Length Units", BoxDimensions, FilterParameter::Parameter, CreateImageGeometry);
+  PreflightUpdatedValueFilterParameter::Pointer param = SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Box Size in Length Units", BoxDimensions, FilterParameter::Category::Parameter, CreateImageGeometry);
   param->setReadOnly(true);
   parameters.push_back(param);
 

@@ -92,18 +92,18 @@ void InitializeData::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
+  parameters.push_back(SeparatorFilterParameter::Create("Cell Data", FilterParameter::Category::RequiredArray));
   {
     MultiDataArraySelectionFilterParameter::RequirementType req =
         MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Cell, IGeometry::Type::Image);
-    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Cell Arrays", CellAttributeMatrixPaths, FilterParameter::RequiredArray, InitializeData, req));
+    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Cell Arrays", CellAttributeMatrixPaths, FilterParameter::Category::RequiredArray, InitializeData, req));
   }
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("X Min (Column)", XMin, FilterParameter::Parameter, InitializeData));
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Y Min (Row)", YMin, FilterParameter::Parameter, InitializeData));
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Z Min (Plane)", ZMin, FilterParameter::Parameter, InitializeData));
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("X Max (Column)", XMax, FilterParameter::Parameter, InitializeData));
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Y Max (Row)", YMax, FilterParameter::Parameter, InitializeData));
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Z Max (Plane)", ZMax, FilterParameter::Parameter, InitializeData));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("X Min (Column)", XMin, FilterParameter::Category::Parameter, InitializeData));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Y Min (Row)", YMin, FilterParameter::Category::Parameter, InitializeData));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Z Min (Plane)", ZMin, FilterParameter::Category::Parameter, InitializeData));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("X Max (Column)", XMax, FilterParameter::Category::Parameter, InitializeData));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Y Max (Row)", YMax, FilterParameter::Category::Parameter, InitializeData));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Z Max (Plane)", ZMax, FilterParameter::Category::Parameter, InitializeData));
 
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
@@ -124,11 +124,11 @@ void InitializeData::setupFilterParameters()
                 << "InitRange";
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameters.push_back(parameter);
   }
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Initialization Value", InitValue, FilterParameter::Parameter, InitializeData, Manual));
-  parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitRange, FilterParameter::Parameter, InitializeData, RandomWithRange));
+  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Initialization Value", InitValue, FilterParameter::Category::Parameter, InitializeData, Manual));
+  parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitRange, FilterParameter::Category::Parameter, InitializeData, RandomWithRange));
   setFilterParameters(parameters);
 }
 

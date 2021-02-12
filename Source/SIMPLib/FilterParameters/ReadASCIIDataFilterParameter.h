@@ -43,6 +43,14 @@ class ASCIIWizardData;
 
 class SIMPLib_EXPORT ReadASCIIDataFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(ReadASCIIDataFilterParameter)
+  PYB11_SHARED_POINTERS(ReadASCIIDataFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString QVariant FilterParameter::Category int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = ReadASCIIDataFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -62,7 +70,16 @@ public:
    */
   static QString ClassName();
 
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const QVariant& defaultValue, Category category, int groupIndex = -1);
+  /**
+   * @brief Create
+   * @param humanLabel
+   * @param propertyName
+   * @param defaultValue
+   * @param category
+   * @param groupIndex
+   * @return
+   */
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QVariant& defaultValue, Category category, int groupIndex = -1);
 
   ~ReadASCIIDataFilterParameter() override;
 

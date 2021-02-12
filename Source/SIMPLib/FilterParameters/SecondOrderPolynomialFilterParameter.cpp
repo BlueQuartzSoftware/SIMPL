@@ -48,9 +48,9 @@ SecondOrderPolynomialFilterParameter::~SecondOrderPolynomialFilterParameter() = 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SecondOrderPolynomialFilterParameter::Pointer SecondOrderPolynomialFilterParameter::New(const QString& humanLabel, const QString& propertyName, const Float2ndOrderPoly_t& defaultValue,
-                                                                                        Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                        int groupIndex)
+SecondOrderPolynomialFilterParameter::Pointer SecondOrderPolynomialFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const Float2ndOrderPoly_t& defaultValue,
+                                                                                           Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                                                                                           int groupIndex)
 {
 
   SecondOrderPolynomialFilterParameter::Pointer ptr = SecondOrderPolynomialFilterParameter::New();

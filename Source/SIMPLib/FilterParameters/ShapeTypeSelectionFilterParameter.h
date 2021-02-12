@@ -64,6 +64,14 @@
  */
 class SIMPLib_EXPORT ShapeTypeSelectionFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(ShapeTypeSelectionFilterParameter)
+  PYB11_SHARED_POINTERS(ShapeTypeSelectionFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString ShapeType::Types FilterParameter::Category ShapeTypeSelectionFilterParameter::SetterCallbackType ShapeTypeSelectionFilterParameter::GetterCallbackType QString QString int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = ShapeTypeSelectionFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -104,8 +112,8 @@ public:
   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
   * @return
   */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, ShapeType::Types defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, const QString& phaseTypeCountProperty, const QString& phaseTypeArrayPathProperty, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, ShapeType::Types defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, const QString& phaseTypeCountProperty, const QString& phaseTypeArrayPathProperty, int groupIndex = -1);
 
   ~ShapeTypeSelectionFilterParameter() override;
 

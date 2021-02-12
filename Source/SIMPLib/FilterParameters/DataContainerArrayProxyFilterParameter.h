@@ -64,6 +64,14 @@
  */
 class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(DataContainerArrayProxyFilterParameter)
+  PYB11_SHARED_POINTERS(DataContainerArrayProxyFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString DataContainerArrayProxy FilterParameter::Category DataContainerArrayProxyFilterParameter::SetterCallbackType DataContainerArrayProxyFilterParameter::GetterCallbackType DataContainerArrayProxy Qt::CheckState int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = DataContainerArrayProxyFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -104,8 +112,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, DataContainerArrayProxy defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, DataContainerArrayProxy proxy, Qt::CheckState defState, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, DataContainerArrayProxy defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, DataContainerArrayProxy proxy, Qt::CheckState defState, int groupIndex = -1);
 
   ~DataContainerArrayProxyFilterParameter() override;
 

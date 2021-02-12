@@ -51,8 +51,8 @@ FileListInfoFilterParameter::~FileListInfoFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::New(const QString& humanLabel, const QString& propertyName, const StackFileListInfo& defaultValue, FilterParameter::Category category,
-                                                                      SetterCallbackType setterCallback, GetterCallbackType getterCallback)
+FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const StackFileListInfo& defaultValue,
+                                                                         FilterParameter::Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback)
 {
 
   FileListInfoFilterParameter::Pointer ptr = FileListInfoFilterParameter::New();

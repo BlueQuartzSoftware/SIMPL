@@ -47,8 +47,9 @@ MontageStructureSelectionFilterParameter::~MontageStructureSelectionFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MontageStructureSelectionFilterParameter::Pointer MontageStructureSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                                                SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+MontageStructureSelectionFilterParameter::Pointer MontageStructureSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue,
+                                                                                                   Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                                                                                                   int groupIndex)
 {
   MontageStructureSelectionFilterParameter::Pointer ptr = MontageStructureSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

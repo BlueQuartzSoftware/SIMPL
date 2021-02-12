@@ -51,8 +51,8 @@ CalculatorFilterParameter::~CalculatorFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CalculatorFilterParameter::Pointer CalculatorFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                  const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+CalculatorFilterParameter::Pointer CalculatorFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                     const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
   CalculatorFilterParameter::Pointer ptr = CalculatorFilterParameter::New();

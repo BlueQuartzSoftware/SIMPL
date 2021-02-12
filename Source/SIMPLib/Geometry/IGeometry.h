@@ -119,7 +119,7 @@ public:
   IGeometry();
   ~IGeometry() override;
 
-  using EnumType = unsigned int;
+  using EnumType = uint32_t;
 
   /**
    * @brief The VtkCellType enum

@@ -48,7 +48,7 @@ public:
   PopUpWidget(QWidget* parent = Q_NULLPTR);
   ~PopUpWidget() override;
 
-  using EnumType = unsigned int;
+  using EnumType = uint32_t;
 
   enum class ArrowOrientation : EnumType
   {

@@ -56,6 +56,16 @@ class AbstractFilter;
  */
 class SIMPLib_EXPORT FilterParameter
 {
+
+  // clang-format off
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(FilterParameter)
+  PYB11_SHARED_POINTERS(FilterParameter)
+
+  PYB11_ENUMERATION(Category)
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = FilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -73,7 +83,9 @@ public:
    */
   static QString ClassName();
 
-  enum Category
+  using EnumType = uint32_t;
+
+  enum class Category : EnumType
   {
     Parameter = 0,
     RequiredArray = 1,
@@ -223,24 +235,25 @@ using FilterParameterVectorType = std::vector<FilterParameter::Pointer>;
 // to the constructor. These macros support a minimum of 4 arguments.
 
 #define SIMPL_NEW_FP_9(Class, Desc, Prop, Category, Filter, Index, A, B, C, D)                                                                                                                         \
-  Class::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop), Index, A, B, C, D)
+  Class::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop), Index, A, B, C, D)
 
 #define SIMPL_NEW_FP_8(Class, Desc, Prop, Category, Filter, Index, A, B, C)                                                                                                                            \
-  Class::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop), Index, A, B, C)
+  Class::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop), Index, A, B, C)
 
 #define SIMPL_NEW_FP_7(Class, Desc, Prop, Category, Filter, Index, A, B)                                                                                                                               \
-  Class::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop), Index, A, B)
+  Class::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop), Index, A, B)
 
 #define SIMPL_NEW_FP_6(Class, Desc, Prop, Category, Filter, Index, A)                                                                                                                                  \
-  Class::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop), Index, A)
+  Class::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop), Index, A)
 
-#define SIMPL_NEW_FP_5(Class, Desc, Prop, Category, Filter, Index) Class::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop), Index)
+#define SIMPL_NEW_FP_5(Class, Desc, Prop, Category, Filter, Index)                                                                                                                                     \
+  Class::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop), Index)
 
-#define SIMPL_NEW_FP_4(Class, Desc, Prop, Category, Filter) Class::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop))
+#define SIMPL_NEW_FP_4(Class, Desc, Prop, Category, Filter) Class::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop))
 
-#define SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_5(Class, Desc, Prop, Category, Filter, Index) Class::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_GETTER(Filter, this, Prop), Index)
+#define SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_5(Class, Desc, Prop, Category, Filter, Index) Class::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_GETTER(Filter, this, Prop), Index)
 
-#define SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_4(Class, Desc, Prop, Category, Filter) Class::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_GETTER(Filter, this, Prop))
+#define SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_4(Class, Desc, Prop, Category, Filter) Class::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_GETTER(Filter, this, Prop))
 
 /**
  * @brief This macro is needed for Visual Studio due to differences of VAR_ARGS when

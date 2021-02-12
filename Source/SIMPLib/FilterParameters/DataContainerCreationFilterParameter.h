@@ -63,6 +63,14 @@
  */
 class SIMPLib_EXPORT DataContainerCreationFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(DataContainerCreationFilterParameter)
+  PYB11_SHARED_POINTERS(DataContainerCreationFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString DataArrayPath FilterParameter::Category DataContainerCreationFilterParameter::SetterCallbackType DataContainerCreationFilterParameter::GetterCallbackType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = DataContainerCreationFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -101,8 +109,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~DataContainerCreationFilterParameter() override;
 

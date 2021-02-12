@@ -48,8 +48,8 @@ ConstrainedIntFilterParameter::~ConstrainedIntFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ConstrainedIntFilterParameter::Pointer ConstrainedIntFilterParameter::New(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category,
-                                                                          const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+ConstrainedIntFilterParameter::Pointer ConstrainedIntFilterParameter::Create(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category,
+                                                                             const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
   ConstrainedIntFilterParameter::Pointer ptr = ConstrainedIntFilterParameter::New();

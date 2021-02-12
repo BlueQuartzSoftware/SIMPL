@@ -50,8 +50,8 @@ DataContainerCreationFilterParameter::~DataContainerCreationFilterParameter() = 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category,
-                                                                                        const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category,
+                                                                                           const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
   DataContainerCreationFilterParameter::Pointer ptr = DataContainerCreationFilterParameter::New();

@@ -67,10 +67,10 @@ void RenameAttributeMatrix::setupFilterParameters()
 
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix to Rename", SelectedAttributeMatrixPath, FilterParameter::RequiredArray, RenameAttributeMatrix, req));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix to Rename", SelectedAttributeMatrixPath, FilterParameter::Category::RequiredArray, RenameAttributeMatrix, req));
   }
 
-  parameters.push_back(SIMPL_NEW_STRING_FP("New Attribute Matrix Name", NewAttributeMatrix, FilterParameter::Parameter, RenameAttributeMatrix));
+  parameters.push_back(SIMPL_NEW_STRING_FP("New Attribute Matrix Name", NewAttributeMatrix, FilterParameter::Category::Parameter, RenameAttributeMatrix));
 
   setFilterParameters(parameters);
 }

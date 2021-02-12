@@ -42,7 +42,7 @@ void ReadASCIIData::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(ReadASCIIDataFilterParameter::New("ASCII Wizard Data", "WizardData", "WizardData", FilterParameter::Parameter));
+  parameters.push_back(ReadASCIIDataFilterParameter::Create("ASCII Wizard Data", "WizardData", "WizardData", FilterParameter::Category::Parameter));
 
   setFilterParameters(parameters);
 }

@@ -633,31 +633,31 @@ public:
   Q_PROPERTY(Float3rdOrderPoly_t Float3rdOrderPoly_2 READ getFloat3rdOrderPoly_2 WRITE setFloat3rdOrderPoly_2)
 
   // -----------------------------------------------------------------------------
-  void setFloat4thOrderPoly_1(const Float4thOrderPoly_t& value)
+  void setFloat4thOrderPoly_1(const Float4thOrderPolynomial& value)
   {
     m_Float4thOrderPoly_1 = value;
   }
 
   // -----------------------------------------------------------------------------
-  Float4thOrderPoly_t getFloat4thOrderPoly_1() const
+  Float4thOrderPolynomial getFloat4thOrderPoly_1() const
   {
     return m_Float4thOrderPoly_1;
   }
 
-  Q_PROPERTY(Float4thOrderPoly_t Float4thOrderPoly_1 READ getFloat4thOrderPoly_1 WRITE setFloat4thOrderPoly_1)
+  Q_PROPERTY(Float4thOrderPolynomial Float4thOrderPoly_1 READ getFloat4thOrderPoly_1 WRITE setFloat4thOrderPoly_1)
   // -----------------------------------------------------------------------------
-  void setFloat4thOrderPoly_2(const Float4thOrderPoly_t& value)
+  void setFloat4thOrderPoly_2(const Float4thOrderPolynomial& value)
   {
     m_Float4thOrderPoly_2 = value;
   }
 
   // -----------------------------------------------------------------------------
-  Float4thOrderPoly_t getFloat4thOrderPoly_2() const
+  Float4thOrderPolynomial getFloat4thOrderPoly_2() const
   {
     return m_Float4thOrderPoly_2;
   }
 
-  Q_PROPERTY(Float4thOrderPoly_t Float4thOrderPoly_2 READ getFloat4thOrderPoly_2 WRITE setFloat4thOrderPoly_2)
+  Q_PROPERTY(Float4thOrderPolynomial Float4thOrderPoly_2 READ getFloat4thOrderPoly_2 WRITE setFloat4thOrderPoly_2)
 
   // -----------------------------------------------------------------------------
   void setDataArrayPaths1(const QVector<DataArrayPath>& value)
@@ -790,8 +790,8 @@ public:
     {
       AttributeMatrixCreationFilterParameter::RequirementType req;
       AttributeMatrixCreationFilterParameter::Pointer fp =
-          AttributeMatrixCreationFilterParameter::New("Test", "ArrayPath1", getArrayPath1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
-                                                      SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1), req);
+          AttributeMatrixCreationFilterParameter::Create("Test", "ArrayPath1", getArrayPath1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
+                                                         SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1), req);
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -807,8 +807,8 @@ public:
     {
       AttributeMatrixSelectionFilterParameter::RequirementType req;
       AttributeMatrixSelectionFilterParameter::Pointer fp =
-          AttributeMatrixSelectionFilterParameter::New("Test", "ArrayPath1", getArrayPath1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
-                                                       SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1), req);
+          AttributeMatrixSelectionFilterParameter::Create("Test", "ArrayPath1", getArrayPath1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
+                                                          SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1), req);
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -822,8 +822,8 @@ public:
     }
 
     {
-      AxisAngleFilterParameter::Pointer fp = AxisAngleFilterParameter::New("Test", "AxisAngle1", getAxisAngle1(), FilterParameter::Parameter,
-                                                                           SIMPL_BIND_SETTER(FilterParametersRWTest, this, AxisAngle2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, AxisAngle1));
+      AxisAngleFilterParameter::Pointer fp = AxisAngleFilterParameter::Create("Test", "AxisAngle1", getAxisAngle1(), FilterParameter::Category::Parameter,
+                                                                              SIMPL_BIND_SETTER(FilterParametersRWTest, this, AxisAngle2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, AxisAngle1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -838,8 +838,8 @@ public:
     }
 
     {
-      BooleanFilterParameter::Pointer fp = BooleanFilterParameter::New("Test", "Bool1", getBool1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Bool2),
-                                                                       SIMPL_BIND_GETTER(FilterParametersRWTest, this, Bool1));
+      BooleanFilterParameter::Pointer fp = BooleanFilterParameter::Create("Test", "Bool1", getBool1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Bool2),
+                                                                          SIMPL_BIND_GETTER(FilterParametersRWTest, this, Bool1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -851,8 +851,8 @@ public:
     }
 
     {
-      CalculatorFilterParameter::Pointer fp = CalculatorFilterParameter::New("Test", "String1", getString1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+      CalculatorFilterParameter::Pointer fp = CalculatorFilterParameter::Create("Test", "String1", getString1(), FilterParameter::Category::Parameter,
+                                                                                SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -864,8 +864,8 @@ public:
     }
 
     {
-      ChoiceFilterParameter::Pointer fp = ChoiceFilterParameter::New("Test", "Int1", getInt1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Int2),
-                                                                     SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1), QVector<QString>(), true);
+      ChoiceFilterParameter::Pointer fp = ChoiceFilterParameter::Create("Test", "Int1", getInt1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Int2),
+                                                                        SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1), QVector<QString>(), true);
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -877,9 +877,9 @@ public:
     }
 
     {
-      ComparisonSelectionFilterParameter::Pointer fp =
-          ComparisonSelectionFilterParameter::New("Test", "ComparisonInputs1", ComparisonInputs(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ComparisonInputs2),
-                                                  SIMPL_BIND_GETTER(FilterParametersRWTest, this, ComparisonInputs1), QVector<QString>(), true);
+      ComparisonSelectionFilterParameter::Pointer fp = ComparisonSelectionFilterParameter::Create("Test", "ComparisonInputs1", ComparisonInputs(), FilterParameter::Category::Parameter,
+                                                                                                  SIMPL_BIND_SETTER(FilterParametersRWTest, this, ComparisonInputs2),
+                                                                                                  SIMPL_BIND_GETTER(FilterParametersRWTest, this, ComparisonInputs1), QVector<QString>(), true);
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -903,8 +903,8 @@ public:
     {
       DataArrayCreationFilterParameter::RequirementType req;
       DataArrayCreationFilterParameter::Pointer fp =
-          DataArrayCreationFilterParameter::New("Test", "ArrayPath1", getArrayPath1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
-                                                SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1), req);
+          DataArrayCreationFilterParameter::Create("Test", "ArrayPath1", getArrayPath1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
+                                                   SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1), req);
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -920,8 +920,8 @@ public:
     {
       DataArraySelectionFilterParameter::RequirementType req;
       DataArraySelectionFilterParameter::Pointer fp =
-          DataArraySelectionFilterParameter::New("Test", "ArrayPath1", getArrayPath1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
-                                                 SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1), req);
+          DataArraySelectionFilterParameter::Create("Test", "ArrayPath1", getArrayPath1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
+                                                    SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1), req);
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -936,8 +936,8 @@ public:
 
     {
       DataContainerArrayProxyFilterParameter::Pointer fp =
-          DataContainerArrayProxyFilterParameter::New("Test", "String1", DataContainerArrayProxy(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, DcaProxy2),
-                                                      SIMPL_BIND_GETTER(FilterParametersRWTest, this, DcaProxy1), DataContainerArrayProxy(), Qt::Checked);
+          DataContainerArrayProxyFilterParameter::Create("Test", "String1", DataContainerArrayProxy(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, DcaProxy2),
+                                                         SIMPL_BIND_GETTER(FilterParametersRWTest, this, DcaProxy1), DataContainerArrayProxy(), Qt::Checked);
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -952,8 +952,8 @@ public:
     }
 
     {
-      DataContainerCreationFilterParameter::Pointer fp = DataContainerCreationFilterParameter::New(
-          "Test", "Path1", getPath1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Path2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Path1));
+      DataContainerCreationFilterParameter::Pointer fp = DataContainerCreationFilterParameter::Create(
+          "Test", "Path1", getPath1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Path2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Path1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -966,8 +966,8 @@ public:
 
     {
       DataContainerSelectionFilterParameter::RequirementType req;
-      DataContainerSelectionFilterParameter::Pointer fp = DataContainerSelectionFilterParameter::New(
-          "Test", "Path1", getPath1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Path2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Path1), req);
+      DataContainerSelectionFilterParameter::Pointer fp = DataContainerSelectionFilterParameter::Create(
+          "Test", "Path1", getPath1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Path2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Path1), req);
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -979,8 +979,8 @@ public:
     }
 
     {
-      DoubleFilterParameter::Pointer fp = DoubleFilterParameter::New("Test", "Double1", getDouble1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Double2),
-                                                                     SIMPL_BIND_GETTER(FilterParametersRWTest, this, Double1));
+      DoubleFilterParameter::Pointer fp = DoubleFilterParameter::Create("Test", "Double1", getDouble1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Double2),
+                                                                        SIMPL_BIND_GETTER(FilterParametersRWTest, this, Double1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -992,8 +992,9 @@ public:
     }
 
     {
-      DynamicChoiceFilterParameter::Pointer fp = DynamicChoiceFilterParameter::New(
-          "Test", "String1", getString1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1), "");
+      DynamicChoiceFilterParameter::Pointer fp =
+          DynamicChoiceFilterParameter::Create("Test", "String1", getString1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
+                                               SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1), "");
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1006,8 +1007,8 @@ public:
 
     {
       DynamicTableFilterParameter::Pointer fp =
-          DynamicTableFilterParameter::New("Test", "DynamicData1", DynamicTableData(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, DynamicData2),
-                                           SIMPL_BIND_GETTER(FilterParametersRWTest, this, DynamicData1));
+          DynamicTableFilterParameter::Create("Test", "DynamicData1", DynamicTableData(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, DynamicData2),
+                                              SIMPL_BIND_GETTER(FilterParametersRWTest, this, DynamicData1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1023,8 +1024,8 @@ public:
 
     {
       FileListInfoFilterParameter::Pointer fp =
-          FileListInfoFilterParameter::New("Test", "FileListInfo1", StackFileListInfo(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, FileListInfo2),
-                                           SIMPL_BIND_GETTER(FilterParametersRWTest, this, FileListInfo1));
+          FileListInfoFilterParameter::Create("Test", "FileListInfo1", StackFileListInfo(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, FileListInfo2),
+                                              SIMPL_BIND_GETTER(FilterParametersRWTest, this, FileListInfo1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1043,8 +1044,9 @@ public:
     }
 
     {
-      FloatVec3FilterParameter::Pointer fp = FloatVec3FilterParameter::New("Test", "FloatVec3_1", FloatVec3Type(), FilterParameter::Parameter,
-                                                                           SIMPL_BIND_SETTER(FilterParametersRWTest, this, FloatVec3_2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, FloatVec3_1));
+      FloatVec3FilterParameter::Pointer fp =
+          FloatVec3FilterParameter::Create("Test", "FloatVec3_1", FloatVec3Type(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, FloatVec3_2),
+                                           SIMPL_BIND_GETTER(FilterParametersRWTest, this, FloatVec3_1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1059,8 +1061,8 @@ public:
 
     {
       FourthOrderPolynomialFilterParameter::Pointer fp =
-          FourthOrderPolynomialFilterParameter::New("Test", "Float4thOrderPoly_1", Float4thOrderPoly_t(), FilterParameter::Parameter,
-                                                    SIMPL_BIND_SETTER(FilterParametersRWTest, this, Float4thOrderPoly_2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Float4thOrderPoly_1));
+          FourthOrderPolynomialFilterParameter::Create("Test", "Float4thOrderPoly_1", Float4thOrderPolynomial(), FilterParameter::Category::Parameter,
+                                                       SIMPL_BIND_SETTER(FilterParametersRWTest, this, Float4thOrderPoly_2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Float4thOrderPoly_1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1082,12 +1084,12 @@ public:
       DREAM3D_REQUIRE_EQUAL(m_Float4thOrderPoly_1.c31, m_Float4thOrderPoly_2.c31)
       DREAM3D_REQUIRE_EQUAL(m_Float4thOrderPoly_1.c40, m_Float4thOrderPoly_2.c40)
 
-      m_Float4thOrderPoly_2 = Float4thOrderPoly_t();
+      m_Float4thOrderPoly_2 = Float4thOrderPolynomial();
     }
 
     {
-      InputFileFilterParameter::Pointer fp = InputFileFilterParameter::New("Test", "String1", getString1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
-                                                                           SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+      InputFileFilterParameter::Pointer fp = InputFileFilterParameter::Create("Test", "String1", getString1(), FilterParameter::Category::Parameter,
+                                                                              SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1099,8 +1101,8 @@ public:
     }
 
     {
-      InputPathFilterParameter::Pointer fp = InputPathFilterParameter::New("Test", "String1", getString1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
-                                                                           SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+      InputPathFilterParameter::Pointer fp = InputPathFilterParameter::Create("Test", "String1", getString1(), FilterParameter::Category::Parameter,
+                                                                              SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1112,8 +1114,8 @@ public:
     }
 
     {
-      IntFilterParameter::Pointer fp =
-          IntFilterParameter::New("Test", "Int1", getInt1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Int2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1));
+      IntFilterParameter::Pointer fp = IntFilterParameter::Create("Test", "Int1", getInt1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Int2),
+                                                                  SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1125,8 +1127,8 @@ public:
     }
 
     {
-      IntVec3FilterParameter::Pointer fp = IntVec3FilterParameter::New("Test", "IntVec3_1", IntVec3Type(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, IntVec3_2),
-                                                                       SIMPL_BIND_GETTER(FilterParametersRWTest, this, IntVec3_1));
+      IntVec3FilterParameter::Pointer fp = IntVec3FilterParameter::Create("Test", "IntVec3_1", IntVec3Type(), FilterParameter::Category::Parameter,
+                                                                          SIMPL_BIND_SETTER(FilterParametersRWTest, this, IntVec3_2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, IntVec3_1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1140,8 +1142,9 @@ public:
     }
 
     {
-      LinkedBooleanFilterParameter::Pointer fp = LinkedBooleanFilterParameter::New("Test", "Bool1", getBool1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Bool2),
-                                                                                   SIMPL_BIND_GETTER(FilterParametersRWTest, this, Bool1), QStringList());
+      LinkedBooleanFilterParameter::Pointer fp =
+          LinkedBooleanFilterParameter::Create("Test", "Bool1", getBool1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Bool2),
+                                               SIMPL_BIND_GETTER(FilterParametersRWTest, this, Bool1), QStringList());
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1153,8 +1156,9 @@ public:
     }
 
     {
-      LinkedChoicesFilterParameter::Pointer fp = LinkedChoicesFilterParameter::New("Test", "Int1", getInt1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Int2),
-                                                                                   SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1), QVector<QString>(), QStringList());
+      LinkedChoicesFilterParameter::Pointer fp =
+          LinkedChoicesFilterParameter::Create("Test", "Int1", getInt1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Int2),
+                                               SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1), QVector<QString>(), QStringList());
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1168,8 +1172,8 @@ public:
     {
       MultiDataArraySelectionFilterParameter::RequirementType req;
       MultiDataArraySelectionFilterParameter::Pointer fp =
-          MultiDataArraySelectionFilterParameter::New("Test", "DataArrayPaths1", getDataArrayPaths1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, DataArrayPaths2),
-                                                      SIMPL_BIND_GETTER(FilterParametersRWTest, this, DataArrayPaths1), req);
+          MultiDataArraySelectionFilterParameter::Create("Test", "DataArrayPaths1", getDataArrayPaths1(), FilterParameter::Category::Parameter,
+                                                         SIMPL_BIND_SETTER(FilterParametersRWTest, this, DataArrayPaths2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, DataArrayPaths1), req);
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1188,8 +1192,8 @@ public:
     }
 
     {
-      OutputFileFilterParameter::Pointer fp = OutputFileFilterParameter::New("Test", "String1", getString1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+      OutputFileFilterParameter::Pointer fp = OutputFileFilterParameter::Create("Test", "String1", getString1(), FilterParameter::Category::Parameter,
+                                                                                SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1201,8 +1205,8 @@ public:
     }
 
     {
-      OutputPathFilterParameter::Pointer fp = OutputPathFilterParameter::New("Test", "String1", getString1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+      OutputPathFilterParameter::Pointer fp = OutputPathFilterParameter::Create("Test", "String1", getString1(), FilterParameter::Category::Parameter,
+                                                                                SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1214,9 +1218,9 @@ public:
     }
 
     {
-      PhaseTypeSelectionFilterParameter::Pointer fp =
-          PhaseTypeSelectionFilterParameter::New("Test", "PhaseTypeVector_2", DataArrayPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, PhaseTypeVector_2),
-                                                 SIMPL_BIND_GETTER(FilterParametersRWTest, this, PhaseTypeVector_1), "", "", "", QStringList());
+      PhaseTypeSelectionFilterParameter::Pointer fp = PhaseTypeSelectionFilterParameter::Create("Test", "PhaseTypeVector_2", DataArrayPath(), FilterParameter::Category::Parameter,
+                                                                                                SIMPL_BIND_SETTER(FilterParametersRWTest, this, PhaseTypeVector_2),
+                                                                                                SIMPL_BIND_GETTER(FilterParametersRWTest, this, PhaseTypeVector_1), "", "", "", QStringList());
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1236,7 +1240,7 @@ public:
 This Filter Parameter is NOT tesed since nothing is read or written for the filter parameter.
     {
       PreflightUpdatedValueFilterParameter::Pointer fp =
-          PreflightUpdatedValueFilterParameter::New("Test", "String2", getString1(), FilterParameter::Parameter, SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+          PreflightUpdatedValueFilterParameter::Create("Test", "String2", getString1(), FilterParameter::Category::Parameter, SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1252,8 +1256,8 @@ This Filter Parameter is NOT tesed since nothing is read or written for the filt
     }
 #endif
     {
-      RangeFilterParameter::Pointer fp = RangeFilterParameter::New("Test", "Pair1", getPair1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Pair2),
-                                                                   SIMPL_BIND_GETTER(FilterParametersRWTest, this, Pair1));
+      RangeFilterParameter::Pointer fp = RangeFilterParameter::Create("Test", "Pair1", getPair1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Pair2),
+                                                                      SIMPL_BIND_GETTER(FilterParametersRWTest, this, Pair1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1267,8 +1271,8 @@ This Filter Parameter is NOT tesed since nothing is read or written for the filt
 
     {
       SecondOrderPolynomialFilterParameter::Pointer fp =
-          SecondOrderPolynomialFilterParameter::New("Test", "Float2ndOrderPoly_1", Float2ndOrderPoly_t(), FilterParameter::Parameter,
-                                                    SIMPL_BIND_SETTER(FilterParametersRWTest, this, Float2ndOrderPoly_2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Float2ndOrderPoly_1));
+          SecondOrderPolynomialFilterParameter::Create("Test", "Float2ndOrderPoly_1", Float2ndOrderPoly_t(), FilterParameter::Category::Parameter,
+                                                       SIMPL_BIND_SETTER(FilterParametersRWTest, this, Float2ndOrderPoly_2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Float2ndOrderPoly_1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1287,7 +1291,7 @@ This Filter Parameter is NOT tesed since nothing is read or written for the filt
     {
       ShapeType::Types shapeData;
       ShapeTypeSelectionFilterParameter::Pointer fp =
-          ShapeTypeSelectionFilterParameter::New("Test", "String1", shapeData, FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ShapeType::Types),
+          ShapeTypeSelectionFilterParameter::Create("Test", "String1", shapeData, FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ShapeType::Types),
                                                  SIMPL_BIND_GETTER(FilterParametersRWTest, this, ShapeType::Types), "String1", "");
 
       QJsonObject obj;
@@ -1305,8 +1309,8 @@ This Filter Parameter is NOT tesed since nothing is read or written for the filt
     }
 #endif
     {
-      StringFilterParameter::Pointer fp = StringFilterParameter::New("Test", "String1", getString1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
-                                                                     SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+      StringFilterParameter::Pointer fp = StringFilterParameter::Create("Test", "String1", getString1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
+                                                                        SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1319,8 +1323,8 @@ This Filter Parameter is NOT tesed since nothing is read or written for the filt
 
     {
       ThirdOrderPolynomialFilterParameter::Pointer fp =
-          ThirdOrderPolynomialFilterParameter::New("Test", "Float3rdOrderPoly_1", Float3rdOrderPoly_t(), FilterParameter::Parameter,
-                                                   SIMPL_BIND_SETTER(FilterParametersRWTest, this, Float3rdOrderPoly_2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Float3rdOrderPoly_1));
+          ThirdOrderPolynomialFilterParameter::Create("Test", "Float3rdOrderPoly_1", Float3rdOrderPoly_t(), FilterParameter::Category::Parameter,
+                                                      SIMPL_BIND_SETTER(FilterParametersRWTest, this, Float3rdOrderPoly_2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Float3rdOrderPoly_1));
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1438,8 +1442,8 @@ private:
   Float2ndOrderPoly_t m_Float2ndOrderPoly_2 = {};
   Float3rdOrderPoly_t m_Float3rdOrderPoly_1 = {};
   Float3rdOrderPoly_t m_Float3rdOrderPoly_2 = {};
-  Float4thOrderPoly_t m_Float4thOrderPoly_1 = {};
-  Float4thOrderPoly_t m_Float4thOrderPoly_2 = {};
+  Float4thOrderPolynomial m_Float4thOrderPoly_1 = {};
+  Float4thOrderPolynomial m_Float4thOrderPoly_2 = {};
   QVector<DataArrayPath> m_DataArrayPaths1 = {};
   QVector<DataArrayPath> m_DataArrayPaths2 = {};
   ShapeType::Types m_ShapeTypeVector_1 = {};

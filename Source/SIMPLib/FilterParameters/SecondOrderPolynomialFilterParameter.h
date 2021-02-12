@@ -99,6 +99,14 @@ Q_DECLARE_METATYPE(Float2ndOrderPoly_t)
  */
 class SIMPLib_EXPORT SecondOrderPolynomialFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(SecondOrderPolynomialFilterParameter)
+  PYB11_SHARED_POINTERS(SecondOrderPolynomialFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString Float2ndOrderPoly_t FilterParameter::Category SecondOrderPolynomialFilterParameter::SetterCallbackType SecondOrderPolynomialFilterParameter::GetterCallbackType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = SecondOrderPolynomialFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -137,8 +145,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const Float2ndOrderPoly_t& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const Float2ndOrderPoly_t& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~SecondOrderPolynomialFilterParameter() override;
 

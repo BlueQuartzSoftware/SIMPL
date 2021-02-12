@@ -48,8 +48,8 @@ StringFilterParameter::~StringFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StringFilterParameter::Pointer StringFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                          const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+StringFilterParameter::Pointer StringFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                             const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
   StringFilterParameter::Pointer ptr = StringFilterParameter::New();

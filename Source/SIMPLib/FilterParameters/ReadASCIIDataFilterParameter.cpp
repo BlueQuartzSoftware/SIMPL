@@ -51,7 +51,7 @@ ReadASCIIDataFilterParameter::~ReadASCIIDataFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ReadASCIIDataFilterParameter::Pointer ReadASCIIDataFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QVariant& defaultValue, Category category, int groupIndex)
+ReadASCIIDataFilterParameter::Pointer ReadASCIIDataFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QVariant& defaultValue, Category category, int groupIndex)
 {
   ReadASCIIDataFilterParameter::Pointer ptr = ReadASCIIDataFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

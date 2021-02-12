@@ -62,6 +62,14 @@
  */
 class SIMPLib_EXPORT PhaseTypeSelectionFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+//  PYB11_BEGIN_BINDINGS(PhaseTypeSelectionFilterParameter)
+//  PYB11_SHARED_POINTERS(PhaseTypeSelectionFilterParameter)
+//  PYB11_STATIC_CREATION(Create)
+//  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = PhaseTypeSelectionFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -104,9 +112,9 @@ public:
   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
   * @return
   */
-  static Pointer New(const QString& humanLabel, const QString& phaseTypeDataProperty, const DataArrayPath& attributeMatrixDefault, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, const QString& PhaseTypesArrayName, const QString& phaseTypeCountProperty, const QString& attributeMatrixProperty,
-                     const QStringList& phaseListChoices, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& phaseTypeDataProperty, const DataArrayPath& attributeMatrixDefault, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, const QString& PhaseTypesArrayName, const QString& phaseTypeCountProperty, const QString& attributeMatrixProperty,
+                        const QStringList& phaseListChoices, int groupIndex = -1);
 
   ~PhaseTypeSelectionFilterParameter() override;
 

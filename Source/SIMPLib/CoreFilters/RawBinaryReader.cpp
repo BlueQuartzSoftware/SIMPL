@@ -181,9 +181,9 @@ void RawBinaryReader::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Parameter, RawBinaryReader, "*.raw *.bin"));
-  parameters.push_back(SIMPL_NEW_NUMERICTYPE_FP("Scalar Type", ScalarType, FilterParameter::Parameter, RawBinaryReader));
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of Components", NumberOfComponents, FilterParameter::Parameter, RawBinaryReader));
+  parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Category::Parameter, RawBinaryReader, "*.raw *.bin"));
+  parameters.push_back(SIMPL_NEW_NUMERICTYPE_FP("Scalar Type", ScalarType, FilterParameter::Category::Parameter, RawBinaryReader));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of Components", NumberOfComponents, FilterParameter::Category::Parameter, RawBinaryReader));
   {
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
     parameter->setHumanLabel("Endian");
@@ -195,13 +195,13 @@ void RawBinaryReader::setupFilterParameters()
     choices.push_back("Little");
     choices.push_back("Big");
     parameter->setChoices(choices);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameters.push_back(parameter);
   }
-  parameters.push_back(SIMPL_NEW_UINT64_FP("Skip Header Bytes", SkipHeaderBytes, FilterParameter::Parameter, RawBinaryReader));
+  parameters.push_back(SIMPL_NEW_UINT64_FP("Skip Header Bytes", SkipHeaderBytes, FilterParameter::Category::Parameter, RawBinaryReader));
   {
     DataArrayCreationFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Output Attribute Array", CreatedAttributeArrayPath, FilterParameter::CreatedArray, RawBinaryReader, req));
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Output Attribute Array", CreatedAttributeArrayPath, FilterParameter::Category::CreatedArray, RawBinaryReader, req));
   }
   setFilterParameters(parameters);
 }

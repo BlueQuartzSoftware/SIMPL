@@ -141,7 +141,7 @@ public:
 
   int writeValue(const QString& name, Float2ndOrderPoly_t v) override;
   int writeValue(const QString& name, Float3rdOrderPoly_t v) override;
-  int writeValue(const QString& name, Float4thOrderPoly_t v) override;
+  int writeValue(const QString& name, Float4thOrderPolynomial v) override;
   int writeValue(const QString& name, StackFileListInfo v) override;
 
   int writeValue(const QString& name, ComparisonInput_t v) override;

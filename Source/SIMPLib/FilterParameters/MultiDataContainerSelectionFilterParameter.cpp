@@ -56,9 +56,9 @@ MultiDataContainerSelectionFilterParameter::~MultiDataContainerSelectionFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataContainerSelectionFilterParameter::Pointer MultiDataContainerSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QStringList& defaultValue,
-                                                                                                    Category category, const SetterCallbackType& setterCallback,
-                                                                                                    const GetterCallbackType& getterCallback, const RequirementType& req, int groupIndex)
+MultiDataContainerSelectionFilterParameter::Pointer MultiDataContainerSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QStringList& defaultValue,
+                                                                                                       Category category, const SetterCallbackType& setterCallback,
+                                                                                                       const GetterCallbackType& getterCallback, const RequirementType& req, int groupIndex)
 {
 
   MultiDataContainerSelectionFilterParameter::Pointer ptr = MultiDataContainerSelectionFilterParameter::New();

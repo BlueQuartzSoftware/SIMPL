@@ -67,7 +67,7 @@ CreateDataContainer::~CreateDataContainer() = default;
 void CreateDataContainer::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
-  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Data Container Name", DataContainerName, FilterParameter::CreatedArray, CreateDataContainer));
+  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Data Container Name", DataContainerName, FilterParameter::Category::CreatedArray, CreateDataContainer));
   setFilterParameters(parameters);
 }
 

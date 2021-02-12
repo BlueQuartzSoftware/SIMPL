@@ -66,12 +66,12 @@ ReplaceValueInArray::~ReplaceValueInArray() = default;
 void ReplaceValueInArray::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Value to Replace", RemoveValue, FilterParameter::Parameter, ReplaceValueInArray));
+  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Value to Replace", RemoveValue, FilterParameter::Category::Parameter, ReplaceValueInArray));
 
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("New Value", ReplaceValue, FilterParameter::Parameter, ReplaceValueInArray));
+  parameters.push_back(SIMPL_NEW_DOUBLE_FP("New Value", ReplaceValue, FilterParameter::Category::Parameter, ReplaceValueInArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, AttributeMatrix::Category::Any);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array", SelectedArray, FilterParameter::RequiredArray, ReplaceValueInArray, req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array", SelectedArray, FilterParameter::Category::RequiredArray, ReplaceValueInArray, req));
   }
   setFilterParameters(parameters);
 }

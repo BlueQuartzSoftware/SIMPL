@@ -78,7 +78,7 @@ CombineAttributeMatrices::~CombineAttributeMatrices() = default;
 void CombineAttributeMatrices::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
-  parameters.push_back(SeparatorFilterParameter::New("Feature/Ensemble Data", FilterParameter::RequiredArray));
+  parameters.push_back(SeparatorFilterParameter::Create("Feature/Ensemble Data", FilterParameter::Category::RequiredArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
     IGeometry::Types dcGeomTypes;
@@ -94,8 +94,8 @@ void CombineAttributeMatrices::setupFilterParameters()
     dcGeomTypes.push_back(IGeometry::Type::Any);
     req.amTypes = amTypes;
     req.dcGeometryTypes = dcGeomTypes;
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("First Feature/Ensemble Attribute Matrix", FirstAttributeMatrixPath, FilterParameter::RequiredArray, CombineAttributeMatrices, req));
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Second Feature/Ensemble Attribute Matrix", SecondAttributeMatrixPath, FilterParameter::RequiredArray, CombineAttributeMatrices, req));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("First Feature/Ensemble Attribute Matrix", FirstAttributeMatrixPath, FilterParameter::Category::RequiredArray, CombineAttributeMatrices, req));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Second Feature/Ensemble Attribute Matrix", SecondAttributeMatrixPath, FilterParameter::Category::RequiredArray, CombineAttributeMatrices, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req;
@@ -120,14 +120,16 @@ void CombineAttributeMatrices::setupFilterParameters()
     req.amTypes = amTypes;
     req.daTypes = daTypes;
     req.componentDimensions = compDims;
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("First Index Array", FirstIndexArrayPath, FilterParameter::RequiredArray, CombineAttributeMatrices, req));
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Second Index Array", SecondIndexArrayPath, FilterParameter::RequiredArray, CombineAttributeMatrices, req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("First Index Array", FirstIndexArrayPath, FilterParameter::Category::RequiredArray, CombineAttributeMatrices, req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Second Index Array", SecondIndexArrayPath, FilterParameter::Category::RequiredArray, CombineAttributeMatrices, req));
   }
 
-  parameters.push_back(SeparatorFilterParameter::New("Cell/Feature Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("New Index Array", NewIndexArrayName, FirstIndexArrayPath, FirstIndexArrayPath, FilterParameter::CreatedArray, CombineAttributeMatrices));
-  parameters.push_back(SeparatorFilterParameter::New("Feature/Ensemble Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Combined Attribute Matrix", CombinedAttributeMatrixName, FirstAttributeMatrixPath, FilterParameter::CreatedArray, CombineAttributeMatrices));
+  parameters.push_back(SeparatorFilterParameter::Create("Cell/Feature Data", FilterParameter::Category::CreatedArray));
+  parameters.push_back(
+      SIMPL_NEW_DA_WITH_LINKED_AM_FP("New Index Array", NewIndexArrayName, FirstIndexArrayPath, FirstIndexArrayPath, FilterParameter::Category::CreatedArray, CombineAttributeMatrices));
+  parameters.push_back(SeparatorFilterParameter::Create("Feature/Ensemble Data", FilterParameter::Category::CreatedArray));
+  parameters.push_back(
+      SIMPL_NEW_AM_WITH_LINKED_DC_FP("Combined Attribute Matrix", CombinedAttributeMatrixName, FirstAttributeMatrixPath, FilterParameter::Category::CreatedArray, CombineAttributeMatrices));
 
   setFilterParameters(parameters);
 }

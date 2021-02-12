@@ -350,19 +350,19 @@ void GenerateTiltSeries::setupFilterParameters()
             << "Y Axis"
             << "Z Axis";
     parameter->setChoices(choices);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameter->setSetterCallback(SIMPL_BIND_SETTER(GenerateTiltSeries, this, RotationAxis));
     parameter->setGetterCallback(SIMPL_BIND_GETTER(GenerateTiltSeries, this, RotationAxis));
     parameters.push_back(parameter);
   }
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Rotation Limits (Start, Stop, Increment) Degrees", RotationLimits, FilterParameter::Parameter, GenerateTiltSeries));
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Resample Spacing", Spacing, FilterParameter::Parameter, GenerateTiltSeries));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Rotation Limits (Start, Stop, Increment) Degrees", RotationLimits, FilterParameter::Category::Parameter, GenerateTiltSeries));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Resample Spacing", Spacing, FilterParameter::Category::Parameter, GenerateTiltSeries));
   //  DataArrayCreationFilterParameter::RequirementType dacReq;
-  //  parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Array Path", CreatedArrayPath, FilterParameter::Parameter, GenerateTiltSeries, dacReq));
+  //  parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Array Path", CreatedArrayPath, FilterParameter::Category::Parameter, GenerateTiltSeries, dacReq));
   DataArraySelectionFilterParameter::RequirementType dasReq;
   dasReq.dcGeometryTypes = {IGeometry::Type::Image};
   dasReq.amTypes = {AttributeMatrix::Type::Cell};
-  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Input Data Array Path", InputDataArrayPath, FilterParameter::Parameter, GenerateTiltSeries, dasReq));
+  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Input Data Array Path", InputDataArrayPath, FilterParameter::Category::Parameter, GenerateTiltSeries, dasReq));
   parameters.push_back(SIMPL_NEW_STRING_FP("DataContainer Prefix", OutputPrefix, FilterParameter::Category::Parameter, GenerateTiltSeries));
   setFilterParameters(parameters);
 }

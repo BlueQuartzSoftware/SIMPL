@@ -46,7 +46,7 @@
 FilterParameter::FilterParameter()
 : m_HumanLabel("")
 , m_PropertyName("")
-, m_Category(Uncategorized)
+, m_Category(FilterParameter::Category::Uncategorized)
 , m_ReadOnly(false)
 , m_GroupIndex(-1)
 {

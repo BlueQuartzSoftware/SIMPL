@@ -48,8 +48,8 @@ AxisAngleFilterParameter::~AxisAngleFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AxisAngleFilterParameter::Pointer AxisAngleFilterParameter::New(const QString& humanLabel, const QString& propertyName, const AxisAngleInput_t& defaultValue, Category category,
-                                                                const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+AxisAngleFilterParameter::Pointer AxisAngleFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const AxisAngleInput_t& defaultValue, Category category,
+                                                                   const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
   AxisAngleFilterParameter::Pointer ptr = AxisAngleFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

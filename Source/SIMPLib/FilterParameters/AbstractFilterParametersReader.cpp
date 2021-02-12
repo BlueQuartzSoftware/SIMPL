@@ -398,13 +398,13 @@ Float3rdOrderPoly_t AbstractFilterParametersReader::readFloat3rdOrderPoly(const 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Float4thOrderPoly_t AbstractFilterParametersReader::readFloat4thOrderPoly(const QString& name, Float4thOrderPoly_t defaultValue)
+Float4thOrderPolynomial AbstractFilterParametersReader::readFloat4thOrderPoly(const QString& name, Float4thOrderPolynomial defaultValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defaultValue)
 
   // This should never be executed
-  return Float4thOrderPoly_t();
+  return Float4thOrderPolynomial();
 }
 
 // -----------------------------------------------------------------------------

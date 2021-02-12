@@ -143,7 +143,7 @@ void FindDerivatives::setupFilterParameters()
     amTypes.push_back(AttributeMatrix::Type::Edge);
     amTypes.push_back(AttributeMatrix::Type::Vertex);
     req.amTypes = amTypes;
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Data Array to Process", SelectedArrayPath, FilterParameter::RequiredArray, FindDerivatives, req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Data Array to Process", SelectedArrayPath, FilterParameter::Category::RequiredArray, FindDerivatives, req));
   }
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Category::Unknown);
@@ -153,7 +153,7 @@ void FindDerivatives::setupFilterParameters()
     amTypes.push_back(AttributeMatrix::Type::Edge);
     amTypes.push_back(AttributeMatrix::Type::Vertex);
     req.amTypes = amTypes;
-    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Derivatives Array", DerivativesArrayPath, FilterParameter::CreatedArray, FindDerivatives, req));
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Derivatives Array", DerivativesArrayPath, FilterParameter::Category::CreatedArray, FindDerivatives, req));
   }
   setFilterParameters(parameters);
 }

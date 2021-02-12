@@ -81,7 +81,7 @@ void ListFilterParametersController::createFilterParametersJson(const QString& f
     QJsonObject filterObj;
     filterObj[SIMPL::JSON::FilterParameterName] = parameter->getNameOfClass();
     filterObj[SIMPL::JSON::FilterParameterWidget] = parameter->getWidgetType();
-    filterObj[SIMPL::JSON::FilterParameterCategory] = parameter->getCategory();
+    filterObj[SIMPL::JSON::FilterParameterCategory] = static_cast<int32_t>(parameter->getCategory());
     filterObj[SIMPL::JSON::FilterParameterGroupIndex] = parameter->getGroupIndex();
     filterObj[SIMPL::JSON::FilterParameterHumanLabel] = parameter->getHumanLabel();
     filterObj[SIMPL::JSON::FilterParameterPropertyName] = parameter->getPropertyName();

@@ -50,8 +50,8 @@ PreflightUpdatedValueFilterParameter::~PreflightUpdatedValueFilterParameter() = 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                                        GetterCallbackType getterCallback, int groupIndex)
+PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                                           GetterCallbackType getterCallback, int groupIndex)
 {
   PreflightUpdatedValueFilterParameter::Pointer ptr = PreflightUpdatedValueFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

@@ -73,8 +73,8 @@ void SplitAttributeArray::setupFilterParameters()
   FilterParameterVectorType parameters;
   DataArraySelectionFilterParameter::RequirementType dasReq =
       DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
-  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Multicomponent Attribute Array", InputArrayPath, FilterParameter::RequiredArray, SplitAttributeArray, dasReq));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Postfix", SplitArraysSuffix, FilterParameter::Parameter, SplitAttributeArray));
+  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Multicomponent Attribute Array", InputArrayPath, FilterParameter::Category::RequiredArray, SplitAttributeArray, dasReq));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Postfix", SplitArraysSuffix, FilterParameter::Category::Parameter, SplitAttributeArray));
   setFilterParameters(parameters);
 }
 

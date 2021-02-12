@@ -81,9 +81,9 @@ void DataContainerWriter::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", OutputFile, FilterParameter::Parameter, DataContainerWriter, "*.dream3d", ""));
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Write Xdmf File", WriteXdmfFile, FilterParameter::Parameter, DataContainerWriter));
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Include Xdmf Time Markers", WriteTimeSeries, FilterParameter::Parameter, DataContainerWriter));
+  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", OutputFile, FilterParameter::Category::Parameter, DataContainerWriter, "*.dream3d", ""));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Write Xdmf File", WriteXdmfFile, FilterParameter::Category::Parameter, DataContainerWriter));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Include Xdmf Time Markers", WriteTimeSeries, FilterParameter::Category::Parameter, DataContainerWriter));
 
   setFilterParameters(parameters);
 }

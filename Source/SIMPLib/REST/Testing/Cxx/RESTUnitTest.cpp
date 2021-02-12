@@ -1001,7 +1001,7 @@ public:
 
         DREAM3D_REQUIRE_EQUAL(responseFPObject.contains(SIMPL::JSON::FilterParameterCategory), true);
         DREAM3D_REQUIRE_EQUAL(responseFPObject[SIMPL::JSON::FilterParameterCategory].isDouble(), true);
-        DREAM3D_REQUIRE_EQUAL(responseFPObject[SIMPL::JSON::FilterParameterCategory].toInt(), parameters[i]->getCategory());
+        DREAM3D_REQUIRE_EQUAL(responseFPObject[SIMPL::JSON::FilterParameterCategory].toInt(), static_cast<int32_t>(parameters[i]->getCategory()));
 
         DREAM3D_REQUIRE_EQUAL(responseFPObject.contains(SIMPL::JSON::FilterParameterGroupIndex), true);
         DREAM3D_REQUIRE_EQUAL(responseFPObject[SIMPL::JSON::FilterParameterGroupIndex].isDouble(), true);

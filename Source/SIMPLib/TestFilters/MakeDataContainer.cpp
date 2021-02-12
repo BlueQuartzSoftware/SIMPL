@@ -80,11 +80,11 @@ void MakeDataContainer::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("FeatureIds", FeatureIdsArrayName, DataContainerName, CellAttributeMatrixName, FilterParameter::CreatedArray, MakeDataContainer));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Cell Euler Angles", CellEulerAnglesArrayName, FilterParameter::CreatedArray, MakeDataContainer));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Cell Phases", CellPhasesArrayName, FilterParameter::CreatedArray, MakeDataContainer));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Crystal Structures", CrystalStructuresArrayName, FilterParameter::CreatedArray, MakeDataContainer));
-  parameters.push_back(SIMPL_NEW_STRING_FP("LatticeConstants", LatticeConstantsArrayName, FilterParameter::CreatedArray, MakeDataContainer));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("FeatureIds", FeatureIdsArrayName, DataContainerName, CellAttributeMatrixName, FilterParameter::Category::CreatedArray, MakeDataContainer));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Cell Euler Angles", CellEulerAnglesArrayName, FilterParameter::Category::CreatedArray, MakeDataContainer));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Cell Phases", CellPhasesArrayName, FilterParameter::Category::CreatedArray, MakeDataContainer));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Crystal Structures", CrystalStructuresArrayName, FilterParameter::Category::CreatedArray, MakeDataContainer));
+  parameters.push_back(SIMPL_NEW_STRING_FP("LatticeConstants", LatticeConstantsArrayName, FilterParameter::Category::CreatedArray, MakeDataContainer));
 
   setFilterParameters(parameters);
 }

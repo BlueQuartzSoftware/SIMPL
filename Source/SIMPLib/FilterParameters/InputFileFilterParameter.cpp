@@ -52,9 +52,9 @@ InputFileFilterParameter::~InputFileFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InputFileFilterParameter::Pointer InputFileFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const QString& fileExtension,
-                                                                const QString& fileType, int groupIndex)
+InputFileFilterParameter::Pointer InputFileFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                   const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const QString& fileExtension,
+                                                                   const QString& fileType, int groupIndex)
 {
   InputFileFilterParameter::Pointer ptr = InputFileFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

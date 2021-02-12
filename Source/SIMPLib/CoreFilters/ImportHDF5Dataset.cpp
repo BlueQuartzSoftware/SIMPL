@@ -102,17 +102,17 @@ void ImportHDF5Dataset::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  ImportHDF5DatasetFilterParameter::Pointer parameter = ImportHDF5DatasetFilterParameter::New(QString("Select HDF5 File"), // Human Label
-                                                                                              QString("ImportHDF5File"),   // Property Name
-                                                                                              QString(""),                 // File Path Default Value
-                                                                                              QString(""),                 // Dataset Default value
-                                                                                              FilterParameter::Parameter,  // Category
-                                                                                              this, -1);
+  ImportHDF5DatasetFilterParameter::Pointer parameter = ImportHDF5DatasetFilterParameter::Create(QString("Select HDF5 File"),          // Human Label
+                                                                                                 QString("ImportHDF5File"),            // Property Name
+                                                                                                 QString(""),                          // File Path Default Value
+                                                                                                 QString(""),                          // Dataset Default value
+                                                                                                 FilterParameter::Category::Parameter, // Category
+                                                                                                 this, -1);
   parameters.push_back(parameter);
 
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix", SelectedAttributeMatrix, FilterParameter::RequiredArray, ImportHDF5Dataset, req));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix", SelectedAttributeMatrix, FilterParameter::Category::RequiredArray, ImportHDF5Dataset, req));
   }
 
   setFilterParameters(parameters);

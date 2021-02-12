@@ -39,6 +39,7 @@
 
 class SIMPLib_EXPORT FileListInfo
 {
+
 public:
   virtual ~FileListInfo();
 

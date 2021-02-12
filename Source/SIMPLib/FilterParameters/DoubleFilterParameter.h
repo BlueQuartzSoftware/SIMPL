@@ -62,6 +62,14 @@
  */
 class SIMPLib_EXPORT DoubleFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+//  PYB11_BEGIN_BINDINGS(DoubleFilterParameter)
+//  PYB11_SHARED_POINTERS(DoubleFilterParameter)
+//  PYB11_STATIC_CREATION(Create ARGS QString QString double FilterParameter::Category DoubleFilterParameter::SetterCallbackType DoubleFilterParameter::GetterCallbackType int )
+//  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = DoubleFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -100,8 +108,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, double defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                     int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, double defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   /**
    * @brief New This function instantiates an instance of the DoubleFilterParameter. Although this function is available to be used,
@@ -119,8 +127,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, float defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                     int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, float defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~DoubleFilterParameter() override;
 

@@ -132,7 +132,7 @@ void ExtractAttributeArraysFromGeometry::setupFilterParameters()
         "SharedVertexListArrayPath5", "SharedHexListArrayPath"                       // HexahedralGeom
     };
     parameter->setLinkedProperties(linkedProps);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     IGeometry::Types geomTypes = {IGeometry::Type::RectGrid, IGeometry::Type::Vertex,      IGeometry::Type::Edge,      IGeometry::Type::Triangle,
                                   IGeometry::Type::Quad,     IGeometry::Type::Tetrahedral, IGeometry::Type::Hexahedral};
     parameter->setDefaultGeometryTypes(geomTypes);
@@ -141,55 +141,55 @@ void ExtractAttributeArraysFromGeometry::setupFilterParameters()
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Any, IGeometry::Type::RectGrid);
     parameters.push_back(
-        SIMPL_NEW_DA_CREATION_FP("X Bounds", XBoundsArrayPath, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req, static_cast<int32_t>(IGeometry::Type::RectGrid)));
+        SIMPL_NEW_DA_CREATION_FP("X Bounds", XBoundsArrayPath, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req, static_cast<int32_t>(IGeometry::Type::RectGrid)));
     parameters.push_back(
-        SIMPL_NEW_DA_CREATION_FP("Y Bounds", YBoundsArrayPath, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req, static_cast<int32_t>(IGeometry::Type::RectGrid)));
+        SIMPL_NEW_DA_CREATION_FP("Y Bounds", YBoundsArrayPath, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req, static_cast<int32_t>(IGeometry::Type::RectGrid)));
     parameters.push_back(
-        SIMPL_NEW_DA_CREATION_FP("Z Bounds", ZBoundsArrayPath, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req, static_cast<int32_t>(IGeometry::Type::RectGrid)));
+        SIMPL_NEW_DA_CREATION_FP("Z Bounds", ZBoundsArrayPath, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req, static_cast<int32_t>(IGeometry::Type::RectGrid)));
   }
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Vertex, IGeometry::Type::Vertex);
-    parameters.push_back(
-        SIMPL_NEW_DA_CREATION_FP("Vertex List", SharedVertexListArrayPath0, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req, static_cast<int32_t>(IGeometry::Type::Vertex)));
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Vertex List", SharedVertexListArrayPath0, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req,
+                                                  static_cast<int32_t>(IGeometry::Type::Vertex)));
   }
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Vertex, IGeometry::Type::Edge);
-    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Shared Vertex List", SharedVertexListArrayPath1, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req,
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Shared Vertex List", SharedVertexListArrayPath1, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req,
                                                   static_cast<int32_t>(IGeometry::Type::Edge)));
     req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Edge, IGeometry::Type::Edge);
     parameters.push_back(
-        SIMPL_NEW_DA_CREATION_FP("Edge List", SharedEdgeListArrayPath, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req, static_cast<int32_t>(IGeometry::Type::Edge)));
+        SIMPL_NEW_DA_CREATION_FP("Edge List", SharedEdgeListArrayPath, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req, static_cast<int32_t>(IGeometry::Type::Edge)));
   }
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Vertex, IGeometry::Type::Triangle);
-    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Shared Vertex List", SharedVertexListArrayPath2, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req,
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Shared Vertex List", SharedVertexListArrayPath2, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req,
                                                   static_cast<int32_t>(IGeometry::Type::Triangle)));
     req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Face, IGeometry::Type::Triangle);
-    parameters.push_back(
-        SIMPL_NEW_DA_CREATION_FP("Triangle List", SharedTriListArrayPath, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req, static_cast<int32_t>(IGeometry::Type::Triangle)));
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Triangle List", SharedTriListArrayPath, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req,
+                                                  static_cast<int32_t>(IGeometry::Type::Triangle)));
   }
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Vertex, IGeometry::Type::Quad);
-    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Shared Vertex List", SharedVertexListArrayPath3, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req,
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Shared Vertex List", SharedVertexListArrayPath3, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req,
                                                   static_cast<int32_t>(IGeometry::Type::Quad)));
     req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Face, IGeometry::Type::Quad);
-    parameters.push_back(
-        SIMPL_NEW_DA_CREATION_FP("Quadrilateral List", SharedQuadListArrayPath, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req, static_cast<int32_t>(IGeometry::Type::Quad)));
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Quadrilateral List", SharedQuadListArrayPath, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req,
+                                                  static_cast<int32_t>(IGeometry::Type::Quad)));
   }
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Vertex, IGeometry::Type::Tetrahedral);
-    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Shared Vertex List", SharedVertexListArrayPath4, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req,
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Shared Vertex List", SharedVertexListArrayPath4, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req,
                                                   static_cast<int32_t>(IGeometry::Type::Tetrahedral)));
     req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Cell, IGeometry::Type::Tetrahedral);
-    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Tetrahedral List", SharedTetListArrayPath, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req,
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Tetrahedral List", SharedTetListArrayPath, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req,
                                                   static_cast<int32_t>(IGeometry::Type::Tetrahedral)));
   }
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Vertex, IGeometry::Type::Hexahedral);
-    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Shared Vertex List", SharedVertexListArrayPath5, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req,
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Shared Vertex List", SharedVertexListArrayPath5, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req,
                                                   static_cast<int32_t>(IGeometry::Type::Hexahedral)));
     req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Cell, IGeometry::Type::Hexahedral);
-    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Hexahedral List", SharedHexListArrayPath, FilterParameter::RequiredArray, ExtractAttributeArraysFromGeometry, req,
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Hexahedral List", SharedHexListArrayPath, FilterParameter::Category::RequiredArray, ExtractAttributeArraysFromGeometry, req,
                                                   static_cast<int32_t>(IGeometry::Type::Hexahedral)));
   }
   setFilterParameters(parameters);

@@ -63,8 +63,8 @@ CreateGridMontage::~CreateGridMontage() = default;
 void CreateGridMontage::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
-  parameters.push_back(SIMPL_NEW_DC_GRID_SELECTION_FP("Data Container Grid", GridSelection, FilterParameter::Parameter, CreateGridMontage));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Created Montage Name", MontageName, FilterParameter::CreatedArray, CreateGridMontage));
+  parameters.push_back(SIMPL_NEW_DC_GRID_SELECTION_FP("Data Container Grid", GridSelection, FilterParameter::Category::Parameter, CreateGridMontage));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Created Montage Name", MontageName, FilterParameter::Category::CreatedArray, CreateGridMontage));
   setFilterParameters(parameters);
 }
 

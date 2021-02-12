@@ -48,7 +48,7 @@ UnknownFilterParameter::~UnknownFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-UnknownFilterParameter::Pointer UnknownFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, int groupIndex)
+UnknownFilterParameter::Pointer UnknownFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, int groupIndex)
 {
   UnknownFilterParameter::Pointer ptr = UnknownFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

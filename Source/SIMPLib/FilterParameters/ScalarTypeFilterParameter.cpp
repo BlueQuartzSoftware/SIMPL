@@ -48,8 +48,8 @@ ScalarTypeFilterParameter::~ScalarTypeFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ScalarTypeFilterParameter::Pointer ScalarTypeFilterParameter::New(const QString& humanLabel, const QString& propertyName, SIMPL::ScalarTypes::Type defaultValue, Category category,
-                                                                  const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+ScalarTypeFilterParameter::Pointer ScalarTypeFilterParameter::Create(const QString& humanLabel, const QString& propertyName, SIMPL::ScalarTypes::Type defaultValue, Category category,
+                                                                     const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
   ScalarTypeFilterParameter::Pointer ptr = ScalarTypeFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

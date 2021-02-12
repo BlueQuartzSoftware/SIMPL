@@ -77,21 +77,22 @@ void RemoveComponentFromArray::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Component Number to Remove", CompNumber, FilterParameter::Parameter, RemoveComponentFromArray));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Component Number to Remove", CompNumber, FilterParameter::Category::Parameter, RemoveComponentFromArray));
 
   DataArraySelectionFilterParameter::RequirementType req =
       DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Category::Any);
-  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Multicomponent Attribute Array", SelectedArrayPath, FilterParameter::RequiredArray, RemoveComponentFromArray, req));
+  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Multicomponent Attribute Array", SelectedArrayPath, FilterParameter::Category::RequiredArray, RemoveComponentFromArray, req));
 
   parameters.push_back(
-      SIMPL_NEW_DA_WITH_LINKED_AM_FP("Removed Component Attribute Array", NewArrayArrayName, SelectedArrayPath, SelectedArrayPath, FilterParameter::CreatedArray, RemoveComponentFromArray));
+      SIMPL_NEW_DA_WITH_LINKED_AM_FP("Removed Component Attribute Array", NewArrayArrayName, SelectedArrayPath, SelectedArrayPath, FilterParameter::Category::CreatedArray, RemoveComponentFromArray));
 
-  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Reduced Attribute Array", ReducedArrayArrayName, SelectedArrayPath, SelectedArrayPath, FilterParameter::CreatedArray, RemoveComponentFromArray));
+  parameters.push_back(
+      SIMPL_NEW_DA_WITH_LINKED_AM_FP("Reduced Attribute Array", ReducedArrayArrayName, SelectedArrayPath, SelectedArrayPath, FilterParameter::Category::CreatedArray, RemoveComponentFromArray));
 
   QStringList linkedProps;
   linkedProps.clear();
   linkedProps << "NewArrayArrayName";
-  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Save Removed Component in New Array", SaveRemovedComponent, FilterParameter::Parameter, RemoveComponentFromArray, linkedProps));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Save Removed Component in New Array", SaveRemovedComponent, FilterParameter::Category::Parameter, RemoveComponentFromArray, linkedProps));
 
   setFilterParameters(parameters);
 }

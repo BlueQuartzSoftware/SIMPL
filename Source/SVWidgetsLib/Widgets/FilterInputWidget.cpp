@@ -330,19 +330,19 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
     }
 
     // Determine which group box to add the widget into
-    if(parameter->getCategory() == FilterParameter::Parameter)
+    if(parameter->getCategory() == FilterParameter::Category::Parameter)
     {
       filterParameterWidget->setParent(m_VariablesWidget);
       pLayout->addWidget(filterParameterWidget);
       pCount++;
     }
-    else if(parameter->getCategory() == FilterParameter::RequiredArray)
+    else if(parameter->getCategory() == FilterParameter::Category::RequiredArray)
     {
       filterParameterWidget->setParent(m_VariablesWidget);
       rLayout->addWidget(filterParameterWidget);
       rCount++;
     }
-    else if(parameter->getCategory() == FilterParameter::CreatedArray)
+    else if(parameter->getCategory() == FilterParameter::Category::CreatedArray)
     {
       filterParameterWidget->setParent(m_VariablesWidget);
       cLayout->addWidget(filterParameterWidget);

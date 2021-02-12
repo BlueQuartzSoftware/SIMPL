@@ -199,7 +199,7 @@ public:
     Contents
   };
 
-  using EnumType = unsigned int;
+  using EnumType = uint32_t;
 
   enum class WidgetState : EnumType
   {

@@ -526,7 +526,7 @@ int H5FilterParametersWriter::writeValue(const QString& name, Float3rdOrderPoly_
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5FilterParametersWriter::writeValue(const QString& name, Float4thOrderPoly_t v)
+int H5FilterParametersWriter::writeValue(const QString& name, Float4thOrderPolynomial v)
 {
   int err = 0;
   int32_t rank = 1;

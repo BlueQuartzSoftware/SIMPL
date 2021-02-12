@@ -48,8 +48,8 @@ RangeFilterParameter::~RangeFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RangeFilterParameter::Pointer RangeFilterParameter::New(const QString& humanLabel, const QString& propertyName, const FPRangePair& defaultPair, Category category,
-                                                        const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+RangeFilterParameter::Pointer RangeFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const FPRangePair& defaultPair, Category category,
+                                                           const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
   RangeFilterParameter::Pointer ptr = RangeFilterParameter::New();

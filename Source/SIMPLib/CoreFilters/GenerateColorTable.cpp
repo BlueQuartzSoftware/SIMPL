@@ -244,7 +244,7 @@ void GenerateColorTable::setupFilterParameters()
   {
     GenerateColorTableFilterParameter::Pointer parameter = GenerateColorTableFilterParameter::New();
     parameter->setHumanLabel("Select Preset...");
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameter->setPropertyName("SelectedPresetName");
     parameter->setFilter(this);
     parameters.push_back(parameter);
@@ -252,10 +252,10 @@ void GenerateColorTable::setupFilterParameters()
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Data Array", SelectedDataArrayPath, FilterParameter::RequiredArray, GenerateColorTable, req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Data Array", SelectedDataArrayPath, FilterParameter::Category::RequiredArray, GenerateColorTable, req));
   }
 
-  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("RGB Array Name", RgbArrayName, SelectedDataArrayPath, SelectedDataArrayPath, FilterParameter::CreatedArray, GenerateColorTable));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("RGB Array Name", RgbArrayName, SelectedDataArrayPath, SelectedDataArrayPath, FilterParameter::Category::CreatedArray, GenerateColorTable));
 
   setFilterParameters(parameters);
 }

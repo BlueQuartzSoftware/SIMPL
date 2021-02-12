@@ -374,7 +374,7 @@ int AbstractFilterParametersWriter::writeValue(const QString& name, Float3rdOrde
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString& name, Float4thOrderPoly_t v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, Float4thOrderPolynomial v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)

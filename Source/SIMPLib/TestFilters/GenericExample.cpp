@@ -128,25 +128,25 @@ void GenericExample::setupFilterParameters()
   FilterParameterVectorType parameters;
   /* Place all your option initialization code here */
   /* For String input use this code */
-  parameters.push_back(SIMPL_NEW_STRING_FP("STL Output Prefix", StlFilePrefix, FilterParameter::Parameter, GenericExample));
+  parameters.push_back(SIMPL_NEW_STRING_FP("STL Output Prefix", StlFilePrefix, FilterParameter::Category::Parameter, GenericExample));
 
   /*   For an output file use this code*/
-  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", OutputFile, FilterParameter::Parameter, GenericExample));
+  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", OutputFile, FilterParameter::Category::Parameter, GenericExample));
   /*   For an output path use this code*/
-  parameters.push_back(SIMPL_NEW_OUTPUT_PATH_FP("Output Path", OutputPath, FilterParameter::Parameter, GenericExample));
+  parameters.push_back(SIMPL_NEW_OUTPUT_PATH_FP("Output Path", OutputPath, FilterParameter::Category::Parameter, GenericExample));
   /*   For a simple true/false boolean use this code*/
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Write Alignment Shift File", WriteAlignmentShifts, FilterParameter::Parameter, GenericExample));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Write Alignment Shift File", WriteAlignmentShifts, FilterParameter::Category::Parameter, GenericExample));
 
-  parameters.push_back(SeparatorFilterParameter::New("Choice Example", FilterParameter::Parameter));
+  parameters.push_back(SeparatorFilterParameter::Create("Choice Example", FilterParameter::Category::Parameter));
 
-  parameters.push_back(SIMPL_NEW_FILELISTINFO_FP("Input File List", InputFileListInfo, FilterParameter::Parameter, GenericExample));
+  parameters.push_back(SIMPL_NEW_FILELISTINFO_FP("Input File List", InputFileListInfo, FilterParameter::Category::Parameter, GenericExample));
 
   {
     QVector<QString> choices;
     choices.push_back("Beta");
     choices.push_back("Lognormal");
     choices.push_back("Power");
-    parameters.push_back(SIMPL_NEW_CHOICE_FP("Size Distribution Fit Type", SizeDistributionFitType, FilterParameter::Parameter, GenericExample, choices, false));
+    parameters.push_back(SIMPL_NEW_CHOICE_FP("Size Distribution Fit Type", SizeDistributionFitType, FilterParameter::Category::Parameter, GenericExample, choices, false));
   }
 
   {
@@ -154,7 +154,7 @@ void GenericExample::setupFilterParameters()
     choices.push_back("CellData");
     choices.push_back("CellEnsemble");
     choices.push_back("FeatureIds");
-    parameters.push_back(SIMPL_NEW_COMP_SEL_FP("Select Arrays to Threshold", SelectedThresholds, FilterParameter::Parameter, GenericExample, choices, true));
+    parameters.push_back(SIMPL_NEW_COMP_SEL_FP("Select Arrays to Threshold", SelectedThresholds, FilterParameter::Category::Parameter, GenericExample, choices, true));
   }
 
   /*   For presenting a set of choices to the user use this code*/
@@ -170,60 +170,60 @@ void GenericExample::setupFilterParameters()
     choices.push_back("Degrees To Radians");
     choices.push_back("Radians To Degrees");
     parameter->setChoices(choices);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameters.push_back(parameter);
   }
 
-  parameters.push_back(SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Estimated Primary Features", EstimatedPrimaryFeatures, FilterParameter::Parameter, GenericExample));
+  parameters.push_back(SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Estimated Primary Features", EstimatedPrimaryFeatures, FilterParameter::Category::Parameter, GenericExample));
 
   /* Display a group of 3 text boxes to collect 3 integer values */
-  parameters.push_back(SIMPL_NEW_INT_VEC3_FP("Dimensions (XYZ)", Dimensions, FilterParameter::Parameter, GenericExample));
-  parameters.push_back(SIMPL_NEW_INT_VEC2_FP("Range (XY)", Range, FilterParameter::Parameter, GenericExample));
+  parameters.push_back(SIMPL_NEW_INT_VEC3_FP("Dimensions (XYZ)", Dimensions, FilterParameter::Category::Parameter, GenericExample));
+  parameters.push_back(SIMPL_NEW_INT_VEC2_FP("Range (XY)", Range, FilterParameter::Category::Parameter, GenericExample));
 
-  parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitRange, FilterParameter::Parameter, GenericExample));
+  parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitRange, FilterParameter::Category::Parameter, GenericExample));
 
-  parameters.push_back(SIMPL_NEW_SecondO_POLY_FP("Second Order A Coefficients", SecondOrderACoeff, FilterParameter::Parameter, GenericExample, 0));
+  parameters.push_back(SIMPL_NEW_SecondO_POLY_FP("Second Order A Coefficients", SecondOrderACoeff, FilterParameter::Category::Parameter, GenericExample, 0));
 
-  parameters.push_back(SIMPL_NEW_ThirdO_POLY_FP("Third Order A Coefficients", ThirdOrderACoeff, FilterParameter::Parameter, GenericExample, 1));
+  parameters.push_back(SIMPL_NEW_ThirdO_POLY_FP("Third Order A Coefficients", ThirdOrderACoeff, FilterParameter::Category::Parameter, GenericExample, 1));
 
-  parameters.push_back(SIMPL_NEW_SHAPETYPE_SELECTION_FP("Shape Types", ShapeTypeData, FilterParameter::CreatedArray, GenericExample, "PhaseCount", "InputPhaseTypesArrayPath"));
+  parameters.push_back(SIMPL_NEW_SHAPETYPE_SELECTION_FP("Shape Types", ShapeTypeData, FilterParameter::Category::CreatedArray, GenericExample, "PhaseCount", "InputPhaseTypesArrayPath"));
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Ids", FeatureIdsArrayPath, FilterParameter::Parameter, GenericExample, req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Ids", FeatureIdsArrayPath, FilterParameter::Category::Parameter, GenericExample, req));
   }
 
   {
     DataContainerArrayProxy proxy;
-    parameters.push_back(SIMPL_NEW_DCA_PROXY_FP("Array to Select", DcaProxy, FilterParameter::Parameter, GenericExample, proxy, Qt::Checked));
+    parameters.push_back(SIMPL_NEW_DCA_PROXY_FP("Array to Select", DcaProxy, FilterParameter::Category::Parameter, GenericExample, proxy, Qt::Checked));
   }
 
-  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Created Data Container", CreatedDataContainer, FilterParameter::CreatedArray, GenericExample));
+  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Created Data Container", CreatedDataContainer, FilterParameter::Category::CreatedArray, GenericExample));
 
   {
     QStringList linkedProps;
     linkedProps << "Bool2"
                 << "Double2";
-    parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Bool1", Bool1, FilterParameter::Parameter, GenericExample, linkedProps));
-    parameters.push_back(SIMPL_NEW_DOUBLE_FP("Double 2", Double2, FilterParameter::Parameter, GenericExample));
+    parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Bool1", Bool1, FilterParameter::Category::Parameter, GenericExample, linkedProps));
+    parameters.push_back(SIMPL_NEW_DOUBLE_FP("Double 2", Double2, FilterParameter::Category::Parameter, GenericExample));
   }
 
-  parameters.push_back(SIMPL_NEW_DYN_CHOICE_FP("X Coordinate Array", SelectedXCoordArrayName, FilterParameter::CreatedArray, GenericExample, "DataArrayList"));
+  parameters.push_back(SIMPL_NEW_DYN_CHOICE_FP("X Coordinate Array", SelectedXCoordArrayName, FilterParameter::Category::CreatedArray, GenericExample, "DataArrayList"));
 
   {
     QStringList linkedProps;
     linkedProps << "AttributeMatrixPath";
-    parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Bool2", Bool2, FilterParameter::Parameter, GenericExample, linkedProps));
+    parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Bool2", Bool2, FilterParameter::Category::Parameter, GenericExample, linkedProps));
   }
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix", AttributeMatrixPath, FilterParameter::Parameter, GenericExample, req));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix", AttributeMatrixPath, FilterParameter::Category::Parameter, GenericExample, req));
   }
   {
     AttributeMatrixCreationFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_AM_CREATION_FP("Created Attribute Matrix", CreatedAttributeMatrix, FilterParameter::CreatedArray, GenericExample, req));
+    parameters.push_back(SIMPL_NEW_AM_CREATION_FP("Created Attribute Matrix", CreatedAttributeMatrix, FilterParameter::Category::CreatedArray, GenericExample, req));
   }
-  parameters.push_back(SeparatorFilterParameter::New("Linked Combo Box Example (1)", FilterParameter::Parameter));
+  parameters.push_back(SeparatorFilterParameter::Create("Linked Combo Box Example (1)", FilterParameter::Category::Parameter));
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Select Distance Metric");
@@ -245,21 +245,21 @@ void GenericExample::setupFilterParameters()
                 << "InputPath";
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameters.push_back(parameter);
 
     /*  For an Integer use this code*/
-    parameters.push_back(SIMPL_NEW_INTEGER_FP("Max Iterations", MaxIterations, FilterParameter::Parameter, GenericExample, 0)); /*  For a Floating point value use this code*/
-    parameters.push_back(SIMPL_NEW_DOUBLE_FP("Misorientation Tolerance", MisorientationTolerance, FilterParameter::Parameter, GenericExample, 1));
+    parameters.push_back(SIMPL_NEW_INTEGER_FP("Max Iterations", MaxIterations, FilterParameter::Category::Parameter, GenericExample, 0)); /*  For a Floating point value use this code*/
+    parameters.push_back(SIMPL_NEW_DOUBLE_FP("Misorientation Tolerance", MisorientationTolerance, FilterParameter::Category::Parameter, GenericExample, 1));
     /*   For an input file use this code*/
-    parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Parameter, GenericExample, "*.txt", "", 1));
+    parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Category::Parameter, GenericExample, "*.txt", "", 1));
     /*   For an input path use this code*/
-    parameters.push_back(SIMPL_NEW_INPUT_PATH_FP("Input Path", InputPath, FilterParameter::Parameter, GenericExample, "*.txt", "", 2));
+    parameters.push_back(SIMPL_NEW_INPUT_PATH_FP("Input Path", InputPath, FilterParameter::Category::Parameter, GenericExample, "*.txt", "", 2));
   }
 
   //------------------
 
-  parameters.push_back(SeparatorFilterParameter::New("Linked Combo Box Example (2)", FilterParameter::Parameter));
+  parameters.push_back(SeparatorFilterParameter::Create("Linked Combo Box Example (2)", FilterParameter::Category::Parameter));
 
   /*   For presenting a set of choices to the user use this code*/
   {
@@ -283,24 +283,24 @@ void GenericExample::setupFilterParameters()
                 << "DataContainerName";
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameters.push_back(parameter);
 
     {
       DataArrayCreationFilterParameter::RequirementType req;
-      parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Data Array", CreatedDataArray, FilterParameter::Parameter, GenericExample, req, 0));
+      parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Data Array", CreatedDataArray, FilterParameter::Category::Parameter, GenericExample, req, 0));
     }
     /* Display a group of 3 text boxes to collect 3 float values */
-    parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Parameter, GenericExample, 1));
+    parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Category::Parameter, GenericExample, 1));
 
     /* Display the AxisAngleWidget to collect Axis-Angle pairs from the user */
-    parameters.push_back(SIMPL_NEW_AXISANGLE_FP("Crystal Rotations", CrystalSymmetryRotations, FilterParameter::Parameter, GenericExample, 2));
+    parameters.push_back(SIMPL_NEW_AXISANGLE_FP("Crystal Rotations", CrystalSymmetryRotations, FilterParameter::Category::Parameter, GenericExample, 2));
 
-    parameters.push_back(SIMPL_NEW_FourthO_POLY_FP("Fourth Order A Coefficients", FourthOrderACoeff, FilterParameter::Parameter, GenericExample, 2));
+    parameters.push_back(SIMPL_NEW_FourthO_POLY_FP("Fourth Order A Coefficients", FourthOrderACoeff, FilterParameter::Category::Parameter, GenericExample, 2));
 
     {
       DataContainerSelectionFilterParameter::RequirementType req;
-      parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container", DataContainerName, FilterParameter::Parameter, GenericExample, req, 2));
+      parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container", DataContainerName, FilterParameter::Category::Parameter, GenericExample, req, 2));
     }
   }
   QVector<DataArrayPath> paths;
@@ -309,11 +309,11 @@ void GenericExample::setupFilterParameters()
 
   {
     MultiDataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Multi Data Array Test", SelectedMultiArrayPaths, FilterParameter::Parameter, GenericExample, req, 0));
+    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Multi Data Array Test", SelectedMultiArrayPaths, FilterParameter::Category::Parameter, GenericExample, req, 0));
   }
 
-  parameters.push_back(SeparatorFilterParameter::New("Montage Selection Example", FilterParameter::Parameter));
-  parameters.push_back(SIMPL_NEW_MONTAGE_SELECTION_FP("Montage Selection", MontageSelection, FilterParameter::Parameter, GenericExample));
+  parameters.push_back(SeparatorFilterParameter::Create("Montage Selection Example", FilterParameter::Category::Parameter));
+  parameters.push_back(SIMPL_NEW_MONTAGE_SELECTION_FP("Montage Selection", MontageSelection, FilterParameter::Category::Parameter, GenericExample));
 
   setFilterParameters(parameters);
 }
@@ -555,13 +555,13 @@ Float3rdOrderPoly_t GenericExample::getThirdOrderACoeff() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setFourthOrderACoeff(const Float4thOrderPoly_t& value)
+void GenericExample::setFourthOrderACoeff(const Float4thOrderPolynomial& value)
 {
   m_FourthOrderACoeff = value;
 }
 
 // -----------------------------------------------------------------------------
-Float4thOrderPoly_t GenericExample::getFourthOrderACoeff() const
+Float4thOrderPolynomial GenericExample::getFourthOrderACoeff() const
 {
   return m_FourthOrderACoeff;
 }

@@ -72,9 +72,9 @@ FeatureDataCSVWriter::~FeatureDataCSVWriter() = default;
 void FeatureDataCSVWriter::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
-  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", FeatureDataFile, FilterParameter::Parameter, FeatureDataCSVWriter, "*.csv", "Comma Separated Data"));
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Write Neighbor Data", WriteNeighborListData, FilterParameter::Parameter, FeatureDataCSVWriter));
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Write Number of Features Line", WriteNumFeaturesLine, FilterParameter::Parameter, FeatureDataCSVWriter));
+  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", FeatureDataFile, FilterParameter::Category::Parameter, FeatureDataCSVWriter, "*.csv", "Comma Separated Data"));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Write Neighbor Data", WriteNeighborListData, FilterParameter::Category::Parameter, FeatureDataCSVWriter));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Write Number of Features Line", WriteNumFeaturesLine, FilterParameter::Category::Parameter, FeatureDataCSVWriter));
 
   {
     QVector<QString> choices;
@@ -84,13 +84,13 @@ void FeatureDataCSVWriter::setupFilterParameters()
     choices.push_back("Tab");
     choices.push_back("Space");
 
-    parameters.push_back(SIMPL_NEW_CHOICE_FP("Delimiter", DelimiterChoiceInt, FilterParameter::Parameter, FeatureDataCSVWriter, choices, false));
+    parameters.push_back(SIMPL_NEW_CHOICE_FP("Delimiter", DelimiterChoiceInt, FilterParameter::Category::Parameter, FeatureDataCSVWriter, choices, false));
   }
 
-  parameters.push_back(SeparatorFilterParameter::New("Feature Data", FilterParameter::RequiredArray));
+  parameters.push_back(SeparatorFilterParameter::Create("Feature Data", FilterParameter::Category::RequiredArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(AttributeMatrix::Category::Feature);
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Feature Attribute Matrix", CellFeatureAttributeMatrixPath, FilterParameter::RequiredArray, FeatureDataCSVWriter, req));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Feature Attribute Matrix", CellFeatureAttributeMatrixPath, FilterParameter::Category::RequiredArray, FeatureDataCSVWriter, req));
   }
 
   setFilterParameters(parameters);

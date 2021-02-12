@@ -75,7 +75,7 @@ public:
 
   ~FilterParameterWidget() override;
 
-  using EnumType = unsigned int;
+  using EnumType = uint32_t;
 
   enum class Style : EnumType
   {

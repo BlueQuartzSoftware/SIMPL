@@ -62,6 +62,14 @@
  */
 class SIMPLib_EXPORT StringFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(StringFilterParameter)
+  PYB11_SHARED_POINTERS(StringFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString QString FilterParameter::Category StringFilterParameter::SetterCallbackType StringFilterParameter::GetterCallbackType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = StringFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -100,8 +108,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~StringFilterParameter() override;
 

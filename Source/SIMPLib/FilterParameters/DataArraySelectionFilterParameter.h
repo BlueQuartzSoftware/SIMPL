@@ -68,6 +68,14 @@ class AbstractFilter;
  */
 class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(DataArraySelectionFilterParameter)
+  PYB11_SHARED_POINTERS(DataArraySelectionFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString DataArrayPath FilterParameter::Category DataArraySelectionFilterParameter::SetterCallbackType DataArraySelectionFilterParameter::GetterCallbackType DataArraySelectionFilterParameter::RequirementType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = DataArraySelectionFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -118,8 +126,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, RequirementType req, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, RequirementType req, int groupIndex = -1);
 
   ~DataArraySelectionFilterParameter() override;
 

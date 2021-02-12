@@ -155,7 +155,7 @@ public:
 
   Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString& name, Float2ndOrderPoly_t v) override;
   Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString& name, Float3rdOrderPoly_t v) override;
-  Float4thOrderPoly_t readFloat4thOrderPoly(const QString& name, Float4thOrderPoly_t v) override;
+  Float4thOrderPolynomial readFloat4thOrderPoly(const QString& name, Float4thOrderPolynomial v) override;
   StackFileListInfo readFileListInfo(const QString& name, StackFileListInfo v) override;
   ComparisonInput_t readComparisonInput(const QString& name, ComparisonInput_t v, int vectorPos) override;
   ComparisonInputs readComparisonInputs(const QString& name, ComparisonInputs v) override;

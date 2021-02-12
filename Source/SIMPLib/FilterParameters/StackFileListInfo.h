@@ -35,10 +35,16 @@
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
 
+#include "SIMPLib/Common/SIMPLPythonMacros.h"
 #include "SIMPLib/FilterParameters/FileListInfo.h"
 
 class SIMPLib_EXPORT StackFileListInfo : public FileListInfo
 {
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(StackFileListInfo)
+  PYB11_CREATION(QString int32_t int32_t int32_t)
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 public:
   StackFileListInfo();
   ~StackFileListInfo() override;

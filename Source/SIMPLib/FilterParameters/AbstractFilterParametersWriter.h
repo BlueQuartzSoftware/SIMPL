@@ -113,7 +113,7 @@ public:
   virtual int writeValue(const QString& name, FloatVec3Type v);
   virtual int writeValue(const QString& name, Float2ndOrderPoly_t v);
   virtual int writeValue(const QString& name, Float3rdOrderPoly_t v);
-  virtual int writeValue(const QString& name, Float4thOrderPoly_t v);
+  virtual int writeValue(const QString& name, Float4thOrderPolynomial v);
   virtual int writeValue(const QString& name, StackFileListInfo v);
 
   virtual int writeValue(const QString& name, ComparisonInput_t v);
