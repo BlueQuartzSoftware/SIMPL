@@ -254,11 +254,11 @@ protected:
   IDataArrayShPtrType convertArrayType(const IDataArrayShPtrType& inputArray, SIMPL::ScalarTypes::Type scalarType);
 
 private:
-  DataArrayPath m_SelectedAttributeMatrix = {};
-  QString m_InfixEquation = {};
-  DataArrayPath m_CalculatedArray = {};
-  ArrayCalculator::AngleUnits m_Units = {};
-  SIMPL::ScalarTypes::Type m_ScalarType = {};
+  DataArrayPath m_SelectedAttributeMatrix = {"", "", ""};
+  QString m_InfixEquation = {QString()};
+  DataArrayPath m_CalculatedArray = {"", "", "Output"};
+  ArrayCalculator::AngleUnits m_Units = {Radians};
+  SIMPL::ScalarTypes::Type m_ScalarType = {SIMPL::ScalarTypes::Type::Double};
 
   QMap<QString, CalculatorItemShPtrType> m_SymbolMap;
   QStack<ICalculatorArray::Pointer> m_ExecutionStack;

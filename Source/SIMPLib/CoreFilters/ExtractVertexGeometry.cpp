@@ -58,9 +58,6 @@ enum createdPathID : RenameDataPath::DataID_t
 //
 // -----------------------------------------------------------------------------
 ExtractVertexGeometry::ExtractVertexGeometry()
-: m_ArrayHandling(static_cast<int>(ArrayHandlingType::MoveArrays))
-, m_SelectedDataContainerName()
-, m_VertexDataContainerName("VertexDataContainer")
 {
   initialize();
 }

@@ -109,5 +109,5 @@ public:
   FileWriter& operator=(FileWriter&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  QString m_OutputFile = {};
+  QString m_OutputFile = {""};
 };

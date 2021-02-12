@@ -205,10 +205,10 @@ private:
 
   IDataArrayWkPtrType m_InArrayPtr;
 
-  DataArrayPath m_SelectedArrayPath = {};
-  DataArrayPath m_DerivativesArrayPath = {};
+  DataArrayPath m_SelectedArrayPath = {"", "", ""};
+  DataArrayPath m_DerivativesArrayPath = {SIMPL::Defaults::DataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "Derivatives"};
 
-  bool m_Interpolate;
+  bool m_Interpolate = {false};
 
 public:
   FindDerivatives(const FindDerivatives&) = delete;            // Copy Constructor Not Implemented

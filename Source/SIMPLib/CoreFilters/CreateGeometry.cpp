@@ -61,44 +61,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreateGeometry::CreateGeometry()
-: m_GeometryType(0)
-, m_DataContainerName("")
-, m_SharedVertexListArrayPath0("", "", "")
-, m_SharedVertexListArrayPath1("", "", "")
-, m_SharedVertexListArrayPath2("", "", "")
-, m_SharedVertexListArrayPath3("", "", "")
-, m_SharedVertexListArrayPath4("", "", "")
-, m_SharedVertexListArrayPath5("", "", "")
-, m_SharedEdgeListArrayPath("", "", "")
-, m_SharedTriListArrayPath("", "", "")
-, m_SharedQuadListArrayPath("", "", "")
-, m_SharedTetListArrayPath("", "", "")
-, m_SharedHexListArrayPath("", "", "")
-, m_XBoundsArrayPath("", "", "")
-, m_YBoundsArrayPath("", "", "")
-, m_ZBoundsArrayPath("", "", "")
-, m_Dimensions(0, 0, 0)
-, m_Origin(0.0f, 0.0f, 0.0f)
-, m_Spacing(1.0f, 1.0f, 1.0f)
-, m_ImageCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
-, m_RectGridCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
-, m_VertexAttributeMatrixName0(SIMPL::Defaults::VertexAttributeMatrixName)
-, m_VertexAttributeMatrixName1(SIMPL::Defaults::VertexAttributeMatrixName)
-, m_VertexAttributeMatrixName2(SIMPL::Defaults::VertexAttributeMatrixName)
-, m_VertexAttributeMatrixName3(SIMPL::Defaults::VertexAttributeMatrixName)
-, m_VertexAttributeMatrixName4(SIMPL::Defaults::VertexAttributeMatrixName)
-, m_VertexAttributeMatrixName5(SIMPL::Defaults::VertexAttributeMatrixName)
-, m_EdgeAttributeMatrixName(SIMPL::Defaults::EdgeAttributeMatrixName)
-, m_FaceAttributeMatrixName0(SIMPL::Defaults::FaceAttributeMatrixName)
-, m_FaceAttributeMatrixName1(SIMPL::Defaults::FaceAttributeMatrixName)
-, m_TetCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
-, m_HexCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
-, m_TreatWarningsAsErrors(false)
-, m_ArrayHandling(false)
-, m_NumVerts(0)
-{
-}
+CreateGeometry::CreateGeometry() = default;
 
 // -----------------------------------------------------------------------------
 //

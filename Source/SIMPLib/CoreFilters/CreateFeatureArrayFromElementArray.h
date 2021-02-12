@@ -210,10 +210,10 @@ private:
 
   IDataArrayWkPtrType m_InArrayPtr;
 
-  DataArrayPath m_CellFeatureAttributeMatrixName = {};
-  DataArrayPath m_SelectedCellArrayPath = {};
-  QString m_CreatedArrayName = {};
-  DataArrayPath m_FeatureIdsArrayPath = {};
+  DataArrayPath m_CellFeatureAttributeMatrixName = {"", "", ""};
+  DataArrayPath m_SelectedCellArrayPath = {"", "", ""};
+  QString m_CreatedArrayName = {""};
+  DataArrayPath m_FeatureIdsArrayPath = {"", "", ""};
 
 public:
   CreateFeatureArrayFromElementArray(const CreateFeatureArrayFromElementArray&) = delete;            // Copy Constructor Not Implemented

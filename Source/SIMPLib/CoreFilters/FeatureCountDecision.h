@@ -169,11 +169,11 @@ protected:
   void initialize();
 
 private:
-  std::weak_ptr<DataArray<int32_t>> m_FeatureIdsPtr;
+  std::weak_ptr<Int32ArrayType> m_FeatureIdsPtr;
   int32_t* m_FeatureIds = nullptr;
 
-  DataArrayPath m_FeatureIdsArrayPath = {};
-  int m_MaxGrains = {};
+  DataArrayPath m_FeatureIdsArrayPath = {"", "", ""};
+  int m_MaxGrains = {0};
 
 public:
   FeatureCountDecision(const FeatureCountDecision&) = delete;            // Copy Constructor Not Implemented

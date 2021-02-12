@@ -57,11 +57,7 @@ const int32_t k_MoveMultiDataArray = 1;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MoveMultiData::MoveMultiData()
-: m_WhatToMove(k_MoveAttributeMatrix)
-, m_DataContainerDestination("")
-{
-}
+MoveMultiData::MoveMultiData() = default;
 
 // -----------------------------------------------------------------------------
 //

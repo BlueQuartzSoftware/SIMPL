@@ -51,12 +51,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RequiredZThickness::RequiredZThickness()
-: m_DataContainerSelection("")
-, m_NumZVoxels(-1)
-, m_PreflightCheck(false)
-{
-}
+RequiredZThickness::RequiredZThickness() = default;
 
 // -----------------------------------------------------------------------------
 //

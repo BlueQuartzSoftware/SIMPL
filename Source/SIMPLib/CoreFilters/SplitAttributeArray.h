@@ -194,8 +194,8 @@ private:
   IDataArrayWkPtrType m_InputArrayPtr;
   void* m_InputArray = nullptr;
 
-  DataArrayPath m_InputArrayPath = {};
-  QString m_SplitArraysSuffix = {};
+  DataArrayPath m_InputArrayPath = {"", "", ""};
+  QString m_SplitArraysSuffix = {"Component"};
 
   std::vector<IDataArrayShPtrType> m_SplitArraysPtrVector;
 

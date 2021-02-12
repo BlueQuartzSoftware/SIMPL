@@ -259,12 +259,12 @@ protected:
   void initialize();
 
 private:
-  QVector<DataArrayPath> m_SelectedDataArrayPaths = {};
-  QString m_OutputPath = {};
+  QVector<DataArrayPath> m_SelectedDataArrayPaths = {QVector<DataArrayPath>()};
+  QString m_OutputPath = {""};
   QString m_OutputFilePath = {};
-  int m_Delimiter = {};
-  QString m_FileExtension = {};
-  int m_MaxValPerLine = {};
+  int m_Delimiter = {0};
+  QString m_FileExtension = {".txt"};
+  int m_MaxValPerLine = {-1};
   int m_OutputStyle = {};
 
   /**

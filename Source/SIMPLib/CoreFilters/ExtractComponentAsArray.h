@@ -196,9 +196,9 @@ private:
   IDataArrayWkPtrType m_InArrayPtr;
   IDataArrayWkPtrType m_NewArrayPtr;
 
-  DataArrayPath m_SelectedArrayPath = {};
-  int m_CompNumber = {};
-  QString m_NewArrayArrayName = {};
+  DataArrayPath m_SelectedArrayPath = {"", "", ""};
+  int m_CompNumber = {0};
+  QString m_NewArrayArrayName = {""};
 
 public:
   ExtractComponentAsArray(const ExtractComponentAsArray&) = delete;            // Copy Constructor Not Implemented

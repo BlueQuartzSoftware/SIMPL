@@ -253,12 +253,12 @@ protected:
   void initialize();
 
 private:
-  int m_ConversionAlgorithm = {};
-  FloatVec3Type m_ColorWeights = {};
-  int m_ColorChannel = {};
+  int m_ConversionAlgorithm = {0};
+  FloatVec3Type m_ColorWeights = {0.2125f, 0.7154f, 0.0721f};
+  int m_ColorChannel = {0};
   QVector<DataArrayPath> m_InputDataArrayVector = {};
-  bool m_CreateNewAttributeMatrix = {};
-  QString m_OutputAttributeMatrixName = {};
+  bool m_CreateNewAttributeMatrix = {false};
+  QString m_OutputAttributeMatrixName = {"GrayScaleData"};
   QString m_OutputArrayPrefix = {};
 
   QVector<DataArrayPath> m_OutputArrayPaths;

@@ -87,10 +87,6 @@ public:
 //
 // -----------------------------------------------------------------------------
 ScaleVolume::ScaleVolume()
-: m_DataContainerName("")
-, m_SurfaceDataContainerName("")
-, m_ApplyToVoxelVolume(true)
-, m_ApplyToSurfaceMesh(true)
 {
   m_ScaleFactor[0] = 1.0f;
   m_ScaleFactor[1] = 1.0f;

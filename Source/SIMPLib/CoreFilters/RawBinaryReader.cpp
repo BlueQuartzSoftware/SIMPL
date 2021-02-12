@@ -163,15 +163,7 @@ int32_t readBinaryFile(IDataArray* dataArrayPtr, const std::string& filename, ui
 } // namespace
 
 // -----------------------------------------------------------------------------
-RawBinaryReader::RawBinaryReader()
-: m_CreatedAttributeArrayPath("")
-, m_ScalarType(SIMPL::NumericTypes::Type::Int8)
-, m_Endian(0)
-, m_NumberOfComponents(0)
-, m_SkipHeaderBytes(0)
-, m_InputFile("")
-{
-}
+RawBinaryReader::RawBinaryReader() = default;
 
 // -----------------------------------------------------------------------------
 RawBinaryReader::~RawBinaryReader() = default;

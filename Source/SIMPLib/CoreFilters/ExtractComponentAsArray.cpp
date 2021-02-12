@@ -55,12 +55,7 @@ enum createdPathID : RenameDataPath::DataID_t
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ExtractComponentAsArray::ExtractComponentAsArray()
-: m_SelectedArrayPath("", "", "")
-, m_CompNumber(0)
-, m_NewArrayArrayName("")
-{
-}
+ExtractComponentAsArray::ExtractComponentAsArray() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -222,7 +222,7 @@ public:
 
 private:
   int m_WhatToMove = {};
-  DataArrayPath m_DataContainerDestination = {};
+  DataArrayPath m_DataContainerDestination = {"", "", ""};
   QVector<DataArrayPath> m_AttributeMatrixSources = {};
   DataArrayPath m_AttributeMatrixDestination = {};
   QVector<DataArrayPath> m_DataArraySources = {};

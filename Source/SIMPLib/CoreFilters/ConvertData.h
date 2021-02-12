@@ -195,7 +195,7 @@ public:
   ConvertData& operator=(ConvertData&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  SIMPL::NumericTypes::Type m_ScalarType = {};
-  QString m_OutputArrayName = {};
-  DataArrayPath m_SelectedCellArrayPath = {};
+  SIMPL::NumericTypes::Type m_ScalarType = {SIMPL::NumericTypes::Type::Int8};
+  QString m_OutputArrayName = {""};
+  DataArrayPath m_SelectedCellArrayPath = {"", "", ""};
 };

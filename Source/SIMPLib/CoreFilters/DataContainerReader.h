@@ -293,10 +293,10 @@ protected slots:
   void cleanupFilter() override;
 
 private:
-  QString m_InputFile = {};
-  bool m_OverwriteExistingDataContainers = {};
-  QString m_LastFileRead = {};
-  QDateTime m_LastRead = {};
+  QString m_InputFile = {""};
+  bool m_OverwriteExistingDataContainers = {false};
+  QString m_LastFileRead = {""};
+  QDateTime m_LastRead = {QDateTime::currentDateTime()};
   DataContainerArrayProxy m_InputFileDataContainerArrayProxy = {};
 
   FilterPipeline::Pointer m_PipelineFromFile;

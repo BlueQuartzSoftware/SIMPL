@@ -38,6 +38,7 @@
 #include <memory>
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
@@ -262,14 +263,14 @@ protected:
   void initialize();
 
 private:
-  DataArrayPath m_DataContainerName = {};
-  DataArrayPath m_CroppedDataContainerName = {};
-  float m_XMin = {};
-  float m_YMin = {};
-  float m_ZMin = {};
-  float m_XMax = {};
-  float m_YMax = {};
-  float m_ZMax = {};
+  DataArrayPath m_DataContainerName = {SIMPL::Defaults::VertexDataContainerName, "", ""};
+  DataArrayPath m_CroppedDataContainerName = {"CroppedDataContainer", "", ""};
+  float m_XMin = {0};
+  float m_YMin = {0};
+  float m_ZMin = {0};
+  float m_XMax = {0};
+  float m_YMax = {0};
+  float m_ZMax = {0};
 
   QList<QString> m_AttrMatList;
 

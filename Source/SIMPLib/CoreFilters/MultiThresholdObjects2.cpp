@@ -55,10 +55,7 @@ enum createdPathID : RenameDataPath::DataID_t
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiThresholdObjects2::MultiThresholdObjects2()
-: m_DestinationArrayName(SIMPL::GeneralData::Mask)
-{
-}
+MultiThresholdObjects2::MultiThresholdObjects2() = default;
 
 // -----------------------------------------------------------------------------
 //

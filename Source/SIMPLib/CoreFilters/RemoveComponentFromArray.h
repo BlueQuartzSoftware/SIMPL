@@ -221,10 +221,10 @@ private:
   IDataArrayWkPtrType m_NewArrayPtr;
   IDataArrayWkPtrType m_ReducedArrayPtr;
 
-  DataArrayPath m_SelectedArrayPath = {};
-  int m_CompNumber = {};
-  bool m_SaveRemovedComponent = {};
-  QString m_NewArrayArrayName = {};
+  DataArrayPath m_SelectedArrayPath = {"", "", ""};
+  int m_CompNumber = {0};
+  bool m_SaveRemovedComponent = {false};
+  QString m_NewArrayArrayName = {""};
   QString m_ReducedArrayArrayName = {};
 
 public:

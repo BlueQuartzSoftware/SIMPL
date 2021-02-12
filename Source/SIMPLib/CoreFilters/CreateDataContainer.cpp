@@ -51,10 +51,7 @@ enum createdPathID : RenameDataPath::DataID_t
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreateDataContainer::CreateDataContainer()
-: m_DataContainerName("DataContainer")
-{
-}
+CreateDataContainer::CreateDataContainer() = default;
 
 // -----------------------------------------------------------------------------
 //

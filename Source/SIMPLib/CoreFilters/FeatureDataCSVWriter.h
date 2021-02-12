@@ -241,10 +241,10 @@ public:
   FeatureDataCSVWriter& operator=(FeatureDataCSVWriter&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  DataArrayPath m_CellFeatureAttributeMatrixPath = {};
-  QString m_FeatureDataFile = {};
-  bool m_WriteNeighborListData = {};
-  int m_DelimiterChoice = {};
-  bool m_WriteNumFeaturesLine = {};
-  char m_Delimiter = {};
+  DataArrayPath m_CellFeatureAttributeMatrixPath = {"", "", ""};
+  QString m_FeatureDataFile = {""};
+  bool m_WriteNeighborListData = {false};
+  int m_DelimiterChoice = {0};
+  bool m_WriteNumFeaturesLine = {true};
+  char m_Delimiter = {','};
 };

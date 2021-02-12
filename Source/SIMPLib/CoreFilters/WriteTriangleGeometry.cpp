@@ -55,12 +55,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-WriteTriangleGeometry::WriteTriangleGeometry()
-: m_DataContainerSelection("")
-, m_OutputNodesFile("")
-, m_OutputTrianglesFile("")
-{
-}
+WriteTriangleGeometry::WriteTriangleGeometry() = default;
 
 // -----------------------------------------------------------------------------
 //

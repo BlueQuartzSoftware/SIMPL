@@ -56,8 +56,8 @@ const int32_t k_MoveDataArray = 1;
 //
 // -----------------------------------------------------------------------------
 MoveData::MoveData()
-: m_WhatToMove(k_MoveAttributeMatrix)
 {
+  m_WhatToMove = k_MoveAttributeMatrix;
 }
 
 // -----------------------------------------------------------------------------

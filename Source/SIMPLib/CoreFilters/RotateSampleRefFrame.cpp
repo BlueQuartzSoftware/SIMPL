@@ -321,9 +321,9 @@ struct RotateSampleRefFrame::Impl
 // -----------------------------------------------------------------------------
 RotateSampleRefFrame::RotateSampleRefFrame()
 : p_Impl(std::make_unique<Impl>())
-, m_CellAttributeMatrixPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "")
 {
   std::vector<std::vector<double>> defaultTable{{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}};
+
   m_RotationTable.setTableData(defaultTable);
   m_RotationTable.setDynamicRows(false);
   m_RotationTable.setDynamicCols(false);

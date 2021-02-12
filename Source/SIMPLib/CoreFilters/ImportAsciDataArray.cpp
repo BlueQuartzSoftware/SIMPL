@@ -254,10 +254,7 @@ ImportAsciDataArrayPrivate::ImportAsciDataArrayPrivate(ImportAsciDataArray* ptr)
 //
 // -----------------------------------------------------------------------------
 ImportAsciDataArray::ImportAsciDataArray()
-: m_CreatedAttributeArrayPath("")
-, m_ScalarType(SIMPL::NumericTypes::Type::Int8)
-, m_InputFile("")
-, d_ptr(new ImportAsciDataArrayPrivate(this))
+: d_ptr(new ImportAsciDataArrayPrivate(this))
 {
 }
 

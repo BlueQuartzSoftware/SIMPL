@@ -188,15 +188,7 @@ protected:
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ConvertColorToGrayScale::ConvertColorToGrayScale()
-: m_ConversionAlgorithm(0)
-, m_ColorWeights{0.2125f, 0.7154f, 0.0721f}
-, m_ColorChannel(0)
-, m_CreateNewAttributeMatrix(false)
-, m_OutputAttributeMatrixName("GrayScaleData")
-, m_OutputArrayPrefix("")
-{
-}
+ConvertColorToGrayScale::ConvertColorToGrayScale() = default;
 
 // -----------------------------------------------------------------------------
 //

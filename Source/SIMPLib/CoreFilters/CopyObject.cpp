@@ -58,14 +58,7 @@ enum createdPathID : RenameDataPath::DataID_t
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CopyObject::CopyObject()
-: m_ObjectToCopy(0)
-, m_DataContainerToCopy("")
-, m_AttributeMatrixToCopy("", "", "")
-, m_AttributeArrayToCopy("", "", "")
-, m_CopiedObjectName("")
-{
-}
+CopyObject::CopyObject() = default;
 
 // -----------------------------------------------------------------------------
 //

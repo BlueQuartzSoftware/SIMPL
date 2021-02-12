@@ -58,17 +58,7 @@ enum createdPathID : RenameDataPath::DataID_t
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CropVertexGeometry::CropVertexGeometry()
-: m_DataContainerName(SIMPL::Defaults::VertexDataContainerName)
-, m_CroppedDataContainerName("CroppedDataContainer")
-, m_XMin(0)
-, m_YMin(0)
-, m_ZMin(0)
-, m_XMax(0)
-, m_YMax(0)
-, m_ZMax(0)
-{
-}
+CropVertexGeometry::CropVertexGeometry() = default;
 
 // -----------------------------------------------------------------------------
 //

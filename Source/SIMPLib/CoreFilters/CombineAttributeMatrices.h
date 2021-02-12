@@ -246,12 +246,12 @@ private:
   std::weak_ptr<DataArray<int32_t>> m_NewIndexPtr;
   int32_t* m_NewIndex = nullptr;
 
-  DataArrayPath m_FirstAttributeMatrixPath = {};
-  DataArrayPath m_SecondAttributeMatrixPath = {};
-  DataArrayPath m_FirstIndexArrayPath = {};
-  DataArrayPath m_SecondIndexArrayPath = {};
-  QString m_CombinedAttributeMatrixName = {};
-  QString m_NewIndexArrayName = {};
+  DataArrayPath m_FirstAttributeMatrixPath = {"", "", ""};
+  DataArrayPath m_SecondAttributeMatrixPath = {"", "", ""};
+  DataArrayPath m_FirstIndexArrayPath = {"", "", ""};
+  DataArrayPath m_SecondIndexArrayPath = {"", "", ""};
+  QString m_CombinedAttributeMatrixName = {""};
+  QString m_NewIndexArrayName = {""};
 
 public:
   CombineAttributeMatrices(const CombineAttributeMatrices&) = delete;            // Copy Constructor Not Implemented

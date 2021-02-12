@@ -218,7 +218,7 @@ public:
   CreateImageGeometry& operator=(CreateImageGeometry&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  DataArrayPath m_SelectedDataContainer = {};
+  DataArrayPath m_SelectedDataContainer = {"ImageGeomDataContainer", "", ""};
   IntVec3Type m_Dimensions = {};
   FloatVec3Type m_Origin = {};
   FloatVec3Type m_Spacing = {};

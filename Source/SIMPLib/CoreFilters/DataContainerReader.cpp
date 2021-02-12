@@ -60,10 +60,6 @@
 //
 // -----------------------------------------------------------------------------
 DataContainerReader::DataContainerReader()
-: m_InputFile("")
-, m_OverwriteExistingDataContainers(false)
-, m_LastFileRead("")
-, m_LastRead(QDateTime::currentDateTime())
 {
   m_PipelineFromFile = FilterPipeline::New();
 }

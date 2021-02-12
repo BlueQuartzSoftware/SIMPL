@@ -203,10 +203,10 @@ protected:
   void initialize();
 
 private:
-  QString m_SlackUser = {};
-  QString m_SlackUrl = {};
-  QString m_SlackMessage = {};
-  bool m_WarningsAsError = {};
+  QString m_SlackUser = {""};
+  QString m_SlackUrl = {""};
+  QString m_SlackMessage = {""};
+  bool m_WarningsAsError = {false};
 
 public:
   PostSlackMessage(const PostSlackMessage&) = delete;            // Copy Constructor Not Implemented

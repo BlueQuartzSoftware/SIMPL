@@ -53,11 +53,7 @@ enum createdPathID : RenameDataPath::DataID_t
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreateAttributeMatrix::CreateAttributeMatrix()
-: m_CreatedAttributeMatrix("", "AttributeMatrix", "")
-, m_AttributeMatrixType(static_cast<int32_t>(AttributeMatrix::Type::Generic))
-{
-}
+CreateAttributeMatrix::CreateAttributeMatrix() = default;
 
 // -----------------------------------------------------------------------------
 //

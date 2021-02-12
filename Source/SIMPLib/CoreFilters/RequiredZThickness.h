@@ -181,9 +181,9 @@ protected:
 private:
   std::weak_ptr<DataArray<int32_t>> m_FeatureIdsPtr;
 
-  DataArrayPath m_DataContainerSelection = {};
-  int m_NumZVoxels = {};
-  bool m_PreflightCheck = {};
+  DataArrayPath m_DataContainerSelection = {"", "", ""};
+  int m_NumZVoxels = {-1};
+  bool m_PreflightCheck = {false};
 
 public:
   RequiredZThickness(const RequiredZThickness&) = delete;            // Copy Constructor Not Implemented

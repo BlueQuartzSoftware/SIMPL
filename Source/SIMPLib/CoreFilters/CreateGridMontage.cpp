@@ -48,9 +48,8 @@ enum createdPathID : RenameDataPath::DataID_t
 //
 // -----------------------------------------------------------------------------
 CreateGridMontage::CreateGridMontage()
-: m_MontageName("Grid Montage")
-{
-}
+
+    = default;
 
 // -----------------------------------------------------------------------------
 //

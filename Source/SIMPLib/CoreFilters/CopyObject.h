@@ -229,9 +229,9 @@ public:
   CopyObject& operator=(CopyObject&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  int m_ObjectToCopy = {};
-  DataArrayPath m_DataContainerToCopy = {};
-  DataArrayPath m_AttributeMatrixToCopy = {};
-  DataArrayPath m_AttributeArrayToCopy = {};
-  QString m_CopiedObjectName = {};
+  int m_ObjectToCopy = {0};
+  DataArrayPath m_DataContainerToCopy = {"", "", ""};
+  DataArrayPath m_AttributeMatrixToCopy = {"", "", ""};
+  DataArrayPath m_AttributeArrayToCopy = {"", "", ""};
+  QString m_CopiedObjectName = {""};
 };

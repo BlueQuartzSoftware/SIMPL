@@ -53,7 +53,6 @@
 //
 // -----------------------------------------------------------------------------
 CreateImageGeometry::CreateImageGeometry()
-: m_SelectedDataContainer("ImageGeomDataContainer")
 {
   m_Dimensions[0] = 0;
   m_Dimensions[1] = 0;

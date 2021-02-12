@@ -195,9 +195,9 @@ protected:
 private:
   IDataArrayWkPtrType m_ArrayPtr;
 
-  DataArrayPath m_SelectedArray = {};
-  double m_RemoveValue = {};
-  double m_ReplaceValue = {};
+  DataArrayPath m_SelectedArray = {"", "", ""};
+  double m_RemoveValue = {0.0};
+  double m_ReplaceValue = {0.0};
 
 public:
   ReplaceValueInArray(const ReplaceValueInArray&) = delete;            // Copy Constructor Not Implemented

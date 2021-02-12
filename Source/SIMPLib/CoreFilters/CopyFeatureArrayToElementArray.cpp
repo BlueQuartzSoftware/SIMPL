@@ -54,12 +54,7 @@ enum createdPathID : RenameDataPath::DataID_t
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CopyFeatureArrayToElementArray::CopyFeatureArrayToElementArray()
-: m_SelectedFeatureArrayPath("", "", "")
-, m_FeatureIdsArrayPath("", "", "")
-, m_CreatedArrayName("")
-{
-}
+CopyFeatureArrayToElementArray::CopyFeatureArrayToElementArray() = default;
 
 // -----------------------------------------------------------------------------
 //

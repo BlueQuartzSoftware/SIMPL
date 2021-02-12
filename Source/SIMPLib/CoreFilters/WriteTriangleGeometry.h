@@ -203,7 +203,7 @@ public:
   WriteTriangleGeometry& operator=(WriteTriangleGeometry&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  DataArrayPath m_DataContainerSelection = {};
-  QString m_OutputNodesFile = {};
-  QString m_OutputTrianglesFile = {};
+  DataArrayPath m_DataContainerSelection = {"", "", ""};
+  QString m_OutputNodesFile = {""};
+  QString m_OutputTrianglesFile = {""};
 };

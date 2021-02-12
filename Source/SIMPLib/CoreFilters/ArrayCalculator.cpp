@@ -139,11 +139,6 @@ enum createdPathID : RenameDataPath::DataID_t
 //
 // -----------------------------------------------------------------------------
 ArrayCalculator::ArrayCalculator()
-: m_SelectedAttributeMatrix("", "", "")
-, m_InfixEquation(QString())
-, m_CalculatedArray("", "", "Output")
-, m_Units(Radians)
-, m_ScalarType(SIMPL::ScalarTypes::Type::Double)
 {
 
   createSymbolMap();

@@ -116,12 +116,7 @@ enum createdPathID : RenameDataPath::DataID_t
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FindDerivatives::FindDerivatives()
-: m_SelectedArrayPath("", "", "")
-, m_DerivativesArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "Derivatives")
-, m_Interpolate(false)
-{
-}
+FindDerivatives::FindDerivatives() = default;
 
 // -----------------------------------------------------------------------------
 //

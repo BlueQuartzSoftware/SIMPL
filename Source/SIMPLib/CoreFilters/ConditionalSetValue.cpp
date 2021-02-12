@@ -50,12 +50,8 @@
 //
 // -----------------------------------------------------------------------------
 ConditionalSetValue::ConditionalSetValue()
-: m_SelectedArrayPath("", "", "")
-, m_ConditionalArrayPath("", "", "")
-, m_ReplaceValue(0.0)
-//, m_Array(nullptr)
-{
-}
+    //, m_Array(nullptr)
+    = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -47,11 +47,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RenameAttributeMatrix::RenameAttributeMatrix()
-: m_SelectedAttributeMatrixPath("", "", "")
-, m_NewAttributeMatrix("")
-{
-}
+RenameAttributeMatrix::RenameAttributeMatrix() = default;
 
 // -----------------------------------------------------------------------------
 //

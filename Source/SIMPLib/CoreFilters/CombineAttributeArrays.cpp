@@ -178,13 +178,7 @@ public:
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CombineAttributeArrays::CombineAttributeArrays()
-: m_SelectedDataArrayPaths(QVector<DataArrayPath>())
-, m_StackedDataArrayName(SIMPL::GeneralData::CombinedData)
-, m_NormalizeData(false)
-, m_MoveValues(false)
-{
-}
+CombineAttributeArrays::CombineAttributeArrays() = default;
 
 // -----------------------------------------------------------------------------
 //

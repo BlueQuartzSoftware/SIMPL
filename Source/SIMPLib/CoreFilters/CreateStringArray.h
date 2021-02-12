@@ -189,9 +189,9 @@ protected:
   void initialize();
 
 private:
-  int m_NumberOfComponents = {};
-  DataArrayPath m_NewArray = {};
-  QString m_InitializationValue = {};
+  int m_NumberOfComponents = {0};
+  DataArrayPath m_NewArray = {"", "", ""};
+  QString m_InitializationValue = {"Text"};
 
   IDataArray::WeakPointer m_OutputArrayPtr;
 

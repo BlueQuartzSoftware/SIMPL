@@ -193,9 +193,9 @@ private:
   std::weak_ptr<DataArray<bool>> m_ConditionalArrayPtr;
   bool* m_ConditionalArray = nullptr;
 
-  DataArrayPath m_SelectedArrayPath = {};
-  DataArrayPath m_ConditionalArrayPath = {};
-  double m_ReplaceValue = {};
+  DataArrayPath m_SelectedArrayPath = {"", "", ""};
+  DataArrayPath m_ConditionalArrayPath = {"", "", ""};
+  double m_ReplaceValue = {0.0};
 
   IDataArray::WeakPointer m_ArrayPtr;
 

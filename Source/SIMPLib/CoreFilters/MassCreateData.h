@@ -177,5 +177,5 @@ public:
   MassCreateData& operator=(MassCreateData&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  DataArrayPath m_DataContainerName = {};
+  DataArrayPath m_DataContainerName = {"DataContainer", "", ""};
 };

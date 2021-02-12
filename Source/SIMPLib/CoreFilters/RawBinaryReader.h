@@ -236,12 +236,12 @@ protected:
   void dataCheck() override;
 
 private:
-  DataArrayPath m_CreatedAttributeArrayPath = {};
-  SIMPL::NumericTypes::Type m_ScalarType = {};
-  int32_t m_Endian = {};
-  int32_t m_NumberOfComponents = {};
-  uint64_t m_SkipHeaderBytes = {};
-  QString m_InputFile = {};
+  DataArrayPath m_CreatedAttributeArrayPath = {"", "", ""};
+  SIMPL::NumericTypes::Type m_ScalarType = {SIMPL::NumericTypes::Type::Int8};
+  int32_t m_Endian = {0};
+  int32_t m_NumberOfComponents = {0};
+  uint64_t m_SkipHeaderBytes = {0};
+  QString m_InputFile = {""};
 
 public:
   RawBinaryReader(const RawBinaryReader&) = delete;            // Copy Constructor Not Implemented

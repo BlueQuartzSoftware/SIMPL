@@ -85,9 +85,6 @@ public:
 //
 // -----------------------------------------------------------------------------
 SetOriginResolutionImageGeom::SetOriginResolutionImageGeom()
-: m_DataContainerName("")
-, m_ChangeOrigin(false)
-, m_ChangeResolution(false)
 {
   m_Origin[0] = 0.0f;
   m_Origin[1] = 0.0f;

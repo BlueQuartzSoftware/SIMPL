@@ -57,15 +57,7 @@ enum createdPathID : RenameDataPath::DataID_t
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CombineAttributeMatrices::CombineAttributeMatrices()
-: m_FirstAttributeMatrixPath("", "", "")
-, m_SecondAttributeMatrixPath("", "", "")
-, m_FirstIndexArrayPath("", "", "")
-, m_SecondIndexArrayPath("", "", "")
-, m_CombinedAttributeMatrixName("")
-, m_NewIndexArrayName("")
-{
-}
+CombineAttributeMatrices::CombineAttributeMatrices() = default;
 
 // -----------------------------------------------------------------------------
 //

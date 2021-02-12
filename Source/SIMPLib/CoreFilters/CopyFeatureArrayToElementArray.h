@@ -197,9 +197,9 @@ private:
 
   IDataArrayWkPtrType m_InArrayPtr;
 
-  DataArrayPath m_SelectedFeatureArrayPath = {};
-  DataArrayPath m_FeatureIdsArrayPath = {};
-  QString m_CreatedArrayName = {};
+  DataArrayPath m_SelectedFeatureArrayPath = {"", "", ""};
+  DataArrayPath m_FeatureIdsArrayPath = {"", "", ""};
+  QString m_CreatedArrayName = {""};
 
 public:
   CopyFeatureArrayToElementArray(const CopyFeatureArrayToElementArray&) = delete;            // Copy Constructor Not Implemented

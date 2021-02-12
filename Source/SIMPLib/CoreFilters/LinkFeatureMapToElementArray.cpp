@@ -55,12 +55,7 @@ enum createdPathID : RenameDataPath::DataID_t
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkFeatureMapToElementArray::LinkFeatureMapToElementArray()
-: m_CellFeatureAttributeMatrixName("")
-, m_SelectedCellArrayPath("", "", "")
-, m_ActiveArrayName("")
-{
-}
+LinkFeatureMapToElementArray::LinkFeatureMapToElementArray() = default;
 
 // -----------------------------------------------------------------------------
 //

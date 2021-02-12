@@ -215,10 +215,10 @@ protected:
   void initialize();
 
 private:
-  int m_ArrayHandling = {};
+  int m_ArrayHandling = {static_cast<int>(ArrayHandlingType::MoveArrays)};
   DataArrayPath m_SelectedDataContainerName = {};
   QVector<DataArrayPath> m_IncludedDataArrayPaths = {};
-  DataArrayPath m_VertexDataContainerName = {};
+  DataArrayPath m_VertexDataContainerName = {"VertexDataContainer", "", ""};
 
   QVector<QString> m_NewDCGeometryChoices;
   QVector<QString> m_ArrayHandlingChoices;

@@ -199,9 +199,9 @@ private:
   std::weak_ptr<DataArray<bool>> m_ActivePtr;
   bool* m_Active = nullptr;
 
-  QString m_CellFeatureAttributeMatrixName = {};
-  DataArrayPath m_SelectedCellArrayPath = {};
-  QString m_ActiveArrayName = {};
+  QString m_CellFeatureAttributeMatrixName = {""};
+  DataArrayPath m_SelectedCellArrayPath = {"", "", ""};
+  QString m_ActiveArrayName = {""};
 
 public:
   LinkFeatureMapToElementArray(const LinkFeatureMapToElementArray&) = delete;            // Copy Constructor Not Implemented

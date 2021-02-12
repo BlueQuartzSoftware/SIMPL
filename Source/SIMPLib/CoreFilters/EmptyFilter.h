@@ -168,7 +168,7 @@ protected:
 private:
   QString m_OriginalFilterName = {};
 
-  QString m_HumanLabel;
+  QString m_HumanLabel = {"Unknown Filter"};
 
 public:
   EmptyFilter(const EmptyFilter&) = delete;            // Copy Constructor Not Implemented

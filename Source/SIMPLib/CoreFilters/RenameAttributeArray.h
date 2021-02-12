@@ -181,8 +181,8 @@ protected:
   void initialize();
 
 private:
-  DataArrayPath m_SelectedArrayPath = {};
-  QString m_NewArrayName = {};
+  DataArrayPath m_SelectedArrayPath = {"", "", ""};
+  QString m_NewArrayName = {""};
 
   QString m_LastArrayName = "";
 

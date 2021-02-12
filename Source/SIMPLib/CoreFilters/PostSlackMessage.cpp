@@ -50,10 +50,6 @@
 //
 // -----------------------------------------------------------------------------
 PostSlackMessage::PostSlackMessage()
-: m_SlackUser("")
-, m_SlackUrl("")
-, m_SlackMessage("")
-, m_WarningsAsError(false)
 {
   m_SlackUser = "[DREAM.3D@" + QSysInfo::machineHostName() + "]";
   initialize();

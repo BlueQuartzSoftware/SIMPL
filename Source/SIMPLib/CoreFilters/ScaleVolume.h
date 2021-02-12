@@ -226,9 +226,9 @@ public:
   ScaleVolume& operator=(ScaleVolume&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  DataArrayPath m_DataContainerName = {};
-  DataArrayPath m_SurfaceDataContainerName = {};
-  bool m_ApplyToVoxelVolume = {};
-  bool m_ApplyToSurfaceMesh = {};
+  DataArrayPath m_DataContainerName = {"", "", ""};
+  DataArrayPath m_SurfaceDataContainerName = {"", "", ""};
+  bool m_ApplyToVoxelVolume = {true};
+  bool m_ApplyToSurfaceMesh = {true};
   FloatVec3Type m_ScaleFactor = {};
 };

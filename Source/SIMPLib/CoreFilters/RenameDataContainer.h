@@ -176,8 +176,8 @@ protected:
   void initialize();
 
 private:
-  DataArrayPath m_SelectedDataContainerName = {};
-  DataArrayPath m_NewDataContainerName = {};
+  DataArrayPath m_SelectedDataContainerName = {"", "", ""};
+  DataArrayPath m_NewDataContainerName = {"", "", ""};
 
   DataArrayPath m_LastContainerName;
 

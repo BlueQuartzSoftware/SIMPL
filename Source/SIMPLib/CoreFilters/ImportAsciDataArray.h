@@ -296,11 +296,11 @@ protected:
   void readHeaderPortion();
 
 private:
-  DataArrayPath m_CreatedAttributeArrayPath = {};
-  SIMPL::NumericTypes::Type m_ScalarType = {};
+  DataArrayPath m_CreatedAttributeArrayPath = {"", "", ""};
+  SIMPL::NumericTypes::Type m_ScalarType = {SIMPL::NumericTypes::Type::Int8};
   int m_NumberOfComponents = {};
   int m_SkipHeaderLines = {};
-  QString m_InputFile = {};
+  QString m_InputFile = {""};
   int m_Delimiter = {};
 
   QScopedPointer<ImportAsciDataArrayPrivate> const d_ptr;

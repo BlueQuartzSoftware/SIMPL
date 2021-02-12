@@ -39,6 +39,7 @@
 #include <memory>
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -288,7 +289,7 @@ private:
   struct Impl;
   std::unique_ptr<Impl> p_Impl;
 
-  DataArrayPath m_CellAttributeMatrixPath = {};
+  DataArrayPath m_CellAttributeMatrixPath = {SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, ""};
   FloatVec3Type m_RotationAxis = {0.0f, 0.0f, 1.0f};
   float m_RotationAngle = 0.0f;
   bool m_SliceBySlice = false;

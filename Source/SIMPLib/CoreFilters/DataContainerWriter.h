@@ -247,10 +247,10 @@ protected:
 
 private:
   QString m_OutputFile = {};
-  bool m_WritePipeline = {};
-  bool m_WriteXdmfFile = {};
-  bool m_WriteTimeSeries = {};
-  bool m_AppendToExisting = {};
+  bool m_WritePipeline = {true};
+  bool m_WriteXdmfFile = {true};
+  bool m_WriteTimeSeries = {false};
+  bool m_AppendToExisting = {false};
 
 public:
   DataContainerWriter(const DataContainerWriter&) = delete;            // Copy Constructor Not Implemented

@@ -189,7 +189,7 @@ protected:
   void initialize();
 
 private:
-  QString m_MontageName;
+  QString m_MontageName = {"Grid Montage"};
   DataContainerGrid m_GridSelection;
   QStringList m_DataContainerNameList;
 

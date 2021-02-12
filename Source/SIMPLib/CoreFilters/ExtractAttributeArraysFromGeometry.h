@@ -373,21 +373,21 @@ private:
   std::weak_ptr<DataArray<MeshIndexType>> m_TetsPtr;
   MeshIndexType* m_Tets = nullptr;
 
-  DataArrayPath m_DataContainerName = {};
-  DataArrayPath m_SharedVertexListArrayPath0 = {};
-  DataArrayPath m_SharedVertexListArrayPath1 = {};
-  DataArrayPath m_SharedVertexListArrayPath2 = {};
-  DataArrayPath m_SharedVertexListArrayPath3 = {};
-  DataArrayPath m_SharedVertexListArrayPath4 = {};
-  DataArrayPath m_SharedVertexListArrayPath5 = {};
-  DataArrayPath m_SharedEdgeListArrayPath = {};
-  DataArrayPath m_SharedTriListArrayPath = {};
-  DataArrayPath m_SharedQuadListArrayPath = {};
-  DataArrayPath m_SharedTetListArrayPath = {};
-  DataArrayPath m_SharedHexListArrayPath = {};
-  DataArrayPath m_XBoundsArrayPath = {};
-  DataArrayPath m_YBoundsArrayPath = {};
-  DataArrayPath m_ZBoundsArrayPath = {};
+  DataArrayPath m_DataContainerName = {"", "", ""};
+  DataArrayPath m_SharedVertexListArrayPath0 = {SIMPL::Defaults::VertexDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates"};
+  DataArrayPath m_SharedVertexListArrayPath1 = {SIMPL::Defaults::EdgeDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates"};
+  DataArrayPath m_SharedVertexListArrayPath2 = {SIMPL::Defaults::TriangleDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates"};
+  DataArrayPath m_SharedVertexListArrayPath3 = {SIMPL::Defaults::QuadDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates"};
+  DataArrayPath m_SharedVertexListArrayPath4 = {SIMPL::Defaults::TetrahedralDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates"};
+  DataArrayPath m_SharedVertexListArrayPath5 = {SIMPL::Defaults::HexahedralDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates"};
+  DataArrayPath m_SharedEdgeListArrayPath = {SIMPL::Defaults::EdgeDataContainerName, SIMPL::Defaults::EdgeAttributeMatrixName, "EdgeConnectivity"};
+  DataArrayPath m_SharedTriListArrayPath = {SIMPL::Defaults::TriangleDataContainerName, SIMPL::Defaults::FaceAttributeMatrixName, "TriangleConnectivity"};
+  DataArrayPath m_SharedQuadListArrayPath = {SIMPL::Defaults::QuadDataContainerName, SIMPL::Defaults::FaceAttributeMatrixName, "QuadConnectivity"};
+  DataArrayPath m_SharedTetListArrayPath = {SIMPL::Defaults::TetrahedralDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "TetConnectivity"};
+  DataArrayPath m_SharedHexListArrayPath = {SIMPL::Defaults::HexahedralDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "HexConnectivity"};
+  DataArrayPath m_XBoundsArrayPath = {"", "", "XBounds"};
+  DataArrayPath m_YBoundsArrayPath = {"", "", "YBounds"};
+  DataArrayPath m_ZBoundsArrayPath = {"", "", "ZBounds"};
 
 public:
   ExtractAttributeArraysFromGeometry(const ExtractAttributeArraysFromGeometry&) = delete;            // Copy Constructor Not Implemented

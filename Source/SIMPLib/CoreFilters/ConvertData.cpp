@@ -189,12 +189,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ConvertData::ConvertData()
-: m_ScalarType(SIMPL::NumericTypes::Type::Int8)
-, m_OutputArrayName("")
-, m_SelectedCellArrayPath("", "", "")
-{
-}
+ConvertData::ConvertData() = default;
 
 // -----------------------------------------------------------------------------
 //

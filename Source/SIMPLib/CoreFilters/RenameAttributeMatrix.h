@@ -181,8 +181,8 @@ protected:
   void initialize();
 
 private:
-  DataArrayPath m_SelectedAttributeMatrixPath = {};
-  QString m_NewAttributeMatrix = {};
+  DataArrayPath m_SelectedAttributeMatrixPath = {"", "", ""};
+  QString m_NewAttributeMatrix = {""};
 
   QString m_LastMatrixName = "";
 

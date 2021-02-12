@@ -180,7 +180,7 @@ private:
   std::weak_ptr<DataArray<bool>> m_DestinationPtr;
   bool* m_Destination = nullptr;
 
-  QString m_DestinationArrayName = {};
+  QString m_DestinationArrayName = {SIMPL::GeneralData::Mask};
   ComparisonInputs m_SelectedThresholds = {};
 
 public:

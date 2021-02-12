@@ -308,15 +308,15 @@ protected:
 
 private:
   QVector<DataArrayPath> m_CellAttributeMatrixPaths = {};
-  int m_XMin = {};
-  int m_YMin = {};
-  int m_ZMin = {};
-  int m_XMax = {};
-  int m_YMax = {};
-  int m_ZMax = {};
-  int m_InitType = {};
+  int m_XMin = {0};
+  int m_YMin = {0};
+  int m_ZMin = {0};
+  int m_XMax = {0};
+  int m_YMax = {0};
+  int m_ZMax = {0};
+  int m_InitType = {Manual};
   bool m_Random = {};
-  double m_InitValue = {};
+  double m_InitValue = {0};
   FPRangePair m_InitRange = {};
 
   enum InitChoices

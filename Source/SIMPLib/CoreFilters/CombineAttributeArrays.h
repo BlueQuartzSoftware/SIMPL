@@ -38,6 +38,7 @@
 #include <memory>
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 class IDataArray;
@@ -220,10 +221,10 @@ protected:
 private:
   IDataArrayWkPtrType m_StackedDataPtr;
 
-  QVector<DataArrayPath> m_SelectedDataArrayPaths = {};
-  QString m_StackedDataArrayName = {};
-  bool m_NormalizeData = {};
-  bool m_MoveValues = {};
+  QVector<DataArrayPath> m_SelectedDataArrayPaths = {QVector<DataArrayPath>()};
+  QString m_StackedDataArrayName = {SIMPL::GeneralData::CombinedData};
+  bool m_NormalizeData = {false};
+  bool m_MoveValues = {false};
 
   QVector<IDataArrayWkPtrType> m_SelectedWeakPtrVector;
 

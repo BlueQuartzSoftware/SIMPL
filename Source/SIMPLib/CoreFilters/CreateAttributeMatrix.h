@@ -38,6 +38,7 @@
 #include <memory>
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
@@ -195,7 +196,7 @@ public:
   CreateAttributeMatrix& operator=(CreateAttributeMatrix&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  DataArrayPath m_CreatedAttributeMatrix = {};
-  int m_AttributeMatrixType = {};
+  DataArrayPath m_CreatedAttributeMatrix = {"", "AttributeMatrix", ""};
+  int m_AttributeMatrixType = {static_cast<int32_t>(AttributeMatrix::Type::Generic)};
   DynamicTableData m_TupleDimensions = {};
 };

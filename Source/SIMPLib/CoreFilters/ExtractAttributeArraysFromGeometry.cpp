@@ -76,21 +76,6 @@ enum createdPathID : RenameDataPath::DataID_t
 //
 // -----------------------------------------------------------------------------
 ExtractAttributeArraysFromGeometry::ExtractAttributeArraysFromGeometry()
-: m_DataContainerName("")
-, m_SharedVertexListArrayPath0(SIMPL::Defaults::VertexDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates")
-, m_SharedVertexListArrayPath1(SIMPL::Defaults::EdgeDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates")
-, m_SharedVertexListArrayPath2(SIMPL::Defaults::TriangleDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates")
-, m_SharedVertexListArrayPath3(SIMPL::Defaults::QuadDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates")
-, m_SharedVertexListArrayPath4(SIMPL::Defaults::TetrahedralDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates")
-, m_SharedVertexListArrayPath5(SIMPL::Defaults::HexahedralDataContainerName, SIMPL::Defaults::VertexAttributeMatrixName, "VertexCoordinates")
-, m_SharedEdgeListArrayPath(SIMPL::Defaults::EdgeDataContainerName, SIMPL::Defaults::EdgeAttributeMatrixName, "EdgeConnectivity")
-, m_SharedTriListArrayPath(SIMPL::Defaults::TriangleDataContainerName, SIMPL::Defaults::FaceAttributeMatrixName, "TriangleConnectivity")
-, m_SharedQuadListArrayPath(SIMPL::Defaults::QuadDataContainerName, SIMPL::Defaults::FaceAttributeMatrixName, "QuadConnectivity")
-, m_SharedTetListArrayPath(SIMPL::Defaults::TetrahedralDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "TetConnectivity")
-, m_SharedHexListArrayPath(SIMPL::Defaults::HexahedralDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "HexConnectivity")
-, m_XBoundsArrayPath("", "", "XBounds")
-, m_YBoundsArrayPath("", "", "YBounds")
-, m_ZBoundsArrayPath("", "", "ZBounds")
 {
   initialize();
 }

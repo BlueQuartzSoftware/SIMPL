@@ -183,8 +183,8 @@ public:
   GenerateColorTable& operator=(GenerateColorTable&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  QString m_SelectedPresetName = {};
-  QJsonArray m_SelectedPresetControlPoints = {};
-  DataArrayPath m_SelectedDataArrayPath = {};
-  QString m_RgbArrayName = {};
+  QString m_SelectedPresetName = {""};
+  QJsonArray m_SelectedPresetControlPoints = {QJsonArray()};
+  DataArrayPath m_SelectedDataArrayPath = {DataArrayPath("", "", "")};
+  QString m_RgbArrayName = {""};
 };

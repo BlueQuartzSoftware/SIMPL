@@ -95,7 +95,7 @@ protected:
   void setOperatorType(OperatorType type);
 
 private:
-  Precedence m_Precedence;
+  Precedence m_Precedence = {Unknown_Precedence};
   OperatorType m_OperatorType;
 
 public:

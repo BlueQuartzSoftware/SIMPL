@@ -52,15 +52,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FeatureDataCSVWriter::FeatureDataCSVWriter()
-: m_CellFeatureAttributeMatrixPath("", "", "")
-, m_FeatureDataFile("")
-, m_WriteNeighborListData(false)
-, m_DelimiterChoice(0)
-, m_WriteNumFeaturesLine(true)
-, m_Delimiter(',')
-{
-}
+FeatureDataCSVWriter::FeatureDataCSVWriter() = default;
 
 // -----------------------------------------------------------------------------
 //

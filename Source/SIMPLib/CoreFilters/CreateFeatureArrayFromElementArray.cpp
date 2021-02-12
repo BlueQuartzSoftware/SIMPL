@@ -55,13 +55,7 @@ enum createdPathID : RenameDataPath::DataID_t
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreateFeatureArrayFromElementArray::CreateFeatureArrayFromElementArray()
-: m_CellFeatureAttributeMatrixName("", "", "")
-, m_SelectedCellArrayPath("", "", "")
-, m_CreatedArrayName("")
-, m_FeatureIdsArrayPath("", "", "")
-{
-}
+CreateFeatureArrayFromElementArray::CreateFeatureArrayFromElementArray() = default;
 
 // -----------------------------------------------------------------------------
 //

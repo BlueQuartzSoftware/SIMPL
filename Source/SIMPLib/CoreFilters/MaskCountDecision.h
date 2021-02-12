@@ -172,8 +172,8 @@ private:
   std::weak_ptr<DataArray<bool>> m_MaskPtr;
   bool* m_Mask = nullptr;
 
-  DataArrayPath m_MaskArrayPath = {};
-  int m_NumberOfTrues = {};
+  DataArrayPath m_MaskArrayPath = {"", "", ""};
+  int m_NumberOfTrues = {0};
 
 public:
   MaskCountDecision(const MaskCountDecision&) = delete;            // Copy Constructor Not Implemented

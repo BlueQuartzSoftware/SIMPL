@@ -226,9 +226,9 @@ public:
   SetOriginResolutionImageGeom& operator=(SetOriginResolutionImageGeom&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  DataArrayPath m_DataContainerName = {};
-  bool m_ChangeOrigin = {};
+  DataArrayPath m_DataContainerName = {"", "", ""};
+  bool m_ChangeOrigin = {false};
   FloatVec3Type m_Origin = {};
-  bool m_ChangeResolution = {};
+  bool m_ChangeResolution = {false};
   FloatVec3Type m_Spacing = {};
 };
