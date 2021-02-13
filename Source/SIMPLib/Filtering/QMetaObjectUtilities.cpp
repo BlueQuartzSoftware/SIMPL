@@ -161,9 +161,24 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<DynamicTableData>("DynamicTableData");
   qRegisterMetaType<PhaseType::Types>("PhaseType::Types");
   qRegisterMetaType<VectString>("VectString");
-  qRegisterMetaType<IVec3<float>>("IVec3<float>");
-  qRegisterMetaTypeStreamOperators<IntVec3Type>("IntVec3Type");
-  qRegisterMetaTypeStreamOperators<FloatVec3Type>("FloatVec3Type");
+  qRegisterMetaType<IVec2<float>>("FloatVec2Type");
+  qRegisterMetaType<IVec3<float>>("FloatVec3Type");
+  qRegisterMetaType<IVec4<float>>("FloatVec4Type");
+  qRegisterMetaType<IVec6<float>>("FloatVec6Type");
+  qRegisterMetaType<IVec7<float>>("FloatVec7Type");
+
+  qRegisterMetaType<IVec2<int>>("IntVec2Type");
+  qRegisterMetaType<IVec3<int>>("IntVec3Type");
+  qRegisterMetaType<IVec4<int>>("IntVec4Type");
+  qRegisterMetaType<IVec6<int>>("IntVec6Type");
+  qRegisterMetaType<IVec7<int>>("IntVec7Type");
+
+  qRegisterMetaType<IVec2<size_t>>("SizeVec2Type");
+  qRegisterMetaType<IVec3<size_t>>("SizeVec3Type");
+  qRegisterMetaType<IVec4<size_t>>("SizeVec4Type");
+  qRegisterMetaType<IVec6<size_t>>("SizeVec6Type");
+  qRegisterMetaType<IVec7<size_t>>("SizeVec7Type");
+
   qRegisterMetaTypeStreamOperators<PhaseType::Types>("PhaseType::Types");
   qRegisterMetaTypeStreamOperators<EnsembleInfo>("EnsembleInfo");
 }
