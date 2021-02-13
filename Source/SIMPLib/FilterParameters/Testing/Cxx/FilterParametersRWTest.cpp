@@ -390,31 +390,31 @@ public:
   Q_PROPERTY(DataArrayPath ArrayPath2 READ getArrayPath2 WRITE setArrayPath2)
 
   // -----------------------------------------------------------------------------
-  void setAxisAngle1(const AxisAngleInput_t& value)
+  void setAxisAngle1(const AxisAngleInput& value)
   {
     m_AxisAngle1 = value;
   }
 
   // -----------------------------------------------------------------------------
-  AxisAngleInput_t getAxisAngle1() const
+  AxisAngleInput getAxisAngle1() const
   {
     return m_AxisAngle1;
   }
 
-  Q_PROPERTY(AxisAngleInput_t AxisAngle1 READ getAxisAngle1 WRITE setAxisAngle1)
+  Q_PROPERTY(AxisAngleInput AxisAngle1 READ getAxisAngle1 WRITE setAxisAngle1)
   // -----------------------------------------------------------------------------
-  void setAxisAngle2(const AxisAngleInput_t& value)
+  void setAxisAngle2(const AxisAngleInput& value)
   {
     m_AxisAngle2 = value;
   }
 
   // -----------------------------------------------------------------------------
-  AxisAngleInput_t getAxisAngle2() const
+  AxisAngleInput getAxisAngle2() const
   {
     return m_AxisAngle2;
   }
 
-  Q_PROPERTY(AxisAngleInput_t AxisAngle2 READ getAxisAngle2 WRITE setAxisAngle2)
+  Q_PROPERTY(AxisAngleInput AxisAngle2 READ getAxisAngle2 WRITE setAxisAngle2)
 
   // -----------------------------------------------------------------------------
   void setComparisonInputs1(const ComparisonInputs& value)
@@ -579,31 +579,31 @@ public:
   Q_PROPERTY(FloatVec3Type FloatVec3_2 READ getFloatVec3_2 WRITE setFloatVec3_2)
 
   // -----------------------------------------------------------------------------
-  void setFloat2ndOrderPoly_1(const Float2ndOrderPoly_t& value)
+  void setFloat2ndOrderPoly_1(const Float2ndOrderPolynomial& value)
   {
     m_Float2ndOrderPoly_1 = value;
   }
 
   // -----------------------------------------------------------------------------
-  Float2ndOrderPoly_t getFloat2ndOrderPoly_1() const
+  Float2ndOrderPolynomial getFloat2ndOrderPoly_1() const
   {
     return m_Float2ndOrderPoly_1;
   }
 
-  Q_PROPERTY(Float2ndOrderPoly_t Float2ndOrderPoly_1 READ getFloat2ndOrderPoly_1 WRITE setFloat2ndOrderPoly_1)
+  Q_PROPERTY(Float2ndOrderPolynomial Float2ndOrderPoly_1 READ getFloat2ndOrderPoly_1 WRITE setFloat2ndOrderPoly_1)
   // -----------------------------------------------------------------------------
-  void setFloat2ndOrderPoly_2(const Float2ndOrderPoly_t& value)
+  void setFloat2ndOrderPoly_2(const Float2ndOrderPolynomial& value)
   {
     m_Float2ndOrderPoly_2 = value;
   }
 
   // -----------------------------------------------------------------------------
-  Float2ndOrderPoly_t getFloat2ndOrderPoly_2() const
+  Float2ndOrderPolynomial getFloat2ndOrderPoly_2() const
   {
     return m_Float2ndOrderPoly_2;
   }
 
-  Q_PROPERTY(Float2ndOrderPoly_t Float2ndOrderPoly_2 READ getFloat2ndOrderPoly_2 WRITE setFloat2ndOrderPoly_2)
+  Q_PROPERTY(Float2ndOrderPolynomial Float2ndOrderPoly_2 READ getFloat2ndOrderPoly_2 WRITE setFloat2ndOrderPoly_2)
 
   // -----------------------------------------------------------------------------
   void setFloat3rdOrderPoly_1(const Float3rdOrderPoly_t& value)
@@ -834,7 +834,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(m_AxisAngle1.k, m_AxisAngle2.k)
       DREAM3D_REQUIRE_EQUAL(m_AxisAngle1.l, m_AxisAngle2.l)
 
-      m_AxisAngle2 = AxisAngleInput_t();
+      m_AxisAngle2 = AxisAngleInput();
     }
 
     {
@@ -1271,7 +1271,7 @@ This Filter Parameter is NOT tesed since nothing is read or written for the filt
 
     {
       SecondOrderPolynomialFilterParameter::Pointer fp =
-          SecondOrderPolynomialFilterParameter::Create("Test", "Float2ndOrderPoly_1", Float2ndOrderPoly_t(), FilterParameter::Category::Parameter,
+          SecondOrderPolynomialFilterParameter::Create("Test", "Float2ndOrderPoly_1", Float2ndOrderPolynomial(), FilterParameter::Category::Parameter,
                                                        SIMPL_BIND_SETTER(FilterParametersRWTest, this, Float2ndOrderPoly_2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Float2ndOrderPoly_1));
 
       QJsonObject obj;
@@ -1285,7 +1285,7 @@ This Filter Parameter is NOT tesed since nothing is read or written for the filt
       DREAM3D_REQUIRE_EQUAL(m_Float2ndOrderPoly_1.c11, m_Float2ndOrderPoly_2.c11)
       DREAM3D_REQUIRE_EQUAL(m_Float2ndOrderPoly_1.c20, m_Float2ndOrderPoly_2.c20)
 
-      m_Float2ndOrderPoly_2 = Float2ndOrderPoly_t();
+      m_Float2ndOrderPoly_2 = Float2ndOrderPolynomial();
     }
 #if 0
     {
@@ -1424,8 +1424,8 @@ private:
   DataArrayPath m_Path2 = {};
   DataArrayPath m_ArrayPath1 = {};
   DataArrayPath m_ArrayPath2 = {};
-  AxisAngleInput_t m_AxisAngle1 = {};
-  AxisAngleInput_t m_AxisAngle2 = {};
+  AxisAngleInput m_AxisAngle1 = {};
+  AxisAngleInput m_AxisAngle2 = {};
   ComparisonInputs m_ComparisonInputs1 = {};
   ComparisonInputs m_ComparisonInputs2 = {};
   DataContainerArrayProxy m_DcaProxy1 = {};
@@ -1438,8 +1438,8 @@ private:
   IntVec3Type m_IntVec3_2 = {};
   FloatVec3Type m_FloatVec3_1 = {};
   FloatVec3Type m_FloatVec3_2 = {};
-  Float2ndOrderPoly_t m_Float2ndOrderPoly_1 = {};
-  Float2ndOrderPoly_t m_Float2ndOrderPoly_2 = {};
+  Float2ndOrderPolynomial m_Float2ndOrderPoly_1 = {};
+  Float2ndOrderPolynomial m_Float2ndOrderPoly_2 = {};
   Float3rdOrderPoly_t m_Float3rdOrderPoly_1 = {};
   Float3rdOrderPoly_t m_Float3rdOrderPoly_2 = {};
   Float4thOrderPolynomial m_Float4thOrderPoly_1 = {};

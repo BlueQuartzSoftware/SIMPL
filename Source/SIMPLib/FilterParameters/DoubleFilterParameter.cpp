@@ -67,25 +67,6 @@ DoubleFilterParameter::Pointer DoubleFilterParameter::Create(const QString& huma
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DoubleFilterParameter::Pointer DoubleFilterParameter::Create(const QString& humanLabel, const QString& propertyName, float defaultValue, Category category, const SetterCallbackType& setterCallback,
-                                                             const GetterCallbackType& getterCallback, int groupIndex)
-{
-
-  DoubleFilterParameter::Pointer ptr = DoubleFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  ptr->setDefaultValue(defaultValue);
-  ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
-  ptr->setSetterCallback(setterCallback);
-  ptr->setGetterCallback(getterCallback);
-
-  return ptr;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 QString DoubleFilterParameter::getWidgetType() const
 {
   return QString("DoubleWidget");

@@ -139,7 +139,7 @@ public:
   int writeValue(const QString& name, IntVec3Type v) override;
   int writeValue(const QString& name, FloatVec3Type v) override;
 
-  int writeValue(const QString& name, Float2ndOrderPoly_t v) override;
+  int writeValue(const QString& name, Float2ndOrderPolynomial v) override;
   int writeValue(const QString& name, Float3rdOrderPoly_t v) override;
   int writeValue(const QString& name, Float4thOrderPolynomial v) override;
   int writeValue(const QString& name, StackFileListInfo v) override;
@@ -147,8 +147,8 @@ public:
   int writeValue(const QString& name, ComparisonInput_t v) override;
   int writeValue(const QString& name, ComparisonInputs v) override;
 
-  int writeValue(const QString& name, AxisAngleInput_t v) override;
-  int writeValue(const QString& name, QVector<AxisAngleInput_t> v) override;
+  int writeValue(const QString& name, AxisAngleInput v) override;
+  int writeValue(const QString& name, QVector<AxisAngleInput> v) override;
 
   int writeArraySelections(const QString& name, QSet<QString> v) override;
   int writeValue(const QString& name, DataContainerArrayProxy& dcaProxy) override;
@@ -162,7 +162,7 @@ public:
 protected:
   H5FilterParametersWriter();
 
-  int writeValue(const QString& name, AxisAngleInput_t v, int notUsed) override;
+  int writeValue(const QString& name, AxisAngleInput v, int notUsed) override;
 
 private:
   hid_t m_PipelineGroupId = {};

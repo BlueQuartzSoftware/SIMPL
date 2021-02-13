@@ -808,10 +808,10 @@ FloatVec3Type H5FilterParametersReader::readFloatVec3(const QString& name, Float
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Float2ndOrderPoly_t H5FilterParametersReader::readFloat2ndOrderPoly(const QString& name, Float2ndOrderPoly_t defaultValue)
+Float2ndOrderPolynomial H5FilterParametersReader::readFloat2ndOrderPoly(const QString& name, Float2ndOrderPolynomial defaultValue)
 {
   int err = 0;
-  Float2ndOrderPoly_t v;
+  Float2ndOrderPolynomial v;
   err = QH5Lite::readPointerDataset<float>(m_CurrentGroupId, name, reinterpret_cast<float*>(&v));
   if(err < 0)
   {
@@ -1023,7 +1023,7 @@ ComparisonInputsAdvanced H5FilterParametersReader::readComparisonInputsAdvanced(
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AxisAngleInput_t H5FilterParametersReader::readAxisAngle(const QString& name, AxisAngleInput_t v, int vectorPos)
+AxisAngleInput H5FilterParametersReader::readAxisAngle(const QString& name, AxisAngleInput v, int vectorPos)
 {
   int err = 0;
 
@@ -1042,11 +1042,11 @@ AxisAngleInput_t H5FilterParametersReader::readAxisAngle(const QString& name, Ax
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<AxisAngleInput_t> H5FilterParametersReader::readAxisAngles(const QString& name, QVector<AxisAngleInput_t> v)
+QVector<AxisAngleInput> H5FilterParametersReader::readAxisAngles(const QString& name, QVector<AxisAngleInput> v)
 {
   std::ignore = v;
-  QVector<AxisAngleInput_t> axisAngleInputsVector;
-  AxisAngleInput_t axisAngleDummyInput;
+  QVector<AxisAngleInput> axisAngleInputsVector;
+  AxisAngleInput axisAngleDummyInput;
   axisAngleDummyInput.angle = 0.0f;
   axisAngleDummyInput.h = 0.0f;
   axisAngleDummyInput.k = 0.0f;

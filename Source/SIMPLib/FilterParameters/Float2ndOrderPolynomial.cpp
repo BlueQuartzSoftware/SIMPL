@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ * Copyright (c) 2021-2021 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -27,59 +27,50 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * The code contained herein was partially funded by the followig contracts:
- *    United States Air Force Prime Contract FA8650-07-D-5800
- *    United States Air Force Prime Contract FA8650-10-D-5210
- *    United States Prime Contract Navy N00173-07-C-2068
- *
+ *    United States Air Force Prime Contract FA8650-15-D-5231
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-#include "ConstrainedFilterParameter.h"
+#include "Float2ndOrderPolynomial.h"
 
 // -----------------------------------------------------------------------------
-ConstrainedFilterParameter::Pointer ConstrainedFilterParameter::NullPointer()
+Float2ndOrderPolynomial::Float2ndOrderPolynomial() = default;
+
+// -----------------------------------------------------------------------------
+Float2ndOrderPolynomial::~Float2ndOrderPolynomial() = default;
+
+// -----------------------------------------------------------------------------
+Float2ndOrderPolynomial::Float2ndOrderPolynomial(float c00, float c01, float c10, float c11, float c02, float c20)
+: c20(c20)
+, c02(c02)
+, c11(c11)
+, c10(c10)
+, c01(c01)
+, c00(c00)
 {
-  return Pointer(static_cast<Self*>(nullptr));
 }
 
 // -----------------------------------------------------------------------------
-ConstrainedFilterParameter::Pointer ConstrainedFilterParameter::New()
+void Float2ndOrderPolynomial::writeJson(QJsonObject& json) const
 {
-  Pointer sharedPtr(new(ConstrainedFilterParameter<T>));
-  return sharedPtr;
+  json["c20"] = c20;
+  json["c02"] = c02;
+  json["c11"] = c11;
+  json["c10"] = c10;
+  json["c01"] = c01;
+  json["c00"] = c00;
 }
 
 // -----------------------------------------------------------------------------
-QString ConstrainedFilterParameter::getNameOfClass() const
+bool Float2ndOrderPolynomial::readJson(const QJsonObject& json)
 {
-  return QString("ConstrainedFilterParameter<T>");
-}
-
-// -----------------------------------------------------------------------------
-QString ConstrainedFilterParameter::ClassName()
-{
-  return QString("ConstrainedFilterParameter<T>");
-}
-
-// -----------------------------------------------------------------------------
-void ConstrainedFilterParameter::setMinimum(const T& value)
-{
-  m_Minimum = value;
-}
-
-// -----------------------------------------------------------------------------
-T ConstrainedFilterParameter::getMinimum() const
-{
-  return m_Minimum;
-}
-
-// -----------------------------------------------------------------------------
-void ConstrainedFilterParameter::setMaximum(const T& value)
-{
-  m_Maximum = value;
-}
-
-// -----------------------------------------------------------------------------
-T ConstrainedFilterParameter::getMaximum() const
-{
-  return m_Maximum;
+  if(json["c20"].isDouble() && json["c02"].isDouble() && json["c11"].isDouble() && json["c10"].isDouble() && json["c01"].isDouble() && json["c00"].isDouble())
+  {
+    c20 = static_cast<float>(json["c20"].toDouble());
+    c02 = static_cast<float>(json["c02"].toDouble());
+    c11 = static_cast<float>(json["c11"].toDouble());
+    c10 = static_cast<float>(json["c10"].toDouble());
+    c01 = static_cast<float>(json["c01"].toDouble());
+    c00 = static_cast<float>(json["c00"].toDouble());
+    return true;
+  }
+  return false;
 }

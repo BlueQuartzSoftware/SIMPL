@@ -94,7 +94,7 @@ void SecondOrderPolynomialWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    Float2ndOrderPoly_t data = m_FilterParameter->getGetterCallback()();
+    Float2ndOrderPolynomial data = m_FilterParameter->getGetterCallback()();
     c20->setText(loc.toString(data.c20));
     c02->setText(loc.toString(data.c02));
     c11->setText(loc.toString(data.c11));
@@ -130,8 +130,8 @@ void SecondOrderPolynomialWidget::widgetChanged(const QString& text)
 void SecondOrderPolynomialWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   bool ok = false;
-  Float2ndOrderPoly_t data;
-  Float2ndOrderPoly_t defValue = m_FilterParameter->getDefaultValue().value<Float2ndOrderPoly_t>();
+  Float2ndOrderPolynomial data;
+  Float2ndOrderPolynomial defValue = m_FilterParameter->getDefaultValue().value<Float2ndOrderPolynomial>();
 
   QLocale loc;
 

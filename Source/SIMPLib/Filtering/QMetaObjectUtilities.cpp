@@ -150,7 +150,7 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<AbstractMessage::Pointer>("AbstractMessage::Pointer");
   qRegisterMetaType<DataContainerArrayProxy>("DataContainerArrayProxy");
   qRegisterMetaType<DataArrayPath>("DataArrayPath");
-  qRegisterMetaType<AxisAngleInput_t>("AxisAngleInput_t");
+  qRegisterMetaType<AxisAngleInput>("AxisAngleInput");
   qRegisterMetaType<ComparisonInput_t>("ComparisonInput_t");
   qRegisterMetaType<ComparisonInputs>("ComparisonInputs");
   qRegisterMetaType<ComparisonInputsAdvanced>("ComparisonInputsAdvanced");

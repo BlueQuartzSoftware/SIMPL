@@ -48,7 +48,7 @@ SecondOrderPolynomialFilterParameter::~SecondOrderPolynomialFilterParameter() = 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SecondOrderPolynomialFilterParameter::Pointer SecondOrderPolynomialFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const Float2ndOrderPoly_t& defaultValue,
+SecondOrderPolynomialFilterParameter::Pointer SecondOrderPolynomialFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const Float2ndOrderPolynomial& defaultValue,
                                                                                            Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                                                                                            int groupIndex)
 {
@@ -88,7 +88,7 @@ void SecondOrderPolynomialFilterParameter::readJson(const QJsonObject& json)
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject obj = jsonValue.toObject();
-    Float2ndOrderPoly_t poly;
+    Float2ndOrderPolynomial poly;
     poly.readJson(obj);
     m_SetterCallback(poly);
   }
@@ -101,7 +101,7 @@ void SecondOrderPolynomialFilterParameter::writeJson(QJsonObject& json)
 {
   if(m_GetterCallback)
   {
-    Float2ndOrderPoly_t poly = m_GetterCallback();
+    Float2ndOrderPolynomial poly = m_GetterCallback();
     QJsonObject obj;
     poly.writeJson(obj);
     json[getPropertyName()] = obj;

@@ -111,7 +111,7 @@ public:
 
   virtual int writeValue(const QString& name, IntVec3Type v);
   virtual int writeValue(const QString& name, FloatVec3Type v);
-  virtual int writeValue(const QString& name, Float2ndOrderPoly_t v);
+  virtual int writeValue(const QString& name, Float2ndOrderPolynomial v);
   virtual int writeValue(const QString& name, Float3rdOrderPoly_t v);
   virtual int writeValue(const QString& name, Float4thOrderPolynomial v);
   virtual int writeValue(const QString& name, StackFileListInfo v);
@@ -119,13 +119,13 @@ public:
   virtual int writeValue(const QString& name, ComparisonInput_t v);
   virtual int writeValue(const QString& name, ComparisonInputs v);
 
-  virtual int writeValue(const QString& name, QVector<AxisAngleInput_t> v);
+  virtual int writeValue(const QString& name, QVector<AxisAngleInput> v);
 
   virtual int writeArraySelections(const QString& name, QSet<QString> v);
 
   virtual int writeValue(const QString& name, DataContainerArrayProxy& dcaProxy);
 
-  virtual int writeValue(const QString& name, AxisAngleInput_t v);
+  virtual int writeValue(const QString& name, AxisAngleInput v);
 
   virtual int writeValue(const QString& name, const DataArrayPath& path);
 
@@ -138,7 +138,7 @@ public:
 protected:
   AbstractFilterParametersWriter();
 
-  virtual int writeValue(const QString& name, AxisAngleInput_t v, int vectorPos);
+  virtual int writeValue(const QString& name, AxisAngleInput v, int vectorPos);
 
 public:
   AbstractFilterParametersWriter(const AbstractFilterParametersWriter&) = delete;            // Copy Constructor Not Implemented

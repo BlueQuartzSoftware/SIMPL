@@ -36,6 +36,7 @@
 #pragma once
 
 #include <memory>
+#include <numeric>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
@@ -44,10 +45,10 @@ class SIMPLib_EXPORT ConstrainedFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(ConstrainedFilterParameter)
-  PYB11_SHARED_POINTERS(ConstrainedFilterParameter)
-  PYB11_STATIC_CREATION(Create)
-  PYB11_END_BINDINGS()
+//  PYB11_BEGIN_BINDINGS(ConstrainedFilterParameter)
+//  PYB11_SHARED_POINTERS(ConstrainedFilterParameter)
+//  PYB11_STATIC_CREATION(Create)
+//  PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations
 public:
@@ -56,54 +57,78 @@ public:
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
   using ConstWeakPointer = std::weak_ptr<const Self>;
-  static Pointer NullPointer();
-
-  static Pointer New();
-
-  /**
-   * @brief Returns the name of the class for ConstrainedFilterParameter<T>
-   */
-  QString getNameOfClass() const override;
-  /**
-   * @brief Returns the name of the class for ConstrainedFilterParameter<T>
-   */
-  static QString ClassName();
-
-  virtual ~ConstrainedFilterParameter()
+  static Pointer NullPointer()
   {
+    return Pointer(static_cast<Self*>(nullptr));
   }
+
+  static Pointer New()
+  {
+    Pointer sharedPtr(new(ConstrainedFilterParameter<T>));
+    return sharedPtr;
+  }
+
+  /**
+   * @brief Returns the name of the class for ConstrainedFilterParameter<T>
+   */
+  QString getNameOfClass() const override
+  {
+    return QString("ConstrainedFilterParameter<T>");
+  }
+  /**
+   * @brief Returns the name of the class for ConstrainedFilterParameter<T>
+   */
+  static QString ClassName()
+  {
+    return "ConstrainedFilterParameter";
+  }
+
+  virtual ~ConstrainedFilterParameter() = default;
 
   /**
    * @brief Setter property for Minimum
    */
-  void setMinimum(const T& value);
+  void setMinimum(const T& value)
+  {
+    m_Minimum = value;
+  }
   /**
    * @brief Getter property for Minimum
    * @return Value of Minimum
    */
-  T getMinimum() const;
+  T getMinimum() const
+  {
+    return m_Minimum;
+  }
 
   /**
    * @brief Setter property for Maximum
    */
-  void setMaximum(const T& value);
+  void setMaximum(const T& value)
+  {
+    m_Maximum = value;
+  }
   /**
    * @brief Getter property for Maximum
    * @return Value of Maximum
    */
-  T getMaximum() const;
+  T getMaximum() const
+  {
+    return m_Maximum;
+  }
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
    * this FilterParameter subclass
    * @return
    */
-  QString getWidgetType() const override;
+  QString getWidgetType() const override
+  {
+    return "SUBCLASS IMPLEMENTS THIS METHOD";
+  }
 
 protected:
-  ConstrainedFilterParameter()
-  {
-  }
+  ConstrainedFilterParameter() = default;
 
 public:
   ConstrainedFilterParameter(const ConstrainedFilterParameter&) = delete;            // Copy Constructor Not Implemented
@@ -112,6 +137,7 @@ public:
   ConstrainedFilterParameter& operator=(ConstrainedFilterParameter&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  T m_Minimum = {};
-  T m_Maximum = {};
+  T m_Minimum = std::numeric_limits<T>::min();
+  T m_Maximum = std::numeric_limits<T>::max();
+  ;
 };

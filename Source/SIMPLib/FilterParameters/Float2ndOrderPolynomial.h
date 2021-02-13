@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2019 BlueQuartz Software, LLC
+ * Copyright (c) 2021-2021 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -26,39 +26,48 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-15-D-5231
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
 #pragma once
-
 #include <QtCore/QJsonObject>
 #include <QtCore/QMetaType>
+#include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLPythonMacros.h"
 
 /**
- * @brief
+ * @brief The Float2ndOrderPolynomial class
  */
-class SIMPLib_EXPORT AxisAngleInput
+class SIMPLib_EXPORT Float2ndOrderPolynomial
 {
   // Start Python bindings declarations
-  // clang-format off
-  PYB11_BEGIN_BINDINGS(AxisAngleInput)
-  PYB11_CREATION(float float float float)
+  PYB11_BEGIN_BINDINGS(Float2ndOrderPolynomial)
+  PYB11_CREATION(float float float float float float)
   PYB11_END_BINDINGS()
-  // clang-format on
   // End Python bindings declarations
-
 public:
-  AxisAngleInput();
-  ~AxisAngleInput();
+  Float2ndOrderPolynomial();
+  ~Float2ndOrderPolynomial();
 
-  AxisAngleInput(float h, float k, float l, float angle);
+  /**
+   * @brief Float2ndOrderPolynomial
+   * @param c00
+   * @param c01
+   * @param c10
+   * @param c11
+   * @param c02
+   * @param c20
+   */
+  Float2ndOrderPolynomial(float c00, float c01, float c10, float c11, float c02, float c20);
 
-  float h = 0.0f;
-  float k = 0.0f;
-  float l = 0.0f;
-  float angle = 0.0f;
+  float c20 = 0.0f;
+  float c02 = 0.0f;
+  float c11 = 0.0f;
+  float c10 = 0.0f;
+  float c01 = 0.0f;
+  float c00 = 0.0f;
 
   /**
    * @brief writeJson
@@ -72,12 +81,6 @@ public:
    * @return
    */
   bool readJson(const QJsonObject& json);
-
-public:
-  AxisAngleInput(const AxisAngleInput&) = default;
-  AxisAngleInput(AxisAngleInput&&) = default;
-  AxisAngleInput& operator=(const AxisAngleInput&) = default;
-  AxisAngleInput& operator=(AxisAngleInput&&) = default;
 };
 
-Q_DECLARE_METATYPE(AxisAngleInput)
+Q_DECLARE_METATYPE(Float2ndOrderPolynomial)

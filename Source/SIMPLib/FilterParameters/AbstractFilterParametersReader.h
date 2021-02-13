@@ -112,15 +112,15 @@ public:
 
   virtual IntVec3Type readIntVec3(const QString& name, IntVec3Type v);
   virtual FloatVec3Type readFloatVec3(const QString& name, FloatVec3Type v);
-  virtual Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString& name, Float2ndOrderPoly_t v);
+  virtual Float2ndOrderPolynomial readFloat2ndOrderPoly(const QString& name, Float2ndOrderPolynomial v);
   virtual Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString& name, Float3rdOrderPoly_t v);
   virtual Float4thOrderPolynomial readFloat4thOrderPoly(const QString& name, Float4thOrderPolynomial v);
   virtual StackFileListInfo readFileListInfo(const QString& name, StackFileListInfo v);
   virtual ComparisonInput_t readComparisonInput(const QString& name, ComparisonInput_t v, int vectorPos);
   virtual ComparisonInputs readComparisonInputs(const QString& name, ComparisonInputs v);
   virtual ComparisonInputsAdvanced readComparisonInputsAdvanced(const QString& name, ComparisonInputsAdvanced v);
-  virtual AxisAngleInput_t readAxisAngle(const QString& name, AxisAngleInput_t v, int vectorPos);
-  virtual QVector<AxisAngleInput_t> readAxisAngles(const QString& name, QVector<AxisAngleInput_t> v);
+  virtual AxisAngleInput readAxisAngle(const QString& name, AxisAngleInput v, int vectorPos);
+  virtual QVector<AxisAngleInput> readAxisAngles(const QString& name, QVector<AxisAngleInput> v);
   virtual QSet<QString> readArraySelections(const QString& name, QSet<QString> v);
 
   virtual DataContainerArrayProxy readDataContainerArrayProxy(const QString& name, DataContainerArrayProxy v);

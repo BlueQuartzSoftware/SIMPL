@@ -40,43 +40,7 @@
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-
-struct Float2ndOrderPoly_t
-{
-  float c20 = 0.0f;
-  float c02 = 0.0f;
-  float c11 = 0.0f;
-  float c10 = 0.0f;
-  float c01 = 0.0f;
-  float c00 = 0.0f;
-
-  void writeJson(QJsonObject& json) const
-  {
-    json["c20"] = c20;
-    json["c02"] = c02;
-    json["c11"] = c11;
-    json["c10"] = c10;
-    json["c01"] = c01;
-    json["c00"] = c00;
-  }
-
-  bool readJson(const QJsonObject& json)
-  {
-    if(json["c20"].isDouble() && json["c02"].isDouble() && json["c11"].isDouble() && json["c10"].isDouble() && json["c01"].isDouble() && json["c00"].isDouble())
-    {
-      c20 = static_cast<float>(json["c20"].toDouble());
-      c02 = static_cast<float>(json["c02"].toDouble());
-      c11 = static_cast<float>(json["c11"].toDouble());
-      c10 = static_cast<float>(json["c10"].toDouble());
-      c01 = static_cast<float>(json["c01"].toDouble());
-      c00 = static_cast<float>(json["c00"].toDouble());
-      return true;
-    }
-    return false;
-  }
-};
-
-Q_DECLARE_METATYPE(Float2ndOrderPoly_t)
+#include "SIMPLib/FilterParameters/Float2ndOrderPolynomial.h"
 
 /**
  * @brief SIMPL_NEW_SecondO_POLY_FP This macro is a short-form way of instantiating an instance of
@@ -103,7 +67,7 @@ class SIMPLib_EXPORT SecondOrderPolynomialFilterParameter : public FilterParamet
   // clang-format off
   PYB11_BEGIN_BINDINGS(SecondOrderPolynomialFilterParameter)
   PYB11_SHARED_POINTERS(SecondOrderPolynomialFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString Float2ndOrderPoly_t FilterParameter::Category SecondOrderPolynomialFilterParameter::SetterCallbackType SecondOrderPolynomialFilterParameter::GetterCallbackType int )
+  PYB11_STATIC_CREATION(Create ARGS QString QString Float2ndOrderPolynomial FilterParameter::Category SecondOrderPolynomialFilterParameter::SetterCallbackType SecondOrderPolynomialFilterParameter::GetterCallbackType int )
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations
@@ -126,8 +90,8 @@ public:
    */
   static QString ClassName();
 
-  using SetterCallbackType = std::function<void(Float2ndOrderPoly_t)>;
-  using GetterCallbackType = std::function<Float2ndOrderPoly_t(void)>;
+  using SetterCallbackType = std::function<void(Float2ndOrderPolynomial)>;
+  using GetterCallbackType = std::function<Float2ndOrderPolynomial(void)>;
 
   /**
    * @brief New This function instantiates an instance of the SecondOrderPolynomialFilterParameter. Although this function is available to be used,
@@ -145,7 +109,7 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer Create(const QString& humanLabel, const QString& propertyName, const Float2ndOrderPoly_t& defaultValue, Category category, const SetterCallbackType& setterCallback,
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const Float2ndOrderPolynomial& defaultValue, Category category, const SetterCallbackType& setterCallback,
                         const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~SecondOrderPolynomialFilterParameter() override;

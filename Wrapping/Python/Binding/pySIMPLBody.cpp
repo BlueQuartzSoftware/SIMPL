@@ -30,12 +30,12 @@ registerSIMPLArray<int32_t, 6>(mod, "IntVec6");
 
 py::implicitly_convertible<QString, DataArrayPath>();
 
-py::class_<AxisAngleInput_t>(mod, "AxisAngleInput")
+py::class_<AxisAngleInput>(mod, "AxisAngleInput")
     .def(py::init<float, float, float, float>())
-    .def_readwrite("angle", &AxisAngleInput_t::angle)
-    .def_readwrite("h", &AxisAngleInput_t::h)
-    .def_readwrite("k", &AxisAngleInput_t::k)
-    .def_readwrite("l", &AxisAngleInput_t::l);
+    .def_readwrite("angle", &AxisAngleInput::angle)
+    .def_readwrite("h", &AxisAngleInput::h)
+    .def_readwrite("k", &AxisAngleInput::k)
+    .def_readwrite("l", &AxisAngleInput::l);
 
 py::class_<StackFileListInfo>(mod, "FileListInfo")
     .def(py::init<>([](int32_t paddingDigits, uint32_t ordering, int32_t startIndex, int32_t endIndex, int32_t incrementIndex, const QString& inputPath, const QString& filePrefix,

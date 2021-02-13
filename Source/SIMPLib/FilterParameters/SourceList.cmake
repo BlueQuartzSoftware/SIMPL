@@ -24,6 +24,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ChoiceFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonSelectionAdvancedFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonSelectionFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ConstrainedFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ConstrainedDoubleFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ConstrainedIntFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataArrayCreationFilterParameter.h
@@ -85,6 +86,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/UnknownFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiInputFileFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Float4thOrderPolynomial.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Float2ndOrderPolynomial.h
 )
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
@@ -93,6 +95,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AttributeMatrixCreationFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AttributeMatrixSelectionFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AxisAngleFilterParameter.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AxisAngleInput.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/BooleanFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/CalculatorFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ChoiceFilterParameter.cpp
@@ -158,6 +161,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/UnknownFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiInputFileFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Float4thOrderPolynomial.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Float2ndOrderPolynomial.cpp
 )
 
 cmp_IDE_SOURCE_PROPERTIES( "${SUBDIR_NAME}" "${SIMPLib_${SUBDIR_NAME}_HDRS};${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}" "${SIMPLib_${SUBDIR_NAME}_SRCS}" "${PROJECT_INSTALL_HEADERS}")

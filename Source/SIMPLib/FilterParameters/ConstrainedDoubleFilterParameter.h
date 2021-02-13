@@ -39,7 +39,7 @@
 
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/FilterParameters/ConstrainedFilterParameter.h"
 
 /**
  * @brief SIMPL_NEW_DOUBLE_FP This macro is a short-form way of instantiating an instance of
@@ -60,13 +60,13 @@
  * @brief The ConstrainedDoubleFilterParameter class is used by filters to instantiate an DoubleWidget.  By instantiating an instance of
  * this class in a filter's setupFilterParameters() method, a DoubleWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
  */
-class SIMPLib_EXPORT ConstrainedDoubleFilterParameter : public FilterParameter
+class SIMPLib_EXPORT ConstrainedDoubleFilterParameter : public ConstrainedFilterParameter<double>
 {
   // Start Python bindings declarations
   // clang-format off
   PYB11_BEGIN_BINDINGS(ConstrainedDoubleFilterParameter)
   PYB11_SHARED_POINTERS(ConstrainedDoubleFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString double FilterParameter::Category ConstrainedDoubleFilterParameter::SetterCallbackType ConstrainedDoubleFilterParameter::GetterCallbackType int )
+  PYB11_STATIC_CREATION(Create ARGS QString QString double double double FilterParameter::Category ConstrainedDoubleFilterParameter::SetterCallbackType ConstrainedDoubleFilterParameter::GetterCallbackType int )
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations
@@ -98,6 +98,8 @@ public:
 
    * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
    * @param propertyName The internal property name for this filter parameter.
+   * @param min value
+   * @param max value
    * @param defaultValue The value that this filter parameter will be initialized to by default.
    * @param category The category for the filter parameter in the DREAM.3D user interface.  There
    * are three categories: Parameter, Required Arrays, and Created Arrays.
@@ -108,7 +110,7 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer Create(const QString& humanLabel, const QString& propertyName, double defaultValue, Category category, const SetterCallbackType& setterCallback,
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, double min, double max, double defaultValue, Category category, const SetterCallbackType& setterCallback,
                         const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~ConstrainedDoubleFilterParameter() override;

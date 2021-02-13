@@ -502,7 +502,7 @@ int H5FilterParametersWriter::writeValue(const QString& name, FloatVec3Type v)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5FilterParametersWriter::writeValue(const QString& name, Float2ndOrderPoly_t v)
+int H5FilterParametersWriter::writeValue(const QString& name, Float2ndOrderPolynomial v)
 {
   int err = 0;
   int32_t rank = 1;
@@ -603,7 +603,7 @@ int H5FilterParametersWriter::writeValue(const QString& name, ComparisonInputs v
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5FilterParametersWriter::writeValue(const QString& name, AxisAngleInput_t v)
+int H5FilterParametersWriter::writeValue(const QString& name, AxisAngleInput v)
 {
   int numQFilters = static_cast<int>(1);
   int err = writeValue(name, numQFilters);
@@ -628,7 +628,7 @@ int H5FilterParametersWriter::writeValue(const QString& name, AxisAngleInput_t v
 // -----------------------------------------------------------------------------
 // These are actually written as a binary 4x1 float array as an attribute
 // -----------------------------------------------------------------------------
-int H5FilterParametersWriter::writeValue(const QString& name, AxisAngleInput_t v, int vectorPos)
+int H5FilterParametersWriter::writeValue(const QString& name, AxisAngleInput v, int vectorPos)
 {
   int err = 0;
   int32_t rank = 1;
@@ -643,7 +643,7 @@ int H5FilterParametersWriter::writeValue(const QString& name, AxisAngleInput_t v
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5FilterParametersWriter::writeValue(const QString& name, QVector<AxisAngleInput_t> v)
+int H5FilterParametersWriter::writeValue(const QString& name, QVector<AxisAngleInput> v)
 {
   int numQFilters = static_cast<int>(v.size());
   int err = writeValue(name, numQFilters);

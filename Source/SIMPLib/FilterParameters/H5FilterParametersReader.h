@@ -153,15 +153,15 @@ public:
   IntVec3Type readIntVec3(const QString& name, IntVec3Type v) override;
   FloatVec3Type readFloatVec3(const QString& name, FloatVec3Type v) override;
 
-  Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString& name, Float2ndOrderPoly_t v) override;
+  Float2ndOrderPolynomial readFloat2ndOrderPoly(const QString& name, Float2ndOrderPolynomial v) override;
   Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString& name, Float3rdOrderPoly_t v) override;
   Float4thOrderPolynomial readFloat4thOrderPoly(const QString& name, Float4thOrderPolynomial v) override;
   StackFileListInfo readFileListInfo(const QString& name, StackFileListInfo v) override;
   ComparisonInput_t readComparisonInput(const QString& name, ComparisonInput_t v, int vectorPos) override;
   ComparisonInputs readComparisonInputs(const QString& name, ComparisonInputs v) override;
   ComparisonInputsAdvanced readComparisonInputsAdvanced(const QString& name, ComparisonInputsAdvanced v) override;
-  AxisAngleInput_t readAxisAngle(const QString& name, AxisAngleInput_t v, int vectorPos) override;
-  QVector<AxisAngleInput_t> readAxisAngles(const QString& name, QVector<AxisAngleInput_t> defValue) override;
+  AxisAngleInput readAxisAngle(const QString& name, AxisAngleInput v, int vectorPos) override;
+  QVector<AxisAngleInput> readAxisAngles(const QString& name, QVector<AxisAngleInput> defValue) override;
   QSet<QString> readArraySelections(const QString& name, QSet<QString> v) override;
 
   DataContainerArrayProxy readDataContainerArrayProxy(const QString& name, DataContainerArrayProxy v) override;

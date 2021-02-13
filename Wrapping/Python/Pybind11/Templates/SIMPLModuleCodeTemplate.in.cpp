@@ -326,7 +326,7 @@ PYBIND11_MODULE(dream3d, m)
   PYB11_DEFINE_SIMPLARRAY_6_INIT(float, FloatVec6Type)
   PYB11_DEFINE_SIMPLARRAY_6_INIT(int32_t, IntVec6Type)
 
-  py::class_<AxisAngleInput_t>(mod, "AxisAngleInput")
+  py::class_<AxisAngleInput>(mod, "AxisAngleInput")
     .def(py::init< const float &, const float &, const float &, const float &>())
   ;
 

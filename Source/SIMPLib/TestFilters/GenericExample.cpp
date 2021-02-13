@@ -531,13 +531,13 @@ int GenericExample::getMaxIterations() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setSecondOrderACoeff(const Float2ndOrderPoly_t& value)
+void GenericExample::setSecondOrderACoeff(const Float2ndOrderPolynomial& value)
 {
   m_SecondOrderACoeff = value;
 }
 
 // -----------------------------------------------------------------------------
-Float2ndOrderPoly_t GenericExample::getSecondOrderACoeff() const
+Float2ndOrderPolynomial GenericExample::getSecondOrderACoeff() const
 {
   return m_SecondOrderACoeff;
 }
@@ -819,13 +819,13 @@ FloatVec3Type GenericExample::getOrigin() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setCrystalSymmetryRotations(const AxisAngleInput_t& value)
+void GenericExample::setCrystalSymmetryRotations(const AxisAngleInput& value)
 {
   m_CrystalSymmetryRotations = value;
 }
 
 // -----------------------------------------------------------------------------
-AxisAngleInput_t GenericExample::getCrystalSymmetryRotations() const
+AxisAngleInput GenericExample::getCrystalSymmetryRotations() const
 {
   return m_CrystalSymmetryRotations;
 }

@@ -6,7 +6,6 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLPythonMacros.h"
-#include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT Float4thOrderPolynomial
 {

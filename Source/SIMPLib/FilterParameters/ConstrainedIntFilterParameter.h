@@ -39,6 +39,7 @@
 
 #include <QtCore/QJsonObject>
 
+#include "SIMPLib/FilterParameters/ConstrainedFilterParameter.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 /**
@@ -60,13 +61,13 @@
  * @brief The ConstrainedIntFilterParameter class is used by filters to instantiate an IntWidget.  By instantiating an instance of
  * this class in a filter's setupFilterParameters() method, an IntWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
  */
-class SIMPLib_EXPORT ConstrainedIntFilterParameter : public FilterParameter
+class SIMPLib_EXPORT ConstrainedIntFilterParameter : public ConstrainedFilterParameter<int32_t>
 {
   // Start Python bindings declarations
   // clang-format off
   PYB11_BEGIN_BINDINGS(ConstrainedIntFilterParameter)
   PYB11_SHARED_POINTERS(ConstrainedIntFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString int FilterParameter::Category ConstrainedIntFilterParameter::SetterCallbackType ConstrainedIntFilterParameter::GetterCallbackType int )
+  PYB11_STATIC_CREATION(Create ARGS QString QString int32_t int32_t int32_t FilterParameter::Category ConstrainedIntFilterParameter::SetterCallbackType ConstrainedIntFilterParameter::GetterCallbackType int )
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations
@@ -98,6 +99,8 @@ public:
 
    * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
    * @param propertyName The internal property name for this filter parameter.
+   * @param min
+   * @param max
    * @param defaultValue The value that this filter parameter will be initialized to by default.
    * @param category The category for the filter parameter in the DREAM.3D user interface.  There
    * are three categories: Parameter, Required Arrays, and Created Arrays.
@@ -108,8 +111,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer Create(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                        int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, int min, int max, int defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~ConstrainedIntFilterParameter() override;
 
