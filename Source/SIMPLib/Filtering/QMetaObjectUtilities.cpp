@@ -45,7 +45,7 @@
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-#include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
+#include "SIMPLib/FilterParameters/AxisAngleInput.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
@@ -161,6 +161,7 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<DynamicTableData>("DynamicTableData");
   qRegisterMetaType<PhaseType::Types>("PhaseType::Types");
   qRegisterMetaType<VectString>("VectString");
+  qRegisterMetaType<IVec3<float>>("IVec3<float>");
   qRegisterMetaTypeStreamOperators<IntVec3Type>("IntVec3Type");
   qRegisterMetaTypeStreamOperators<FloatVec3Type>("FloatVec3Type");
   qRegisterMetaTypeStreamOperators<PhaseType::Types>("PhaseType::Types");

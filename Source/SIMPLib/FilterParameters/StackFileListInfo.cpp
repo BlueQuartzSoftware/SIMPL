@@ -45,6 +45,21 @@ StackFileListInfo::StackFileListInfo(const QString& extension, int32_t startInde
 }
 
 // -----------------------------------------------------------------------------
+StackFileListInfo::StackFileListInfo(int32_t paddingDigits, uint32_t ordering, int32_t incIndex, const QString& inputPath, const QString& filePrefix, const QString& fileSuffix,
+                                     const QString& extension, int32_t startIndex, int32_t endIndex)
+{
+  PaddingDigits = paddingDigits;
+  Ordering = ordering;
+  IncrementIndex = incIndex;
+  InputPath = inputPath;
+  FilePrefix = filePrefix;
+  FileSuffix = fileSuffix;
+  FileExtension = extension;
+  StartIndex = startIndex;
+  EndIndex = endIndex;
+}
+
+// -----------------------------------------------------------------------------
 StackFileListInfo::~StackFileListInfo() = default;
 
 // -----------------------------------------------------------------------------

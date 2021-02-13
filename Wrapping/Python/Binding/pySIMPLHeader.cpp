@@ -15,9 +15,6 @@
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
-#include "SIMPLib/FilterParameters/AxisAngleInput.h"
-#include "SIMPLib/FilterParameters/StackFileListInfo.h"
-#include "SIMPLib/FilterParameters/ThirdOrderPolynomial.h"
 #include "SIMPLib/Utilities/PythonSupport.h"
 
 namespace py = pybind11;
