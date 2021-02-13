@@ -121,7 +121,7 @@ MultiAttributeMatrixSelectionFilterParameter::RequirementType MultiAttributeMatr
   req.amTypes = amTypes;
   if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {
-    req.daTypes = QVector<QString>(1, primitiveType);
+    req.daTypes = std::vector<QString>(1, primitiveType);
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
@@ -144,7 +144,7 @@ MultiAttributeMatrixSelectionFilterParameter::RequirementType MultiAttributeMatr
   MultiAttributeMatrixSelectionFilterParameter::RequirementType req;
   if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {
-    req.daTypes = QVector<QString>(1, primitiveType);
+    req.daTypes = std::vector<QString>(1, primitiveType);
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
@@ -152,7 +152,7 @@ MultiAttributeMatrixSelectionFilterParameter::RequirementType MultiAttributeMatr
   }
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {
-    QVector<AttributeMatrix::Type> amTypes(1, attributeMatrixType);
+    AttributeMatrix::Types amTypes(1, attributeMatrixType);
     req.amTypes = amTypes;
   }
   if(IGeometry::Type::Any != geometryType)
@@ -286,25 +286,25 @@ IGeometry::Types MultiAttributeMatrixSelectionFilterParameter::getDefaultGeometr
 }
 
 // -----------------------------------------------------------------------------
-void MultiAttributeMatrixSelectionFilterParameter::setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value)
+void MultiAttributeMatrixSelectionFilterParameter::setDefaultAttributeMatrixTypes(const AttributeMatrix::Types& value)
 {
   m_DefaultAttributeMatrixTypes = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<AttributeMatrix::Type> MultiAttributeMatrixSelectionFilterParameter::getDefaultAttributeMatrixTypes() const
+AttributeMatrix::Types MultiAttributeMatrixSelectionFilterParameter::getDefaultAttributeMatrixTypes() const
 {
   return m_DefaultAttributeMatrixTypes;
 }
 
 // -----------------------------------------------------------------------------
-void MultiAttributeMatrixSelectionFilterParameter::setDefaultAttributeArrayTypes(const QVector<QString>& value)
+void MultiAttributeMatrixSelectionFilterParameter::setDefaultAttributeArrayTypes(const std::vector<QString>& value)
 {
   m_DefaultAttributeArrayTypes = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<QString> MultiAttributeMatrixSelectionFilterParameter::getDefaultAttributeArrayTypes() const
+std::vector<QString> MultiAttributeMatrixSelectionFilterParameter::getDefaultAttributeArrayTypes() const
 {
   return m_DefaultAttributeArrayTypes;
 }

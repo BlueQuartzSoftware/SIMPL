@@ -122,7 +122,7 @@ AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectio
   AttributeMatrixSelectionFilterParameter::RequirementType req;
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {
-    req.amTypes = QVector<AttributeMatrix::Type>(1, attributeMatrixType);
+    req.amTypes = AttributeMatrix::Types(1, attributeMatrixType);
   }
   if(IGeometry::Type::Any != geometryType)
   {
@@ -234,13 +234,13 @@ IGeometry::Types AttributeMatrixSelectionFilterParameter::getDefaultGeometryType
 }
 
 // -----------------------------------------------------------------------------
-void AttributeMatrixSelectionFilterParameter::setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value)
+void AttributeMatrixSelectionFilterParameter::setDefaultAttributeMatrixTypes(const AttributeMatrix::Types& value)
 {
   m_DefaultAttributeMatrixTypes = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<AttributeMatrix::Type> AttributeMatrixSelectionFilterParameter::getDefaultAttributeMatrixTypes() const
+AttributeMatrix::Types AttributeMatrixSelectionFilterParameter::getDefaultAttributeMatrixTypes() const
 {
   return m_DefaultAttributeMatrixTypes;
 }

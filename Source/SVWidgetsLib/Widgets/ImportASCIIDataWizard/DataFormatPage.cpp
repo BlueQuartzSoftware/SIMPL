@@ -45,6 +45,7 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Utilities/STLUtilities.hpp"
 #include "SIMPLib/Utilities/StringOperations.h"
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
@@ -452,9 +453,9 @@ void DataFormatPage::createAMSelectionMenu()
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
   DataContainerArray::Container containers = dca->getDataContainers();
-  QVector<QString> daTypes;               // = m_FilterParameter->getDefaultAttributeArrayTypes();
+  std::vector<QString> daTypes;           // = m_FilterParameter->getDefaultAttributeArrayTypes();
   QVector<std::vector<size_t>> cDims;     // = m_FilterParameter->getDefaultComponentDimensions();
-  QVector<AttributeMatrix::Type> amTypes; // = m_FilterParameter->getDefaultAttributeMatrixTypes();
+  AttributeMatrix::Types amTypes;         // = m_FilterParameter->getDefaultAttributeMatrixTypes();
   IGeometry::Types geomTypes;             // = m_FilterParameter->getDefaultGeometryTypes();
 
   for(DataContainer::Pointer dc : containers)
@@ -473,7 +474,7 @@ void DataFormatPage::createAMSelectionMenu()
     QMenu* dcMenu = btnMenu->addMenu(dc->getName()); // BtnMenu owns the new QMenu
     dcMenu->setDisabled(false);
 
-    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
+    if(!geomTypes.empty() && !SIMPL::contains(geomTypes, geomType) && !SIMPL::contains(geomTypes, IGeometry::Type::Any))
     {
       dcMenu->setDisabled(true);
     }
@@ -493,7 +494,7 @@ void DataFormatPage::createAMSelectionMenu()
       m_AMMenuMapper->setMapping(amAction, path);
 
       bool amIsNotNull = nullptr != am.get();
-      bool amValidType = !amTypes.isEmpty() && !amTypes.contains(am->getType());
+      bool amValidType = !amTypes.empty() && !SIMPL::contains(amTypes, am->getType());
 
       if(amIsNotNull && amValidType)
       {
@@ -560,7 +561,7 @@ void DataFormatPage::createDCSelectionMenu()
     connect(dcAction, SIGNAL(triggered(bool)), m_DCMenuMapper, SLOT(map()));
     m_DCMenuMapper->setMapping(dcAction, path);
 
-    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
+    if(!geomTypes.empty() && !SIMPL::contains(geomTypes, geomType) && !SIMPL::contains(geomTypes, IGeometry::Type::Any))
     {
       dcAction->setDisabled(true);
     }
@@ -1144,14 +1145,7 @@ void DataFormatPage::checkHeaders()
 // -----------------------------------------------------------------------------
 void DataFormatPage::checkHeaders(QVector<QString> headers)
 {
-  if(validateHeaders(headers))
-  {
-    m_HeadersHasErrors = false;
-  }
-  else
-  {
-    m_HeadersHasErrors = true;
-  }
+  m_HeadersHasErrors = !validateHeaders(headers);
 }
 
 // -----------------------------------------------------------------------------

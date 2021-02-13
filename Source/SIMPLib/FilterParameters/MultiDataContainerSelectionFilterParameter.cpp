@@ -120,7 +120,7 @@ MultiDataContainerSelectionFilterParameter::RequirementType MultiDataContainerSe
   req.amTypes = amTypes;
   if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {
-    req.daTypes = QVector<QString>(1, primitiveType);
+    req.daTypes = std::vector<QString>(1, primitiveType);
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
@@ -143,7 +143,7 @@ MultiDataContainerSelectionFilterParameter::RequirementType MultiDataContainerSe
   MultiDataContainerSelectionFilterParameter::RequirementType req;
   if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {
-    req.daTypes = QVector<QString>(1, primitiveType);
+    req.daTypes = std::vector<QString>(1, primitiveType);
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
@@ -151,7 +151,7 @@ MultiDataContainerSelectionFilterParameter::RequirementType MultiDataContainerSe
   }
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {
-    QVector<AttributeMatrix::Type> amTypes(1, attributeMatrixType);
+    AttributeMatrix::Types amTypes(1, attributeMatrixType);
     req.amTypes = amTypes;
   }
   if(IGeometry::Type::Any != geometryType)
@@ -281,25 +281,25 @@ IGeometry::Types MultiDataContainerSelectionFilterParameter::getDefaultGeometryT
 }
 
 // -----------------------------------------------------------------------------
-void MultiDataContainerSelectionFilterParameter::setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value)
+void MultiDataContainerSelectionFilterParameter::setDefaultAttributeMatrixTypes(const AttributeMatrix::Types& value)
 {
   m_DefaultAttributeMatrixTypes = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<AttributeMatrix::Type> MultiDataContainerSelectionFilterParameter::getDefaultAttributeMatrixTypes() const
+AttributeMatrix::Types MultiDataContainerSelectionFilterParameter::getDefaultAttributeMatrixTypes() const
 {
   return m_DefaultAttributeMatrixTypes;
 }
 
 // -----------------------------------------------------------------------------
-void MultiDataContainerSelectionFilterParameter::setDefaultAttributeArrayTypes(const QVector<QString>& value)
+void MultiDataContainerSelectionFilterParameter::setDefaultAttributeArrayTypes(const std::vector<QString>& value)
 {
   m_DefaultAttributeArrayTypes = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<QString> MultiDataContainerSelectionFilterParameter::getDefaultAttributeArrayTypes() const
+std::vector<QString> MultiDataContainerSelectionFilterParameter::getDefaultAttributeArrayTypes() const
 {
   return m_DefaultAttributeArrayTypes;
 }

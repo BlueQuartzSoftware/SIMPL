@@ -120,7 +120,7 @@ DataArrayCreationFilterParameter::RequirementType DataArrayCreationFilterParamet
   DataArrayCreationFilterParameter::RequirementType req;
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {
-    req.amTypes = QVector<AttributeMatrix::Type>(1, attributeMatrixType);
+    req.amTypes = AttributeMatrix::Types(1, attributeMatrixType);
   }
   if(IGeometry::Type::Any != geometryType)
   {
@@ -220,13 +220,13 @@ IGeometry::Types DataArrayCreationFilterParameter::getDefaultGeometryTypes() con
 }
 
 // -----------------------------------------------------------------------------
-void DataArrayCreationFilterParameter::setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value)
+void DataArrayCreationFilterParameter::setDefaultAttributeMatrixTypes(const AttributeMatrix::Types& value)
 {
   m_DefaultAttributeMatrixTypes = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<AttributeMatrix::Type> DataArrayCreationFilterParameter::getDefaultAttributeMatrixTypes() const
+AttributeMatrix::Types DataArrayCreationFilterParameter::getDefaultAttributeMatrixTypes() const
 {
   return m_DefaultAttributeMatrixTypes;
 }

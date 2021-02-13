@@ -42,6 +42,7 @@
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Geometry/IGeometry.h"
+#include "SIMPLib/Utilities/STLUtilities.hpp"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetUtils.hpp"
@@ -215,7 +216,7 @@ void LinkedDataContainerSelectionWidget::createSelectionMenu()
     m_MenuMapper->setMapping(action, path);
     menu->addAction(action);
 
-    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
+    if(!geomTypes.empty() && !SIMPL::contains(geomTypes, geomType) && !SIMPL::contains(geomTypes, IGeometry::Type::Any))
     {
       action->setDisabled(true);
     }

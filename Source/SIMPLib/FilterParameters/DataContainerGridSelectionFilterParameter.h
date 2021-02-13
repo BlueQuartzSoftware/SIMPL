@@ -86,10 +86,6 @@ public:
   using SetterCallbackType = std::function<void(DataContainerGrid)>;
   using GetterCallbackType = std::function<DataContainerGrid(void)>;
 
-  // using RequirementType = struct
-  //{
-  //  IGeometry::Types dcGeometryTypes;
-  //};
 
   /**
    * @brief New This function instantiates an instance of the DataContainerGridSelectionFilterParameter.  Specifying a RequirementType will

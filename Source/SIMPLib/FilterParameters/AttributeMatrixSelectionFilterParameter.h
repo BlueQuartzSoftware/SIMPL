@@ -180,12 +180,12 @@ public:
   /**
    * @brief Setter property for DefaultAttributeMatrixTypes
    */
-  void setDefaultAttributeMatrixTypes(const QVector<AttributeMatrix::Type>& value);
+  void setDefaultAttributeMatrixTypes(const AttributeMatrix::Types& value);
   /**
    * @brief Getter property for DefaultAttributeMatrixTypes
    * @return Value of DefaultAttributeMatrixTypes
    */
-  QVector<AttributeMatrix::Type> getDefaultAttributeMatrixTypes() const;
+  AttributeMatrix::Types getDefaultAttributeMatrixTypes() const;
 
   /**
    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
@@ -237,7 +237,7 @@ public:
 
 private:
   IGeometry::Types m_DefaultGeometryTypes = {};
-  QVector<AttributeMatrix::Type> m_DefaultAttributeMatrixTypes = {};
+  AttributeMatrix::Types m_DefaultAttributeMatrixTypes = {};
   AttributeMatrixSelectionFilterParameter::SetterCallbackType m_SetterCallback = {};
   AttributeMatrixSelectionFilterParameter::GetterCallbackType m_GetterCallback = {};
 };

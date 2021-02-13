@@ -54,6 +54,7 @@
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
+#include "SIMPLib/Utilities/STLUtilities.hpp"
 
 #include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Lite.h"
@@ -132,7 +133,7 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
     dcProxy.setName(dataContainerName);
     dcProxy.setFlag(Qt::Unchecked);
 
-    int32_t geometryType;
+    uint32_t geometryType;
     herr_t err = QH5Lite::readScalarAttribute(containerGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, geometryType);
     if(err >= 0)
     {
@@ -140,14 +141,12 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
       if(req != nullptr)
       {
         IGeometry::Types geomTypes = req->getDCGeometryTypes();
-        if(geomTypes.empty() || geomTypes.contains(static_cast<IGeometry::Type>(geometryType)))
+        if(geomTypes.empty() || SIMPL::contains(geomTypes, static_cast<IGeometry::Type>(geometryType)))
         {
+          dcProxy.setFlag(Qt::Checked);
         }
-
-        dcProxy.setFlag(Qt::Checked);
       }
     }
-
     QString h5Path = h5InternalPath + "/" + dataContainerName;
     // Read the Attribute Matricies for this Data Container
     AttributeMatrix::ReadAttributeMatrixStructure(containerGid, &dcProxy, req, h5Path);

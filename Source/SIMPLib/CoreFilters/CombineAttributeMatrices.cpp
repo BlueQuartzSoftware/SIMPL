@@ -110,7 +110,7 @@ void CombineAttributeMatrices::setupFilterParameters()
     amTypes.push_back(AttributeMatrix::Type::FaceFeature);
     amTypes.push_back(AttributeMatrix::Type::Vertex);
     amTypes.push_back(AttributeMatrix::Type::VertexFeature);
-    QVector<QString> daTypes;
+    std::vector<QString> daTypes;
     daTypes.push_back(SIMPL::TypeNames::Int32);
     std::vector<std::vector<size_t>> compDims;
     compDims.resize(1);

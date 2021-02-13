@@ -35,7 +35,10 @@
 
 #pragma once
 
+#include <cstdint>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include <QMutex>
 #include <QtCore/QMap>
@@ -188,8 +191,8 @@ public:
     Unknown = 101U
   };
 
-  using VtkCellTypes = QVector<VtkCellType>;
-  using Types = QVector<Type>;
+  using VtkCellTypes = std::vector<VtkCellType>;
+  using Types = std::vector<Type>;
 
   /**
    * @brief AttributeMatrixMap_t
