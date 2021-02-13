@@ -59,7 +59,7 @@ class SIMPLib_EXPORT StackFileListInfo : public FileListInfo
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(StackFileListInfo)
   PYB11_CREATION(QString int32_t int32_t int32_t)
-  PYB11_CREATION(int32_t uint32_t int32_t QString QString QString QString int32_t int32_t)
+  PYB11_CREATION(int32_t uint32_t int32_t int32_t int32_t QString QString QString QString)
   PYB11_PROPERTY(int32_t PaddingDigits READ getPaddingDigits WRITE setPaddingDigits)
   PYB11_PROPERTY(uint32_t Ordering READ getOrdering WRITE setOrdering)
   PYB11_PROPERTY(int32_t IncrementIndex READ getIncrementIndex WRITE setIncrementIndex)
@@ -87,16 +87,17 @@ public:
    * @brief StackFileListInfo
    * @param paddingDigits
    * @param ordering
-   * @param incIndex
+   * @param startIndex
+   * @param endIndex
+   * @param incrementIndex
    * @param inputPath
    * @param filePrefix
    * @param fileSuffix
-   * @param extension
-   * @param startIndex
-   * @param endIndex
+   * @param fileExtension
    */
-  StackFileListInfo(int32_t paddingDigits, uint32_t ordering, int32_t incIndex, const QString& inputPath, const QString& filePrefix, const QString& fileSuffix, const QString& extension,
-                    int32_t startIndex, int32_t endIndex);
+  StackFileListInfo(int32_t paddingDigits, uint32_t ordering, int32_t startIndex, int32_t endIndex, int32_t incrementIndex, const QString& inputPath, const QString& filePrefix,
+                    const QString& fileSuffix, const QString& fileExtension);
+
   // These are from the super class
   FP_PROP_DEC_DEF(int32_t, PaddingDigits)
   FP_PROP_DEC_DEF(uint32_t, Ordering)
