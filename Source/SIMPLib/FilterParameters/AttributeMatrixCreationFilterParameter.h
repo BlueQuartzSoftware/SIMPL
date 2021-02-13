@@ -56,7 +56,7 @@ class AbstractFilter;
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
  * AttributeMatrixCreationFilterParameter::RequirementType req;
- * SIMPL_NEW_AM_CREATION_FP("Created Attribute Matrix", CreatedAttributeMatrix, FilterParameter::CreatedArray, GenericExample, req);
+ * SIMPL_NEW_AM_CREATION_FP("Created Attribute Matrix", CreatedAttributeMatrix, FilterParameter::Category::CreatedArray, GenericExample, req);
  */
 #define SIMPL_NEW_AM_CREATION_FP(...)                                                                                                                                                                  \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(AttributeMatrixCreationFilterParameter, __VA_ARGS__))

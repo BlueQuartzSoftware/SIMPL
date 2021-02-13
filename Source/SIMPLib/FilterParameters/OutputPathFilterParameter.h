@@ -51,7 +51,7 @@
  * SIMPL_NEW_OUTPUT_PATH_FP("HumanLabel", PropertyName, Category, FilterName, FileExtension, FileType, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional parameters):
- * SIMPL_NEW_OUTPUT_PATH_FP("Output Path", OutputPath, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_OUTPUT_PATH_FP("Output Path", OutputPath, FilterParameter::Category::Parameter, GenericExample);
  */
 #define SIMPL_NEW_OUTPUT_PATH_FP(...)                                                                                                                                                                  \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(OutputPathFilterParameter, __VA_ARGS__))

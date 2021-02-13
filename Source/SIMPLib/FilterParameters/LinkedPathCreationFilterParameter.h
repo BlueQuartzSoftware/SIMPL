@@ -82,7 +82,7 @@
  * SIMPL_NEW_AM_WITH_LINKED_DC_FP("HumanLabel", PropertyName, DcName, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Matrix", CellMatrixName, DcName, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Matrix", CellMatrixName, DcName, FilterParameter::Category::Parameter, GenericExample);
  */
 #define SIMPL_NEW_AM_WITH_LINKED_DC_FP(...) SIMPL_EXPAND(_FP_GET_OVERRIDE6(__VA_ARGS__, SIMPL_NEW_LINKED_DATA_CONTAINER_Index, SIMPL_NEW_LINKED_DATA_CONTAINER_NoIndex)(__VA_ARGS__))
 
@@ -96,7 +96,7 @@
  * SIMPL_NEW_DA_WITH_LINKED_AM_FP("HumanLabel", PropertyName, DcName, AmName, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_DA_WITH_LINKED_AM_FP("Feature Id", CellMatrixName, DcName, AmName, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_DA_WITH_LINKED_AM_FP("Feature Id", CellMatrixName, DcName, AmName, FilterParameter::Category::Parameter, GenericExample);
  */
 #define SIMPL_NEW_DA_WITH_LINKED_AM_FP(...) SIMPL_EXPAND(_FP_GET_OVERRIDE7(__VA_ARGS__, SIMPL_NEW_LINKED_ATTRIBUTE_MATRIX_Index, SIMPL_NEW_LINKED_ATTRIBUTE_MATRIX_NoIndex)(__VA_ARGS__))
 
@@ -111,7 +111,7 @@
  * SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP("HumanLabel", PropertyName, LinkedAdvComparisonProperty, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP("Mask", MaskName, AdvComparison, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP("Mask", MaskName, AdvComparison, FilterParameter::Category::Parameter, GenericExample);
  */
 #define SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP(...) SIMPL_EXPAND(_FP_GET_OVERRIDE6(__VA_ARGS__, SIMPL_NEW_DA_FROM_ADV_COMPARISON_Index, SIMPL_NEW_DA_FROM_ADV_COMPARISON_NoIndex)(__VA_ARGS__))
 

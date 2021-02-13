@@ -55,7 +55,7 @@
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), with optional GroupIndex parameter):
  * MultiDataContainerSelectionFilterParameter::RequirementType req;
- * SIMPL_NEW_MCA_SELECTION_FP("Multi Data Container Test", SelectedMultiDataContainers, FilterParameter::Parameter, GenericExample, req, 0);
+ * SIMPL_NEW_MCA_SELECTION_FP("Multi Data Container Test", SelectedMultiDataContainers, FilterParameter::Category::Parameter, GenericExample, req, 0);
  */
 #define SIMPL_NEW_MDC_SELECTION_FP(...)                                                                                                                                                                \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(MultiDataContainerSelectionFilterParameter, __VA_ARGS__))

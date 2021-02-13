@@ -53,7 +53,7 @@
  * SIMPL_NEW_INT_VEC3_FP("HumanLabel", PropertyName, Category, FilterName, Units, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional parameters):
- * SIMPL_NEW_INT_VEC3_FP("Dimensions (XYZ)", Dimensions, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_INT_VEC3_FP("Dimensions (XYZ)", Dimensions, FilterParameter::Category::Parameter, GenericExample);
  */
 #define SIMPL_NEW_INT_VEC3_FP(...)                                                                                                                                                                     \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(IntVec3FilterParameter, __VA_ARGS__))

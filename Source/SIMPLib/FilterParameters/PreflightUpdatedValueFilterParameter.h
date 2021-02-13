@@ -49,7 +49,7 @@
  * SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("HumanLabel", PropertyName, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), with optional GroupIndex parameter):
- * SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Estimated Primary Features", EstimatedPrimaryFeatures, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Estimated Primary Features", EstimatedPrimaryFeatures, FilterParameter::Category::Parameter, GenericExample);
  */
 #define SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP(...)                                                                                                                                                        \
   SIMPL_EXPAND(_FP_GET_PREFLIGHTUPDATEDVALUE_OVERRIDE(__VA_ARGS__, SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_5, SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_4)(PreflightUpdatedValueFilterParameter, __VA_ARGS__))

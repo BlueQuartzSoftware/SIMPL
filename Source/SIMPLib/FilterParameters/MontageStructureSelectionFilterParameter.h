@@ -47,7 +47,7 @@
  * SIMPL_NEW_MONTAGE_STRUCTURE_SELECTION_FP("HumanLabel", PropertyName, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), with optional GroupIndex parameter):
- * SIMPL_NEW_MONTAGE_STRUCTURE_SELECTION_FP("Montage", NameName, FilterParameter::Parameter, GenericExample, 2);
+ * SIMPL_NEW_MONTAGE_STRUCTURE_SELECTION_FP("Montage", NameName, FilterParameter::Category::Parameter, GenericExample, 2);
  */
 #define SIMPL_NEW_MONTAGE_STRUCTURE_SELECTION_FP(...)                                                                                                                                                  \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(MontageStructureSelectionFilterParameter, __VA_ARGS__))
