@@ -53,7 +53,7 @@
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), with optional GroupIndex parameter):
  * DataContainerGridSelectionFilterParameter::RequirementType req;
- * SIMPL_NEW_DC_GRID_SELECTION_FP("Data Container", DataContainerName, FilterParameter::Parameter, GenericExample, req, 2);
+ * SIMPL_NEW_DC_GRID_SELECTION_FP("Data Container", DataContainerName, FilterParameter::Category::Parameter, GenericExample, req, 2);
  */
 #define SIMPL_NEW_DC_GRID_SELECTION_FP(...)                                                                                                                                                            \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(DataContainerGridSelectionFilterParameter, __VA_ARGS__))
@@ -64,6 +64,14 @@
  */
 class SIMPLib_EXPORT DataContainerGridSelectionFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(DataContainerGridSelectionFilterParameter)
+  PYB11_SHARED_POINTERS(DataContainerGridSelectionFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString DataContainerGrid FilterParameter::Category DataContainerGridSelectionFilterParameter::SetterCallbackType DataContainerGridSelectionFilterParameter::GetterCallbackType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = DataContainerGridSelectionFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -107,8 +115,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const DataContainerGrid& defaultValue, Category category, SetterCallbackType setterCallback,
-                     GetterCallbackType getterCallback, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const DataContainerGrid& defaultValue, Category category, SetterCallbackType setterCallback,
+                        GetterCallbackType getterCallback, int groupIndex = -1);
 
   ~DataContainerGridSelectionFilterParameter() override;
 

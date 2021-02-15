@@ -76,12 +76,12 @@ void MultiThresholdObjects::setupFilterParameters()
     parameter->setPropertyName("SelectedThresholds");
 
     parameter->setShowOperators(true);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameter->setSetterCallback(SIMPL_BIND_SETTER(MultiThresholdObjects, this, SelectedThresholds));
     parameter->setGetterCallback(SIMPL_BIND_GETTER(MultiThresholdObjects, this, SelectedThresholds));
     parameters.push_back(parameter);
   }
-  parameters.push_back(SIMPL_NEW_STRING_FP("Output Attribute Array", DestinationArrayName, FilterParameter::CreatedArray, MultiThresholdObjects));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Output Attribute Array", DestinationArrayName, FilterParameter::Category::CreatedArray, MultiThresholdObjects));
   setFilterParameters(parameters);
 }
 

@@ -62,7 +62,7 @@ void ExecuteProcess::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(SIMPL_NEW_STRING_FP("Command Line Arguments", Arguments, FilterParameter::Parameter, ExecuteProcess));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Command Line Arguments", Arguments, FilterParameter::Category::Parameter, ExecuteProcess));
 
   setFilterParameters(parameters);
 }

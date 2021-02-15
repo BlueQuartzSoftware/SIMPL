@@ -118,8 +118,8 @@ void LinkedDataContainerSelectionWidget::setupGui()
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(dataContainerSelected(QString)));
 
-  QString dcName = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QString>();
-  m_SelectedDataContainerPath->setText(dcName);
+  DataArrayPath dcPath = m_FilterParameter->getGetterCallback()();
+  m_SelectedDataContainerPath->setText(dcPath.getDataContainerName());
 
   changeStyleSheet(Style::FS_STANDARD_STYLE);
 }

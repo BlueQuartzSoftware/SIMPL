@@ -74,11 +74,11 @@ void ErrorWarningFilter::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Preflight Warning", PreflightWarning, FilterParameter::Parameter, ErrorWarningFilter));
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Preflight Error", PreflightError, FilterParameter::Parameter, ErrorWarningFilter));
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Execute Warning", ExecuteWarning, FilterParameter::Parameter, ErrorWarningFilter));
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Execute Error", ExecuteError, FilterParameter::Parameter, ErrorWarningFilter));
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Property Error", PropertyError, FilterParameter::Parameter, ErrorWarningFilter));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Preflight Warning", PreflightWarning, FilterParameter::Category::Parameter, ErrorWarningFilter));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Preflight Error", PreflightError, FilterParameter::Category::Parameter, ErrorWarningFilter));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Execute Warning", ExecuteWarning, FilterParameter::Category::Parameter, ErrorWarningFilter));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Execute Error", ExecuteError, FilterParameter::Category::Parameter, ErrorWarningFilter));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Property Error", PropertyError, FilterParameter::Category::Parameter, ErrorWarningFilter));
 
   setFilterParameters(parameters);
 }

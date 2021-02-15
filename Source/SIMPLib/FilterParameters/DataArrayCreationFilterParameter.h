@@ -57,7 +57,7 @@ class AbstractFilter;
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), with optional GroupIndex parameter):
  * DataArrayCreationFilterParameter::RequirementType req;
- * SIMPL_NEW_DA_CREATION_FP("Created Data Array", CreatedDataArray, FilterParameter::Parameter, GenericExample, req, 0);
+ * SIMPL_NEW_DA_CREATION_FP("Created Data Array", CreatedDataArray, FilterParameter::Category::Parameter, GenericExample, req, 0);
  */
 #define SIMPL_NEW_DA_CREATION_FP(...)                                                                                                                                                                  \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(DataArrayCreationFilterParameter, __VA_ARGS__))
@@ -68,6 +68,14 @@ class AbstractFilter;
  */
 class SIMPLib_EXPORT DataArrayCreationFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(DataArrayCreationFilterParameter)
+  PYB11_SHARED_POINTERS(DataArrayCreationFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString DataArrayPath FilterParameter::Category DataArrayCreationFilterParameter::SetterCallbackType DataArrayCreationFilterParameter::GetterCallbackType DataArrayCreationFilterParameter::RequirementType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = DataArrayCreationFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -116,8 +124,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, RequirementType req, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, RequirementType req, int groupIndex = -1);
 
   ~DataArrayCreationFilterParameter() override;
 

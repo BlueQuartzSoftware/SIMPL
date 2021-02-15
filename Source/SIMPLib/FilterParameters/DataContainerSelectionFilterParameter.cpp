@@ -50,9 +50,9 @@ DataContainerSelectionFilterParameter::~DataContainerSelectionFilterParameter() 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerSelectionFilterParameter::Pointer DataContainerSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category,
-                                                                                          const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                          const RequirementType& req, int groupIndex)
+DataContainerSelectionFilterParameter::Pointer DataContainerSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue,
+                                                                                             Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                                                                                             const RequirementType& req, int groupIndex)
 {
   DataContainerSelectionFilterParameter::Pointer ptr = DataContainerSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

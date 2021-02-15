@@ -350,7 +350,7 @@ int AbstractFilterParametersWriter::writeValue(const QString& name, FloatVec3Typ
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString& name, Float2ndOrderPoly_t v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, Float2ndOrderPolynomial v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -374,7 +374,7 @@ int AbstractFilterParametersWriter::writeValue(const QString& name, Float3rdOrde
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString& name, Float4thOrderPoly_t v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, Float4thOrderPolynomial v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -422,7 +422,7 @@ int AbstractFilterParametersWriter::writeValue(const QString& name, ComparisonIn
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString& name, AxisAngleInput_t v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, AxisAngleInput v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -434,7 +434,7 @@ int AbstractFilterParametersWriter::writeValue(const QString& name, AxisAngleInp
 // -----------------------------------------------------------------------------
 // These are actually written as a binary 4x1 float array as an attribute
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString& name, AxisAngleInput_t v, int vectorPos)
+int AbstractFilterParametersWriter::writeValue(const QString& name, AxisAngleInput v, int vectorPos)
 {
   Q_UNUSED(name)
   Q_UNUSED(vectorPos)
@@ -446,7 +446,7 @@ int AbstractFilterParametersWriter::writeValue(const QString& name, AxisAngleInp
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<AxisAngleInput_t> v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<AxisAngleInput> v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)

@@ -37,11 +37,11 @@ void Filt1::setupFilterParameters()
 
   /*  For an Integer use this code*/
   {
-    parameters.push_back(SIMPL_NEW_INTEGER_FP("Int Value", Filt1_Integer, FilterParameter::Parameter, Filt1));
+    parameters.push_back(SIMPL_NEW_INTEGER_FP("Int Value", Filt1_Integer, FilterParameter::Category::Parameter, Filt1));
   }
   /*  For a Floating point value use this code*/
   {
-    parameters.push_back(SIMPL_NEW_FLOAT_FP("Float Value", Filt1_Float, FilterParameter::Parameter, Filt1));
+    parameters.push_back(SIMPL_NEW_FLOAT_FP("Float Value", Filt1_Float, FilterParameter::Category::Parameter, Filt1));
   }
 
   setFilterParameters(parameters);

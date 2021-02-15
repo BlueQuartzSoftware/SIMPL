@@ -49,7 +49,7 @@
  * SIMPL_NEW_INTEGER_FP("HumanLabel", PropertyName, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), with optional GroupIndex parameter):
- * SIMPL_NEW_INTEGER_FP("Max Iterations", MaxIterations, FilterParameter::Parameter, GenericExample, 0);
+ * SIMPL_NEW_INTEGER_FP("Max Iterations", MaxIterations, FilterParameter::Category::Parameter, GenericExample, 0);
  */
 #define SIMPL_NEW_UINT64_FP(...)                                                                                                                                                                       \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(UInt64FilterParameter, __VA_ARGS__))
@@ -60,6 +60,14 @@
  */
 class SIMPLib_EXPORT UInt64FilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(UInt64FilterParameter)
+  PYB11_SHARED_POINTERS(UInt64FilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString uint64_t FilterParameter::Category UInt64FilterParameter::SetterCallbackType UInt64FilterParameter::GetterCallbackType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = UInt64FilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -98,8 +106,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, uint64_t defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, uint64_t defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~UInt64FilterParameter() override;
 

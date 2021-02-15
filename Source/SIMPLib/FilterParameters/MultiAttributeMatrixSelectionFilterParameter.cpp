@@ -56,10 +56,10 @@ MultiAttributeMatrixSelectionFilterParameter::~MultiAttributeMatrixSelectionFilt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiAttributeMatrixSelectionFilterParameter::Pointer MultiAttributeMatrixSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-                                                                                                        const QVector<DataArrayPath>& defaultValue, Category category,
-                                                                                                        const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                                        RequirementType req, int groupIndex)
+MultiAttributeMatrixSelectionFilterParameter::Pointer MultiAttributeMatrixSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName,
+                                                                                                           const QVector<DataArrayPath>& defaultValue, Category category,
+                                                                                                           const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                                                                                                           RequirementType req, int groupIndex)
 {
 
   MultiAttributeMatrixSelectionFilterParameter::Pointer ptr = MultiAttributeMatrixSelectionFilterParameter::New();

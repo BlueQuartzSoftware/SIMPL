@@ -49,7 +49,7 @@
  * SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("HumanLabel", PropertyName, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), with optional GroupIndex parameter):
- * SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Estimated Primary Features", EstimatedPrimaryFeatures, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Estimated Primary Features", EstimatedPrimaryFeatures, FilterParameter::Category::Parameter, GenericExample);
  */
 #define SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP(...)                                                                                                                                                        \
   SIMPL_EXPAND(_FP_GET_PREFLIGHTUPDATEDVALUE_OVERRIDE(__VA_ARGS__, SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_5, SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_4)(PreflightUpdatedValueFilterParameter, __VA_ARGS__))
@@ -60,6 +60,14 @@
  */
 class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(PreflightUpdatedValueFilterParameter)
+  PYB11_SHARED_POINTERS(PreflightUpdatedValueFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString QString FilterParameter::Category PreflightUpdatedValueFilterParameter::GetterCallbackType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = PreflightUpdatedValueFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -96,7 +104,7 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, GetterCallbackType getterCallback, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, GetterCallbackType getterCallback, int groupIndex = -1);
 
   ~PreflightUpdatedValueFilterParameter() override;
 

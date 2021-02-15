@@ -80,14 +80,14 @@ void DataContainerReader::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Overwrite Existing Data Containers", OverwriteExistingDataContainers, FilterParameter::Parameter, DataContainerReader));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Overwrite Existing Data Containers", OverwriteExistingDataContainers, FilterParameter::Category::Parameter, DataContainerReader));
   {
     DataContainerReaderFilterParameter::Pointer parameter = DataContainerReaderFilterParameter::New();
     parameter->setHumanLabel("Select Arrays from Input File");
     parameter->setPropertyName("InputFileDataContainerArrayProxy");
     parameter->setDefaultFlagValue(Qt::Checked);
     parameter->setInputFileProperty("InputFile");
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameter->setFilter(this);
     parameters.push_back(parameter);
   }

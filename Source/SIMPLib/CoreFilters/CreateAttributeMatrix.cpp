@@ -87,14 +87,14 @@ void CreateAttributeMatrix::setupFilterParameters()
     choices.push_back("CellEnsemble");
     choices.push_back("MetaData");
     choices.push_back("Generic");
-    parameters.push_back(SIMPL_NEW_CHOICE_FP("Attribute Matrix Type", AttributeMatrixType, FilterParameter::Parameter, CreateAttributeMatrix, choices, false));
+    parameters.push_back(SIMPL_NEW_CHOICE_FP("Attribute Matrix Type", AttributeMatrixType, FilterParameter::Category::Parameter, CreateAttributeMatrix, choices, false));
   }
 
   m_TupleDimensions.setDynamicCols(true);
-  parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Tuple Dimensions", TupleDimensions, FilterParameter::Parameter, CreateAttributeMatrix));
+  parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Tuple Dimensions", TupleDimensions, FilterParameter::Category::Parameter, CreateAttributeMatrix));
   {
     AttributeMatrixCreationFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_AM_CREATION_FP("Created Attribute Matrix", CreatedAttributeMatrix, FilterParameter::CreatedArray, CreateAttributeMatrix, req));
+    parameters.push_back(SIMPL_NEW_AM_CREATION_FP("Created Attribute Matrix", CreatedAttributeMatrix, FilterParameter::Category::CreatedArray, CreateAttributeMatrix, req));
   }
 
   setFilterParameters(parameters);

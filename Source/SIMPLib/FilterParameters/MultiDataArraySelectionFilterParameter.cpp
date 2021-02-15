@@ -56,9 +56,9 @@ MultiDataArraySelectionFilterParameter::~MultiDataArraySelectionFilterParameter(
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QVector<DataArrayPath>& defaultValue,
-                                                                                            Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                            RequirementType req, int groupIndex)
+MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QVector<DataArrayPath>& defaultValue,
+                                                                                               Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                                                                                               RequirementType req, int groupIndex)
 {
 
   MultiDataArraySelectionFilterParameter::Pointer ptr = MultiDataArraySelectionFilterParameter::New();

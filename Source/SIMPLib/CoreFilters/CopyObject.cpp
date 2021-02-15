@@ -95,22 +95,22 @@ void CopyObject::setupFilterParameters()
                 << "AttributeArrayToCopy";
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameters.push_back(parameter);
   }
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container to Copy", DataContainerToCopy, FilterParameter::RequiredArray, CopyObject, req, 0));
+    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container to Copy", DataContainerToCopy, FilterParameter::Category::RequiredArray, CopyObject, req, 0));
   }
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix to Copy", AttributeMatrixToCopy, FilterParameter::RequiredArray, CopyObject, req, 1));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix to Copy", AttributeMatrixToCopy, FilterParameter::Category::RequiredArray, CopyObject, req, 1));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Copy", AttributeArrayToCopy, FilterParameter::RequiredArray, CopyObject, req, 2));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Copy", AttributeArrayToCopy, FilterParameter::Category::RequiredArray, CopyObject, req, 2));
   }
-  parameters.push_back(SIMPL_NEW_STRING_FP("Copied Object Name", CopiedObjectName, FilterParameter::CreatedArray, CopyObject));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Copied Object Name", CopiedObjectName, FilterParameter::Category::CreatedArray, CopyObject));
   setFilterParameters(parameters);
 }
 

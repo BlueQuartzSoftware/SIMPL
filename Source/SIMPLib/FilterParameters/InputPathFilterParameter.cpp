@@ -48,9 +48,9 @@ InputPathFilterParameter::~InputPathFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InputPathFilterParameter::Pointer InputPathFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const QString& fileExtension,
-                                                                const QString& fileType, int groupIndex)
+InputPathFilterParameter::Pointer InputPathFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                   const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const QString& fileExtension,
+                                                                   const QString& fileType, int groupIndex)
 {
   InputPathFilterParameter::Pointer ptr = InputPathFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

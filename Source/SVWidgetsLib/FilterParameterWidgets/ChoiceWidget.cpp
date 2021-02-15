@@ -91,7 +91,7 @@ void ChoiceWidget::setupGui()
       value->blockSignals(false);
     }
     // Get the Default value from the filter
-    int i = getFilter()->property(PROPERTY_NAME_AS_CHAR).toInt();
+    int i = m_FilterParameter->getGetterCallback()();
     value->setCurrentIndex(i);
   }
 }

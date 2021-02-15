@@ -49,7 +49,7 @@
  * SIMPL_NEW_PARAGRAPH_FP("HumanLabel", PropertyName, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_PARAGRAPH_FP("STL Output Prefix", StlFilePrefix, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_PARAGRAPH_FP("STL Output Prefix", StlFilePrefix, FilterParameter::Category::Parameter, GenericExample);
  */
 #define SIMPL_NEW_PARAGRAPH_FP(...)                                                                                                                                                                    \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(ParagraphFilterParameter, __VA_ARGS__))
@@ -60,6 +60,14 @@
  */
 class SIMPLib_EXPORT ParagraphFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(ParagraphFilterParameter)
+  PYB11_SHARED_POINTERS(ParagraphFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString QString FilterParameter::Category ParagraphFilterParameter::SetterCallbackType ParagraphFilterParameter::GetterCallbackType bool int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = ParagraphFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -98,8 +106,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, bool allowPreflight = true, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, bool allowPreflight = true, int groupIndex = -1);
 
   ~ParagraphFilterParameter() override;
 

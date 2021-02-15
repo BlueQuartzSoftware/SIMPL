@@ -162,16 +162,16 @@ void ArrayCalculator::setupFilterParameters()
   FilterParameterVectorType parameters;
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(AttributeMatrix::Type::Any, IGeometry::Type::Any);
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Cell Attribute Matrix", SelectedAttributeMatrix, FilterParameter::Parameter, ArrayCalculator, req));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Cell Attribute Matrix", SelectedAttributeMatrix, FilterParameter::Category::Parameter, ArrayCalculator, req));
   }
 
-  parameters.push_back(SIMPL_NEW_CALC_FP("Infix Expression", InfixEquation, FilterParameter::Parameter, ArrayCalculator));
+  parameters.push_back(SIMPL_NEW_CALC_FP("Infix Expression", InfixEquation, FilterParameter::Category::Parameter, ArrayCalculator));
 
-  parameters.push_back(SIMPL_NEW_SCALARTYPE_FP("Scalar Type", ScalarType, FilterParameter::CreatedArray, ArrayCalculator));
+  parameters.push_back(SIMPL_NEW_SCALARTYPE_FP("Scalar Type", ScalarType, FilterParameter::Category::CreatedArray, ArrayCalculator));
 
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Type::Any, IGeometry::Type::Any);
-    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Calculated Array", CalculatedArray, FilterParameter::CreatedArray, ArrayCalculator, req));
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Calculated Array", CalculatedArray, FilterParameter::Category::CreatedArray, ArrayCalculator, req));
   }
 
   setFilterParameters(parameters);

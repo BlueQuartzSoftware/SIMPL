@@ -47,6 +47,7 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
@@ -227,24 +228,24 @@ void ConvertColorToGrayScale::setupFilterParameters()
     parameter->setGetterCallback(SIMPL_BIND_GETTER(ConvertColorToGrayScale, this, ConversionAlgorithm));
     parameter->setChoices(choices);
     parameter->setLinkedProperties(linkedProps);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameters.push_back(parameter);
   }
 
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Color Weighting", ColorWeights, FilterParameter::Parameter, ConvertColorToGrayScale, 0));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Color Weighting", ColorWeights, FilterParameter::Category::Parameter, ConvertColorToGrayScale, 0));
 
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Color Channel", ColorChannel, FilterParameter::Parameter, ConvertColorToGrayScale, 3));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Color Channel", ColorChannel, FilterParameter::Category::Parameter, ConvertColorToGrayScale, 3));
 
   MultiDataArraySelectionFilterParameter::RequirementType req;
   req.dcGeometryTypes = IGeometry::Types(1, IGeometry::Type::Image);
   req.amTypes = AttributeMatrix::Types(1, AttributeMatrix::Type::Cell);
-  parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Input Attribute Arrays", InputDataArrayVector, FilterParameter::RequiredArray, ConvertColorToGrayScale, req));
+  parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Input Attribute Arrays", InputDataArrayVector, FilterParameter::Category::RequiredArray, ConvertColorToGrayScale, req));
 
   QStringList linkedProps("OutputAttributeMatrixName");
-  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Create Attribute Matrix", CreateNewAttributeMatrix, FilterParameter::Parameter, ConvertColorToGrayScale, linkedProps));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Output Cell Attribute Matrix", OutputAttributeMatrixName, FilterParameter::CreatedArray, ConvertColorToGrayScale));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Create Attribute Matrix", CreateNewAttributeMatrix, FilterParameter::Category::Parameter, ConvertColorToGrayScale, linkedProps));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Output Cell Attribute Matrix", OutputAttributeMatrixName, FilterParameter::Category::CreatedArray, ConvertColorToGrayScale));
 
-  parameters.push_back(SIMPL_NEW_STRING_FP("Output Array Prefix", OutputArrayPrefix, FilterParameter::CreatedArray, ConvertColorToGrayScale));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Output Array Prefix", OutputArrayPrefix, FilterParameter::Category::CreatedArray, ConvertColorToGrayScale));
   setFilterParameters(parameters);
 }
 

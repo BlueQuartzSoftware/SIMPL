@@ -91,10 +91,10 @@ void CreateStringArray::setupFilterParameters()
   // Do not let the user change the number of components in a StringDataArray
   setNumberOfComponents(1);
 
-  parameters.push_back(SIMPL_NEW_STRING_FP("Initialization Value", InitializationValue, FilterParameter::Parameter, CreateStringArray));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Initialization Value", InitializationValue, FilterParameter::Category::Parameter, CreateStringArray));
   {
     DataArrayCreationFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Attribute Array", NewArray, FilterParameter::CreatedArray, CreateStringArray, req));
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Attribute Array", NewArray, FilterParameter::Category::CreatedArray, CreateStringArray, req));
   }
 
   setFilterParameters(parameters);

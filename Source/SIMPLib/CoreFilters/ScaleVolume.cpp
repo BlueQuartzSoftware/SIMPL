@@ -109,25 +109,25 @@ void ScaleVolume::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Scaling Factor", ScaleFactor, FilterParameter::Parameter, ScaleVolume));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Scaling Factor", ScaleFactor, FilterParameter::Category::Parameter, ScaleVolume));
 
   QStringList linkedProps("DataContainerName");
-  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Apply to Image Geometry", ApplyToVoxelVolume, FilterParameter::Parameter, ScaleVolume, linkedProps));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Apply to Image Geometry", ApplyToVoxelVolume, FilterParameter::Category::Parameter, ScaleVolume, linkedProps));
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     req.dcGeometryTypes = IGeometry::Types(1, IGeometry::Type::Image);
-    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Image Geometry to Scale", DataContainerName, FilterParameter::RequiredArray, ScaleVolume, req));
+    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Image Geometry to Scale", DataContainerName, FilterParameter::Category::RequiredArray, ScaleVolume, req));
   }
   linkedProps.clear();
   linkedProps << "SurfaceDataContainerName";
-  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Apply to Surface Geometry", ApplyToSurfaceMesh, FilterParameter::Parameter, ScaleVolume, linkedProps));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Apply to Surface Geometry", ApplyToSurfaceMesh, FilterParameter::Category::Parameter, ScaleVolume, linkedProps));
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     IGeometry::Types dcGeometryTypes;
     dcGeometryTypes.push_back(IGeometry::Type::Triangle);
     dcGeometryTypes.push_back(IGeometry::Type::Quad);
     req.dcGeometryTypes = dcGeometryTypes;
-    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Surface Geometry to Scale", SurfaceDataContainerName, FilterParameter::RequiredArray, ScaleVolume, req));
+    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Surface Geometry to Scale", SurfaceDataContainerName, FilterParameter::Category::RequiredArray, ScaleVolume, req));
   }
 
   setFilterParameters(parameters);

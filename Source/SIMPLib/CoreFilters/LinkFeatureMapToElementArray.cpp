@@ -73,14 +73,16 @@ LinkFeatureMapToElementArray::~LinkFeatureMapToElementArray() = default;
 void LinkFeatureMapToElementArray::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
-  parameters.push_back(SeparatorFilterParameter::New("Element Data", FilterParameter::RequiredArray));
+  parameters.push_back(SeparatorFilterParameter::Create("Element Data", FilterParameter::Category::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Int32, 1, AttributeMatrix::Category::Element);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Element Attribute Array to Link", SelectedCellArrayPath, FilterParameter::RequiredArray, LinkFeatureMapToElementArray, req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Element Attribute Array to Link", SelectedCellArrayPath, FilterParameter::Category::RequiredArray, LinkFeatureMapToElementArray, req));
   }
-  parameters.push_back(SeparatorFilterParameter::New("Feature Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Feature Attribute Matrix", CellFeatureAttributeMatrixName, SelectedCellArrayPath, FilterParameter::CreatedArray, LinkFeatureMapToElementArray));
-  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Active", ActiveArrayName, SelectedCellArrayPath, CellFeatureAttributeMatrixName, FilterParameter::CreatedArray, LinkFeatureMapToElementArray));
+  parameters.push_back(SeparatorFilterParameter::Create("Feature Data", FilterParameter::Category::CreatedArray));
+  parameters.push_back(
+      SIMPL_NEW_AM_WITH_LINKED_DC_FP("Feature Attribute Matrix", CellFeatureAttributeMatrixName, SelectedCellArrayPath, FilterParameter::Category::CreatedArray, LinkFeatureMapToElementArray));
+  parameters.push_back(
+      SIMPL_NEW_DA_WITH_LINKED_AM_FP("Active", ActiveArrayName, SelectedCellArrayPath, CellFeatureAttributeMatrixName, FilterParameter::Category::CreatedArray, LinkFeatureMapToElementArray));
 
   setFilterParameters(parameters);
 }

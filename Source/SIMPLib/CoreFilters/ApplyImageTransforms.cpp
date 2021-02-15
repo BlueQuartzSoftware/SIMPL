@@ -79,7 +79,7 @@ void ApplyImageTransforms::setupFilterParameters()
   {
     MultiDataContainerSelectionFilterParameter::RequirementType req =
         MultiDataContainerSelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Cell, IGeometry::Type::Image);
-    parameters.push_back(SIMPL_NEW_MDC_SELECTION_FP("Image Data Containers", ImageDataContainers, FilterParameter::RequiredArray, ApplyImageTransforms, req));
+    parameters.push_back(SIMPL_NEW_MDC_SELECTION_FP("Image Data Containers", ImageDataContainers, FilterParameter::Category::RequiredArray, ApplyImageTransforms, req));
   }
 
   setFilterParameters(parameters);

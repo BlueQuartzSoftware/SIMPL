@@ -137,7 +137,7 @@ void DataArrayCreationWidget::setupGui()
   connect(m_SelectedAttributeMatrixPath, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)));
   connect(this, SIGNAL(unlockDataArrayPathSelection(QToolButton*)), m_SelectedAttributeMatrixPath, SLOT(selectionWidgetUnlocked(QToolButton*)));
 
-  DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+  DataArrayPath defaultPath = m_FilterParameter->getGetterCallback()();
   DataArrayPath amPath(defaultPath.getDataContainerName(), defaultPath.getAttributeMatrixName(), "");
   m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
   m_SelectedAttributeMatrixPath->setPropertyName(getFilterParameter()->getHumanLabel());
@@ -186,10 +186,9 @@ bool DataArrayCreationWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 void DataArrayCreationWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
 {
-  if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
+  if(propertyName == getFilterParameter()->getPropertyName())
   {
-    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-    DataArrayPath updatedPath = var.value<DataArrayPath>();
+    DataArrayPath updatedPath = m_FilterParameter->getGetterCallback()();
     QString dataArrayName = updatedPath.getDataArrayName();
     updatedPath.setDataArrayName("");
 

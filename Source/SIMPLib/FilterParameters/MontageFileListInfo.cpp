@@ -39,6 +39,15 @@ MontageFileListInfo::MontageFileListInfo() = default;
 MontageFileListInfo::~MontageFileListInfo() = default;
 
 // -----------------------------------------------------------------------------
+MontageFileListInfo::MontageFileListInfo(int32_t rowStart, int32_t rowEnd, int32_t colStart, int32_t colEnd)
+: RowStart(rowStart)
+, RowEnd(rowEnd)
+, ColStart(colStart)
+, ColEnd(colEnd)
+{
+}
+
+// -----------------------------------------------------------------------------
 void MontageFileListInfo::writeJson(QJsonObject& json) const
 {
   writeSuperclassJson(json);

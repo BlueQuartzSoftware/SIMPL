@@ -67,9 +67,7 @@ void StringWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-
-    QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-    stringEdit->setText(str, true);
+    stringEdit->setText(m_FilterParameter->getGetterCallback()(), true);
   }
   blockSignals(false);
 

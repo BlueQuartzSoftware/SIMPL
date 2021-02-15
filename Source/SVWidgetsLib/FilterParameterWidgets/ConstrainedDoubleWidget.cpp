@@ -78,10 +78,7 @@ void ConstrainedDoubleWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    bool ok = false;
-
-    double d = getFilter()->property(PROPERTY_NAME_AS_CHAR).toDouble(&ok);
-    spinBox->setValue(d);
+    spinBox->setValue(m_FilterParameter->getGetterCallback()());
   }
 }
 

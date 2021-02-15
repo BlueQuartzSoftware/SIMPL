@@ -48,24 +48,24 @@
 
 // Helper macros: Index / NoIndex implementations
 #define SIMPL_NEW_DA_FROM_ADV_COMPARISON_NoIndex(Desc, Prop, LinkedComp, Category, Filter)                                                                                                             \
-  LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
-                                         SIMPL_NEW_LINKED_ADV_COMPARE(Filter, this, LinkedComp))
+  LinkedPathCreationFilterParameter::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                          \
+                                            SIMPL_NEW_LINKED_ADV_COMPARE(Filter, this, LinkedComp))
 #define SIMPL_NEW_DA_FROM_ADV_COMPARISON_Index(Desc, Prop, LinkedComp, Category, Filter, Index)                                                                                                        \
-  LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
-                                         SIMPL_NEW_LINKED_ADV_COMPARE(Filter, this, LinkedComp), Index)
+  LinkedPathCreationFilterParameter::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                          \
+                                            SIMPL_NEW_LINKED_ADV_COMPARE(Filter, this, LinkedComp), Index)
 
 #define SIMPL_NEW_LINKED_ATTRIBUTE_MATRIX_Index(Desc, Prop, LinkedDcProp, LinkedAmProp, Category, Filter, Index)                                                                                       \
-  LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
-                                         SIMPL_NEW_LINKED_AM_PATH(Filter, this, LinkedDcProp, LinkedAmProp), Index)
+  LinkedPathCreationFilterParameter::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                          \
+                                            SIMPL_NEW_LINKED_AM_PATH(Filter, this, LinkedDcProp, LinkedAmProp), Index)
 #define SIMPL_NEW_LINKED_ATTRIBUTE_MATRIX_NoIndex(Desc, Prop, LinkedDcProp, LinkedAmProp, Category, Filter)                                                                                            \
-  LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
-                                         SIMPL_NEW_LINKED_AM_PATH(Filter, this, LinkedDcProp, LinkedAmProp))
+  LinkedPathCreationFilterParameter::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                          \
+                                            SIMPL_NEW_LINKED_AM_PATH(Filter, this, LinkedDcProp, LinkedAmProp))
 #define SIMPL_NEW_LINKED_DATA_CONTAINER_Index(Desc, Prop, LinkedProp, Category, Filter, Index)                                                                                                         \
-  LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
-                                         SIMPL_NEW_LINKED_DC_PATH(Filter, this, LinkedProp), Index)
+  LinkedPathCreationFilterParameter::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                          \
+                                            SIMPL_NEW_LINKED_DC_PATH(Filter, this, LinkedProp), Index)
 #define SIMPL_NEW_LINKED_DATA_CONTAINER_NoIndex(Desc, Prop, LinkedProp, Category, Filter)                                                                                                              \
-  LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
-                                         SIMPL_NEW_LINKED_DC_PATH(Filter, this, LinkedProp))
+  LinkedPathCreationFilterParameter::Create(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                          \
+                                            SIMPL_NEW_LINKED_DC_PATH(Filter, this, LinkedProp))
 
 // Helper macros: Expansion
 #define _FP_GET_OVERRIDE6(A, B, C, D, E, F, NAME, ...) NAME
@@ -82,7 +82,7 @@
  * SIMPL_NEW_AM_WITH_LINKED_DC_FP("HumanLabel", PropertyName, DcName, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Matrix", CellMatrixName, DcName, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Matrix", CellMatrixName, DcName, FilterParameter::Category::Parameter, GenericExample);
  */
 #define SIMPL_NEW_AM_WITH_LINKED_DC_FP(...) SIMPL_EXPAND(_FP_GET_OVERRIDE6(__VA_ARGS__, SIMPL_NEW_LINKED_DATA_CONTAINER_Index, SIMPL_NEW_LINKED_DATA_CONTAINER_NoIndex)(__VA_ARGS__))
 
@@ -96,7 +96,7 @@
  * SIMPL_NEW_DA_WITH_LINKED_AM_FP("HumanLabel", PropertyName, DcName, AmName, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_DA_WITH_LINKED_AM_FP("Feature Id", CellMatrixName, DcName, AmName, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_DA_WITH_LINKED_AM_FP("Feature Id", CellMatrixName, DcName, AmName, FilterParameter::Category::Parameter, GenericExample);
  */
 #define SIMPL_NEW_DA_WITH_LINKED_AM_FP(...) SIMPL_EXPAND(_FP_GET_OVERRIDE7(__VA_ARGS__, SIMPL_NEW_LINKED_ATTRIBUTE_MATRIX_Index, SIMPL_NEW_LINKED_ATTRIBUTE_MATRIX_NoIndex)(__VA_ARGS__))
 
@@ -111,7 +111,7 @@
  * SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP("HumanLabel", PropertyName, LinkedAdvComparisonProperty, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP("Mask", MaskName, AdvComparison, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP("Mask", MaskName, AdvComparison, FilterParameter::Category::Parameter, GenericExample);
  */
 #define SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP(...) SIMPL_EXPAND(_FP_GET_OVERRIDE6(__VA_ARGS__, SIMPL_NEW_DA_FROM_ADV_COMPARISON_Index, SIMPL_NEW_DA_FROM_ADV_COMPARISON_NoIndex)(__VA_ARGS__))
 
@@ -121,6 +121,14 @@
  */
 class SIMPLib_EXPORT LinkedPathCreationFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+//  PYB11_BEGIN_BINDINGS(LinkedPathCreationFilterParameter)
+//  PYB11_SHARED_POINTERS(LinkedPathCreationFilterParameter)
+//  PYB11_STATIC_CREATION(Create ARGS QString QString QString FilterParameter::Category LinkedPathCreationFilterParameter::SetterCallbackType LinkedPathCreationFilterParameter::GetterCallbackType std::unique_ptr<ILinkedPath> int )
+//  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = LinkedPathCreationFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -310,8 +318,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, std::unique_ptr<ILinkedPath> linkedPath, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, std::unique_ptr<ILinkedPath> linkedPath, int groupIndex = -1);
 
   ~LinkedPathCreationFilterParameter() override;
 

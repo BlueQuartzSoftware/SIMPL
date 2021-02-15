@@ -96,7 +96,7 @@ void FourthOrderPolynomialWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    Float4thOrderPoly_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<Float4thOrderPoly_t>();
+    Float4thOrderPolynomial data = m_FilterParameter->getGetterCallback()();
     c40->setText(loc.toString(data.c40));
     c04->setText(loc.toString(data.c04));
     c31->setText(loc.toString(data.c31));
@@ -150,8 +150,8 @@ void FourthOrderPolynomialWidget::widgetChanged(const QString& text)
 void FourthOrderPolynomialWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   bool ok = false;
-  Float4thOrderPoly_t data;
-  Float4thOrderPoly_t defValue = m_FilterParameter->getDefaultValue().value<Float4thOrderPoly_t>();
+  Float4thOrderPolynomial data;
+  Float4thOrderPolynomial defValue = m_FilterParameter->getDefaultValue().value<Float4thOrderPolynomial>();
 
   QLocale loc;
 

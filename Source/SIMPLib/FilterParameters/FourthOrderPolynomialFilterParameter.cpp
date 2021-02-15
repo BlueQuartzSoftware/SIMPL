@@ -48,9 +48,9 @@ FourthOrderPolynomialFilterParameter::~FourthOrderPolynomialFilterParameter() = 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FourthOrderPolynomialFilterParameter::Pointer FourthOrderPolynomialFilterParameter::New(const QString& humanLabel, const QString& propertyName, const Float4thOrderPoly_t& defaultValue,
-                                                                                        Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                        int groupIndex)
+FourthOrderPolynomialFilterParameter::Pointer FourthOrderPolynomialFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const Float4thOrderPolynomial& defaultValue,
+                                                                                           Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                                                                                           int groupIndex)
 {
 
   FourthOrderPolynomialFilterParameter::Pointer ptr = FourthOrderPolynomialFilterParameter::New();
@@ -88,7 +88,7 @@ void FourthOrderPolynomialFilterParameter::readJson(const QJsonObject& json)
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject obj = jsonValue.toObject();
-    Float4thOrderPoly_t poly;
+    Float4thOrderPolynomial poly;
     poly.readJson(obj);
     m_SetterCallback(poly);
   }
@@ -101,7 +101,7 @@ void FourthOrderPolynomialFilterParameter::writeJson(QJsonObject& json)
 {
   if(m_GetterCallback)
   {
-    Float4thOrderPoly_t poly = m_GetterCallback();
+    Float4thOrderPolynomial poly = m_GetterCallback();
     QJsonObject obj;
     poly.writeJson(obj);
     json[getPropertyName()] = obj;

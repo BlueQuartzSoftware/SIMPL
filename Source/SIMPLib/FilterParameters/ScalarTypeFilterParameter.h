@@ -53,7 +53,7 @@
  * PhaseTypeCountProperty, PhaseTypeArrayPathProperty, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_SCALARTYPE_FP("Shape Types", ShapeTypeData, FilterParameter::CreatedArray, EstablishShapeTypes, "PhaseCount", "InputPhaseTypesArrayPath");
+ * SIMPL_NEW_SCALARTYPE_FP("Shape Types", ShapeTypeData, FilterParameter::Category::CreatedArray, EstablishShapeTypes, "PhaseCount", "InputPhaseTypesArrayPath");
  */
 #define SIMPL_NEW_SCALARTYPE_FP(...)                                                                                                                                                                   \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(ScalarTypeFilterParameter, __VA_ARGS__))
@@ -64,6 +64,14 @@
  */
 class SIMPLib_EXPORT ScalarTypeFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(ScalarTypeFilterParameter)
+  PYB11_SHARED_POINTERS(ScalarTypeFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString SIMPL::ScalarTypes::Type FilterParameter::Category ScalarTypeFilterParameter::SetterCallbackType ScalarTypeFilterParameter::GetterCallbackType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = ScalarTypeFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -104,8 +112,8 @@ public:
   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
   * @return
   */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, SIMPL::ScalarTypes::Type defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, SIMPL::ScalarTypes::Type defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~ScalarTypeFilterParameter() override;
 

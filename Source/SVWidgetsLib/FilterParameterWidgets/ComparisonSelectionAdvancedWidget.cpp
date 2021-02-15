@@ -336,7 +336,7 @@ void ComparisonSelectionAdvancedWidget::afterPreflight()
 
       if(nullptr == comparisonSetWidget->getAttributeMatrix())
       {
-        ComparisonInputsAdvanced comps = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<ComparisonInputsAdvanced>();
+        ComparisonInputsAdvanced comps = m_FilterParameter->getGetterCallback()();
         comparisonSetWidget->setAttributeMatrix(am);
         comparisonSetWidget->setComparisons(comps.getInputs());
       }
@@ -375,7 +375,7 @@ void ComparisonSelectionAdvancedWidget::populateButtonText()
   QString curAmName = "";
 
   // Get what is in the filter
-  ComparisonInputsAdvanced comps = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<ComparisonInputsAdvanced>();
+  ComparisonInputsAdvanced comps = m_FilterParameter->getGetterCallback()();
 
   QString filtDcName = comps.getDataContainerName();
   QString filtAmName = comps.getAttributeMatrixName();
@@ -472,14 +472,13 @@ void ComparisonSelectionAdvancedWidget::presetAttributeMatrix(DataArrayPath amPa
 // -----------------------------------------------------------------------------
 void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
 {
-  if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
+  if(propertyName == getFilterParameter()->getPropertyName())
   {
     DataArrayPath oldPath;
     DataArrayPath newPath;
     std::tie(oldPath, newPath) = renamePath;
 
-    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-    ComparisonInputsAdvanced inputs = var.value<ComparisonInputsAdvanced>();
+    ComparisonInputsAdvanced inputs = m_FilterParameter->getGetterCallback()();
     DataArrayPath amPath = inputs.getAttributeMatrixPath();
     AbstractComparison::Pointer input = inputs[0];
 

@@ -180,7 +180,7 @@ void DynamicTableWidget::filterNeedsInputParameters(AbstractFilter* filter)
     }
   }
 
-  DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
+  DynamicTableData data = m_FilterParameter->getGetterCallback()();
   data.setTableData(getData());
   data.setRowHeaders(rHeaders);
   data.setColHeaders(cHeaders);
@@ -322,7 +322,7 @@ void DynamicTableWidget::on_addColBtn_clicked()
 // -----------------------------------------------------------------------------
 void DynamicTableWidget::on_deleteRowBtn_clicked()
 {
-  DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
+  DynamicTableData data = m_FilterParameter->getGetterCallback()();
 
   dynamicTable->removeRow(dynamicTable->currentRow());
 
@@ -349,7 +349,7 @@ void DynamicTableWidget::on_deleteRowBtn_clicked()
 // -----------------------------------------------------------------------------
 void DynamicTableWidget::on_deleteColBtn_clicked()
 {
-  DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
+  DynamicTableData data = m_FilterParameter->getGetterCallback()();
 
   dynamicTable->removeColumn(dynamicTable->currentColumn());
 
@@ -377,7 +377,7 @@ void DynamicTableWidget::on_deleteColBtn_clicked()
 void DynamicTableWidget::populateTable()
 {
   // Get what is in the filter
-  DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
+  DynamicTableData data = m_FilterParameter->getGetterCallback()();
 
   if(m_FilterParameter != nullptr)
   {
@@ -470,7 +470,7 @@ void DynamicTableWidget::populateTable()
 // -----------------------------------------------------------------------------
 void DynamicTableWidget::populateHeaders()
 {
-  DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
+  DynamicTableData data = m_FilterParameter->getGetterCallback()();
 
   if(!data.getDynamicRows())
   {
@@ -489,7 +489,7 @@ void DynamicTableWidget::populateHeaders()
 // -----------------------------------------------------------------------------
 void DynamicTableWidget::renumberDynamicHeaders()
 {
-  DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
+  DynamicTableData data = m_FilterParameter->getGetterCallback()();
 
   if(data.getDynamicRows())
   {
@@ -517,7 +517,7 @@ void DynamicTableWidget::renumberDynamicHeaders()
 // -----------------------------------------------------------------------------
 void DynamicTableWidget::updateDynamicButtons()
 {
-  DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
+  DynamicTableData data = m_FilterParameter->getGetterCallback()();
 
   // Hide add/remove row buttons if row count is not dynamic
   if(!data.getDynamicRows())

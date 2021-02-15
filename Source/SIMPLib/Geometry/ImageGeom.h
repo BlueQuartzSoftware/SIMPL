@@ -91,7 +91,7 @@ public:
 
   ~ImageGeom() override;
 
-  using EnumType = unsigned int;
+  using EnumType = uint32_t;
 
   enum class ErrorType : EnumType
   {

@@ -55,7 +55,7 @@
  * SIMPL_NEW_COMP_SEL_ADV_FP("HumanLabel", PropertyName, Category, FilterName, Choices, ShowOperators, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_COMP_SEL_ADV_FP("Select Arrays to Threshold", SelectedThresholds, FilterParameter::Parameter, GenericExample, choices, true);
+ * SIMPL_NEW_COMP_SEL_ADV_FP("Select Arrays to Threshold", SelectedThresholds, FilterParameter::Category::Parameter, GenericExample, choices, true);
  */
 #define SIMPL_NEW_COMP_SEL_ADV_FP(...)                                                                                                                                                                 \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(ComparisonSelectionAdvancedFilterParameter, __VA_ARGS__))
@@ -66,6 +66,14 @@
  */
 class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(ComparisonSelectionAdvancedFilterParameter)
+  PYB11_SHARED_POINTERS(ComparisonSelectionAdvancedFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString ComparisonInputsAdvanced FilterParameter::Category ComparisonSelectionAdvancedFilterParameter::SetterCallbackType ComparisonSelectionAdvancedFilterParameter::GetterCallbackType QVector<QString> bool int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = ComparisonSelectionAdvancedFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -106,8 +114,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, ComparisonInputsAdvanced defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, QVector<QString> choices, bool showOperators, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, ComparisonInputsAdvanced defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, QVector<QString> choices, bool showOperators, int groupIndex = -1);
 
   ~ComparisonSelectionAdvancedFilterParameter() override;
 

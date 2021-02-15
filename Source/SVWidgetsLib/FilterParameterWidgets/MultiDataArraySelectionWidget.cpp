@@ -567,7 +567,7 @@ void MultiDataArraySelectionWidget::updateDataArrayPath(QString propertyName, co
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
 
-  if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
+  if(propertyName == getFilterParameter()->getPropertyName())
   {
     QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
     DataArrayPath updatedPath = var.value<DataArrayPath>();

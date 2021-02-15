@@ -77,18 +77,7 @@ void LinkedBooleanWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-
-    QVariant objValue = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-    if(objValue.isValid())
-    {
-      value->setChecked(objValue.toBool());
-    }
-    else
-    {
-      QString ss = QObject::tr("Error occurred getting Filter Parameter %1 for filter %2").arg(getFilterParameter()->getPropertyName()).arg(getFilter()->getNameOfClass());
-      emit errorSettingFilterParameter(ss);
-      qDebug() << ss;
-    }
+    value->setChecked(m_FilterParameter->getGetterCallback()());
   }
 }
 
@@ -97,7 +86,6 @@ void LinkedBooleanWidget::setupGui()
 // -----------------------------------------------------------------------------
 void LinkedBooleanWidget::updateLinkedWidgets()
 {
-  // QVariant objValue = getFilter()->property(PROPERTY_NAME_AS_CHAR);
   int state = value->checkState();
   emit conditionalPropertyChanged(state);
 }

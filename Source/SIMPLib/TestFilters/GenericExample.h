@@ -74,9 +74,9 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(QString StlFilePrefix READ getStlFilePrefix WRITE setStlFilePrefix)
   PYB11_PROPERTY(bool ShowPrefix READ getShowPrefix WRITE setShowPrefix)
   PYB11_PROPERTY(int MaxIterations READ getMaxIterations WRITE setMaxIterations)
-  PYB11_PROPERTY(Float2ndOrderPoly_t SecondOrderACoeff READ getSecondOrderACoeff WRITE setSecondOrderACoeff)
+  PYB11_PROPERTY(Float2ndOrderPolynomial SecondOrderACoeff READ getSecondOrderACoeff WRITE setSecondOrderACoeff)
   PYB11_PROPERTY(Float3rdOrderPoly_t ThirdOrderACoeff READ getThirdOrderACoeff WRITE setThirdOrderACoeff)
-  PYB11_PROPERTY(Float4thOrderPoly_t FourthOrderACoeff READ getFourthOrderACoeff WRITE setFourthOrderACoeff)
+  PYB11_PROPERTY(Float4thOrderPolynomial FourthOrderACoeff READ getFourthOrderACoeff WRITE setFourthOrderACoeff)
   PYB11_PROPERTY(double MisorientationTolerance READ getMisorientationTolerance WRITE setMisorientationTolerance)
   PYB11_PROPERTY(DataArrayPath InputPhaseTypesArrayPath READ getInputPhaseTypesArrayPath WRITE setInputPhaseTypesArrayPath)
   PYB11_PROPERTY(ShapeType::Types ShapeTypeData READ getShapeTypeData WRITE setShapeTypeData)
@@ -98,7 +98,7 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
   PYB11_PROPERTY(IntVec2Type Range READ getRange WRITE setRange)
   PYB11_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
-  PYB11_PROPERTY(AxisAngleInput_t CrystalSymmetryRotations READ getCrystalSymmetryRotations WRITE setCrystalSymmetryRotations)
+  PYB11_PROPERTY(AxisAngleInput CrystalSymmetryRotations READ getCrystalSymmetryRotations WRITE setCrystalSymmetryRotations)
   PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
   PYB11_PROPERTY(DataArrayPath AttributeMatrixPath READ getAttributeMatrixPath WRITE setAttributeMatrixPath)
   PYB11_PROPERTY(DataArrayPath CreatedAttributeMatrix READ getCreatedAttributeMatrix WRITE setCreatedAttributeMatrix)
@@ -186,14 +186,14 @@ public:
   /**
    * @brief Setter property for SecondOrderACoeff
    */
-  void setSecondOrderACoeff(const Float2ndOrderPoly_t& value);
+  void setSecondOrderACoeff(const Float2ndOrderPolynomial& value);
   /**
    * @brief Getter property for SecondOrderACoeff
    * @return Value of SecondOrderACoeff
    */
-  Float2ndOrderPoly_t getSecondOrderACoeff() const;
+  Float2ndOrderPolynomial getSecondOrderACoeff() const;
 
-  Q_PROPERTY(Float2ndOrderPoly_t SecondOrderACoeff READ getSecondOrderACoeff WRITE setSecondOrderACoeff)
+  Q_PROPERTY(Float2ndOrderPolynomial SecondOrderACoeff READ getSecondOrderACoeff WRITE setSecondOrderACoeff)
 
   /**
    * @brief Setter property for ThirdOrderACoeff
@@ -210,14 +210,14 @@ public:
   /**
    * @brief Setter property for FourthOrderACoeff
    */
-  void setFourthOrderACoeff(const Float4thOrderPoly_t& value);
+  void setFourthOrderACoeff(const Float4thOrderPolynomial& value);
   /**
    * @brief Getter property for FourthOrderACoeff
    * @return Value of FourthOrderACoeff
    */
-  Float4thOrderPoly_t getFourthOrderACoeff() const;
+  Float4thOrderPolynomial getFourthOrderACoeff() const;
 
-  Q_PROPERTY(Float4thOrderPoly_t FourthOrderACoeff READ getFourthOrderACoeff WRITE setFourthOrderACoeff)
+  Q_PROPERTY(Float4thOrderPolynomial FourthOrderACoeff READ getFourthOrderACoeff WRITE setFourthOrderACoeff)
 
   /**
    * @brief Setter property for MisorientationTolerance
@@ -474,14 +474,14 @@ public:
   /**
    * @brief Setter property for CrystalSymmetryRotations
    */
-  void setCrystalSymmetryRotations(const AxisAngleInput_t& value);
+  void setCrystalSymmetryRotations(const AxisAngleInput& value);
   /**
    * @brief Getter property for CrystalSymmetryRotations
    * @return Value of CrystalSymmetryRotations
    */
-  AxisAngleInput_t getCrystalSymmetryRotations() const;
+  AxisAngleInput getCrystalSymmetryRotations() const;
 
-  Q_PROPERTY(AxisAngleInput_t CrystalSymmetryRotations READ getCrystalSymmetryRotations WRITE setCrystalSymmetryRotations)
+  Q_PROPERTY(AxisAngleInput CrystalSymmetryRotations READ getCrystalSymmetryRotations WRITE setCrystalSymmetryRotations)
 
   /**
    * @brief Setter property for FeatureIdsArrayPath
@@ -725,9 +725,9 @@ private:
   QString m_StlFilePrefix = {};
   bool m_ShowPrefix = {};
   int m_MaxIterations = {};
-  Float2ndOrderPoly_t m_SecondOrderACoeff = {};
+  Float2ndOrderPolynomial m_SecondOrderACoeff = {};
   Float3rdOrderPoly_t m_ThirdOrderACoeff = {};
-  Float4thOrderPoly_t m_FourthOrderACoeff = {};
+  Float4thOrderPolynomial m_FourthOrderACoeff = {};
   double m_MisorientationTolerance = {};
   DataArrayPath m_InputPhaseTypesArrayPath = {};
   ShapeType::Types m_ShapeTypeData = {};
@@ -749,7 +749,7 @@ private:
   IntVec3Type m_Dimensions = {};
   IntVec2Type m_Range = {};
   FloatVec3Type m_Origin = {};
-  AxisAngleInput_t m_CrystalSymmetryRotations = {};
+  AxisAngleInput m_CrystalSymmetryRotations = {};
   DataArrayPath m_FeatureIdsArrayPath = {};
   DataArrayPath m_AttributeMatrixPath = {};
   DataArrayPath m_CreatedAttributeMatrix = {};

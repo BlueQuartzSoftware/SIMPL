@@ -139,7 +139,7 @@ void DataArraySelectionWidget::setupGui()
   connect(m_SelectedDataArrayPath, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)));
   connect(this, SIGNAL(unlockDataArrayPathSelection(QToolButton*)), m_SelectedDataArrayPath, SLOT(selectionWidgetUnlocked(QToolButton*)));
 
-  DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+  DataArrayPath defaultPath = m_FilterParameter->getGetterCallback()();
   m_SelectedDataArrayPath->setText(defaultPath.serialize(Detail::Delimiter));
   m_SelectedDataArrayPath->setPropertyName(getFilterParameter()->getHumanLabel());
 
@@ -165,10 +165,9 @@ bool DataArraySelectionWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 void DataArraySelectionWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
 {
-  if(propertyName.compare(PROPERTY_NAME_AS_CHAR) == 0)
+  if(propertyName == getFilterParameter()->getPropertyName())
   {
-    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-    DataArrayPath updatedPath = var.value<DataArrayPath>();
+    DataArrayPath updatedPath = m_FilterParameter->getGetterCallback()();
 
     blockSignals(true);
     setSelectedPath(updatedPath);

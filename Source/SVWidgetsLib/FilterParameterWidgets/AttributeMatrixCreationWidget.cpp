@@ -94,8 +94,9 @@ void AttributeMatrixCreationWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-    stringEdit->setText(str, true);
+    AttributeMatrixCreationFilterParameter::GetterCallbackType getter = m_FilterParameter->getGetterCallback();
+    DataArrayPath dap = getter();
+    stringEdit->setText(dap.serialize(), true);
   }
   blockSignals(false);
 
@@ -139,7 +140,7 @@ void AttributeMatrixCreationWidget::setupGui()
   connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
 
   m_SelectedDataContainerPath->blockSignals(true);
-  DataArrayPath amPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+  DataArrayPath amPath = m_FilterParameter->getGetterCallback()();
   m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
   m_SelectedDataContainerPath->setPropertyName(getFilterParameter()->getHumanLabel());
   stringEdit->setText(amPath.getAttributeMatrixName(), true);
@@ -188,10 +189,9 @@ bool AttributeMatrixCreationWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 void AttributeMatrixCreationWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
 {
-  if(propertyName.compare(PROPERTY_NAME_AS_CHAR) == 0)
+  if(propertyName == getFilterParameter()->getPropertyName())
   {
-    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-    DataArrayPath updatedPath = var.value<DataArrayPath>();
+    DataArrayPath updatedPath = m_FilterParameter->getGetterCallback()();
     QString amName = updatedPath.getAttributeMatrixName();
     updatedPath.setAttributeMatrixName("");
 

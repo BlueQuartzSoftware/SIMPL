@@ -48,8 +48,9 @@ ConstrainedDoubleFilterParameter::~ConstrainedDoubleFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ConstrainedDoubleFilterParameter::Pointer ConstrainedDoubleFilterParameter::New(const QString& humanLabel, const QString& propertyName, double defaultValue, Category category,
-                                                                                const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+ConstrainedDoubleFilterParameter::Pointer ConstrainedDoubleFilterParameter::Create(const QString& humanLabel, const QString& propertyName, double min, double max, double defaultValue,
+                                                                                   Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                                                                                   int groupIndex)
 {
 
   ConstrainedDoubleFilterParameter::Pointer ptr = ConstrainedDoubleFilterParameter::New();
@@ -60,6 +61,8 @@ ConstrainedDoubleFilterParameter::Pointer ConstrainedDoubleFilterParameter::New(
   ptr->setGroupIndex(groupIndex);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
+  ptr->setMinimum(min);
+  ptr->setMaximum(max);
 
   return ptr;
 }

@@ -78,9 +78,8 @@ void ScalarTypeWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-
-    int index = getFilter()->property(PROPERTY_NAME_AS_CHAR).toInt();
-    value->setCurrentIndex(index);
+    SIMPL::ScalarTypes::Type t = m_FilterParameter->getGetterCallback()();
+    value->setCurrentIndex(static_cast<int>(t));
   }
 }
 

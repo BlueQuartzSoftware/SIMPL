@@ -112,17 +112,17 @@ void SetOriginResolutionImageGeom::setupFilterParameters()
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     req.dcGeometryTypes = IGeometry::Types(1, IGeometry::Type::Image);
-    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Image Geometry to Modify", DataContainerName, FilterParameter::RequiredArray, SetOriginResolutionImageGeom, req));
+    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Image Geometry to Modify", DataContainerName, FilterParameter::Category::RequiredArray, SetOriginResolutionImageGeom, req));
   }
 
   QStringList linkedProps("Origin");
-  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Change Origin", ChangeOrigin, FilterParameter::Parameter, SetOriginResolutionImageGeom, linkedProps));
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Parameter, SetOriginResolutionImageGeom));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Change Origin", ChangeOrigin, FilterParameter::Category::Parameter, SetOriginResolutionImageGeom, linkedProps));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Category::Parameter, SetOriginResolutionImageGeom));
 
   linkedProps.clear();
   linkedProps << "Spacing";
-  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Change Spacing", ChangeResolution, FilterParameter::Parameter, SetOriginResolutionImageGeom, linkedProps));
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Spacing", Spacing, FilterParameter::Parameter, SetOriginResolutionImageGeom));
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Change Spacing", ChangeResolution, FilterParameter::Category::Parameter, SetOriginResolutionImageGeom, linkedProps));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Spacing", Spacing, FilterParameter::Category::Parameter, SetOriginResolutionImageGeom));
   parameters.back()->setLegacyPropertyName("Resolution");
 
   setFilterParameters(parameters);

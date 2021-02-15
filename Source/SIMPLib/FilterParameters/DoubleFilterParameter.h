@@ -51,7 +51,7 @@
  * SIMPL_NEW_DOUBLE_FP("HumanLabel", PropertyName, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_DOUBLE_FP("Double 2", Double2, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_DOUBLE_FP("Double 2", Double2, FilterParameter::Category::Parameter, GenericExample);
  */
 #define SIMPL_NEW_DOUBLE_FP(...)                                                                                                                                                                       \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(DoubleFilterParameter, __VA_ARGS__))
@@ -62,6 +62,14 @@
  */
 class SIMPLib_EXPORT DoubleFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(DoubleFilterParameter)
+  PYB11_SHARED_POINTERS(DoubleFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString double FilterParameter::Category DoubleFilterParameter::SetterCallbackType DoubleFilterParameter::GetterCallbackType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = DoubleFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -100,27 +108,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, double defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                     int groupIndex = -1);
-
-  /**
-   * @brief New This function instantiates an instance of the DoubleFilterParameter. Although this function is available to be used,
-   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_DOUBLE_FP(...) macro at the top of this file.
-
-   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
-   * @param propertyName The internal property name for this filter parameter.
-   * @param defaultValue The value that this filter parameter will be initialized to by default.
-   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
-   * are three categories: Parameter, Required Arrays, and Created Arrays.
-   * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-  * that this FilterParameter subclass represents.
-   * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-  * that this FilterParameter subclass represents.
-   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
-   * @return
-   */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, float defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                     int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, double defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~DoubleFilterParameter() override;
 

@@ -35,15 +35,80 @@
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
 
+#include "SIMPLib/Common/SIMPLPythonMacros.h"
 #include "SIMPLib/FilterParameters/FileListInfo.h"
+
+#define FP_SET_PROPERTY(type, prpty)                                                                                                                                                                   \
+  void set##prpty(const type& value)                                                                                                                                                                   \
+  {                                                                                                                                                                                                    \
+    this->prpty = value;                                                                                                                                                                               \
+  }
+
+#define FP_GET_PROPERTY(type, prpty)                                                                                                                                                                   \
+  type get##prpty() const                                                                                                                                                                              \
+  {                                                                                                                                                                                                    \
+    return prpty;                                                                                                                                                                                      \
+  }
+
+#define FP_PROP_DEC_DEF(type, prpty)                                                                                                                                                                   \
+  FP_SET_PROPERTY(type, prpty)                                                                                                                                                                         \
+  FP_GET_PROPERTY(type, prpty)
 
 class SIMPLib_EXPORT StackFileListInfo : public FileListInfo
 {
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(StackFileListInfo)
+  PYB11_CREATION(QString int32_t int32_t int32_t)
+  PYB11_CREATION(int32_t uint32_t int32_t int32_t int32_t QString QString QString QString)
+  PYB11_PROPERTY(int32_t PaddingDigits READ getPaddingDigits WRITE setPaddingDigits)
+  PYB11_PROPERTY(uint32_t Ordering READ getOrdering WRITE setOrdering)
+  PYB11_PROPERTY(int32_t IncrementIndex READ getIncrementIndex WRITE setIncrementIndex)
+  PYB11_PROPERTY(QString InputPath READ getInputPath WRITE setInputPath)
+  PYB11_PROPERTY(QString FilePrefix READ getFilePrefix WRITE setFilePrefix)
+  PYB11_PROPERTY(QString FileSuffix READ getFileSuffix WRITE setFileSuffix)
+  PYB11_PROPERTY(QString FileExtension READ getFileExtension WRITE setFileExtension)
+  PYB11_PROPERTY(int32_t StartIndex READ getStartIndex WRITE setStartIndex)
+  PYB11_PROPERTY(int32_t EndIndex READ getEndIndex WRITE setEndIndex)
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 public:
   StackFileListInfo();
   ~StackFileListInfo() override;
-
+  /**
+   * @brief StackFileListInfo
+   * @param extension
+   * @param startIndex
+   * @param endIndex
+   * @param padding
+   */
   StackFileListInfo(const QString& extension, int32_t startIndex, int32_t endIndex, int32_t padding);
+
+  /**
+   * @brief StackFileListInfo
+   * @param paddingDigits
+   * @param ordering
+   * @param startIndex
+   * @param endIndex
+   * @param incrementIndex
+   * @param inputPath
+   * @param filePrefix
+   * @param fileSuffix
+   * @param fileExtension
+   */
+  StackFileListInfo(int32_t paddingDigits, uint32_t ordering, int32_t startIndex, int32_t endIndex, int32_t incrementIndex, const QString& inputPath, const QString& filePrefix,
+                    const QString& fileSuffix, const QString& fileExtension);
+
+  // These are from the super class
+  FP_PROP_DEC_DEF(int32_t, PaddingDigits)
+  FP_PROP_DEC_DEF(uint32_t, Ordering)
+  FP_PROP_DEC_DEF(int32_t, IncrementIndex)
+  FP_PROP_DEC_DEF(QString, InputPath)
+  FP_PROP_DEC_DEF(QString, FilePrefix)
+  FP_PROP_DEC_DEF(QString, FileSuffix)
+  FP_PROP_DEC_DEF(QString, FileExtension)
+  // These are from this subclass
+  FP_PROP_DEC_DEF(int32_t, StartIndex)
+  FP_PROP_DEC_DEF(int32_t, EndIndex)
 
   qint32 StartIndex = 0;
   qint32 EndIndex = 1;

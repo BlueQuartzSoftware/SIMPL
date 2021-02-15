@@ -391,11 +391,11 @@ void ImportAsciDataArray::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Parameter, ImportAsciDataArray, "*.*"));
-  parameters.push_back(SIMPL_NEW_NUMERICTYPE_FP("Scalar Type", ScalarType, FilterParameter::Parameter, ImportAsciDataArray));
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of Components", NumberOfComponents, FilterParameter::Parameter, ImportAsciDataArray));
+  parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Category::Parameter, ImportAsciDataArray, "*.*"));
+  parameters.push_back(SIMPL_NEW_NUMERICTYPE_FP("Scalar Type", ScalarType, FilterParameter::Category::Parameter, ImportAsciDataArray));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of Components", NumberOfComponents, FilterParameter::Category::Parameter, ImportAsciDataArray));
 
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Skip Header Lines", SkipHeaderLines, FilterParameter::Parameter, ImportAsciDataArray));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Skip Header Lines", SkipHeaderLines, FilterParameter::Category::Parameter, ImportAsciDataArray));
   {
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
     parameter->setHumanLabel("Delimiter");
@@ -410,16 +410,16 @@ void ImportAsciDataArray::setupFilterParameters()
     choices.push_back(": (colon)");
     choices.push_back("\\t (Tab)");
     parameter->setChoices(choices);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameters.push_back(parameter);
   }
 
   {
     DataArrayCreationFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Output Attribute Array", CreatedAttributeArrayPath, FilterParameter::CreatedArray, ImportAsciDataArray, req));
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Output Attribute Array", CreatedAttributeArrayPath, FilterParameter::Category::CreatedArray, ImportAsciDataArray, req));
   }
 
-  PreflightUpdatedValueFilterParameter::Pointer param = SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("First Line of Data:", FirstLine, FilterParameter::Parameter, ImportAsciDataArray);
+  PreflightUpdatedValueFilterParameter::Pointer param = SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("First Line of Data:", FirstLine, FilterParameter::Category::Parameter, ImportAsciDataArray);
   param->setReadOnly(true);
   parameters.push_back(param);
 

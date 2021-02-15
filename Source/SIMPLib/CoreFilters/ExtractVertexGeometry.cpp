@@ -93,14 +93,14 @@ void ExtractVertexGeometry::setupFilterParameters()
   //  {
   //    m_NewDCGeometryChoices.push_back("Vertex Geometry");
   //    // Create the Choice Filter Parameter and add it to the list of parameters
-  //    parameters.push_back(SIMPL_NEW_CHOICE_FP("New Data Container Geometry", NewDataContainerGeometry, FilterParameter::Parameter, ExtractVertexGeometry, m_NewDCGeometryChoices, false));
+  //    parameters.push_back(SIMPL_NEW_CHOICE_FP("New Data Container Geometry", NewDataContainerGeometry, FilterParameter::Category::Parameter, ExtractVertexGeometry, m_NewDCGeometryChoices, false));
   //  }
 
   {
     m_ArrayHandlingChoices.push_back("Move Attribute Arrays");
     m_ArrayHandlingChoices.push_back("Copy Attribute Arrays");
     // Create the Choice Filter Parameter and add it to the list of parameters
-    parameters.push_back(SIMPL_NEW_CHOICE_FP("Array Handling", ArrayHandling, FilterParameter::Parameter, ExtractVertexGeometry, m_ArrayHandlingChoices, false));
+    parameters.push_back(SIMPL_NEW_CHOICE_FP("Array Handling", ArrayHandling, FilterParameter::Category::Parameter, ExtractVertexGeometry, m_ArrayHandlingChoices, false));
   }
 
   {
@@ -108,16 +108,16 @@ void ExtractVertexGeometry::setupFilterParameters()
     req.dcGeometryTypes = IGeometry::Types(2);
     req.dcGeometryTypes[0] = IGeometry::Type::Image;
     req.dcGeometryTypes[0] = IGeometry::Type::RectGrid;
-    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container with Input Geometry", SelectedDataContainerName, FilterParameter::RequiredArray, ExtractVertexGeometry, req));
+    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container with Input Geometry", SelectedDataContainerName, FilterParameter::Category::RequiredArray, ExtractVertexGeometry, req));
   }
 
   {
     MultiDataArraySelectionFilterParameter::RequirementType req;
     req.amTypes = AttributeMatrix::Types(1, AttributeMatrix::Type::Cell);
-    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Included Attribute Arrays", IncludedDataArrayPaths, FilterParameter::RequiredArray, ExtractVertexGeometry, req));
+    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Included Attribute Arrays", IncludedDataArrayPaths, FilterParameter::Category::RequiredArray, ExtractVertexGeometry, req));
   }
 
-  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Vertex Data Container Name", VertexDataContainerName, FilterParameter::CreatedArray, ExtractVertexGeometry));
+  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Vertex Data Container Name", VertexDataContainerName, FilterParameter::Category::CreatedArray, ExtractVertexGeometry));
 
   setFilterParameters(parameters);
 }

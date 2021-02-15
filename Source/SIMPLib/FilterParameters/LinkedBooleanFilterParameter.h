@@ -51,7 +51,7 @@
  * SIMPL_NEW_LINKED_BOOL_FP("HumanLabel", PropertyName, Category, FilterName, ConditionalProperties, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_LINKED_BOOL_FP("Bool1", Bool1, FilterParameter::Parameter, GenericExample, linkedProps);
+ * SIMPL_NEW_LINKED_BOOL_FP("Bool1", Bool1, FilterParameter::Category::Parameter, GenericExample, linkedProps);
  */
 #define SIMPL_NEW_LINKED_BOOL_FP(...)                                                                                                                                                                  \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(LinkedBooleanFilterParameter, __VA_ARGS__))
@@ -62,6 +62,14 @@
  */
 class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(LinkedBooleanFilterParameter)
+  PYB11_SHARED_POINTERS(LinkedBooleanFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString bool FilterParameter::Category LinkedBooleanFilterParameter::SetterCallbackType LinkedBooleanFilterParameter::GetterCallbackType QStringList int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = LinkedBooleanFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -101,8 +109,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const bool& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, QStringList conditionalProperties, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const bool& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, QStringList conditionalProperties, int groupIndex = -1);
 
   ~LinkedBooleanFilterParameter() override;
 

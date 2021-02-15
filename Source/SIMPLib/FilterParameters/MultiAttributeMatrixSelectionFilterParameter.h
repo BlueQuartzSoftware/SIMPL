@@ -55,7 +55,7 @@
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), with optional GroupIndex parameter):
  * MultiAttributeMatrixSelectionFilterParameter::RequirementType req;
- * SIMPL_NEW_MDA_SELECTION_FP("Multi Data Array Test", SelectedMultiArrayPaths, FilterParameter::Parameter, GenericExample, req, 0);
+ * SIMPL_NEW_MDA_SELECTION_FP("Multi Data Array Test", SelectedMultiArrayPaths, FilterParameter::Category::Parameter, GenericExample, req, 0);
  */
 #define SIMPL_NEW_MAM_SELECTION_FP(...)                                                                                                                                                                \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(MultiAttributeMatrixSelectionFilterParameter, __VA_ARGS__))
@@ -66,6 +66,14 @@
  */
 class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(MultiAttributeMatrixSelectionFilterParameter)
+  PYB11_SHARED_POINTERS(MultiAttributeMatrixSelectionFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString QVector<DataArrayPath> FilterParameter::Category MultiAttributeMatrixSelectionFilterParameter::SetterCallbackType MultiAttributeMatrixSelectionFilterParameter::GetterCallbackType MultiAttributeMatrixSelectionFilterParameter::RequirementType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = MultiAttributeMatrixSelectionFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -116,8 +124,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const QVector<DataArrayPath>& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, RequirementType req, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QVector<DataArrayPath>& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, RequirementType req, int groupIndex = -1);
 
   ~MultiAttributeMatrixSelectionFilterParameter() override;
 

@@ -33,36 +33,51 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QMetaType>
 
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLPythonMacros.h"
+
 /**
  * @brief
  */
-struct AxisAngleInput_t
+class SIMPLib_EXPORT AxisAngleInput
 {
-  float angle = 0.0f;
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(AxisAngleInput)
+  PYB11_CREATION(float float float float)
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
+
+public:
+  AxisAngleInput();
+  ~AxisAngleInput();
+
+  AxisAngleInput(float h, float k, float l, float angle);
+
   float h = 0.0f;
   float k = 0.0f;
   float l = 0.0f;
+  float angle = 0.0f;
 
-  void writeJson(QJsonObject& json) const
-  {
-    json["angle"] = angle;
-    json["h"] = h;
-    json["k"] = k;
-    json["l"] = l;
-  }
+  /**
+   * @brief writeJson
+   * @param json
+   */
+  void writeJson(QJsonObject& json) const;
 
-  bool readJson(const QJsonObject& json)
-  {
-    if(json["angle"].isDouble() && json["h"].isDouble() && json["k"].isDouble() && json["l"].isDouble())
-    {
-      angle = static_cast<float>(json["angle"].toDouble());
-      h = static_cast<float>(json["h"].toDouble());
-      k = static_cast<float>(json["k"].toDouble());
-      l = static_cast<float>(json["l"].toDouble());
-      return true;
-    }
-    return false;
-  }
+  /**
+   * @brief readJson
+   * @param json
+   * @return
+   */
+  bool readJson(const QJsonObject& json);
+
+public:
+  AxisAngleInput(const AxisAngleInput&) = default;
+  AxisAngleInput(AxisAngleInput&&) = default;
+  AxisAngleInput& operator=(const AxisAngleInput&) = default;
+  AxisAngleInput& operator=(AxisAngleInput&&) = default;
 };
 
-Q_DECLARE_METATYPE(AxisAngleInput_t)
+Q_DECLARE_METATYPE(AxisAngleInput)

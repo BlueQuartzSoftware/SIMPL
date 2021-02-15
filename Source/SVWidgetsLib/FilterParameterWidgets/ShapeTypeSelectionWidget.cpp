@@ -142,7 +142,7 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
     numPhases = 0;
   }
 
-  ShapeType::Types shapeTypesFromFilter = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<ShapeType::Types>();
+  ShapeType::Types shapeTypesFromFilter = m_FilterParameter->getGetterCallback()();
   if(shapeTypesFromFilter.size() > 1 && numPhases <= 0)
   {
     numPhases = shapeTypesFromFilter.size();

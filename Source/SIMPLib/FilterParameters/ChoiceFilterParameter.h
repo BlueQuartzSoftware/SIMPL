@@ -51,7 +51,7 @@
  * SIMPL_NEW_CHOICE_FP("HumanLabel", PropertyName, Category, FilterName, Choices, Editable, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_CHOICE_FP("Size Distribution Fit Type", SizeDistributionFitType, FilterParameter::Parameter, GenericExample, choices, false);
+ * SIMPL_NEW_CHOICE_FP("Size Distribution Fit Type", SizeDistributionFitType, FilterParameter::Category::Parameter, GenericExample, choices, false);
  */
 #define SIMPL_NEW_CHOICE_FP(...)                                                                                                                                                                       \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(ChoiceFilterParameter, __VA_ARGS__))
@@ -62,6 +62,14 @@
  */
 class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(ChoiceFilterParameter)
+  PYB11_SHARED_POINTERS(ChoiceFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString int FilterParameter::Category ChoiceFilterParameter::SetterCallbackType ChoiceFilterParameter::GetterCallbackType QVector<QString> bool int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = ChoiceFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -102,8 +110,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                     QVector<QString> choices, bool editable, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                        QVector<QString> choices, bool editable, int groupIndex = -1);
 
   ~ChoiceFilterParameter() override;
 

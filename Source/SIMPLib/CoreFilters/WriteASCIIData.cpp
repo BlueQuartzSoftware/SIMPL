@@ -160,18 +160,18 @@ void WriteASCIIData::setupFilterParameters()
     QStringList linkedProps = {"OutputPath", "FileExtension", "MaxValPerLine", "OutputFilePath"};
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameters.push_back(parameter);
     linkedProps.clear();
   }
 
   // Multiple File Output
-  parameters.push_back(SIMPL_NEW_OUTPUT_PATH_FP("Output Path", OutputPath, FilterParameter::Parameter, WriteASCIIData, "*", "*", 0));
-  parameters.push_back(SIMPL_NEW_STRING_FP("File Extension", FileExtension, FilterParameter::Parameter, WriteASCIIData, 0));
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Maximum Tuples Per Line", MaxValPerLine, FilterParameter::Parameter, WriteASCIIData, 0));
+  parameters.push_back(SIMPL_NEW_OUTPUT_PATH_FP("Output Path", OutputPath, FilterParameter::Category::Parameter, WriteASCIIData, "*", "*", 0));
+  parameters.push_back(SIMPL_NEW_STRING_FP("File Extension", FileExtension, FilterParameter::Category::Parameter, WriteASCIIData, 0));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Maximum Tuples Per Line", MaxValPerLine, FilterParameter::Category::Parameter, WriteASCIIData, 0));
 
   // Single File Output
-  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File Path", OutputFilePath, FilterParameter::Parameter, WriteASCIIData, "*", "*", 1));
+  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File Path", OutputFilePath, FilterParameter::Category::Parameter, WriteASCIIData, "*", "*", 1));
 
   {
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New(); // Delimiter choice
@@ -187,12 +187,12 @@ void WriteASCIIData::setupFilterParameters()
     choices.push_back(": (colon)");
     choices.push_back("\\t (Tab)");
     parameter->setChoices(choices);
-    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setCategory(FilterParameter::Category::Parameter);
     parameters.push_back(parameter);
   }
   {
     MultiDataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Arrays to Export", SelectedDataArrayPaths, FilterParameter::RequiredArray, WriteASCIIData, req));
+    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Arrays to Export", SelectedDataArrayPaths, FilterParameter::Category::RequiredArray, WriteASCIIData, req));
   }
   setFilterParameters(parameters);
 }

@@ -374,13 +374,13 @@ FloatVec3Type AbstractFilterParametersReader::readFloatVec3(const QString& name,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Float2ndOrderPoly_t AbstractFilterParametersReader::readFloat2ndOrderPoly(const QString& name, Float2ndOrderPoly_t defaultValue)
+Float2ndOrderPolynomial AbstractFilterParametersReader::readFloat2ndOrderPoly(const QString& name, Float2ndOrderPolynomial defaultValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defaultValue)
 
   // This should never be executed
-  return Float2ndOrderPoly_t();
+  return Float2ndOrderPolynomial();
 }
 
 // -----------------------------------------------------------------------------
@@ -398,13 +398,13 @@ Float3rdOrderPoly_t AbstractFilterParametersReader::readFloat3rdOrderPoly(const 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Float4thOrderPoly_t AbstractFilterParametersReader::readFloat4thOrderPoly(const QString& name, Float4thOrderPoly_t defaultValue)
+Float4thOrderPolynomial AbstractFilterParametersReader::readFloat4thOrderPoly(const QString& name, Float4thOrderPolynomial defaultValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defaultValue)
 
   // This should never be executed
-  return Float4thOrderPoly_t();
+  return Float4thOrderPolynomial();
 }
 
 // -----------------------------------------------------------------------------
@@ -459,26 +459,26 @@ ComparisonInputsAdvanced AbstractFilterParametersReader::readComparisonInputsAdv
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AxisAngleInput_t AbstractFilterParametersReader::readAxisAngle(const QString& name, AxisAngleInput_t v, int vectorPos)
+AxisAngleInput AbstractFilterParametersReader::readAxisAngle(const QString& name, AxisAngleInput v, int vectorPos)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
   Q_UNUSED(vectorPos)
 
   // This should never be executed
-  return AxisAngleInput_t();
+  return AxisAngleInput();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<AxisAngleInput_t> AbstractFilterParametersReader::readAxisAngles(const QString& name, QVector<AxisAngleInput_t> v)
+QVector<AxisAngleInput> AbstractFilterParametersReader::readAxisAngles(const QString& name, QVector<AxisAngleInput> v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
 
   // This should never be executed
-  return QVector<AxisAngleInput_t>();
+  return QVector<AxisAngleInput>();
 }
 
 // -----------------------------------------------------------------------------

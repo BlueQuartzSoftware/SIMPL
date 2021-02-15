@@ -54,7 +54,7 @@ class SIMPLib_EXPORT ShapeType
 public:
   virtual ~ShapeType();
 
-  using EnumType = unsigned int;
+  using EnumType = uint32_t;
 
   enum class Type : EnumType
   {

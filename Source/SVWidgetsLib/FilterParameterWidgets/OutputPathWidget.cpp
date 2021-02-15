@@ -50,7 +50,7 @@ OutputPathWidget::OutputPathWidget(FilterParameter* parameter, AbstractFilter* f
 
   if(filter != nullptr)
   {
-    QString currentPath = filter->property(PROPERTY_NAME_AS_CHAR).toString();
+    QString currentPath = m_FilterParameter->getGetterCallback()();
     if(!currentPath.isEmpty())
     {
       currentPath = QDir::toNativeSeparators(currentPath);
@@ -85,7 +85,7 @@ void OutputPathWidget::setupGui()
 // -----------------------------------------------------------------------------
 void OutputPathWidget::selectOutputPath()
 {
-  QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
+  QString currentPath = m_FilterParameter->getGetterCallback()();
   if(currentPath.isEmpty())
   {
     currentPath = getValue();

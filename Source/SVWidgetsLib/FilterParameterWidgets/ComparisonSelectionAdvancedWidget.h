@@ -39,19 +39,19 @@
 
 #include <QtWidgets/QWidget>
 
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
-
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/ComparisonSelectionAdvancedFilterParameter.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
-
-#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
-#include "SVWidgetsLib/SVWidgetsLib.h"
-
 #include "SIMPLib/Filtering/AbstractComparison.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/ComparisonInputsAdvanced.h"
 
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
+
 #include "ui_ComparisonSelectionAdvancedWidget.h"
+
+class ComparisonSelectionAdvancedFilterParameter;
 
 /**
  * @brief The ComparisonSelectionAdvancedWidget class is used to display, edit, and add AbstractComparisons
@@ -178,5 +178,5 @@ private:
 
   bool m_DidCausePreflight;
 
-  ComparisonSelectionAdvancedFilterParameter* m_FilterParameter;
+  ComparisonSelectionAdvancedFilterParameter* m_FilterParameter = nullptr;
 };

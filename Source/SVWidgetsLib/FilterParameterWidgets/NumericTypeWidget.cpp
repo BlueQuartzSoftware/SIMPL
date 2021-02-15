@@ -79,8 +79,8 @@ void NumericTypeWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    int index = getFilter()->property(PROPERTY_NAME_AS_CHAR).toInt();
-    value->setCurrentIndex(index);
+    SIMPL::NumericTypes::Type t = m_FilterParameter->getGetterCallback()();
+    value->setCurrentIndex(static_cast<int>(t));
   }
 }
 

@@ -48,9 +48,9 @@ OutputPathFilterParameter::~OutputPathFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-OutputPathFilterParameter::Pointer OutputPathFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                  const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const QString& fileExtension,
-                                                                  const QString& fileType, int groupIndex)
+OutputPathFilterParameter::Pointer OutputPathFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                     const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const QString& fileExtension,
+                                                                     const QString& fileType, int groupIndex)
 {
   OutputPathFilterParameter::Pointer ptr = OutputPathFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

@@ -39,14 +39,21 @@
 
 class SIMPLib_EXPORT MontageFileListInfo : public FileListInfo
 {
+  // Start Python bindings declarations
+  PYB11_BEGIN_BINDINGS(MontageFileListInfo)
+  PYB11_CREATION(int32_t int32_t int32_t int32_t)
+  PYB11_END_BINDINGS()
+  // End Python bindings declarations
 public:
   MontageFileListInfo();
   ~MontageFileListInfo() override;
 
-  qint32 RowStart = 0;
-  qint32 RowEnd = 2;
-  qint32 ColStart = 0;
-  qint32 ColEnd = 2;
+  MontageFileListInfo(int32_t rowStart, int32_t rowEnd, int32_t colStart, int32_t colEnd);
+
+  int32_t RowStart = 0;
+  int32_t RowEnd = 2;
+  int32_t ColStart = 0;
+  int32_t ColEnd = 2;
 
   /**
    * @brief writeJson

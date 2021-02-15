@@ -84,14 +84,14 @@ void CropVertexGeometry::setupFilterParameters()
   DataContainerSelectionFilterParameter::RequirementType req;
   IGeometry::Types reqGeom = {IGeometry::Type::Vertex};
   req.dcGeometryTypes = reqGeom;
-  parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Vertex Geometry to Crop", DataContainerName, FilterParameter::RequiredArray, CropVertexGeometry, req));
-  parameters.push_back(SIMPL_NEW_FLOAT_FP("X Min", XMin, FilterParameter::Parameter, CropVertexGeometry));
-  parameters.push_back(SIMPL_NEW_FLOAT_FP("Y Min", YMin, FilterParameter::Parameter, CropVertexGeometry));
-  parameters.push_back(SIMPL_NEW_FLOAT_FP("Z Min", ZMin, FilterParameter::Parameter, CropVertexGeometry));
-  parameters.push_back(SIMPL_NEW_FLOAT_FP("X Max", XMax, FilterParameter::Parameter, CropVertexGeometry));
-  parameters.push_back(SIMPL_NEW_FLOAT_FP("Y Max", YMax, FilterParameter::Parameter, CropVertexGeometry));
-  parameters.push_back(SIMPL_NEW_FLOAT_FP("Z Max", ZMax, FilterParameter::Parameter, CropVertexGeometry));
-  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Cropped Data Container", CroppedDataContainerName, FilterParameter::CreatedArray, CropVertexGeometry));
+  parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Vertex Geometry to Crop", DataContainerName, FilterParameter::Category::RequiredArray, CropVertexGeometry, req));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("X Min", XMin, FilterParameter::Category::Parameter, CropVertexGeometry));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Y Min", YMin, FilterParameter::Category::Parameter, CropVertexGeometry));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Z Min", ZMin, FilterParameter::Category::Parameter, CropVertexGeometry));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("X Max", XMax, FilterParameter::Category::Parameter, CropVertexGeometry));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Y Max", YMax, FilterParameter::Category::Parameter, CropVertexGeometry));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Z Max", ZMax, FilterParameter::Category::Parameter, CropVertexGeometry));
+  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Cropped Data Container", CroppedDataContainerName, FilterParameter::Category::CreatedArray, CropVertexGeometry));
   setFilterParameters(parameters);
 }
 

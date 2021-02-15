@@ -208,14 +208,15 @@ void ConvertData::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(SIMPL_NEW_NUMERICTYPE_FP("Scalar Type", ScalarType, FilterParameter::Parameter, ConvertData));
+  parameters.push_back(SIMPL_NEW_NUMERICTYPE_FP("Scalar Type", ScalarType, FilterParameter::Category::Parameter, ConvertData));
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Convert", SelectedCellArrayPath, FilterParameter::RequiredArray, ConvertData, req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Convert", SelectedCellArrayPath, FilterParameter::Category::RequiredArray, ConvertData, req));
   }
 
-  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Converted Attribute Array", OutputArrayName, SelectedCellArrayPath, SelectedCellArrayPath, FilterParameter::CreatedArray, ConvertData));
+  parameters.push_back(
+      SIMPL_NEW_DA_WITH_LINKED_AM_FP("Converted Attribute Array", OutputArrayName, SelectedCellArrayPath, SelectedCellArrayPath, FilterParameter::Category::CreatedArray, ConvertData));
 
   setFilterParameters(parameters);
 }

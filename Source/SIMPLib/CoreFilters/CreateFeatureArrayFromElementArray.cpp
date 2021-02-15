@@ -74,23 +74,23 @@ CreateFeatureArrayFromElementArray::~CreateFeatureArrayFromElementArray() = defa
 void CreateFeatureArrayFromElementArray::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
-  parameters.push_back(SeparatorFilterParameter::New("Element Data", FilterParameter::RequiredArray));
+  parameters.push_back(SeparatorFilterParameter::Create("Element Data", FilterParameter::Category::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req =
         DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Category::Element);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Element Data to Copy to Feature Data", SelectedCellArrayPath, FilterParameter::RequiredArray, CreateFeatureArrayFromElementArray, req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Element Data to Copy to Feature Data", SelectedCellArrayPath, FilterParameter::Category::RequiredArray, CreateFeatureArrayFromElementArray, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Int32, 1, AttributeMatrix::Category::Element);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Ids", FeatureIdsArrayPath, FilterParameter::RequiredArray, CreateFeatureArrayFromElementArray, req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Ids", FeatureIdsArrayPath, FilterParameter::Category::RequiredArray, CreateFeatureArrayFromElementArray, req));
   }
-  parameters.push_back(SeparatorFilterParameter::New("Feature Data", FilterParameter::CreatedArray));
+  parameters.push_back(SeparatorFilterParameter::Create("Feature Data", FilterParameter::Category::CreatedArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(AttributeMatrix::Type::CellFeature, IGeometry::Type::Any);
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Feature Attribute Matrix", CellFeatureAttributeMatrixName, FilterParameter::CreatedArray, CreateFeatureArrayFromElementArray, req));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Feature Attribute Matrix", CellFeatureAttributeMatrixName, FilterParameter::Category::CreatedArray, CreateFeatureArrayFromElementArray, req));
   }
-  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Copied Attribute Array", CreatedArrayName, CellFeatureAttributeMatrixName, CellFeatureAttributeMatrixName, FilterParameter::CreatedArray,
-                                                      CreateFeatureArrayFromElementArray));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Copied Attribute Array", CreatedArrayName, CellFeatureAttributeMatrixName, CellFeatureAttributeMatrixName,
+                                                      FilterParameter::Category::CreatedArray, CreateFeatureArrayFromElementArray));
   setFilterParameters(parameters);
 }
 

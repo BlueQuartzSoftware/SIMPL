@@ -52,7 +52,7 @@ public:
     Path
   };
 
-  using EnumType = unsigned int;
+  using EnumType = uint32_t;
 
   enum class ItemType : EnumType
   {

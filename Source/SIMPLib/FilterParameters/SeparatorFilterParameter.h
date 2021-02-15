@@ -45,6 +45,14 @@
  */
 class SIMPLib_EXPORT SeparatorFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(SeparatorFilterParameter)
+  PYB11_SHARED_POINTERS(SeparatorFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString FilterParameter::Category)
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = SeparatorFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -66,13 +74,12 @@ public:
 
   /**
    * @brief New This function instantiates an instance of the SeparatorFilterParameter.
-
    * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
    * @param category The category for the filter parameter in the DREAM.3D user interface.  There
    * are three categories: Parameter, Required Arrays, and Created Arrays.
    * @return
    */
-  static Pointer New(const QString& humanLabel, FilterParameter::Category category);
+  static Pointer Create(const QString& humanLabel, FilterParameter::Category category);
 
   ~SeparatorFilterParameter() override;
 

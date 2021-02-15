@@ -40,6 +40,14 @@ class ImportHDF5Dataset;
 
 class SIMPLib_EXPORT ImportHDF5DatasetFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(ImportHDF5DatasetFilterParameter)
+  PYB11_SHARED_POINTERS(ImportHDF5DatasetFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString QVariant QVariant FilterParameter::Category ImportHDF5Dataset* int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = ImportHDF5DatasetFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -59,8 +67,8 @@ public:
    */
   static QString ClassName();
 
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const QVariant& filePathDefaultValue, const QVariant& datasetDefaultValue, Category category, ImportHDF5Dataset* filter,
-                     int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QVariant& filePathDefaultValue, const QVariant& datasetDefaultValue, Category category, ImportHDF5Dataset* filter,
+                        int groupIndex = -1);
 
   ~ImportHDF5DatasetFilterParameter() override;
 

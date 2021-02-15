@@ -48,8 +48,8 @@ AxisAngleFilterParameter::~AxisAngleFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AxisAngleFilterParameter::Pointer AxisAngleFilterParameter::New(const QString& humanLabel, const QString& propertyName, const AxisAngleInput_t& defaultValue, Category category,
-                                                                const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+AxisAngleFilterParameter::Pointer AxisAngleFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const AxisAngleInput& defaultValue, Category category,
+                                                                   const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
   AxisAngleFilterParameter::Pointer ptr = AxisAngleFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -86,7 +86,7 @@ void AxisAngleFilterParameter::readJson(const QJsonObject& json)
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject axisObj = jsonValue.toObject();
-    AxisAngleInput_t axisAngle;
+    AxisAngleInput axisAngle;
     axisAngle.readJson(axisObj);
     m_SetterCallback(axisAngle);
   }
@@ -100,7 +100,7 @@ void AxisAngleFilterParameter::writeJson(QJsonObject& json)
   if(m_GetterCallback)
   {
     QJsonObject axisObj;
-    AxisAngleInput_t axisAngle = m_GetterCallback();
+    AxisAngleInput axisAngle = m_GetterCallback();
     axisAngle.writeJson(axisObj);
     json[getPropertyName()] = axisObj;
   }

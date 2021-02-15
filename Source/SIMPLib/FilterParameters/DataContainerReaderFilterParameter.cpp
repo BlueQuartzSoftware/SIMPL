@@ -53,8 +53,8 @@ DataContainerReaderFilterParameter::~DataContainerReaderFilterParameter() = defa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                                    DataContainerReader* filter, int groupIndex)
+DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                                       DataContainerReader* filter, int groupIndex)
 {
   DataContainerReaderFilterParameter::Pointer ptr = DataContainerReaderFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

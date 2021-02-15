@@ -145,7 +145,7 @@ void DynamicChoiceWidget::updateComboBox()
       value->addItems(choices);
     }
     // Get the Default value from the filter
-    QString i = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
+    QString i = m_FilterParameter->getGetterCallback()();
     int index = value->findText(i);
     value->setCurrentIndex(index);
     value->blockSignals(false);

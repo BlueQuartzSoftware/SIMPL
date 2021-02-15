@@ -125,7 +125,7 @@ void MultiDataContainerSelectionWidget::setupGui()
   // If the DataArrayPath is updated in the filter, update the widget
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
-  QStringList dcNames = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QStringList>();
+  QStringList dcNames = m_FilterParameter->getGetterCallback()();
   for(int i = 0; i < dcNames.size(); i++)
   {
     QString dcName = dcNames[i];

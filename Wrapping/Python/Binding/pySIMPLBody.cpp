@@ -30,29 +30,6 @@ registerSIMPLArray<int32_t, 6>(mod, "IntVec6");
 
 py::implicitly_convertible<QString, DataArrayPath>();
 
-py::class_<AxisAngleInput_t>(mod, "AxisAngleInput")
-    .def(py::init<float, float, float, float>())
-    .def_readwrite("angle", &AxisAngleInput_t::angle)
-    .def_readwrite("h", &AxisAngleInput_t::h)
-    .def_readwrite("k", &AxisAngleInput_t::k)
-    .def_readwrite("l", &AxisAngleInput_t::l);
-
-py::class_<StackFileListInfo>(mod, "FileListInfo")
-    .def(py::init<>([](int32_t paddingDigits, uint32_t ordering, int32_t startIndex, int32_t endIndex, int32_t incrementIndex, const QString& inputPath, const QString& filePrefix,
-                       const QString& fileSuffix, const QString& fileExtension) {
-      StackFileListInfo fileListInfo;
-      fileListInfo.PaddingDigits = paddingDigits;
-      fileListInfo.Ordering = ordering;
-      fileListInfo.StartIndex = startIndex;
-      fileListInfo.EndIndex = endIndex;
-      fileListInfo.IncrementIndex = incrementIndex;
-      fileListInfo.InputPath = inputPath;
-      fileListInfo.FilePrefix = filePrefix;
-      fileListInfo.FileSuffix = fileSuffix;
-      fileListInfo.FileExtension = fileExtension;
-      return fileListInfo;
-    }));
-
 py::class_<QSet<QString>>(mod, "StringSet").def(py::init<>([](py::set stringSet) {
   QSet<QString> newQStringSet = QSet<QString>();
   for(auto newString : stringSet)

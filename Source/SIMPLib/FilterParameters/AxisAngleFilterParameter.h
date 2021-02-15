@@ -52,7 +52,7 @@
  * SIMPL_NEW_AXISANGLE_FP("HumanLabel", PropertyName, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), with optional GroupIndex parameter):
- * SIMPL_NEW_AXISANGLE_FP("Crystal Rotations", CrystalSymmetryRotations, FilterParameter::Parameter, GenericExample, 2);
+ * SIMPL_NEW_AXISANGLE_FP("Crystal Rotations", CrystalSymmetryRotations, FilterParameter::Category::Parameter, GenericExample, 2);
  */
 #define SIMPL_NEW_AXISANGLE_FP(...)                                                                                                                                                                    \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(AxisAngleFilterParameter, __VA_ARGS__))
@@ -63,6 +63,14 @@
  */
 class SIMPLib_EXPORT AxisAngleFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(AxisAngleFilterParameter)
+  PYB11_SHARED_POINTERS(AxisAngleFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString AxisAngleInput FilterParameter::Category AxisAngleFilterParameter::SetterCallbackType AxisAngleFilterParameter::GetterCallbackType int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = AxisAngleFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -82,8 +90,8 @@ public:
    */
   static QString ClassName();
 
-  using SetterCallbackType = std::function<void(AxisAngleInput_t)>;
-  using GetterCallbackType = std::function<AxisAngleInput_t(void)>;
+  using SetterCallbackType = std::function<void(AxisAngleInput)>;
+  using GetterCallbackType = std::function<AxisAngleInput(void)>;
 
   /**
    * @brief New This function instantiates an instance of the AxisAngleFilterParameter. Although this function is available to be used,
@@ -101,8 +109,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const AxisAngleInput_t& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const AxisAngleInput& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~AxisAngleFilterParameter() override;
 

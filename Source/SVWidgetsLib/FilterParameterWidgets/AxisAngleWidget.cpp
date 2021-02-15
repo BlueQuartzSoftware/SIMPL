@@ -90,7 +90,7 @@ void AxisAngleWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    AxisAngleInput_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<AxisAngleInput_t>();
+    AxisAngleInput data = m_FilterParameter->getGetterCallback()();
     h->setText(loc.toString(data.h));
     k->setText(loc.toString(data.k));
     l->setText(loc.toString(data.l));
@@ -115,8 +115,8 @@ void AxisAngleWidget::filterNeedsInputParameters(AbstractFilter* filter)
   Q_UNUSED(filter)
 
   bool ok = false;
-  AxisAngleInput_t data;
-  AxisAngleInput_t defValue = m_FilterParameter->getDefaultValue().value<AxisAngleInput_t>();
+  AxisAngleInput data;
+  AxisAngleInput defValue = m_FilterParameter->getDefaultValue().value<AxisAngleInput>();
 
   QLabel* errorLabel = nullptr;
   QLocale loc;

@@ -579,12 +579,13 @@ void MultiAttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyNa
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
 
-  if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
+  if(propertyName == getFilterParameter()->getPropertyName())
   {
-    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-    DataArrayPath updatedPath = var.value<DataArrayPath>();
-    QString dataArrayName = updatedPath.getDataArrayName();
-    updatedPath.setDataArrayName("");
+    QVector<DataArrayPath> updatedPaths = m_FilterParameter->getGetterCallback()();
+    DataArrayPath& dap = updatedPaths[0];
+    QString dataArrayName = dap.getDataArrayName();
+    dap.setDataArrayName("");
+    updatedPaths[0] = dap;
 
     blockSignals(true);
     DataArrayPath currentPath = DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter);

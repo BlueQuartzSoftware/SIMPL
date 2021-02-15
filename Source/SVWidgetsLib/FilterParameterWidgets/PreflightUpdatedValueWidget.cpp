@@ -76,9 +76,7 @@ void PreflightUpdatedValueWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-
-    QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-    value->setText(str);
+    value->setText(m_FilterParameter->getGetterCallback()());
   }
   blockSignals(false);
 }
@@ -103,15 +101,5 @@ void PreflightUpdatedValueWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void PreflightUpdatedValueWidget::afterPreflight()
 {
-  QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-  if(var.isValid())
-  {
-    value->setText(var.toString());
-  }
-  else
-  {
-    QString ss = QObject::tr("Error occurred getting Filter Parameter %1").arg(getFilterParameter()->getPropertyName());
-    emit errorSettingFilterParameter(ss);
-    qDebug() << ss;
-  }
+  value->setText(m_FilterParameter->getGetterCallback()());
 }

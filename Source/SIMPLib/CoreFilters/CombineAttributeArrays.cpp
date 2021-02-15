@@ -197,14 +197,14 @@ CombineAttributeArrays::~CombineAttributeArrays() = default;
 void CombineAttributeArrays::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Normalize Data", NormalizeData, FilterParameter::Parameter, CombineAttributeArrays));
-  parameters.push_back(SIMPL_NEW_BOOL_FP("Move Data", MoveValues, FilterParameter::Parameter, CombineAttributeArrays));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Normalize Data", NormalizeData, FilterParameter::Category::Parameter, CombineAttributeArrays));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Move Data", MoveValues, FilterParameter::Category::Parameter, CombineAttributeArrays));
   {
     MultiDataArraySelectionFilterParameter::RequirementType req =
         MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
-    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Arrays to Combine", SelectedDataArrayPaths, FilterParameter::RequiredArray, CombineAttributeArrays, req));
+    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Arrays to Combine", SelectedDataArrayPaths, FilterParameter::Category::RequiredArray, CombineAttributeArrays, req));
   }
-  parameters.push_back(SIMPL_NEW_STRING_FP("Combined Data", StackedDataArrayName, FilterParameter::CreatedArray, CombineAttributeArrays));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Combined Data", StackedDataArrayName, FilterParameter::Category::CreatedArray, CombineAttributeArrays));
   setFilterParameters(parameters);
 }
 

@@ -48,7 +48,7 @@ SeparatorFilterParameter::~SeparatorFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SeparatorFilterParameter::Pointer SeparatorFilterParameter::New(const QString& humanLabel, FilterParameter::Category category)
+SeparatorFilterParameter::Pointer SeparatorFilterParameter::Create(const QString& humanLabel, FilterParameter::Category category)
 {
   SeparatorFilterParameter::Pointer ptr = SeparatorFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

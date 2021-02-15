@@ -54,10 +54,10 @@ ComparisonSelectionAdvancedFilterParameter::~ComparisonSelectionAdvancedFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonSelectionAdvancedFilterParameter::Pointer ComparisonSelectionAdvancedFilterParameter::New(const QString& humanLabel, const QString& propertyName, ComparisonInputsAdvanced defaultValue,
-                                                                                                    Category category, const SetterCallbackType& setterCallback,
-                                                                                                    const GetterCallbackType& getterCallback, QVector<QString> choices, bool showOperators,
-                                                                                                    int groupIndex)
+ComparisonSelectionAdvancedFilterParameter::Pointer ComparisonSelectionAdvancedFilterParameter::Create(const QString& humanLabel, const QString& propertyName, ComparisonInputsAdvanced defaultValue,
+                                                                                                       Category category, const SetterCallbackType& setterCallback,
+                                                                                                       const GetterCallbackType& getterCallback, QVector<QString> choices, bool showOperators,
+                                                                                                       int groupIndex)
 {
   ComparisonSelectionAdvancedFilterParameter::Pointer ptr = ComparisonSelectionAdvancedFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

@@ -53,7 +53,7 @@
  * SIMPL_NEW_FILELISTINFO_FP("HumanLabel", PropertyName, Category, FilterName)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample)):
- * SIMPL_NEW_FILELISTINFO_FP("Input File List", InputFileListInfo, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_FILELISTINFO_FP("Input File List", InputFileListInfo, FilterParameter::Category::Parameter, GenericExample);
  */
 #define SIMPL_NEW_FILELISTINFO_FP(...)                                                                                                                                                                 \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(FileListInfoFilterParameter, __VA_ARGS__))
@@ -64,6 +64,12 @@
  */
 class SIMPLib_EXPORT FileListInfoFilterParameter : public FilterParameter
 {
+
+  PYB11_BEGIN_BINDINGS(FileListInfoFilterParameter)
+  PYB11_SHARED_POINTERS(FileListInfoFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString StackFileListInfo FilterParameter::Category FileListInfoFilterParameter::SetterCallbackType FileListInfoFilterParameter::GetterCallbackType)
+  PYB11_END_BINDINGS()
+
 public:
   using Self = FileListInfoFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -102,8 +108,8 @@ public:
   * that this FilterParameter subclass represents.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const StackFileListInfo& defaultValue, Category category, SetterCallbackType setterCallback,
-                     GetterCallbackType getterCallback);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const StackFileListInfo& defaultValue, Category category, SetterCallbackType setterCallback,
+                        GetterCallbackType getterCallback);
 
   ~FileListInfoFilterParameter() override;
 

@@ -68,7 +68,7 @@ void RemoveArrays::setupFilterParameters()
     parameter->setGetterCallback(SIMPL_BIND_GETTER(RemoveArrays, this, DataArraysToRemove));
 
     parameter->setDefaultFlagValue(Qt::Unchecked);
-    parameter->setCategory(FilterParameter::RequiredArray);
+    parameter->setCategory(FilterParameter::Category::RequiredArray);
     parameters.push_back(parameter);
   }
 

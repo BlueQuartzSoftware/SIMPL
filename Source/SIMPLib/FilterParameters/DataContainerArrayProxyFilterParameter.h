@@ -53,7 +53,7 @@
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
  * DataContainerArrayProxy proxy;
- * SIMPL_NEW_DCA_PROXY_FP("Array to Select", DcaProxy, FilterParameter::Parameter, GenericExample, proxy, Qt::Checked);
+ * SIMPL_NEW_DCA_PROXY_FP("Array to Select", DcaProxy, FilterParameter::Category::Parameter, GenericExample, proxy, Qt::Checked);
  */
 #define SIMPL_NEW_DCA_PROXY_FP(...)                                                                                                                                                                    \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(DataContainerArrayProxyFilterParameter, __VA_ARGS__))
@@ -64,6 +64,14 @@
  */
 class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParameter
 {
+  // Start Python bindings declarations
+  // clang-format off
+  PYB11_BEGIN_BINDINGS(DataContainerArrayProxyFilterParameter)
+  PYB11_SHARED_POINTERS(DataContainerArrayProxyFilterParameter)
+  PYB11_STATIC_CREATION(Create ARGS QString QString DataContainerArrayProxy FilterParameter::Category DataContainerArrayProxyFilterParameter::SetterCallbackType DataContainerArrayProxyFilterParameter::GetterCallbackType DataContainerArrayProxy Qt::CheckState int )
+  PYB11_END_BINDINGS()
+  // clang-format on
+  // End Python bindings declarations
 public:
   using Self = DataContainerArrayProxyFilterParameter;
   using Pointer = std::shared_ptr<Self>;
@@ -104,8 +112,8 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, DataContainerArrayProxy defaultValue, Category category, const SetterCallbackType& setterCallback,
-                     const GetterCallbackType& getterCallback, DataContainerArrayProxy proxy, Qt::CheckState defState, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, DataContainerArrayProxy defaultValue, Category category, const SetterCallbackType& setterCallback,
+                        const GetterCallbackType& getterCallback, DataContainerArrayProxy proxy, Qt::CheckState defState, int groupIndex = -1);
 
   ~DataContainerArrayProxyFilterParameter() override;
 

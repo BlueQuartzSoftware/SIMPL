@@ -135,10 +135,9 @@ void DataContainerCreationWidget::filterNeedsInputParameters(AbstractFilter* fil
 // -----------------------------------------------------------------------------
 void DataContainerCreationWidget::updateDataArrayPath(const QString& propertyName, const DataArrayPath::RenameType& renamePath)
 {
-  if(propertyName.compare(PROPERTY_NAME_AS_CHAR) == 0)
+  if(propertyName == getFilterParameter()->getPropertyName())
   {
-    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-    DataArrayPath updatedPath = var.value<DataArrayPath>();
+    DataArrayPath updatedPath = m_FilterParameter->getGetterCallback()();
     QString dcName = updatedPath.getDataContainerName();
     updatedPath.setDataContainerName("");
 
