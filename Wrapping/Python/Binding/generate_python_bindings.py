@@ -107,10 +107,13 @@ class PyClass():
       code += f'  .def_static(\"New\", &{self.name}::New)\n'
 
     for static_new_method in self.static_creation_methods:
-      args = ', '.join([f'{arg} var_{i}' for i, arg in enumerate(static_new_method.args)])
-      values = ', '.join([f'var_{i}' for i, arg in enumerate(static_new_method.args)])
+      if static_new_method.args:
+        args = ', '.join([f'{arg} var_{i}' for i, arg in enumerate(static_new_method.args)])
+        values = ', '.join([f'var_{i}' for i, arg in enumerate(static_new_method.args)])
 
-      code += f'  .def(py::init([]({args}) {{\n      return {self.name}::{static_new_method.name}({values});\n    }}))\n'
+        code += f'  .def(py::init([]({args}) {{\n      return {self.name}::{static_new_method.name}({values});\n    }}))\n'
+      else:
+        code += f'  .def(py::init(&{self.name}::{static_new_method.name}))\n'
       if not static_new_method.is_overload:
         code += f'  .def_static(\"{static_new_method.name}\", &{self.name}::{static_new_method.name})\n'
 
