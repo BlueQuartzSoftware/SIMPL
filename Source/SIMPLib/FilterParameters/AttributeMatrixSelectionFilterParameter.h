@@ -96,7 +96,7 @@ public:
   using SetterCallbackType = std::function<void(DataArrayPath)>;
   using GetterCallbackType = std::function<DataArrayPath(void)>;
 
-  using RequirementType = struct
+  struct RequirementType
   {
     IGeometry::Types dcGeometryTypes;
     AttributeMatrix::Types amTypes;

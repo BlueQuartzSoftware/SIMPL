@@ -97,7 +97,7 @@ public:
   using SetterCallbackType = std::function<void(QStringList)>;
   using GetterCallbackType = std::function<QStringList(void)>;
 
-  using RequirementType = struct
+  struct RequirementType
   {
     IGeometry::Types dcGeometryTypes;
     AttributeMatrix::Types amTypes;
