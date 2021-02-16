@@ -63,7 +63,7 @@ namespace
  * @return Boolean if we pass or not.
  */
 template <typename RequirementsType>
-bool CheckPathRequirements(AbstractFilter* filter, const DataArrayPath& path, const RequirementsType& reqs)
+bool CheckDataPathAndRequirements(AbstractFilter* filter, const DataArrayPath& path, const RequirementsType& reqs)
 {
   if(nullptr == filter)
   {
@@ -231,7 +231,7 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   {
     return false;
   }
-  return CheckPathRequirements(filter, path, reqs);
+  return ::CheckDataPathAndRequirements(filter, path, reqs);
 }
 
 // -----------------------------------------------------------------------------
@@ -244,7 +244,7 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
     return false;
   }
 
-  if(!CheckPathRequirements(filter, path, reqs))
+  if(!::CheckDataPathAndRequirements(filter, path, reqs))
   {
     return false;
   }
@@ -279,7 +279,7 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
     return false;
   }
 
-  if(!CheckPathRequirements(filter, path, reqs))
+  if(!::CheckDataPathAndRequirements(filter, path, reqs))
   {
     return false;
   }
