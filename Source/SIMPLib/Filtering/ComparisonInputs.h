@@ -45,11 +45,11 @@ struct ComparisonInput_t
 {
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(ComparisonInput_t)
-  PYB11_PROPERTY(QString dataContainerName)
-  PYB11_PROPERTY(QString attributeMatrixName)
-  PYB11_PROPERTY(QString attributeArrayName)
-  PYB11_PROPERTY(int compOperator)
-  PYB11_PROPERTY(double compValue)
+  PYB11_FIELD(dataContainerName)
+  PYB11_FIELD(attributeMatrixName)
+  PYB11_FIELD(attributeArrayName)
+  PYB11_FIELD(compOperator)
+  PYB11_FIELD(compValue)
   PYB11_END_BINDINGS()
   // End Python bindings declarations
 

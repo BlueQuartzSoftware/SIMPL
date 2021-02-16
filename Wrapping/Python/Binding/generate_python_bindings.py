@@ -21,6 +21,7 @@ PYB11_FILTER_NEW_MACRO: str = 'PYB11_FILTER_NEW_MACRO'
 PYB11_SHARED_POINTERS: str = 'PYB11_SHARED_POINTERS'
 PYB11_FILTER: str = 'PYB11_FILTER'
 PYB11_CUSTOM: str = 'PYB11_CUSTOM'
+PYB11_FIELD: str = 'PYB11_FIELD'
 
 PYB11_SUPERCLASS: str = 'SUPERCLASS'
 PYB11_READ: str = 'READ'
@@ -32,6 +33,11 @@ PYB11_ARGS: str = 'ARGS'
 PYB11_OVERLOAD: str = 'OVERLOAD'
 
 OBSERVER_ARG_NAME: str = 'observer'
+
+class PyField():
+  def __init__(self):
+    self.cpp_name: str = ''
+    self.py_name: str = ''
 
 class PyProperty():
   def __init__(self):
@@ -71,6 +77,7 @@ class PyClass():
     self.name: str = ''
     self.superclass: str = ''
     self.properties: List[PyProperty] = []
+    self.fields: List[PyField] = []
     self.methods: List[PyMethod] = []
     self.static_creation_methods: List[PyStaticCreation] = []
     self.constructors: List[PyConstructor] = []
@@ -90,7 +97,7 @@ class PyClass():
     if self.uses_shared_pointer:
       template_param += f', std::shared_ptr<{self.name}>'
 
-    needs_var: bool = self.constructors or self.has_static_new or self.static_creation_methods or self.properties or self.methods
+    needs_var: bool = self.constructors or self.has_static_new or self.static_creation_methods or self.properties or self.methods or self.fields
 
     if self.enums or self.is_custom:
       instance = f'instance{self.name}'
@@ -134,6 +141,9 @@ class PyClass():
       elif prop.write:
         code += f'  .def(\"set{prop.name}\", &{self.name}::set{prop.name}, \"{prop.name}\"_a)\n'
     
+    for field in self.fields:
+      code += f'  .def_readwrite(\"{field.py_name}\", &{self.name}::{field.cpp_name})\n'
+
     for method in self.methods:
       if method.is_overload:
         template_param = ', '.join(method.arg_types)
@@ -360,6 +370,20 @@ def parse_filter(line: str) -> bool:
 def parse_custom(line: str) -> bool:
   return True
 
+def parse_field(line: str) -> PyField:
+  tokens = extract_macro_args(line)
+  field = PyField()
+  size = len(tokens)
+  if size == 2:
+    field.cpp_name = tokens[0]
+    field.py_name = tokens[1]
+  elif size == 1:
+    field.cpp_name = tokens[0]
+    field.py_name = tokens[0]
+  else:
+    raise RuntimeError('incorrect number of arguments for PyField')
+  return field
+
 def parse_bindings(class_line: str, file: Generator[str, None, None]) -> PyClass:
   py_class = parse_class(class_line)
   line: str
@@ -387,6 +411,8 @@ def parse_bindings(class_line: str, file: Generator[str, None, None]) -> PyClass
       py_class.is_filter = parse_filter(line)
     elif line.startswith(PYB11_CUSTOM):
       py_class.is_custom = parse_custom(line)
+    elif line.startswith(PYB11_FIELD):
+      py_class.fields.append(parse_field(line))
   return py_class
 
 def parse_file(file_path: str) -> List[PyClass]:

@@ -204,6 +204,12 @@
  */
 #define PYB11_CUSTOM(...)
 
+/**
+* @brief PYB11_FIELD This macro is used to wrap instance variable of a class.
+* It is similiar to PYB11_PROPERTY but without getters/setters.
+*/
+#define PYB11_FIELD(...)
+
 // End of PYBIND11 Macro Definitions
 /* *****************************************************************************
  * *****************************************************************************
