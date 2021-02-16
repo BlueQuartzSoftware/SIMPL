@@ -64,7 +64,7 @@ class SIMPLib_EXPORT PhaseTypeSelectionFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-//  PYB11_BEGIN_BINDINGS(PhaseTypeSelectionFilterParameter)
+//  PYB11_BEGIN_BINDINGS(PhaseTypeSelectionFilterParameter SUPERCLASS FilterParameter)
 //  PYB11_SHARED_POINTERS(PhaseTypeSelectionFilterParameter)
 //  PYB11_STATIC_CREATION(Create)
 //  PYB11_END_BINDINGS()

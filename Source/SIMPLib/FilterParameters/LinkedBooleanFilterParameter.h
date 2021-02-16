@@ -64,9 +64,9 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(LinkedBooleanFilterParameter)
+  PYB11_BEGIN_BINDINGS(LinkedBooleanFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(LinkedBooleanFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString bool FilterParameter::Category LinkedBooleanFilterParameter::SetterCallbackType LinkedBooleanFilterParameter::GetterCallbackType QStringList int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

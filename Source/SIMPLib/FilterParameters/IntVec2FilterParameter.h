@@ -64,9 +64,9 @@ class SIMPLib_EXPORT IntVec2FilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(IntVec2FilterParameter)
+  PYB11_BEGIN_BINDINGS(IntVec2FilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(IntVec2FilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString IntVec2Type FilterParameter::Category IntVec2FilterParameter::SetterCallbackType IntVec2FilterParameter::GetterCallbackType int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

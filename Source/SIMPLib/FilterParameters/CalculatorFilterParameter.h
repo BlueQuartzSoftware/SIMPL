@@ -64,9 +64,9 @@ class SIMPLib_EXPORT CalculatorFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(CalculatorFilterParameter)
+  PYB11_BEGIN_BINDINGS(CalculatorFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(CalculatorFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString QString FilterParameter::Category CalculatorFilterParameter::SetterCallbackType CalculatorFilterParameter::GetterCallbackType int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

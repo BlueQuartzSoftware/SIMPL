@@ -69,9 +69,9 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(AttributeMatrixCreationFilterParameter)
+  PYB11_BEGIN_BINDINGS(AttributeMatrixCreationFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(AttributeMatrixCreationFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString DataArrayPath FilterParameter::Category AttributeMatrixCreationFilterParameter::SetterCallbackType AttributeMatrixCreationFilterParameter::GetterCallbackType AttributeMatrixCreationFilterParameter::RequirementType int)
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

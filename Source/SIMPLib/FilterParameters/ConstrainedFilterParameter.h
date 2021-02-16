@@ -45,7 +45,7 @@ class SIMPLib_EXPORT ConstrainedFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-//  PYB11_BEGIN_BINDINGS(ConstrainedFilterParameter)
+//  PYB11_BEGIN_BINDINGS(ConstrainedFilterParameter SUPERCLASS FilterParameter)
 //  PYB11_SHARED_POINTERS(ConstrainedFilterParameter)
 //  PYB11_STATIC_CREATION(Create)
 //  PYB11_END_BINDINGS()

@@ -64,9 +64,9 @@ class SIMPLib_EXPORT OutputFileFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(OutputFileFilterParameter)
+  PYB11_BEGIN_BINDINGS(OutputFileFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(OutputFileFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString QString FilterParameter::Category OutputFileFilterParameter::SetterCallbackType OutputFileFilterParameter::GetterCallbackType QString QString int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

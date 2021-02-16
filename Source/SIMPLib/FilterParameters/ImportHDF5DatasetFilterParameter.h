@@ -42,9 +42,9 @@ class SIMPLib_EXPORT ImportHDF5DatasetFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(ImportHDF5DatasetFilterParameter)
+  PYB11_BEGIN_BINDINGS(ImportHDF5DatasetFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(ImportHDF5DatasetFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString QVariant QVariant FilterParameter::Category ImportHDF5Dataset* int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

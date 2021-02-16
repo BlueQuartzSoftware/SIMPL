@@ -66,9 +66,9 @@ class SIMPLib_EXPORT ShapeTypeSelectionFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(ShapeTypeSelectionFilterParameter)
+  PYB11_BEGIN_BINDINGS(ShapeTypeSelectionFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(ShapeTypeSelectionFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString ShapeType::Types FilterParameter::Category ShapeTypeSelectionFilterParameter::SetterCallbackType ShapeTypeSelectionFilterParameter::GetterCallbackType QString QString int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

@@ -65,9 +65,9 @@ class SIMPLib_EXPORT DataContainerCreationFilterParameter : public FilterParamet
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(DataContainerCreationFilterParameter)
+  PYB11_BEGIN_BINDINGS(DataContainerCreationFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(DataContainerCreationFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString DataArrayPath FilterParameter::Category DataContainerCreationFilterParameter::SetterCallbackType DataContainerCreationFilterParameter::GetterCallbackType int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

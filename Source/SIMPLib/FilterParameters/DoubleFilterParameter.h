@@ -64,9 +64,9 @@ class SIMPLib_EXPORT DoubleFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(DoubleFilterParameter)
+  PYB11_BEGIN_BINDINGS(DoubleFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(DoubleFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString double FilterParameter::Category DoubleFilterParameter::SetterCallbackType DoubleFilterParameter::GetterCallbackType int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

@@ -69,9 +69,9 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(MultiDataContainerSelectionFilterParameter)
+  PYB11_BEGIN_BINDINGS(MultiDataContainerSelectionFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(MultiDataContainerSelectionFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString QStringList FilterParameter::Category MultiDataContainerSelectionFilterParameter::SetterCallbackType MultiDataContainerSelectionFilterParameter::GetterCallbackType MultiDataContainerSelectionFilterParameter::RequirementType int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

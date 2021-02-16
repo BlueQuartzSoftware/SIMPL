@@ -68,9 +68,9 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(MultiDataArraySelectionFilterParameter)
+  PYB11_BEGIN_BINDINGS(MultiDataArraySelectionFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(MultiDataArraySelectionFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString QVector<DataArrayPath> FilterParameter::Category MultiDataArraySelectionFilterParameter::SetterCallbackType MultiDataArraySelectionFilterParameter::GetterCallbackType MultiDataArraySelectionFilterParameter::RequirementType int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

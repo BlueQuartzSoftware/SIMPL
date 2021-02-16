@@ -64,9 +64,9 @@ class SIMPLib_EXPORT FourthOrderPolynomialFilterParameter : public FilterParamet
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(FourthOrderPolynomialFilterParameter)
+  PYB11_BEGIN_BINDINGS(FourthOrderPolynomialFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(FourthOrderPolynomialFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString Float4thOrderPolynomial FilterParameter::Category FourthOrderPolynomialFilterParameter::SetterCallbackType FourthOrderPolynomialFilterParameter::GetterCallbackType int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

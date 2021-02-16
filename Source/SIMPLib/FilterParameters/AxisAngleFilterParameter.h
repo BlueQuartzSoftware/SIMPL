@@ -65,9 +65,9 @@ class SIMPLib_EXPORT AxisAngleFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(AxisAngleFilterParameter)
+  PYB11_BEGIN_BINDINGS(AxisAngleFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(AxisAngleFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString AxisAngleInput FilterParameter::Category AxisAngleFilterParameter::SetterCallbackType AxisAngleFilterParameter::GetterCallbackType int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

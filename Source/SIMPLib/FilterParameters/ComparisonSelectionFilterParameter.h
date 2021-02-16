@@ -67,9 +67,9 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(ComparisonSelectionFilterParameter)
+  PYB11_BEGIN_BINDINGS(ComparisonSelectionFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(ComparisonSelectionFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString ComparisonInputs FilterParameter::Category ComparisonSelectionFilterParameter::SetterCallbackType ComparisonSelectionFilterParameter::GetterCallbackType QVector<QString> bool int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

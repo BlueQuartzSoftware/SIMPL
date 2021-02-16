@@ -65,9 +65,9 @@ class SIMPLib_EXPORT FloatFilterParameter : public FilterParameter
 
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(FloatFilterParameter)
+  PYB11_BEGIN_BINDINGS(FloatFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(FloatFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString float FilterParameter::Category FloatFilterParameter::SetterCallbackType FloatFilterParameter::GetterCallbackType int)
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

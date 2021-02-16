@@ -51,9 +51,9 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(DataContainerReaderFilterParameter)
+  PYB11_BEGIN_BINDINGS(DataContainerReaderFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(DataContainerReaderFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString QString FilterParameter::Category DataContainerReader* int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

@@ -65,9 +65,9 @@ class SIMPLib_EXPORT SecondOrderPolynomialFilterParameter : public FilterParamet
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(SecondOrderPolynomialFilterParameter)
+  PYB11_BEGIN_BINDINGS(SecondOrderPolynomialFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(SecondOrderPolynomialFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString Float2ndOrderPolynomial FilterParameter::Category SecondOrderPolynomialFilterParameter::SetterCallbackType SecondOrderPolynomialFilterParameter::GetterCallbackType int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

@@ -65,9 +65,9 @@
 class SIMPLib_EXPORT FileListInfoFilterParameter : public FilterParameter
 {
 
-  PYB11_BEGIN_BINDINGS(FileListInfoFilterParameter)
+  PYB11_BEGIN_BINDINGS(FileListInfoFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(FileListInfoFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString StackFileListInfo FilterParameter::Category FileListInfoFilterParameter::SetterCallbackType FileListInfoFilterParameter::GetterCallbackType)
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
 
 public:

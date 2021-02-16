@@ -51,9 +51,9 @@ class SIMPLib_EXPORT GenerateColorTableFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(GenerateColorTableFilterParameter)
+  PYB11_BEGIN_BINDINGS(GenerateColorTableFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(GenerateColorTableFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString QString FilterParameter::Category GenerateColorTable* int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

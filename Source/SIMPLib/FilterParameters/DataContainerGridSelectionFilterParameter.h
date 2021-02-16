@@ -66,9 +66,9 @@ class SIMPLib_EXPORT DataContainerGridSelectionFilterParameter : public FilterPa
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(DataContainerGridSelectionFilterParameter)
+  PYB11_BEGIN_BINDINGS(DataContainerGridSelectionFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(DataContainerGridSelectionFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString DataContainerGrid FilterParameter::Category DataContainerGridSelectionFilterParameter::SetterCallbackType DataContainerGridSelectionFilterParameter::GetterCallbackType int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

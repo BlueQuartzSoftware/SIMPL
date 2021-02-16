@@ -47,9 +47,9 @@ class SIMPLib_EXPORT SeparatorFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(SeparatorFilterParameter)
+  PYB11_BEGIN_BINDINGS(SeparatorFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(SeparatorFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString FilterParameter::Category)
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

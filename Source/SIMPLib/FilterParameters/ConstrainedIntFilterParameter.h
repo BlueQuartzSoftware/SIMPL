@@ -65,9 +65,9 @@ class SIMPLib_EXPORT ConstrainedIntFilterParameter : public ConstrainedFilterPar
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(ConstrainedIntFilterParameter)
+  PYB11_BEGIN_BINDINGS(ConstrainedIntFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(ConstrainedIntFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString int32_t int32_t int32_t FilterParameter::Category ConstrainedIntFilterParameter::SetterCallbackType ConstrainedIntFilterParameter::GetterCallbackType int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

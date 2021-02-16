@@ -63,9 +63,9 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(LinkedDataContainerSelectionFilterParameter)
+  PYB11_BEGIN_BINDINGS(LinkedDataContainerSelectionFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(LinkedDataContainerSelectionFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString DataArrayPath FilterParameter::Category LinkedDataContainerSelectionFilterParameter::SetterCallbackType LinkedDataContainerSelectionFilterParameter::GetterCallbackType LinkedDataContainerSelectionFilterParameter::RequirementType QStringList int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

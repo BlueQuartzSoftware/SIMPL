@@ -47,9 +47,9 @@ class SIMPLib_EXPORT UnknownFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-  PYB11_BEGIN_BINDINGS(UnknownFilterParameter)
+  PYB11_BEGIN_BINDINGS(UnknownFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(UnknownFilterParameter)
-  PYB11_STATIC_CREATION(Create ARGS QString QString QString FilterParameter::Category int )
+  PYB11_STATIC_CREATION(Create)
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

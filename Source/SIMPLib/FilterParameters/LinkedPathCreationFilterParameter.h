@@ -123,9 +123,9 @@ class SIMPLib_EXPORT LinkedPathCreationFilterParameter : public FilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
-//  PYB11_BEGIN_BINDINGS(LinkedPathCreationFilterParameter)
+//  PYB11_BEGIN_BINDINGS(LinkedPathCreationFilterParameter SUPERCLASS FilterParameter)
 //  PYB11_SHARED_POINTERS(LinkedPathCreationFilterParameter)
-//  PYB11_STATIC_CREATION(Create ARGS QString QString QString FilterParameter::Category LinkedPathCreationFilterParameter::SetterCallbackType LinkedPathCreationFilterParameter::GetterCallbackType std::unique_ptr<ILinkedPath> int )
+//  PYB11_STATIC_CREATION(Create)
 //  PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations
