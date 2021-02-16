@@ -74,6 +74,7 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
   PYB11_BEGIN_BINDINGS(DataArraySelectionFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(DataArraySelectionFilterParameter)
   PYB11_STATIC_CREATION(Create)
+  PYB11_CUSTOM()
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

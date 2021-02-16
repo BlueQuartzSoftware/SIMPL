@@ -72,6 +72,7 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
   PYB11_BEGIN_BINDINGS(MultiDataContainerSelectionFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(MultiDataContainerSelectionFilterParameter)
   PYB11_STATIC_CREATION(Create)
+  PYB11_CUSTOM()
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

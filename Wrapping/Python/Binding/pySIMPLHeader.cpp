@@ -5,17 +5,18 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QString>
 
-#include "pybind11/numpy.h"
-#include "pybind11/pybind11.h"
-#include "pybind11/stl.h"
-#include "pybind11/stl_bind.h"
+#include <pybind11/pybind11.h>
+
+#include <pybind11/functional.h>
+#include <pybind11/numpy.h>
+#include <pybind11/stl.h>
+#include <pybind11/stl_bind.h>
 
 #include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/Common/QtBackwardCompatibilityMacro.h"
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
-#include "SIMPLib/Utilities/PythonSupport.h"
 
 namespace py = pybind11;
 using namespace py::literals;

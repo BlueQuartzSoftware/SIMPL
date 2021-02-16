@@ -71,6 +71,7 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
   PYB11_BEGIN_BINDINGS(MultiAttributeMatrixSelectionFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(MultiAttributeMatrixSelectionFilterParameter)
   PYB11_STATIC_CREATION(Create)
+  PYB11_CUSTOM()
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations

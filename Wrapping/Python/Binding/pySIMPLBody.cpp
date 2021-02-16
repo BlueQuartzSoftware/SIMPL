@@ -186,3 +186,62 @@ instanceAbstractFilter.def("connectObserver",
                            [](AbstractFilter& filter, Observer& observer) { QObject::connect(&filter, &AbstractFilter::messageGenerated, &observer, &Observer::processPipelineMessage); });
 instanceAbstractFilter.def("disconnectObserver",
                            [](AbstractFilter& filter, Observer& observer) { QObject::disconnect(&filter, &AbstractFilter::messageGenerated, &observer, &Observer::processPipelineMessage); });
+
+py::class_<AttributeMatrixCreationFilterParameter::RequirementType>(instanceAttributeMatrixCreationFilterParameter, "RequirementType")
+    .def(py::init<>())
+    .def(py::init<const IGeometry::Types&>())
+    .def_readwrite("dcGeometryTypes", &AttributeMatrixCreationFilterParameter::RequirementType::dcGeometryTypes);
+
+py::class_<AttributeMatrixSelectionFilterParameter::RequirementType>(instanceAttributeMatrixSelectionFilterParameter, "RequirementType")
+    .def(py::init<>())
+    .def(py::init<const IGeometry::Types&, const AttributeMatrix::Types&>())
+    .def_readwrite("dcGeometryTypes", &AttributeMatrixSelectionFilterParameter::RequirementType::dcGeometryTypes)
+    .def_readwrite("amTypes", &AttributeMatrixSelectionFilterParameter::RequirementType::amTypes);
+
+py::class_<DataArrayCreationFilterParameter::RequirementType>(instanceDataArrayCreationFilterParameter, "RequirementType")
+    .def(py::init<>())
+    .def(py::init<const IGeometry::Types&, const AttributeMatrix::Types&>())
+    .def_readwrite("dcGeometryTypes", &DataArrayCreationFilterParameter::RequirementType::dcGeometryTypes)
+    .def_readwrite("amTypes", &DataArrayCreationFilterParameter::RequirementType::amTypes);
+
+py::class_<DataArraySelectionFilterParameter::RequirementType>(instanceDataArraySelectionFilterParameter, "RequirementType")
+    .def(py::init<>())
+    .def(py::init<const IGeometry::Types&, const AttributeMatrix::Types&, const std::vector<QString>&, const std::vector<std::vector<size_t>>&>())
+    .def_readwrite("dcGeometryTypes", &DataArraySelectionFilterParameter::RequirementType::dcGeometryTypes)
+    .def_readwrite("amTypes", &DataArraySelectionFilterParameter::RequirementType::amTypes)
+    .def_readwrite("daTypes", &DataArraySelectionFilterParameter::RequirementType::daTypes)
+    .def_readwrite("componentDimensions", &DataArraySelectionFilterParameter::RequirementType::componentDimensions);
+
+py::class_<DataContainerSelectionFilterParameter::RequirementType>(instanceDataContainerSelectionFilterParameter, "RequirementType")
+    .def(py::init<>())
+    .def(py::init<const IGeometry::Types&>())
+    .def_readwrite("dcGeometryTypes", &DataContainerSelectionFilterParameter::RequirementType::dcGeometryTypes);
+
+py::class_<LinkedDataContainerSelectionFilterParameter::RequirementType>(instanceLinkedDataContainerSelectionFilterParameter, "RequirementType")
+    .def(py::init<>())
+    .def(py::init<const IGeometry::Types&>())
+    .def_readwrite("dcGeometryTypes", &LinkedDataContainerSelectionFilterParameter::RequirementType::dcGeometryTypes);
+
+py::class_<MultiAttributeMatrixSelectionFilterParameter::RequirementType>(instanceMultiAttributeMatrixSelectionFilterParameter, "RequirementType")
+    .def(py::init<>())
+    .def(py::init<const IGeometry::Types&, const AttributeMatrix::Types&, const std::vector<QString>&, const std::vector<std::vector<size_t>>&>())
+    .def_readwrite("dcGeometryTypes", &MultiAttributeMatrixSelectionFilterParameter::RequirementType::dcGeometryTypes)
+    .def_readwrite("amTypes", &MultiAttributeMatrixSelectionFilterParameter::RequirementType::amTypes)
+    .def_readwrite("daTypes", &MultiAttributeMatrixSelectionFilterParameter::RequirementType::daTypes)
+    .def_readwrite("componentDimensions", &MultiAttributeMatrixSelectionFilterParameter::RequirementType::componentDimensions);
+
+py::class_<MultiDataArraySelectionFilterParameter::RequirementType>(instanceMultiDataArraySelectionFilterParameter, "RequirementType")
+    .def(py::init<>())
+    .def(py::init<const IGeometry::Types&, const AttributeMatrix::Types&, const std::vector<QString>&, const std::vector<std::vector<size_t>>&>())
+    .def_readwrite("dcGeometryTypes", &MultiDataArraySelectionFilterParameter::RequirementType::dcGeometryTypes)
+    .def_readwrite("amTypes", &MultiDataArraySelectionFilterParameter::RequirementType::amTypes)
+    .def_readwrite("daTypes", &MultiDataArraySelectionFilterParameter::RequirementType::daTypes)
+    .def_readwrite("componentDimensions", &MultiDataArraySelectionFilterParameter::RequirementType::componentDimensions);
+
+py::class_<MultiDataContainerSelectionFilterParameter::RequirementType>(instanceMultiDataContainerSelectionFilterParameter, "RequirementType")
+    .def(py::init<>())
+    .def(py::init<const IGeometry::Types&, const AttributeMatrix::Types&, const std::vector<QString>&, const std::vector<std::vector<size_t>>&>())
+    .def_readwrite("dcGeometryTypes", &MultiDataContainerSelectionFilterParameter::RequirementType::dcGeometryTypes)
+    .def_readwrite("amTypes", &MultiDataContainerSelectionFilterParameter::RequirementType::amTypes)
+    .def_readwrite("daTypes", &MultiDataContainerSelectionFilterParameter::RequirementType::daTypes)
+    .def_readwrite("componentDimensions", &MultiDataContainerSelectionFilterParameter::RequirementType::componentDimensions);

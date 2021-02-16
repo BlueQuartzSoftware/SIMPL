@@ -72,6 +72,7 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
   PYB11_BEGIN_BINDINGS(AttributeMatrixCreationFilterParameter SUPERCLASS FilterParameter)
   PYB11_SHARED_POINTERS(AttributeMatrixCreationFilterParameter)
   PYB11_STATIC_CREATION(Create)
+  PYB11_CUSTOM()
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations
