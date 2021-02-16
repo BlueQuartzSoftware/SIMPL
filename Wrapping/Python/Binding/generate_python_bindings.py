@@ -90,13 +90,19 @@ class PyClass():
     if self.uses_shared_pointer:
       template_param += f', std::shared_ptr<{self.name}>'
 
+    needs_var: bool = self.constructors or self.has_static_new or self.static_creation_methods or self.properties or self.methods
+
     if self.enums or self.is_custom:
       instance = f'instance{self.name}'
       code = f'py::class_<{template_param}> {instance}(mod, \"{self.name}\");\n'
 
-      code += f'{instance}\n'
+      if needs_var:
+        code += f'{instance}\n'
     else:
-      code = f'py::class_<{template_param}>(mod, \"{self.name}\")\n'
+      code = f'py::class_<{template_param}>(mod, \"{self.name}\")'
+      if not needs_var:
+        code += ';'
+      code += '\n'
 
     for constructor in self.constructors:
       args = ', '.join(constructor.args)
@@ -144,7 +150,10 @@ class PyClass():
         code += f', {args}'
       code += ')\n'
 
-    code += ';\n\n'
+    if needs_var:
+      code += ';\n\n'
+    else:
+      code += '\n'
 
     for enum in self.enums:
       code += f'py::enum_<{self.name}::{enum.name}>(instance{self.name}, \"{enum.name}\")\n'
