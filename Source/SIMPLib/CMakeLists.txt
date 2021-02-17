@@ -195,10 +195,25 @@ if(SIMPL_USE_GHC_FILESYSTEM)
   list(APPEND ${PROJECT_NAME}_LINK_LIBS ghcFilesystem::ghc_filesystem)
 endif()
 
+if(SIMPL_EMBED_PYTHON)
+  find_package(pybind11 REQUIRED)
+
+  list(APPEND ${PROJECT_NAME}_LINK_LIBS pybind11::embed)
+
+  D3DCompileDir(Python)
+endif()
+
 #-------------------------------------------------------------------------------
 # Add the SIMPLib Library
 add_library(${PROJECT_NAME} ${LIB_TYPE} ${Project_SRCS} )
 CMP_AddDefinitions(TARGET ${PROJECT_NAME})
+
+if(SIMPL_EMBED_PYTHON)
+  add_custom_command(TARGET ${PROJECT_NAME}
+    PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Python
+  )
+endif()
 
 # Add H5Support
 add_subdirectory(${H5Support_SOURCE_DIR} ${PROJECT_BINARY_DIR}/H5Support)
