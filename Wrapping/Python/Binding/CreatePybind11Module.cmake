@@ -71,7 +71,7 @@ endfunction()
 #-------------------------------------------------------------------------------
 function(CreatePybind11Module)
   set(options PLUGIN)
-  set(oneValueArgs MODULE_NAME OUTPUT_DIR FILE_LIST_PATH SOURCE_DIR HEADER_PATH BODY_PATH INCLUDE_DIR PYTHON_OUTPUT_DIR)
+  set(oneValueArgs MODULE_NAME OUTPUT_DIR FILE_LIST_PATH SOURCE_DIR HEADER_PATH BODY_PATH BODY_TOP_PATH INCLUDE_DIR PYTHON_OUTPUT_DIR)
   set(multiValueArgs LINK_LIBRARIES INCLUDE_DIRS)
   cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
@@ -108,6 +108,7 @@ function(CreatePybind11Module)
       "--module_name=${MODULE_NAME_lower}"
       "--header_path=${ARGS_HEADER_PATH}"
       "--body_path=${ARGS_BODY_PATH}"
+      "--body_top_path=${ARGS_BODY_TOP_PATH}"
       "--plugin_name=${ARGS_MODULE_NAME}"
       COMMENT "${ARGS_MODULE_NAME}: Generating Python bindings"
       BYPRODUCTS ${PYTHON_MODULE_SOURCE_FILE}
@@ -122,6 +123,8 @@ function(CreatePybind11Module)
 
   pybind11_add_module(${MODULE_NAME_lower}
     ${PYTHON_MODULE_SOURCE_FILE}
+    ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/pySupport.h
+    ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/Pybind11CustomTypeCasts.h
   )
 
   set_property(TARGET ${MODULE_NAME_lower} PROPERTY FOLDER "Python/Bindings")
@@ -162,7 +165,7 @@ endfunction()
 #-------------------------------------------------------------------------------
 function(CreatePybind11Plugin)
   set(options)
-  set(oneValueArgs PLUGIN_NAME PLUGIN_TARGET HEADER_PATH BODY_PATH)
+  set(oneValueArgs PLUGIN_NAME PLUGIN_TARGET HEADER_PATH BODY_PATH BODY_TOP_PATH)
   set(multiValueArgs)
   cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
@@ -176,6 +179,7 @@ function(CreatePybind11Plugin)
     PYTHON_OUTPUT_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}$<${_isMultiConfig}:/$<CONFIG>>"
     HEADER_PATH ${ARGS_HEADER_PATH}
     BODY_PATH ${ARGS_BODY_PATH}
+    BODY_TOP_PATH ${ARGS_BODY_TOP_PATH}
     LINK_LIBRARIES ${ARGS_PLUGIN_TARGET}
     INCLUDE_DIRS ${SIMPLProj_SOURCE_DIR}/Wrapping/Python
     PLUGIN
