@@ -480,6 +480,8 @@ include(${SIMPLProj_SOURCE_DIR}/Support/Support.cmake)
 # --------------------------------------------------------------------------
 # Find the Pybind11 installation
 option(SIMPL_ENABLE_PYTHON "Generate and Compile Python wrapping codes" OFF)
+include(CMakeDependentOption)
+cmake_dependent_option(SIMPL_EMBED_PYTHON "Embed the Python interpreter in SIMPL and allow for loading filters from Python" OFF SIMPL_ENABLE_PYTHON OFF)
 if(SIMPL_ENABLE_PYTHON)
   set(SIMPL_PYTHON_TEST_ENV ${SIMPL_PYTHON_TEST_ENV} CACHE STRING "A semicolon delimited list of environment variables used for Python tests")
 

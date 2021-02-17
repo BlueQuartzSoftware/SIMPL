@@ -58,6 +58,8 @@
 /* define to 1 if we are building the Test Filters */
 #cmakedefine SIMPL_BUILD_TEST_FILTERS
 
+#cmakedefine SIMPL_EMBED_PYTHON
+
 /* ****************************************************************************
 * These define misc items from the build
 **************************************************************************** */
