@@ -35,6 +35,8 @@
 
 #include "ComparisonSelectionAdvancedWidget.h"
 
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
+
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
@@ -51,8 +53,7 @@ ComparisonSelectionAdvancedWidget::ComparisonSelectionAdvancedWidget(FilterParam
 : FilterParameterWidget(parameter, filter, parent)
 , m_DidCausePreflight(false)
 {
-  m_FilterParameter = dynamic_cast<ComparisonSelectionAdvancedFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ComparisonSelectionAdvancedWidget can ONLY be used with a ComparisonSelectionAdvancedFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, ComparisonSelectionAdvancedWidget, ComparisonSelectionAdvancedFilterParameter);
 
   QString filterName = getFilter()->getNameOfClass();
 

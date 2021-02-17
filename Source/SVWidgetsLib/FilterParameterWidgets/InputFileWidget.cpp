@@ -38,6 +38,7 @@
 #include <QtWidgets/QFileDialog>
 
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -45,8 +46,7 @@
 InputFileWidget::InputFileWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : AbstractIOFileWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<InputFileFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "InputFileWidget can ONLY be used with a InputFileFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, InputFileWidget, InputFileFilterParameter);
 
   setupGui();
 }

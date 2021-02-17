@@ -35,6 +35,8 @@
 
 #include "ScalarTypeWidget.h"
 
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
+
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -47,8 +49,7 @@
 ScalarTypeWidget::ScalarTypeWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<ScalarTypeFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ScalarTypeWidget can ONLY be used with a ScalarFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, ScalarTypeWidget, ScalarTypeFilterParameter);
 
   setupUi(this);
   setupGui();

@@ -45,6 +45,7 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/PhaseTypeSelectionFilterParameter.h"
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
@@ -58,8 +59,7 @@ PhaseTypeSelectionWidget::PhaseTypeSelectionWidget(FilterParameter* parameter, A
 : FilterParameterWidget(parameter, filter, parent)
 , m_DidCausePreflight(false)
 {
-  m_FilterParameter = dynamic_cast<PhaseTypeSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "PhaseTypeSelectionWidget can ONLY be used with a PhaseTypeSelectionFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, PhaseTypeSelectionWidget, PhaseTypeSelectionFilterParameter);
 
   setupUi(this);
   setupGui();

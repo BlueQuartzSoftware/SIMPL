@@ -36,6 +36,7 @@
 #include "FourthOrderPolynomialWidget.h"
 
 #include "SIMPLib/FilterParameters/FourthOrderPolynomialFilterParameter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -48,8 +49,7 @@
 FourthOrderPolynomialWidget::FourthOrderPolynomialWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<FourthOrderPolynomialFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "FourthOrderPolynomialWidget can ONLY be used with a FourthOrderPolynomialFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, FourthOrderPolynomialWidget, FourthOrderPolynomialFilterParameter);
 
   setupUi(this);
   setupGui();

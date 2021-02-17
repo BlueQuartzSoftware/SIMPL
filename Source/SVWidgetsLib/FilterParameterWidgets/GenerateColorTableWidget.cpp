@@ -36,6 +36,7 @@
 #include "GenerateColorTableWidget.h"
 
 #include "SIMPLib/FilterParameters/GenerateColorTableFilterParameter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "SVWidgetsLib/Dialogs/ColorPresetsDialog.h"
 
@@ -47,10 +48,8 @@ GenerateColorTableWidget::GenerateColorTableWidget(FilterParameter* parameter, A
 , m_PresetsDialog(nullptr)
 , m_DidCausePreflight(false)
 {
-  m_FilterParameter = dynamic_cast<GenerateColorTableFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "GenerateColorTableWidget can ONLY be used with a GenerateColorTableFilterParameter object");
-  m_Filter = dynamic_cast<GenerateColorTable*>(filter);
-  Q_ASSERT_X(getFilter() != nullptr, "NULL Pointer", "GenerateColorTableWidget can ONLY be used with a GenerateColorTable object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, GenerateColorTableWidget, GenerateColorTableFilterParameter);
+  m_Filter = SIMPL_FILTER_COMPATIBILITY_CHECK(filter, parameter, GenerateColorTableWidget, GenerateColorTable);
 
   setupUi(this);
   setupGui();

@@ -36,6 +36,7 @@
 #include "FloatVec3Widget.h"
 
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
@@ -49,8 +50,7 @@
 FloatVec3Widget::FloatVec3Widget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<FloatVec3FilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "FloatVec3Widget can ONLY be used with a FloatVec3FilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, FloatVec3Widget, FloatVec3FilterParameter);
 
   setupUi(this);
   setupGui();

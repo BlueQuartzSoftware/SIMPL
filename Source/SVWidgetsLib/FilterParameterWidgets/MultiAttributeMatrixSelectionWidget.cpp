@@ -47,6 +47,7 @@
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiAttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
@@ -61,8 +62,7 @@ MultiAttributeMatrixSelectionWidget::MultiAttributeMatrixSelectionWidget(FilterP
 : FilterParameterWidget(parameter, filter, parent)
 , m_DidCausePreflight(false)
 {
-  m_FilterParameter = dynamic_cast<MultiAttributeMatrixSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "MultiAttributeMatrixSelectionWidget can ONLY be used with a MultiAttributeMatrixSelectionFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, MultiAttributeMatrixSelectionWidget, MultiAttributeMatrixSelectionFilterParameter);
 
   setupUi(this);
   setupGui();

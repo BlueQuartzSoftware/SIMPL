@@ -35,6 +35,8 @@
 
 #include "RangeWidget.h"
 
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
+
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 #include "FilterParameterWidgetsDialogs.h"
@@ -45,8 +47,7 @@
 RangeWidget::RangeWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<RangeFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "RangeWidget can ONLY be used with a RangeFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, RangeWidget, RangeFilterParameter);
 
   setupUi(this);
   setupGui();

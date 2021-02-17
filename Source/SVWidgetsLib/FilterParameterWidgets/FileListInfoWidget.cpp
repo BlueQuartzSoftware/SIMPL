@@ -48,6 +48,7 @@
 #include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Utilities/FilePathGenerator.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 #include "SIMPLib/Utilities/StringOperations.h"
 
@@ -67,16 +68,8 @@ FileListInfoWidget::FileListInfoWidget(FilterParameter* parameter, AbstractFilte
 : FilterParameterWidget(parameter, filter, parent)
 , m_Ui(new Ui::FileListInfoWidget)
 {
-  m_FilterParameter = dynamic_cast<FileListInfoFilterParameter*>(parameter);
-  if(nullptr == m_FilterParameter)
-  {
-    QString msg;
-    QTextStream ss(&msg);
-    ss << "FileListInfoWidget can ONLY be used with FileListInfoFilterParameter objects. The programmer of the filter has a bug.";
-    ss << " The name of the filter was " << filter->getHumanLabel() << " and the name of the Filter Parameter was " << parameter->getHumanLabel();
-    ss << " and is trying to get the propery " << parameter->getPropertyName() << " in the filter";
-    Q_ASSERT_X(nullptr != m_FilterParameter, msg.toLatin1().constData(), __FILE__);
-  }
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, FileListInfoWidget, FileListInfoFilterParameter);
+
   m_Ui->setupUi(this);
   setupGui();
   if(m_Ui->inputDir->text().isEmpty())

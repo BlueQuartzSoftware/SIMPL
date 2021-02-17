@@ -36,6 +36,7 @@
 #include "ThirdOrderPolynomialWidget.h"
 
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -48,8 +49,7 @@
 ThirdOrderPolynomialWidget::ThirdOrderPolynomialWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<ThirdOrderPolynomialFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ThirdOrderPolynomialWidget can ONLY be used with a ThirdOrderPolynomialFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, ThirdOrderPolynomialWidget, ThirdOrderPolynomialFilterParameter);
 
   setupUi(this);
   setupGui();

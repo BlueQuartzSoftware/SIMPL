@@ -47,6 +47,7 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/ReadASCIIDataFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "Widgets/ImportASCIIDataWizard/DataFormatPage.h"
@@ -65,11 +66,8 @@ ReadASCIIDataWidget::ReadASCIIDataWidget(FilterParameter* parameter, AbstractFil
 , m_WorkerThread(nullptr)
 , m_LineCounter(nullptr)
 {
-  m_FilterParameter = dynamic_cast<ReadASCIIDataFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "ReadASCIIDataWidget can ONLY be used with an ReadASCIIDataFilterParameter object");
-
-  m_Filter = dynamic_cast<ReadASCIIData*>(filter);
-  Q_ASSERT_X(m_Filter != nullptr, "nullptr Pointer", "ReadASCIIDataWidget can ONLY be used with an ReadASCIIData filter");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, ReadASCIIDataWidget, ReadASCIIDataFilterParameter);
+  m_Filter = SIMPL_FILTER_COMPATIBILITY_CHECK(filter, parameter, ReadASCIIDataWidget, ReadASCIIData);
 
   setupUi(this);
 

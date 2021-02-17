@@ -35,6 +35,8 @@
 
 #include "DoubleWidget.h"
 
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
+
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -47,8 +49,7 @@
 DoubleWidget::DoubleWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<DoubleFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "DoubleWidget can ONLY be used with a DoubleFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, DoubleWidget, DoubleFilterParameter);
 
   setupUi(this);
   setupGui();

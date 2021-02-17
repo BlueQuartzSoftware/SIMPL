@@ -35,6 +35,8 @@
 
 #include "ConstrainedIntWidget.h"
 
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
+
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -47,8 +49,7 @@
 ConstrainedIntWidget::ConstrainedIntWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<ConstrainedIntFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ConstrainedIntWidget can ONLY be used with a IntFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, ConstrainedIntWidget, ConstrainedIntFilterParameter);
 
   setupUi(this);
   setupGui();

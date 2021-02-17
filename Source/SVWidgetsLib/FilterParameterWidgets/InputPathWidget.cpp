@@ -37,6 +37,8 @@
 
 #include <QtWidgets/QFileDialog>
 
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
+
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -49,8 +51,7 @@
 InputPathWidget::InputPathWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : AbstractIOFileWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<InputPathFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "InputPathWidget can ONLY be used with a InputPathFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, InputPathWidget, InputPathFilterParameter);
 
   setupGui();
 

@@ -37,6 +37,7 @@
 
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/MontageSelectionFilterParameter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "SVWidgetsLib/ui_MontageSelectionWidget.h"
 
@@ -48,8 +49,7 @@ MontageSelectionWidget::MontageSelectionWidget(FilterParameter* parameter, Abstr
 , m_DidCausePreflight(false)
 , m_Ui(new Ui::MontageSelectionWidget)
 {
-  m_FilterParameter = dynamic_cast<MontageSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "MontageSelectionWidget can ONLY be used with a MontageSelectionFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, MontageSelectionWidget, MontageSelectionFilterParameter);
 
   m_Ui->setupUi(this);
   setupGui();

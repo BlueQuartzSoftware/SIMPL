@@ -36,6 +36,7 @@
 #include "AttributeMatrixSelectionWidget.h"
 
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
@@ -60,8 +61,7 @@ AttributeMatrixSelectionWidget::AttributeMatrixSelectionWidget(FilterParameter* 
 : FilterParameterWidget(parameter, filter, parent)
 , m_DidCausePreflight(false)
 {
-  m_FilterParameter = dynamic_cast<AttributeMatrixSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "AttributeMatrixSelectionWidget can ONLY be used with an AttributeMatrixSelectionFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, AttributeMatrixSelectionWidget, AttributeMatrixSelectionFilterParameter);
 
   setupUi(this);
   setupGui();

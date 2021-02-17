@@ -37,6 +37,7 @@
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
@@ -51,8 +52,7 @@ DataContainerSelectionWidget::DataContainerSelectionWidget(FilterParameter* para
 : FilterParameterWidget(parameter, filter, parent)
 , m_DidCausePreflight(false)
 {
-  m_FilterParameter = dynamic_cast<DataContainerSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "DataContainerSelectionWidget can ONLY be used with a DataContainerSelectionFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, DataContainerSelectionWidget, DataContainerSelectionFilterParameter);
 
   setupUi(this);
   setupGui();

@@ -36,6 +36,7 @@
 #include "ComparisonSelectionWidget.h"
 
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
@@ -53,8 +54,7 @@ ComparisonSelectionWidget::ComparisonSelectionWidget(FilterParameter* parameter,
 , m_DidCausePreflight(false)
 , m_ComparisonSelectionTableModel(nullptr)
 {
-  m_FilterParameter = dynamic_cast<ComparisonSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ComparisonSelectionWidget can ONLY be used with a ComparisonSelectionFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, ComparisonSelectionWidget, ComparisonSelectionFilterParameter);
 
   setupUi(this);
   setupGui();

@@ -39,6 +39,7 @@
 #include <QtWidgets/QMenu>
 
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
@@ -55,11 +56,8 @@ CalculatorWidget::CalculatorWidget(FilterParameter* parameter, AbstractFilter* f
 , m_SelectedText("")
 , m_SelectionStart(-1)
 {
-  m_Filter = dynamic_cast<ArrayCalculator*>(filter);
-  Q_ASSERT_X(m_Filter != nullptr, "NULL Pointer", "CalculatorWidget can ONLY be used with an ArrayCalculator filter");
-
-  m_FilterParameter = dynamic_cast<CalculatorFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "CalculatorWidget can ONLY be used with a CalculatorFilterParameter object");
+  m_Filter = SIMPL_FILTER_COMPATIBILITY_CHECK(filter, parameter, CalculatorWidget, ArrayCalculator);
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, CalculatorWidget, CalculatorFilterParameter);
 
   setupUi(this);
   setupGui();

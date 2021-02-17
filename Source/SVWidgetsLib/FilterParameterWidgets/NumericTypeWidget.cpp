@@ -35,6 +35,8 @@
 
 #include "NumericTypeWidget.h"
 
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
+
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -47,8 +49,7 @@
 NumericTypeWidget::NumericTypeWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<NumericTypeFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "NumericTypeWidget can ONLY be used with a NumericTypeFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, NumericTypeWidget, NumericTypeFilterParameter);
 
   setupUi(this);
   setupGui();

@@ -37,14 +37,15 @@
 
 #include <QtWidgets/QFileDialog>
 
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 OutputPathWidget::OutputPathWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : AbstractIOFileWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<OutputPathFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "OutputPathWidget can ONLY be used with a OutputPathFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, OutputPathWidget, OutputPathFilterParameter);
 
   setupGui();
 

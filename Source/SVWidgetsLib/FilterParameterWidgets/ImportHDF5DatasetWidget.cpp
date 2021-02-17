@@ -55,6 +55,7 @@
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/ImportHDF5DatasetFilterParameter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
@@ -76,11 +77,8 @@ ImportHDF5DatasetWidget::ImportHDF5DatasetWidget(FilterParameter* parameter, Abs
 , m_CurrentHDFDataPath("")
 , m_FileId(-1)
 {
-  m_FilterParameter = dynamic_cast<ImportHDF5DatasetFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ImportHDF5DatasetWidget can ONLY be used with an ImportHDF5DatasetFilterParameter object");
-
-  m_Filter = dynamic_cast<ImportHDF5Dataset*>(filter);
-  Q_ASSERT_X(m_Filter != nullptr, "NULL Pointer", "ImportHDF5DatasetWidget can ONLY be used with an ImportHDF5Dataset filter");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, ImportHDF5DatasetWidget, ImportHDF5DatasetFilterParameter);
+  m_Filter = SIMPL_FILTER_COMPATIBILITY_CHECK(filter, parameter, ImportHDF5DatasetWidget, ImportHDF5Dataset);
 
   setupUi(this);
   setupGui();

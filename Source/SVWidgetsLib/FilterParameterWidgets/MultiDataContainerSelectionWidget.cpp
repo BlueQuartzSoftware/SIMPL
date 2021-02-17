@@ -44,6 +44,7 @@
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataContainerSelectionFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
@@ -58,8 +59,7 @@ MultiDataContainerSelectionWidget::MultiDataContainerSelectionWidget(FilterParam
 : FilterParameterWidget(parameter, filter, parent)
 , m_DidCausePreflight(false)
 {
-  m_FilterParameter = dynamic_cast<MultiDataContainerSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "MultiDataContainerSelectionWidget can ONLY be used with a MultiDataContainerSelectionFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, MultiDataContainerSelectionWidget, MultiDataContainerSelectionFilterParameter);
 
   setupUi(this);
   setupGui();

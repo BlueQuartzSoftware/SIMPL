@@ -36,6 +36,7 @@
 #include "AxisAngleWidget.h"
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"
@@ -48,8 +49,7 @@
 AxisAngleWidget::AxisAngleWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<AxisAngleFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "AxisAngleWidget can ONLY be used with an AxisAngleFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, AxisAngleWidget, AxisAngleFilterParameter);
 
   setupUi(this);
   setupGui();

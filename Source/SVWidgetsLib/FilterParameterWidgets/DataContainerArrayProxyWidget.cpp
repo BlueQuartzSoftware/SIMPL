@@ -43,6 +43,7 @@
 #include <QtGui/QFont>
 
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
@@ -57,8 +58,7 @@ DataContainerArrayProxyWidget::DataContainerArrayProxyWidget(FilterParameter* pa
 , m_EmptyDcProxy(DataContainerProxy())
 , m_EmptyAmProxy(AttributeMatrixProxy())
 {
-  m_FilterParameter = dynamic_cast<DataContainerArrayProxyFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "DataContainerArrayProxyWidget can ONLY be used with a DataContainerArrayProxyFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, DataContainerArrayProxyWidget, DataContainerArrayProxyFilterParameter);
 
   setupUi(this);
   setupGui();

@@ -42,6 +42,7 @@
 #include "SIMPLib/FilterParameters/DynamicTableFilterParameter.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -60,8 +61,7 @@ const QString deleteColTT = "Removes the currently selected column from the tabl
 DynamicTableWidget::DynamicTableWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<DynamicTableFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "DynamicTableWidget can ONLY be used with a DynamicTableFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, DynamicTableWidget, DynamicTableFilterParameter);
 
   setupUi(this);
   setupGui();

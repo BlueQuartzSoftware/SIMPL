@@ -44,6 +44,7 @@
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
@@ -58,8 +59,7 @@ MultiDataArraySelectionWidget::MultiDataArraySelectionWidget(FilterParameter* pa
 : FilterParameterWidget(parameter, filter, parent)
 , m_DidCausePreflight(false)
 {
-  m_FilterParameter = dynamic_cast<MultiDataArraySelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "MultiDataArraySelectionWidget can ONLY be used with a MultiDataArraySelectionFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, MultiDataArraySelectionWidget, MultiDataArraySelectionFilterParameter);
 
   setupUi(this);
   setupGui();

@@ -33,6 +33,8 @@
 
 #include "LinkedPathCreationWidget.h"
 
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
+
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 #include "FilterParameterWidgetsDialogs.h"
@@ -43,8 +45,7 @@
 LinkedPathCreationWidget::LinkedPathCreationWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<LinkedPathCreationFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "LinkedPathCreationWidget can ONLY be used with a StringFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, LinkedPathCreationWidget, LinkedPathCreationFilterParameter);
 
   setupGui();
 }

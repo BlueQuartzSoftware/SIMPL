@@ -37,6 +37,7 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/FilterParameters/DataContainerGridSelectionFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
@@ -53,8 +54,7 @@ DataContainerGridSelectionWidget::DataContainerGridSelectionWidget(FilterParamet
 , m_Ui(new Ui::DataContainerGridSelectionWidget)
 , m_DidCausePreflight(false)
 {
-  m_FilterParameter = dynamic_cast<DataContainerGridSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "DataContainerGridSelectionWidget can ONLY be used with a DataContainerGridSelectionFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, DataContainerGridSelectionWidgetk, DataContainerGridSelectionFilterParameter);
 
   m_Ui->setupUi(this);
   setupGui();

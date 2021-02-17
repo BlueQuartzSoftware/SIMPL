@@ -36,6 +36,7 @@
 #include "IntVec3Widget.h"
 
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
@@ -47,8 +48,7 @@
 IntVec3Widget::IntVec3Widget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<IntVec3FilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "IntVec3Widget can ONLY be used with a IntVec3FilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, IntVec3Widget, IntVec3FilterParameter);
 
   setupUi(this);
   setupGui();

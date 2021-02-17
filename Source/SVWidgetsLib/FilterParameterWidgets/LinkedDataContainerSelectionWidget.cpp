@@ -42,6 +42,7 @@
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Geometry/IGeometry.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SIMPLib/Utilities/STLUtilities.hpp"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -56,8 +57,7 @@ LinkedDataContainerSelectionWidget::LinkedDataContainerSelectionWidget(FilterPar
 : FilterParameterWidget(parameter, filter, parent)
 , m_DidCausePreflight(false)
 {
-  m_FilterParameter = dynamic_cast<LinkedDataContainerSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "LinkedDataContainerSelectionWidget can ONLY be used with a LinkedDataContainerSelectionFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, LinkedDataContainerSelectionWidget, LinkedDataContainerSelectionFilterParameter);
 
   setupUi(this);
   setupGui();

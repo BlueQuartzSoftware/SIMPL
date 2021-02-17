@@ -47,6 +47,7 @@
 #include <QtWidgets/QMenu>
 
 #include "SIMPLib/FilterParameters/MultiInputFileFilterParameter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SIMPLib/Utilities/QtConverter.hpp"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -65,8 +66,7 @@ MultiInputFileWidget::MultiInputFileWidget(FilterParameter* parameter, AbstractF
 : FilterParameterWidget(parameter, filter, parent)
 , m_Ui(new Ui::MultiInputFileWidget)
 {
-  m_FilterParameter = dynamic_cast<MultiInputFileFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "MultiInputFileWidget can ONLY be used with a MultiInputFileFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, MultiInputFileWidget, MultiInputFileFilterParameter);
 
   m_Ui->setupUi(this);
   setupGui();

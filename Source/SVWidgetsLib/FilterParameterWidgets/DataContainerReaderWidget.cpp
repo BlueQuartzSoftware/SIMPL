@@ -50,6 +50,7 @@
 
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -250,10 +251,8 @@ DataContainerReaderWidget::DataContainerReaderWidget(FilterParameter* parameter,
 : FilterParameterWidget(parameter, filter, parent)
 , m_DidCausePreflight(false)
 {
-  m_FilterParameter = dynamic_cast<DataContainerReaderFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "DataContainerReaderWidget can ONLY be used with a DataContainerReaderFilterParameter object");
-  m_Filter = dynamic_cast<DataContainerReader*>(filter);
-  Q_ASSERT_X(getFilter() != nullptr, "NULL Pointer", "DataContainerReaderWidget can ONLY be used with a DataContainerReader object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, DataContainerReaderWidget, DataContainerReaderFilterParameter);
+  m_Filter = SIMPL_FILTER_COMPATIBILITY_CHECK(filter, parameter, DataContainerReaderWidget, DataContainerReader);
 
   if(m_OpenDialogLastFilePath.isEmpty())
   {

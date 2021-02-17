@@ -37,6 +37,7 @@
 
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -48,8 +49,7 @@
 ChoiceWidget::ChoiceWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<ChoiceFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ChoiceWidget can ONLY be used with a ChoiceFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, ChoiceWidget, ChoiceFilterParameter);
 
   setupUi(this);
   setupGui();

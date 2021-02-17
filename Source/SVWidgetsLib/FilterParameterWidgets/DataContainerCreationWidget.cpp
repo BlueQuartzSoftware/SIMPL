@@ -35,6 +35,8 @@
 
 #include "DataContainerCreationWidget.h"
 
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
+
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 #include "FilterParameterWidgetUtils.hpp"
@@ -46,8 +48,7 @@
 DataContainerCreationWidget::DataContainerCreationWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<DataContainerCreationFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "DataContainerCreationWidget can ONLY be used with a DataContainerCreationFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, DataContainerCreationWidget, DataContainerCreationFilterParameter);
 
   setupUi(this);
   setupGui();

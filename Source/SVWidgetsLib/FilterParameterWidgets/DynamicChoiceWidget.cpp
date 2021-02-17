@@ -38,6 +38,7 @@
 #include <QtCore/QDebug>
 
 #include "SIMPLib/FilterParameters/DynamicChoiceFilterParameter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -49,8 +50,7 @@
 DynamicChoiceWidget::DynamicChoiceWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<DynamicChoiceFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "DynamicChoiceWidget can ONLY be used with a DynamicChoiceFilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, DynamicChoiceWidget, DynamicChoiceFilterParameter);
 
   setupUi(this);
   setupGui();

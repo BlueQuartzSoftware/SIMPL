@@ -34,7 +34,7 @@
 #include "UInt64Widget.h"
 
 #include "SIMPLib/FilterParameters/UInt64FilterParameter.h"
-
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
@@ -46,8 +46,7 @@
 UInt64Widget::UInt64Widget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_FilterParameter = dynamic_cast<UInt64FilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "UInt64Widget can ONLY be used with a UInt64FilterParameter object");
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, UInt64Widget, UInt64FilterParameter);
 
   setupUi(this);
   setupGui();
