@@ -797,7 +797,7 @@ int SVPipelineView::filterCount()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::clearPipeline()
+void SVPipelineView::clearPipeline(bool playAnimation)
 {
   PipelineModel* model = getPipelineModel();
 
@@ -808,7 +808,7 @@ void SVPipelineView::clearPipeline()
     filters.push_back(model->filter(filterIndex));
   }
 
-  RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filters, this, "Clear");
+  RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filters, this, "Clear", playAnimation);
   addUndoCommand(removeCmd);
 
   Q_EMIT clearDataStructureWidgetTriggered();

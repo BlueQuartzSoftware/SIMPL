@@ -335,7 +335,7 @@ public Q_SLOTS:
   /**
    * @brief clearPipeline
    */
-  void clearPipeline();
+  void clearPipeline(bool playAnimation = true);
 
   /**
    * @brief toReadyState
