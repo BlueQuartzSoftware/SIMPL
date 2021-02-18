@@ -214,6 +214,9 @@ if(SIMPL_EMBED_PYTHON)
     COMMAND ${CMAKE_COMMAND} -E copy ${SIMPLib_SOURCE_DIR}/Python/Filter.py $<TARGET_FILE_DIR:${PROJECT_NAME}>
     COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Python
   )
+
+  install(DIRECTORY DESTINATION "Python")
+  install(FILES ${SIMPLib_SOURCE_DIR}/Python/Filter.py DESTINATION ".")
 endif()
 
 # Add H5Support
