@@ -167,12 +167,12 @@ void StandardOutputWidget::clearLog()
     msgBox.addButton(QMessageBox::No);
     msgBox.addButton(QMessageBox::Yes);
     msgBox.setDefaultButton(QMessageBox::No);
+    // Takes ownership
     msgBox.setCheckBox(cb);
 
     answer = msgBox.exec();
 
     displayDialog = !cb->isChecked();
-    delete cb;
 
     prefs->setValue("DisplayClearMessageBox", displayDialog);
   }
