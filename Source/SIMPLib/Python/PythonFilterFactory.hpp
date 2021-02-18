@@ -40,8 +40,8 @@ public:
   }
 
   /**
-   * @brief Creates a new  for this filter. The Calling method MUST set
-   * a parent  OR take responsibility for deleting this object.
+   * @brief Creates a new for this filter. The Calling method MUST set
+   * a parent OR take responsibility for deleting this object.
    * @return
    */
   AbstractFilter::Pointer create() const override
@@ -95,8 +95,6 @@ protected:
   PythonFilterFactory(pybind11::object typeObject)
   : m_TypeObject(typeObject)
   {
-    pybind11::gil_scoped_acquire gil_acquire_guard{};
-
     auto filter = PythonFilter::New(m_TypeObject());
     m_FilterClassName = filter->getNameOfClass();
     m_GroupName = filter->getGroupName();
