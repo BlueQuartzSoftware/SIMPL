@@ -50,10 +50,6 @@ public:
   virtual ~PipelineItem();
 
   /**
-   * @brief Setter property for FilterInputWidget
-   */
-  void setFilterInputWidget(FilterInputWidget* value);
-  /**
    * @brief Getter property for FilterInputWidget
    * @return Value of FilterInputWidget
    */
@@ -322,6 +318,11 @@ private:
   bool m_PipelineSaved = false;
 
   void setupFilterInputWidget();
+
+  /**
+   * @brief Setter property for FilterInputWidget
+   */
+  void setFilterInputWidget(FilterInputWidget* value);
 
 public:
   PipelineItem(const PipelineItem&) = delete;            // Copy Constructor Not Implemented
