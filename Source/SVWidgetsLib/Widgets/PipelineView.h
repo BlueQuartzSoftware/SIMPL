@@ -82,6 +82,17 @@ public:
    */
   QAction* getActionRedo();
 
+  /**
+   * @brief Returns true if the undo stack is clean
+   * @return 
+  */
+  bool undoStackIsClear() const;
+
+  /**
+   * @brief Clears the undo stack
+  */
+  void clearUndoStack();
+
 private:
   QSharedPointer<QUndoStack> m_UndoStack;
   QAction* m_ActionUndo = nullptr;
