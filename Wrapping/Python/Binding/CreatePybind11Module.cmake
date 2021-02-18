@@ -154,6 +154,10 @@ function(CreatePybind11Module)
     FILE ${PYTHON_UNIT_TEST_FILE}
     PYTHONPATH ${TESTS_PYTHONPATH}
   )
+
+  install(TARGETS ${MODULE_NAME_lower}
+    LIBRARY DESTINATION "."
+  )
 endfunction()
 
 #-------------------------------------------------------------------------------
