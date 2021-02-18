@@ -228,7 +228,7 @@ void DataStructureTreeView::mouseMoveEvent(QMouseEvent* event)
 {
   QTreeView::mouseMoveEvent(event);
 
-  if(event->buttons() & static_cast<int>(Qt::LeftButton != 0u != 0u))
+  if(event->buttons() & Qt::MouseButton::LeftButton)
   {
     QModelIndex index = indexAt(m_StartPos);
     if(m_Delegate->isFiltered() && !m_Delegate->indexMatchesReqs(index))
