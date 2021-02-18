@@ -20,7 +20,7 @@ struct FilterDelegate
 {
   AbstractFilter* filter;
 
-  void notifyStatusMessage(const QString& message)
+  void notifyStatusMessage(const QString& message) const
   {
     if(filter == nullptr)
     {
@@ -29,7 +29,7 @@ struct FilterDelegate
     filter->notifyStatusMessage(message);
   }
 
-  void notifyProgressMessage(int progress, const QString& message)
+  void notifyProgressMessage(int progress, const QString& message) const
   {
     if(filter == nullptr)
     {
