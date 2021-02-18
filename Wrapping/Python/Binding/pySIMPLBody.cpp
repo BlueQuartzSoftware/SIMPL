@@ -245,3 +245,12 @@ py::class_<MultiDataContainerSelectionFilterParameter::RequirementType>(instance
     .def_readwrite("amTypes", &MultiDataContainerSelectionFilterParameter::RequirementType::amTypes)
     .def_readwrite("daTypes", &MultiDataContainerSelectionFilterParameter::RequirementType::daTypes)
     .def_readwrite("componentDimensions", &MultiDataContainerSelectionFilterParameter::RequirementType::componentDimensions);
+
+#ifdef SIMPL_EMBED_PYTHON
+py::class_<PythonSupport::FilterDelegate>(mod, "FilterDelegateCpp")
+    .def("notifyStatusMessage", &PythonSupport::FilterDelegate::notifyStatusMessage)
+    .def("notifyProgressMessage", &PythonSupport::FilterDelegate::notifyProgressMessage)
+    .def("setWarningCondition", &PythonSupport::FilterDelegate::setWarningCondition);
+
+py::class_<PythonFilter, AbstractFilter, std::shared_ptr<PythonFilter>>(mod, "PythonFilter").def(py::init([](py::object object) { return PythonFilter::New(object); }));
+#endif

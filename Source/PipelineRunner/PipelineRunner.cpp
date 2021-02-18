@@ -64,11 +64,29 @@
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 
+#ifdef SIMPL_EMBED_PYTHON
+// undef slots since a Python header uses slots
+#undef slots
+
+#include <pybind11/embed.h>
+
+#include "SIMPLib/Python/PythonLoader.h"
+#endif
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
+#ifdef SIMPL_EMBED_PYTHON
+  if(!PythonLoader::checkPythonHome())
+  {
+    std::cout << "\"PYTHONHOME\" not set. This environment variable must be set for embedded Python to work.";
+    return 2;
+  }
+
+  pybind11::scoped_interpreter interpreter_guard{};
+#endif
 
   // Instantiate the QCoreApplication that we need to get the current path and load plugins.
   QCoreApplication app(argc, argv);
@@ -103,6 +121,16 @@ int main(int argc, char* argv[])
   // Register all the filters including trying to load those from Plugins
   FilterManager* fm = FilterManager::Instance();
   SIMPLibPluginLoader::LoadPluginFilters(fm);
+
+#ifdef SIMPL_EMBED_PYTHON
+  {
+    std::cout << "Loading Python filters:\n";
+    auto pythonErrorCallback = [](const std::string& message, const std::string& filePath) { std::cout << message << "\nSkipping file: \"" << filePath << "\"\n"; };
+    auto pythonLoadedCallback = [](const std::string& className, const std::string& filePath) { std::cout << "Loaded \"" << className << "\" from \"" << filePath << "\"\n"; };
+    PythonLoader::loadPythonFilters(*fm, PythonLoader::defaultPythonFilterPaths(), pythonErrorCallback, pythonLoadedCallback);
+    std::cout << '\n';
+  }
+#endif
 
   QMetaObjectUtilities::RegisterMetaTypes();
 
@@ -142,7 +170,7 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  std::cout << "Filter Count: " << pipeline->size() << std::endl;
+  std::cout << "Pipeline Count: " << pipeline->size() << std::endl;
   Observer obs; // Create an Observer to report errors/progress from the executing pipeline
   pipeline->addMessageReceiver(&obs);
   // Preflight the pipeline

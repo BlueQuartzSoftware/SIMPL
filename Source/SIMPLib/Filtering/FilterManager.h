@@ -44,6 +44,10 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
 
+#ifdef SIMPL_EMBED_PYTHON
+#include <QtCore/QSet>
+#endif
+
 /**
  * @brief The FilterManager class manages instances of filters and is mainly used to instantiate
  * an instance of a filter given its human label or class name. This class uses the Factory design
@@ -130,6 +134,13 @@ public:
   void addFilterFactory(const QString& name, IFilterFactory::Pointer factory);
 
   /**
+   * @brief Removes the given filter factory by UUID. Returns true if successful
+   * @param uuid
+   * @return
+   */
+  bool removeFilterFactory(const QUuid& uuid);
+
+  /**
    * @brief getGroupNames Returns the uniqe set of group names for all the filters
    * @return
    */
@@ -170,12 +181,36 @@ public:
    */
   QJsonArray toJsonArray() const;
 
+#ifdef SIMPL_EMBED_PYTHON
+  /**
+   * @brief Adds a factory that creates Python filters
+   * @param name
+   * @param factory
+   */
+  void addPythonFilterFactory(const QString& name, IFilterFactory::Pointer factory);
+
+  /**
+   * @brief Returns set of Python filter uuids
+   * @return
+   */
+  QSet<QUuid> pythonFilterUuids() const;
+
+  /**
+   * @brief Clears all Python filters
+   */
+  void clearPythonFilterFactories();
+#endif
+
 protected:
   FilterManager();
 
 private:
   Collection m_Factories;
   UuidCollection m_UuidFactories;
+
+#ifdef SIMPL_EMBED_PYTHON
+  QSet<QUuid> m_PythonUuids;
+#endif
 
   static FilterManager* s_Self;
 

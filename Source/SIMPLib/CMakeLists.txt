@@ -211,6 +211,7 @@ CMP_AddDefinitions(TARGET ${PROJECT_NAME})
 if(SIMPL_EMBED_PYTHON)
   add_custom_command(TARGET ${PROJECT_NAME}
     PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy ${SIMPLib_SOURCE_DIR}/Python/Filter.py $<TARGET_FILE_DIR:${PROJECT_NAME}>
     COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Python
   )
 endif()

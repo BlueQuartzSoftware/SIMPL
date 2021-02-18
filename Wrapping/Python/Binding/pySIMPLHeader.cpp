@@ -44,3 +44,8 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 
 #include "Binding/Pybind11CustomTypeCasts.h"
 #include "Binding/pySupport.h"
+
+#ifdef SIMPL_EMBED_PYTHON
+#include "SIMPLib/Python/FilterPyObject.h"
+#include "SIMPLib/Python/PythonFilter.h"
+#endif
