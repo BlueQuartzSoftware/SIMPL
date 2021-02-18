@@ -24,6 +24,39 @@ constexpr char k_Separator = ';';
 #else
 constexpr char k_Separator = ':';
 #endif
+
+#if defined(_WIN32)
+// -----------------------------------------------------------------------------
+std::string WindowsPythonPath()
+{
+  return QString("%1/Python").arg(QCoreApplication::applicationDirPath()).toStdString();
+}
+#elif defined(__APPLE__)
+// -----------------------------------------------------------------------------
+std::string MacOSPythonPath()
+{
+  return "";
+}
+#else
+// -----------------------------------------------------------------------------
+std::string LinuxPythonPath()
+{
+  return "";
+}
+#endif
+
+// -----------------------------------------------------------------------------
+std::string PlatformDependentPythonPath()
+{
+#if defined(_WIN32)
+  return WindowsPythonPath();
+#elif defined(__APPLE__)
+  return MacOSPythonPath();
+#else
+  return LinuxPythonPath();
+#endif
+}
+
 } // namespace
 
 // -----------------------------------------------------------------------------
@@ -35,7 +68,7 @@ bool PythonLoader::checkPythonHome()
 // -----------------------------------------------------------------------------
 std::vector<std::string> PythonLoader::defaultPythonFilterPaths()
 {
-  std::vector<std::string> paths{QString("%1/Python").arg(QCoreApplication::applicationDirPath()).toStdString()};
+  std::vector<std::string> paths{PlatformDependentPythonPath()};
   QString pythonPath = qEnvironmentVariable("SIMPL_PYTHONPATH");
   if(!pythonPath.isEmpty())
   {
@@ -64,6 +97,10 @@ void PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::ve
 
   for(const auto& path : paths)
   {
+    if(path.empty())
+    {
+      continue;
+    }
     QDir pythonDir = QDir(QString::fromStdString(path));
     QFileInfoList pyFiles = pythonDir.entryInfoList({"*.py"}, QDir::Filter::Files);
     files.append(pyFiles);
