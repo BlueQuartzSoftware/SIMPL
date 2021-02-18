@@ -15,7 +15,7 @@ public:
   
   static Pointer NullPointer()
   {
-    nullptr;
+    return nullptr;
   }
 
   /**
