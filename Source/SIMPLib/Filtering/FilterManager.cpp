@@ -331,7 +331,9 @@ bool FilterManager::removeFilterFactory(const QUuid& uuid)
 
   m_Factories.remove(filterName);
   m_UuidFactories.remove(uuid);
+#ifdef SIMPL_EMBED_PYTHON
   m_PythonUuids.remove(uuid);
+#endif
 
   return true;
 }
