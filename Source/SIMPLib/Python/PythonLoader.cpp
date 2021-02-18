@@ -26,11 +26,13 @@ constexpr char k_Separator = ':';
 #endif
 } // namespace
 
+// -----------------------------------------------------------------------------
 bool PythonLoader::checkPythonHome()
 {
   return !qEnvironmentVariable(k_PYTHONHOME).isEmpty();
 }
 
+// -----------------------------------------------------------------------------
 std::vector<std::string> PythonLoader::defaultPythonFilterPaths()
 {
   std::vector<std::string> paths{QString("%1/Python").arg(QCoreApplication::applicationDirPath()).toStdString()};
@@ -47,11 +49,13 @@ std::vector<std::string> PythonLoader::defaultPythonFilterPaths()
   return paths;
 }
 
+// -----------------------------------------------------------------------------
 bool PythonLoader::setPythonHome(const std::string& value)
 {
   return qputenv(k_PYTHONHOME, value.c_str());
 }
 
+// -----------------------------------------------------------------------------
 void PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::vector<std::string>& paths, ErrorCallback errorCallBack, LoadedCallback loadedCallback)
 {
   QFileInfoList files{};
