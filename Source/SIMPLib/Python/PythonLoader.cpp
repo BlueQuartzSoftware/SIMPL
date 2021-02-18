@@ -19,7 +19,7 @@
 namespace
 {
 constexpr char k_PYTHONHOME[] = "PYTHONHOME";
-#ifdef WIN32
+#ifdef _WIN32
 constexpr char k_Separator = ';';
 #else
 constexpr char k_Separator = ':';
