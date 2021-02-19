@@ -52,57 +52,6 @@
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
-namespace
-{
-
-/**
- * @brief CheckPathRequirements This is a common function that 3 other methods below implement
- * @param filter AbstractFilter
- * @param path The DataArrayPath
- * @param reqs The requirements
- * @return Boolean if we pass or not.
- */
-template <typename RequirementsType>
-bool CheckDataPathAndRequirements(AbstractFilter* filter, const DataArrayPath& path, const RequirementsType& reqs)
-{
-  if(nullptr == filter)
-  {
-    return false;
-  }
-  if(nullptr == filter->getDataContainerArray())
-  {
-    return false;
-  }
-
-  // Check that the DataContainer exists
-  DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer(path);
-  if(nullptr == dc)
-  {
-    return false;
-  }
-
-  // Check Geometry
-  if(!reqs.dcGeometryTypes.empty())
-  {
-    // Unknown Geometry gets a pass
-    if(!SIMPL::contains(reqs.dcGeometryTypes, IGeometry::Type::Unknown))
-    {
-      IGeometry::Pointer geom = dc->getGeometry();
-      if(nullptr == geom)
-      {
-        return false;
-      }
-      if(!SIMPL::contains(reqs.dcGeometryTypes, geom->getGeometryType()) && !SIMPL::contains(reqs.dcGeometryTypes, IGeometry::Type::Any))
-      {
-        return false;
-      }
-    }
-  }
-
-  return true;
-}
-
-} // namespace
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -231,7 +180,41 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   {
     return false;
   }
-  return ::CheckDataPathAndRequirements(filter, path, reqs);
+  if(nullptr == filter)
+  {
+    return false;
+  }
+  if(nullptr == filter->getDataContainerArray())
+  {
+    return false;
+  }
+
+  // Check that the DataContainer exists
+  DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer(path);
+  if(nullptr == dc)
+  {
+    return false;
+  }
+
+  // Check Geometry
+  if(!reqs.dcGeometryTypes.empty())
+  {
+    // Unknown Geometry gets a pass
+    if(!SIMPL::contains(reqs.dcGeometryTypes, IGeometry::Type::Unknown))
+    {
+      IGeometry::Pointer geom = dc->getGeometry();
+      if(nullptr == geom)
+      {
+        return false;
+      }
+      if(!SIMPL::contains(reqs.dcGeometryTypes, geom->getGeometryType()) && !SIMPL::contains(reqs.dcGeometryTypes, IGeometry::Type::Any))
+      {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }
 
 // -----------------------------------------------------------------------------
@@ -243,13 +226,39 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   {
     return false;
   }
-
-  if(!::CheckDataPathAndRequirements(filter, path, reqs))
+  if(nullptr == filter)
   {
     return false;
   }
-  // This is OK because one of the checks in the function above is if "dc" would be nullptr
+  if(nullptr == filter->getDataContainerArray())
+  {
+    return false;
+  }
+
+  // Check that the DataContainer exists
   DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer(path);
+  if(nullptr == dc)
+  {
+    return false;
+  }
+
+  // Check if geometry exists and matches the requirements only if a geometry is required
+  if(!reqs.dcGeometryTypes.empty())
+  {
+    // Unknown Geometry gets a pass
+    if(!SIMPL::contains(reqs.dcGeometryTypes, IGeometry::Type::Unknown))
+    {
+      IGeometry::Pointer geom = dc->getGeometry();
+      if(nullptr == geom)
+      {
+        return false;
+      }
+      if(!SIMPL::contains(reqs.dcGeometryTypes, geom->getGeometryType()) && !SIMPL::contains(reqs.dcGeometryTypes, IGeometry::Type::Any))
+      {
+        return false;
+      }
+    }
+  }
 
   // Check AttributeMatrix
   AttributeMatrix::Pointer am = dc->getAttributeMatrix(path);
@@ -278,13 +287,39 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   {
     return false;
   }
-
-  if(!::CheckDataPathAndRequirements(filter, path, reqs))
+  if(nullptr == filter)
   {
     return false;
   }
-  // This is OK because one of the checks in the function above is if "dc" would be nullptr
+  if(nullptr == filter->getDataContainerArray())
+  {
+    return false;
+  }
+
+  // Check that the DataContainer exists
   DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer(path);
+  if(nullptr == dc)
+  {
+    return false;
+  }
+
+  // Check if geometry exists and matches the requirements only if a geometry is required
+  if(!reqs.dcGeometryTypes.empty())
+  {
+    // Unknown Geometry gets a pass
+    if(!SIMPL::contains(reqs.dcGeometryTypes, IGeometry::Type::Unknown))
+    {
+      IGeometry::Pointer geom = dc->getGeometry();
+      if(nullptr == geom)
+      {
+        return false;
+      }
+      if(!SIMPL::contains(reqs.dcGeometryTypes, geom->getGeometryType()) && !SIMPL::contains(reqs.dcGeometryTypes, IGeometry::Type::Any))
+      {
+        return false;
+      }
+    }
+  }
 
   // Check AttributeMatrix
   AttributeMatrix::Pointer am = dc->getAttributeMatrix(path);
@@ -295,7 +330,7 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
 
   if(!SIMPL::contains(reqs.amTypes, AttributeMatrix::Type::Unknown))
   {
-    if(!reqs.amTypes.empty() && !(SIMPL::contains(reqs.amTypes, am->getType()) && SIMPL::contains(reqs.amTypes, AttributeMatrix::Type::Any)))
+    if(!reqs.amTypes.empty() && !SIMPL::contains(reqs.amTypes, am->getType()) && !SIMPL::contains(reqs.amTypes, AttributeMatrix::Type::Any))
     {
       return false;
     }
