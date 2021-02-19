@@ -12,7 +12,7 @@ public:
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
   using ConstWeakPointer = std::weak_ptr<const Self>;
-  
+
   static Pointer NullPointer()
   {
     return nullptr;
@@ -121,5 +121,5 @@ public:
   PythonFilterFactory(const PythonFilterFactory&) = delete;            // Copy Constructor Not Implemented
   PythonFilterFactory(PythonFilterFactory&&) = delete;                 // Move Constructor Not Implemented
   PythonFilterFactory& operator=(const PythonFilterFactory&) = delete; // Copy Assignment Not Implemented
-  PythonFilterFactory& operator=(PythonFilterFactory&&) = delete; // Move Assignment Not Implemented
+  PythonFilterFactory& operator=(PythonFilterFactory&&) = delete;      // Move Assignment Not Implemented
 };
