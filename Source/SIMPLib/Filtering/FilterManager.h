@@ -196,6 +196,13 @@ public:
   QSet<QUuid> pythonFilterUuids() const;
 
   /**
+   * @brief Returns true if the given uuid is for a Python filter
+   * @param uuid
+   * @return
+   */
+  bool isPythonFilter(const QUuid& uuid) const;
+
+  /**
    * @brief Clears all Python filters
    */
   void clearPythonFilterFactories();

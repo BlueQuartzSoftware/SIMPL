@@ -361,4 +361,10 @@ void FilterManager::clearPythonFilterFactories()
     removeFilterFactory(uuid);
   }
 }
+
+// -----------------------------------------------------------------------------
+bool FilterManager::isPythonFilter(const QUuid& uuid) const
+{
+  return m_PythonUuids.contains(uuid);
+}
 #endif

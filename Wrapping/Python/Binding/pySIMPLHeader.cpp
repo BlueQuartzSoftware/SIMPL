@@ -46,6 +46,8 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 #include "Binding/pySupport.h"
 
 #ifdef SIMPL_EMBED_PYTHON
+#include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Python/FilterPyObject.h"
 #include "SIMPLib/Python/PythonFilter.h"
+#include "SIMPLib/Python/PythonFilterFactory.hpp"
 #endif
