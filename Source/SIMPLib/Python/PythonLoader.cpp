@@ -169,7 +169,6 @@ void PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::ve
       }
     } catch(const pybind11::error_already_set& exception)
     {
-
       if(errorCallBack)
       {
         QString message = QString("Python exception: %1").arg(exception.what());
