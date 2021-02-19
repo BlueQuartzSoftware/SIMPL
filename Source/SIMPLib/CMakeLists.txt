@@ -196,7 +196,7 @@ if(SIMPL_USE_GHC_FILESYSTEM)
 endif()
 
 if(SIMPL_EMBED_PYTHON)
-  find_package(pybind11 REQUIRED)
+  find_package(pybind11 2.6 REQUIRED)
 
   list(APPEND ${PROJECT_NAME}_LINK_LIBS pybind11::embed)
 
