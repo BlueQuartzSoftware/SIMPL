@@ -84,13 +84,13 @@ public:
 
   /**
    * @brief Returns true if the undo stack is clean
-   * @return 
-  */
+   * @return
+   */
   bool undoStackIsClear() const;
 
   /**
    * @brief Clears the undo stack
-  */
+   */
   void clearUndoStack();
 
 private:
