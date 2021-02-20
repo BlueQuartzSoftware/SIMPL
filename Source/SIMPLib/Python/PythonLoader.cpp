@@ -217,3 +217,57 @@ void PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::ve
     }
   }
 }
+
+// -----------------------------------------------------------------------------
+struct PythonLoader::ScopedInterpreter::Impl
+{
+  pybind11::scoped_interpreter interpreter_guard{};
+};
+
+// -----------------------------------------------------------------------------
+PythonLoader::ScopedInterpreter::ScopedInterpreter(bool enable)
+{
+  if(enable)
+  {
+    m_Impl = std::make_unique<Impl>();
+  }
+}
+
+// -----------------------------------------------------------------------------
+PythonLoader::ScopedInterpreter::~ScopedInterpreter() = default;
+
+// -----------------------------------------------------------------------------
+struct PythonLoader::GILScopedRelease::Impl
+{
+  pybind11::gil_scoped_release gil_release_guard{};
+};
+
+// -----------------------------------------------------------------------------
+PythonLoader::GILScopedRelease::GILScopedRelease(bool enable)
+{
+  if(enable)
+  {
+    m_Impl = std::make_unique<Impl>();
+  }
+}
+
+// -----------------------------------------------------------------------------
+PythonLoader::GILScopedRelease::~GILScopedRelease() = default;
+
+// -----------------------------------------------------------------------------
+struct PythonLoader::GILScopedAcquire::Impl
+{
+  pybind11::gil_scoped_acquire gil_acquire_guard{};
+};
+
+// -----------------------------------------------------------------------------
+PythonLoader::GILScopedAcquire::GILScopedAcquire(bool enable)
+{
+  if(enable)
+  {
+    m_Impl = std::make_unique<Impl>();
+  }
+}
+
+// -----------------------------------------------------------------------------
+PythonLoader::GILScopedAcquire::~GILScopedAcquire() = default;

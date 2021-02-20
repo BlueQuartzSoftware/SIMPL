@@ -196,10 +196,6 @@ if(SIMPL_USE_GHC_FILESYSTEM)
 endif()
 
 if(SIMPL_EMBED_PYTHON)
-  find_package(pybind11 2.6 REQUIRED)
-
-  list(APPEND ${PROJECT_NAME}_LINK_LIBS pybind11::embed)
-
   D3DCompileDir(Python)
 endif()
 
@@ -209,6 +205,9 @@ add_library(${PROJECT_NAME} ${LIB_TYPE} ${Project_SRCS} )
 CMP_AddDefinitions(TARGET ${PROJECT_NAME})
 
 if(SIMPL_EMBED_PYTHON)
+  find_package(pybind11 2.6 REQUIRED)
+  target_link_libraries(${PROJECT_NAME} PRIVATE pybind11::embed)
+
   add_custom_command(TARGET ${PROJECT_NAME}
     PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy ${SIMPLib_SOURCE_DIR}/Python/Filter.py $<TARGET_FILE_DIR:${PROJECT_NAME}>
@@ -296,13 +295,13 @@ endif()
 if(SIMPL_Group_REST)
   target_include_directories(${PROJECT_NAME} PUBLIC 
                                 $<BUILD_INTERFACE:${SIMPLProj_SOURCE_DIR}/ThirdParty>)
-  target_link_libraries(${PROJECT_NAME} QtWebAppLib)                            
+  target_link_libraries(${PROJECT_NAME} PUBLIC QtWebAppLib)                            
 endif()
 
 #-- Configure Link Libraries for the Target
 LibraryProperties( ${PROJECT_NAME} ${EXE_DEBUG_EXTENSION} )
 #-- Link the Target to its dependent libraries
-target_link_libraries(${PROJECT_NAME} ${${PROJECT_NAME}_LINK_LIBS})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${${PROJECT_NAME}_LINK_LIBS})
 
 #-- Configure Target Installation Rules
 set(install_dir "tools")

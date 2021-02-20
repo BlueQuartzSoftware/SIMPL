@@ -32,6 +32,7 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -53,4 +54,62 @@ SIMPLib_EXPORT void loadPythonFilters(FilterManager& filterManager, const std::v
 SIMPLib_EXPORT bool checkPythonHome();
 
 SIMPLib_EXPORT bool setPythonHome(const std::string& value);
+
+class SIMPLib_EXPORT ScopedInterpreter
+{
+public:
+  ScopedInterpreter() = delete;
+
+  explicit ScopedInterpreter(bool enable);
+  ~ScopedInterpreter();
+
+  ScopedInterpreter(const ScopedInterpreter&) = delete;
+  ScopedInterpreter(ScopedInterpreter&&) = delete;
+
+  ScopedInterpreter& operator=(const ScopedInterpreter&) = delete;
+  ScopedInterpreter& operator=(ScopedInterpreter&&) = delete;
+
+private:
+  struct Impl;
+  std::unique_ptr<Impl> m_Impl = nullptr;
+};
+
+class SIMPLib_EXPORT GILScopedRelease
+{
+public:
+  GILScopedRelease() = delete;
+
+  explicit GILScopedRelease(bool enable);
+  ~GILScopedRelease();
+
+  GILScopedRelease(const GILScopedRelease&) = delete;
+  GILScopedRelease(GILScopedRelease&&) = delete;
+
+  GILScopedRelease& operator=(const GILScopedRelease&) = delete;
+  GILScopedRelease& operator=(GILScopedRelease&&) = delete;
+
+private:
+  struct Impl;
+  std::unique_ptr<Impl> m_Impl = nullptr;
+};
+
+class SIMPLib_EXPORT GILScopedAcquire
+{
+public:
+  GILScopedAcquire() = delete;
+
+  explicit GILScopedAcquire(bool enable);
+  ~GILScopedAcquire();
+
+  GILScopedAcquire(const GILScopedAcquire&) = delete;
+  GILScopedAcquire(GILScopedAcquire&&) = delete;
+
+  GILScopedAcquire& operator=(const GILScopedAcquire&) = delete;
+  GILScopedAcquire& operator=(GILScopedAcquire&&) = delete;
+
+private:
+  struct Impl;
+  std::unique_ptr<Impl> m_Impl = nullptr;
+};
+
 } // namespace PythonLoader

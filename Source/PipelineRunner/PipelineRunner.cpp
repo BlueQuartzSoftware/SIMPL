@@ -65,11 +65,6 @@
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 
 #ifdef SIMPL_EMBED_PYTHON
-// undef slots since a Python header uses slots
-#undef slots
-
-#include <pybind11/embed.h>
-
 #include "SIMPLib/Python/PythonLoader.h"
 #endif
 
@@ -79,13 +74,14 @@
 int main(int argc, char* argv[])
 {
 #ifdef SIMPL_EMBED_PYTHON
-  if(!PythonLoader::checkPythonHome())
+  bool hasPythonHome = PythonLoader::checkPythonHome();
+
+  if(!hasPythonHome)
   {
-    std::cout << "\"PYTHONHOME\" not set. This environment variable must be set for embedded Python to work.";
-    return 2;
+    std::cout << "Warning: \"PYTHONHOME\" not set. This environment variable must be set for embedded Python to work.";
   }
 
-  pybind11::scoped_interpreter interpreter_guard{};
+  PythonLoader::ScopedInterpreter interpreter_guard{hasPythonHome};
 #endif
 
   // Instantiate the QCoreApplication that we need to get the current path and load plugins.
@@ -123,6 +119,7 @@ int main(int argc, char* argv[])
   SIMPLibPluginLoader::LoadPluginFilters(fm);
 
 #ifdef SIMPL_EMBED_PYTHON
+  if(hasPythonHome)
   {
     std::cout << "Loading Python filters:\n";
     auto pythonErrorCallback = [](const std::string& message, const std::string& filePath) { std::cout << message << "\nSkipping file: \"" << filePath << "\"\n"; };
