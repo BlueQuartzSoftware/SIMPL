@@ -111,7 +111,7 @@ std::string LinuxPythonPath()
   QDir pythonDir(path);
   if(pythonDir.exists())
   {
-    return path;
+    return path.toStdString();
   }
 
   pythonDir.cd(QString("../../%1").arg(k_PythonDirName));
