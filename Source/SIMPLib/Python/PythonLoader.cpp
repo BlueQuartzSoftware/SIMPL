@@ -56,23 +56,70 @@ constexpr char k_Separator = ';';
 constexpr char k_Separator = ':';
 #endif
 
+constexpr char k_PythonDirName[] = "Python";
+
 #if defined(_WIN32)
 // -----------------------------------------------------------------------------
 std::string WindowsPythonPath()
 {
-  return QString("%1/Python").arg(QCoreApplication::applicationDirPath()).toStdString();
+  return QString("%1/%2").arg(QCoreApplication::applicationDirPath(), k_PythonDirName).toStdString();
 }
 #elif defined(__APPLE__)
 // -----------------------------------------------------------------------------
 std::string MacOSPythonPath()
 {
-  return "";
+  QDir pythonFilterDir = QDir(QCoreApplication::applicationDirPath());
+
+  QString path;
+
+  // Look to see if we are inside an .app package or inside the 'tools' directory
+  if(pythonFilterDir.dirName() == "MacOS")
+  {
+    pythonFilterDir.cdUp();
+
+    path = QString("%1/%2").arg(pythonFilterDir.absolutePath(), k_PythonDirName);
+
+    if(QFileInfo::exists(path))
+    {
+      return path.toStdString();
+    }
+
+    // We are not in a self contained package, so move up 2 more levels
+    pythonFilterDir.cdUp();
+    pythonFilterDir.cdUp();
+  }
+  if(pythonFilterDir.dirName() == "bin")
+  {
+    pythonFilterDir.cdUp();
+  }
+  path = QString("%1/%2").arg(pythonFilterDir.absolutePath(), k_PythonDirName);
+
+  if(!QFileInfo::exists(path))
+  {
+    return "";
+  }
+
+  return path.toStdString();
 }
 #else
 // -----------------------------------------------------------------------------
 std::string LinuxPythonPath()
 {
-  return "";
+  QString path = QString("%1/%2").arg(QCoreApplication::applicationDirPath(), k_PythonDirName);
+  QDir pythonDir(path);
+  if(pythonDir.exists())
+  {
+    return path;
+  }
+
+  pythonDir.cd(QString("../../%1").arg(k_PythonDirName));
+
+  if(!pythonDir.exists())
+  {
+    return "";
+  }
+
+  return pythonDir.canonicalPath().toStdString();
 }
 #endif
 
