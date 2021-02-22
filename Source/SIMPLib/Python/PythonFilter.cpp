@@ -105,7 +105,17 @@ void PythonFilter::execute()
   clearErrorCode();
   clearWarningCode();
 
+  if(getCancel())
+  {
+    return;
+  }
+
   DataContainerArray::Pointer dca = getDataContainerArray();
+
+  if(dca == nullptr)
+  {
+    throw std::runtime_error("DataContainerArray is nullptr");
+  }
 
   py::gil_scoped_acquire gil_acquire_guard{};
 
