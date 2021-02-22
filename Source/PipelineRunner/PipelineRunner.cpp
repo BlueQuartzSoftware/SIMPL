@@ -124,8 +124,8 @@ int main(int argc, char* argv[])
     std::cout << "Loading Python filters:\n";
     auto pythonErrorCallback = [](const std::string& message, const std::string& filePath) { std::cout << message << "\nSkipping file: \"" << filePath << "\"\n"; };
     auto pythonLoadedCallback = [](const std::string& className, const std::string& filePath) { std::cout << "Loaded \"" << className << "\" from \"" << filePath << "\"\n"; };
-    PythonLoader::loadPythonFilters(*fm, PythonLoader::defaultPythonFilterPaths(), pythonErrorCallback, pythonLoadedCallback);
-    std::cout << '\n';
+    size_t numLoaded = PythonLoader::loadPythonFilters(*fm, PythonLoader::defaultPythonFilterPaths(), pythonErrorCallback, pythonLoadedCallback);
+    std::cout << "Loaded " << numLoaded << " filters\n";
   }
 #endif
 

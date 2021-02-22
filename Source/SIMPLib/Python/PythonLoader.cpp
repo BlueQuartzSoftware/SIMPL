@@ -139,8 +139,10 @@ void PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::ve
 
   if(files.empty())
   {
-    return;
+    return 0;
   }
+
+  size_t numberLoaded = 0;
 
   pybind11::gil_scoped_acquire gil_acquire_guard{};
 
@@ -193,6 +195,7 @@ void PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::ve
 
         auto filterFactory = PythonFilterFactory::New(pyType);
         filterManager.addPythonFilterFactory(filterFactory->getFilterClassName(), filterFactory);
+        numberLoaded++;
         if(loadedCallback)
         {
           loadedCallback(name, filePathStr);
@@ -216,6 +219,7 @@ void PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::ve
       continue;
     }
   }
+  return numberLoaded;
 }
 
 // -----------------------------------------------------------------------------

@@ -48,7 +48,7 @@ using LoadedCallback = std::function<void(const std::string&, const std::string&
 
 SIMPLib_EXPORT std::vector<std::string> defaultPythonFilterPaths();
 
-SIMPLib_EXPORT void loadPythonFilters(FilterManager& filterManager, const std::vector<std::string>& paths = defaultPythonFilterPaths(), ErrorCallback errorCallBack = {},
+SIMPLib_EXPORT size_t loadPythonFilters(FilterManager& filterManager, const std::vector<std::string>& paths = defaultPythonFilterPaths(), ErrorCallback errorCallBack = {},
                                       LoadedCallback loadedCallback = {});
 
 SIMPLib_EXPORT bool checkPythonHome();
