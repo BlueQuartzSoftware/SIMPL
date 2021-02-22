@@ -159,6 +159,20 @@ size_t PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::
 
   pybind11::gil_scoped_acquire gil_acquire_guard{};
 
+  pybind11::object filterBaseClass;
+
+  try
+  {
+    filterBaseClass = pybind11::module_::import("Filter").attr("Filter");
+  } catch(const pybind11::error_already_set& exception)
+  {
+    if(errorCallBack)
+    {
+      errorCallBack(exception.what(), "Filter.py");
+    }
+    return 0;
+  }
+
   pybind11::dict globals = pybind11::globals();
 
   for(const QFileInfo& fileInfo : files)
@@ -191,11 +205,18 @@ size_t PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::
       }
       pybind11::list pyFilters = filtersObject.cast<pybind11::list>();
 
-      pybind11::object filterBaseClass = pybind11::eval("Filter", globalsCopy);
+      size_t i = -1;
       for(pybind11::handle filter : pyFilters)
       {
-        auto name = filter.cast<std::string>();
-        pybind11::object pyType = pybind11::eval(name, globalsCopy);
+        i++;
+        if(PyType_Check(filter.ptr()) == 0)
+        {
+          QString message = QString("Item %1 in \"filters\" is not a class type").arg(i);
+          errorCallBack(message.toStdString(), filePathStr);
+          continue;
+        }
+        auto pyType = filter.cast<pybind11::type>();
+        auto name = pyType.attr("__name__").cast<std::string>();
         if(!pybind11::isinstance(pyType(), filterBaseClass))
         {
           if(errorCallBack)

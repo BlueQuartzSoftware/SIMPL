@@ -81,4 +81,4 @@ class ExampleFilter(Filter):
     delegate.notifyStatusMessage('execute finished!')
     return (0, 'Success')
 
-filters = ['ExampleFilter']
+filters = [ExampleFilter]
