@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
 
   if(!hasPythonHome)
   {
-    std::cout << "Warning: \"PYTHONHOME\" not set. This environment variable must be set for embedded Python to work.";
+    std::cout << "Warning: \"PYTHONHOME\" not set. This environment variable must be set for embedded Python to work.\n";
   }
 
   PythonLoader::ScopedInterpreter interpreter_guard{hasPythonHome};
