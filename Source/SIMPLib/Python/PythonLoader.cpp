@@ -114,13 +114,26 @@ std::vector<std::string> PythonLoader::defaultPythonFilterPaths()
 }
 
 // -----------------------------------------------------------------------------
+std::string PythonLoader::defaultSIMPLPythonLibPath()
+{
+  return QCoreApplication::applicationDirPath().toStdString();
+}
+
+// -----------------------------------------------------------------------------
 bool PythonLoader::setPythonHome(const std::string& value)
 {
   return qputenv(k_PYTHONHOME, value.c_str());
 }
 
 // -----------------------------------------------------------------------------
-void PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::vector<std::string>& paths, ErrorCallback errorCallBack, LoadedCallback loadedCallback)
+void PythonLoader::addToPythonPath(const std::string& value)
+{
+  pybind11::gil_scoped_acquire gil_acquire_guard{};
+  pybind11::module_::import("sys").attr("path").cast<pybind11::list>().append(value);
+}
+
+// -----------------------------------------------------------------------------
+size_t PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::vector<std::string>& paths, ErrorCallback errorCallBack, LoadedCallback loadedCallback)
 {
   QFileInfoList files{};
 

@@ -48,12 +48,16 @@ using LoadedCallback = std::function<void(const std::string&, const std::string&
 
 SIMPLib_EXPORT std::vector<std::string> defaultPythonFilterPaths();
 
+SIMPLib_EXPORT std::string defaultSIMPLPythonLibPath();
+
 SIMPLib_EXPORT size_t loadPythonFilters(FilterManager& filterManager, const std::vector<std::string>& paths = defaultPythonFilterPaths(), ErrorCallback errorCallBack = {},
                                       LoadedCallback loadedCallback = {});
 
 SIMPLib_EXPORT bool checkPythonHome();
 
 SIMPLib_EXPORT bool setPythonHome(const std::string& value);
+
+SIMPLib_EXPORT void addToPythonPath(const std::string& value);
 
 class SIMPLib_EXPORT ScopedInterpreter
 {
