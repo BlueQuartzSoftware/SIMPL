@@ -58,6 +58,8 @@ constexpr char k_Separator = ':';
 
 constexpr char k_PythonDirName[] = "Python";
 
+constexpr char k_SIMPL_PYTHONPATH[] = "SIMPL_PYTHONPATH";
+
 #if defined(_WIN32)
 // -----------------------------------------------------------------------------
 std::string WindowsPythonPath()
@@ -156,7 +158,7 @@ bool PythonLoader::checkPythonHome()
 std::vector<std::string> PythonLoader::defaultPythonFilterPaths()
 {
   std::vector<std::string> paths{PlatformDependentPythonPath()};
-  QString pythonPath = getEnvironmentVariable("SIMPL_PYTHONPATH");
+  QString pythonPath = getEnvironmentVariable(k_SIMPL_PYTHONPATH);
   if(!pythonPath.isEmpty())
   {
     QStringList pyPaths = pythonPath.split(k_Separator);
