@@ -135,19 +135,28 @@ std::string PlatformDependentPythonPath()
 #endif
 }
 
+// -----------------------------------------------------------------------------
+QString getEnvironmentVariable(const char* varName)
+{
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+  return qgetenv(varName);
+#else
+  return qEnvironmentVariable(varName);
+#endif
+}
 } // namespace
 
 // -----------------------------------------------------------------------------
 bool PythonLoader::checkPythonHome()
 {
-  return !qEnvironmentVariable(k_PYTHONHOME).isEmpty();
+  return !getEnvironmentVariable(k_PYTHONHOME).isEmpty();
 }
 
 // -----------------------------------------------------------------------------
 std::vector<std::string> PythonLoader::defaultPythonFilterPaths()
 {
   std::vector<std::string> paths{PlatformDependentPythonPath()};
-  QString pythonPath = qEnvironmentVariable("SIMPL_PYTHONPATH");
+  QString pythonPath = getEnvironmentVariable("SIMPL_PYTHONPATH");
   if(!pythonPath.isEmpty())
   {
     QStringList pyPaths = pythonPath.split(k_Separator);
