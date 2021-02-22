@@ -227,10 +227,7 @@ struct PythonLoader::ScopedInterpreter::Impl
 // -----------------------------------------------------------------------------
 PythonLoader::ScopedInterpreter::ScopedInterpreter(bool enable)
 {
-  if(enable)
-  {
-    m_Impl = std::make_unique<Impl>();
-  }
+  m_Impl = enable ? std::make_unique<Impl>() : nullptr;
 }
 
 // -----------------------------------------------------------------------------
@@ -245,10 +242,7 @@ struct PythonLoader::GILScopedRelease::Impl
 // -----------------------------------------------------------------------------
 PythonLoader::GILScopedRelease::GILScopedRelease(bool enable)
 {
-  if(enable)
-  {
-    m_Impl = std::make_unique<Impl>();
-  }
+  m_Impl = enable ? std::make_unique<Impl>() : nullptr;
 }
 
 // -----------------------------------------------------------------------------
@@ -263,10 +257,7 @@ struct PythonLoader::GILScopedAcquire::Impl
 // -----------------------------------------------------------------------------
 PythonLoader::GILScopedAcquire::GILScopedAcquire(bool enable)
 {
-  if(enable)
-  {
-    m_Impl = std::make_unique<Impl>();
-  }
+  m_Impl = enable ? std::make_unique<Impl>() : nullptr;
 }
 
 // -----------------------------------------------------------------------------

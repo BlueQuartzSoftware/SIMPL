@@ -71,7 +71,7 @@ public:
 
 private:
   struct Impl;
-  std::unique_ptr<Impl> m_Impl = nullptr;
+  std::unique_ptr<Impl> m_Impl;
 };
 
 class SIMPLib_EXPORT GILScopedRelease
@@ -90,7 +90,7 @@ public:
 
 private:
   struct Impl;
-  std::unique_ptr<Impl> m_Impl = nullptr;
+  std::unique_ptr<Impl> m_Impl;
 };
 
 class SIMPLib_EXPORT GILScopedAcquire
@@ -109,7 +109,7 @@ public:
 
 private:
   struct Impl;
-  std::unique_ptr<Impl> m_Impl = nullptr;
+  std::unique_ptr<Impl> m_Impl;
 };
 
 } // namespace PythonLoader
