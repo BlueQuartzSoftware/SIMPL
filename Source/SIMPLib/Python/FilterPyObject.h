@@ -83,6 +83,15 @@ struct FilterDelegate
     }
     filter->setWarningCondition(code, message);
   }
+
+  bool preflight() const
+  {
+    if(filter == nullptr)
+    {
+      throw std::runtime_error("filter is nullptr");
+    }
+    return filter->getInPreflight();
+  }
 };
 
 class SIMPL_PY_VISIBILITY FilterPyObject

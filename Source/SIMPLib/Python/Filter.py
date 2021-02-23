@@ -8,6 +8,7 @@ class FilterDelegatePy:
   def __init__(self) -> None:
       self.warning_code: int = 0
       self.warning_message: str = ''
+      self.preflight: bool = False
 
   def notifyStatusMessage(self, message: str) -> None:
     print(message)

@@ -250,7 +250,8 @@ py::class_<MultiDataContainerSelectionFilterParameter::RequirementType>(instance
 py::class_<PythonSupport::FilterDelegate>(mod, "FilterDelegateCpp")
     .def("notifyStatusMessage", &PythonSupport::FilterDelegate::notifyStatusMessage)
     .def("notifyProgressMessage", &PythonSupport::FilterDelegate::notifyProgressMessage)
-    .def("setWarningCondition", &PythonSupport::FilterDelegate::setWarningCondition);
+    .def("setWarningCondition", &PythonSupport::FilterDelegate::setWarningCondition)
+    .def_property_readonly("preflight", &PythonSupport::FilterDelegate::preflight);
 
 py::class_<PythonFilter, AbstractFilter, std::shared_ptr<PythonFilter>>(mod, "PythonFilter").def(py::init([](py::object object) { return PythonFilter::New(object); }));
 
