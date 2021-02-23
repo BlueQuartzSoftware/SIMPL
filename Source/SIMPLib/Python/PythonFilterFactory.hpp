@@ -35,7 +35,13 @@
 
 #include "SIMPLib/Python/PythonFilter.h"
 
-class PythonFilterFactory : public IFilterFactory
+#ifdef __GNUG__
+#define SIMPL_PY_VISIBILITY __attribute__((visibility("hidden")))
+#else
+#define SIMPL_PY_VISIBILITY
+#endif
+
+class SIMPL_PY_VISIBILITY PythonFilterFactory : public IFilterFactory
 {
 public:
   using Self = PythonFilterFactory;

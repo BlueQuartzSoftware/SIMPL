@@ -35,10 +35,10 @@
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
-// undef slots since a Python header uses slots
-#undef slots
-
-#include "SIMPLib/Python/FilterPyObject.h"
+namespace PythonSupport
+{
+class FilterPyObject;
+}
 
 /**
  * @brief The PythonFilter class. See [Filter documentation](@ref PythonFilter) for details.
@@ -56,7 +56,7 @@ public:
 
   static Pointer NullPointer();
 
-  static Pointer New(PythonSupport::FilterPyObject filterObject);
+  static Pointer New(const PythonSupport::FilterPyObject& filterObject);
 
   /**
    * @brief Returns the name of the class for CreateDataArray
@@ -123,7 +123,7 @@ public:
 
 protected:
   PythonFilter() = delete;
-  PythonFilter(PythonSupport::FilterPyObject object);
+  PythonFilter(const PythonSupport::FilterPyObject& object);
 
   /**
    * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
@@ -131,7 +131,9 @@ protected:
   void dataCheck() override;
 
 private:
-  PythonSupport::FilterPyObject m_Filter;
+  struct Impl;
+  std::unique_ptr<Impl> m_Impl;
+
   QString m_CompiledLibraryName;
   QString m_FilterVersion;
   QString m_GroupName;

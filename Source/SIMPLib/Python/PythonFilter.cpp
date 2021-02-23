@@ -37,27 +37,29 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 
-// undef slots since a Python header uses slots
-#undef slots
-
-#include <pybind11/embed.h>
+#include "SIMPLib/Python/FilterPyObject.h"
 
 namespace py = pybind11;
 
+struct PythonFilter::Impl
+{
+  PythonSupport::FilterPyObject m_Filter;
+};
+
 // -----------------------------------------------------------------------------
-PythonFilter::PythonFilter(PythonSupport::FilterPyObject object)
+PythonFilter::PythonFilter(const PythonSupport::FilterPyObject& object)
 : AbstractFilter()
-, m_Filter(object)
+, m_Impl(std::make_unique<Impl>(Impl{object}))
 {
   py::gil_scoped_acquire gil_acquire_guard{};
   setupFilterParameters();
-  m_CompiledLibraryName = QString::fromStdString(m_Filter.compiled_lib_name());
-  m_FilterVersion = QString::fromStdString(m_Filter.version());
-  m_GroupName = QString::fromStdString(m_Filter.group_name());
-  m_SubGroupName = QString::fromStdString(m_Filter.sub_group_name());
-  m_HumanLabel = QString::fromStdString(m_Filter.human_label());
-  m_ClassName = QString::fromStdString(m_Filter.class_name());
-  m_Uuid = QString::fromStdString(m_Filter.uuid());
+  m_CompiledLibraryName = QString::fromStdString(m_Impl->m_Filter.compiled_lib_name());
+  m_FilterVersion = QString::fromStdString(m_Impl->m_Filter.version());
+  m_GroupName = QString::fromStdString(m_Impl->m_Filter.group_name());
+  m_SubGroupName = QString::fromStdString(m_Impl->m_Filter.sub_group_name());
+  m_HumanLabel = QString::fromStdString(m_Impl->m_Filter.human_label());
+  m_ClassName = QString::fromStdString(m_Impl->m_Filter.class_name());
+  m_Uuid = QString::fromStdString(m_Impl->m_Filter.uuid());
 }
 
 // -----------------------------------------------------------------------------
@@ -68,7 +70,7 @@ void PythonFilter::setupFilterParameters()
 {
   py::gil_scoped_acquire gil_acquire_guard{};
 
-  FilterParameterVectorType parameters = m_Filter.setup_parameters();
+  FilterParameterVectorType parameters = m_Impl->m_Filter.setup_parameters();
 
   setFilterParameters(parameters);
 }
@@ -85,7 +87,7 @@ void PythonFilter::dataCheck()
 
   try
   {
-    auto&& [status, message] = m_Filter.data_check(dca, PythonSupport::FilterDelegate{this});
+    auto&& [status, message] = m_Impl->m_Filter.data_check(dca, PythonSupport::FilterDelegate{this});
     if(status < 0)
     {
       setErrorCondition(status, QString::fromStdString(message));
@@ -121,7 +123,7 @@ void PythonFilter::execute()
 
   try
   {
-    auto&& [status, message] = m_Filter.execute(dca, PythonSupport::FilterDelegate{this});
+    auto&& [status, message] = m_Impl->m_Filter.execute(dca, PythonSupport::FilterDelegate{this});
     if(status < 0)
     {
       setErrorCondition(status, QString::fromStdString(message));
@@ -140,7 +142,7 @@ AbstractFilter::Pointer PythonFilter::newFilterInstance(bool copyFilterParameter
 {
   py::gil_scoped_acquire gil_acquire_guard{};
 
-  PythonSupport::FilterPyObject newFilter = m_Filter.create_new();
+  PythonSupport::FilterPyObject newFilter = m_Impl->m_Filter.create_new();
 
   PythonFilter::Pointer filter = PythonFilter::New(newFilter);
   if(copyFilterParameters)
@@ -199,7 +201,7 @@ PythonFilter::Pointer PythonFilter::NullPointer()
 }
 
 // -----------------------------------------------------------------------------
-PythonFilter::Pointer PythonFilter::New(PythonSupport::FilterPyObject filterObject)
+PythonFilter::Pointer PythonFilter::New(const PythonSupport::FilterPyObject& filterObject)
 {
   py::gil_scoped_acquire gil_acquire_guard{};
 

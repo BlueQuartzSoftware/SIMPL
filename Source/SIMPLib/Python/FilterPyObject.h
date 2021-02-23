@@ -45,6 +45,12 @@
 
 #include <pybind11/embed.h>
 
+#ifdef __GNUG__
+#define SIMPL_PY_VISIBILITY __attribute__((visibility("hidden")))
+#else
+#define SIMPL_PY_VISIBILITY
+#endif
+
 namespace PythonSupport
 {
 struct FilterDelegate
@@ -79,7 +85,7 @@ struct FilterDelegate
   }
 };
 
-class FilterPyObject
+class SIMPL_PY_VISIBILITY FilterPyObject
 {
 public:
   FilterPyObject() = default;
