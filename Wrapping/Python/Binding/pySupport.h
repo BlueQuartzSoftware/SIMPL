@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdexcept>
+
 #include <pybind11/pybind11.h>
 
 #include <pybind11/numpy.h>
@@ -15,8 +17,20 @@ void registerDataArray(pybind11::module& mod, const char* name)
   using namespace py::literals;
   using DataArrayType = DataArray<T>;
   py::class_<DataArrayType, IDataArray, std::shared_ptr<DataArrayType>>(mod, name, py::buffer_protocol())
-      .def(py::init([](size_t numElements, const QString& name, T initValue) { return std::make_shared<DataArrayType>(numElements, name, initValue); }))
-      .def(py::init([](size_t numElements, const std::vector<size_t>& cDims, const QString& name, T initValue) { return std::make_shared<DataArrayType>(numElements, name, cDims, initValue); }))
+      .def(py::init([](size_t numElements, const QString& name, T initValue) {
+        if(name.isEmpty())
+        {
+          throw std::invalid_argument("name cannot be empty");
+        }
+        return std::make_shared<DataArrayType>(numElements, name, initValue);
+      }))
+      .def(py::init([](size_t numElements, const std::vector<size_t>& cDims, const QString& name, T initValue) {
+        if(name.isEmpty())
+        {
+          throw std::invalid_argument("name cannot be empty");
+        }
+        return std::make_shared<DataArrayType>(numElements, name, cDims, initValue);
+      }))
       .def(py::init([](py::array_t<T, py::array::c_style> data, const QString& name, bool ownsData) {
         py::buffer_info buf = data.request();
         const std::vector<ssize_t>& shape = buf.shape;
