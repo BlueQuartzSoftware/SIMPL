@@ -91,6 +91,7 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
   PYB11_METHOD(bool renameAttributeMatrix ARGS OldName NewName OverWrite)
   PYB11_METHOD(bool doesAttributeMatrixExist ARGS Name)
   PYB11_METHOD(void setGeometry ARGS Geometry)
+  PYB11_CUSTOM()
   PYB11_END_BINDINGS()
   // End Python bindings declarations
   // clang-format on

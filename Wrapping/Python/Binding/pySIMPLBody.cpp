@@ -246,6 +246,10 @@ py::class_<MultiDataContainerSelectionFilterParameter::RequirementType>(instance
     .def_readwrite("daTypes", &MultiDataContainerSelectionFilterParameter::RequirementType::daTypes)
     .def_readwrite("componentDimensions", &MultiDataContainerSelectionFilterParameter::RequirementType::componentDimensions);
 
+registerDataContainerArray(instanceDataContainerArray);
+registerDataContainer(instanceDataContainer);
+registerAttributeMatrix(instanceAttributeMatrix);
+
 #ifdef SIMPL_EMBED_PYTHON
 py::class_<PythonSupport::FilterDelegate>(mod, "FilterDelegateCpp")
     .def("notifyStatusMessage", &PythonSupport::FilterDelegate::notifyStatusMessage)

@@ -101,6 +101,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureC
   PYB11_METHOD(int renameAttributeArray ARGS OldName NewName OverWrite)
   PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.QString.&,Name CONST_METHOD)
   PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
+  PYB11_CUSTOM()
   PYB11_END_BINDINGS()
   // clang-format on
   // End Python bindings declarations
