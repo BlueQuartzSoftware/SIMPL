@@ -68,7 +68,7 @@ void CreateAttributeMatrix::setupFilterParameters()
   FilterParameterVectorType parameters;
 
   {
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Vertex");
     choices.push_back("Edge");
     choices.push_back("Face");

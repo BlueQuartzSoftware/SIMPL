@@ -407,13 +407,13 @@ DataArrayPath ExtractVertexGeometry::getSelectedDataContainerName() const
 }
 
 // -----------------------------------------------------------------------------
-void ExtractVertexGeometry::setIncludedDataArrayPaths(const QVector<DataArrayPath>& value)
+void ExtractVertexGeometry::setIncludedDataArrayPaths(const std::vector<DataArrayPath>& value)
 {
   m_IncludedDataArrayPaths = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<DataArrayPath> ExtractVertexGeometry::getIncludedDataArrayPaths() const
+std::vector<DataArrayPath> ExtractVertexGeometry::getIncludedDataArrayPaths() const
 {
   return m_IncludedDataArrayPaths;
 }

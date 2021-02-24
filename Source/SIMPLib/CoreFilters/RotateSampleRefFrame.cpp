@@ -351,9 +351,9 @@ void RotateSampleRefFrame::setupFilterParameters()
     parameter->setPropertyName("RotationRepresentationChoice");
     parameter->setSetterCallback(SIMPL_BIND_SETTER(RotateSampleRefFrame, this, RotationRepresentationChoice));
     parameter->setGetterCallback(SIMPL_BIND_GETTER(RotateSampleRefFrame, this, RotationRepresentationChoice));
-    QVector<QString> choices{"Axis Angle", "Rotation Matrix"};
+    std::vector<QString> choices{"Axis Angle", "Rotation Matrix"};
     parameter->setChoices(choices);
-    QStringList linkedProps{"RotationAngle", "RotationAxis", "RotationTable"};
+    std::vector<QString> linkedProps{"RotationAngle", "RotationAxis", "RotationTable"};
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Category::Parameter);

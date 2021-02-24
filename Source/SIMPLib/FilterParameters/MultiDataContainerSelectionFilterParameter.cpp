@@ -44,7 +44,7 @@
 //
 // -----------------------------------------------------------------------------
 MultiDataContainerSelectionFilterParameter::MultiDataContainerSelectionFilterParameter()
-: m_DefaultNames(QStringList())
+: m_DefaultNames(std::vector<QString>())
 {
 }
 
@@ -56,7 +56,7 @@ MultiDataContainerSelectionFilterParameter::~MultiDataContainerSelectionFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataContainerSelectionFilterParameter::Pointer MultiDataContainerSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QStringList& defaultValue,
+MultiDataContainerSelectionFilterParameter::Pointer MultiDataContainerSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const std::vector<QString>& defaultValue,
                                                                                                        Category category, const SetterCallbackType& setterCallback,
                                                                                                        const GetterCallbackType& getterCallback, const RequirementType& req, int groupIndex)
 {
@@ -174,7 +174,7 @@ void MultiDataContainerSelectionFilterParameter::readJson(const QJsonObject& jso
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonArray arrayObj = jsonValue.toArray();
-    QStringList dcList;
+    std::vector<QString> dcList;
     for(const auto obj : arrayObj)
     {
       QString dcName = obj.toString();
@@ -192,10 +192,10 @@ void MultiDataContainerSelectionFilterParameter::writeJson(QJsonObject& json)
 {
   if(m_GetterCallback)
   {
-    QStringList dcList = m_GetterCallback();
+    std::vector<QString> dcList = m_GetterCallback();
     QJsonArray arrayObj;
 
-    for(int i = 0; i < dcList.size(); i++)
+    for(size_t i = 0; i < dcList.size(); i++)
     {
       QString dcName = dcList[i];
       arrayObj.push_back(dcName);
@@ -214,11 +214,11 @@ void MultiDataContainerSelectionFilterParameter::dataArrayPathRenamed(AbstractFi
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
 
-  QStringList dcList = m_GetterCallback();
-  int count = dcList.size();
+  std::vector<QString> dcList = m_GetterCallback();
+  size_t count = dcList.size();
   bool updated = false;
 
-  for(int i = 0; i < count; i++)
+  for(size_t i = 0; i < count; i++)
   {
     if(dcList[i] == oldPath.getDataContainerName())
     {
@@ -257,13 +257,13 @@ QString MultiDataContainerSelectionFilterParameter::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void MultiDataContainerSelectionFilterParameter::setDefaultNames(const QStringList& value)
+void MultiDataContainerSelectionFilterParameter::setDefaultNames(const std::vector<QString>& value)
 {
   m_DefaultNames = value;
 }
 
 // -----------------------------------------------------------------------------
-QStringList MultiDataContainerSelectionFilterParameter::getDefaultNames() const
+std::vector<QString> MultiDataContainerSelectionFilterParameter::getDefaultNames() const
 {
   return m_DefaultNames;
 }

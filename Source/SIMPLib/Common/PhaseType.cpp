@@ -177,7 +177,7 @@ PhaseType::Type PhaseType::getPhaseType(const char* str)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PhaseType::getPhaseTypeStrings(QStringList& strings)
+void PhaseType::getPhaseTypeStrings(std::vector<QString>& strings)
 {
   strings.clear();
   strings.push_back(PrimaryStr());

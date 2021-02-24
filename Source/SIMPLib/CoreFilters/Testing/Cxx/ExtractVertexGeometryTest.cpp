@@ -188,7 +188,7 @@ public:
     extVertGeomFilter->setVertexDataContainerName(k_VertexDataContainerPath);
     extVertGeomFilter->setSelectedDataContainerName(k_ImageGeomDataContainerPath);
     // Set an incorrect AttributeMatrix/DataArray Path
-    QVector<DataArrayPath> includePaths;
+    std::vector<DataArrayPath> includePaths;
     DataArrayPath dap(k_ImageGeomDataContainerName, k_FeatureAttrMatName, k_FeatureArrayName);
     includePaths.push_back(dap);
     extVertGeomFilter->setIncludedDataArrayPaths(includePaths);

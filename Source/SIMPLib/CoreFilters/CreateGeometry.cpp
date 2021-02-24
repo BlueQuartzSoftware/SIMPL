@@ -80,7 +80,7 @@ void CreateGeometry::setupFilterParameters()
     parameter->setPropertyName("GeometryType");
     parameter->setSetterCallback(SIMPL_BIND_SETTER(CreateGeometry, this, GeometryType));
     parameter->setGetterCallback(SIMPL_BIND_GETTER(CreateGeometry, this, GeometryType));
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Image");
     choices.push_back("Rectilinear Grid");
     choices.push_back("Vertex");
@@ -90,37 +90,37 @@ void CreateGeometry::setupFilterParameters()
     choices.push_back("Tetrahedral");
     choices.push_back("Hexahedral");
     parameter->setChoices(choices);
-    QStringList linkedProps = {"Dimensions",
-                               "Origin",
-                               "Spacing",
-                               "BoxDimensions",
-                               "ImageCellAttributeMatrixName", // ImageGeom
-                               "XBoundsArrayPath",
-                               "YBoundsArrayPath",
-                               "ZBoundsArrayPath",
-                               "RectGridCellAttributeMatrixName", // RectGridGeom
-                               "SharedVertexListArrayPath0",
-                               "VertexAttributeMatrixName0", // VertexGeom
-                               "SharedVertexListArrayPath1",
-                               "SharedEdgeListArrayPath",
-                               "VertexAttributeMatrixName1",
-                               "EdgeAttributeMatrixName", // EdgeGeom
-                               "SharedVertexListArrayPath2",
-                               "SharedTriListArrayPath",
-                               "VertexAttributeMatrixName2",
-                               "FaceAttributeMatrixName0", // TriangleGeom
-                               "SharedVertexListArrayPath3",
-                               "SharedQuadListArrayPath",
-                               "VertexAttributeMatrixName3",
-                               "FaceAttributeMatrixName1", // QuadGeom
-                               "SharedVertexListArrayPath4",
-                               "SharedTetListArrayPath",
-                               "VertexAttributeMatrixName4",
-                               "TetCellAttributeMatrixName", // TetrahedralGeom
-                               "SharedVertexListArrayPath5",
-                               "SharedHexListArrayPath",
-                               "VertexAttributeMatrixName5",
-                               "HexCellAttributeMatrixName"}; // HexahedralGeom
+    std::vector<QString> linkedProps = {"Dimensions",
+                                        "Origin",
+                                        "Spacing",
+                                        "BoxDimensions",
+                                        "ImageCellAttributeMatrixName", // ImageGeom
+                                        "XBoundsArrayPath",
+                                        "YBoundsArrayPath",
+                                        "ZBoundsArrayPath",
+                                        "RectGridCellAttributeMatrixName", // RectGridGeom
+                                        "SharedVertexListArrayPath0",
+                                        "VertexAttributeMatrixName0", // VertexGeom
+                                        "SharedVertexListArrayPath1",
+                                        "SharedEdgeListArrayPath",
+                                        "VertexAttributeMatrixName1",
+                                        "EdgeAttributeMatrixName", // EdgeGeom
+                                        "SharedVertexListArrayPath2",
+                                        "SharedTriListArrayPath",
+                                        "VertexAttributeMatrixName2",
+                                        "FaceAttributeMatrixName0", // TriangleGeom
+                                        "SharedVertexListArrayPath3",
+                                        "SharedQuadListArrayPath",
+                                        "VertexAttributeMatrixName3",
+                                        "FaceAttributeMatrixName1", // QuadGeom
+                                        "SharedVertexListArrayPath4",
+                                        "SharedTetListArrayPath",
+                                        "VertexAttributeMatrixName4",
+                                        "TetCellAttributeMatrixName", // TetrahedralGeom
+                                        "SharedVertexListArrayPath5",
+                                        "SharedHexListArrayPath",
+                                        "VertexAttributeMatrixName5",
+                                        "HexCellAttributeMatrixName"}; // HexahedralGeom
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Category::Parameter);
@@ -129,7 +129,7 @@ void CreateGeometry::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_BOOL_FP("Treat Geometry Warnings as Errors", TreatWarningsAsErrors, FilterParameter::Category::Parameter, CreateGeometry));
 
   {
-    QVector<QString> choices = {"Copy Arrays", "Move Arrays"};
+    std::vector<QString> choices = {"Copy Arrays", "Move Arrays"};
     parameters.push_back(SIMPL_NEW_CHOICE_FP("Array Handling", ArrayHandling, FilterParameter::Category::Parameter, CreateGeometry, choices, false));
   }
 

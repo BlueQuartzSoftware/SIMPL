@@ -113,6 +113,8 @@ void MultiDataArraySelectionWidget::setupGui()
   label->setText(getFilterParameter()->getHumanLabel());
 
   AttributeMatrixSelectionFilterParameter::RequirementType reqs;
+  reqs.amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
+  reqs.dcGeometryTypes = m_FilterParameter->getDefaultGeometryTypes();
   m_SelectedAttributeMatrixPath->setAttrMatrixRequirements(reqs);
   m_SelectedAttributeMatrixPath->setFilter(getFilter());
 
@@ -145,11 +147,11 @@ void MultiDataArraySelectionWidget::setupGui()
   connect(m_SelectedAttributeMatrixPath, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)));
   connect(this, SIGNAL(unlockDataArrayPathSelection(QToolButton*)), m_SelectedAttributeMatrixPath, SLOT(selectionWidgetUnlocked(QToolButton*)));
 
-  QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath>>();
+  std::vector<DataArrayPath> selectedPaths = m_FilterParameter->getGetterCallback()();
   DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(selectedPaths);
   m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
   m_SelectedAttributeMatrixPath->setPropertyName(getFilterParameter()->getHumanLabel());
-  for(int i = 0; i < selectedPaths.size(); i++)
+  for(size_t i = 0; i < selectedPaths.size(); i++)
   {
     DataArrayPath selectedPath = selectedPaths[i];
     QListWidgetItem* item = new QListWidgetItem(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"), selectedPath.getDataArrayName());
@@ -538,7 +540,7 @@ void MultiDataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* f
 {
   DataArrayPath amPath = m_SelectedAttributeMatrixPath->getDataArrayPath();
 
-  QVector<DataArrayPath> selectedPaths;
+  std::vector<DataArrayPath> selectedPaths;
   for(int i = 0; i < selectedArraysListWidget->count(); i++)
   {
     DataArrayPath path = amPath;
@@ -569,11 +571,6 @@ void MultiDataArraySelectionWidget::updateDataArrayPath(QString propertyName, co
 
   if(propertyName == getFilterParameter()->getPropertyName())
   {
-    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-    DataArrayPath updatedPath = var.value<DataArrayPath>();
-    QString dataArrayName = updatedPath.getDataArrayName();
-    updatedPath.setDataArrayName("");
-
     blockSignals(true);
     DataArrayPath currentPath = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
     if(currentPath.hasSameDataContainer(oldPath))

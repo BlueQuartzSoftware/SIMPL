@@ -104,14 +104,14 @@ void InitializeData::setupFilterParameters()
 
     parameter->setDefaultValue(Manual);
 
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Manual");
     choices.push_back("Random");
     choices.push_back("Random With Range");
     parameter->setChoices(choices);
-    QStringList linkedProps;
-    linkedProps << "InitValue"
-                << "InitRange";
+    std::vector<QString> linkedProps;
+    linkedProps.push_back("InitValue");
+    linkedProps.push_back("InitRange");
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Category::Parameter);
@@ -120,25 +120,6 @@ void InitializeData::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Initialization Value", InitValue, FilterParameter::Category::Parameter, InitializeData, Manual));
   parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitRange, FilterParameter::Category::Parameter, InitializeData, RandomWithRange));
   setFilterParameters(parameters);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InitializeData::readFilterParameters(AbstractFilterParametersReader* reader, int index)
-{
-  reader->openFilterGroup(this, index);
-  setCellAttributeMatrixPaths(reader->readDataArrayPathVector("CellAttributeMatrixPaths", getCellAttributeMatrixPaths()));
-  setXMin(reader->readValue("XMin", getXMin()));
-  setYMin(reader->readValue("YMin", getYMin()));
-  setZMin(reader->readValue("ZMin", getZMin()));
-  setXMax(reader->readValue("XMax", getXMax()));
-  setYMax(reader->readValue("YMax", getYMax()));
-  setZMax(reader->readValue("ZMax", getZMax()));
-  setInitType(reader->readValue("InitType", getInitType()));
-  setInitValue(reader->readValue("InitValue", getInitValue()));
-  setInitRange(reader->readPairOfDoubles("InitRange", getInitRange()));
-  reader->closeFilterGroup();
 }
 
 // -----------------------------------------------------------------------------
@@ -223,11 +204,11 @@ void InitializeData::dataCheck()
   // SizeVec3Type udims = m->getGeometryAs<ImageGeom>()->getDimensions();
 
   QString attrMatName = attributeMatrixPath.getAttributeMatrixName();
-  QList<QString> voxelArrayNames = DataArrayPath::GetDataArrayNames(m_CellAttributeMatrixPaths);
+  std::vector<QString> voxelArrayNames = DataArrayPath::GetDataArrayNames(m_CellAttributeMatrixPaths);
 
-  for(QList<QString>::iterator iter = voxelArrayNames.begin(); iter != voxelArrayNames.end(); ++iter)
+  for(const QString& name : voxelArrayNames)
   {
-    IDataArray::Pointer p = m->getAttributeMatrix(attrMatName)->getAttributeArray(*iter);
+    IDataArray::Pointer p = m->getAttributeMatrix(attrMatName)->getAttributeArray(name);
 
     QString type = p->getTypeAsString();
     if(type == "int8_t")
@@ -344,11 +325,11 @@ void InitializeData::execute()
   };
 
   QString attrMatName = attributeMatrixPath.getAttributeMatrixName();
-  QList<QString> voxelArrayNames = DataArrayPath::GetDataArrayNames(m_CellAttributeMatrixPaths);
+  std::vector<QString> voxelArrayNames = DataArrayPath::GetDataArrayNames(m_CellAttributeMatrixPaths);
 
-  for(QList<QString>::iterator iter = voxelArrayNames.begin(); iter != voxelArrayNames.end(); ++iter)
+  for(const QString& name : voxelArrayNames)
   {
-    IDataArray::Pointer p = m->getAttributeMatrix(attrMatName)->getAttributeArray(*iter);
+    IDataArray::Pointer p = m->getAttributeMatrix(attrMatName)->getAttributeArray(name);
 
     QString type = p->getTypeAsString();
     if(type == "int8_t")
@@ -593,13 +574,13 @@ QString InitializeData::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void InitializeData::setCellAttributeMatrixPaths(const QVector<DataArrayPath>& value)
+void InitializeData::setCellAttributeMatrixPaths(const std::vector<DataArrayPath>& value)
 {
   m_CellAttributeMatrixPaths = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<DataArrayPath> InitializeData::getCellAttributeMatrixPaths() const
+std::vector<DataArrayPath> InitializeData::getCellAttributeMatrixPaths() const
 {
   return m_CellAttributeMatrixPaths;
 }

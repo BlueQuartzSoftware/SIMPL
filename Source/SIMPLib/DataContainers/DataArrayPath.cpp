@@ -35,12 +35,72 @@
 
 #include "DataArrayPath.h"
 
+#include <type_traits>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+
+namespace
+{
+template <class Container>
+bool ValidateVectorImpl(const Container& other)
+{
+  static_assert(std::is_same_v<typename Container::value_type, DataArrayPath>);
+
+  using size_type = typename Container::size_type;
+
+  if(other.size() <= 1)
+  {
+    return true;
+  }
+
+  QString dcName = other.front().getDataContainerName();
+  QString amName = other.front().getAttributeMatrixName();
+
+  for(size_type i = 1; i < other.size(); i++)
+  {
+    if(other.at(i).getDataContainerName() != dcName || other.at(i).getAttributeMatrixName() != amName)
+    {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+template <class OutputContainer, class InputContainer>
+OutputContainer GetDataArrayNamesImpl(const InputContainer& paths)
+{
+  static_assert(std::is_same_v<typename InputContainer::value_type, DataArrayPath>);
+  static_assert(std::is_same_v<typename OutputContainer::value_type, QString>);
+
+  OutputContainer arrayNames;
+  arrayNames.reserve(paths.size());
+  for(const DataArrayPath& path : paths)
+  {
+    arrayNames.push_back(path.getDataArrayName());
+  }
+
+  return arrayNames;
+}
+
+template <class Container>
+DataArrayPath GetAttributeMatrixPathImpl(const Container& paths)
+{
+  static_assert(std::is_same_v<typename Container::value_type, DataArrayPath>);
+
+  if(paths.empty())
+  {
+    return DataArrayPath();
+  }
+
+  return DataArrayPath(paths.front().getDataContainerName(), paths.front().getAttributeMatrixName(), "");
+}
+} // namespace
 
 // -----------------------------------------------------------------------------
 //
@@ -331,13 +391,13 @@ QVector<QString> DataArrayPath::toQVector() const
 // -----------------------------------------------------------------------------
 QList<QString> DataArrayPath::GetDataArrayNames(const QVector<DataArrayPath>& paths)
 {
-  QList<QString> arrayNames;
-  for(int i = 0; i < paths.count(); i++)
-  {
-    arrayNames.push_back(paths.at(i).getDataArrayName());
-  }
+  return GetDataArrayNamesImpl<QList<QString>>(paths);
+}
 
-  return arrayNames;
+// -----------------------------------------------------------------------------
+std::vector<QString> DataArrayPath::GetDataArrayNames(const std::vector<DataArrayPath>& paths)
+{
+  return GetDataArrayNamesImpl<std::vector<QString>>(paths);
 }
 
 // -----------------------------------------------------------------------------
@@ -345,12 +405,13 @@ QList<QString> DataArrayPath::GetDataArrayNames(const QVector<DataArrayPath>& pa
 // -----------------------------------------------------------------------------
 DataArrayPath DataArrayPath::GetAttributeMatrixPath(const QVector<DataArrayPath>& paths)
 {
-  if(paths.isEmpty())
-  {
-    return DataArrayPath();
-  }
+  return GetAttributeMatrixPathImpl(paths);
+}
 
-  return DataArrayPath(paths.first().getDataContainerName(), paths.first().getAttributeMatrixName(), "");
+// -----------------------------------------------------------------------------
+DataArrayPath DataArrayPath::GetAttributeMatrixPath(const std::vector<DataArrayPath>& paths)
+{
+  return GetAttributeMatrixPathImpl(paths);
 }
 
 // -----------------------------------------------------------------------------
@@ -468,26 +529,13 @@ bool DataArrayPath::isSubset(const DataArrayPath& other) const
 // -----------------------------------------------------------------------------
 bool DataArrayPath::ValidateVector(const QVector<DataArrayPath>& other)
 {
-  QString dcName = "";
-  QString amName = "";
+  return ValidateVectorImpl(other);
+}
 
-  if(other.isEmpty())
-  {
-    return true;
-  }
-
-  dcName = other.first().getDataContainerName();
-  amName = other.first().getAttributeMatrixName();
-
-  for(int i = 0; i < other.size(); ++i)
-  {
-    if(other.at(i).getDataContainerName() != dcName || other.at(i).getAttributeMatrixName() != amName)
-    {
-      return false;
-    }
-  }
-
-  return true;
+// -----------------------------------------------------------------------------
+bool DataArrayPath::ValidateVector(const std::vector<DataArrayPath>& other)
+{
+  return ValidateVectorImpl(other);
 }
 
 // -----------------------------------------------------------------------------

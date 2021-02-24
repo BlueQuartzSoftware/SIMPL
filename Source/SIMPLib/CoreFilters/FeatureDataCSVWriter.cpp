@@ -69,7 +69,7 @@ void FeatureDataCSVWriter::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_BOOL_FP("Write Number of Features Line", WriteNumFeaturesLine, FilterParameter::Category::Parameter, FeatureDataCSVWriter));
 
   {
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back(",");
     choices.push_back(";");
     choices.push_back(":");

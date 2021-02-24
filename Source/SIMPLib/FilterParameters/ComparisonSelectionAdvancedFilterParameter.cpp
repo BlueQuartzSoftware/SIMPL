@@ -56,8 +56,8 @@ ComparisonSelectionAdvancedFilterParameter::~ComparisonSelectionAdvancedFilterPa
 // -----------------------------------------------------------------------------
 ComparisonSelectionAdvancedFilterParameter::Pointer ComparisonSelectionAdvancedFilterParameter::Create(const QString& humanLabel, const QString& propertyName, ComparisonInputsAdvanced defaultValue,
                                                                                                        Category category, const SetterCallbackType& setterCallback,
-                                                                                                       const GetterCallbackType& getterCallback, QVector<QString> choices, bool showOperators,
-                                                                                                       int groupIndex)
+                                                                                                       const GetterCallbackType& getterCallback, const std::vector<QString>& choices,
+                                                                                                       bool showOperators, int groupIndex)
 {
   ComparisonSelectionAdvancedFilterParameter::Pointer ptr = ComparisonSelectionAdvancedFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -190,13 +190,13 @@ QString ComparisonSelectionAdvancedFilterParameter::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void ComparisonSelectionAdvancedFilterParameter::setChoices(const QVector<QString>& value)
+void ComparisonSelectionAdvancedFilterParameter::setChoices(const std::vector<QString>& value)
 {
   m_Choices = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<QString> ComparisonSelectionAdvancedFilterParameter::getChoices() const
+std::vector<QString> ComparisonSelectionAdvancedFilterParameter::getChoices() const
 {
   return m_Choices;
 }

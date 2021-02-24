@@ -114,7 +114,7 @@ public:
   */
   static Pointer Create(const QString& humanLabel, const QString& phaseTypeDataProperty, const DataArrayPath& attributeMatrixDefault, Category category, const SetterCallbackType& setterCallback,
                         const GetterCallbackType& getterCallback, const QString& PhaseTypesArrayName, const QString& phaseTypeCountProperty, const QString& attributeMatrixProperty,
-                        const QStringList& phaseListChoices, int groupIndex = -1);
+                        const std::vector<QString>& phaseListChoices, int groupIndex = -1);
 
   ~PhaseTypeSelectionFilterParameter() override;
 
@@ -161,12 +161,12 @@ public:
   /**
    * @brief Setter property for PhaseListChoices
    */
-  void setPhaseListChoices(const QStringList& value);
+  void setPhaseListChoices(const std::vector<QString>& value);
   /**
    * @brief Getter property for PhaseListChoices
    * @return Value of PhaseListChoices
    */
-  QStringList getPhaseListChoices() const;
+  std::vector<QString> getPhaseListChoices() const;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -260,7 +260,7 @@ private:
   QString m_PhaseTypeDataProperty = {};
   QString m_AttributeMatrixPathProperty = {};
   DataArrayPath m_AttributeMatrixPathDefault = {};
-  QStringList m_PhaseListChoices = {};
+  std::vector<QString> m_PhaseListChoices = {};
   IGeometry::Types m_DefaultGeometryTypes = {};
   AttributeMatrix::Types m_DefaultAttributeMatrixTypes = {};
   PhaseTypeSelectionFilterParameter::SetterCallbackType m_SetterCallback = {};

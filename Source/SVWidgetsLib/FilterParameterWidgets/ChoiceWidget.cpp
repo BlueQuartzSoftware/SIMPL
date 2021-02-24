@@ -85,7 +85,12 @@ void ChoiceWidget::setupGui()
     ChoiceFilterParameter* choice = dynamic_cast<ChoiceFilterParameter*>(getFilterParameter());
     if(choice != nullptr)
     {
-      QList<QString> choices = choice->getChoices().toList();
+      std::vector<QString> choiceVec = choice->getChoices();
+      QList<QString> choices;
+      for(const QString& value : choiceVec)
+      {
+        choices.push_back(value);
+      }
       value->blockSignals(true);
       value->addItems(choices);
       value->blockSignals(false);

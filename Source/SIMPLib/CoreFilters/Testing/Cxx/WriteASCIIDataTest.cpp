@@ -109,7 +109,7 @@ public:
     dc->addOrReplaceAttributeMatrix(am);
     dca->addOrReplaceDataContainer(dc);
 
-    QVector<DataArrayPath> paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "ASCII_Data")};
+    std::vector<DataArrayPath> paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "ASCII_Data")};
     WriteASCIIData::Pointer writer = WriteASCIIData::New();
     writer->setDataContainerArray(dca);
     writer->setSelectedDataArrayPaths(paths);

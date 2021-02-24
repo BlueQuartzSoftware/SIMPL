@@ -660,31 +660,31 @@ public:
   Q_PROPERTY(Float4thOrderPolynomial Float4thOrderPoly_2 READ getFloat4thOrderPoly_2 WRITE setFloat4thOrderPoly_2)
 
   // -----------------------------------------------------------------------------
-  void setDataArrayPaths1(const QVector<DataArrayPath>& value)
+  void setDataArrayPaths1(const std::vector<DataArrayPath>& value)
   {
     m_DataArrayPaths1 = value;
   }
 
   // -----------------------------------------------------------------------------
-  QVector<DataArrayPath> getDataArrayPaths1() const
+  std::vector<DataArrayPath> getDataArrayPaths1() const
   {
     return m_DataArrayPaths1;
   }
 
-  Q_PROPERTY(QVector<DataArrayPath> DataArrayPaths1 READ getDataArrayPaths1 WRITE setDataArrayPaths1)
+  Q_PROPERTY(DataArrayPathVec DataArrayPaths1 READ getDataArrayPaths1 WRITE setDataArrayPaths1)
   // -----------------------------------------------------------------------------
-  void setDataArrayPaths2(const QVector<DataArrayPath>& value)
+  void setDataArrayPaths2(const std::vector<DataArrayPath>& value)
   {
     m_DataArrayPaths2 = value;
   }
 
   // -----------------------------------------------------------------------------
-  QVector<DataArrayPath> getDataArrayPaths2() const
+  std::vector<DataArrayPath> getDataArrayPaths2() const
   {
     return m_DataArrayPaths2;
   }
 
-  Q_PROPERTY(QVector<DataArrayPath> DataArrayPaths2 READ getDataArrayPaths2 WRITE setDataArrayPaths2)
+  Q_PROPERTY(DataArrayPathVec DataArrayPaths2 READ getDataArrayPaths2 WRITE setDataArrayPaths2)
 
   // -----------------------------------------------------------------------------
   void setShapeTypeVector_1(const ShapeType::Types& value)
@@ -865,7 +865,7 @@ public:
 
     {
       ChoiceFilterParameter::Pointer fp = ChoiceFilterParameter::Create("Test", "Int1", getInt1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Int2),
-                                                                        SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1), QVector<QString>(), true);
+                                                                        SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1), std::vector<QString>(), true);
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -879,7 +879,7 @@ public:
     {
       ComparisonSelectionFilterParameter::Pointer fp = ComparisonSelectionFilterParameter::Create("Test", "ComparisonInputs1", ComparisonInputs(), FilterParameter::Category::Parameter,
                                                                                                   SIMPL_BIND_SETTER(FilterParametersRWTest, this, ComparisonInputs2),
-                                                                                                  SIMPL_BIND_GETTER(FilterParametersRWTest, this, ComparisonInputs1), QVector<QString>(), true);
+                                                                                                  SIMPL_BIND_GETTER(FilterParametersRWTest, this, ComparisonInputs1), std::vector<QString>(), true);
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1144,7 +1144,7 @@ public:
     {
       LinkedBooleanFilterParameter::Pointer fp =
           LinkedBooleanFilterParameter::Create("Test", "Bool1", getBool1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Bool2),
-                                               SIMPL_BIND_GETTER(FilterParametersRWTest, this, Bool1), QStringList());
+                                               SIMPL_BIND_GETTER(FilterParametersRWTest, this, Bool1), std::vector<QString>());
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1158,7 +1158,7 @@ public:
     {
       LinkedChoicesFilterParameter::Pointer fp =
           LinkedChoicesFilterParameter::Create("Test", "Int1", getInt1(), FilterParameter::Category::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Int2),
-                                               SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1), QVector<QString>(), QStringList());
+                                               SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1), std::vector<QString>(), std::vector<QString>());
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1181,14 +1181,14 @@ public:
 
       DREAM3D_REQUIRE_EQUAL(m_DataArrayPaths1.size(), m_DataArrayPaths2.size())
 
-      for(int i = 0; i < m_DataArrayPaths1.size(); i++)
+      for(size_t i = 0; i < m_DataArrayPaths1.size(); i++)
       {
         DREAM3D_REQUIRE_EQUAL(m_DataArrayPaths1[i].getDataContainerName(), m_DataArrayPaths2[i].getDataContainerName())
         DREAM3D_REQUIRE_EQUAL(m_DataArrayPaths1[i].getAttributeMatrixName(), m_DataArrayPaths2[i].getAttributeMatrixName())
         DREAM3D_REQUIRE_EQUAL(m_DataArrayPaths1[i].getDataArrayName(), m_DataArrayPaths2[i].getDataArrayName())
       }
 
-      m_DataArrayPaths2 = QVector<DataArrayPath>();
+      m_DataArrayPaths2 = std::vector<DataArrayPath>();
     }
 
     {
@@ -1220,7 +1220,7 @@ public:
     {
       PhaseTypeSelectionFilterParameter::Pointer fp = PhaseTypeSelectionFilterParameter::Create("Test", "PhaseTypeVector_2", DataArrayPath(), FilterParameter::Category::Parameter,
                                                                                                 SIMPL_BIND_SETTER(FilterParametersRWTest, this, PhaseTypeVector_2),
-                                                                                                SIMPL_BIND_GETTER(FilterParametersRWTest, this, PhaseTypeVector_1), "", "", "", QStringList());
+                                                                                                SIMPL_BIND_GETTER(FilterParametersRWTest, this, PhaseTypeVector_1), "", "", "", std::vector<QString>());
 
       QJsonObject obj;
       fp->writeJson(obj);
@@ -1444,8 +1444,8 @@ private:
   Float3rdOrderPoly_t m_Float3rdOrderPoly_2 = {};
   Float4thOrderPolynomial m_Float4thOrderPoly_1 = {};
   Float4thOrderPolynomial m_Float4thOrderPoly_2 = {};
-  QVector<DataArrayPath> m_DataArrayPaths1 = {};
-  QVector<DataArrayPath> m_DataArrayPaths2 = {};
+  std::vector<DataArrayPath> m_DataArrayPaths1 = {};
+  std::vector<DataArrayPath> m_DataArrayPaths2 = {};
   ShapeType::Types m_ShapeTypeVector_1 = {};
   ShapeType::Types m_ShapeTypeVector_2 = {};
   PhaseType::Types m_PhaseTypeVector_1 = {};

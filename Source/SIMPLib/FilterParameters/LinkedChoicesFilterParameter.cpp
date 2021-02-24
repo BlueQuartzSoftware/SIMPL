@@ -49,8 +49,8 @@ LinkedChoicesFilterParameter::~LinkedChoicesFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::Create(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category,
-                                                                           const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, QVector<QString> choices,
-                                                                           QStringList linkedProperties, int groupIndex)
+                                                                           const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<QString>& choices,
+                                                                           const std::vector<QString>& linkedProperties, int groupIndex)
 {
   LinkedChoicesFilterParameter::Pointer ptr = LinkedChoicesFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -124,13 +124,13 @@ QString LinkedChoicesFilterParameter::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void LinkedChoicesFilterParameter::setLinkedProperties(const QStringList& value)
+void LinkedChoicesFilterParameter::setLinkedProperties(const std::vector<QString>& value)
 {
   m_LinkedProperties = value;
 }
 
 // -----------------------------------------------------------------------------
-QStringList LinkedChoicesFilterParameter::getLinkedProperties() const
+std::vector<QString> LinkedChoicesFilterParameter::getLinkedProperties() const
 {
   return m_LinkedProperties;
 }

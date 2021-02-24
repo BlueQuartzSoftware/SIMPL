@@ -231,7 +231,7 @@ public:
    * @brief GetAllLengthUnitStrings Returns all the Length Units as a vector of strings. This would be suitable to display as a list to a user.
    * @return
    */
-  static QVector<QString> GetAllLengthUnitStrings();
+  static std::vector<QString> GetAllLengthUnitStrings();
 
   /**
    * @brief Setter property for TimeValue

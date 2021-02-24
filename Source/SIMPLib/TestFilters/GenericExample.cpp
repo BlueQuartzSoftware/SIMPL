@@ -142,7 +142,7 @@ void GenericExample::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_FILELISTINFO_FP("Input File List", InputFileListInfo, FilterParameter::Category::Parameter, GenericExample));
 
   {
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Beta");
     choices.push_back("Lognormal");
     choices.push_back("Power");
@@ -150,7 +150,7 @@ void GenericExample::setupFilterParameters()
   }
 
   {
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("CellData");
     choices.push_back("CellEnsemble");
     choices.push_back("FeatureIds");
@@ -166,7 +166,7 @@ void GenericExample::setupFilterParameters()
     parameter->setGetterCallback(SIMPL_BIND_GETTER(GenericExample, this, ConversionType));
 
     ////parameter->setValueType("unsigned int");
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Degrees To Radians");
     choices.push_back("Radians To Degrees");
     parameter->setChoices(choices);
@@ -201,9 +201,9 @@ void GenericExample::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Created Data Container", CreatedDataContainer, FilterParameter::Category::CreatedArray, GenericExample));
 
   {
-    QStringList linkedProps;
-    linkedProps << "Bool2"
-                << "Double2";
+    std::vector<QString> linkedProps;
+    linkedProps.push_back("Bool2");
+    linkedProps.push_back("Double2");
     parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Bool1", Bool1, FilterParameter::Category::Parameter, GenericExample, linkedProps));
     parameters.push_back(SIMPL_NEW_DOUBLE_FP("Double 2", Double2, FilterParameter::Category::Parameter, GenericExample));
   }
@@ -211,8 +211,8 @@ void GenericExample::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_DYN_CHOICE_FP("X Coordinate Array", SelectedXCoordArrayName, FilterParameter::Category::CreatedArray, GenericExample, "DataArrayList"));
 
   {
-    QStringList linkedProps;
-    linkedProps << "AttributeMatrixPath";
+    std::vector<QString> linkedProps;
+    linkedProps.push_back("AttributeMatrixPath");
     parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Bool2", Bool2, FilterParameter::Category::Parameter, GenericExample, linkedProps));
   }
   {
@@ -233,16 +233,16 @@ void GenericExample::setupFilterParameters()
 
     parameter->setDefaultValue(getDistanceMetric()); // Just set the first index
 
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Alt Choice 0");
     choices.push_back("Alt Choice 1");
     choices.push_back("Alt Choice 2");
     parameter->setChoices(choices);
-    QStringList linkedProps;
-    linkedProps << "MaxIterations"
-                << "MisorientationTolerance"
-                << "InputFile"
-                << "InputPath";
+    std::vector<QString> linkedProps;
+    linkedProps.push_back("MaxIterations");
+    linkedProps.push_back("MisorientationTolerance");
+    linkedProps.push_back("InputFile");
+    linkedProps.push_back("InputPath");
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Category::Parameter);
@@ -271,16 +271,16 @@ void GenericExample::setupFilterParameters()
 
     parameter->setDefaultValue(getAlgorithmSelection()); // Just set the first index
 
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Choice 0");
     choices.push_back("Choice 1");
     choices.push_back("Choice 2");
     parameter->setChoices(choices);
-    QStringList linkedProps;
-    linkedProps << "CreatedDataArray"
-                << "Origin"
-                << "CrystalSymmetryRotations"
-                << "DataContainerName";
+    std::vector<QString> linkedProps;
+    linkedProps.push_back("CreatedDataArray");
+    linkedProps.push_back("Origin");
+    linkedProps.push_back("CrystalSymmetryRotations");
+    linkedProps.push_back("DataContainerName");
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Category::Parameter);
@@ -316,30 +316,6 @@ void GenericExample::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_MONTAGE_SELECTION_FP("Montage Selection", MontageSelection, FilterParameter::Category::Parameter, GenericExample));
 
   setFilterParameters(parameters);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void GenericExample::readFilterParameters(AbstractFilterParametersReader* reader, int index)
-{
-
-  reader->openFilterGroup(this, index);
-  setFeatureIdsArrayPath(reader->readDataArrayPath("FeatureIdsArrayPath", getFeatureIdsArrayPath()));
-  setSelectedMultiArrayPaths(reader->readDataArrayPathVector("SelectedMultiArrayPaths", getSelectedMultiArrayPaths()));
-  setStlFilePrefix(reader->readString("StlFilePrefix", getStlFilePrefix()));
-  setMaxIterations(reader->readValue("MaxIterations", getMaxIterations()));
-  setMisorientationTolerance(reader->readValue("MisorientationTolerance", getMisorientationTolerance()));
-  setInputFile(reader->readString("InputFile", getInputFile()));
-  setInputPath(reader->readString("InputPath", getInputPath()));
-  setOutputFile(reader->readString("OutputFile", getOutputFile()));
-  setOutputPath(reader->readString("OutputPath", getOutputPath()));
-  setWriteAlignmentShifts(reader->readValue("WriteAlignmentShifts", getWriteAlignmentShifts()));
-  setConversionType(reader->readValue("ConversionType", getConversionType()));
-  setDimensions(reader->readIntVec3("Dimensions", getDimensions()));
-  setOrigin(reader->readFloatVec3("Origin", getOrigin()));
-
-  reader->closeFilterGroup();
 }
 
 // -----------------------------------------------------------------------------
@@ -747,13 +723,13 @@ QString GenericExample::getOutputPath() const
 }
 
 // -----------------------------------------------------------------------------
-void GenericExample::setSelectedMultiArrayPaths(const QVector<DataArrayPath>& value)
+void GenericExample::setSelectedMultiArrayPaths(const std::vector<DataArrayPath>& value)
 {
   m_SelectedMultiArrayPaths = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<DataArrayPath> GenericExample::getSelectedMultiArrayPaths() const
+std::vector<DataArrayPath> GenericExample::getSelectedMultiArrayPaths() const
 {
   return m_SelectedMultiArrayPaths;
 }

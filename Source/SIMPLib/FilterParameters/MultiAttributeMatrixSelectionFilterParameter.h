@@ -94,8 +94,8 @@ public:
    */
   static QString ClassName();
 
-  typedef std::function<void(QVector<DataArrayPath>)> SetterCallbackType;
-  typedef std::function<QVector<DataArrayPath>(void)> GetterCallbackType;
+  using SetterCallbackType = std::function<void(std::vector<DataArrayPath>)>;
+  using GetterCallbackType = std::function<std::vector<DataArrayPath>(void)>;
 
   struct RequirementType
   {
@@ -125,7 +125,7 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QVector<DataArrayPath>& defaultValue, Category category, const SetterCallbackType& setterCallback,
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const std::vector<DataArrayPath>& defaultValue, Category category, const SetterCallbackType& setterCallback,
                         const GetterCallbackType& getterCallback, RequirementType req, int groupIndex = -1);
 
   ~MultiAttributeMatrixSelectionFilterParameter() override;
@@ -152,12 +152,12 @@ public:
   /**
    * @brief Setter property for DefaultPaths
    */
-  void setDefaultPaths(const QVector<DataArrayPath>& value);
+  void setDefaultPaths(const std::vector<DataArrayPath>& value);
   /**
    * @brief Getter property for DefaultPaths
    * @return Value of DefaultPaths
    */
-  QVector<DataArrayPath> getDefaultPaths() const;
+  std::vector<DataArrayPath> getDefaultPaths() const;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -269,7 +269,7 @@ public:
   MultiAttributeMatrixSelectionFilterParameter& operator=(MultiAttributeMatrixSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  QVector<DataArrayPath> m_DefaultPaths = {};
+  std::vector<DataArrayPath> m_DefaultPaths = {};
   IGeometry::Types m_DefaultGeometryTypes = {};
   AttributeMatrix::Types m_DefaultAttributeMatrixTypes = {};
   std::vector<QString> m_DefaultAttributeArrayTypes = {};

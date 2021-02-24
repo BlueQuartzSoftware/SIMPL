@@ -56,7 +56,7 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
   PYB11_FILTER()
   PYB11_SHARED_POINTERS(WriteASCIIData)
   PYB11_FILTER_NEW_MACRO(WriteASCIIData)
-  PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+  PYB11_PROPERTY(std::vector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
   PYB11_PROPERTY(QString OutputPath READ getOutputPath WRITE setOutputPath)
   PYB11_PROPERTY(QString OutputFilePath READ getOutputFilePath WRITE setOutputFilePath)
   PYB11_PROPERTY(int Delimiter READ getDelimiter WRITE setDelimiter)
@@ -90,14 +90,14 @@ public:
   /**
    * @brief Setter property for SelectedDataArrayPaths
    */
-  void setSelectedDataArrayPaths(const QVector<DataArrayPath>& value);
+  void setSelectedDataArrayPaths(const std::vector<DataArrayPath>& value);
   /**
    * @brief Getter property for SelectedDataArrayPaths
    * @return Value of SelectedDataArrayPaths
    */
-  QVector<DataArrayPath> getSelectedDataArrayPaths() const;
+  std::vector<DataArrayPath> getSelectedDataArrayPaths() const;
 
-  Q_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+  Q_PROPERTY(DataArrayPathVec SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
 
   /**
    * @brief Setter property for OutputPath
@@ -237,11 +237,6 @@ public:
   void setupFilterParameters() override;
 
   /**
-   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-   */
-  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
-
-  /**
    * @brief execute Reimplemented from @see AbstractFilter class
    */
   void execute() override;
@@ -259,7 +254,7 @@ protected:
   void initialize();
 
 private:
-  QVector<DataArrayPath> m_SelectedDataArrayPaths = {QVector<DataArrayPath>()};
+  std::vector<DataArrayPath> m_SelectedDataArrayPaths = {};
   QString m_OutputPath = {""};
   QString m_OutputFilePath = {};
   int m_Delimiter = {0};

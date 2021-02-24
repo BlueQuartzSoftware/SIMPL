@@ -44,7 +44,7 @@
 //
 // -----------------------------------------------------------------------------
 MultiAttributeMatrixSelectionFilterParameter::MultiAttributeMatrixSelectionFilterParameter()
-: m_DefaultPaths(QVector<DataArrayPath>())
+: m_DefaultPaths(std::vector<DataArrayPath>())
 {
 }
 
@@ -57,7 +57,7 @@ MultiAttributeMatrixSelectionFilterParameter::~MultiAttributeMatrixSelectionFilt
 //
 // -----------------------------------------------------------------------------
 MultiAttributeMatrixSelectionFilterParameter::Pointer MultiAttributeMatrixSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName,
-                                                                                                           const QVector<DataArrayPath>& defaultValue, Category category,
+                                                                                                           const std::vector<DataArrayPath>& defaultValue, Category category,
                                                                                                            const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                                                                                                            RequirementType req, int groupIndex)
 {
@@ -175,7 +175,7 @@ void MultiAttributeMatrixSelectionFilterParameter::readJson(const QJsonObject& j
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonArray arrayObj = jsonValue.toArray();
-    QVector<DataArrayPath> dapVec;
+    std::vector<DataArrayPath> dapVec;
     for(int i = 0; i < arrayObj.size(); i++)
     {
       QJsonObject obj = arrayObj.at(i).toObject();
@@ -195,7 +195,7 @@ void MultiAttributeMatrixSelectionFilterParameter::writeJson(QJsonObject& json)
 {
   if(m_GetterCallback)
   {
-    QVector<DataArrayPath> dapVec = m_GetterCallback();
+    std::vector<DataArrayPath> dapVec = m_GetterCallback();
     QJsonArray arrayObj;
 
     for(int i = 0; i < dapVec.size(); i++)
@@ -219,11 +219,11 @@ void MultiAttributeMatrixSelectionFilterParameter::dataArrayPathRenamed(Abstract
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
 
-  QVector<DataArrayPath> paths = m_GetterCallback();
-  int count = paths.size();
+  std::vector<DataArrayPath> paths = m_GetterCallback();
+  size_t count = paths.size();
   bool updated = false;
 
-  for(int i = 0; i < count; i++)
+  for(size_t i = 0; i < count; i++)
   {
     if(paths[i] == oldPath)
     {
@@ -262,13 +262,13 @@ QString MultiAttributeMatrixSelectionFilterParameter::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void MultiAttributeMatrixSelectionFilterParameter::setDefaultPaths(const QVector<DataArrayPath>& value)
+void MultiAttributeMatrixSelectionFilterParameter::setDefaultPaths(const std::vector<DataArrayPath>& value)
 {
   m_DefaultPaths = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<DataArrayPath> MultiAttributeMatrixSelectionFilterParameter::getDefaultPaths() const
+std::vector<DataArrayPath> MultiAttributeMatrixSelectionFilterParameter::getDefaultPaths() const
 {
   return m_DefaultPaths;
 }

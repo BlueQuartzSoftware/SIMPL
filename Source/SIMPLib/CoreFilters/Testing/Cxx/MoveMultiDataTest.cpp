@@ -217,7 +217,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void TestCase(DataContainerArray::Pointer dca, QVector<DataArrayPath> sources, DataArrayPath dapDst, int whatToMove, int err)
+  void TestCase(DataContainerArray::Pointer dca, const std::vector<DataArrayPath>& sources, DataArrayPath dapDst, int whatToMove, int err)
   {
 
     QVector<AttributeMatrix::Pointer> amSourcesCopy;
@@ -465,7 +465,7 @@ public:
 
     DataContainerArray::Pointer dcaTest = dca->deepCopy();
 
-    QVector<DataArrayPath> sources = {DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, ""), DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, "")};
+    std::vector<DataArrayPath> sources = {DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, ""), DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, "")};
 
     DataArrayPath dst(k_DataContainerDstName);
 

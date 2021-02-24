@@ -183,7 +183,7 @@ void RawBinaryReader::setupFilterParameters()
     parameter->setSetterCallback(SIMPL_BIND_SETTER(RawBinaryReader, this, Endian));
     parameter->setGetterCallback(SIMPL_BIND_GETTER(RawBinaryReader, this, Endian));
 
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Little");
     choices.push_back("Big");
     parameter->setChoices(choices);

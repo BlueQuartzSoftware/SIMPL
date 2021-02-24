@@ -77,15 +77,15 @@ void CopyObject::setupFilterParameters()
     parameter->setPropertyName("ObjectToCopy");
     parameter->setSetterCallback(SIMPL_BIND_SETTER(CopyObject, this, ObjectToCopy));
     parameter->setGetterCallback(SIMPL_BIND_GETTER(CopyObject, this, ObjectToCopy));
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Data Container");
     choices.push_back("Attribute Matrix");
     choices.push_back("Attribute Array");
     parameter->setChoices(choices);
-    QStringList linkedProps;
-    linkedProps << "DataContainerToCopy"
-                << "AttributeMatrixToCopy"
-                << "AttributeArrayToCopy";
+    std::vector<QString> linkedProps;
+    linkedProps.push_back("DataContainerToCopy");
+    linkedProps.push_back("AttributeMatrixToCopy");
+    linkedProps.push_back("AttributeArrayToCopy");
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Category::Parameter);

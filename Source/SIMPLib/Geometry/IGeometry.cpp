@@ -375,9 +375,9 @@ QString IGeometry::LengthUnitToString(IGeometry::LengthUnit t)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<QString> IGeometry::GetAllLengthUnitStrings()
+std::vector<QString> IGeometry::GetAllLengthUnitStrings()
 {
-  QVector<QString> lengthUnits;
+  std::vector<QString> lengthUnits;
 
   lengthUnits.push_back(SIMPL::Geometry::k_Yoctometer);  // ("Yoctometer");
   lengthUnits.push_back(SIMPL::Geometry::k_Zeptometer);  // ("Zeptometer");

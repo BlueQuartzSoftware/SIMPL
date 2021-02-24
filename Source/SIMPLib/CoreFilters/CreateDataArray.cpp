@@ -291,13 +291,13 @@ void CreateDataArray::setupFilterParameters()
 
     parameter->setDefaultValue(Manual);
 
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Manual");
     choices.push_back("Random With Range");
     parameter->setChoices(choices);
-    QStringList linkedProps;
-    linkedProps << "InitializationValue"
-                << "InitializationRange";
+    std::vector<QString> linkedProps;
+    linkedProps.push_back("InitializationValue");
+    linkedProps.push_back("InitializationRange");
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Category::Parameter);

@@ -72,11 +72,11 @@ void MoveData::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  QStringList linkedProps;
-  linkedProps << "DataContainerDestination"
-              << "AttributeMatrixSource"
-              << "AttributeMatrixDestination"
-              << "DataArraySource";
+  std::vector<QString> linkedProps;
+  linkedProps.push_back("DataContainerDestination");
+  linkedProps.push_back("AttributeMatrixSource");
+  linkedProps.push_back("AttributeMatrixDestination");
+  linkedProps.push_back("DataArraySource");
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Object to Move");
@@ -85,7 +85,7 @@ void MoveData::setupFilterParameters()
     parameter->setGetterCallback(SIMPL_BIND_GETTER(MoveData, this, WhatToMove));
 
     parameter->setDefaultValue(getWhatToMove()); // Just set the first index
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Attribute Matrix");
     choices.push_back("Attribute Array");
     parameter->setChoices(choices);

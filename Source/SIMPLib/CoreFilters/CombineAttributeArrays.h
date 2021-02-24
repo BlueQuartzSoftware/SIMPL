@@ -56,7 +56,7 @@ class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
   PYB11_FILTER()
   PYB11_SHARED_POINTERS(CombineAttributeArrays)
   PYB11_FILTER_NEW_MACRO(CombineAttributeArrays)
-  PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+  PYB11_PROPERTY(std::vector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
   PYB11_PROPERTY(QString StackedDataArrayName READ getStackedDataArrayName WRITE setStackedDataArrayName)
   PYB11_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
   PYB11_END_BINDINGS()
@@ -95,14 +95,14 @@ public:
   /**
    * @brief Setter property for SelectedDataArrayPaths
    */
-  void setSelectedDataArrayPaths(const QVector<DataArrayPath>& value);
+  void setSelectedDataArrayPaths(const std::vector<DataArrayPath>& value);
   /**
    * @brief Getter property for SelectedDataArrayPaths
    * @return Value of SelectedDataArrayPaths
    */
-  QVector<DataArrayPath> getSelectedDataArrayPaths() const;
+  std::vector<DataArrayPath> getSelectedDataArrayPaths() const;
 
-  Q_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+  Q_PROPERTY(DataArrayPathVec SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
 
   /**
    * @brief Setter property for StackedDataArrayName
@@ -191,11 +191,6 @@ public:
   void setupFilterParameters() override;
 
   /**
-   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-   */
-  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
-
-  /**
    * @brief execute Reimplemented from @see AbstractFilter class
    */
   void execute() override;
@@ -221,7 +216,7 @@ protected:
 private:
   IDataArrayWkPtrType m_StackedDataPtr;
 
-  QVector<DataArrayPath> m_SelectedDataArrayPaths = {QVector<DataArrayPath>()};
+  std::vector<DataArrayPath> m_SelectedDataArrayPaths = {};
   QString m_StackedDataArrayName = {SIMPL::GeneralData::CombinedData};
   bool m_NormalizeData = {false};
   bool m_MoveValues = {false};

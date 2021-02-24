@@ -35,6 +35,8 @@
 
 #include "DataContainerArray.h"
 
+#include <type_traits>
+
 #include <QtCore/QTextStream>
 
 #include <hdf5.h>
@@ -45,6 +47,81 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Montages/AbstractMontage.h"
 #include "SIMPLib/Montages/GridMontage.h"
+
+namespace
+{
+template <class Container>
+bool validateNumberOfTuplesImpl(const DataContainerArray& dca, AbstractFilter* filter, const Container& paths)
+{
+  static_assert(std::is_same_v<typename Container::value_type, DataArrayPath>);
+
+  using size_type = typename Container::size_type;
+
+  if(paths.size() <= 1)
+  {
+    return false;
+  }
+  QVector<IDataArrayShPtrType> dataArrays;
+  bool valid = true;
+  QString ss;
+  if(!paths.at(0).isValid() && nullptr != filter)
+  {
+    ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2")
+             .arg(__LINE__)
+             .arg(paths.at(0).serialize());
+    filter->setErrorCondition(-10000, ss);
+    valid = false;
+    return valid;
+  }
+  IDataArrayShPtrType array0 = dca.getPrereqIDataArrayFromPath(filter, paths.at(0));
+  if(nullptr == array0.get() && nullptr != filter)
+  {
+    ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
+    filter->setErrorCondition(-10100, ss);
+    valid = false;
+    return valid;
+  }
+
+  dataArrays.push_back(array0);
+  for(size_type i = 1; i < paths.size(); i++)
+  {
+    if(!paths.at(i).isValid() && nullptr != filter)
+    {
+      ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2")
+               .arg(__LINE__)
+               .arg(paths.at(i).serialize());
+      filter->setErrorCondition(-10000, ss);
+      valid = false;
+      return valid;
+    }
+    IDataArrayShPtrType nextArray = dca.getPrereqIDataArrayFromPath(filter, paths.at(i));
+    if(nullptr == nextArray.get() && nullptr != filter)
+    {
+      ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
+      filter->setErrorCondition(-10100, ss);
+      valid = false;
+      return valid;
+    }
+
+    dataArrays.push_back(nextArray);
+  }
+  size_t numTuples = dataArrays[0]->getNumberOfTuples();
+  for(int32_t i = 1; i < dataArrays.size(); i++)
+  {
+    if(numTuples != dataArrays[i]->getNumberOfTuples() && nullptr != filter)
+    {
+      ss = QObject::tr("The number of tuples for the DataArray %1 is %2 and for DataArray %3 is %4. The number of tuples must match.")
+               .arg(dataArrays[0]->getName())
+               .arg(dataArrays[0]->getNumberOfTuples())
+               .arg(dataArrays[i]->getName())
+               .arg(dataArrays[i]->getNumberOfTuples());
+      filter->setErrorCondition(-10200, ss);
+      valid = false;
+    }
+  }
+  return valid;
+}
+} // namespace
 
 // -----------------------------------------------------------------------------
 //
@@ -770,69 +847,13 @@ AttributeMatrix::Pointer DataContainerArray::getPrereqAttributeMatrixFromPath(Ab
 // -----------------------------------------------------------------------------
 bool DataContainerArray::validateNumberOfTuples(AbstractFilter* filter, const QVector<DataArrayPath>& paths) const
 {
-  if(paths.size() <= 1)
-  {
-    return false;
-  }
-  QVector<IDataArrayShPtrType> dataArrays;
-  bool valid = true;
-  QString ss;
-  if(!paths.at(0).isValid() && nullptr != filter)
-  {
-    ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2")
-             .arg(__LINE__)
-             .arg(paths.at(0).serialize());
-    filter->setErrorCondition(-10000, ss);
-    valid = false;
-    return valid;
-  }
-  IDataArrayShPtrType array0 = getPrereqIDataArrayFromPath(filter, paths.at(0));
-  if(nullptr == array0.get() && nullptr != filter)
-  {
-    ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
-    filter->setErrorCondition(-10100, ss);
-    valid = false;
-    return valid;
-  }
+  return validateNumberOfTuplesImpl(*this, filter, paths);
+}
 
-  dataArrays.push_back(array0);
-  for(int32_t i = 1; i < paths.size(); i++)
-  {
-    if(!paths.at(i).isValid() && nullptr != filter)
-    {
-      ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2")
-               .arg(__LINE__)
-               .arg(paths.at(i).serialize());
-      filter->setErrorCondition(-10000, ss);
-      valid = false;
-      return valid;
-    }
-    IDataArrayShPtrType nextArray = getPrereqIDataArrayFromPath(filter, paths.at(i));
-    if(nullptr == nextArray.get() && nullptr != filter)
-    {
-      ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
-      filter->setErrorCondition(-10100, ss);
-      valid = false;
-      return valid;
-    }
-
-    dataArrays.push_back(nextArray);
-  }
-  size_t numTuples = dataArrays[0]->getNumberOfTuples();
-  for(int32_t i = 1; i < dataArrays.size(); i++)
-  {
-    if(numTuples != dataArrays[i]->getNumberOfTuples() && nullptr != filter)
-    {
-      ss = QObject::tr("The number of tuples for the DataArray %1 is %2 and for DataArray %3 is %4. The number of tuples must match.")
-               .arg(dataArrays[0]->getName())
-               .arg(dataArrays[0]->getNumberOfTuples())
-               .arg(dataArrays[i]->getName())
-               .arg(dataArrays[i]->getNumberOfTuples());
-      filter->setErrorCondition(-10200, ss);
-      valid = false;
-    }
-  }
-  return valid;
+// -----------------------------------------------------------------------------
+bool DataContainerArray::validateNumberOfTuples(AbstractFilter* filter, const std::vector<DataArrayPath>& paths) const
+{
+  return validateNumberOfTuplesImpl(*this, filter, paths);
 }
 
 // -----------------------------------------------------------------------------

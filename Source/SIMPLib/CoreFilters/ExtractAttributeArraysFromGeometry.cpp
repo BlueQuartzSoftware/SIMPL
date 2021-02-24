@@ -107,7 +107,7 @@ void ExtractAttributeArraysFromGeometry::setupFilterParameters()
     parameter->setPropertyName("DataContainerName");
     parameter->setSetterCallback(SIMPL_BIND_SETTER(ExtractAttributeArraysFromGeometry, this, DataContainerName));
     parameter->setGetterCallback(SIMPL_BIND_GETTER(ExtractAttributeArraysFromGeometry, this, DataContainerName));
-    QStringList linkedProps = {
+    std::vector<QString> linkedProps = {
         "XBoundsArrayPath",           "YBoundsArrayPath",        "ZBoundsArrayPath", // RectGridGeom
         "SharedVertexListArrayPath0",                                                // VertexGeom
         "SharedVertexListArrayPath1", "SharedEdgeListArrayPath",                     // EdgeGeom

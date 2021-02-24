@@ -125,8 +125,8 @@ void MultiDataContainerSelectionWidget::setupGui()
   // If the DataArrayPath is updated in the filter, update the widget
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
-  QStringList dcNames = m_FilterParameter->getGetterCallback()();
-  for(int i = 0; i < dcNames.size(); i++)
+  std::vector<QString> dcNames = m_FilterParameter->getGetterCallback()();
+  for(size_t i = 0; i < dcNames.size(); i++)
   {
     QString dcName = dcNames[i];
     QListWidgetItem* item = new QListWidgetItem(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"), dcName);
@@ -460,7 +460,7 @@ void MultiDataContainerSelectionWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void MultiDataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  QStringList dcNames;
+  std::vector<QString> dcNames;
   for(int i = 0; i < selectedDataContainersListWidget->count(); i++)
   {
     dcNames.push_back(selectedDataContainersListWidget->item(i)->text());

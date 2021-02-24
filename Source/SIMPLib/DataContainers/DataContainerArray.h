@@ -633,6 +633,17 @@ public:
 
   /**
    * @brief validateNumberOfTuples This method will validate that all of the DataArray
+   * paths supplied are valid, return non-nullptr DataArray pointers, and that all have the
+   * same number of tuples.  It will return false if and any of the checks fail, or
+   * if the QVector of input paths has 0 or 1 element.
+   * @param filter The filter calling the validation
+   * @param paths The paths that should be checked
+   * @return bool Validation check
+   */
+  bool validateNumberOfTuples(AbstractFilter* filter, const std::vector<DataArrayPath>& paths) const;
+
+  /**
+   * @brief validateNumberOfTuples This method will validate that all of the DataArray
    * objects supplied are non-nullptr and that all are have the same number of tuples.
    * It will return false if and any of the checks fail, or
    * if the QVector of input DataArray objects has 0 or 1 element.

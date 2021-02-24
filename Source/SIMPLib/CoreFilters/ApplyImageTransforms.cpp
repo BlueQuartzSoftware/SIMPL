@@ -263,13 +263,13 @@ QString ApplyImageTransforms::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void ApplyImageTransforms::setImageDataContainers(const QStringList& value)
+void ApplyImageTransforms::setImageDataContainers(const std::vector<QString>& value)
 {
   m_ImageDataContainers = value;
 }
 
 // -----------------------------------------------------------------------------
-QStringList ApplyImageTransforms::getImageDataContainers() const
+std::vector<QString> ApplyImageTransforms::getImageDataContainers() const
 {
   return m_ImageDataContainers;
 }

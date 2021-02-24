@@ -115,19 +115,19 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, ComparisonInputsAdvanced defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, QVector<QString> choices, bool showOperators, int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, const std::vector<QString>& choices, bool showOperators, int groupIndex = -1);
 
   ~ComparisonSelectionAdvancedFilterParameter() override;
 
   /**
    * @brief Setter property for Choices
    */
-  void setChoices(const QVector<QString>& value);
+  void setChoices(const std::vector<QString>& value);
   /**
    * @brief Getter property for Choices
    * @return Value of Choices
    */
-  QVector<QString> getChoices() const;
+  std::vector<QString> getChoices() const;
 
   /**
    * @brief Setter property for ShowOperators
@@ -229,7 +229,7 @@ public:
   ComparisonSelectionAdvancedFilterParameter& operator=(ComparisonSelectionAdvancedFilterParameter&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  QVector<QString> m_Choices = {};
+  std::vector<QString> m_Choices = {};
   bool m_ShowOperators = {};
   IGeometry::Types m_DefaultGeometryTypes = {};
   AttributeMatrix::Types m_DefaultAttributeMatrixTypes = {};

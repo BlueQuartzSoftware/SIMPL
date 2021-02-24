@@ -95,8 +95,8 @@ public:
    */
   static QString ClassName();
 
-  using SetterCallbackType = std::function<void(QStringList)>;
-  using GetterCallbackType = std::function<QStringList(void)>;
+  using SetterCallbackType = std::function<void(std::vector<QString>)>;
+  using GetterCallbackType = std::function<std::vector<QString>(void)>;
 
   struct RequirementType
   {
@@ -126,7 +126,7 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QStringList& defaultValue, Category category, const SetterCallbackType& setterCallback,
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const std::vector<QString>& defaultValue, Category category, const SetterCallbackType& setterCallback,
                         const GetterCallbackType& getterCallback, const RequirementType& req, int groupIndex = -1);
 
   ~MultiDataContainerSelectionFilterParameter() override;
@@ -153,12 +153,12 @@ public:
   /**
    * @brief Setter property for DefaultNames
    */
-  void setDefaultNames(const QStringList& value);
+  void setDefaultNames(const std::vector<QString>& value);
   /**
    * @brief Getter property for DefaultNames
    * @return Value of DefaultNames
    */
-  QStringList getDefaultNames() const;
+  std::vector<QString> getDefaultNames() const;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -270,7 +270,7 @@ public:
   MultiDataContainerSelectionFilterParameter& operator=(MultiDataContainerSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  QStringList m_DefaultNames = {};
+  std::vector<QString> m_DefaultNames = {};
   IGeometry::Types m_DefaultGeometryTypes = {};
   AttributeMatrix::Types m_DefaultAttributeMatrixTypes = {};
   std::vector<QString> m_DefaultAttributeArrayTypes = {};

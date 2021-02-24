@@ -205,19 +205,6 @@ void CombineAttributeArrays::setupFilterParameters()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CombineAttributeArrays::readFilterParameters(AbstractFilterParametersReader* reader, int index)
-{
-  reader->openFilterGroup(this, index);
-  setSelectedDataArrayPaths(reader->readDataArrayPathVector("SelectedDataArrayPaths", getSelectedDataArrayPaths()));
-  setStackedDataArrayName(reader->readString("StackedDataArrayName", getStackedDataArrayName()));
-  setNormalizeData(reader->readValue("NormalizeData", getNormalizeData()));
-  setMoveValues(reader->readValue("MoveValues", getMoveValues()));
-  reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 template <typename DataType>
 void verifyArrayList(AbstractFilter* filter, QVector<IDataArray::WeakPointer> ptrArray)
 {
@@ -255,7 +242,7 @@ void CombineAttributeArrays::dataCheck()
     return;
   }
 
-  QVector<DataArrayPath> paths = getSelectedDataArrayPaths();
+  std::vector<DataArrayPath> paths = getSelectedDataArrayPaths();
 
   if(!DataArrayPath::ValidateVector(paths))
   {
@@ -265,7 +252,7 @@ void CombineAttributeArrays::dataCheck()
 
   int32_t totalComps = 0;
 
-  for(int32_t i = 0; i < paths.count(); i++)
+  for(int32_t i = 0; i < paths.size(); i++)
   {
     DataArrayPath path = paths.at(i);
     IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, path);
@@ -292,7 +279,7 @@ void CombineAttributeArrays::dataCheck()
 
   if(getMoveValues() && getInPreflight())
   {
-    QVector<DataArrayPath> paths = getSelectedDataArrayPaths();
+    std::vector<DataArrayPath> paths = getSelectedDataArrayPaths();
     for(DataArrayPath path : paths)
     {
       AttributeMatrix::Pointer attrMat = getDataContainerArray()->getAttributeMatrix(path);
@@ -316,8 +303,8 @@ void CombineAttributeArrays::execute()
 
   if(getMoveValues())
   {
-    QVector<DataArrayPath> paths = getSelectedDataArrayPaths();
-    for(DataArrayPath path : paths)
+    std::vector<DataArrayPath> paths = getSelectedDataArrayPaths();
+    for(const DataArrayPath& path : paths)
     {
       AttributeMatrix::Pointer attrMat = getDataContainerArray()->getAttributeMatrix(path);
       attrMat->removeAttributeArray(path.getDataArrayName());
@@ -332,8 +319,8 @@ std::list<DataArrayPath> CombineAttributeArrays::getDeletedPaths()
 {
   if(getMoveValues())
   {
-    QList<DataArrayPath> tList = getSelectedDataArrayPaths().toList();
-    return std::list<DataArrayPath>(tList.begin(), tList.end());
+    std::vector<DataArrayPath> tList = getSelectedDataArrayPaths();
+    return std::list<DataArrayPath>(tList.cbegin(), tList.cend());
   }
   return std::list<DataArrayPath>();
 }
@@ -440,13 +427,13 @@ QString CombineAttributeArrays::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void CombineAttributeArrays::setSelectedDataArrayPaths(const QVector<DataArrayPath>& value)
+void CombineAttributeArrays::setSelectedDataArrayPaths(const std::vector<DataArrayPath>& value)
 {
   m_SelectedDataArrayPaths = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<DataArrayPath> CombineAttributeArrays::getSelectedDataArrayPaths() const
+std::vector<DataArrayPath> CombineAttributeArrays::getSelectedDataArrayPaths() const
 {
   return m_SelectedDataArrayPaths;
 }

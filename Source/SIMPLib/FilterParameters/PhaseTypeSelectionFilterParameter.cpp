@@ -55,7 +55,7 @@ PhaseTypeSelectionFilterParameter::~PhaseTypeSelectionFilterParameter() = defaul
 PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::Create(const QString& humanLabel, const QString& phaseTypeDataProperty, const DataArrayPath& attributeMatrixDefault,
                                                                                      Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                                                                                      const QString& PhaseTypesArrayName, const QString& phaseTypeCountProperty, const QString& attributeMatrixProperty,
-                                                                                     const QStringList& phaseListChoices, int groupIndex)
+                                                                                     const std::vector<QString>& phaseListChoices, int groupIndex)
 {
   PhaseTypeSelectionFilterParameter::Pointer ptr = PhaseTypeSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -214,13 +214,13 @@ DataArrayPath PhaseTypeSelectionFilterParameter::getAttributeMatrixPathDefault()
 }
 
 // -----------------------------------------------------------------------------
-void PhaseTypeSelectionFilterParameter::setPhaseListChoices(const QStringList& value)
+void PhaseTypeSelectionFilterParameter::setPhaseListChoices(const std::vector<QString>& value)
 {
   m_PhaseListChoices = value;
 }
 
 // -----------------------------------------------------------------------------
-QStringList PhaseTypeSelectionFilterParameter::getPhaseListChoices() const
+std::vector<QString> PhaseTypeSelectionFilterParameter::getPhaseListChoices() const
 {
   return m_PhaseListChoices;
 }

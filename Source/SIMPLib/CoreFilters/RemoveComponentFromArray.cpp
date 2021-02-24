@@ -83,9 +83,9 @@ void RemoveComponentFromArray::setupFilterParameters()
   parameters.push_back(
       SIMPL_NEW_DA_WITH_LINKED_AM_FP("Reduced Attribute Array", ReducedArrayArrayName, SelectedArrayPath, SelectedArrayPath, FilterParameter::Category::CreatedArray, RemoveComponentFromArray));
 
-  QStringList linkedProps;
+  std::vector<QString> linkedProps;
   linkedProps.clear();
-  linkedProps << "NewArrayArrayName";
+  linkedProps.push_back("NewArrayArrayName");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Save Removed Component in New Array", SaveRemovedComponent, FilterParameter::Category::Parameter, RemoveComponentFromArray, linkedProps));
 
   setFilterParameters(parameters);

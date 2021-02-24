@@ -144,10 +144,22 @@ public:
   static bool ValidateVector(const QVector<DataArrayPath>& other);
 
   /**
+   * @brief checks that a vector of paths have the same data container and attribute matrix
+   * @return true if the paths in the vector have the same data container and attribute matrix, false otherwise
+   */
+  static bool ValidateVector(const std::vector<DataArrayPath>& other);
+
+  /**
    * @brief Gets the data array names from a QVector of DataArrayPaths.
    * @return Returns the data array names from a QVector of DataArrayPaths, in a QList.
    */
   static QList<QString> GetDataArrayNames(const QVector<DataArrayPath>& paths);
+
+  /**
+   * @brief Gets the data array names from a QVector of DataArrayPaths.
+   * @return Returns the data array names from a QVector of DataArrayPaths, in a QList.
+   */
+  static std::vector<QString> GetDataArrayNames(const std::vector<DataArrayPath>& paths);
 
   /**
    * @brief Gets the attribute matrix path from a QVector of DataArrayPaths.
@@ -155,6 +167,13 @@ public:
    * of DataArrayPaths.
    */
   static DataArrayPath GetAttributeMatrixPath(const QVector<DataArrayPath>& paths);
+
+  /**
+   * @brief Gets the attribute matrix path from a QVector of DataArrayPaths.
+   * @return Returns the attribute matrix path as a DataArrayPath from a QVector
+   * of DataArrayPaths.
+   */
+  static DataArrayPath GetAttributeMatrixPath(const std::vector<DataArrayPath>& paths);
 
   /**
    * @brief ConvertToQVector Converts a QStringList of DataArrayPaths to a QVector of DataArrayPaths
@@ -503,5 +522,8 @@ private:
   DataArrayPathHelper::DataType m_DataType = DataArrayPathHelper::DataType::None;
 };
 
+using DataArrayPathVec = std::vector<DataArrayPath>;
+
 Q_DECLARE_METATYPE(DataArrayPath)
 Q_DECLARE_METATYPE(DataArrayPathHelper::DataType)
+Q_DECLARE_METATYPE(DataArrayPathVec)

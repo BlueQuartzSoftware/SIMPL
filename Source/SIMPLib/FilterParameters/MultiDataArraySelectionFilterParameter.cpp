@@ -44,7 +44,7 @@
 //
 // -----------------------------------------------------------------------------
 MultiDataArraySelectionFilterParameter::MultiDataArraySelectionFilterParameter()
-: m_DefaultPaths(QVector<DataArrayPath>())
+: m_DefaultPaths(std::vector<DataArrayPath>())
 {
 }
 
@@ -56,7 +56,7 @@ MultiDataArraySelectionFilterParameter::~MultiDataArraySelectionFilterParameter(
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QVector<DataArrayPath>& defaultValue,
+MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const std::vector<DataArrayPath>& defaultValue,
                                                                                                Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                                                                                                RequirementType req, int groupIndex)
 {
@@ -174,7 +174,7 @@ void MultiDataArraySelectionFilterParameter::readJson(const QJsonObject& json)
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonArray arrayObj = jsonValue.toArray();
-    QVector<DataArrayPath> dapVec;
+    std::vector<DataArrayPath> dapVec;
     for(int i = 0; i < arrayObj.size(); i++)
     {
       QJsonObject obj = arrayObj.at(i).toObject();
@@ -194,7 +194,7 @@ void MultiDataArraySelectionFilterParameter::writeJson(QJsonObject& json)
 {
   if(m_GetterCallback)
   {
-    QVector<DataArrayPath> dapVec = m_GetterCallback();
+    std::vector<DataArrayPath> dapVec = m_GetterCallback();
     QJsonArray arrayObj;
 
     for(int i = 0; i < dapVec.size(); i++)
@@ -218,7 +218,7 @@ void MultiDataArraySelectionFilterParameter::dataArrayPathRenamed(AbstractFilter
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
 
-  QVector<DataArrayPath> paths = m_GetterCallback();
+  std::vector<DataArrayPath> paths = m_GetterCallback();
   int count = paths.size();
   bool updated = false;
 
@@ -261,13 +261,13 @@ QString MultiDataArraySelectionFilterParameter::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionFilterParameter::setDefaultPaths(const QVector<DataArrayPath>& value)
+void MultiDataArraySelectionFilterParameter::setDefaultPaths(const std::vector<DataArrayPath>& value)
 {
   m_DefaultPaths = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<DataArrayPath> MultiDataArraySelectionFilterParameter::getDefaultPaths() const
+std::vector<DataArrayPath> MultiDataArraySelectionFilterParameter::getDefaultPaths() const
 {
   return m_DefaultPaths;
 }

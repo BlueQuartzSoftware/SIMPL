@@ -92,7 +92,7 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(QString InputPath READ getInputPath WRITE setInputPath)
   PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
   PYB11_PROPERTY(QString OutputPath READ getOutputPath WRITE setOutputPath)
-  PYB11_PROPERTY(QVector<DataArrayPath> SelectedMultiArrayPaths READ getSelectedMultiArrayPaths WRITE setSelectedMultiArrayPaths)
+  PYB11_PROPERTY(std::vector<DataArrayPath> SelectedMultiArrayPaths READ getSelectedMultiArrayPaths WRITE setSelectedMultiArrayPaths)
   PYB11_PROPERTY(bool WriteAlignmentShifts READ getWriteAlignmentShifts WRITE setWriteAlignmentShifts)
   PYB11_PROPERTY(int ConversionType READ getConversionType WRITE setConversionType)
   PYB11_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
@@ -402,14 +402,14 @@ public:
   /**
    * @brief Setter property for SelectedMultiArrayPaths
    */
-  void setSelectedMultiArrayPaths(const QVector<DataArrayPath>& value);
+  void setSelectedMultiArrayPaths(const std::vector<DataArrayPath>& value);
   /**
    * @brief Getter property for SelectedMultiArrayPaths
    * @return Value of SelectedMultiArrayPaths
    */
-  QVector<DataArrayPath> getSelectedMultiArrayPaths() const;
+  std::vector<DataArrayPath> getSelectedMultiArrayPaths() const;
 
-  Q_PROPERTY(QVector<DataArrayPath> SelectedMultiArrayPaths READ getSelectedMultiArrayPaths WRITE setSelectedMultiArrayPaths)
+  Q_PROPERTY(DataArrayPathVec SelectedMultiArrayPaths READ getSelectedMultiArrayPaths WRITE setSelectedMultiArrayPaths)
 
   /**
    * @brief Setter property for WriteAlignmentShifts
@@ -680,12 +680,6 @@ public:
   void setupFilterParameters() override;
 
   /**
-   * @brief This method will read the options from a file
-   * @param reader The reader that is used to read the options from a file
-   */
-  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
-
-  /**
    * @brief readFilterParametersFromJson Reads the filter parameters from a file
    * @param reader Reader that is used to read the parameters from a file
    */
@@ -743,7 +737,7 @@ private:
   QString m_InputPath = {};
   QString m_OutputFile = {};
   QString m_OutputPath = {};
-  QVector<DataArrayPath> m_SelectedMultiArrayPaths = {};
+  std::vector<DataArrayPath> m_SelectedMultiArrayPaths = {};
   bool m_WriteAlignmentShifts = {};
   int m_ConversionType = {};
   IntVec3Type m_Dimensions = {};

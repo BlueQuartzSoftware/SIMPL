@@ -56,8 +56,8 @@ ComparisonSelectionFilterParameter::~ComparisonSelectionFilterParameter() = defa
 //
 // -----------------------------------------------------------------------------
 ComparisonSelectionFilterParameter::Pointer ComparisonSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, ComparisonInputs defaultValue, Category category,
-                                                                                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, QVector<QString> choices,
-                                                                                       bool showOperators, int groupIndex)
+                                                                                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                                                                                       const std::vector<QString>& choices, bool showOperators, int groupIndex)
 {
   ComparisonSelectionFilterParameter::Pointer ptr = ComparisonSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -205,13 +205,13 @@ QString ComparisonSelectionFilterParameter::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void ComparisonSelectionFilterParameter::setChoices(const QVector<QString>& value)
+void ComparisonSelectionFilterParameter::setChoices(const std::vector<QString>& value)
 {
   m_Choices = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<QString> ComparisonSelectionFilterParameter::getChoices() const
+std::vector<QString> ComparisonSelectionFilterParameter::getChoices() const
 {
   return m_Choices;
 }

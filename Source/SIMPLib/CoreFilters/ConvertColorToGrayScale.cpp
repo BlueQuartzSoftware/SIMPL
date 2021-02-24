@@ -203,15 +203,15 @@ void ConvertColorToGrayScale::setupFilterParameters()
 
   FilterParameterVectorType parameters;
   {
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Luminosity");
     choices.push_back("Average");
     choices.push_back("Lightness");
     choices.push_back("SingleChannel");
 
-    QStringList linkedProps;
-    linkedProps << "ColorWeights"
-                << "ColorChannel";
+    std::vector<QString> linkedProps;
+    linkedProps.push_back("ColorWeights");
+    linkedProps.push_back("ColorChannel");
 
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Conversion Algorithm");
@@ -233,7 +233,7 @@ void ConvertColorToGrayScale::setupFilterParameters()
   req.amTypes = AttributeMatrix::Types(1, AttributeMatrix::Type::Cell);
   parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Input Attribute Arrays", InputDataArrayVector, FilterParameter::Category::RequiredArray, ConvertColorToGrayScale, req));
 
-  QStringList linkedProps("OutputAttributeMatrixName");
+  std::vector<QString> linkedProps = {"OutputAttributeMatrixName"};
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Create Attribute Matrix", CreateNewAttributeMatrix, FilterParameter::Category::Parameter, ConvertColorToGrayScale, linkedProps));
   parameters.push_back(SIMPL_NEW_STRING_FP("Output Cell Attribute Matrix", OutputAttributeMatrixName, FilterParameter::Category::CreatedArray, ConvertColorToGrayScale));
 
@@ -267,7 +267,7 @@ void ConvertColorToGrayScale::dataCheck()
     setErrorCondition(-62102, message);
   }
 
-  if(getInputDataArrayVector().isEmpty())
+  if(getInputDataArrayVector().empty())
   {
     QString message = QObject::tr("At least one Attribute Array must be selected");
     setErrorCondition(-62103, message);
@@ -299,7 +299,7 @@ void ConvertColorToGrayScale::dataCheck()
   }
 
   // Get the list of checked array names from the input m_Data arrays list
-  QList<QString> arrayNames = DataArrayPath::GetDataArrayNames(getInputDataArrayVector());
+  std::vector<QString> arrayNames = DataArrayPath::GetDataArrayNames(getInputDataArrayVector());
   m_OutputArrayPaths.clear();
   m_OutputArrayPaths.resize(arrayNames.size());
   for(int32_t i = 0; i < arrayNames.size(); i++)
@@ -350,7 +350,7 @@ void ConvertColorToGrayScale::execute()
     return;
   }
 
-  QVector<DataArrayPath> inputArrayPaths = getInputDataArrayVector();
+  std::vector<DataArrayPath> inputArrayPaths = getInputDataArrayVector();
   qint32 size = inputArrayPaths.size();
 
   for(qint32 i = 0; i < size; i++)
@@ -541,13 +541,13 @@ int ConvertColorToGrayScale::getColorChannel() const
 }
 
 // -----------------------------------------------------------------------------
-void ConvertColorToGrayScale::setInputDataArrayVector(const QVector<DataArrayPath>& value)
+void ConvertColorToGrayScale::setInputDataArrayVector(const std::vector<DataArrayPath>& value)
 {
   m_InputDataArrayVector = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<DataArrayPath> ConvertColorToGrayScale::getInputDataArrayVector() const
+std::vector<DataArrayPath> ConvertColorToGrayScale::getInputDataArrayVector() const
 {
   return m_InputDataArrayVector;
 }

@@ -52,7 +52,7 @@ LinkedDataContainerSelectionFilterParameter::~LinkedDataContainerSelectionFilter
 LinkedDataContainerSelectionFilterParameter::Pointer LinkedDataContainerSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue,
                                                                                                          Category category, const SetterCallbackType& setterCallback,
                                                                                                          const GetterCallbackType& getterCallback, const RequirementType& req,
-                                                                                                         const QStringList& linkedProperties, int groupIndex)
+                                                                                                         const std::vector<QString>& linkedProperties, int groupIndex)
 {
   LinkedDataContainerSelectionFilterParameter::Pointer ptr = LinkedDataContainerSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -161,13 +161,13 @@ QString LinkedDataContainerSelectionFilterParameter::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void LinkedDataContainerSelectionFilterParameter::setLinkedProperties(const QStringList& value)
+void LinkedDataContainerSelectionFilterParameter::setLinkedProperties(const std::vector<QString>& value)
 {
   m_LinkedProperties = value;
 }
 
 // -----------------------------------------------------------------------------
-QStringList LinkedDataContainerSelectionFilterParameter::getLinkedProperties() const
+std::vector<QString> LinkedDataContainerSelectionFilterParameter::getLinkedProperties() const
 {
   return m_LinkedProperties;
 }

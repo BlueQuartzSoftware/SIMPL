@@ -178,8 +178,8 @@ public:
   {
     int32_t err = 0;
 
-    QVector<DataArrayPath> dataArrayPathsVecFirst = {vectorArrayPath, scalarArrayPath};
-    QVector<DataArrayPath> dataArrayPathsScalarFirst = {scalarArrayPath, vectorArrayPath};
+    std::vector<DataArrayPath> dataArrayPathsVecFirst = {vectorArrayPath, scalarArrayPath};
+    std::vector<DataArrayPath> dataArrayPathsScalarFirst = {scalarArrayPath, vectorArrayPath};
 
     bool isBool = false;
 

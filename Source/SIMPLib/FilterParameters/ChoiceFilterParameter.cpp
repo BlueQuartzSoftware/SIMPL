@@ -52,7 +52,7 @@ ChoiceFilterParameter::~ChoiceFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 ChoiceFilterParameter::Pointer ChoiceFilterParameter::Create(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback,
-                                                             const GetterCallbackType& getterCallback, QVector<QString> choices, bool editable, int groupIndex)
+                                                             const GetterCallbackType& getterCallback, const std::vector<QString>& choices, bool editable, int groupIndex)
 
 {
   ChoiceFilterParameter::Pointer ptr = ChoiceFilterParameter::New();
@@ -130,13 +130,13 @@ QString ChoiceFilterParameter::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void ChoiceFilterParameter::setChoices(const QVector<QString>& value)
+void ChoiceFilterParameter::setChoices(const std::vector<QString>& value)
 {
   m_Choices = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<QString> ChoiceFilterParameter::getChoices() const
+std::vector<QString> ChoiceFilterParameter::getChoices() const
 {
   return m_Choices;
 }

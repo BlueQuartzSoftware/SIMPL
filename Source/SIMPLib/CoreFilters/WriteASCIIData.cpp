@@ -145,12 +145,12 @@ void WriteASCIIData::setupFilterParameters()
     parameter->setPropertyName("OutputStyle");
     parameter->setSetterCallback(SIMPL_BIND_SETTER(WriteASCIIData, this, OutputStyle));
     parameter->setGetterCallback(SIMPL_BIND_GETTER(WriteASCIIData, this, OutputStyle));
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Multiple Files");
     choices.push_back("Single File");
     parameter->setChoices(choices);
 
-    QStringList linkedProps = {"OutputPath", "FileExtension", "MaxValPerLine", "OutputFilePath"};
+    std::vector<QString> linkedProps = {"OutputPath", "FileExtension", "MaxValPerLine", "OutputFilePath"};
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Category::Parameter);
@@ -173,7 +173,7 @@ void WriteASCIIData::setupFilterParameters()
     parameter->setSetterCallback(SIMPL_BIND_SETTER(WriteASCIIData, this, Delimiter));
     parameter->setGetterCallback(SIMPL_BIND_GETTER(WriteASCIIData, this, Delimiter));
 
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back(", (comma)");
     choices.push_back("; (semicolon)");
     choices.push_back("  (space)");
@@ -188,20 +188,6 @@ void WriteASCIIData::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Arrays to Export", SelectedDataArrayPaths, FilterParameter::Category::RequiredArray, WriteASCIIData, req));
   }
   setFilterParameters(parameters);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void WriteASCIIData::readFilterParameters(AbstractFilterParametersReader* reader, int index)
-{
-  reader->openFilterGroup(this, index);
-  setSelectedDataArrayPaths(reader->readDataArrayPathVector("SelectedDataArrayPaths", getSelectedDataArrayPaths()));
-  setOutputPath(reader->readString("OutputPath", getOutputPath()));
-  setDelimiter(reader->readValue("Delimiter", getDelimiter()));
-  setFileExtension(reader->readString("FileExtension", getFileExtension()));
-  setMaxValPerLine(reader->readValue("MaxValPerLine", getMaxValPerLine()));
-  reader->closeFilterGroup();
 }
 
 // -----------------------------------------------------------------------------
@@ -271,14 +257,14 @@ void WriteASCIIData::dataCheck()
     return;
   }
 
-  if(m_SelectedDataArrayPaths.isEmpty())
+  if(m_SelectedDataArrayPaths.empty())
   {
     QString ss = QObject::tr("At least one Attribute Array must be selected");
     setErrorCondition(-11007, ss);
     return;
   }
 
-  QVector<DataArrayPath> paths = getSelectedDataArrayPaths();
+  std::vector<DataArrayPath> paths = getSelectedDataArrayPaths();
 
   if(!DataArrayPath::ValidateVector(paths))
   {
@@ -329,7 +315,7 @@ void WriteASCIIData::execute()
     return;
   }
 
-  if(m_SelectedDataArrayPaths.count() != m_SelectedWeakPtrVector.count())
+  if(m_SelectedDataArrayPaths.size() != m_SelectedWeakPtrVector.count())
   {
     QString ss = QObject::tr("The number of selected Attribute Arrays does not equal the number of internal weak pointers");
     setErrorCondition(-11010, ss);
@@ -672,13 +658,13 @@ QString WriteASCIIData::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void WriteASCIIData::setSelectedDataArrayPaths(const QVector<DataArrayPath>& value)
+void WriteASCIIData::setSelectedDataArrayPaths(const std::vector<DataArrayPath>& value)
 {
   m_SelectedDataArrayPaths = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<DataArrayPath> WriteASCIIData::getSelectedDataArrayPaths() const
+std::vector<DataArrayPath> WriteASCIIData::getSelectedDataArrayPaths() const
 {
   return m_SelectedDataArrayPaths;
 }

@@ -378,7 +378,7 @@ class ConvertColorToGrayScaleTest
     DataContainerArray::Pointer m_dca = DataContainerArray::New();
     m_dca->setName("TEST DATA CONTAINER ARRAY");
     m_dca->insertOrAssign(dc);
-    QVector<DataArrayPath> daps;
+    std::vector<DataArrayPath> daps;
     for(const AttributeMatrix::Pointer& eachAM : dc->getAttributeMatrices())
     {
       QString amName = eachAM->getName();
@@ -387,7 +387,7 @@ class ConvertColorToGrayScaleTest
         // Make sure not to add an output AA
         if(!eachAAName.contains(m_outputArrayPrefix))
         {
-          daps.append(DataArrayPath(dc->getName(), amName, eachAAName));
+          daps.push_back(DataArrayPath(dc->getName(), amName, eachAAName));
         }
       }
     }

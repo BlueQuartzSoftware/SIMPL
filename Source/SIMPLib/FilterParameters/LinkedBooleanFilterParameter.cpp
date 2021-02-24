@@ -49,8 +49,8 @@ LinkedBooleanFilterParameter::~LinkedBooleanFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 LinkedBooleanFilterParameter::Pointer LinkedBooleanFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const bool& defaultValue, Category category,
-                                                                           const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, QStringList conditionalProperties,
-                                                                           int groupIndex)
+                                                                           const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                                                                           const std::vector<QString>& conditionalProperties, int groupIndex)
 {
   LinkedBooleanFilterParameter::Pointer ptr = LinkedBooleanFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -126,13 +126,13 @@ QString LinkedBooleanFilterParameter::ClassName()
 }
 
 // -----------------------------------------------------------------------------
-void LinkedBooleanFilterParameter::setConditionalProperties(const QStringList& value)
+void LinkedBooleanFilterParameter::setConditionalProperties(const std::vector<QString>& value)
 {
   m_ConditionalProperties = value;
 }
 
 // -----------------------------------------------------------------------------
-QStringList LinkedBooleanFilterParameter::getConditionalProperties() const
+std::vector<QString> LinkedBooleanFilterParameter::getConditionalProperties() const
 {
   return m_ConditionalProperties;
 }

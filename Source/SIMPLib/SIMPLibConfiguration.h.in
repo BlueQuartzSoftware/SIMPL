@@ -99,6 +99,8 @@
 #include "SIMPLib/Common/QtBackwardCompatibilityMacro.h"
 
 #include <QtCore/QMetaType>
+#include <QtCore/QString>
+#include <vector>
 Q_DECLARE_METATYPE(uint8_t)
 Q_DECLARE_METATYPE(int8_t)
 Q_DECLARE_METATYPE(uint16_t)
@@ -107,7 +109,8 @@ Q_DECLARE_METATYPE(uint32_t)
 Q_DECLARE_METATYPE(int32_t)
 Q_DECLARE_METATYPE(uint64_t)
 Q_DECLARE_METATYPE(int64_t)
-
+using QStringVec = std::vector<QString>;
+Q_DECLARE_METATYPE(QStringVec)
 #endif
 
 #cmakedefine SIMPL_USE_GHC_FILESYSTEM

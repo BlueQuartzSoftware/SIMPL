@@ -400,7 +400,7 @@ void ImportAsciDataArray::setupFilterParameters()
     parameter->setSetterCallback(SIMPL_BIND_SETTER(ImportAsciDataArray, this, Delimiter));
     parameter->setGetterCallback(SIMPL_BIND_GETTER(ImportAsciDataArray, this, Delimiter));
 
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back(", (comma)");
     choices.push_back("; (semicolon)");
     choices.push_back("  (space)");

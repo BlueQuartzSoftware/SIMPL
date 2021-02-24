@@ -345,10 +345,10 @@ void GenerateTiltSeries::setupFilterParameters()
     parameter->setHumanLabel("Rotation Axis");
     parameter->setPropertyName("RotationAxis");
 
-    QVector<QString> choices; // Please add choices to the choices QVector to finish this widget
-    choices << "X Axis"
-            << "Y Axis"
-            << "Z Axis";
+    std::vector<QString> choices; // Please add choices to the choices QVector to finish this widget
+    choices.push_back("X Axis");
+    choices.push_back("Y Axis");
+    choices.push_back("Z Axis");
     parameter->setChoices(choices);
     parameter->setCategory(FilterParameter::Category::Parameter);
     parameter->setSetterCallback(SIMPL_BIND_SETTER(GenerateTiltSeries, this, RotationAxis));

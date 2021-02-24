@@ -201,7 +201,7 @@ public:
 
       DataArrayPath path4 = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, SIMPL::GeneralData::ThresholdArray);
 
-      QVector<DataArrayPath> vector;
+      std::vector<DataArrayPath> vector;
       vector.push_back(path1);
       vector.push_back(path2);
       vector.push_back(path4);

@@ -138,7 +138,7 @@ public:
    * @brief getPhaseTypeStrings
    * @param strings
    */
-  static void getPhaseTypeStrings(QStringList& strings);
+  static void getPhaseTypeStrings(std::vector<QString>& strings);
 
   /**
    * @brief getPhaseTypeEnums

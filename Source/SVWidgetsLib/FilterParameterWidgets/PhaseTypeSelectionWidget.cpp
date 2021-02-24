@@ -270,7 +270,7 @@ void PhaseTypeSelectionWidget::updatePhaseComboBoxes()
 
   phaseListWidget->clear();
   // Get our list of Phase Type Strings
-  QStringList phaseListChoices = m_FilterParameter->getPhaseListChoices();
+  std::vector<QString> phaseListChoices = m_FilterParameter->getPhaseListChoices();
 
   for(int i = 1; i < phaseCount; i++)
   {

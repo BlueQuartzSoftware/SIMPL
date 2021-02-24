@@ -117,6 +117,7 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
   label->setText(getFilterParameter()->getHumanLabel());
 
   DataContainerSelectionFilterParameter::RequirementType reqs;
+  reqs.dcGeometryTypes = m_FilterParameter->getDefaultGeometryTypes();
   m_SelectedDataContainerPath->setDataContainerRequirements(reqs);
   m_SelectedDataContainerPath->setFilter(getFilter());
 
@@ -149,11 +150,11 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
   connect(m_SelectedDataContainerPath, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)));
   connect(this, SIGNAL(unlockDataArrayPathSelection(QToolButton*)), m_SelectedDataContainerPath, SLOT(selectionWidgetUnlocked(QToolButton*)));
 
-  QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath>>();
+  std::vector<DataArrayPath> selectedPaths = m_FilterParameter->getGetterCallback()();
   DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(selectedPaths);
   m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
   m_SelectedDataContainerPath->setPropertyName(getFilterParameter()->getHumanLabel());
-  for(int i = 0; i < selectedPaths.size(); i++)
+  for(size_t i = 0; i < selectedPaths.size(); i++)
   {
     DataArrayPath selectedPath = selectedPaths[i];
     attributeMatricesOrderWidget->addItem(selectedPath.getAttributeMatrixName());
@@ -550,7 +551,7 @@ void MultiAttributeMatrixSelectionWidget::filterNeedsInputParameters(AbstractFil
 {
   DataArrayPath amPath = DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter);
 
-  QVector<DataArrayPath> selectedPaths;
+  std::vector<DataArrayPath> selectedPaths;
   for(int i = 0; i < attributeMatricesOrderWidget->count(); i++)
   {
     DataArrayPath path = amPath;
@@ -581,7 +582,7 @@ void MultiAttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyNa
 
   if(propertyName == getFilterParameter()->getPropertyName())
   {
-    QVector<DataArrayPath> updatedPaths = m_FilterParameter->getGetterCallback()();
+    std::vector<DataArrayPath> updatedPaths = m_FilterParameter->getGetterCallback()();
     DataArrayPath& dap = updatedPaths[0];
     QString dataArrayName = dap.getDataArrayName();
     dap.setDataArrayName("");

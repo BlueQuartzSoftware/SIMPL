@@ -36,6 +36,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include <QtCore/QJsonObject>
 
@@ -111,19 +112,19 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                        QVector<QString> choices, bool editable, int groupIndex = -1);
+                        const std::vector<QString>& choices, bool editable, int groupIndex = -1);
 
   ~ChoiceFilterParameter() override;
 
   /**
    * @brief Setter property for Choices
    */
-  void setChoices(const QVector<QString>& value);
+  void setChoices(const std::vector<QString>& value);
   /**
    * @brief Getter property for Choices
    * @return Value of Choices
    */
-  QVector<QString> getChoices() const;
+  std::vector<QString> getChoices() const;
 
   /**
    * @brief Setter property for Editable
@@ -198,7 +199,7 @@ public:
   ChoiceFilterParameter& operator=(ChoiceFilterParameter&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  QVector<QString> m_Choices = {};
+  std::vector<QString> m_Choices = {};
   bool m_Editable = {};
   ChoiceFilterParameter::SetterCallbackType m_SetterCallback = {};
   ChoiceFilterParameter::GetterCallbackType m_GetterCallback = {};

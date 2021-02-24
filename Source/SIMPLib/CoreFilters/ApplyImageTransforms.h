@@ -71,14 +71,14 @@ public:
   /**
    * @brief Setter property for ImageDataContainers
    */
-  void setImageDataContainers(const QStringList& value);
+  void setImageDataContainers(const std::vector<QString>& value);
   /**
    * @brief Getter property for ImageDataContainers
    * @return Value of ImageDataContainers
    */
-  QStringList getImageDataContainers() const;
+  std::vector<QString> getImageDataContainers() const;
 
-  Q_PROPERTY(QStringList ImageDataContainers READ getImageDataContainers WRITE setImageDataContainers)
+  Q_PROPERTY(QStringVec ImageDataContainers READ getImageDataContainers WRITE setImageDataContainers)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -149,7 +149,7 @@ protected:
   void initialize();
 
 private:
-  QStringList m_ImageDataContainers = {};
+  std::vector<QString> m_ImageDataContainers = {};
 
 public:
   /* Rule of 5: All special member functions should be defined if any are defined.

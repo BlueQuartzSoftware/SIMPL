@@ -55,7 +55,7 @@ class SIMPLib_EXPORT ConvertColorToGrayScale : public AbstractFilter
   PYB11_PROPERTY(int ConversionAlgorithm READ getConversionAlgorithm WRITE setConversionAlgorithm)
   PYB11_PROPERTY(FloatVec3Type ColorWeights READ getColorWeights WRITE setColorWeights)
   PYB11_PROPERTY(int ColorChannel READ getColorChannel WRITE setColorChannel)
-  PYB11_PROPERTY(QVector<DataArrayPath> InputDataArrayVector READ getInputDataArrayVector WRITE setInputDataArrayVector)
+  PYB11_PROPERTY(std::vector<DataArrayPath> InputDataArrayVector READ getInputDataArrayVector WRITE setInputDataArrayVector)
   PYB11_PROPERTY(bool CreateNewAttributeMatrix READ getCreateNewAttributeMatrix WRITE setCreateNewAttributeMatrix)
   PYB11_PROPERTY(QString OutputAttributeMatrixName READ getOutputAttributeMatrixName WRITE setOutputAttributeMatrixName)
   PYB11_PROPERTY(QString OutputArrayPrefix READ getOutputArrayPrefix WRITE setOutputArrayPrefix)
@@ -140,14 +140,14 @@ public:
   /**
    * @brief Setter property for InputDataArrayVector
    */
-  void setInputDataArrayVector(const QVector<DataArrayPath>& value);
+  void setInputDataArrayVector(const std::vector<DataArrayPath>& value);
   /**
    * @brief Getter property for InputDataArrayVector
    * @return Value of InputDataArrayVector
    */
-  QVector<DataArrayPath> getInputDataArrayVector() const;
+  std::vector<DataArrayPath> getInputDataArrayVector() const;
 
-  Q_PROPERTY(QVector<DataArrayPath> InputDataArrayVector READ getInputDataArrayVector WRITE setInputDataArrayVector)
+  Q_PROPERTY(DataArrayPathVec InputDataArrayVector READ getInputDataArrayVector WRITE setInputDataArrayVector)
 
   /**
    * @brief Setter property for CreateNewAttributeMatrix
@@ -256,7 +256,7 @@ private:
   int m_ConversionAlgorithm = {0};
   FloatVec3Type m_ColorWeights = {0.2125f, 0.7154f, 0.0721f};
   int m_ColorChannel = {0};
-  QVector<DataArrayPath> m_InputDataArrayVector = {};
+  std::vector<DataArrayPath> m_InputDataArrayVector = {};
   bool m_CreateNewAttributeMatrix = {false};
   QString m_OutputAttributeMatrixName = {"GrayScaleData"};
   QString m_OutputArrayPrefix = {};

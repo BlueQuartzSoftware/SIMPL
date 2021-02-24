@@ -54,9 +54,9 @@ class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
   PYB11_FILTER_NEW_MACRO(MoveMultiData)
   PYB11_PROPERTY(int WhatToMove READ getWhatToMove WRITE setWhatToMove)
   PYB11_PROPERTY(DataArrayPath DataContainerDestination READ getDataContainerDestination WRITE setDataContainerDestination)
-  PYB11_PROPERTY(QVector<DataArrayPath> AttributeMatrixSources READ getAttributeMatrixSources WRITE setAttributeMatrixSources)
+  PYB11_PROPERTY(std::vector<DataArrayPath> AttributeMatrixSources READ getAttributeMatrixSources WRITE setAttributeMatrixSources)
   PYB11_PROPERTY(DataArrayPath AttributeMatrixDestination READ getAttributeMatrixDestination WRITE setAttributeMatrixDestination)
-  PYB11_PROPERTY(QVector<DataArrayPath> DataArraySources READ getDataArraySources WRITE setDataArraySources)
+  PYB11_PROPERTY(std::vector<DataArrayPath> DataArraySources READ getDataArraySources WRITE setDataArraySources)
   PYB11_END_BINDINGS()
   // End Python bindings declarations
 
@@ -108,14 +108,14 @@ public:
   /**
    * @brief Setter property for AttributeMatrixSources
    */
-  void setAttributeMatrixSources(const QVector<DataArrayPath>& value);
+  void setAttributeMatrixSources(const std::vector<DataArrayPath>& value);
   /**
    * @brief Getter property for AttributeMatrixSources
    * @return Value of AttributeMatrixSources
    */
-  QVector<DataArrayPath> getAttributeMatrixSources() const;
+  std::vector<DataArrayPath> getAttributeMatrixSources() const;
 
-  Q_PROPERTY(QVector<DataArrayPath> AttributeMatrixSources READ getAttributeMatrixSources WRITE setAttributeMatrixSources)
+  Q_PROPERTY(DataArrayPathVec AttributeMatrixSources READ getAttributeMatrixSources WRITE setAttributeMatrixSources)
 
   /**
    * @brief Setter property for AttributeMatrixDestination
@@ -132,14 +132,14 @@ public:
   /**
    * @brief Setter property for DataArraySources
    */
-  void setDataArraySources(const QVector<DataArrayPath>& value);
+  void setDataArraySources(const std::vector<DataArrayPath>& value);
   /**
    * @brief Getter property for DataArraySources
    * @return Value of DataArraySources
    */
-  QVector<DataArrayPath> getDataArraySources() const;
+  std::vector<DataArrayPath> getDataArraySources() const;
 
-  Q_PROPERTY(QVector<DataArrayPath> DataArraySources READ getDataArraySources WRITE setDataArraySources)
+  Q_PROPERTY(DataArrayPathVec DataArraySources READ getDataArraySources WRITE setDataArraySources)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -192,11 +192,6 @@ public:
   void setupFilterParameters() override;
 
   /**
-   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-   */
-  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
-
-  /**
    * @brief execute Reimplemented from @see AbstractFilter class
    */
   void execute() override;
@@ -223,7 +218,7 @@ public:
 private:
   int m_WhatToMove = {};
   DataArrayPath m_DataContainerDestination = {"", "", ""};
-  QVector<DataArrayPath> m_AttributeMatrixSources = {};
+  std::vector<DataArrayPath> m_AttributeMatrixSources = {};
   DataArrayPath m_AttributeMatrixDestination = {};
-  QVector<DataArrayPath> m_DataArraySources = {};
+  std::vector<DataArrayPath> m_DataArraySources = {};
 };

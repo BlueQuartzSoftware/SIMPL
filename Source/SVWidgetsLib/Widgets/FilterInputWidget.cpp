@@ -510,13 +510,12 @@ void FilterInputWidget::linkConditionalWidgets(FilterParameterVectorType& filter
 
     if(nullptr != filterParameterPtr)
     {
-      QStringList linkedProps = filterParameterPtr->getConditionalProperties();
+      std::vector<QString> linkedProps = filterParameterPtr->getConditionalProperties();
 
-      QStringListIterator iter = QStringListIterator(linkedProps);
       QWidget* checkboxSource = m_PropertyToWidget[filterParameterPtr->getPropertyName()];
-      while(iter.hasNext())
+
+      for(const QString& propName : linkedProps)
       {
-        QString propName = iter.next();
         QWidget* w = nullptr;
         if(m_PropertyToWidget.contains(propName))
         {
@@ -529,6 +528,7 @@ void FilterInputWidget::linkConditionalWidgets(FilterParameterVectorType& filter
           }
         }
       }
+
       LinkedBooleanWidget* boolWidget = qobject_cast<LinkedBooleanWidget*>(checkboxSource);
       if(nullptr != boolWidget)
       {
@@ -541,14 +541,13 @@ void FilterInputWidget::linkConditionalWidgets(FilterParameterVectorType& filter
 
     if(nullptr != optionPtr2.get())
     {
-      QStringList linkedProps = optionPtr2->getLinkedProperties();
+      std::vector<QString> linkedProps = optionPtr2->getLinkedProperties();
 
-      QStringListIterator iter = QStringListIterator(linkedProps);
       QWidget* checkboxSource = m_PropertyToWidget[optionPtr2->getPropertyName()];
-      while(iter.hasNext())
+
+      for(const QString& propName : linkedProps)
       {
         QWidget* w = nullptr;
-        QString propName = iter.next();
         if(m_PropertyToWidget.contains(propName))
         {
           w = m_PropertyToWidget[propName];
@@ -572,14 +571,13 @@ void FilterInputWidget::linkConditionalWidgets(FilterParameterVectorType& filter
 
     if(nullptr != optionPtr3)
     {
-      QStringList linkedProps = optionPtr3->getLinkedProperties();
+      std::vector<QString> linkedProps = optionPtr3->getLinkedProperties();
 
-      QStringListIterator iter = QStringListIterator(linkedProps);
       QWidget* checkboxSource = m_PropertyToWidget[optionPtr3->getPropertyName()];
-      while(iter.hasNext())
+
+      for(const QString& propName : linkedProps)
       {
         QWidget* w = nullptr;
-        QString propName = iter.next();
         if(m_PropertyToWidget.contains(propName))
         {
           w = m_PropertyToWidget[propName];

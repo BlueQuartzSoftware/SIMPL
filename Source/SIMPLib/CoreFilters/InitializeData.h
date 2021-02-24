@@ -58,7 +58,7 @@ class SIMPLib_EXPORT InitializeData : public AbstractFilter
   PYB11_FILTER()
   PYB11_SHARED_POINTERS(InitializeData)
   PYB11_FILTER_NEW_MACRO(InitializeData)
-  PYB11_PROPERTY(QVector<DataArrayPath> CellAttributeMatrixPaths READ getCellAttributeMatrixPaths WRITE setCellAttributeMatrixPaths)
+  PYB11_PROPERTY(std::vector<DataArrayPath> CellAttributeMatrixPaths READ getCellAttributeMatrixPaths WRITE setCellAttributeMatrixPaths)
   PYB11_PROPERTY(int XMin READ getXMin WRITE setXMin)
   PYB11_PROPERTY(int YMin READ getYMin WRITE setYMin)
   PYB11_PROPERTY(int ZMin READ getZMin WRITE setZMin)
@@ -105,14 +105,14 @@ public:
   /**
    * @brief Setter property for CellAttributeMatrixPaths
    */
-  void setCellAttributeMatrixPaths(const QVector<DataArrayPath>& value);
+  void setCellAttributeMatrixPaths(const std::vector<DataArrayPath>& value);
   /**
    * @brief Getter property for CellAttributeMatrixPaths
    * @return Value of CellAttributeMatrixPaths
    */
-  QVector<DataArrayPath> getCellAttributeMatrixPaths() const;
+  std::vector<DataArrayPath> getCellAttributeMatrixPaths() const;
 
-  Q_PROPERTY(QVector<DataArrayPath> CellAttributeMatrixPaths READ getCellAttributeMatrixPaths WRITE setCellAttributeMatrixPaths)
+  Q_PROPERTY(DataArrayPathVec CellAttributeMatrixPaths READ getCellAttributeMatrixPaths WRITE setCellAttributeMatrixPaths)
 
   /**
    * @brief Setter property for XMin
@@ -285,11 +285,6 @@ public:
   void setupFilterParameters() override;
 
   /**
-   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-   */
-  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
-
-  /**
    * @brief execute Reimplemented from @see AbstractFilter class
    */
   void execute() override;
@@ -307,7 +302,7 @@ protected:
   void initialize();
 
 private:
-  QVector<DataArrayPath> m_CellAttributeMatrixPaths = {};
+  std::vector<DataArrayPath> m_CellAttributeMatrixPaths = {};
   int m_XMin = {0};
   int m_YMin = {0};
   int m_ZMin = {0};

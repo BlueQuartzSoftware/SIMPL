@@ -112,12 +112,12 @@ void SetOriginResolutionImageGeom::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Image Geometry to Modify", DataContainerName, FilterParameter::Category::RequiredArray, SetOriginResolutionImageGeom, req));
   }
 
-  QStringList linkedProps("Origin");
+  std::vector<QString> linkedProps = {"Origin"};
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Change Origin", ChangeOrigin, FilterParameter::Category::Parameter, SetOriginResolutionImageGeom, linkedProps));
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Category::Parameter, SetOriginResolutionImageGeom));
 
   linkedProps.clear();
-  linkedProps << "Spacing";
+  linkedProps.push_back("Spacing");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Change Spacing", ChangeResolution, FilterParameter::Category::Parameter, SetOriginResolutionImageGeom, linkedProps));
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Spacing", Spacing, FilterParameter::Category::Parameter, SetOriginResolutionImageGeom));
   parameters.back()->setLegacyPropertyName("Resolution");

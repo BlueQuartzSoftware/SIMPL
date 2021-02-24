@@ -110,19 +110,19 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, const bool& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, QStringList conditionalProperties, int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, const std::vector<QString>& conditionalProperties, int groupIndex = -1);
 
   ~LinkedBooleanFilterParameter() override;
 
   /**
    * @brief Setter property for ConditionalProperties
    */
-  void setConditionalProperties(const QStringList& value);
+  void setConditionalProperties(const std::vector<QString>& value);
   /**
    * @brief Getter property for ConditionalProperties
    * @return Value of ConditionalProperties
    */
-  QStringList getConditionalProperties() const;
+  std::vector<QString> getConditionalProperties() const;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -187,7 +187,7 @@ public:
   LinkedBooleanFilterParameter& operator=(LinkedBooleanFilterParameter&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  QStringList m_ConditionalProperties = {};
+  std::vector<QString> m_ConditionalProperties = {};
   LinkedBooleanFilterParameter::SetterCallbackType m_SetterCallback = {};
   LinkedBooleanFilterParameter::GetterCallbackType m_GetterCallback = {};
 };

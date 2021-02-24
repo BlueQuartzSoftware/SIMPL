@@ -71,11 +71,11 @@ void MoveMultiData::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  QStringList linkedProps;
-  linkedProps << "DataContainerDestination"
-              << "AttributeMatrixSources"
-              << "AttributeMatrixDestination"
-              << "DataArraySources";
+  std::vector<QString> linkedProps;
+  linkedProps.push_back("DataContainerDestination");
+  linkedProps.push_back("AttributeMatrixSources");
+  linkedProps.push_back("AttributeMatrixDestination");
+  linkedProps.push_back("DataArraySources");
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Object to Move");
@@ -84,7 +84,7 @@ void MoveMultiData::setupFilterParameters()
     parameter->setGetterCallback(SIMPL_BIND_GETTER(MoveMultiData, this, WhatToMove));
 
     parameter->setDefaultValue(getWhatToMove()); // Just set the first index
-    QVector<QString> choices;
+    std::vector<QString> choices;
     choices.push_back("Attribute Matrix");
     choices.push_back("Attribute Array");
     parameter->setChoices(choices);
@@ -117,20 +117,6 @@ void MoveMultiData::setupFilterParameters()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MoveMultiData::readFilterParameters(AbstractFilterParametersReader* reader, int index)
-{
-  reader->openFilterGroup(this, index);
-  setWhatToMove(reader->readValue("WhatToMove", getWhatToMove()));
-  setDataContainerDestination(reader->readDataArrayPath("DataContainerDestination", getDataContainerDestination()));
-  setAttributeMatrixSources(reader->readDataArrayPathVector("AttributeMatrixSource", getAttributeMatrixSources()));
-  setAttributeMatrixDestination(reader->readDataArrayPath("AttributeMatrixDestination", getAttributeMatrixDestination()));
-  setDataArraySources(reader->readDataArrayPathVector("DataArraySources", getDataArraySources()));
-  reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void MoveMultiData::initialize()
 {
 }
@@ -142,16 +128,16 @@ void MoveMultiData::dataCheck()
 {
   clearErrorCode();
   clearWarningCode();
-  QVector<DataArrayPath> amSrcPaths = getAttributeMatrixSources();
+  std::vector<DataArrayPath> amSrcPaths = getAttributeMatrixSources();
   DataArrayPath amDestPath = getAttributeMatrixDestination();
-  QVector<DataArrayPath> daSrcPaths = getDataArraySources();
+  std::vector<DataArrayPath> daSrcPaths = getDataArraySources();
 
   if(getWhatToMove() == k_MoveAttributeMatrix)
   {
     DataContainer::Pointer amDestDataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerDestination());
 
     // Repeat for each AttributeMatrix
-    for(int i = 0; i < amSrcPaths.size(); i++)
+    for(size_t i = 0; i < amSrcPaths.size(); i++)
     {
       DataContainer::Pointer amSrcDataContainer = getDataContainerArray()->getPrereqDataContainer(this, amSrcPaths[i].getDataContainerName());
       AttributeMatrix::Pointer amSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, amSrcPaths[i], -301);
@@ -362,13 +348,13 @@ DataArrayPath MoveMultiData::getDataContainerDestination() const
 }
 
 // -----------------------------------------------------------------------------
-void MoveMultiData::setAttributeMatrixSources(const QVector<DataArrayPath>& value)
+void MoveMultiData::setAttributeMatrixSources(const std::vector<DataArrayPath>& value)
 {
   m_AttributeMatrixSources = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<DataArrayPath> MoveMultiData::getAttributeMatrixSources() const
+std::vector<DataArrayPath> MoveMultiData::getAttributeMatrixSources() const
 {
   return m_AttributeMatrixSources;
 }
@@ -386,13 +372,13 @@ DataArrayPath MoveMultiData::getAttributeMatrixDestination() const
 }
 
 // -----------------------------------------------------------------------------
-void MoveMultiData::setDataArraySources(const QVector<DataArrayPath>& value)
+void MoveMultiData::setDataArraySources(const std::vector<DataArrayPath>& value)
 {
   m_DataArraySources = value;
 }
 
 // -----------------------------------------------------------------------------
-QVector<DataArrayPath> MoveMultiData::getDataArraySources() const
+std::vector<DataArrayPath> MoveMultiData::getDataArraySources() const
 {
   return m_DataArraySources;
 }

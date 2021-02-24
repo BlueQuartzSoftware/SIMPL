@@ -116,19 +116,19 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, const RequirementType& req, const QStringList& linkedProperties, int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, const RequirementType& req, const std::vector<QString>& linkedProperties, int groupIndex = -1);
 
   ~LinkedDataContainerSelectionFilterParameter() override;
 
   /**
    * @brief Setter property for LinkedProperties
    */
-  void setLinkedProperties(const QStringList& value);
+  void setLinkedProperties(const std::vector<QString>& value);
   /**
    * @brief Getter property for LinkedProperties
    * @return Value of LinkedProperties
    */
-  QStringList getLinkedProperties() const;
+  std::vector<QString> getLinkedProperties() const;
 
   /**
    * @brief Setter property for DefaultGeometryTypes
@@ -208,7 +208,7 @@ public:
   LinkedDataContainerSelectionFilterParameter& operator=(LinkedDataContainerSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  QStringList m_LinkedProperties = {};
+  std::vector<QString> m_LinkedProperties = {};
   IGeometry::Types m_DefaultGeometryTypes = {};
   LinkedDataContainerSelectionFilterParameter::SetterCallbackType m_SetterCallback = {};
   LinkedDataContainerSelectionFilterParameter::GetterCallbackType m_GetterCallback = {};

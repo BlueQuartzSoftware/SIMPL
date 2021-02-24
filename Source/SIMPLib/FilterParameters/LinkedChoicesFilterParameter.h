@@ -95,19 +95,19 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                        QVector<QString> choices, QStringList linkedProperties, int groupIndex = -1);
+                        const std::vector<QString>& choices, const std::vector<QString>& linkedProperties, int groupIndex = -1);
 
   ~LinkedChoicesFilterParameter() override;
 
   /**
    * @brief Setter property for LinkedProperties
    */
-  void setLinkedProperties(const QStringList& value);
+  void setLinkedProperties(const std::vector<QString>& value);
   /**
    * @brief Getter property for LinkedProperties
    * @return Value of LinkedProperties
    */
-  QStringList getLinkedProperties() const;
+  std::vector<QString> getLinkedProperties() const;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -142,5 +142,5 @@ public:
   LinkedChoicesFilterParameter& operator=(LinkedChoicesFilterParameter&&) = delete;      // Move Assignment Not Implemented
 
 private:
-  QStringList m_LinkedProperties = {};
+  std::vector<QString> m_LinkedProperties = {};
 };

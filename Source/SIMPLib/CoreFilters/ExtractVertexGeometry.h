@@ -57,7 +57,7 @@ class SIMPLib_EXPORT ExtractVertexGeometry : public AbstractFilter
   PYB11_FILTER_NEW_MACRO(ExtractVertexGeometry)
   PYB11_PROPERTY(int ArrayHandling READ getArrayHandling WRITE setArrayHandling)
   PYB11_PROPERTY(DataArrayPath SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
-  PYB11_PROPERTY(QVector<DataArrayPath> IncludedDataArrayPaths READ getIncludedDataArrayPaths WRITE setIncludedDataArrayPaths)
+  PYB11_PROPERTY(std::vector<DataArrayPath> IncludedDataArrayPaths READ getIncludedDataArrayPaths WRITE setIncludedDataArrayPaths)
   PYB11_PROPERTY(DataArrayPath VertexDataContainerName READ getVertexDataContainerName WRITE setVertexDataContainerName)
   PYB11_END_BINDINGS()
   // End Python bindings declarations
@@ -117,14 +117,14 @@ public:
   /**
    * @brief Setter property for IncludedDataArrayPaths
    */
-  void setIncludedDataArrayPaths(const QVector<DataArrayPath>& value);
+  void setIncludedDataArrayPaths(const std::vector<DataArrayPath>& value);
   /**
    * @brief Getter property for IncludedDataArrayPaths
    * @return Value of IncludedDataArrayPaths
    */
-  QVector<DataArrayPath> getIncludedDataArrayPaths() const;
+  std::vector<DataArrayPath> getIncludedDataArrayPaths() const;
 
-  Q_PROPERTY(QVector<DataArrayPath> IncludedDataArrayPaths READ getIncludedDataArrayPaths WRITE setIncludedDataArrayPaths)
+  Q_PROPERTY(DataArrayPathVec IncludedDataArrayPaths READ getIncludedDataArrayPaths WRITE setIncludedDataArrayPaths)
 
   /**
    * @brief Setter property for VertexDataContainerName
@@ -217,11 +217,11 @@ protected:
 private:
   int m_ArrayHandling = {static_cast<int>(ArrayHandlingType::MoveArrays)};
   DataArrayPath m_SelectedDataContainerName = {};
-  QVector<DataArrayPath> m_IncludedDataArrayPaths = {};
+  std::vector<DataArrayPath> m_IncludedDataArrayPaths = {};
   DataArrayPath m_VertexDataContainerName = {"VertexDataContainer", "", ""};
 
-  QVector<QString> m_NewDCGeometryChoices;
-  QVector<QString> m_ArrayHandlingChoices;
+  std::vector<QString> m_NewDCGeometryChoices;
+  std::vector<QString> m_ArrayHandlingChoices;
 
 public:
   ExtractVertexGeometry(const ExtractVertexGeometry&) = delete;            // Copy Constructor Not Implemented

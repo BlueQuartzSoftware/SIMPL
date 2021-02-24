@@ -107,7 +107,7 @@ void ScaleVolume::setupFilterParameters()
 
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Scaling Factor", ScaleFactor, FilterParameter::Category::Parameter, ScaleVolume));
 
-  QStringList linkedProps("DataContainerName");
+  std::vector<QString> linkedProps = {"DataContainerName"};
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Apply to Image Geometry", ApplyToVoxelVolume, FilterParameter::Category::Parameter, ScaleVolume, linkedProps));
   {
     DataContainerSelectionFilterParameter::RequirementType req;
@@ -115,7 +115,7 @@ void ScaleVolume::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Image Geometry to Scale", DataContainerName, FilterParameter::Category::RequiredArray, ScaleVolume, req));
   }
   linkedProps.clear();
-  linkedProps << "SurfaceDataContainerName";
+  linkedProps.push_back("SurfaceDataContainerName");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Apply to Surface Geometry", ApplyToSurfaceMesh, FilterParameter::Category::Parameter, ScaleVolume, linkedProps));
   {
     DataContainerSelectionFilterParameter::RequirementType req;
