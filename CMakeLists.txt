@@ -287,8 +287,7 @@ set(SIMPL_Qt5_COMPONENTS Core Network)
 if( SIMPL_Group_WIDGETS)
   set(SIMPL_Qt5_COMPONENTS Core Widgets Network Gui Concurrent Svg Xml OpenGL PrintSupport)
 endif()
-set(USE_QtWebEngine FALSE)
-CMP_AddQt5Support( "${SIMPL_Qt5_COMPONENTS}" "${USE_QtWebEngine}" "${SIMPLProj_BINARY_DIR}" "SIMPL")
+CMP_AddQt5Support( "${SIMPL_Qt5_COMPONENTS}" "${SIMPLProj_BINARY_DIR}" "SIMPL")
 
 # --------------------------------------------------------------------
 # Should we use enable NTFS file checking on Windows

@@ -140,13 +140,6 @@ SET(SVWidgetsLib_Widgets_Util_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/util/RemoveFilterCommand.cpp
   )
 
-#-- Only include this widget if we are compiling against QtWebEngine
-if(SIMPL_USE_QtWebEngine)
-  set(SVWidgetsLib_Widgets_MOC_HDRS ${SVWidgetsLib_Widgets_MOC_HDRS}  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVUserManualDialog.h)
-  set(SVWidgetsLib_Widgets_SRCS ${SVWidgetsLib_Widgets_SRCS} ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVUserManualDialog.cpp)
-  set(SVWidgetsLib_Widgets_UIS ${SVWidgetsLib_Widgets_UIS} ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SVUserManualDialog.ui)
-endif()
-
 cmp_IDE_SOURCE_PROPERTIES( "SVWidgetsLib/Widgets/util" "${SVWidgetsLib_Widgets_Util_HDRS}" "${SVWidgetsLib_Widgets_Util_SRCS}" "${PROJECT_INSTALL_HEADERS}")
 source_group("${SVWidgetsLib_SOURCE_DIR}/Widgets util" FILES ${HEADERS} ${SOURCES})
 

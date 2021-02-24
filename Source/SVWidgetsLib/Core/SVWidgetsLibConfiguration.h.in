@@ -36,9 +36,6 @@
 /* Defined if SIMPL uses mkdocs (python utility) for creating HTML documentation */
 #cmakedefine SIMPL_USE_MKDOCS
 
-/* Defined if SIMPL QtWebEngine to display help docs or if the local web browser is used instead */
-#cmakedefine SIMPL_USE_QtWebEngine
-
 #if (_MSC_VER >= 1)
 
   #pragma warning (error: 4715) /* Not all control points return a value */

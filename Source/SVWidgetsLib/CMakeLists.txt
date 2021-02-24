@@ -49,15 +49,11 @@ mark_as_advanced(SVWidgetsLib_ENABLE_HDF5)
 
 include(${CMP_SOURCE_DIR}/cmpProject.cmake)
 
-option(SIMPL_USE_QtWebEngine "Use QWebEngine to display Help. OFF=Use default web browser" ON)
-set_property(GLOBAL PROPERTY SIMPL_USE_QtWebEngine "${SIMPL_USE_QtWebEngine}")
-
 # --------------------------------------------------------------------
 # Find and Use the Qt5 Libraries
 include(${CMP_SOURCE_DIR}/ExtLib/Qt5Support.cmake)
 set(SVWidgetsLib_Qt5_Components Core Widgets Network Gui Concurrent Svg Xml OpenGL PrintSupport )
 CMP_AddQt5Support( "${SVWidgetsLib_Qt5_Components}"
-                    "${SIMPL_USE_QtWebEngine}"
                     "${SIMPLProj_BINARY_DIR}"
                     "SVWidgetsLib")
 
