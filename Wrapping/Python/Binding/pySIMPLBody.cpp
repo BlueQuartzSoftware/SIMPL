@@ -249,6 +249,7 @@ py::class_<MultiDataContainerSelectionFilterParameter::RequirementType>(instance
 registerDataContainerArray(instanceDataContainerArray);
 registerDataContainer(instanceDataContainer);
 registerAttributeMatrix(instanceAttributeMatrix);
+registerDataArrayPath(instanceDataArrayPath);
 
 #ifdef SIMPL_EMBED_PYTHON
 py::class_<PythonSupport::FilterDelegate>(mod, "FilterDelegateCpp")

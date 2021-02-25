@@ -81,6 +81,7 @@ void registerDataArray(pybind11::module& mod, const char* name)
                                return dims;
                              })
       .def_property_readonly("tuples", &DataArrayType::getNumberOfTuples)
+      .def_property_readonly_static("dtype", []([[maybe_unused]] py::object self) { return py::dtype::of<T>(); })
       .def(
           "__iter__", [](const DataArrayType& dataArray) { return py::make_iterator(dataArray.begin(), dataArray.end()); }, py::keep_alive<0, 1>())
       .def_buffer([](const DataArrayType& dataArray) -> py::buffer_info {
@@ -224,6 +225,9 @@ void registerDataContainerArray(pybind11::class_<DataContainerArray, std::shared
   instance.def("__len__", &DataContainerArray::size);
   instance.def_property_readonly("size", &DataContainerArray::size);
 
+  instance.def(
+      "__iter__", [](DataContainerArray& dca) { return py::make_iterator(dca.begin(), dca.end()); }, py::keep_alive<0, 1>());
+
 #ifdef SIMPL_EMBED_PYTHON
   instance.def(
       "createNonPrereqArrayFromPath",
@@ -293,6 +297,9 @@ void registerDataContainer(pybind11::class_<DataContainer, std::shared_ptr<DataC
   instance.def("__len__", &DataContainer::size);
   instance.def_property_readonly("size", &DataContainer::size);
 
+  instance.def(
+      "__iter__", [](DataContainer& dc) { return py::make_iterator(dc.begin(), dc.end()); }, py::keep_alive<0, 1>());
+
 #ifdef SIMPL_EMBED_PYTHON
   instance.def(
       "createNonPrereqAttributeMatrix",
@@ -320,6 +327,9 @@ void registerAttributeMatrix(pybind11::class_<AttributeMatrix, std::shared_ptr<A
   instance.def("__len__", &AttributeMatrix::size);
   instance.def_property_readonly("size", &AttributeMatrix::size);
 
+  instance.def(
+      "__iter__", [](AttributeMatrix& am) { return py::make_iterator(am.begin(), am.end()); }, py::keep_alive<0, 1>());
+
   instance.def("__getitem__", [](const AttributeMatrix& am, const QString& name) {
     if(!am.doesAttributeArrayExist(name))
     {
@@ -327,4 +337,12 @@ void registerAttributeMatrix(pybind11::class_<AttributeMatrix, std::shared_ptr<A
     }
     return am.getAttributeArray(name);
   });
+}
+
+void registerDataArrayPath(py::class_<DataArrayPath>& instance)
+{
+  namespace py = pybind11;
+  using namespace py::literals;
+
+  instance.def("__repr__", [](const DataArrayPath& path) { return QString("DataArrayPath(\"%1\")").arg(path.serialize()); });
 }
