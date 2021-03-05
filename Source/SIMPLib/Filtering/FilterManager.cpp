@@ -152,6 +152,12 @@ FilterManager::Collection FilterManager::getFactories(const QString& groupName, 
 }
 
 // -----------------------------------------------------------------------------
+bool FilterManager::contains(const QUuid& uuid) const
+{
+  return m_UuidFactories.contains(uuid);
+}
+
+// -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void FilterManager::addFilterFactory(const QString& name, IFilterFactory::Pointer factory)

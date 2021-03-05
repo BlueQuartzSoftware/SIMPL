@@ -116,6 +116,13 @@ public:
   Collection getFactories(const QString& groupName, const QString& subGroupName);
 
   /**
+   * @brief Returns true if it contains a filter factory with the given UUID
+   * @param uuid
+   * @return
+   */
+  bool contains(const QUuid& uuid) const;
+
+  /**
    * @brief Adds a Factory that creates QFilters
    * @param name
    * @param factory

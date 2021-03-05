@@ -395,7 +395,10 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
 {
   FilterManager* filtManager = FilterManager::Instance();
   FilterFactory<EmptyFilter>::Pointer emptyFilterFactory = FilterFactory<EmptyFilter>::New();
-  filtManager->addFilterFactory("EmptyFilter", emptyFilterFactory);
+  if(!filtManager->contains(emptyFilterFactory->getUuid()))
+  {
+    filtManager->addFilterFactory("EmptyFilter", emptyFilterFactory);
+  }
 
   if(!containsGroup(SIMPL::Settings::PipelineBuilderGroup))
   {

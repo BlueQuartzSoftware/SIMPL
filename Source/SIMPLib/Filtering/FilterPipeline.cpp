@@ -243,7 +243,10 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
   // Store FilterManager
   FilterManager* filtManager = FilterManager::Instance();
   FilterFactory<EmptyFilter>::Pointer emptyFilterFactory = FilterFactory<EmptyFilter>::New();
-  filtManager->addFilterFactory("EmptyFilter", emptyFilterFactory);
+  if(!filtManager->contains(emptyFilterFactory->getUuid()))
+  {
+    filtManager->addFilterFactory("EmptyFilter", emptyFilterFactory);
+  }
 
   QJsonObject builderObj = json[SIMPL::Settings::PipelineBuilderGroup].toObject();
   int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
