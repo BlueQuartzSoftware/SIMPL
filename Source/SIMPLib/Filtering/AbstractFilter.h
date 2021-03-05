@@ -481,7 +481,7 @@ public:
    */
   void clearRenamedPaths();
 
-signals:
+Q_SIGNALS:
   /**
    * @brief Signal is emitted when filter has completed the execute() method
    */
@@ -521,7 +521,7 @@ signals:
    */
   void preflightExecuted();
 
-public slots:
+public Q_SLOTS:
 
   /**
    * @brief Cancel the operation
@@ -572,7 +572,7 @@ protected:
    */
   void addPathRename(const DataArrayPath& oldPath, const DataArrayPath& newPath);
 
-protected slots:
+protected Q_SLOTS:
   /**
    * @brief This function will be called after the pipeline is completely done executing.  This can be reimplemented
    * in subclasses to provide cleanup code between pipeline executions. (resetting/clearing variables, updating settings, etc.)

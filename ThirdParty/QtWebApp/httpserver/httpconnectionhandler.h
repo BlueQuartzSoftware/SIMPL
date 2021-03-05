@@ -98,7 +98,7 @@ private:
   /**  Create SSL or TCP socket */
   void createSocket();
 
-public slots:
+public Q_SLOTS:
 
   /**
     Received from from the listener, when the handler shall start processing a new connection.
@@ -106,7 +106,7 @@ public slots:
   */
   void handleConnection(tSocketDescriptor socketDescriptor);
 
-private slots:
+private Q_SLOTS:
 
   /** Received from the socket when a read-timeout occured */
   void readTimeout();

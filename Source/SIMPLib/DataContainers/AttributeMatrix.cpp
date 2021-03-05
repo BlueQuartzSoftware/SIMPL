@@ -236,7 +236,7 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
 {
   QList<QString> attributeMatrixNames;
   QH5Utilities::getGroupObjects(containerId, H5Utilities::CustomHDFDataTypes::Group, attributeMatrixNames);
-  foreach(QString attributeMatrixName, attributeMatrixNames)
+  for(QString attributeMatrixName : attributeMatrixNames)
   {
     if(attributeMatrixName.compare(SIMPL::Geometry::Geometry) != 0)
     {

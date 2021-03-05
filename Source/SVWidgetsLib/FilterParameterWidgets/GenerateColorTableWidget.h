@@ -89,12 +89,12 @@ public:
   void setFilterParameter(FilterParameter* value);
   FilterParameter* getFilterParameter() const;
 
-public slots:
+public Q_SLOTS:
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
 
-protected slots:
+protected Q_SLOTS:
   void on_choosePresetBtn_clicked();
 
   void presetSelected(const QJsonObject& preset, const QPixmap& pixmap);

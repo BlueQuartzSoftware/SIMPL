@@ -117,7 +117,7 @@ void DREAM3DListWidget::dropEvent(QDropEvent* event)
   if((source != nullptr) && source != this)
   {
     event->setDropAction(Qt::MoveAction);
-    emit dropOccurred(); // We want to emit this signal so that we can respond in a slot when a drop occurs
+    Q_EMIT dropOccurred(); // We want to Q_EMIT this signal so that we can respond in a slot when a drop occurs
     event->accept();
   }
 

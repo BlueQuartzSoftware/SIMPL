@@ -78,7 +78,7 @@ public:
 
   void setLoadPreferencesFlag();
 
-public slots:
+public Q_SLOTS:
   void on_closeBtn_clicked();
   void on_addPluginBtn_clicked();
   void on_removePluginBtn_clicked();

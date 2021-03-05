@@ -84,7 +84,7 @@ public:
    */
   QTableWidget* getIssuesTable();
 
-public slots:
+public Q_SLOTS:
   void processPipelineMessage(const AbstractMessage::Pointer& msg) override;
   void clearIssues();
   void on_errorTableWidget_itemClicked(QTableWidgetItem* item);
@@ -92,7 +92,7 @@ public slots:
 
   void showFilterHelp(const QString& url);
 
-signals:
+Q_SIGNALS:
   void tableHasErrors(bool b, int errCount, int warnCount);
   void showTable(bool b);
 

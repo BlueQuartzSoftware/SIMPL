@@ -132,14 +132,14 @@ bool ImportHDF5TreeModel::setData(const QModelIndex& index, const QVariant& valu
       m_SelectedHDF5Paths.removeAll(hdf5Path);
     }
 
-    emit selectedHDF5PathsChanged();
+    Q_EMIT selectedHDF5PathsChanged();
   }
   else if(role == Roles::HasErrorsRole)
   {
     item->setHasErrors(value.toBool());
   }
 
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
 
   return true;
 }

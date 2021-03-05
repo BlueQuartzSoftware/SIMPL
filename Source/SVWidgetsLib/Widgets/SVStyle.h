@@ -1671,7 +1671,7 @@ protected:
    */
   void initialize();
 
-signals:
+Q_SIGNALS:
   void styleSheetLoaded(const QString& styleFilePath);
 
 private:

@@ -31,7 +31,7 @@ public:
 
   void initializeWithFilter(AbstractFilter* filter);
 
-protected slots:
+protected Q_SLOTS:
 
   void updateView();
 

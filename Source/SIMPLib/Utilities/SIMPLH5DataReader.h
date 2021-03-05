@@ -116,7 +116,7 @@ public:
    */
   void setErrorCondition(int code, const QString& str) override;
 
-signals:
+Q_SIGNALS:
   void errorGenerated(const QString& title, const QString& msg, const int& code);
 
 private:

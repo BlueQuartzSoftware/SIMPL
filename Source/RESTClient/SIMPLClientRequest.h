@@ -37,7 +37,7 @@ class RESTClient_EXPORT SIMPLClientRequest : public MRestRequest
 public:
   SIMPLClientRequest(QUrl url, Command command, Type msgType, QJsonObject jsonMsg = QJsonObject());
 
-signals:
+Q_SIGNALS:
   void replyInfo(const QString& cityName, int humidity, int pressure, float temp) const;
 
 protected:

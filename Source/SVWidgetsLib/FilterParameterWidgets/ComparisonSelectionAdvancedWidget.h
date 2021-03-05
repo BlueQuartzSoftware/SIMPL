@@ -78,7 +78,7 @@ public:
    */
   bool eventFilter(QObject* obj, QEvent* event) override;
 
-public slots:
+public Q_SLOTS:
   /**
    * @brief beforePreflight
    */
@@ -140,7 +140,7 @@ protected:
    */
   void presetAttributeMatrix(DataArrayPath path);
 
-protected slots:
+protected Q_SLOTS:
   /**
    * @brief widgetChanged
    * @param text

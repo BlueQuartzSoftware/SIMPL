@@ -130,7 +130,7 @@ void CalculatorFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, con
       inputStr.replace(oldPath.getDataArrayName(), newPath.getDataArrayName());
       m_SetterCallback(inputStr);
 
-      emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+      Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
     }
   }
 }

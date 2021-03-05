@@ -59,7 +59,7 @@ public:
   QVector<QString> getHeaders();
   void setHeaders(QVector<QString> headers);
 
-protected slots:
+protected Q_SLOTS:
   void m_ButtonBox_accepted();
   void m_ButtonBox_rejected();
 

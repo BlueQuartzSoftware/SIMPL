@@ -106,7 +106,7 @@ public:
     m_StdOutput.clear();
   }
 
-public slots:
+public Q_SLOTS:
   void processPipelineMessage(const AbstractMessage::Pointer& pm) override
   {
     ExecuteProcessMessageHandler msgHandler(&m_StdOutput);

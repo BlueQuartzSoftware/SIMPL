@@ -77,7 +77,7 @@ QString searchConfigFile()
   QStringList searchList;
   searchList.append(binDir);
 
-  foreach(QString dir, searchList)
+  for(QString dir : searchList)
   {
     QFile file(dir + "/" + fileName);
     if(file.exists())
@@ -90,7 +90,7 @@ QString searchConfigFile()
   }
 
   // not found
-  foreach(QString dir, searchList)
+  for(QString dir : searchList)
   {
     qWarning("%s/%s not found", qPrintable(dir), qPrintable(fileName));
   }

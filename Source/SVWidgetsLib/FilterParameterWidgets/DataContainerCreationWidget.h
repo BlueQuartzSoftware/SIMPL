@@ -72,12 +72,12 @@ public:
    */
   void setupGui() override;
 
-public slots:
+public Q_SLOTS:
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
 
-protected slots:
+protected Q_SLOTS:
   void updateDataArrayPath(const QString& propertyName, const DataArrayPath::RenameType& renamePath);
 
 private:

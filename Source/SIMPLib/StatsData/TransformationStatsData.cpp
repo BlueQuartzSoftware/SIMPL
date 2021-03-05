@@ -290,7 +290,7 @@ void TransformationStatsData::readJson(const QJsonObject& json)
     QJsonObject avgSizeDist = jsonValue.toObject();
     QStringList keys = avgSizeDist.keys();
     VectorOfFloatArray arrays;
-    foreach(const QString key, keys)
+    for(const QString key : keys)
     {
       FloatArrayType::Pointer fArray = FloatArrayType::CreateArray(1, key, true);
       fArray->setValue(0, avgSizeDist[key].toDouble());

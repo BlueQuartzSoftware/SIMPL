@@ -50,12 +50,12 @@ void HttpListener::listen()
   QHostAddress hostAddress(host);
   if(hostAddress.isNull())
   {
-    foreach(const QNetworkInterface& netInterface, QNetworkInterface::allInterfaces())
+    for(const QNetworkInterface& netInterface : QNetworkInterface::allInterfaces())
     {
       QNetworkInterface::InterfaceFlags flags = netInterface.flags();
       if(static_cast<bool>(flags & QNetworkInterface::IsRunning) && !static_cast<bool>(flags & QNetworkInterface::IsLoopBack))
       {
-        foreach(const QNetworkAddressEntry& address, netInterface.addressEntries())
+        for(const QNetworkAddressEntry& address : netInterface.addressEntries())
         {
           if(address.ip().protocol() == QAbstractSocket::IPv4Protocol)
           {

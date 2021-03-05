@@ -118,7 +118,7 @@ void ColorPresetsDialog::updateEnabledStateForSelection()
     ui.okBtn->setEnabled(false);
 
     bool isEditable = true;
-    foreach(const QModelIndex& idx, selectedRows)
+    for(const QModelIndex& idx : selectedRows)
     {
       isEditable &= this->Internals->Model->flags(idx).testFlag(Qt::ItemIsEditable);
     }
@@ -152,7 +152,7 @@ void ColorPresetsDialog::triggerApply()
   const QJsonObject& preset = internals.Model->getPresets()->GetPreset(index.row());
   QPixmap presetPixmap = internals.Model->data(index, Qt::DecorationRole).value<QPixmap>();
   Q_ASSERT(preset.isEmpty() == false);
-  emit applyPreset(preset, presetPixmap);
+  Q_EMIT applyPreset(preset, presetPixmap);
   done(1);
 }
 

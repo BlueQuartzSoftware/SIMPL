@@ -171,7 +171,7 @@ void GenerateColorTableWidget::presetSelected(const QJsonObject& preset, const Q
   imageLabel->setPixmap(pixmap);
   imageLabel->show();
 
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

@@ -177,7 +177,7 @@ protected:
    */
   void initialize();
 
-protected slots:
+protected Q_SLOTS:
   void processHasFinished(int exitCode, QProcess::ExitStatus exitStatus);
   void processHasErroredOut(QProcess::ProcessError error);
   void sendErrorOutput();

@@ -200,7 +200,7 @@ public:
    */
   void getGridData(DataContainerGrid& grid);
 
-signals:
+Q_SIGNALS:
   void modelChanged();
 
 private:

@@ -60,7 +60,7 @@ public:
 
   bool isExtractPipelineBtnChecked();
 
-protected slots:
+protected Q_SLOTS:
   void on_okBtn_clicked();
   void on_cancelBtn_clicked();
 

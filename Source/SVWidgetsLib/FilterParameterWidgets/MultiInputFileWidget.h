@@ -77,7 +77,7 @@ public:
    */
   void setupGui() override;
 
-public slots:
+public Q_SLOTS:
   void selectMultiInputFile();
   void beforePreflight();
   void afterPreflight();

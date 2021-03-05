@@ -98,7 +98,7 @@ public:
    */
   virtual void renameDataArrayPath(DataArrayPath::RenameType renamePath) = 0;
 
-signals:
+Q_SIGNALS:
   /**
    * @brief Specifies that the comparison used by the widget has changed
    */

@@ -124,7 +124,7 @@ public:
 
   virtual void changeStyleSheet(Style style);
 
-signals:
+Q_SIGNALS:
   void filterPath(DataArrayPath path);
   void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
   void viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
@@ -141,7 +141,7 @@ signals:
   void errorSettingFilterParameter(const QString& msg);
   void parametersChanged(bool preflight = true);
 
-public slots:
+public Q_SLOTS:
 
   void setLinkedConditionalState(int state);
   void setLinkedComboBoxState(int groupId);
@@ -167,7 +167,7 @@ protected:
    */
   QPoint adjustedMenuPosition(QToolButton* pushButton);
 
-protected slots:
+protected Q_SLOTS:
   void showBorder();
   void hideBorder();
 

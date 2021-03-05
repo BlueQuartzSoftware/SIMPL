@@ -143,10 +143,10 @@ void AbstractFilter::setupFilterParameters()
 void AbstractFilter::preflight()
 {
   setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
+  Q_EMIT preflightAboutToExecute();
+  Q_EMIT updateFilterParameters(this);
   dataCheck();
-  emit preflightExecuted();
+  Q_EMIT preflightExecuted();
   setInPreflight(false);
 }
 
@@ -527,7 +527,7 @@ void AbstractFilter::setErrorCondition(int code, const QString& messageText)
 {
   m_ErrorCode = code;
   FilterErrorMessage::Pointer pm = FilterErrorMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText, code);
-  emit messageGenerated(pm);
+  Q_EMIT messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -536,7 +536,7 @@ void AbstractFilter::setErrorCondition(int code, const QString& messageText)
 void AbstractFilter::notifyStatusMessage(const QString& messageText) const
 {
   FilterStatusMessage::Pointer pm = FilterStatusMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText);
-  emit messageGenerated(pm);
+  Q_EMIT messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -546,7 +546,7 @@ void AbstractFilter::setWarningCondition(int code, const QString& messageText)
 {
   m_WarningCode = code;
   FilterWarningMessage::Pointer pm = FilterWarningMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText, code);
-  emit messageGenerated(pm);
+  Q_EMIT messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -555,7 +555,7 @@ void AbstractFilter::setWarningCondition(int code, const QString& messageText)
 void AbstractFilter::notifyProgressMessage(int progress, const QString& messageText) const
 {
   FilterProgressMessage::Pointer pm = FilterProgressMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText, progress);
-  emit messageGenerated(pm);
+  Q_EMIT messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------

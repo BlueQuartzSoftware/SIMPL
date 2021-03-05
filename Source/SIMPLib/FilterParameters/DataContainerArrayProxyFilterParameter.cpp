@@ -127,7 +127,7 @@ void DataContainerArrayProxyFilterParameter::dataArrayPathRenamed(AbstractFilter
   {
     m_SetterCallback(dcaProxy);
   }
-  emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+  Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }
 
 // -----------------------------------------------------------------------------

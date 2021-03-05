@@ -76,13 +76,13 @@ public:
 
   int getCurrentIndex();
 
-public slots:
+public Q_SLOTS:
   void widgetChanged(int index, bool emitParametersChanged = true);
   void filterNeedsInputParameters(AbstractFilter* filter); // When the filter is ready for us to update its input parameter(s) that we are responsible for
   void beforePreflight();                                  // Called just before the "dataCheck()" is called
   void afterPreflight();                                   // Called just after the dataCheck() is called.
 
-signals:
+Q_SIGNALS:
   void conditionalPropertyChanged(int);
 
 private:

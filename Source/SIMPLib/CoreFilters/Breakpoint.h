@@ -148,13 +148,13 @@ public:
    */
   void execute() override;
 
-public slots:
+public Q_SLOTS:
   /**
    * @brief resumePipeline Resumes the pipeline
    */
   void resumePipeline();
 
-signals:
+Q_SIGNALS:
   /**
    * @brief pipelineHasPaused Emitted when the pipeline needs to be paused
    */

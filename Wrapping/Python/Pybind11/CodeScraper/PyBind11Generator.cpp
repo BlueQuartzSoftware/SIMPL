@@ -202,7 +202,7 @@ void PyBind11Generator::copyPyInitFiles()
 
   QFileInfoList itemList = currentDir.entryInfoList(filters);
 
-  foreach(QFileInfo itemInfo, itemList)
+  for(QFileInfo itemInfo : itemList)
   {
     QString pyFilePath = itemInfo.absoluteFilePath();
 
@@ -271,7 +271,7 @@ void PyBind11Generator::recursiveSearch(const QDir& currentDir)
     QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
     if(!dirList.empty())
     {
-      foreach(QFileInfo fi, dirList)
+      for(QFileInfo fi : dirList)
       {
         recursiveSearch(QDir(fi.absoluteFilePath())); // Recursive call
       }
@@ -279,7 +279,7 @@ void PyBind11Generator::recursiveSearch(const QDir& currentDir)
     QStringList filters;
     filters.append("*.h");
     QFileInfoList itemList = currentDir.entryInfoList(filters);
-    foreach(QFileInfo itemInfo, itemList)
+    for(QFileInfo itemInfo : itemList)
     {
       QString headerFilePath = itemInfo.absoluteFilePath();
       generatePybind11Header(headerFilePath);

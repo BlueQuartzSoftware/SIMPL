@@ -79,13 +79,13 @@ public:
 
   int getLinkedState();
 
-public slots:
+public Q_SLOTS:
   void widgetChanged(int state);
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
 
-signals:
+Q_SIGNALS:
   void conditionalPropertyChanged(int state);
 
 private:

@@ -150,7 +150,7 @@ QJsonArray DataContainerProxy::writeMap(const QMap<QString, AttributeMatrixProxy
 QMap<QString, AttributeMatrixProxy> DataContainerProxy::readMap(QJsonArray jsonArray)
 {
   QMap<QString, AttributeMatrixProxy> map;
-  foreach(QJsonValue val, jsonArray)
+  for(QJsonValue val : jsonArray)
   {
     if(val.isObject())
     {

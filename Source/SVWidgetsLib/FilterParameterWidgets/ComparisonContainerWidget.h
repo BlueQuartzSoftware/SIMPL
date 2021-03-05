@@ -127,13 +127,13 @@ public:
    */
   void setupGui();
 
-public slots:
+public Q_SLOTS:
   /**
    * @brief Delete this and remove the comparison from the current ComparisonSet
    */
   void deleteItem();
 
-signals:
+Q_SIGNALS:
   /**
    * @brief Signifies that the comparison stored has changed
    */
@@ -161,7 +161,7 @@ protected:
    */
   void mouseReleaseEvent(QMouseEvent* event) override;
 
-protected slots:
+protected Q_SLOTS:
   /**
    * @brief Union operator has been changed in the UI and needs to update the comparison
    * @param unionOp New union operator

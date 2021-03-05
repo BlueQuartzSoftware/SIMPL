@@ -64,7 +64,7 @@ public:
 
   void start();
 
-signals:
+Q_SIGNALS:
   void animationComplete();
 
 protected:

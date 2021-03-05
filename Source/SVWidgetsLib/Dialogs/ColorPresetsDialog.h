@@ -82,10 +82,10 @@ public:
    */
   int currentPresetIndex();
 
-signals:
+Q_SIGNALS:
   void applyPreset(const QJsonObject& preset, const QPixmap& pixmap);
 
-protected slots:
+protected Q_SLOTS:
   void updateEnabledStateForSelection();
   void updateForSelectedIndex(const QModelIndex& idx);
   void triggerApply();

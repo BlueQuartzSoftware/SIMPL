@@ -54,7 +54,7 @@ public:
 
   ~TestObserver() override;
 
-public slots:
+public Q_SLOTS:
   void processPipelineMessage(const AbstractMessage::Pointer& pm) override;
 
 public:

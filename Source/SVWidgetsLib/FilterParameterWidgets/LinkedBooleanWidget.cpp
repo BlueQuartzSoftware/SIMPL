@@ -88,7 +88,7 @@ void LinkedBooleanWidget::setupGui()
 void LinkedBooleanWidget::updateLinkedWidgets()
 {
   int state = value->checkState();
-  emit conditionalPropertyChanged(state);
+  Q_EMIT conditionalPropertyChanged(state);
 }
 
 // -----------------------------------------------------------------------------
@@ -105,8 +105,8 @@ int LinkedBooleanWidget::getLinkedState()
 void LinkedBooleanWidget::widgetChanged(int state)
 {
   // Let the other widgets that this widget is linked to know that the state changed.
-  emit conditionalPropertyChanged(state);
-  emit parametersChanged();
+  Q_EMIT conditionalPropertyChanged(state);
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

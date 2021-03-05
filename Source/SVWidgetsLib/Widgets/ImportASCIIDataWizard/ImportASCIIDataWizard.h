@@ -156,7 +156,7 @@ public:
 
   void setEditSettings(bool value);
 
-protected slots:
+protected Q_SLOTS:
   void refreshModel();
   void cleanupPage(int id) override;
 

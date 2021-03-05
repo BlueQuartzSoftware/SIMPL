@@ -54,14 +54,14 @@ void HttpResponse::writeHeaders()
   buffer.append(' ');
   buffer.append(m_StatusCodeLookup.value(statusCode));
   buffer.append("\r\n");
-  foreach(QByteArray name, headers.keys())
+  for(QByteArray name : headers.keys())
   {
     buffer.append(name);
     buffer.append(": ");
     buffer.append(headers.value(name));
     buffer.append("\r\n");
   }
-  foreach(HttpCookie cookie, cookies.values())
+  for(HttpCookie cookie : cookies.values())
   {
     buffer.append("Set-Cookie: ");
     buffer.append(cookie.toByteArray());

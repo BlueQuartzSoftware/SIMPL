@@ -52,7 +52,7 @@ public:
 
   void setBookmarkName(QString name);
 
-protected slots:
+protected Q_SLOTS:
   void on_locateBtn_clicked();
   void on_cancelBtn_clicked();
 

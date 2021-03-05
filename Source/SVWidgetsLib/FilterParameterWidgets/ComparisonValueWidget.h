@@ -101,7 +101,7 @@ protected:
    */
   void setupDataArrayComboBox();
 
-protected slots:
+protected Q_SLOTS:
   /**
    * @brief Changes the DataArray used by the ComparisonValue
    * @param index Specifies which DataArray name to use

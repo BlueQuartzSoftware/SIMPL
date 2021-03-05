@@ -89,7 +89,7 @@ public:
    */
   QStringList getDataContainerNames() const;
 
-signals:
+Q_SIGNALS:
   void dimensionsChanged(SizeVec3Type newDims);
   void dataContainerNameChanged();
 

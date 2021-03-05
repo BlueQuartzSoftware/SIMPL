@@ -135,7 +135,7 @@ void PhaseTypeSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* fil
     {
       var.setValue(path);
       filter->setProperty(qPrintable(getAttributeMatrixPathProperty()), var);
-      emit filter->dataArrayPathUpdated(getAttributeMatrixPathProperty(), renamePath);
+      Q_EMIT filter->dataArrayPathUpdated(getAttributeMatrixPathProperty(), renamePath);
     }
   }
 }

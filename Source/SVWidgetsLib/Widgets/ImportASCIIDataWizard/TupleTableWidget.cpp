@@ -152,7 +152,7 @@ void TupleTableWidget::on_addTupleBtn_clicked()
   addColumn(1);
   m_UserEdited = true;
 
-  emit tupleDimsChanged(getData());
+  Q_EMIT tupleDimsChanged(getData());
 }
 
 // -----------------------------------------------------------------------------
@@ -173,7 +173,7 @@ void TupleTableWidget::on_deleteTupleBtn_clicked()
     m_UserEdited = false;
   }
 
-  emit tupleDimsChanged(getData());
+  Q_EMIT tupleDimsChanged(getData());
 }
 
 // -----------------------------------------------------------------------------
@@ -181,5 +181,5 @@ void TupleTableWidget::on_deleteTupleBtn_clicked()
 // -----------------------------------------------------------------------------
 void TupleTableWidget::on_tupleTable_itemChanged(QTableWidgetItem* item)
 {
-  emit tupleDimsChanged(getData());
+  Q_EMIT tupleDimsChanged(getData());
 }

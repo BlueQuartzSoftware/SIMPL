@@ -192,7 +192,7 @@ protected:
    */
   void initialize();
 
-protected slots:
+protected Q_SLOTS:
   /**
    * @brief processDerivativesMessage
    * @param msg

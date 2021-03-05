@@ -174,7 +174,7 @@ void RequiredZThickness::execute()
 
     setErrorCondition(-7788, str);
     bool needMoreData = true;
-    emit decisionMade(needMoreData);
+    Q_EMIT decisionMade(needMoreData);
   }
 }
 

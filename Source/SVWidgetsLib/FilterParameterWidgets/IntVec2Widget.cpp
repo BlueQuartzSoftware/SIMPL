@@ -94,7 +94,7 @@ void IntVec2Widget::setupGui()
 // -----------------------------------------------------------------------------
 void IntVec2Widget::widgetChanged(const QString& text)
 {
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

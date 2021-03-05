@@ -120,7 +120,7 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
 {
   QList<QString> dataContainers;
   QH5Utilities::getGroupObjects(dcArrayGroupId, H5Utilities::CustomHDFDataTypes::Group, dataContainers);
-  foreach(QString dataContainerName, dataContainers)
+  for(QString dataContainerName : dataContainers)
   {
     hid_t containerGid = H5Gopen(dcArrayGroupId, dataContainerName.toLatin1().constData(), H5P_DEFAULT);
     if(containerGid < 0)

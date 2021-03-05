@@ -117,7 +117,7 @@ protected:
   void populateFilterList(QStringList filterNames);
   QString writeNewFavoriteFilePath(QString newFavoriteTitle, QString favoritePath, QTreeWidgetItem* item);
 
-protected slots:
+protected Q_SLOTS:
 
   //// Slots to catch signals from the QTreeWidget
   void on_bookmarksTreeView_clicked(const QModelIndex& index);
@@ -125,7 +125,7 @@ protected slots:
 
   void listenLocateBookmarkTriggered();
 
-signals:
+Q_SIGNALS:
 
   void fireWriteSettings();
 

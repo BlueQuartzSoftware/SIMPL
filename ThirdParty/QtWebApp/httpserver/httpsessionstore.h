@@ -112,7 +112,7 @@ private:
   /** Used to synchronize threads */
   QMutex mutex;
 
-private slots:
+private Q_SLOTS:
 
   /** Called every minute to cleanup expired sessions. */
   void sessionTimerEvent();

@@ -410,7 +410,7 @@ bool BookmarksModel::setData(const QModelIndex& index, const QVariant& value, in
     return false;
   }
 
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
 
   if(!m_LoadingModel)
   {
@@ -878,7 +878,7 @@ void BookmarksModel::addPipelinesRecursively(QDir currentDir, QModelIndex parent
   QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
   if(!dirList.empty())
   {
-    foreach(QFileInfo fi, dirList)
+    for(QFileInfo fi : dirList)
     {
       // At this point we have the first level of directories and we want to do 2 things:
       // 1.Create an entry in the tree widget with this name
@@ -897,7 +897,7 @@ void BookmarksModel::addPipelinesRecursively(QDir currentDir, QModelIndex parent
   }
 
   QFileInfoList itemList = currentDir.entryInfoList(filters);
-  foreach(QFileInfo itemInfo, itemList)
+  for(QFileInfo itemInfo : itemList)
   {
     QString itemFilePath = itemInfo.absoluteFilePath();
     QString itemName;

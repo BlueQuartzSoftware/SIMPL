@@ -346,7 +346,7 @@ VectorOfFloatArray StatsData::ReadJsonDistributionArrays(const QJsonObject& json
   disType = StatsData::EncodeDistributionType(disTypeString);
 
   QStringList arrayNames = StatsData::ArrayNamesFromDistributionType(disTypeString);
-  foreach(const QString arrayName, arrayNames)
+  for(const QString arrayName : arrayNames)
   {
     QJsonArray data = jDistribution[arrayName].toArray();
     DataArray<float>::Pointer array = decodeDataArrayFromJsonDoubleArray<float>(arrayName, data);
@@ -364,7 +364,7 @@ VectorOfFloatArray StatsData::ReadJsonVectorOfFloatsArrays(const QJsonObject& js
   VectorOfFloatArray arrays;
   QJsonObject obj = json[key].toObject();
   QStringList arrayNames = obj.keys();
-  foreach(const QString name, arrayNames)
+  for(const QString name : arrayNames)
   {
     QJsonValue value = obj[name];
     if(value.isArray())

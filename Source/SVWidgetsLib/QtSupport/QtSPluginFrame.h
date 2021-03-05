@@ -128,7 +128,7 @@ public:
    */
   virtual void displayDialogBox(QString title, QString text, QMessageBox::Icon icon);
 
-signals:
+Q_SIGNALS:
 
   /**
    * @brief Signal emitted when a process is started
@@ -152,7 +152,7 @@ signals:
   void pipelineWarningMessage(const QString&);
   void pipelineErrorMessage(const QString&);
 
-private slots:
+private Q_SLOTS:
   /**
    * @brief Slot to add a message to display to the user
    * @param message

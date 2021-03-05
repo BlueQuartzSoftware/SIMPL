@@ -84,7 +84,7 @@ public:
    */
   int getDataTypei() const;
 
-public slots:
+public Q_SLOTS:
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);

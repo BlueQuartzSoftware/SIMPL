@@ -85,7 +85,7 @@ private:
   /** Load SSL configuration */
   void loadSslConfig();
 
-private slots:
+private Q_SLOTS:
 
   /** Received from the clean-up timer.  */
   void cleanup();

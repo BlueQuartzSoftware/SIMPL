@@ -142,7 +142,7 @@ public:
 
   QList<QObject*> getPipelineMessageObservers();
 
-signals:
+Q_SIGNALS:
   void clearIssuesTriggered();
 
   void preflightTriggered(const QModelIndex& pipelineIndex, PipelineModel* model);

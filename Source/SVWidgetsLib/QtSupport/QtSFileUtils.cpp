@@ -126,7 +126,7 @@ QStringList QtSFileUtils::GetEnvVar(const QString& envVar)
 QString QtSFileUtils::FindInPath(const QString& exe)
 {
   QStringList paths = QtSFileUtils::GetEnvVar("PATH");
-  foreach(const QString& p, paths)
+  for(const QString& p : paths)
   {
     QFileInfo fi(p + QDir::separator() + exe);
     if(fi.exists())

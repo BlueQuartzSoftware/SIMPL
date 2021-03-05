@@ -197,7 +197,7 @@ QIcon MontageSelectionWidget::getDcIcon(const QString& dcName) const
 void MontageSelectionWidget::causePreflight()
 {
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 

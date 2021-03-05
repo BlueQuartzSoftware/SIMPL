@@ -170,7 +170,7 @@ bool PipelineItem::insertColumns(int position, int columns)
     m_ItemData.insert(position, QVariant());
   }
 
-  foreach(PipelineItem* child, m_ChildItems)
+  for(PipelineItem* child : m_ChildItems)
   {
     child->insertColumns(position, columns);
   }
@@ -228,7 +228,7 @@ bool PipelineItem::removeColumns(int position, int columns)
     m_ItemData.remove(position);
   }
 
-  foreach(PipelineItem* child, m_ChildItems)
+  for(PipelineItem* child : m_ChildItems)
   {
     child->removeColumns(position, columns);
   }

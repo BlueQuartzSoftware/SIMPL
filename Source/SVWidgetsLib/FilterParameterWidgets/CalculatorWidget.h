@@ -71,7 +71,7 @@ public:
    */
   void setupGui() override;
 
-public slots:
+public Q_SLOTS:
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
@@ -82,7 +82,7 @@ public slots:
 
   void hideButton();
 
-protected slots:
+protected Q_SLOTS:
   void printUnaryButtonName();
   void printButtonName();
   void printActionName();

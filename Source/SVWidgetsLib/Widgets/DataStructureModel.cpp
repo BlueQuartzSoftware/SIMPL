@@ -214,7 +214,7 @@ bool DataStructureModel::setData(const QModelIndex& index, const QVariant& value
 
   if(result)
   {
-    emit dataChanged(index, index);
+    Q_EMIT dataChanged(index, index);
   }
 
   return result;

@@ -96,7 +96,7 @@ void DoubleWidget::setupGui()
 // -----------------------------------------------------------------------------
 void DoubleWidget::widgetChanged(const QString& text)
 {
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

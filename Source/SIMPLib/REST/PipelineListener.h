@@ -48,7 +48,7 @@ public:
   QString getWarningLog();
   QString getStatusLog();
 
-public slots:
+public Q_SLOTS:
   void processPipelineMessage(const AbstractMessage::Pointer& pm) override;
 
 private:

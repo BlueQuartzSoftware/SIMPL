@@ -178,7 +178,7 @@ void DataArrayCreationFilterParameter::dataArrayPathRenamed(AbstractFilter* filt
       {
         m_SetterCallback(path);
       }
-      emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+      Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
     }
   }
 }

@@ -60,7 +60,7 @@ DocRequestManager* DocRequestManager::Instance()
 // -----------------------------------------------------------------------------
 void DocRequestManager::requestFilterDocs(const QString& filter)
 {
-  emit showFilterDocs(filter);
+  Q_EMIT showFilterDocs(filter);
 }
 
 // -----------------------------------------------------------------------------
@@ -68,5 +68,5 @@ void DocRequestManager::requestFilterDocs(const QString& filter)
 // -----------------------------------------------------------------------------
 void DocRequestManager::requestFilterDocUrl(const QUrl& url)
 {
-  emit showFilterDocUrl(url);
+  Q_EMIT showFilterDocUrl(url);
 }

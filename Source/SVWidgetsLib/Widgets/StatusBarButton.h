@@ -41,7 +41,7 @@ protected:
    */
   int getTextMargin();
 
-signals:
+Q_SIGNALS:
   void visibilityChanged(bool visible);
 
 private:

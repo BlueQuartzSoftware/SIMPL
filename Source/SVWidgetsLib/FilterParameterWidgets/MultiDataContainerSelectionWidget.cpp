@@ -211,7 +211,7 @@ void MultiDataContainerSelectionWidget::on_selectBtn_clicked()
     }
 
     m_DidCausePreflight = true;
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
     m_DidCausePreflight = false;
   }
 }
@@ -223,14 +223,14 @@ void MultiDataContainerSelectionWidget::on_deselectBtn_clicked()
 {
   // QModelIndexList indexList = selectedDataContainersListWidget->selectionModel()->selectedRows();
   QList<QListWidgetItem*> items = selectedDataContainersListWidget->selectedItems();
-  foreach(QListWidgetItem* item, items)
+  for(QListWidgetItem* item : items)
   {
     int row = selectedDataContainersListWidget->row(item);
     selectedDataContainersListWidget->takeItem(row);
     availableDataContainersListWidget->addItem(item);
   }
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 
@@ -248,7 +248,7 @@ void MultiDataContainerSelectionWidget::on_upBtn_clicked()
     selectedDataContainersListWidget->setCurrentRow(currentIndex - 1);
 
     m_DidCausePreflight = true;
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
     m_DidCausePreflight = false;
   }
 }
@@ -267,7 +267,7 @@ void MultiDataContainerSelectionWidget::on_downBtn_clicked()
     selectedDataContainersListWidget->setCurrentRow(currentIndex + 1);
 
     m_DidCausePreflight = true;
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
     m_DidCausePreflight = false;
   }
 }
@@ -291,7 +291,7 @@ void MultiDataContainerSelectionWidget::on_removeBtn_clicked()
     }
 
     m_DidCausePreflight = true;
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
     m_DidCausePreflight = false;
   }
 }

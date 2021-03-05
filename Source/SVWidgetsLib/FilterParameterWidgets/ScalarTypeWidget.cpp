@@ -89,7 +89,7 @@ void ScalarTypeWidget::setupGui()
 // -----------------------------------------------------------------------------
 void ScalarTypeWidget::widgetChanged(int index)
 {
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

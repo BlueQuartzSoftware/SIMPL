@@ -137,7 +137,7 @@ void DataContainerGrid::resizeDimensions(SizeVec3Type newSize)
     }
   }
 
-  emit dimensionsChanged(newSize);
+  Q_EMIT dimensionsChanged(newSize);
 }
 
 // -----------------------------------------------------------------------------
@@ -157,7 +157,7 @@ void DataContainerGrid::setDataContainerName(SizeVec3Type pos, const QString& na
   size_t offset = getOffset(pos);
   m_DataContainerNames[offset] = name;
 
-  emit dataContainerNameChanged();
+  Q_EMIT dataContainerNameChanged();
 }
 
 // -----------------------------------------------------------------------------
@@ -190,6 +190,6 @@ DataContainerGrid& DataContainerGrid::operator=(const DataContainerGrid& other)
   m_Dims = other.m_Dims;
   m_DataContainerNames = other.m_DataContainerNames;
 
-  emit dimensionsChanged(m_Dims);
+  Q_EMIT dimensionsChanged(m_Dims);
   return *this;
 }

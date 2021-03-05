@@ -146,7 +146,7 @@ public:
    */
   QStringList getSelectedHDF5Paths();
 
-signals:
+Q_SIGNALS:
   void selectedHDF5PathsChanged();
 
 private:

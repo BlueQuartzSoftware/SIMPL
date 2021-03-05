@@ -92,14 +92,14 @@ public:
 
   bool eventFilter(QObject* obj, QEvent* event) override;
 
-public slots:
+public Q_SLOTS:
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
 
   void attributeMatrixSelected(QString path);
 
-protected slots:
+protected Q_SLOTS:
   void updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath);
 
 private:

@@ -179,13 +179,13 @@ bool ASCIIDataModel::setHeaderData(int section, Qt::Orientation orientation, con
   if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
   {
     m_HorizontalHeaders[section] = value.toString();
-    emit headerDataChanged(Qt::Horizontal, section, section);
+    Q_EMIT headerDataChanged(Qt::Horizontal, section, section);
     return true;
   }
   if(orientation == Qt::Vertical && role == Qt::DisplayRole)
   {
     m_VerticalHeaders[section] = value.toString();
-    emit headerDataChanged(Qt::Vertical, section, section);
+    Q_EMIT headerDataChanged(Qt::Vertical, section, section);
     return true;
   }
 
@@ -279,7 +279,7 @@ bool ASCIIDataModel::setData(const QModelIndex& index, const QVariant& value, in
 
   if(result)
   {
-    emit dataChanged(index, index);
+    Q_EMIT dataChanged(index, index);
   }
 
   return result;
@@ -330,7 +330,7 @@ void ASCIIDataModel::setColumnDataType(int column, const QString& type)
   m_ColumnDataType[column] = type;
 
   QModelIndex index = this->index(0, column);
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -396,7 +396,7 @@ void ASCIIDataModel::clearHeaders(Qt::Orientation orientation)
     {
       header = "";
     }
-    emit headerDataChanged(Qt::Horizontal, 0, m_HorizontalHeaders.size() - 1);
+    Q_EMIT headerDataChanged(Qt::Horizontal, 0, m_HorizontalHeaders.size() - 1);
   }
   else if(orientation == Qt::Vertical)
   {
@@ -404,7 +404,7 @@ void ASCIIDataModel::clearHeaders(Qt::Orientation orientation)
     {
       header = "";
     }
-    emit headerDataChanged(Qt::Vertical, 0, m_VerticalHeaders.size() - 1);
+    Q_EMIT headerDataChanged(Qt::Vertical, 0, m_VerticalHeaders.size() - 1);
   }
 }
 

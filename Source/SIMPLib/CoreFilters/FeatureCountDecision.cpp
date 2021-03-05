@@ -134,8 +134,8 @@ void FeatureCountDecision::execute()
     dm = false;
   }
 
-  emit decisionMade(dm);
-  emit targetValue(m_FeatureIds[1]);
+  Q_EMIT decisionMade(dm);
+  Q_EMIT targetValue(m_FeatureIds[1]);
 }
 
 // -----------------------------------------------------------------------------

@@ -57,7 +57,7 @@ public:
 
   friend ProgressDialogMessageHandler;
 
-public slots:
+public Q_SLOTS:
 
   void setLabelText(const QString& text);
   void processPipelineMessage(const AbstractMessage::Pointer& msg);

@@ -70,12 +70,12 @@ public:
    */
   void setupGui() override;
 
-public slots:
+public Q_SLOTS:
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
 
-signals:
+Q_SIGNALS:
 
 private:
   bool m_DidCausePreflight;

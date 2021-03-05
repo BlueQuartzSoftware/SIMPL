@@ -705,8 +705,8 @@ void DataArrayPathSelectionWidget::setDataArrayPath(const DataArrayPath& path)
   {
     setText(path.serialize(Detail::Delimiter));
     resetStyle();
-    emit pathChanged();
-    emit endViewPaths();
+    Q_EMIT pathChanged();
+    Q_EMIT endViewPaths();
   }
   else
   {
@@ -728,7 +728,7 @@ void DataArrayPathSelectionWidget::setDataArrayPath(const DataArrayPath& path)
     }
 
     resetStyle();
-    emit pathChanged();
+    Q_EMIT pathChanged();
   }
 }
 
@@ -900,13 +900,13 @@ void DataArrayPathSelectionWidget::emitRequirements()
   switch(m_DataType)
   {
   case DataArrayPathHelper::DataType::DataContainer:
-    emit viewPathsMatchingReqs(m_DataContainerReqs);
+    Q_EMIT viewPathsMatchingReqs(m_DataContainerReqs);
     break;
   case DataArrayPathHelper::DataType::AttributeMatrix:
-    emit viewPathsMatchingReqs(m_AttrMatrixReqs);
+    Q_EMIT viewPathsMatchingReqs(m_AttrMatrixReqs);
     break;
   case DataArrayPathHelper::DataType::DataArray:
-    emit viewPathsMatchingReqs(m_DataArrayReqs);
+    Q_EMIT viewPathsMatchingReqs(m_DataArrayReqs);
     break;
   case DataArrayPathHelper::DataType::None:
     break;
@@ -940,7 +940,7 @@ void DataArrayPathSelectionWidget::leaveEvent(QEvent* event)
   }
 
   m_FilteringPassed = false;
-  emit endViewPaths();
+  Q_EMIT endViewPaths();
   if(checkCurrentPath())
   {
     setState(State::Normal);
@@ -1044,7 +1044,7 @@ void DataArrayPathSelectionWidget::performDrag()
 {
   setChecked(true);
   DataArrayPath path = getDataArrayPath();
-  emit filterPath(path);
+  Q_EMIT filterPath(path);
 
   // MimeData stores the current path AND marks itself as a SelectionWidget drag
   // for connecting to the DataStructureWidget.
@@ -1059,7 +1059,7 @@ void DataArrayPathSelectionWidget::performDrag()
 
   // drag->exec is a blocking method
   resetStyle();
-  emit endViewPaths();
+  Q_EMIT endViewPaths();
 }
 
 // -----------------------------------------------------------------------------
@@ -1139,12 +1139,12 @@ void DataArrayPathSelectionWidget::updateCheckState(bool checked)
 {
   if(checked)
   {
-    emit dataArrayPathSelectionLocked(this);
+    Q_EMIT dataArrayPathSelectionLocked(this);
     emitRequirements();
   }
   else
   {
-    emit dataArrayPathSelectionUnlocked(this);
+    Q_EMIT dataArrayPathSelectionUnlocked(this);
     m_FilteringPassed = false;
 
     if(checkCurrentPath())

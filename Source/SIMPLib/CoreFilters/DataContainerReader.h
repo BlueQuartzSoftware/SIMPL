@@ -286,7 +286,7 @@ protected:
    */
   DataContainerArray::MontageCollection readMontageGroup(const DataContainerArray::Pointer& dca);
 
-protected slots:
+protected Q_SLOTS:
   /**
    * @brief Cleans up the filter after execution
    */

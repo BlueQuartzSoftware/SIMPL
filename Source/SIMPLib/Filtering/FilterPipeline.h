@@ -304,7 +304,7 @@ public:
    */
   static Pointer FromJson(const QJsonObject& json, IObserver* obs = nullptr);
 
-public slots:
+public Q_SLOTS:
 
   /**
    * @brief This method is called to start the pipeline for a plugin
@@ -323,7 +323,7 @@ protected:
 
   void updatePrevNextFilters();
 
-signals:
+Q_SIGNALS:
   //  void messageGenerated(AbstractMessage::Pointer message);
 
   /**

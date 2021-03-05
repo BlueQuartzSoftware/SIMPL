@@ -62,7 +62,7 @@ void QtSCheckboxDialog::setupGui()
 
   QVBoxLayout* verticalLayout_2 = new QVBoxLayout(this);
 
-  foreach(QString str, m_List)
+  for(QString str : m_List)
   {
     QCheckBox* cb = new QCheckBox(this);
     cb->setText(str);

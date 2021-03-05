@@ -88,7 +88,7 @@ void ConstrainedDoubleWidget::setupGui()
 // -----------------------------------------------------------------------------
 void ConstrainedDoubleWidget::widgetChanged(double d)
 {
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

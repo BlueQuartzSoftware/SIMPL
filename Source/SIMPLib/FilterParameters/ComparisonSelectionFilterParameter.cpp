@@ -175,7 +175,7 @@ void ComparisonSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* fi
   if(hasChanges)
   {
     m_SetterCallback(inputs);
-    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }
 

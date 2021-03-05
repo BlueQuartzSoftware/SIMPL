@@ -207,7 +207,7 @@ void ComparisonSelectionAdvancedWidget::on_conditionalCB_stateChanged(int state)
   linkLeft->setVisible(boolProp);
   linkRight->setVisible(boolProp);
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 
 }
@@ -257,7 +257,7 @@ void ComparisonSelectionAdvancedWidget::widgetChanged(const QString& text)
 {
   Q_UNUSED(text)
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 
@@ -418,7 +418,7 @@ void ComparisonSelectionAdvancedWidget::attributeMatrixSelected(QString path)
   setSelectedPath(path);
 
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 

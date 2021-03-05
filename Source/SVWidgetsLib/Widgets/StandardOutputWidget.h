@@ -67,10 +67,10 @@ public:
 protected:
   void setupGui();
 
-public slots:
+public Q_SLOTS:
   void requestContextMenu(const QPoint& pos);
 
-protected slots:
+protected Q_SLOTS:
   /**
    * @brief saveLog
    */

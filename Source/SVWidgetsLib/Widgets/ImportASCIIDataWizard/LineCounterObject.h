@@ -68,14 +68,14 @@ public:
    */
   int getNumberOfLines();
 
-protected slots:
+protected Q_SLOTS:
 
   /**
    * @brief run
    */
   void run();
 
-signals:
+Q_SIGNALS:
 
   /**
    * @brief finished

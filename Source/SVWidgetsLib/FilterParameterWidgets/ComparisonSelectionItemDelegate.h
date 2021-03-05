@@ -71,7 +71,7 @@ public:
 
   void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
-public slots:
+public Q_SLOTS:
   void arrayNameChangedData(int i);
   void operatorChangedData(int i);
   void valueChangedData(const QString& text);

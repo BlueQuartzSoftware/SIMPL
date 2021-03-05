@@ -97,7 +97,7 @@ public:
   Q_PROPERTY(QIcon HexahedralGeomIcon READ getHexahedralGeomIcon WRITE setHexahedralGeomIcon)
   Q_PROPERTY(QIcon RectilinearGeomIcon READ getRectilinearGeomIcon WRITE setRectilinearGeomIcon)
 
-public slots:
+public Q_SLOTS:
   /**
    * @brief Updates the internal DataContainerArray copy from the input DataContainerArray
    * @param dca
@@ -146,7 +146,7 @@ public slots:
    */
   void clearViewRequirements();
 
-signals:
+Q_SIGNALS:
   void filterPath(DataArrayPath path);
   void endDataStructureFiltering();
   void applyPathToFilteringParameter(DataArrayPath path);

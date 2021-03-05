@@ -293,7 +293,7 @@ void FilterLibraryToolboxWidget::on_filterLibrary_itemDoubleClicked(QTreeWidgetI
   if(nodeType.toInt() == FILTER_NODE_TYPE)
   {
     QString filterClassName = item->data(0, Qt::UserRole + 1).toString();
-    emit filterItemDoubleClicked(filterClassName);
+    Q_EMIT filterItemDoubleClicked(filterClassName);
   }
 }
 
@@ -307,7 +307,7 @@ void FilterLibraryToolboxWidget::updateFilterGroupList(FilterManager::Collection
   {
     filterNames << factory.key();
   }
-  emit filterListGenerated(filterNames, true);
+  Q_EMIT filterListGenerated(filterNames, true);
 }
 
 // -----------------------------------------------------------------------------

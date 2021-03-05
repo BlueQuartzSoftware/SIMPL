@@ -217,7 +217,7 @@ void MultiAttributeMatrixSelectionWidget::dataContainerSelected(QString path)
   setSelectedPath(path);
 
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 
@@ -266,7 +266,7 @@ void MultiAttributeMatrixSelectionWidget::on_selectBtn_clicked()
     }
 
     m_DidCausePreflight = true;
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
     m_DidCausePreflight = false;
   }
 }
@@ -292,7 +292,7 @@ void MultiAttributeMatrixSelectionWidget::on_deselectBtn_clicked()
     }
 
     m_DidCausePreflight = true;
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
     m_DidCausePreflight = false;
   }
 }
@@ -311,7 +311,7 @@ void MultiAttributeMatrixSelectionWidget::on_upBtn_clicked()
     attributeMatricesOrderWidget->setCurrentRow(currentIndex - 1);
 
     m_DidCausePreflight = true;
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
     m_DidCausePreflight = false;
   }
 }
@@ -330,7 +330,7 @@ void MultiAttributeMatrixSelectionWidget::on_downBtn_clicked()
     attributeMatricesOrderWidget->setCurrentRow(currentIndex + 1);
 
     m_DidCausePreflight = true;
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
     m_DidCausePreflight = false;
   }
 }
@@ -354,7 +354,7 @@ void MultiAttributeMatrixSelectionWidget::on_removeBtn_clicked()
     }
 
     m_DidCausePreflight = true;
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
     m_DidCausePreflight = false;
   }
 }

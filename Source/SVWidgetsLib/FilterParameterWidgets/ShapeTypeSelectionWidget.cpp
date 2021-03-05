@@ -250,7 +250,7 @@ void ShapeTypeSelectionWidget::comboboxChanged(int index)
 {
   Q_UNUSED(index)
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 

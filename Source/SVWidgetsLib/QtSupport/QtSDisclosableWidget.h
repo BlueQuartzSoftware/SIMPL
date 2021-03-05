@@ -70,10 +70,10 @@ public:
 
   void setTitle(const QString& title);
 
-signals:
+Q_SIGNALS:
   void dragStarted(QtSDisclosableWidget* widget);
 
-public slots:
+public Q_SLOTS:
   //  void disclose(bool on);
 
   /**

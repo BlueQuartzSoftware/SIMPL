@@ -73,7 +73,7 @@ void Observable::operator=(const Observable&)
 void Observable::setErrorCondition(int code, const QString& messageText)
 {
   GenericErrorMessage::Pointer pm = GenericErrorMessage::New(messageText, code);
-  emit messageGenerated(pm);
+  Q_EMIT messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -93,7 +93,7 @@ void Observable::setErrorConditionWithPrefix(int code, const QString& prefix, co
 void Observable::setWarningCondition(int code, const QString& messageText)
 {
   GenericWarningMessage::Pointer pm = GenericWarningMessage::New(messageText, code);
-  emit messageGenerated(pm);
+  Q_EMIT messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -113,7 +113,7 @@ void Observable::setWarningConditionWithPrefix(int code, const QString& prefix, 
 void Observable::notifyStatusMessage(const QString& messageText) const
 {
   GenericStatusMessage::Pointer pm = GenericStatusMessage::New(messageText);
-  emit messageGenerated(pm);
+  Q_EMIT messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -133,7 +133,7 @@ void Observable::notifyStatusMessageWithPrefix(const QString& prefix, const QStr
 void Observable::notifyProgressMessage(int progress, const QString& messageText) const
 {
   GenericProgressMessage::Pointer pm = GenericProgressMessage::New(messageText, progress);
-  emit messageGenerated(pm);
+  Q_EMIT messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------

@@ -61,7 +61,7 @@ public:
 
   void setServerUrl(QUrl url);
 
-signals:
+Q_SIGNALS:
   void notifyErrorMessage(const QString& msg);
   void notifyWarningMessage(const QString& msg);
   void notifyStatusMessage(const QString& msg);

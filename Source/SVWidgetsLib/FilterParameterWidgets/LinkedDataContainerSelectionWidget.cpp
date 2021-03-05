@@ -138,7 +138,7 @@ void LinkedDataContainerSelectionWidget::widgetChanged()
     index = static_cast<int32_t>(igeom->getGeometryType());
   }
 
-  emit conditionalPropertyChanged(index);
+  Q_EMIT conditionalPropertyChanged(index);
 }
 
 // -----------------------------------------------------------------------------
@@ -246,7 +246,7 @@ void LinkedDataContainerSelectionWidget::dataContainerSelected(QString path)
 
   m_DidCausePreflight = true;
   widgetChanged();
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 

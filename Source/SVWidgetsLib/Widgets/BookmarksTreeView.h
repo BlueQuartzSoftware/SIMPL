@@ -144,7 +144,7 @@ public:
    */
   QModelIndexList filterOutDescendants(QModelIndexList indexList);
 
-public slots:
+public Q_SLOTS:
   void collapseIndex(const QModelIndex& index);
   void expandIndex(const QModelIndex& index);
 
@@ -162,7 +162,7 @@ protected:
    */
   void addActionList(QList<QAction*> actionList);
 
-protected slots:
+protected Q_SLOTS:
   void listenAddBookmarkTriggered();
   void listenAddBookmarkFolderTriggered();
   void listenRenameBookmarkTriggered();
@@ -172,7 +172,7 @@ protected slots:
   void listenClearBookmarksTriggered();
   void listenOpenBookmarkTriggered();
 
-signals:
+Q_SIGNALS:
   void currentIndexChanged(const QModelIndex& current, const QModelIndex& previous);
   void folderChangedState(const QModelIndex& index, bool expand);
 
@@ -184,7 +184,7 @@ signals:
   void fireWriteSettings();
   void updateStatusBar(const QString& msg);
 
-private slots:
+private Q_SLOTS:
 
   /**
    * @brief mousePressEvent

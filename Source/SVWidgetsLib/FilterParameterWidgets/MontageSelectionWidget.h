@@ -66,7 +66,7 @@ public:
    */
   MontageSelection getMontageSelection() const;
 
-public slots:
+public Q_SLOTS:
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);

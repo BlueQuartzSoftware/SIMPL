@@ -70,7 +70,7 @@ Template TemplateLoader::getTemplate(QString templateName, QString locales)
   QStringList locs = locales.split(',', QString::SkipEmptyParts);
 
   // Search for exact match
-  foreach(QString loc, locs)
+  for(QString loc : locs)
   {
     loc.replace(QRegExp(";.*"), "");
     loc.replace('-', '_');
@@ -87,7 +87,7 @@ Template TemplateLoader::getTemplate(QString templateName, QString locales)
   }
 
   // Search for correct language but any country
-  foreach(QString loc, locs)
+  for(QString loc : locs)
   {
     loc.replace(QRegExp("[;_-].*"), "");
     QString localizedName = templateName + "-" + loc.trimmed();

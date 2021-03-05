@@ -158,7 +158,7 @@ void DynamicChoiceWidget::updateComboBox()
 void DynamicChoiceWidget::widgetChanged(int index)
 {
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 

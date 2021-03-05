@@ -162,7 +162,7 @@ void IssuesWidget::displayCachedMessages()
     m_CachedMessages[j]->visit(&messageHandler);
   }
 
-  emit tableHasErrors(errCount > 0, errCount, warnCount);
+  Q_EMIT tableHasErrors(errCount > 0, errCount, warnCount);
 
   if(ui->errorTableWidget->rowCount() > 0)
   {

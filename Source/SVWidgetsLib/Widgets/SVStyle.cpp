@@ -261,7 +261,7 @@ bool SVStyle::loadStyleSheet(const QString& jsonFilePath)
 
   // FINALLY, Set the style sheet into the app object
   qApp->setStyleSheet(cssContent);
-  emit styleSheetLoaded(jsonFilePath);
+  Q_EMIT styleSheetLoaded(jsonFilePath);
   return success;
 }
 

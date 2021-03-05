@@ -96,7 +96,7 @@ void IntWidget::setupGui()
 // -----------------------------------------------------------------------------
 void IntWidget::widgetChanged(const QString& text)
 {
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

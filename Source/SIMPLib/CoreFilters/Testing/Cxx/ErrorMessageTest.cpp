@@ -69,10 +69,10 @@ public:
     FilterErrorMessage::Pointer errorMessage = FilterErrorMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Testing Error Message...", -23);
     FilterStatusMessage::Pointer statusMessage = FilterStatusMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Testing Status Message...");
     FilterWarningMessage::Pointer warningMessage = FilterWarningMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Testing Status Message...", 23);
-    emit f->messageGenerated(progressMessage);
-    emit f->messageGenerated(errorMessage);
-    emit f->messageGenerated(statusMessage);
-    emit f->messageGenerated(warningMessage);
+    Q_EMIT f->messageGenerated(progressMessage);
+    Q_EMIT f->messageGenerated(errorMessage);
+    Q_EMIT f->messageGenerated(statusMessage);
+    Q_EMIT f->messageGenerated(warningMessage);
 
     if(true)
     {

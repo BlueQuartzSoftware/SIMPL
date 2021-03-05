@@ -54,7 +54,7 @@ public:
   PipelineItemSlideAnimation(PipelineModel* model, QPersistentModelIndex index, int numberOfPixels, AnimationDirection direction);
   ~PipelineItemSlideAnimation() override = default;
 
-private slots:
+private Q_SLOTS:
   void listenValueChanged(const QVariant& value);
 
 private:

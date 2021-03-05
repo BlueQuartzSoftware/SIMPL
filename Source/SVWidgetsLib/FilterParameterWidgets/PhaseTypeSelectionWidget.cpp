@@ -165,7 +165,7 @@ void PhaseTypeSelectionWidget::attributeMatrixSelected(QString path)
   setSelectedPath(path);
 
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 
@@ -206,7 +206,7 @@ void PhaseTypeSelectionWidget::updateDataArrayPath(QString propertyName, const D
 void PhaseTypeSelectionWidget::attributeMatrixUpdated()
 {
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 
@@ -299,7 +299,7 @@ void PhaseTypeSelectionWidget::updatePhaseComboBoxes()
 void PhaseTypeSelectionWidget::phaseTypeComboBoxChanged(int index)
 {
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 

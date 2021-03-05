@@ -89,7 +89,7 @@ public:
    */
   void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
 
-public slots:
+public Q_SLOTS:
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);

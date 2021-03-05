@@ -183,7 +183,7 @@ protected:
    */
   void dropEvent(QDropEvent* event) override;
 
-protected slots:
+protected Q_SLOTS:
   /**
    * @brief Show the context menu at a given point
    * @param pos

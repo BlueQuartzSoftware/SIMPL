@@ -152,7 +152,7 @@ void DataContainerArrayProxyWidget::selectAllDataContainersClicked(bool checked)
   applyDataContainerArrayProxy(m_DcaProxy);
   dataContainerList->blockSignals(false);
 
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 
@@ -170,7 +170,7 @@ void DataContainerArrayProxyWidget::selectAllAttributeMatricesClicked(bool check
   applyDataContainerProxy();
   attributeMatrixList->blockSignals(false);
 
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 
@@ -188,7 +188,7 @@ void DataContainerArrayProxyWidget::selectAllDataArraysClicked(bool checked)
   applyAttributeMatrixProxy();
   dataArrayList->blockSignals(false);
 
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 
@@ -208,7 +208,7 @@ void DataContainerArrayProxyWidget::itemChanged(QListWidgetItem* item)
   updateProxyChecked(item);
   item->listWidget()->blockSignals(false);
 
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 

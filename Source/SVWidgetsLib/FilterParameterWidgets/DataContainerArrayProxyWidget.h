@@ -84,7 +84,7 @@ public:
   void setFilterParameter(FilterParameter* value);
   FilterParameter* getFilterParameter() const;
 
-public slots:
+public Q_SLOTS:
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
@@ -117,7 +117,7 @@ protected:
 
   void checkAllItems(QListWidget* listWidget, Qt::CheckState state);
 
-protected slots:
+protected Q_SLOTS:
   void selectAllDataContainersClicked(bool checked);
   void selectAllAttributeMatricesClicked(bool checked);
   void selectAllDataArraysClicked(bool checked);

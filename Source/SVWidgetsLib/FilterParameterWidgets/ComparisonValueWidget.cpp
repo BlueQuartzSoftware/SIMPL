@@ -96,7 +96,7 @@ void ComparisonValueWidget::dataArrayChanged(int index)
 {
   m_comparisonValue->setAttributeArrayName(arrayNameComboBox->currentText());
 
-  emit comparisonChanged();
+  Q_EMIT comparisonChanged();
 }
 
 // -----------------------------------------------------------------------------
@@ -106,7 +106,7 @@ void ComparisonValueWidget::comparisonOperatorChanged(int index)
 {
   m_comparisonValue->setCompOperator(index);
 
-  emit comparisonChanged();
+  Q_EMIT comparisonChanged();
 }
 
 // -----------------------------------------------------------------------------
@@ -119,7 +119,7 @@ void ComparisonValueWidget::comparisonValueChanged()
   double d = valueSpinBox->text().toDouble(&ok);
   m_comparisonValue->setCompValue(d);
 
-  emit comparisonChanged();
+  Q_EMIT comparisonChanged();
 }
 
 // -----------------------------------------------------------------------------

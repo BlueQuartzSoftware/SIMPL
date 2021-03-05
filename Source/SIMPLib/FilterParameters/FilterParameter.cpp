@@ -95,7 +95,7 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArr
     {
       var.setValue(path);
       filter->setProperty(qPrintable(getPropertyName()), var);
-      emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+      Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
     }
   }
   else if(var.canConvert<DataContainerArrayProxy>())
@@ -104,7 +104,7 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArr
     proxy.updatePath(renamePath);
     var.setValue(proxy);
     filter->setProperty(qPrintable(getPropertyName()), var);
-    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
   else if(var.canConvert<DataContainerProxy>())
   {
@@ -112,7 +112,7 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArr
     proxy.updatePath(renamePath);
     var.setValue(proxy);
     filter->setProperty(qPrintable(getPropertyName()), var);
-    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
   else if(var.canConvert<AttributeMatrixProxy>())
   {
@@ -120,7 +120,7 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArr
     proxy.updatePath(renamePath);
     var.setValue(proxy);
     filter->setProperty(qPrintable(getPropertyName()), var);
-    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
   else if(var.canConvert<DataArrayProxy>())
   {
@@ -128,7 +128,7 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArr
     proxy.updatePath(renamePath);
     var.setValue(proxy);
     filter->setProperty(qPrintable(getPropertyName()), var);
-    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }
 

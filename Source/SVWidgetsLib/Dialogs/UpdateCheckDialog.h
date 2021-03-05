@@ -116,16 +116,16 @@ public:
 
   void setupGui();
 
-public slots:
+public Q_SLOTS:
   void on_checkNowBtn_clicked();
   void on_howOften_currentIndexChanged(int);
   void on_automatically_toggled(bool);
   void on_manually_toggled(bool);
 
-protected slots:
+protected Q_SLOTS:
   void LatestVersionReplied(UpdateCheckData*);
 
-signals:
+Q_SIGNALS:
   void finished();
   void hasMessage(const QString& message);
   void updateFound();

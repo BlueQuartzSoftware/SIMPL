@@ -55,7 +55,7 @@ public:
    */
   void setProgressValue(float percent);
 
-public slots:
+public Q_SLOTS:
   /**
    * @brief on_startPipelineBtn_clicked
    */
@@ -77,7 +77,7 @@ protected:
    */
   void setupGui();
 
-signals:
+Q_SIGNALS:
   void pipelineCanceled(const QModelIndex& pipelineIndex);
 
 private:

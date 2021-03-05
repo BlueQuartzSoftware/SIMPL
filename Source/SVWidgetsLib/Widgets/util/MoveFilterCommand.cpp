@@ -110,13 +110,13 @@ void MoveFilterCommand::undo()
 
   //    if (m_Filters.size() == 1)
   //    {
-  //      emit m_DestinationView->statusMessage(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
-  //      emit m_DestinationView->stdOutMessage(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
+  //      Q_EMIT m_DestinationView->statusMessage(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
+  //      Q_EMIT m_DestinationView->stdOutMessage(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
   //    }
   //    else
   //    {
-  //      emit m_DestinationView->statusMessage(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
-  //      emit m_DestinationView->stdOutMessage(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
+  //      Q_EMIT m_DestinationView->statusMessage(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
+  //      Q_EMIT m_DestinationView->stdOutMessage(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
   //    }
   //  }
 }
@@ -177,11 +177,11 @@ void MoveFilterCommand::redo()
     m_FirstRun = false;
   }
 
-  emit m_PipelineView->preflightPipeline();
-  emit model->pipelineDataChanged(QModelIndex());
+  Q_EMIT m_PipelineView->preflightPipeline();
+  Q_EMIT model->pipelineDataChanged(QModelIndex());
 
-  emit model->statusMessageGenerated(statusMessage);
-  emit model->standardOutputMessageGenerated(statusMessage);
+  Q_EMIT model->statusMessageGenerated(statusMessage);
+  Q_EMIT model->standardOutputMessageGenerated(statusMessage);
 }
 
 // -----------------------------------------------------------------------------

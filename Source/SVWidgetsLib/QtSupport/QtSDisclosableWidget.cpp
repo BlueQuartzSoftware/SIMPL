@@ -151,7 +151,7 @@ void QtSDisclosableWidget::disclose(bool on)
   }
 
   QObjectList objs = children();
-  foreach(QObject* obj, objs)
+  for(QObject* obj : objs)
   {
     QWidget* w = qobject_cast<QWidget*>(obj);
     if(nullptr != w)

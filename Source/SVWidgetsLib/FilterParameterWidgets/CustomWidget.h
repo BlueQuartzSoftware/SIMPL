@@ -69,7 +69,7 @@ public:
    */
   void setupGui();
 
-public slots:
+public Q_SLOTS:
 
 public:
   CustomWidget(const CustomWidget&) = delete;            // Copy Constructor Not Implemented

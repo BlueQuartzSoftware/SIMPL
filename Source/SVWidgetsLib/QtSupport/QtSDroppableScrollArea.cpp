@@ -83,7 +83,7 @@ void QtSDroppableScrollArea::dropEvent(QDropEvent* event)
     QByteArray dropData = event->mimeData()->data("text/plain");
     QString name(dropData);
     //  qDebug() << "name: " << name() << "\n";
-    emit filterDropped(name);
+    Q_EMIT filterDropped(name);
   }
 
   //  event->acceptProposedAction();

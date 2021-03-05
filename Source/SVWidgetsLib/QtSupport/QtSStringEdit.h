@@ -62,10 +62,10 @@ public:
 
   void setValidator(const QValidator* v);
 
-signals:
+Q_SIGNALS:
   void valueChanged(QString value);
 
-public slots:
+public Q_SLOTS:
   void widgetChanged(const QString& msg);
   void on_applyChangesBtn_clicked();
   void on_cancelChangesBtn_clicked();

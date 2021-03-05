@@ -72,7 +72,7 @@ bool SIMPLH5DataReader::openFile(const QString& filePath)
   if(m_FileId >= 0)
   {
     QString ss = QObject::tr("Error opening input file '%1' - A file is already open with this reader.").arg(filePath);
-    emit errorGenerated(Title, ss, -148);
+    Q_EMIT errorGenerated(Title, ss, -148);
     return false;
   }
 
@@ -80,7 +80,7 @@ bool SIMPLH5DataReader::openFile(const QString& filePath)
   if(m_FileId < 0)
   {
     QString ss = QObject::tr("Error opening input file '%1'.").arg(filePath);
-    emit errorGenerated(Title, ss, -149);
+    Q_EMIT errorGenerated(Title, ss, -149);
     m_FileId = -1;
     return false;
   }
@@ -98,7 +98,7 @@ bool SIMPLH5DataReader::closeFile()
   if(err < 0)
   {
     QString ss = QObject::tr("Error closing input file '%1'").arg(m_CurrentFilePath);
-    emit errorGenerated(Title, ss, -151);
+    Q_EMIT errorGenerated(Title, ss, -151);
     return false;
   }
 
@@ -115,7 +115,7 @@ DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(DataConta
   if(m_FileId < 0)
   {
     QString ss = QObject::tr("File data unable to be read - file was not properly opened");
-    emit errorGenerated(Title, ss, -249);
+    Q_EMIT errorGenerated(Title, ss, -249);
     return DataContainerArray::NullPointer();
   }
 
@@ -142,20 +142,20 @@ DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(DataConta
   if(!check)
   {
     QString ss = QObject::tr("File data unable to be read - file version could not be read");
-    emit errorGenerated(Title, ss, -250);
+    Q_EMIT errorGenerated(Title, ss, -250);
     return DataContainerArray::NullPointer();
   }
   if(fVersion < 7.0)
   {
     ss = QObject::tr("File unable to be read - file structure older than 7.0");
-    emit errorGenerated(Title, ss, -251);
+    Q_EMIT errorGenerated(Title, ss, -251);
     return DataContainerArray::NullPointer();
   }
   hid_t dcaGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), 0);
   if(dcaGid < 0)
   {
     QString ss = QObject::tr("Error attempting to open the HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
-    emit errorGenerated(Title, ss, -1923123);
+    Q_EMIT errorGenerated(Title, ss, -1923123);
     return DataContainerArray::NullPointer();
   }
 
@@ -163,7 +163,7 @@ DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(DataConta
   if(err < 0)
   {
     QString ss = QObject::tr("Error trying to read the DataContainers from the file '%1'").arg(m_CurrentFilePath);
-    emit errorGenerated(Title, ss, err);
+    Q_EMIT errorGenerated(Title, ss, err);
     return DataContainerArray::NullPointer();
   }
 
@@ -174,7 +174,7 @@ DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(DataConta
   if(!result)
   {
     QString ss = QObject::tr("Error trying to read the DataContainerBundles from the file '%1'").arg(m_CurrentFilePath);
-    emit errorGenerated(Title, ss, err);
+    Q_EMIT errorGenerated(Title, ss, err);
     return DataContainerArray::NullPointer();
   }
 
@@ -200,7 +200,7 @@ DataContainerArrayProxy SIMPLH5DataReader::readDataContainerArrayStructure(SIMPL
   {
     QString ss = QObject::tr("HDF5 Attribute '%1' was not found on the HDF5 root node and this is required").arg(SIMPL::HDF5::DREAM3DVersion);
     err = -72;
-    emit errorGenerated(Title, ss, err);
+    Q_EMIT errorGenerated(Title, ss, err);
     return DataContainerArrayProxy();
   }
 
@@ -211,7 +211,7 @@ DataContainerArrayProxy SIMPLH5DataReader::readDataContainerArrayStructure(SIMPL
     // std::cout << "Attribute '" << SIMPL::HDF5::FileVersionName.toStdString() << " was not found" << std::endl;
     QString ss = QObject::tr("HDF5 Attribute '%1' was not found on the HDF5 root node and this is required").arg(SIMPL::HDF5::FileVersionName);
     err = -73;
-    emit errorGenerated(Title, ss, err);
+    Q_EMIT errorGenerated(Title, ss, err);
     return DataContainerArrayProxy();
   }
   //  else {
@@ -223,7 +223,7 @@ DataContainerArrayProxy SIMPLH5DataReader::readDataContainerArrayStructure(SIMPL
   {
     QString ss = QObject::tr("Error opening HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
     err = -74;
-    emit errorGenerated(Title, ss, err);
+    Q_EMIT errorGenerated(Title, ss, err);
     return DataContainerArrayProxy();
   }
 
@@ -251,13 +251,13 @@ bool SIMPLH5DataReader::readPipelineJson(QString& json)
   if(!check)
   {
     QString ss = QObject::tr("Pipeline unable to be read - file version could not be read.");
-    emit errorGenerated(Title, ss, -252);
+    Q_EMIT errorGenerated(Title, ss, -252);
     return false;
   }
   if(fVersion < 7.0)
   {
     QString ss = QObject::tr("Pipeline unable to be read - file version older than 7.0.");
-    emit errorGenerated(Title, ss, -253);
+    Q_EMIT errorGenerated(Title, ss, -253);
     return false;
   }
 
@@ -268,7 +268,7 @@ bool SIMPLH5DataReader::readPipelineJson(QString& json)
   if(err < 0)
   {
     QString ss = QObject::tr("Pipeline unable to be read - JSON dataset could not be read.");
-    emit errorGenerated(Title, ss, -254);
+    Q_EMIT errorGenerated(Title, ss, -254);
     json.clear();
     return false;
   }
@@ -288,7 +288,7 @@ bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, const DataContain
   {
     // NO Bundles are available to read so just return.
     QString ss = QObject::tr("Error opening HDF5 Group '%1' ").arg(SIMPL::StringConstants::DataContainerBundleGroupName);
-    emit errorGenerated(Title, ss, -73);
+    Q_EMIT errorGenerated(Title, ss, -73);
     return false;
   }
 
@@ -299,7 +299,7 @@ bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, const DataContain
   if(err < 0)
   {
     QString ss = QObject::tr("Error getting group objects from HDF5 group '%1' ").arg(SIMPL::StringConstants::DataContainerBundleGroupName);
-    emit errorGenerated(Title, ss, -74);
+    Q_EMIT errorGenerated(Title, ss, -74);
     return false;
   }
 
@@ -319,7 +319,7 @@ bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, const DataContain
     if(err < 0)
     {
       QString ss = QObject::tr("Error reading DataContainer group names from HDF5 group '%1' ").arg(bundleName);
-      emit errorGenerated(Title, ss, -75);
+      Q_EMIT errorGenerated(Title, ss, -75);
       return false;
     }
     QStringList dcNameList = dcNames.split(QString(sep));
@@ -342,7 +342,7 @@ bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, const DataContain
     if(err < 0)
     {
       QString ss = QObject::tr("Error reading DataContainerBundle meta data arrays from HDF5 group '%1' ").arg(bundleName);
-      emit errorGenerated(Title, ss, -76);
+      Q_EMIT errorGenerated(Title, ss, -76);
       return false;
     }
     QStringList metaNameList = metaArrays.split(QString(sep));
@@ -361,7 +361,7 @@ bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, const DataContain
 // -----------------------------------------------------------------------------
 void SIMPLH5DataReader::setErrorCondition(int code, const QString& str)
 {
-  emit errorGenerated(Title, str, code);
+  Q_EMIT errorGenerated(Title, str, code);
 }
 
 // -----------------------------------------------------------------------------

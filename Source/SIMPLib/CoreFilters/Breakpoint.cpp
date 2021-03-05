@@ -100,7 +100,7 @@ void Breakpoint::execute()
 void Breakpoint::pause()
 {
   // Pause the pipeline at this point until someone chooses to resume
-  emit pipelineHasPaused();
+  Q_EMIT pipelineHasPaused();
 
   m_Mutex.lock();
   QString ss = "The pipeline is paused - Press \"Resume\" to continue execution.";
@@ -116,7 +116,7 @@ void Breakpoint::resumePipeline()
 {
   // Resume the pipeline
   m_WaitCondition.wakeAll();
-  emit pipelineHasResumed();
+  Q_EMIT pipelineHasResumed();
 }
 
 // -----------------------------------------------------------------------------

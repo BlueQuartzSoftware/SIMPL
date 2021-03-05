@@ -90,7 +90,7 @@ void NumericTypeWidget::setupGui()
 // -----------------------------------------------------------------------------
 void NumericTypeWidget::widgetChanged(int index)
 {
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

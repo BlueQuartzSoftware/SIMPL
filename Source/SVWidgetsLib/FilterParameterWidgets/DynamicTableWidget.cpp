@@ -151,7 +151,7 @@ void DynamicTableWidget::updateButtonStyles()
 void DynamicTableWidget::on_dynamicTable_cellChanged(int /* row */, int /* col */)
 {
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 

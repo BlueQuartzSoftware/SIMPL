@@ -143,7 +143,7 @@ void DataContainerGridModel::setCurrentDepth(int depth)
   m_CurrentDepth = depth;
 
   QModelIndex index;
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -168,8 +168,8 @@ bool DataContainerGridModel::setData(const QModelIndex& index, const QVariant& v
   {
     SizeVec3Type pos(index.row(), index.column(), m_CurrentDepth);
     m_DCGrid.setDataContainerName(pos, value.toString());
-    emit dataChanged(index, index);
-    emit modelChanged();
+    Q_EMIT dataChanged(index, index);
+    Q_EMIT modelChanged();
     return true;
   }
 
@@ -183,7 +183,7 @@ bool DataContainerGridModel::insertRows(int row, int count, const QModelIndex& i
 {
   beginInsertRows(QModelIndex(), row, row + count - 1);
   endInsertRows();
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
   return true;
 }
 
@@ -198,7 +198,7 @@ bool DataContainerGridModel::removeRows(int row, int count, const QModelIndex& i
   } // No Rows to remove
   beginRemoveRows(QModelIndex(), row, row + count - 1);
   endRemoveRows();
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
   return true;
 }
 
@@ -209,7 +209,7 @@ bool DataContainerGridModel::insertColumns(int col, int count, const QModelIndex
 {
   beginInsertColumns(QModelIndex(), col, col + count - 1);
   endInsertColumns();
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
   return true;
 }
 
@@ -224,7 +224,7 @@ bool DataContainerGridModel::removeColumns(int col, int count, const QModelIndex
   } // No Rows to remove
   beginRemoveColumns(QModelIndex(), col, col + count - 1);
   endRemoveColumns();
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
   return true;
 }
 
@@ -291,8 +291,8 @@ void DataContainerGridModel::setGridData(DataContainerGrid& grid)
   endInsertRows();
   QModelIndex topLeft = createIndex(0, 0);
   QModelIndex botRight = createIndex(rows, cols);
-  emit dataChanged(topLeft, botRight);
-  emit modelChanged();
+  Q_EMIT dataChanged(topLeft, botRight);
+  Q_EMIT modelChanged();
 }
 
 // -----------------------------------------------------------------------------

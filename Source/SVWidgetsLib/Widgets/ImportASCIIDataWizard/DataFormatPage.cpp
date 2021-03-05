@@ -146,7 +146,7 @@ void DataFormatPage::setupGui()
 
   QVector<QString> amTypes = AttributeMatrix::GetTypesAsStrings();
 
-  foreach(const QString amType, amTypes)
+  for(const QString amType : amTypes)
   {
     attributeMatrixType->addItem(amType);
   }
@@ -343,7 +343,7 @@ void DataFormatPage::on_createAMRadio_toggled(bool b)
   if(b)
   {
     checkTupleDimensions(getTupleTable()->getData());
-    emit completeChanged();
+    Q_EMIT completeChanged();
   }
 }
 
@@ -362,7 +362,7 @@ void DataFormatPage::on_useAMRadio_toggled(bool b)
     }
     else
     {
-      emit completeChanged();
+      Q_EMIT completeChanged();
     }
   }
 }
@@ -713,7 +713,7 @@ void DataFormatPage::on_startRowSpin_valueChanged(int value)
   }
   checkTupleDimensions(getTupleTable()->getData());
 
-  emit completeChanged();
+  Q_EMIT completeChanged();
 }
 
 // -----------------------------------------------------------------------------
@@ -801,7 +801,7 @@ void DataFormatPage::on_doesNotHaveHeadersRadio_toggled(bool checked)
     }
 
     checkHeaders();
-    emit completeChanged();
+    Q_EMIT completeChanged();
   }
 }
 
@@ -823,7 +823,7 @@ void DataFormatPage::on_useDefaultHeaders_toggled(bool checked)
     }
 
     checkHeaders();
-    emit completeChanged();
+    Q_EMIT completeChanged();
   }
 }
 
@@ -837,7 +837,7 @@ void DataFormatPage::on_headersIndexLineEdit_textChanged(const QString& text)
   {
     m_ASCIIDataModel->clearHeaders(Qt::Horizontal);
     checkHeaders(QVector<QString>());
-    emit completeChanged();
+    Q_EMIT completeChanged();
     return;
   }
 
@@ -848,7 +848,7 @@ void DataFormatPage::on_headersIndexLineEdit_textChanged(const QString& text)
   {
     m_ASCIIDataModel->clearHeaders(Qt::Horizontal);
     checkHeaders(QVector<QString>());
-    emit completeChanged();
+    Q_EMIT completeChanged();
     return;
   }
 
@@ -859,7 +859,7 @@ void DataFormatPage::on_headersIndexLineEdit_textChanged(const QString& text)
   {
     m_ASCIIDataModel->clearHeaders(Qt::Horizontal);
     checkHeaders(QVector<QString>());
-    emit completeChanged();
+    Q_EMIT completeChanged();
     return;
   }
 
@@ -897,7 +897,7 @@ void DataFormatPage::on_headersIndexLineEdit_textChanged(const QString& text)
 
   checkHeaders(headers);
 
-  emit completeChanged();
+  Q_EMIT completeChanged();
 }
 
 // -----------------------------------------------------------------------------
@@ -961,14 +961,14 @@ bool DataFormatPage::checkTupleDimensions(std::vector<size_t> tupleDims)
     tupleTableErrLabel->setText("The current number of tuples in the attribute matrix do not match the total number of lines imported.");
     tupleTableErrLabel->show();
     m_TupleDimsHasErrors = true;
-    emit completeChanged();
+    Q_EMIT completeChanged();
     return false;
   }
 
   tupleTableErrLabel->setText("");
   tupleTableErrLabel->hide();
   m_TupleDimsHasErrors = false;
-  emit completeChanged();
+  Q_EMIT completeChanged();
   return true;
 }
 

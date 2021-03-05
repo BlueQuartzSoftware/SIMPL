@@ -100,7 +100,7 @@ void IntVec3Widget::setupGui()
 // -----------------------------------------------------------------------------
 void IntVec3Widget::widgetChanged(const QString& text)
 {
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

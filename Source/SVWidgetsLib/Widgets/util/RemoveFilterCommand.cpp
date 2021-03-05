@@ -115,7 +115,7 @@ void RemoveFilterCommand::undo()
 
   m_PipelineView->preflightPipeline();
 
-  emit m_PipelineView->pipelineChanged();
+  Q_EMIT m_PipelineView->pipelineChanged();
 
   QString statusMessage;
   if(m_Filters.size() > 1)
@@ -133,8 +133,8 @@ void RemoveFilterCommand::undo()
     statusMessage = QObject::tr("Undo \"Removed '%1' filter at index %2\"").arg(m_Filters[0]->getHumanLabel()).arg(m_FilterRows[0] + 1);
   }
 
-  emit m_PipelineView->statusMessage(statusMessage);
-  emit m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage, false));
+  Q_EMIT m_PipelineView->statusMessage(statusMessage);
+  Q_EMIT m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage, false));
 }
 
 // -----------------------------------------------------------------------------
@@ -184,10 +184,10 @@ void RemoveFilterCommand::redo()
 
   m_PipelineView->preflightPipeline();
 
-  emit m_PipelineView->pipelineChanged();
+  Q_EMIT m_PipelineView->pipelineChanged();
 
-  emit m_PipelineView->statusMessage(statusMessage);
-  emit m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage, false));
+  Q_EMIT m_PipelineView->statusMessage(statusMessage);
+  Q_EMIT m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage, false));
 }
 
 // -----------------------------------------------------------------------------
@@ -277,7 +277,7 @@ void RemoveFilterCommand::connectFilterSignalsSlots(const AbstractFilter::Pointe
     {
       m_PipelineView->preflightPipeline();
     }
-    emit m_PipelineView->filterParametersChanged(filter);
+    Q_EMIT m_PipelineView->filterParametersChanged(filter);
   });
   m_Connections[filter] = connection;
 }

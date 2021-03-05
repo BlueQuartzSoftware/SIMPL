@@ -101,14 +101,14 @@ public:
    */
   bool eventFilter(QObject* obj, QEvent* event) override;
 
-public slots:
+public Q_SLOTS:
   void widgetChanged();
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
   void dataContainerSelected(QString path);
 
-signals:
+Q_SIGNALS:
   void conditionalPropertyChanged(int);
 
 protected:

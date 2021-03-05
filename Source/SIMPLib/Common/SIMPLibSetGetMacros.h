@@ -257,7 +257,7 @@ public:                                                                         
   void set##prpty(const type& value)                                                                                                                                                                   \
   {                                                                                                                                                                                                    \
     this->m_##prpty = value;                                                                                                                                                                           \
-    emit parametersChanged();                                                                                                                                                                          \
+    Q_EMIT parametersChanged();                                                                                                                                                                          \
   }
 
 #define SIMPL_SET_PROPERTY_DECL(type, prpty) void set##prpty(type value);

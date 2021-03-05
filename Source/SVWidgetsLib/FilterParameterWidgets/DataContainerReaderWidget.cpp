@@ -346,7 +346,7 @@ void DataContainerReaderWidget::setupGui()
     checkFilePath(m_LineEdit->text());
     blockSignals(false);
 
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   });
 
   if(getFilterParameter() != nullptr)
@@ -364,7 +364,7 @@ void DataContainerReaderWidget::setupGui()
     checkFilePath(path);
     updateStylingForPath(path);
 
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   }
 }
 
@@ -424,7 +424,7 @@ void DataContainerReaderWidget::itemActivated(const QModelIndex& index)
   updateProxyFromModel();
   m_Filter->setInputFileDataContainerArrayProxy(m_DcaProxy); // Set the new proxy into filter
 
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 
@@ -629,7 +629,7 @@ void DataContainerReaderWidget::checkFilePath(const QString& text)
   m_CurrentText = text;
 
   updateDCAProxy(text);
-  emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+  Q_EMIT parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
 // -----------------------------------------------------------------------------
@@ -676,7 +676,7 @@ void DataContainerReaderWidget::updateDCAProxy(const QString& text)
 
       updateModelFromProxy(proxy);
     }
-    emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+    Q_EMIT parametersChanged(); // This should force the preflight to run because we are emitting a signal
   }
 }
 

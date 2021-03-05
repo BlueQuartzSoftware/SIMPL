@@ -52,13 +52,13 @@ public:
   FavoritesChangedDialog(QWidget* parent = nullptr);
   ~FavoritesChangedDialog() override;
 
-protected slots:
+protected Q_SLOTS:
 
   void on_selectBtn_clicked();
   void on_exportBtn_clicked();
   void on_outputDir_textChanged(const QString& text);
 
-signals:
+Q_SIGNALS:
 
   void exportBtnPressed(QString directory);
 

@@ -103,7 +103,7 @@ public:
    */
   void clear();
 
-public slots:
+public Q_SLOTS:
   /**
    * @brief listenKeyPressed
    * @param event
@@ -128,10 +128,10 @@ protected:
    */
   void mouseMoveEvent(QMouseEvent* event) override;
 
-signals:
+Q_SIGNALS:
   void filterItemDoubleClicked(const QString& filterName, int insertIndex = -1, bool useAnimationOnFirstRun = true);
 
-private slots:
+private Q_SLOTS:
   /**
    * @brief requestContextMenu
    * @param pos

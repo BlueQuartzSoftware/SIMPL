@@ -159,7 +159,7 @@ void UpdateCheck::networkReplied(QNetworkReply* reply)
       errorMessage.append("Please contact the SIMPLView developers for more information.\n");
       dataObj->setMessageDescription(errorMessage);
       dataObj->setHasError(true);
-      emit latestVersion(dataObj);
+      Q_EMIT latestVersion(dataObj);
       return;
     }
 
@@ -185,7 +185,7 @@ void UpdateCheck::networkReplied(QNetworkReply* reply)
     dataObj->setAppString(appVersionStr);
     dataObj->setServerString(serverVersionStr);
 
-    emit latestVersion(dataObj);
+    Q_EMIT latestVersion(dataObj);
   }
   // The URL does not exist on the server
   else
@@ -196,7 +196,7 @@ void UpdateCheck::networkReplied(QNetworkReply* reply)
     errorMessage.append(reply->errorString());
     dataObj->setMessageDescription(errorMessage);
     dataObj->setHasError(true);
-    emit latestVersion(dataObj);
+    Q_EMIT latestVersion(dataObj);
     reply->abort();
   }
 }

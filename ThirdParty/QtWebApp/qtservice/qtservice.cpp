@@ -413,7 +413,7 @@ public:
   , d_ptr(service)
   {
   }
-public slots:
+public Q_SLOTS:
   void slotStart()
   {
     d_ptr->startService();

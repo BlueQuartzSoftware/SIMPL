@@ -166,7 +166,7 @@ void MontageStructureSelectionWidget::setMontageName(const QString& montage)
   m_Ui->montageSelectionComboBox->setCurrentText(montage);
 
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 

@@ -146,10 +146,10 @@ void AddFilterCommand::undo()
 
   m_PipelineView->preflightPipeline();
 
-  emit m_PipelineView->pipelineChanged();
+  Q_EMIT m_PipelineView->pipelineChanged();
 
-  emit m_PipelineView->statusMessage(statusMessage);
-  emit m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage, false));
+  Q_EMIT m_PipelineView->statusMessage(statusMessage);
+  Q_EMIT m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage, false));
 }
 
 // -----------------------------------------------------------------------------
@@ -169,8 +169,8 @@ void AddFilterCommand::redo()
     addFilter(m_Filters[i], m_FilterRows[i]);
   }
 
-  emit m_PipelineView->preflightPipeline();
-  emit m_PipelineView->pipelineChanged();
+  Q_EMIT m_PipelineView->preflightPipeline();
+  Q_EMIT m_PipelineView->pipelineChanged();
 
   QString statusMessage;
   if(m_Filters.size() > 1)
@@ -192,8 +192,8 @@ void AddFilterCommand::redo()
     m_FirstRun = false;
   }
 
-  emit model->statusMessageGenerated(statusMessage);
-  emit model->standardOutputMessageGenerated(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage, false));
+  Q_EMIT model->statusMessageGenerated(statusMessage);
+  Q_EMIT model->standardOutputMessageGenerated(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage, false));
 }
 
 // -----------------------------------------------------------------------------
@@ -283,7 +283,7 @@ void AddFilterCommand::connectFilterSignalsSlots(const AbstractFilter::Pointer& 
     {
       m_PipelineView->preflightPipeline();
     }
-    emit m_PipelineView->filterParametersChanged(filter);
+    Q_EMIT m_PipelineView->filterParametersChanged(filter);
   });
   m_Connections[filter] = connection;
 }

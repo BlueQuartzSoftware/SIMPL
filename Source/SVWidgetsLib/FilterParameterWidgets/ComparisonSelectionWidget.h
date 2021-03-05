@@ -114,7 +114,7 @@ public:
    */
   bool eventFilter(QObject* obj, QEvent* event) override;
 
-public slots:
+public Q_SLOTS:
   /**
    * @brief beforePreflight
    */
@@ -172,7 +172,7 @@ protected:
    */
   void populateButtonText();
 
-protected slots:
+protected Q_SLOTS:
   /**
    * @brief on_addComparison_clicked
    */

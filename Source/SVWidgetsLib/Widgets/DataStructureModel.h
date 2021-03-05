@@ -128,7 +128,7 @@ the setData() and setHeaderData() functions, respectively.
   QModelIndexList findIndexByPath(QString filePath);
 */
 
-protected slots:
+protected Q_SLOTS:
   //    void updateRowState(const QString& path);
   //    void updateModel(const QModelIndex& topLeft, const QModelIndex& bottomRight);
 

@@ -296,7 +296,7 @@ public:
 protected:
   void incomingConnection(tSocketDescriptor socketDescriptor) Q_DECL_OVERRIDE;
 
-private slots:
+private Q_SLOTS:
   void slotReady();
   void slotClosed();
 
@@ -489,7 +489,7 @@ void QtServiceBase::logMessage(const QString& message, QtServiceBase::MessageTyp
     ::memcpy(d_ptr->sysd->ident, tmp.toLocal8Bit().constData(), len);
   }
   openlog(d_ptr->sysd->ident, LOG_PID, LOG_DAEMON);
-  foreach(QString line, message.split('\n'))
+  for(QString line : message.split('\n'))
     syslog(st, "%s", line.toLocal8Bit().constData());
   closelog();
 }

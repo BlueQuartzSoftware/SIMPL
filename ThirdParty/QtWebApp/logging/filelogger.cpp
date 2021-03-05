@@ -132,7 +132,7 @@ void FileLogger::rotate()
 {
   // count current number of existing backup files
   int count = 0;
-  forever
+  while(true)
   {
     QFile bakFile(QString("%1.%2").arg(fileName).arg(count + 1));
     if(bakFile.exists())

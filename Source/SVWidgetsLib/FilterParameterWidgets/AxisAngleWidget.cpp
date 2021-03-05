@@ -104,7 +104,7 @@ void AxisAngleWidget::setupGui()
 void AxisAngleWidget::widgetChanged(const QString& text)
 {
   Q_UNUSED(text)
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

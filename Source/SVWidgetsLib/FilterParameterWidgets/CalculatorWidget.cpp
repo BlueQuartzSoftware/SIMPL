@@ -221,7 +221,7 @@ void CalculatorWidget::on_backspaceBtn_clicked()
 void CalculatorWidget::on_radiansBtn_toggled(bool checked)
 {
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 
@@ -433,7 +433,7 @@ void CalculatorWidget::filterNeedsInputParameters(AbstractFilter* filter)
 void CalculatorWidget::on_applyChangesBtn_clicked()
 {
   equation->setStyleSheet(QString(""));
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 
   QPointer<QtSFaderWidget> faderWidget = new QtSFaderWidget(applyChangesBtn);
   setFaderWidget(faderWidget);

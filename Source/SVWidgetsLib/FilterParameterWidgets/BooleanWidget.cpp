@@ -88,7 +88,7 @@ void BooleanWidget::setupGui()
 void BooleanWidget::widgetChanged(int state)
 {
   Q_UNUSED(state)
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

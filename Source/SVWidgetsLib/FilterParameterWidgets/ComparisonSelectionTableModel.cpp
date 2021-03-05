@@ -266,7 +266,7 @@ bool ComparisonSelectionTableModel::setData(const QModelIndex& index, const QVar
     Q_ASSERT(false);
   }
 
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
   return true;
 }
 
@@ -294,7 +294,7 @@ bool ComparisonSelectionTableModel::insertRows(int row, int count, const QModelI
     m_RowCount = m_FeatureNames.count();
   }
   endInsertRows();
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
   return true;
 }
 
@@ -317,7 +317,7 @@ bool ComparisonSelectionTableModel::removeRows(int row, int count, const QModelI
     m_RowCount = m_FeatureNames.count();
   }
   endRemoveRows();
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
   return true;
 }
 
@@ -364,7 +364,7 @@ void ComparisonSelectionTableModel::setTableData(QVector<QString> featureNames, 
   endInsertRows();
   QModelIndex topLeft = createIndex(0, 0);
   QModelIndex botRight = createIndex(count - 1, ColumnCount);
-  emit dataChanged(topLeft, botRight);
+  Q_EMIT dataChanged(topLeft, botRight);
 }
 
 // -----------------------------------------------------------------------------
@@ -412,7 +412,7 @@ void ComparisonSelectionTableModel::setTableData(ComparisonInputs& comps)
   endInsertRows();
   QModelIndex topLeft = createIndex(0, 0);
   QModelIndex botRight = createIndex(count - 1, ColumnCount);
-  emit dataChanged(topLeft, botRight);
+  Q_EMIT dataChanged(topLeft, botRight);
 }
 
 // -----------------------------------------------------------------------------

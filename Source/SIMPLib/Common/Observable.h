@@ -102,7 +102,7 @@ public:
 
   void notifyProgressMessageWithPrefix(int progress, const QString& prefix, const QString& messageText) const;
 
-signals:
+Q_SIGNALS:
 
   /**
    * @brief messageGenerated This is a Qt Signal that is used when the filter generates Errors, Warnings, Status and Progress Messages

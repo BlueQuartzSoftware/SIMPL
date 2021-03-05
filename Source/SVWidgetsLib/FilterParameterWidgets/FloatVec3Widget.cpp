@@ -148,7 +148,7 @@ void FloatVec3Widget::widgetChanged(QLineEdit* le, const QString& msg)
     SVStyle::Instance()->LineEditClearStyle(le);
   }
 
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

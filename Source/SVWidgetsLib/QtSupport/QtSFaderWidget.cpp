@@ -136,6 +136,6 @@ void QtSFaderWidget::paintEvent(QPaintEvent* /* event */)
   {
     timer->stop();
     close();
-    emit animationComplete();
+    Q_EMIT animationComplete();
   }
 }

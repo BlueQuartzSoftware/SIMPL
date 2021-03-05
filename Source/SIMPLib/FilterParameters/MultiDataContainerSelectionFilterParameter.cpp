@@ -228,7 +228,7 @@ void MultiDataContainerSelectionFilterParameter::dataArrayPathRenamed(AbstractFi
   }
 
   m_SetterCallback(dcList);
-  emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+  Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }
 
 // -----------------------------------------------------------------------------

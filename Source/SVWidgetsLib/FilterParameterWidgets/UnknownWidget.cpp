@@ -80,7 +80,7 @@ void UnknownWidget::setupGui()
 // -----------------------------------------------------------------------------
 void UnknownWidget::widgetChanged(const QString& text)
 {
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

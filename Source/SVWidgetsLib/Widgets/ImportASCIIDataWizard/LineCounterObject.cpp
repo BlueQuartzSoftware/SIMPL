@@ -78,7 +78,7 @@ void LineCounterObject::run()
   if(m_FilePath.isEmpty())
   {
     m_NumOfLines = -1;
-    emit finished();
+    Q_EMIT finished();
     return;
   }
   QFile qFile(m_FilePath);
@@ -126,7 +126,7 @@ void LineCounterObject::run()
       if(currentByte > currentThresh)
       {
         double progress = static_cast<double>(currentByte) / static_cast<double>(fileSize) * 100;
-        emit progressUpdateGenerated(progress);
+        Q_EMIT progressUpdateGenerated(progress);
         currentThresh = currentThresh + fiveThresh;
       }
 
@@ -146,7 +146,7 @@ void LineCounterObject::run()
   // Close the file and free the memory from the buffer
   qFile.close();
 
-  emit finished();
+  Q_EMIT finished();
 }
 
 // -----------------------------------------------------------------------------

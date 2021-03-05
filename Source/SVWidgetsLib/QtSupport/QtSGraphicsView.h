@@ -131,7 +131,7 @@ public:
   void updateColorTables(QVector<QRgb> colorTable);
   void useCustomColorTable(bool b);
 
-public slots:
+public Q_SLOTS:
   void zoomIn();
 
   void zoomOut();
@@ -146,7 +146,7 @@ public slots:
 
   void updateDisplay();
 
-signals:
+Q_SIGNALS:
   void fireBaseImageFileLoaded(const QString& filename);
   void fireOverlayImageFileLoaded(const QString& filename);
 

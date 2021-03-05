@@ -80,7 +80,7 @@ void ReadASCIIDataFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, 
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
 
-  emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+  Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }
 
 // -----------------------------------------------------------------------------

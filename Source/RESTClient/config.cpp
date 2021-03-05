@@ -51,7 +51,7 @@ void Config::load()
 {
   QSettings settings;
   settings.beginGroup(mGroupName);
-  foreach(const QByteArray& key, mValues.keys())
+  for(const QByteArray& key : mValues.keys())
   {
     copyValue(mValues.value(key).ptr, mValues.value(key).type, settings.value(key));
   }
@@ -64,7 +64,7 @@ void Config::save()
 {
   QSettings settings;
   settings.beginGroup(mGroupName);
-  foreach(const QByteArray& key, mValues.keys())
+  for(const QByteArray& key : mValues.keys())
   {
     QVariant value(mValues.value(key).type, mValues.value(key).ptr);
     settings.setValue(key, value);

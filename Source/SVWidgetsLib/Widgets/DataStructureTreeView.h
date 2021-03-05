@@ -161,7 +161,7 @@ public:
    */
   void search(const QString& name);
 
-public slots:
+public Q_SLOTS:
   void displayDataContainers(const DataContainerArrayShPtr& dca);
   void displayMontages(const DataContainerArrayShPtr& dca);
 
@@ -182,7 +182,7 @@ public slots:
   QIcon getHexahedralGeomIcon() const;
   QIcon getRectilinearGeomIcon() const;
 
-signals:
+Q_SIGNALS:
   void filterPath(DataArrayPath path);
   void endDataStructureFiltering();
   void applyPathToFilteringParameter(DataArrayPath path);
@@ -320,7 +320,7 @@ protected:
    */
   void contextMenuEvent(QContextMenuEvent* event) Q_DECL_OVERRIDE;
 
-private slots:
+private Q_SLOTS:
   /**
    * @brief mousePressEvent
    * @param event

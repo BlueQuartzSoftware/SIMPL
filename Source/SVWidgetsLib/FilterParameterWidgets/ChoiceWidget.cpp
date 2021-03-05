@@ -122,13 +122,13 @@ void ChoiceWidget::widgetChanged(int index, bool emitParametersChanged)
   LinkedChoicesFilterParameter* lnkedChoices = dynamic_cast<LinkedChoicesFilterParameter*>(fp);
   if(lnkedChoices != nullptr)
   {
-    emit conditionalPropertyChanged(index);
+    Q_EMIT conditionalPropertyChanged(index);
   }
 
   // We emit no matter what
   if(emitParametersChanged)
   {
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   }
 }
 

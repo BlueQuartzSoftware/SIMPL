@@ -204,7 +204,7 @@ public:
    */
   void setPropertyName(QString propName);
 
-public slots:
+public Q_SLOTS:
   /**
    * @brief Sets whether or not filtering is forced active or not
    * @param active
@@ -250,7 +250,7 @@ public slots:
    */
   void selectionWidgetUnlocked(QToolButton* selection);
 
-signals:
+Q_SIGNALS:
   void filterPath(DataArrayPath path);
   void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
   void viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
@@ -420,7 +420,7 @@ protected:
    */
   bool isCreatedPath(const DataArrayPath& path) const;
 
-protected slots:
+protected Q_SLOTS:
   /**
    * @brief Show the legacy menu when right-clicking
    * @param pos
@@ -433,7 +433,7 @@ protected slots:
    */
   void updateCheckState(bool checked);
 
-private slots:
+private Q_SLOTS:
   /**
    * @brief mousePressEvent
    * @param event

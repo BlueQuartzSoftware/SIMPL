@@ -88,5 +88,5 @@ void InputFileWidget::selectInputFile()
   on_m_LineEdit_editingFinished();
 
   //  filterNeedsInputParameters(getFilter());
-  // emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+  // Q_EMIT parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }

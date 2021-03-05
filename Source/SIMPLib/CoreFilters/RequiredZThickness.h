@@ -163,7 +163,7 @@ public:
    */
   void execute() override;
 
-  //  signals:
+  //  Q_SIGNALS:
   //    void decisionMade(bool& dm);
 
 protected:

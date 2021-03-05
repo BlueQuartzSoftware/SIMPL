@@ -111,7 +111,7 @@ void QtSRecentFileList::addFile(const QString& file, AddType type)
     // Add the path to the watcher
     m_Watcher->addPath(file);
 
-    emit fileListChanged(file); // Emit the signal so all the menus can update their contents
+    Q_EMIT fileListChanged(file); // Emit the signal so all the menus can update their contents
   }
 }
 
@@ -133,7 +133,7 @@ void QtSRecentFileList::removeFile(const QString& file)
   // Remove the path from the watcher
   m_Watcher->removePath(file);
 
-  emit fileListChanged(file); // Emit the signal so all the menus can update their contents
+  Q_EMIT fileListChanged(file); // Emit the signal so all the menus can update their contents
 }
 
 // -----------------------------------------------------------------------------
@@ -143,7 +143,7 @@ void QtSRecentFileList::clear()
 {
   this->recentFiles.clear();
 
-  emit fileListChanged(""); // Emit the signal so all the menus can update their contents
+  Q_EMIT fileListChanged(""); // Emit the signal so all the menus can update their contents
 }
 
 // -----------------------------------------------------------------------------

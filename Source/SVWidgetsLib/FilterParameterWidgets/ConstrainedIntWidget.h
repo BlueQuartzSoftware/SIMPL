@@ -74,7 +74,7 @@ public:
    */
   void setupGui() override;
 
-public slots:
+public Q_SLOTS:
   void widgetChanged(int i);
   void beforePreflight();
   void afterPreflight();

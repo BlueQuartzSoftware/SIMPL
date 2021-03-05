@@ -66,7 +66,7 @@ public:
 
   void changeStyleSheet(int style);
 
-signals:
+Q_SIGNALS:
   void fileDropped(const QString& file);
 
 private:

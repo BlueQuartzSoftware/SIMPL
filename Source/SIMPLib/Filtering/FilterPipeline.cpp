@@ -123,7 +123,7 @@ void FilterPipeline::setName(const QString& newName)
   QString oldName = m_PipelineName;
   m_PipelineName = newName;
 
-  emit pipelineNameChanged(oldName, newName);
+  Q_EMIT pipelineNameChanged(oldName, newName);
 }
 
 // -----------------------------------------------------------------------------
@@ -370,7 +370,7 @@ DataContainerArray::Pointer FilterPipeline::run()
 {
   m_Dca = execute();
 
-  emit pipelineFinished();
+  Q_EMIT pipelineFinished();
 
   return m_Dca;
 }
@@ -390,7 +390,7 @@ bool FilterPipeline::pushFront(const AbstractFilter::Pointer& f)
 
   m_Pipeline.push_front(f);
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -410,7 +410,7 @@ bool FilterPipeline::popFront()
 
   m_Pipeline.pop_front();
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -428,7 +428,7 @@ bool FilterPipeline::pushBack(const AbstractFilter::Pointer& f)
 
   m_Pipeline.push_back(f);
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -448,7 +448,7 @@ bool FilterPipeline::popBack()
 
   m_Pipeline.pop_back();
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -471,7 +471,7 @@ bool FilterPipeline::insert(size_t index, const AbstractFilter::Pointer& f)
   }
   m_Pipeline.insert(it, f);
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -496,7 +496,7 @@ bool FilterPipeline::erase(size_t index)
   }
   m_Pipeline.erase(it);
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -518,7 +518,7 @@ bool FilterPipeline::clear()
     filter->setNextFilter(AbstractFilter::NullPointer());
   }
   m_Pipeline.clear();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -560,7 +560,7 @@ AbstractFilter::Pointer FilterPipeline::removeFirstFilterByName(const QString& n
     }
   }
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
 
   return f;
 }
@@ -626,7 +626,7 @@ void FilterPipeline::setErrorCondition(int code, const QString& messageText)
 {
   m_ErrorCode = code;
   PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New(getName(), messageText, code);
-  emit messageGenerated(pm);
+  Q_EMIT messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -635,7 +635,7 @@ void FilterPipeline::setErrorCondition(int code, const QString& messageText)
 void FilterPipeline::notifyStatusMessage(const QString& messageText) const
 {
   PipelineStatusMessage::Pointer pm = PipelineStatusMessage::New(getName(), messageText);
-  emit messageGenerated(pm);
+  Q_EMIT messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -645,7 +645,7 @@ void FilterPipeline::setWarningCondition(int code, const QString& messageText)
 {
   m_WarningCode = code;
   PipelineWarningMessage::Pointer pm = PipelineWarningMessage::New(getName(), messageText, code);
-  emit messageGenerated(pm);
+  Q_EMIT messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -654,7 +654,7 @@ void FilterPipeline::setWarningCondition(int code, const QString& messageText)
 void FilterPipeline::notifyProgressMessage(int progress, const QString& messageText) const
 {
   PipelineProgressMessage::Pointer pm = PipelineProgressMessage::New(getName(), messageText, progress);
-  emit messageGenerated(pm);
+  Q_EMIT messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -895,7 +895,7 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
     QString ss = QObject::tr("[%1/%2] %3").arg(filtIndex + 1).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
     notifyStatusMessage(ss);
 
-    emit filt->filterInProgress(filt.get());
+    Q_EMIT filt->filterInProgress(filt.get());
 
     // Do not execute disabled filters
     if(filt->getEnabled())
@@ -915,8 +915,8 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
 
         notifyProgressMessage(100, "");
 
-        emit filt->filterCompleted(filt.get());
-        emit pipelineFinished();
+        Q_EMIT filt->filterCompleted(filt.get());
+        Q_EMIT pipelineFinished();
         disconnectSignalsSlots();
         m_State = FilterPipeline::State::Idle;
         m_ExecutionResult = FilterPipeline::ExecutionResult::Failed;
@@ -932,7 +932,7 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
     }
 
     // Emit that the filter is completed for those objects that care, even the disabled ones.
-    emit filt->filterCompleted(filt.get());
+    Q_EMIT filt->filterCompleted(filt.get());
 
     notifyProgressMessage(static_cast<int>(static_cast<float>(filtIndex + 1) / (m_Pipeline.size()) * 100.0f), "");
   }
@@ -960,7 +960,7 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
 
   m_State = FilterPipeline::State::Idle;
 
-  emit pipelineFinished();
+  Q_EMIT pipelineFinished();
 
   return m_Dca;
 }

@@ -107,7 +107,7 @@ void QtSStringEdit::on_applyChangesBtn_clicked()
 {
   value->setStyleSheet(QString(""));
   m_storedValue = value->text();
-  emit valueChanged(m_storedValue);
+  Q_EMIT valueChanged(m_storedValue);
 
   hideButtons();
 }
