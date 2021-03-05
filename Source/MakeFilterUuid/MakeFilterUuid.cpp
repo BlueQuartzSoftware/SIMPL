@@ -1,5 +1,7 @@
 
 
+#include <iostream>
+
 #include <QtCore/QDebug>
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
@@ -13,7 +15,11 @@
  */
 int main(int argc, char* argv[])
 {
-
+  if(argc == 1)
+  {
+    std::cout << "Please supply the name of the filter class or some randome string of characters" << std::endl;
+    return 1;
+  }
   QString libName = QString::fromLatin1(argv[1]);
   QString className = QString::fromLatin1(argv[2]);
 
