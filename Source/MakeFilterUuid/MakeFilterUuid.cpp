@@ -13,9 +13,9 @@
  */
 int main(int argc, char* argv[])
 {
-  if(argc < 3)
+  if(argc != 3)
   {
-    std::cout << "Please supply 2 arguments like the name of the filter class or some randome string of characters\n";
+    std::cout << "Please supply 2 arguments\n  LibraryName\n  ClassName\n";
     return 1;
   }
   QString libName = QString::fromLatin1(argv[1]);
