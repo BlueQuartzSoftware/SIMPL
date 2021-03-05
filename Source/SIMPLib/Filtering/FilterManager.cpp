@@ -35,6 +35,8 @@
 
 #include "FilterManager.h"
 
+#include <stdexcept>
+
 #include <QtCore/QDebug>
 #include <QtCore/QJsonObject>
 #include <QtCore/QSet>
@@ -155,8 +157,36 @@ FilterManager::Collection FilterManager::getFactories(const QString& groupName, 
 void FilterManager::addFilterFactory(const QString& name, IFilterFactory::Pointer factory)
 {
   // std::cout << this << " - Registering Filter: " << name.toStdString() << std::endl;
+  QUuid uuid = factory->getUuid();
+
+  if(uuid.isNull())
+  {
+    throw std::runtime_error(QString("%1 (%2) has an invalid uuid").arg(name, factory->getCompiledLibraryName()).toStdString());
+  }
+
+  if(name.isEmpty())
+  {
+    throw std::runtime_error("Attempted to add a filter with an empty name");
+  }
+
+  if(m_UuidFactories.contains(uuid))
+  {
+    IFilterFactory::Pointer existingFactory = m_UuidFactories[uuid];
+    throw std::runtime_error(QString("Attempted to add %1 (%2), but %3 (%4) has the same uuid")
+                                 .arg(name, factory->getCompiledLibraryName(), existingFactory->getFilterClassName(), existingFactory->getCompiledLibraryName())
+                                 .toStdString());
+  }
+
+  if(m_Factories.contains(name))
+  {
+    IFilterFactory::Pointer existingFactory = m_Factories[name];
+    throw std::runtime_error(QString("Attempted to add %1 (%2), but %3 (%4) has the same name")
+                                 .arg(name, factory->getCompiledLibraryName(), existingFactory->getFilterClassName(), existingFactory->getCompiledLibraryName())
+                                 .toStdString());
+  }
+
   m_Factories[name] = factory;
-  m_UuidFactories[factory->getUuid()] = factory;
+  m_UuidFactories[uuid] = factory;
 }
 
 // -----------------------------------------------------------------------------
