@@ -52,115 +52,83 @@ public:
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
   using ConstWeakPointer = std::weak_ptr<const Self>;
+
   static Pointer NullPointer()
   {
-    return Pointer(static_cast<Self*>(nullptr));
+    return nullptr;
   }
+
   /**
    * @brief Returns the name of the class for AbstractMessage
    */
   virtual QString getNameOfClass() const
   {
-    return QString("IFilterFactory");
+    return ClassName();
   }
+
   /**
    * @brief Returns the name of the class for AbstractMessage
    */
   static QString ClassName()
   {
-    return QString("IFilterFactory");
+    return "IFilterFactory";
   }
 
   virtual ~IFilterFactory() = default;
 
-  /** @brief This function should NEVER get called. The subclass should ALWAYS implement
+  /**
+   * @brief This function should NEVER get called. The subclass should ALWAYS implement
    * this method so we are going to crash the program.
    */
-  virtual AbstractFilter::Pointer create() const
-  {
-    Q_ASSERT(false);
-    return AbstractFilter::NullPointer();
-  }
+  virtual AbstractFilter::Pointer create() const = 0;
 
   /**
    * @brief getFilterClassName
    * @return
    */
-  virtual QString getFilterClassName() const
-  {
-    Q_ASSERT(false);
-    return "";
-  }
+  virtual QString getFilterClassName() const = 0;
 
   /**
    * @brief getFilterGroup
    * @return
    */
-  virtual QString getFilterGroup() const
-  {
-    Q_ASSERT(false);
-    return "";
-  }
+  virtual QString getFilterGroup() const = 0;
 
   /**
    * @brief getFilterSubGroup
    * @return
    */
-  virtual QString getFilterSubGroup() const
-  {
-    Q_ASSERT(false);
-    return "";
-  }
+  virtual QString getFilterSubGroup() const = 0;
 
   /**
    * @brief getFilterHumanLabel
    * @return
    */
-  virtual QString getFilterHumanLabel() const
-  {
-    Q_ASSERT(false);
-    return "";
-  }
+  virtual QString getFilterHumanLabel() const = 0;
 
   /**
    * @brief getBrandingString
    * @return
    */
-  virtual QString getBrandingString() const
-  {
-    Q_ASSERT(false);
-    return "";
-  }
+  virtual QString getBrandingString() const = 0;
 
   /**
    * @brief getCompiledLibraryName
    * @return
    */
-  virtual QString getCompiledLibraryName() const
-  {
-    Q_ASSERT(false);
-    return "";
-  }
+  virtual QString getCompiledLibraryName() const = 0;
 
   /**
    * @brief getFilterHtmlSummary
    * @return
    */
-  virtual QString getFilterHtmlSummary() const
-  {
-    Q_ASSERT(false);
-    return "";
-  }
+  virtual QString getFilterHtmlSummary() const = 0;
 
   /**
    * @brief getUuid
    * @return
    */
-  virtual QUuid getUuid() const
-  {
-    Q_ASSERT(false);
-    return QUuid();
-  }
+  virtual QUuid getUuid() const = 0;
 
 protected:
   IFilterFactory() = default;
