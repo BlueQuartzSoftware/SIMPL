@@ -145,7 +145,11 @@ void InitializeData::dataCheck()
   }
 
   DataArrayPath attributeMatrixPath(m_CellAttributeMatrixPaths[0].getDataContainerName(), m_CellAttributeMatrixPaths[0].getAttributeMatrixName(), "");
-  getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, attributeMatrixPath, -301);
+  AttributeMatrix::Pointer am = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, attributeMatrixPath, -301);
+  if(getErrorCode() < 0)
+  {
+    return;
+  }
 
   ImageGeom::Pointer image = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom>(this, attributeMatrixPath.getDataContainerName());
   if(nullptr == image.get())
@@ -199,16 +203,16 @@ void InitializeData::dataCheck()
     setErrorCondition(-5559, ss);
   }
 
-  DataContainer::Pointer m = getDataContainerArray()->getDataContainer(attributeMatrixPath.getDataContainerName());
-
-  // SizeVec3Type udims = m->getGeometryAs<ImageGeom>()->getDimensions();
-
-  QString attrMatName = attributeMatrixPath.getAttributeMatrixName();
   std::vector<QString> voxelArrayNames = DataArrayPath::GetDataArrayNames(m_CellAttributeMatrixPaths);
 
   for(const QString& name : voxelArrayNames)
   {
-    IDataArray::Pointer p = m->getAttributeMatrix(attrMatName)->getAttributeArray(name);
+    IDataArray::Pointer p = am->getAttributeArray(name);
+    if(p == nullptr)
+    {
+      setErrorCondition(-5560, QString("DataArray \"%1\" doesn't exist").arg(name));
+      return;
+    }
 
     QString type = p->getTypeAsString();
     if(type == "int8_t")
