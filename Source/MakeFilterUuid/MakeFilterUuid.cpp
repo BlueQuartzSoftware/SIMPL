@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 
 #include <QtCore/QDebug>
@@ -15,9 +13,9 @@
  */
 int main(int argc, char* argv[])
 {
-  if(argc == 1)
+  if(argc < 3)
   {
-    std::cout << "Please supply the name of the filter class or some randome string of characters" << std::endl;
+    std::cout << "Please supply 2 arguments like the name of the filter class or some randome string of characters\n";
     return 1;
   }
   QString libName = QString::fromLatin1(argv[1]);
