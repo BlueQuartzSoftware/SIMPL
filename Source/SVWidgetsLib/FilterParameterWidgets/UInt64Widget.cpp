@@ -84,7 +84,7 @@ void UInt64Widget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
     uint64_t ui64 = m_FilterParameter->getGetterCallback()();
-    QString str = loc.toString(ui64);
+    QString str = loc.toString(static_cast<qulonglong>(ui64));
     value->setText(str);
   }
 }
