@@ -77,8 +77,10 @@ void IntWidget::setupGui()
   connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
   QLocale loc = QLocale::system();
+  loc.setNumberOptions(QLocale::NumberOption::RejectGroupSeparator | QLocale::NumberOption::OmitGroupSeparator);
 
   QIntValidator* xVal = new QIntValidator(value);
+  xVal->setLocale(loc);
   value->setValidator(xVal);
 
   if(getFilterParameter() != nullptr)
@@ -109,7 +111,7 @@ void IntWidget::filterNeedsInputParameters(AbstractFilter* filter)
   // Next make sure there is something in the
   if(!value->text().isEmpty())
   {
-    i = value->text().toInt(&ok);
+    i = value->locale().toInt(value->text(), &ok);
     //  make sure we can convert the entered value to a 32 bit signed int
     if(!ok)
     {

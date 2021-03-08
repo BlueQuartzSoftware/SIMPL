@@ -73,14 +73,18 @@ void UInt64Widget::setupGui()
 
   connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
+  QLocale loc = QLocale::system();
+  loc.setNumberOptions(QLocale::NumberOption::RejectGroupSeparator | QLocale::NumberOption::OmitGroupSeparator);
+
   QIntValidator* xVal = new QIntValidator(value);
+  xVal->setLocale(loc);
   value->setValidator(xVal);
 
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
     uint64_t ui64 = m_FilterParameter->getGetterCallback()();
-    QString str = QString::number(ui64);
+    QString str = loc.toString(ui64);
     value->setText(str);
   }
 }
@@ -101,13 +105,13 @@ void UInt64Widget::filterNeedsInputParameters(AbstractFilter* filter)
   Q_UNUSED(filter)
 
   bool ok = true;
-  int defValue = getFilterParameter()->getDefaultValue().toInt();
-  uint64_t i = static_cast<uint64_t>(defValue);
+  uint64_t defValue = getFilterParameter()->getDefaultValue().toULongLong();
+  uint64_t i = defValue;
 
   // Next make sure there is something in the
   if(!value->text().isEmpty())
   {
-    i = value->text().toULongLong(&ok);
+    i = value->locale().toULongLong(value->text(), &ok);
     //  make sure we can convert the entered value to a 32 bit signed int
     if(!ok)
     {
@@ -115,7 +119,7 @@ void UInt64Widget::filterNeedsInputParameters(AbstractFilter* filter)
       SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
       errorLabel->setText("Value entered is beyond the representable range for a 64 bit integer. The filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
       errorLabel->show();
-      i = static_cast<uint64_t>(defValue);
+      i = defValue;
     }
     else
     {

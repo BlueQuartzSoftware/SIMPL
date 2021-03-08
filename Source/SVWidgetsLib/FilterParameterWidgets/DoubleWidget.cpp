@@ -77,10 +77,11 @@ void DoubleWidget::setupGui()
   connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
   QLocale loc = QLocale::system();
+  loc.setNumberOptions(QLocale::NumberOption::RejectGroupSeparator | QLocale::NumberOption::OmitGroupSeparator);
 
   QDoubleValidator* xVal = new QDoubleValidator(value);
-  value->setValidator(xVal);
   xVal->setLocale(loc);
+  value->setValidator(xVal);
 
   if(getFilterParameter() != nullptr)
   {
@@ -106,11 +107,10 @@ void DoubleWidget::filterNeedsInputParameters(AbstractFilter* filter)
   bool ok = true;
   double defValue = getFilterParameter()->getDefaultValue().toDouble();
   double i = defValue;
-  QLocale loc;
   // Next make sure there is something in the
   if(!value->text().isEmpty())
   {
-    i = loc.toDouble(value->text(), &ok);
+    i = value->locale().toDouble(value->text(), &ok);
     // i = value->text().toDouble(&ok);
     //  make sure we can convert the entered value to a 32 bit signed int
     if(!ok)
