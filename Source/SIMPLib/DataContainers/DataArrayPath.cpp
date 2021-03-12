@@ -40,8 +40,6 @@
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/DataArrays/NeighborList.hpp"
-#include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 
 namespace

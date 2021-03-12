@@ -81,8 +81,8 @@ public:
    */
   void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
 
-  void setFilterParameter(FilterParameter* value);
-  FilterParameter* getFilterParameter() const;
+  void setFilterParameter(FilterParameter* value) override;
+  FilterParameter* getFilterParameter() const override;
 
   std::vector<std::vector<double>> getData();
 

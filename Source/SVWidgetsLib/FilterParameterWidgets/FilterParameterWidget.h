@@ -88,22 +88,22 @@ public:
   /**
    * @brief Setter property for Filter
    */
-  void setFilter(AbstractFilter* value);
+  virtual void setFilter(AbstractFilter* value);
   /**
    * @brief Getter property for Filter
    * @return Value of Filter
    */
-  AbstractFilter* getFilter() const;
+  virtual AbstractFilter* getFilter() const;
 
   /**
    * @brief Setter property for FilterParameter
    */
-  void setFilterParameter(FilterParameter* value);
+  virtual void setFilterParameter(FilterParameter* value);
   /**
    * @brief Getter property for FilterParameter
    * @return Value of FilterParameter
    */
-  FilterParameter* getFilterParameter() const;
+  virtual FilterParameter* getFilterParameter() const;
 
   /**
    * @brief Setter property for WidgetIsExpanding
