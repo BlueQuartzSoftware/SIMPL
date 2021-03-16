@@ -146,7 +146,7 @@ void DataFormatPage::setupGui()
 
   QVector<QString> amTypes = AttributeMatrix::GetTypesAsStrings();
 
-  for(const QString amType : amTypes)
+  for(const QString& amType : amTypes)
   {
     attributeMatrixType->addItem(amType);
   }

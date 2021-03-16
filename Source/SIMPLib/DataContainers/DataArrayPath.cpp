@@ -192,7 +192,7 @@ DataArrayPath::~DataArrayPath() = default;
 QVector<DataArrayPath> DataArrayPath::ConvertToQVector(QStringList& paths)
 {
   QVector<DataArrayPath> vPaths;
-  for(const QString sPath : paths)
+  for(const QString& sPath : paths)
   {
     DataArrayPath p(sPath);
     vPaths.push_back(p);
