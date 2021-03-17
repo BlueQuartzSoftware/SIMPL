@@ -73,6 +73,21 @@
 // -----------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
+#ifdef DREAM3D_ANACONDA
+  {
+    constexpr const char k_PYTHONHOME[] = "PYTHONHOME";
+    QString condaPrefix = qgetenv("CONDA_PREFIX");
+
+    QString pythonHome = qgetenv(k_PYTHONHOME);
+    if(pythonHome.isEmpty() && !condaPrefix.isEmpty())
+    {
+      qputenv(k_PYTHONHOME, condaPrefix.toLocal8Bit());
+    }
+
+    qputenv("DREAM3D_PLUGINS_LOADED", "1");
+  }
+#endif
+
 #ifdef SIMPL_EMBED_PYTHON
   bool hasPythonHome = PythonLoader::checkPythonHome();
 

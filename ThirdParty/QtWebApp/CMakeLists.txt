@@ -77,16 +77,25 @@ elseif(WIN32)
   set(lib_install_dir ".")
 endif()
 
+if(DREAM3D_ANACONDA AND WIN32)
+  set(install_dir "bin")
+  set(lib_install_dir "bin")
+endif()
 
-INSTALL(TARGETS ${PROJECT_NAME}
-    EXPORT QtWebAppLibTargets
-    COMPONENT Applications
-    RUNTIME DESTINATION ${install_dir}
-    LIBRARY DESTINATION ${lib_install_dir}
-    ARCHIVE DESTINATION lib
-    BUNDLE DESTINATION "."
+install(TARGETS ${PROJECT_NAME}
+  EXPORT QtWebAppLibTargets
+  COMPONENT Applications
+  RUNTIME DESTINATION ${install_dir}
+  LIBRARY DESTINATION ${lib_install_dir}
+  BUNDLE DESTINATION "."
 )
 
+if(NOT DREAM3D_ANACONDA)
+  install(TARGETS ${PROJECT_NAME}
+    COMPONENT Applications
+    ARCHIVE DESTINATION lib
+  )
+endif()
 
 # --------------------------------------------------------------------
 # Allow the generation and installation of a CMake configuration file

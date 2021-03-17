@@ -208,14 +208,27 @@ if(SIMPL_EMBED_PYTHON)
   find_package(pybind11 2.6 REQUIRED)
   target_link_libraries(${PROJECT_NAME} PRIVATE pybind11::embed)
 
-  add_custom_command(TARGET ${PROJECT_NAME}
-    PRE_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${SIMPLib_SOURCE_DIR}/Python/Filter.py $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Python
-  )
+  if(NOT DREAM3D_ANACONDA)
+    add_custom_command(TARGET ${PROJECT_NAME}
+      PRE_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy ${SIMPLib_SOURCE_DIR}/Python/Filter.py $<TARGET_FILE_DIR:${PROJECT_NAME}>
+      COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Python
+    )
+  endif()
 
-  install(DIRECTORY DESTINATION "Python")
-  install(FILES ${SIMPLib_SOURCE_DIR}/Python/Filter.py DESTINATION ".")
+  if(DREAM3D_ANACONDA)
+    configure_file(${SIMPLib_SOURCE_DIR}/Python/Filter.py.in ${DREAM3D_PYTHON_PACKAGE_DIR}/Filter.py COPYONLY)
+    file(APPEND ${DREAM3D_INIT_PY_FILE} "from . import Filter\n")
+  endif()
+
+  if(NOT DREAM3D_ANACONDA)
+    install(DIRECTORY DESTINATION "Python")
+    install(FILES ${SIMPLib_SOURCE_DIR}/Python/Filter.py DESTINATION ".")
+  endif()
+endif()
+
+if(DREAM3D_ANACONDA)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE DREAM3D_ANACONDA)
 endif()
 
 # Add H5Support
@@ -316,46 +329,54 @@ elseif(WIN32)
   set(lib_install_dir ".")
 endif()
 
-INSTALL(TARGETS ${PROJECT_NAME}
-    EXPORT ${PROJECT_NAME}Targets
-    COMPONENT Applications
-    RUNTIME DESTINATION ${install_dir}
-    LIBRARY DESTINATION ${lib_install_dir}
-    ARCHIVE DESTINATION lib
-    BUNDLE DESTINATION "."
-)
-
-
-# --------------------------------------------------------------------
-# Allow the generation and installation of a CMake configuration file
-# which makes using SIMPL from another project easier.
-# --------------------------------------------------------------------
-export(EXPORT ${PROJECT_NAME}Targets
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Targets.cmake"
-  NAMESPACE ${PROJECT_NAME}::
-)
-
-if(PROJECT_INSTALL_HEADERS)
-  install(EXPORT SIMPLibTargets
-    FILE
-      SIMPLibTargets.cmake
-    NAMESPACE
-      SIMPL::
-    DESTINATION
-      ${ConfigPackageLocation}
-  )
-
-  install(FILES 
-      ${CMP_HEADER_DIR}/${CMP_TOP_HEADER_FILE}
-      ${CMP_HEADER_DIR}/${CMP_TYPES_FILE_NAME}
-      ${CMP_HEADER_DIR}/${CMP_CONFIGURATION_FILE_NAME}
-      ${CMP_HEADER_DIR}/${CMP_VERSION_HEADER_FILE_NAME}
-    DESTINATION
-      include/${PROJECT_NAME}
-  )
-
+if(DREAM3D_ANACONDA AND WIN32)
+  set(install_dir "bin")
+  set(lib_install_dir "bin")
 endif()
 
+install(TARGETS ${PROJECT_NAME}
+  COMPONENT Applications
+  RUNTIME DESTINATION ${install_dir}
+  LIBRARY DESTINATION ${lib_install_dir}
+  BUNDLE DESTINATION "."
+)
+
+if(NOT DREAM3D_ANACONDA)
+  install(TARGETS ${PROJECT_NAME}
+    EXPORT ${PROJECT_NAME}Targets
+    COMPONENT Applications
+    ARCHIVE DESTINATION lib
+  )
+
+  # --------------------------------------------------------------------
+  # Allow the generation and installation of a CMake configuration file
+  # which makes using SIMPL from another project easier.
+  # --------------------------------------------------------------------
+  export(EXPORT ${PROJECT_NAME}Targets
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Targets.cmake"
+    NAMESPACE ${PROJECT_NAME}::
+  )
+
+  if(PROJECT_INSTALL_HEADERS)
+    install(EXPORT SIMPLibTargets
+      FILE
+        SIMPLibTargets.cmake
+      NAMESPACE
+        SIMPL::
+      DESTINATION
+        ${ConfigPackageLocation}
+    )
+
+    install(FILES 
+        ${CMP_HEADER_DIR}/${CMP_TOP_HEADER_FILE}
+        ${CMP_HEADER_DIR}/${CMP_TYPES_FILE_NAME}
+        ${CMP_HEADER_DIR}/${CMP_CONFIGURATION_FILE_NAME}
+        ${CMP_HEADER_DIR}/${CMP_VERSION_HEADER_FILE_NAME}
+      DESTINATION
+        include/${PROJECT_NAME}
+    )
+  endif()
+endif()
 
 # ------- Enable the CTest testing. ---------------
 # -------------------------------------------------------------------- 
@@ -363,7 +384,3 @@ endif()
 if(SIMPL_BUILD_TESTING)
     include(${SIMPLib_SOURCE_DIR}/Testing/CMakeLists.txt)
 endif()
-
-
-
-

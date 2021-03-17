@@ -97,6 +97,16 @@ function(CreatePybind11Module)
 
   set(PY_GENERATOR ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/generate_python_bindings.py)
 
+  set(NO_TESTS_ARG "")
+  if(DREAM3D_ANACONDA)
+    set(NO_TESTS_ARG "--no_tests")
+  endif()
+
+  set(RELATIVE_IMPORTS_ARGS "")
+  if(DREAM3D_ANACONDA)
+    set(RELATIVE_IMPORTS_ARGS "--relative_imports")
+  endif()
+
   add_custom_target(${CREATE_PYTHON_BINDINGS_TARGET} ALL
       COMMAND ${PYTHON_EXECUTABLE} ${PY_GENERATOR}
       "${ARGS_OUTPUT_DIR}"
@@ -110,6 +120,8 @@ function(CreatePybind11Module)
       "--body_path=${ARGS_BODY_PATH}"
       "--body_top_path=${ARGS_BODY_TOP_PATH}"
       "--plugin_name=${ARGS_MODULE_NAME}"
+      "${NO_TESTS_ARG}"
+      "${RELATIVE_IMPORTS_ARGS}"
       COMMENT "${ARGS_MODULE_NAME}: Generating Python bindings"
       BYPRODUCTS ${PYTHON_MODULE_SOURCE_FILE}
   )
@@ -155,9 +167,22 @@ function(CreatePybind11Module)
     PYTHONPATH ${TESTS_PYTHONPATH}
   )
 
-  install(TARGETS ${MODULE_NAME_lower}
-    LIBRARY DESTINATION "."
-  )
+  set(install_dir ".")
+  if(DREAM3D_ANACONDA)
+    set(install_dir "bin")
+  endif()
+
+  if(NOT DREAM3D_ANACONDA)
+    install(TARGETS ${MODULE_NAME_lower}
+      LIBRARY DESTINATION ${install_dir}
+    )
+  endif()
+
+  if(DREAM3D_ANACONDA)
+    file(APPEND ${DREAM3D_INIT_PY_FILE} "from . import ${MODULE_NAME_lower}\n")
+    file(APPEND ${DREAM3D_INIT_PY_FILE} "from . import ${MODULE_NAME_lower}py\n")
+    add_dependencies(CopyPythonPackage ${MODULE_NAME_lower})
+  endif()
 endfunction()
 
 #-------------------------------------------------------------------------------

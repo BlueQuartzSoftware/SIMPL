@@ -330,15 +330,20 @@ configure_file(${PROJECT_RESOURCES_DIR}/SIMPL/SIMPLLicense.txt
 
 # --------------------------------------------------------------------
 # Generate install rules for the text files
+set(license_install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}")
+
 if(APPLE)
-  install(FILES ${PROJECT_BINARY_DIR}/SIMPL/SIMPLLicense.txt
-          DESTINATION "${APPLE_RESOURCES_DIR}"
-          COMPONENT Applications)
-else()
-  install(FILES ${PROJECT_BINARY_DIR}/SIMPL/SIMPLLicense.txt
-          DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}"
-          COMPONENT Applications)
+  set(license_install_dir "${APPLE_RESOURCES_DIR}")
 endif()
+
+if(DREAM3D_ANACONDA)
+  set(license_install_dir "share/DREAM3D")
+endif()
+
+install(FILES ${PROJECT_BINARY_DIR}/SIMPL/SIMPLLicense.txt
+  DESTINATION ${license_install_dir}
+  COMPONENT Applications
+)
 
 # -----------------------------------------------------------------------
 # Setup a Global property that is used to gather Documentation Information
@@ -377,15 +382,17 @@ if(APPLE)
   set(ConfigPackageLocation ${DREAM3D_PACKAGE_DEST_PREFIX}${ConfigPackageLocation})
 endif()
 
-install(
-  FILES
-    "${SIMPLProj_SOURCE_DIR}/SIMPLConfig.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/SIMPL/SIMPLTargetsConfigVersion.cmake"
-  DESTINATION
-    ${ConfigPackageLocation}
-  COMPONENT
-    Devel
-)
+if(NOT DREAM3D_ANACONDA)
+  install(
+    FILES
+      "${SIMPLProj_SOURCE_DIR}/SIMPLConfig.cmake"
+      "${CMAKE_CURRENT_BINARY_DIR}/SIMPL/SIMPLTargetsConfigVersion.cmake"
+    DESTINATION
+      ${ConfigPackageLocation}
+    COMPONENT
+      Devel
+  )
+endif()
 
 # -----------------------------------------------------------------------
 # Add in the support to host the documentation over a thin-http server
@@ -533,14 +540,16 @@ if(SIMPL_ENABLE_PYTHON)
 
   get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 
-  add_custom_target(CreateDream3dModuleFile ALL
-    COMMAND ${PYTHON_EXECUTABLE} ${PY_ALL_MODULES_GENERATOR}
-    "${PY_ALL_MODULES_FILE}"
-    "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}$<${_isMultiConfig}:/$<CONFIG>>"
-    COMMENT "Creating dream3d.py module file"
-  )
+  if(NOT DREAM3D_ANACONDA)
+    add_custom_target(CreateDream3dModuleFile ALL
+      COMMAND ${PYTHON_EXECUTABLE} ${PY_ALL_MODULES_GENERATOR}
+      "${PY_ALL_MODULES_FILE}"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}$<${_isMultiConfig}:/$<CONFIG>>"
+      COMMENT "Creating dream3d.py module file"
+    )
 
-  set_property(TARGET CreateDream3dModuleFile PROPERTY FOLDER "Python")
+    set_property(TARGET CreateDream3dModuleFile PROPERTY FOLDER "Python")
+  endif()
 
   CreatePybind11Module(MODULE_NAME "simpl"
     OUTPUT_DIR "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore"
@@ -553,16 +562,18 @@ if(SIMPL_ENABLE_PYTHON)
     INCLUDE_DIRS ${SIMPLProj_SOURCE_DIR}/Wrapping/Python
   )
 
-  add_custom_target(CopyPythonSupport ALL
-    COMMAND ${CMAKE_COMMAND} -E copy
-      ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/SIMPL/simpl_helpers.py
-      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}$<${_isMultiConfig}:/$<CONFIG>>"
-    COMMENT "Copying simpl_helpers.py to binary directory"
-  )
+  if(NOT DREAM3D_ANACONDA)
+    add_custom_target(CopyPythonSupport ALL
+      COMMAND ${CMAKE_COMMAND} -E copy
+        ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/SIMPL/simpl_helpers.py
+        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}$<${_isMultiConfig}:/$<CONFIG>>"
+      COMMENT "Copying simpl_helpers.py to binary directory"
+    )
 
-  add_dependencies(simpl CopyPythonSupport)
+    add_dependencies(simpl CopyPythonSupport)
 
-  set_property(TARGET CopyPythonSupport PROPERTY FOLDER "ZZ_COPY_FILES")
+    set_property(TARGET CopyPythonSupport PROPERTY FOLDER "ZZ_COPY_FILES")
+  endif()
 
   if(SIMPL_BUILD_TESTING)
     file(READ ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/SIMPL/simpl_test_dirs.in.py SIMPL_TEST_DIRS_FILE)

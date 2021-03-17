@@ -17,6 +17,10 @@ elseif(WIN32)
   set(lib_install_dir ".")
 endif()
 
+if(DREAM3D_ANACONDA AND WIN32)
+  set(install_dir "bin")
+  set(lib_install_dir "bin")
+endif()
 
 #-------------------------------------------------------------------------------
 # Function COMPILE_TOOL to help alleviate lots of extra code below for adding
@@ -63,5 +67,8 @@ if(SIMPL_Group_PLUGIN AND SIMPL_Group_BASE AND SIMPL_Group_FILTERS)
       INSTALL_DEST  "${install_dir}"
       LINK_LIBRARIES SIMPLib Qt5::Core
   )
-endif()
 
+  if(DREAM3D_ANACONDA)
+    target_compile_definitions(PipelineRunner PRIVATE DREAM3D_ANACONDA)
+  endif()
+endif()

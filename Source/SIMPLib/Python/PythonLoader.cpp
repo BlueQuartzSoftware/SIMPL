@@ -221,7 +221,11 @@ size_t PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::
 
   try
   {
+#ifdef DREAM3D_ANACONDA
+    filterBaseClass = pybind11::module_::import("dream3d.Filter").attr("Filter");
+#else
     filterBaseClass = pybind11::module_::import("Filter").attr("Filter");
+#endif
   } catch(const pybind11::error_already_set& exception)
   {
     if(errorCallBack)
