@@ -531,7 +531,7 @@ void FileListInfoWidget::findMaxSliceAndPrefix()
         fPrefix = fn.left(pos);
         pos += rx.matchedLength();
       }
-      while(digitEnd >= 0 && fn[digitEnd] >= '0' && fn[digitEnd] <= '9')
+      while(digitEnd >= 0 && digitEnd < fn.size() && fn[digitEnd] >= '0' && fn[digitEnd] <= '9')
       {
         ++digitEnd;
       }
