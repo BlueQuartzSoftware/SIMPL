@@ -52,6 +52,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   SetOriginResolutionImageGeomTest
   SplitAttributeArrayTest
   WriteTriangleGeometryTest
+  GenerateVertexCoordinatesTest
 )
 
 
