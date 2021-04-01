@@ -102,9 +102,7 @@ void ExtractVertexGeometry::setupFilterParameters()
 
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    req.dcGeometryTypes = IGeometry::Types(2);
-    req.dcGeometryTypes[0] = IGeometry::Type::Image;
-    req.dcGeometryTypes[0] = IGeometry::Type::RectGrid;
+    req.dcGeometryTypes = {IGeometry::Type::Image, IGeometry::Type::RectGrid};
     parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container with Input Geometry", SelectedDataContainerName, FilterParameter::Category::RequiredArray, ExtractVertexGeometry, req));
   }
 
