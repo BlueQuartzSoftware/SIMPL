@@ -151,7 +151,7 @@ void GenerateVertexCoordinates::execute()
   std::array<float, 3> coords = {0.0f, 0.0f, 0.0f};
 
   SizeVec3Type dims = sourceGeometry->getDimensions();
-  size_t cellCount = std::accumulate(dims.cbegin(), dims.cend(), static_cast<size_t>(1), std::multiplies<size_t>());
+  size_t cellCount = std::accumulate(dims.begin(), dims.end(), static_cast<size_t>(1), std::multiplies<size_t>());
 
   // Use the APIs from the IGeometryGrid to get the XYZ coord for the center of each cell and then set that into the
   // the new VertexGeometry
