@@ -34,6 +34,7 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "GenerateVertexCoordinates.h"
 
+#include <array>
 #include <numeric>
 
 #include <QtCore/QTextStream>
@@ -81,9 +82,7 @@ void GenerateVertexCoordinates::setupFilterParameters()
   FilterParameterVectorType parameters;
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    req.dcGeometryTypes = IGeometry::Types(2);
-    req.dcGeometryTypes[0] = IGeometry::Type::Image;
-    req.dcGeometryTypes[0] = IGeometry::Type::RectGrid;
+    req.dcGeometryTypes = {IGeometry::Type::Image, IGeometry::Type::RectGrid};
     parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container with Input Geometry", SelectedDataContainerName, FilterParameter::Category::RequiredArray, GenerateVertexCoordinates, req));
   }
 
@@ -116,7 +115,7 @@ void GenerateVertexCoordinates::dataCheck()
   }
 
   IGeometry::Pointer fromGeometry = dc->getGeometry();
-  if(nullptr == fromGeometry.get())
+  if(nullptr == fromGeometry)
   {
     QString ss = QObject::tr("Selected input DataContainer must contain either an Image Geometry or RectLinearGrid Geometry. The DataContainer did not contain a Geometry object.");
     setErrorCondition(-2008, ss);
@@ -125,8 +124,7 @@ void GenerateVertexCoordinates::dataCheck()
   IGeometry::Type geomType = fromGeometry->getGeometryType();
   if(IGeometry::Type::Image == geomType || IGeometry::Type::RectGrid == geomType)
   {
-    std::vector<size_t> cDims = {3};
-    m_CoordinatesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType>(this, getCoordinateArrayPath(), 0, cDims, "", DataArrayID31);
+    m_CoordinatesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType>(this, getCoordinateArrayPath(), 0, {3}, "", DataArrayID31);
   }
   else
   {
@@ -150,17 +148,17 @@ void GenerateVertexCoordinates::execute()
 
   IGeometryGrid::Pointer sourceGeometry = getDataContainerArray()->getDataContainer(getSelectedDataContainerName())->getGeometryAs<IGeometryGrid>();
 
-  float coords[3] = {0.0f, 0.0f, 0.0f};
+  std::array<float, 3> coords = {0.0f, 0.0f, 0.0f};
 
   SizeVec3Type dims = sourceGeometry->getDimensions();
-  size_t cellCount = std::accumulate(dims.begin(), dims.end(), static_cast<size_t>(1), std::multiplies<size_t>());
+  size_t cellCount = std::accumulate(dims.cbegin(), dims.cend(), static_cast<size_t>(1), std::multiplies<size_t>());
 
   // Use the APIs from the IGeometryGrid to get the XYZ coord for the center of each cell and then set that into the
   // the new VertexGeometry
   for(size_t idx = 0; idx < cellCount; idx++)
   {
-    sourceGeometry->getCoords(idx, coords);
-    m_CoordinatesPtr->setTuple(idx, coords);
+    sourceGeometry->getCoords(idx, coords.data());
+    m_CoordinatesPtr->setTuple(idx, coords.data());
   }
 }
 
