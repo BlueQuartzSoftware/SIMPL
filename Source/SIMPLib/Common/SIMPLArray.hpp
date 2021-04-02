@@ -156,6 +156,24 @@ public:
   }
 
   /**
+   * @brief returns an iterator to the beginning
+   * @return
+   */
+  const_iterator cbegin() const
+  {
+    return m_Array.cbegin();
+  }
+
+  /**
+   * @brief returns an iterator to the end
+   * @return
+   */
+  const_iterator cend() const
+  {
+    return m_Array.cend();
+  }
+
+  /**
    * @brief direct access to the underlying array
    * @return
    */
