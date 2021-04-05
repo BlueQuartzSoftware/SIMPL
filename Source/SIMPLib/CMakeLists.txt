@@ -346,6 +346,8 @@ if(NOT DREAM3D_ANACONDA)
     EXPORT ${PROJECT_NAME}Targets
     COMPONENT Applications
     ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION ${install_dir}
+    LIBRARY DESTINATION ${lib_install_dir}
   )
 
   # --------------------------------------------------------------------
