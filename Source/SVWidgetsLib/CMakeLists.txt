@@ -185,31 +185,29 @@ target_link_libraries(SVWidgetsLib ${SVWidgetsLib_LINK_LIBRARIES} QtWebAppLib)
 
 set(install_dir "tools")
 set(lib_install_dir "lib")
-set(archive_install_dir "lib")
 if(WIN32)
     set(install_dir ".")
     set(lib_install_dir "")
-    set(archive_install_dir "")
 endif()
 
-if(DREAM3D_ANACONDA AND WIN32)
-  set(install_dir "bin")
-  set(lib_install_dir "bin")
-endif()
-
-if(BUILD_SHARED_LIBS AND NOT APPLE)
-  install(TARGETS ${PROJECT_NAME}
+if(NOT DREAM3D_ANACONDA)
+  if(BUILD_SHARED_LIBS AND NOT APPLE)
+    install(TARGETS ${PROJECT_NAME}
       COMPONENT Applications
       RUNTIME DESTINATION ${install_dir}
       LIBRARY DESTINATION ${lib_install_dir}
-      BUNDLE DESTINATION "."
-  )
-
-  if(NOT DREAM3D_ANACONDA)
-    install(TARGETS ${PROJECT_NAME}
-      COMPONENT Applications
       ARCHIVE DESTINATION ${lib_install_dir}
+      BUNDLE DESTINATION "."
+    )
+  endif()
+else()
+  if(WIN32)
+    install(TARGETS SVWidgetsLib
+      RUNTIME DESTINATION bin
+    )
+  else()
+    install(TARGETS SVWidgetsLib
+      LIBRARY DESTINATION lib
     )
   endif()
 endif()
-
