@@ -1,6 +1,6 @@
 from typing import List, Tuple, Union
-from Filter import Filter, FilterDelegatePy
-from simpl import DataContainerArray, FilterDelegateCpp, FilterParameter, IntFilterParameter, DataArraySelectionFilterParameter, DataArrayPath
+from dream3d.Filter import Filter, FilterDelegatePy
+from dream3d.simpl import DataContainerArray, FilterDelegateCpp, FilterParameter, IntFilterParameter, DataArraySelectionFilterParameter, DataArrayPath
 
 class ExampleFilter(Filter):
   def __init__(self) -> None:

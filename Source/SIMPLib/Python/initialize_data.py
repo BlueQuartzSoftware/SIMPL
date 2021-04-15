@@ -3,8 +3,8 @@ import numpy as np
 from enum import IntEnum
 from typing import List, Tuple, Union
 
-from Filter import Filter, FilterDelegatePy
-from simpl import DataContainerArray, FilterDelegateCpp, FilterParameter, IntFilterParameter, DataArrayPath, MultiDataArraySelectionFilterParameter, IGeometry, AttributeMatrix, LinkedChoicesFilterParameter, DoubleFilterParameter, RangeFilterParameter, SeparatorFilterParameter
+from dream3d.Filter import Filter, FilterDelegatePy
+from dream3d.simpl import DataContainerArray, FilterDelegateCpp, FilterParameter, IntFilterParameter, DataArrayPath, MultiDataArraySelectionFilterParameter, IGeometry, AttributeMatrix, LinkedChoicesFilterParameter, DoubleFilterParameter, RangeFilterParameter, SeparatorFilterParameter
 
 class InitType(IntEnum):
   MANUAL = 0
