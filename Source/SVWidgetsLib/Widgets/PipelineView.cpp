@@ -104,3 +104,15 @@ QAction* PipelineView::getActionRedo()
 {
   return m_ActionRedo;
 }
+
+// -----------------------------------------------------------------------------
+bool PipelineView::undoStackIsClear() const
+{
+  return m_UndoStack->count() == 0;
+}
+
+// -----------------------------------------------------------------------------
+void PipelineView::clearUndoStack()
+{
+  m_UndoStack->clear();
+}

@@ -64,11 +64,40 @@
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 
+#ifdef SIMPL_EMBED_PYTHON
+#include "SIMPLib/Python/PythonLoader.h"
+#endif
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
+#ifdef DREAM3D_ANACONDA
+  {
+    constexpr const char k_PYTHONHOME[] = "PYTHONHOME";
+    QString condaPrefix = qgetenv("CONDA_PREFIX");
+
+    QString pythonHome = qgetenv(k_PYTHONHOME);
+    if(pythonHome.isEmpty() && !condaPrefix.isEmpty())
+    {
+      qputenv(k_PYTHONHOME, condaPrefix.toLocal8Bit());
+    }
+
+    qputenv("DREAM3D_PLUGINS_LOADED", "1");
+  }
+#endif
+
+#ifdef SIMPL_EMBED_PYTHON
+  bool hasPythonHome = PythonLoader::checkPythonHome();
+
+  if(!hasPythonHome)
+  {
+    std::cout << "Warning: \"PYTHONHOME\" not set. This environment variable must be set for embedded Python to work.\n";
+  }
+
+  PythonLoader::ScopedInterpreter interpreter_guard{hasPythonHome};
+#endif
 
   // Instantiate the QCoreApplication that we need to get the current path and load plugins.
   QCoreApplication app(argc, argv);
@@ -103,6 +132,18 @@ int main(int argc, char* argv[])
   // Register all the filters including trying to load those from Plugins
   FilterManager* fm = FilterManager::Instance();
   SIMPLibPluginLoader::LoadPluginFilters(fm);
+
+#ifdef SIMPL_EMBED_PYTHON
+  if(hasPythonHome)
+  {
+    PythonLoader::addToPythonPath(PythonLoader::defaultSIMPLPythonLibPath());
+    std::cout << "Loading Python filters:\n";
+    auto pythonErrorCallback = [](const std::string& message, const std::string& filePath) { std::cout << message << "\nSkipping file: \"" << filePath << "\"\n"; };
+    auto pythonLoadedCallback = [](const std::string& className, const std::string& filePath) { std::cout << "Loaded \"" << className << "\" from \"" << filePath << "\"\n"; };
+    size_t numLoaded = PythonLoader::loadPythonFilters(*fm, PythonLoader::defaultPythonFilterPaths(), pythonErrorCallback, pythonLoadedCallback);
+    std::cout << "Loaded " << numLoaded << " filters\n";
+  }
+#endif
 
   QMetaObjectUtilities::RegisterMetaTypes();
 
@@ -142,7 +183,7 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  std::cout << "Filter Count: " << pipeline->size() << std::endl;
+  std::cout << "Pipeline Count: " << pipeline->size() << std::endl;
   Observer obs; // Create an Observer to report errors/progress from the executing pipeline
   pipeline->addMessageReceiver(&obs);
   // Preflight the pipeline

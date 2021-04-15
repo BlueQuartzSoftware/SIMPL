@@ -176,6 +176,10 @@ if(WIN32 AND BUILD_SHARED_LIBS)
 endif()
 target_compile_definitions(SVWidgetsLib PRIVATE -DQT_CORE_LIB)
 
+if(DREAM3D_ANACONDA)
+  target_compile_definitions(SVWidgetsLib PRIVATE DREAM3D_ANACONDA)
+endif()
+
 LibraryProperties( SVWidgetsLib ${EXE_DEBUG_EXTENSION})
 target_link_libraries(SVWidgetsLib ${SVWidgetsLib_LINK_LIBRARIES} QtWebAppLib)
 
@@ -186,14 +190,24 @@ if(WIN32)
     set(lib_install_dir "")
 endif()
 
-
-if(BUILD_SHARED_LIBS AND NOT APPLE)
-    INSTALL(TARGETS ${PROJECT_NAME}
-        COMPONENT Applications
-        RUNTIME DESTINATION ${install_dir}
-        LIBRARY DESTINATION ${lib_install_dir}
-        ARCHIVE DESTINATION ${lib_install_dir}
-        BUNDLE DESTINATION "."
+if(NOT DREAM3D_ANACONDA)
+  if(BUILD_SHARED_LIBS AND NOT APPLE)
+    install(TARGETS ${PROJECT_NAME}
+      COMPONENT Applications
+      RUNTIME DESTINATION ${install_dir}
+      LIBRARY DESTINATION ${lib_install_dir}
+      ARCHIVE DESTINATION ${lib_install_dir}
+      BUNDLE DESTINATION "."
     )
+  endif()
+else()
+  if(WIN32)
+    install(TARGETS SVWidgetsLib
+      RUNTIME DESTINATION bin
+    )
+  else()
+    install(TARGETS SVWidgetsLib
+      LIBRARY DESTINATION lib
+    )
+  endif()
 endif()
-

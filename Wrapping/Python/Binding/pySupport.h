@@ -1,11 +1,21 @@
 #pragma once
 
-#include "pybind11/numpy.h"
-#include "pybind11/pybind11.h"
-#include "pybind11/stl.h"
+#include <stdexcept>
+
+#include <pybind11/pybind11.h>
+
+#include <pybind11/numpy.h>
+#include <pybind11/stl.h>
 
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+
+#ifdef SIMPL_EMBED_PYTHON
+#include "SIMPLib/Python/FilterPyObject.h"
+#endif
 
 template <class T>
 void registerDataArray(pybind11::module& mod, const char* name)
@@ -14,8 +24,20 @@ void registerDataArray(pybind11::module& mod, const char* name)
   using namespace py::literals;
   using DataArrayType = DataArray<T>;
   py::class_<DataArrayType, IDataArray, std::shared_ptr<DataArrayType>>(mod, name, py::buffer_protocol())
-      .def(py::init([](size_t numElements, const QString& name, T initValue) { return std::make_shared<DataArrayType>(numElements, name, initValue); }))
-      .def(py::init([](size_t numElements, const std::vector<size_t>& cDims, const QString& name, T initValue) { return std::make_shared<DataArrayType>(numElements, name, cDims, initValue); }))
+      .def(py::init([](size_t numElements, const QString& name, T initValue) {
+        if(name.isEmpty())
+        {
+          throw std::invalid_argument("name cannot be empty");
+        }
+        return std::make_shared<DataArrayType>(numElements, name, initValue);
+      }))
+      .def(py::init([](size_t numElements, const std::vector<size_t>& cDims, const QString& name, T initValue) {
+        if(name.isEmpty())
+        {
+          throw std::invalid_argument("name cannot be empty");
+        }
+        return std::make_shared<DataArrayType>(numElements, name, cDims, initValue);
+      }))
       .def(py::init([](py::array_t<T, py::array::c_style> data, const QString& name, bool ownsData) {
         py::buffer_info buf = data.request();
         const std::vector<ssize_t>& shape = buf.shape;
@@ -59,6 +81,7 @@ void registerDataArray(pybind11::module& mod, const char* name)
                                return dims;
                              })
       .def_property_readonly("tuples", &DataArrayType::getNumberOfTuples)
+      .def_property_readonly_static("dtype", []([[maybe_unused]] py::object self) { return py::dtype::of<T>(); })
       .def(
           "__iter__", [](const DataArrayType& dataArray) { return py::make_iterator(dataArray.begin(), dataArray.end()); }, py::keep_alive<0, 1>())
       .def_buffer([](const DataArrayType& dataArray) -> py::buffer_info {
@@ -182,4 +205,144 @@ void registerSIMPLArray(pybind11::module& mod, const char* name)
              return py::str(output);
            })
       .def("__getitem__", [](const array_t& values, size_t index) { return values.at(index); });
+}
+
+void registerDataContainerArray(pybind11::class_<DataContainerArray, std::shared_ptr<DataContainerArray>>& instance)
+{
+  namespace py = pybind11;
+  using namespace py::literals;
+
+  instance.def("__getitem__", [](const DataContainerArray& dca, const QString& name) {
+    if(!dca.doesDataContainerExist(name))
+    {
+      throw pybind11::key_error(name.toStdString());
+    }
+    return dca.getDataContainer(name);
+  });
+
+  instance.def("__contains__", py::overload_cast<const QString&>(&DataContainerArray::doesDataContainerExist, py::const_));
+
+  instance.def("__len__", &DataContainerArray::size);
+  instance.def_property_readonly("size", &DataContainerArray::size);
+
+  instance.def(
+      "__iter__", [](DataContainerArray& dca) { return py::make_iterator(dca.begin(), dca.end()); }, py::keep_alive<0, 1>());
+
+#ifdef SIMPL_EMBED_PYTHON
+  instance.def(
+      "createNonPrereqArrayFromPath",
+      [](DataContainerArray& dca, PythonSupport::FilterDelegate& filter, SIMPL::NumericTypes::Type type, const DataArrayPath& path, py::object initValue, const std::vector<size_t>& compDims,
+         const QString& property, RenameDataPath::DataID_t id) {
+        switch(type)
+        {
+        case SIMPL::NumericTypes::Type::Int8:
+          return py::cast(dca.createNonPrereqArrayFromPath<Int8ArrayType>(filter.filter, path, initValue.cast<int8_t>(), compDims, property, id));
+        case SIMPL::NumericTypes::Type::UInt8:
+          return py::cast(dca.createNonPrereqArrayFromPath<Int8ArrayType>(filter.filter, path, initValue.cast<uint8_t>(), compDims, property, id));
+        case SIMPL::NumericTypes::Type::Int16:
+          return py::cast(dca.createNonPrereqArrayFromPath<Int16ArrayType>(filter.filter, path, initValue.cast<int16_t>(), compDims, property, id));
+        case SIMPL::NumericTypes::Type::UInt16:
+          return py::cast(dca.createNonPrereqArrayFromPath<UInt16ArrayType>(filter.filter, path, initValue.cast<uint16_t>(), compDims, property, id));
+        case SIMPL::NumericTypes::Type::Int32:
+          return py::cast(dca.createNonPrereqArrayFromPath<Int32ArrayType>(filter.filter, path, initValue.cast<int32_t>(), compDims, property, id));
+        case SIMPL::NumericTypes::Type::UInt32:
+          return py::cast(dca.createNonPrereqArrayFromPath<UInt32ArrayType>(filter.filter, path, initValue.cast<uint32_t>(), compDims, property, id));
+        case SIMPL::NumericTypes::Type::Int64:
+          return py::cast(dca.createNonPrereqArrayFromPath<Int64ArrayType>(filter.filter, path, initValue.cast<int64_t>(), compDims, property, id));
+        case SIMPL::NumericTypes::Type::UInt64:
+          return py::cast(dca.createNonPrereqArrayFromPath<UInt64ArrayType>(filter.filter, path, initValue.cast<uint64_t>(), compDims, property, id));
+        case SIMPL::NumericTypes::Type::SizeT:
+          return py::cast(dca.createNonPrereqArrayFromPath<SizeTArrayType>(filter.filter, path, initValue.cast<size_t>(), compDims, property, id));
+        case SIMPL::NumericTypes::Type::Float:
+          return py::cast(dca.createNonPrereqArrayFromPath<FloatArrayType>(filter.filter, path, initValue.cast<float>(), compDims, property, id));
+        case SIMPL::NumericTypes::Type::Double:
+          return py::cast(dca.createNonPrereqArrayFromPath<DoubleArrayType>(filter.filter, path, initValue.cast<double>(), compDims, property, id));
+        case SIMPL::NumericTypes::Type::Bool:
+          return py::cast(dca.createNonPrereqArrayFromPath<BoolArrayType>(filter.filter, path, initValue.cast<bool>(), compDims, property, id));
+        default:
+          throw std::invalid_argument("Invalid numeric type");
+        }
+      },
+      "filter"_a, "type"_a, "path"_a, "initValue"_a, "compDims"_a, "property"_a = std::string(""), "id"_a = RenameDataPath::k_Invalid_ID);
+
+  instance.def(
+      "createNonPrereqDataContainer",
+      [](DataContainerArray& dca, PythonSupport::FilterDelegate& filter, const QString& dataContainerName, RenameDataPath::DataID_t id) {
+        return dca.createNonPrereqDataContainer(filter.filter, dataContainerName, id);
+      },
+      "filter"_a, "dataContainerName"_a, "id"_a = RenameDataPath::k_Invalid_ID);
+
+  instance.def(
+      "createNonPrereqDataContainer",
+      [](DataContainerArray& dca, PythonSupport::FilterDelegate& filter, const DataArrayPath& dap, RenameDataPath::DataID_t id) { return dca.createNonPrereqDataContainer(filter.filter, dap, id); },
+      "filter"_a, "dap"_a, "id"_a = RenameDataPath::k_Invalid_ID);
+#endif
+}
+
+void registerDataContainer(pybind11::class_<DataContainer, std::shared_ptr<DataContainer>>& instance)
+{
+  namespace py = pybind11;
+  using namespace py::literals;
+
+  instance.def("__getitem__", [](const DataContainer& dc, const QString& name) {
+    if(!dc.doesAttributeMatrixExist(name))
+    {
+      throw pybind11::key_error(name.toStdString());
+    }
+    return dc.getAttributeMatrix(name);
+  });
+
+  instance.def("__contains__", py::overload_cast<const QString&>(&DataContainer::doesAttributeMatrixExist, py::const_));
+
+  instance.def("__len__", &DataContainer::size);
+  instance.def_property_readonly("size", &DataContainer::size);
+
+  instance.def(
+      "__iter__", [](DataContainer& dc) { return py::make_iterator(dc.begin(), dc.end()); }, py::keep_alive<0, 1>());
+
+#ifdef SIMPL_EMBED_PYTHON
+  instance.def(
+      "createNonPrereqAttributeMatrix",
+      [](DataContainer& dc, PythonSupport::FilterDelegate& filter, const DataArrayPath& path, const std::vector<size_t>& tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id) {
+        return dc.createNonPrereqAttributeMatrix(filter.filter, path, tDims, amType, id);
+      },
+      "filter"_a, "path"_a, "tDims"_a, "amType"_a, "id"_a = RenameDataPath::k_Invalid_ID);
+
+  instance.def(
+      "createNonPrereqAttributeMatrix",
+      [](DataContainer& dc, PythonSupport::FilterDelegate& filter, const QString& attributeMatrixName, const std::vector<size_t>& tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id) {
+        return dc.createNonPrereqAttributeMatrix(filter.filter, attributeMatrixName, tDims, amType, id);
+      },
+      "filter"_a, "attributeMatrixName"_a, "tDims"_a, "amType"_a, "id"_a = RenameDataPath::k_Invalid_ID);
+#endif
+}
+
+void registerAttributeMatrix(pybind11::class_<AttributeMatrix, std::shared_ptr<AttributeMatrix>>& instance)
+{
+  namespace py = pybind11;
+  using namespace py::literals;
+
+  instance.def("__contains__", py::overload_cast<const QString&>(&AttributeMatrix::doesAttributeArrayExist, py::const_));
+
+  instance.def("__len__", &AttributeMatrix::size);
+  instance.def_property_readonly("size", &AttributeMatrix::size);
+
+  instance.def(
+      "__iter__", [](AttributeMatrix& am) { return py::make_iterator(am.begin(), am.end()); }, py::keep_alive<0, 1>());
+
+  instance.def("__getitem__", [](const AttributeMatrix& am, const QString& name) {
+    if(!am.doesAttributeArrayExist(name))
+    {
+      throw pybind11::key_error(name.toStdString());
+    }
+    return am.getAttributeArray(name);
+  });
+}
+
+void registerDataArrayPath(py::class_<DataArrayPath>& instance)
+{
+  namespace py = pybind11;
+  using namespace py::literals;
+
+  instance.def("__repr__", [](const DataArrayPath& path) { return QString("DataArrayPath(\"%1\")").arg(path.serialize()); });
 }

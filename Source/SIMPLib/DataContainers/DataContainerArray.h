@@ -93,6 +93,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
   PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix ARGS DataArrayPath)
   PYB11_METHOD(bool doesAttributeMatrixExist ARGS DataArrayPath)
   PYB11_METHOD(bool doesAttributeArrayExist ARGS DataArrayPath)
+  PYB11_CUSTOM()
   PYB11_END_BINDINGS()
   // End Python bindings declarations
   // clang-format on

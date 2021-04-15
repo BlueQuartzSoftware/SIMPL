@@ -101,6 +101,9 @@ QString QtSDocServer::GetHelpRootDir()
 
   QDir helpDir = QDir(appPath);
 
+#if defined(DREAM3D_ANACONDA)
+  helpDir.cd(QString("../share/%1/Help/%1").arg(QApplication::applicationName()));
+#else
 #if defined(Q_OS_MAC)
   if(helpDir.dirName() == "MacOS")
   {
@@ -143,6 +146,7 @@ QString QtSDocServer::GetHelpRootDir()
     helpDir.cd("Help");
     helpDir.cd(QApplication::applicationName());
   }
+#endif
 #endif
   return helpDir.absolutePath();
 }

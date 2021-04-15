@@ -135,6 +135,17 @@ public:
   FilterPipeline::Pointer readPipelineFromString(QString contents, IObserver* obs = nullptr);
 
   /**
+   * @brief ReadPipelineFromString Reads the Json and returns a FilterPipeline object
+   * that contains all the filters that could be found. If a filter can not be found then that filter is simply skipped.
+   * If the IObserver is NON-Null then an error message will be passed to it with an error message
+   * @param filePath The path to the INI formatted file
+   * @param format The format of the file which is anything that QSettings understands
+   * @param obs An IObserver object to report errors.
+   * @return Shared Pointer to a FilterPipeline Instance
+   */
+  FilterPipeline::Pointer readPipelineFromJson(const QJsonObject& contents, IObserver* obs = nullptr);
+
+  /**
    * @brief Gets the name of the pipeline from a pipeline file
    * @param filePath The absolute path to the pipeline file.
    * @param name Sets the name of the pipeline into this variable
@@ -166,6 +177,13 @@ public:
    * @return
    */
   int setPipelineContents(QString contents);
+
+  /**
+   * @brief setPipelineContents
+   * @param contents
+   * @return
+   */
+  void setPipelineContents(const QJsonObject& contents);
 
   /**
    * @brief closeFile

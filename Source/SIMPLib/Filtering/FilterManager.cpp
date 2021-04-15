@@ -318,3 +318,53 @@ QString FilterManager::ClassName()
 {
   return QString("FilterManager");
 }
+
+// -----------------------------------------------------------------------------
+bool FilterManager::removeFilterFactory(const QUuid& uuid)
+{
+  if(!m_UuidFactories.contains(uuid))
+  {
+    return false;
+  }
+
+  QString filterName = m_UuidFactories[uuid]->getFilterClassName();
+
+  m_Factories.remove(filterName);
+  m_UuidFactories.remove(uuid);
+#ifdef SIMPL_EMBED_PYTHON
+  m_PythonUuids.remove(uuid);
+#endif
+
+  return true;
+}
+
+#ifdef SIMPL_EMBED_PYTHON
+// -----------------------------------------------------------------------------
+QSet<QUuid> FilterManager::pythonFilterUuids() const
+{
+  return m_PythonUuids;
+}
+
+// -----------------------------------------------------------------------------
+void FilterManager::addPythonFilterFactory(const QString& name, IFilterFactory::Pointer factory)
+{
+  addFilterFactory(name, factory);
+  m_PythonUuids.insert(factory->getUuid());
+}
+
+// -----------------------------------------------------------------------------
+void FilterManager::clearPythonFilterFactories()
+{
+  QSet<QUuid> pythonUuids = m_PythonUuids;
+  for(const QUuid& uuid : pythonUuids)
+  {
+    removeFilterFactory(uuid);
+  }
+}
+
+// -----------------------------------------------------------------------------
+bool FilterManager::isPythonFilter(const QUuid& uuid) const
+{
+  return m_PythonUuids.contains(uuid);
+}
+#endif

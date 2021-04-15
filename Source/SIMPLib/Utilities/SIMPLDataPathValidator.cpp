@@ -80,6 +80,9 @@ QString SIMPLDataPathValidator::convertToAbsolutePath(const QString& path)
 #if defined(SIMPL_RELATIVE_PATH_CHECK)
     parentPath = m_SIMPLDataDirectory;
 #else
+#if defined(DREAM3D_ANACONDA)
+    dir.cd(QString("../share/%1").arg(QCoreApplication::applicationName()));
+#else
 #if defined(Q_OS_MAC)
     if(dir.dirName() == "MacOS")
     {
@@ -89,6 +92,7 @@ QString SIMPLDataPathValidator::convertToAbsolutePath(const QString& path)
     }
 #elif defined(Q_OS_LINUX)
     dir.cdUp();
+#endif
 #endif
 
     parentPath = dir.absolutePath();

@@ -245,3 +245,39 @@ py::class_<MultiDataContainerSelectionFilterParameter::RequirementType>(instance
     .def_readwrite("amTypes", &MultiDataContainerSelectionFilterParameter::RequirementType::amTypes)
     .def_readwrite("daTypes", &MultiDataContainerSelectionFilterParameter::RequirementType::daTypes)
     .def_readwrite("componentDimensions", &MultiDataContainerSelectionFilterParameter::RequirementType::componentDimensions);
+
+registerDataContainerArray(instanceDataContainerArray);
+registerDataContainer(instanceDataContainer);
+registerAttributeMatrix(instanceAttributeMatrix);
+registerDataArrayPath(instanceDataArrayPath);
+
+#ifdef SIMPL_EMBED_PYTHON
+py::class_<PythonSupport::FilterDelegate>(mod, "FilterDelegateCpp")
+    .def("notifyStatusMessage", &PythonSupport::FilterDelegate::notifyStatusMessage)
+    .def("notifyProgressMessage", &PythonSupport::FilterDelegate::notifyProgressMessage)
+    .def("setWarningCondition", &PythonSupport::FilterDelegate::setWarningCondition)
+    .def_property_readonly("preflight", &PythonSupport::FilterDelegate::preflight);
+
+py::class_<PythonFilter, AbstractFilter, std::shared_ptr<PythonFilter>>(mod, "PythonFilter").def(py::init([](py::object object) { return PythonFilter::New(object); }));
+
+mod.def("registerPythonFilter", [](py::object object) {
+  auto filterManager = FilterManager::Instance();
+  auto filterFactory = PythonFilterFactory::New(object);
+  filterManager->addPythonFilterFactory(filterFactory->getFilterClassName(), filterFactory);
+});
+
+mod.def("unregisterPythonFilter", [](const std::string& uuidStr) {
+  QUuid uuid(QString::fromStdString(uuidStr));
+  auto filterManager = FilterManager::Instance();
+  if(!filterManager->isPythonFilter(uuid))
+  {
+    return false;
+  }
+  return filterManager->removeFilterFactory(uuid);
+});
+
+mod.def("clearPythonFilters", []() {
+  auto filterManager = FilterManager::Instance();
+  filterManager->clearPythonFilterFactories();
+});
+#endif

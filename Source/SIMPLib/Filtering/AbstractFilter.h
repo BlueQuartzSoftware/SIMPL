@@ -88,6 +88,7 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_PROPERTY(QString HumanLabel READ getHumanLabel)
   PYB11_PROPERTY(QString FilterVersion READ getFilterVersion)
   PYB11_PROPERTY(QString CompiledLibraryName READ getCompiledLibraryName)
+  PYB11_PROPERTY(QString DataContainerArray READ getDataContainerArray WRITE setDataContainerArray)
   PYB11_PROPERTY(bool Cancel READ getCancel WRITE setCancel)
   PYB11_PROPERTY(bool Enabled READ getEnabled WRITE setEnabled)
   PYB11_PROPERTY(int ErrorCode READ getErrorCode)

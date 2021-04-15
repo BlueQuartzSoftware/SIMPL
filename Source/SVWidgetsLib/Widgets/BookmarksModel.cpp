@@ -824,6 +824,9 @@ QDir BookmarksModel::findPipelinesDirectory()
 
   QString appPath = QCoreApplication::applicationDirPath();
   QDir pipelinesDir = QDir(appPath);
+#if defined(DREAM3D_ANACONDA)
+  pipelinesDir.cd(QString("../share/%1").arg(QCoreApplication::applicationName()));
+#else
 #if defined(Q_OS_WIN)
   QFileInfo fi(pipelinesDir.absolutePath() + QDir::separator() + dirName);
   if(fi.exists() == false)
@@ -860,6 +863,7 @@ QDir BookmarksModel::findPipelinesDirectory()
     pipelinesDir.cdUp();
   }
 
+#endif
 #endif
 
   pipelinesDir.setPath(pipelinesDir.absolutePath() + QDir::separator() + dirName);

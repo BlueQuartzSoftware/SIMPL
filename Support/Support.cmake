@@ -17,9 +17,14 @@ if(EXISTS ${SIMPLProj_SOURCE_DIR}/Support/ExamplePipelines/${PLUGIN_NAME})
     set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}/PrebuiltPipelines/Examples")
   endif()
 
+  if(DREAM3D_ANACONDA)
+    set(INSTALL_DESTINATION "share/DREAM3D/PrebuiltPipelines/Examples")
+  endif()
+
   install(DIRECTORY ${SIMPLProj_SOURCE_DIR}/Support/ExamplePipelines/${PLUGIN_NAME}
-          DESTINATION ${INSTALL_DESTINATION}
-          COMPONENT Applications )
+    DESTINATION ${INSTALL_DESTINATION}
+    COMPONENT Applications
+  )
 endif()
 
 
@@ -34,13 +39,13 @@ if(EXISTS ${SIMPLProj_SOURCE_DIR}/Support/Data/${PLUGIN_NAME})
               COMMENT "Copying ${PLUGIN_NAME} Data Folder into Binary Directory")
   set_target_properties(${PLUGIN_NAME}DataFolderCopy PROPERTIES FOLDER ZZ_COPY_FILES)
 
-  if(APPLE)
-    set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}/Resources/Data")
-  else()
-    set(INSTALL_DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}/Data")
+  set(INSTALL_DESTINATION "Data")
+  if(DREAM3D_ANACONDA)
+    set(INSTALL_DESTINATION "share/DREAM3D/Data")
   endif()
 
   install(DIRECTORY ${SIMPLProj_SOURCE_DIR}/Support/Data/${PLUGIN_NAME}
-          DESTINATION Data
-          COMPONENT Applications )
+    DESTINATION ${INSTALL_DESTINATION}
+    COMPONENT Applications
+  )
 endif()

@@ -389,6 +389,17 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromString(QStri
 }
 
 // -----------------------------------------------------------------------------
+FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromJson(const QJsonObject& contents, IObserver* obs)
+{
+  setPipelineContents(contents);
+
+  FilterPipeline::Pointer pipeline = readPipeline(obs);
+  closeFile();
+
+  return pipeline;
+}
+
+// -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
@@ -588,6 +599,17 @@ int JsonFilterParametersReader::setPipelineContents(QString contents)
   err = QJsonParseError::NoError;
 
   return err;
+}
+
+// -----------------------------------------------------------------------------
+void JsonFilterParametersReader::setPipelineContents(const QJsonObject& contents)
+{
+  if(!m_Root.isEmpty() || !m_CurrentFilterIndex.isEmpty())
+  {
+    closeFile();
+  }
+
+  m_Root = contents;
 }
 
 // -----------------------------------------------------------------------------

@@ -45,18 +45,6 @@ set(QtWebAppLib_SRCS
   )
 
 
-set(install_dir "bin")
-set(lib_install_dir "lib")
-
-if(APPLE)
-  get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
-  set(install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}bin")
-  set(lib_install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}lib")
-elseif(WIN32)
-  set(install_dir ".")
-  set(lib_install_dir ".")
-endif()
-
 add_library(QtWebAppLib ${LIB_TYPE} ${QtWebAppLib_SRCS})
 CMP_AddDefinitions(TARGET ${PROJECT_NAME})
 target_link_libraries(QtWebAppLib Qt5::Core Qt5::Network)
@@ -77,16 +65,27 @@ elseif(WIN32)
   set(lib_install_dir ".")
 endif()
 
+if(DREAM3D_ANACONDA AND WIN32)
+  set(install_dir "bin")
+  set(lib_install_dir "bin")
+endif()
 
-INSTALL(TARGETS ${PROJECT_NAME}
-    EXPORT QtWebAppLibTargets
-    COMPONENT Applications
-    RUNTIME DESTINATION ${install_dir}
-    LIBRARY DESTINATION ${lib_install_dir}
-    ARCHIVE DESTINATION lib
-    BUNDLE DESTINATION "."
+install(TARGETS ${PROJECT_NAME}
+  EXPORT QtWebAppLibTargets
+  COMPONENT Applications
+  RUNTIME DESTINATION ${install_dir}
+  LIBRARY DESTINATION ${lib_install_dir}
+  BUNDLE DESTINATION "."
 )
 
+if(NOT DREAM3D_ANACONDA)
+  install(TARGETS ${PROJECT_NAME}
+    COMPONENT Applications
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION ${install_dir}
+    LIBRARY DESTINATION ${lib_install_dir}
+  )
+endif()
 
 # --------------------------------------------------------------------
 # Allow the generation and installation of a CMake configuration file

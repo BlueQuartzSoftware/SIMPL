@@ -91,6 +91,7 @@ class SIMPLib_EXPORT DataArrayPath
   PYB11_METHOD(bool isEmpty)
   PYB11_METHOD(bool isValid)
   PYB11_METHOD(void update ARGS dcName amName daName)
+  PYB11_CUSTOM()
   PYB11_END_BINDINGS()
   // End Python bindings declarations
 
