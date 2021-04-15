@@ -182,7 +182,7 @@ class InitializeDataPython(Filter):
       if not data_array:
         return (-5560, f'{array_path} does not exist')
       dtype = data_array.dtype
-      if isinstance(dtype, np.floating):
+      if dtype == np.float32 or dtype == np.float64:
         min_value = np.finfo(dtype).min
         max_value = np.finfo(dtype).max
       else:
@@ -225,14 +225,14 @@ class InitializeDataPython(Filter):
           range_min = self.init_range[0]
           range_max = self.init_range[1]
         else:
-          if isinstance(dtype, np.floating):
+          if dtype == np.float32 or dtype == np.float64:
             range_min = np.finfo(dtype).min
             range_max = np.finfo(dtype).max
           else:
             range_min = np.iinfo(dtype).min
             range_max = np.iinfo(dtype).max
         rng = np.random.default_rng()
-        if isinstance(dtype, np.floating):
+        if dtype == np.float32 or dtype == np.float64:
           data_slice[:] = rng.uniform(range_min, range_max, size=data_slice.size).reshape(data_slice.shape)
         else:
           data_slice[:] = rng.integers(range_min, range_max, size=data_slice.size).reshape(data_slice.shape)
