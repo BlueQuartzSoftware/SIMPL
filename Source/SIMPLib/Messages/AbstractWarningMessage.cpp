@@ -37,6 +37,7 @@ AbstractWarningMessage::AbstractWarningMessage() = default;
 
 AbstractWarningMessage::AbstractWarningMessage(const QString& msgText, int32_t code)
 : AbstractMessage(msgText)
+, m_Code(code)
 {
 }
 
