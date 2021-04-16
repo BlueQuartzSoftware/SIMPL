@@ -102,7 +102,7 @@ class InitializeDataPython(Filter):
 
   @staticmethod
   def human_label() -> str:
-    return 'Initialize Data Python'
+    return 'Initialize Data (Python)'
 
   @staticmethod
   def version() -> str:
@@ -209,7 +209,7 @@ class InitializeDataPython(Filter):
     udims = dc.Geometry.getDimensions()
     am = dca.getAttributeMatrix(path)
 
-    dims = [np.int64(udims[0]), np.int64(udims[1]), np.int64(udims[2])]
+    dims = [np.int64(udims[2]), np.int64(udims[1]), np.int64(udims[0])]
 
     data_arrays = [am.getAttributeArray(array_path.DataArrayName) for array_path in self.cell_attribute_matrix_paths]
 
