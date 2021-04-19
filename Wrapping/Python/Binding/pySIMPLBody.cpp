@@ -13,6 +13,8 @@ registerDataArray<uint64_t>(mod, "UInt64Array");
 registerDataArray<float>(mod, "FloatArray");
 registerDataArray<double>(mod, "DoubleArray");
 
+registerDataArray<bool>(mod, "BoolArray");
+
 registerSIMPLArray<float, 2>(mod, "FloatVec2");
 registerSIMPLArray<int32_t, 2>(mod, "IntVec2");
 registerSIMPLArray<size_t, 2>(mod, "SizeVec2");
