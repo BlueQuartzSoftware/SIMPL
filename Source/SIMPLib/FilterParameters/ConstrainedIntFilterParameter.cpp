@@ -89,7 +89,7 @@ void ConstrainedIntFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ConstrainedIntFilterParameter::writeJson(QJsonObject& json)
+void ConstrainedIntFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

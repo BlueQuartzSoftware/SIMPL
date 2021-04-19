@@ -90,7 +90,7 @@ void LinkedChoicesFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LinkedChoicesFilterParameter::writeJson(QJsonObject& json)
+void LinkedChoicesFilterParameter::writeJson(QJsonObject& json) const
 {
   if(getGetterCallback())
   {

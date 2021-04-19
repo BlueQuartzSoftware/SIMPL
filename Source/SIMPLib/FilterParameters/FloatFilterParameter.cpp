@@ -88,7 +88,7 @@ void FloatFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FloatFilterParameter::writeJson(QJsonObject& json)
+void FloatFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

@@ -101,7 +101,7 @@ void DataContainerReaderFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 // THIS IS A SPECIAL CASE AND IS NOT STANDARD.  DO NOT COPY THIS CODE.
 // -----------------------------------------------------------------------------
-void DataContainerReaderFilterParameter::writeJson(QJsonObject& json)
+void DataContainerReaderFilterParameter::writeJson(QJsonObject& json) const
 {
   DataContainerArrayProxy proxy = m_Filter->getInputFileDataContainerArrayProxy();
   QJsonObject obj;

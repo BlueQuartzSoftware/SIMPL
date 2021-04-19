@@ -152,7 +152,7 @@ void DataArrayCreationFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayCreationFilterParameter::writeJson(QJsonObject& json)
+void DataArrayCreationFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

@@ -100,7 +100,7 @@ void MultiInputFileFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiInputFileFilterParameter::writeJson(QJsonObject& json)
+void MultiInputFileFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

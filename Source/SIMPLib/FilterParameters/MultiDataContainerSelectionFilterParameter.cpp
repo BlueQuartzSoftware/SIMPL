@@ -188,7 +188,7 @@ void MultiDataContainerSelectionFilterParameter::readJson(const QJsonObject& jso
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataContainerSelectionFilterParameter::writeJson(QJsonObject& json)
+void MultiDataContainerSelectionFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

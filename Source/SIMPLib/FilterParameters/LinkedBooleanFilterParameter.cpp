@@ -92,7 +92,7 @@ void LinkedBooleanFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LinkedBooleanFilterParameter::writeJson(QJsonObject& json)
+void LinkedBooleanFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

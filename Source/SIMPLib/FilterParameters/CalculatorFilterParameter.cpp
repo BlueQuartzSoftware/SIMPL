@@ -94,7 +94,7 @@ void CalculatorFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorFilterParameter::writeJson(QJsonObject& json)
+void CalculatorFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

@@ -92,7 +92,7 @@ void ScalarTypeFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ScalarTypeFilterParameter::writeJson(QJsonObject& json)
+void ScalarTypeFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

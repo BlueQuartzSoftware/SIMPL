@@ -98,7 +98,7 @@ void IntVec2FilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IntVec2FilterParameter::writeJson(QJsonObject& obj)
+void IntVec2FilterParameter::writeJson(QJsonObject& obj) const
 {
   if(m_GetterCallback)
   {

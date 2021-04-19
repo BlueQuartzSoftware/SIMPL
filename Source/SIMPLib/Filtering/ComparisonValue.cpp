@@ -55,7 +55,7 @@ ComparisonValue::~ComparisonValue() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonValue::writeJson(QJsonObject& json)
+void ComparisonValue::writeJson(QJsonObject& json) const
 {
   json["Union Operator"] = m_unionOperator;
   json["Attribute Array Name"] = m_attributeArrayName;

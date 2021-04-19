@@ -90,7 +90,7 @@ void ParagraphFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ParagraphFilterParameter::writeJson(QJsonObject& json)
+void ParagraphFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

@@ -91,7 +91,7 @@ void UInt64FilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void UInt64FilterParameter::writeJson(QJsonObject& json)
+void UInt64FilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

@@ -91,7 +91,7 @@ void DoubleFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DoubleFilterParameter::writeJson(QJsonObject& json)
+void DoubleFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

@@ -80,7 +80,7 @@ void PreflightUpdatedValueFilterParameter::readJson(const QJsonObject& json)
 }
 
 // -----------------------------------------------------------------------------
-void PreflightUpdatedValueFilterParameter::writeJson(QJsonObject& json)
+void PreflightUpdatedValueFilterParameter::writeJson(QJsonObject& json) const
 {
   // We don't want to write this value. It serves no purpose saving the value
   std::ignore = json;

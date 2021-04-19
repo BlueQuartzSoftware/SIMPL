@@ -91,7 +91,7 @@ void IntFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IntFilterParameter::writeJson(QJsonObject& json)
+void IntFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

@@ -97,7 +97,7 @@ public:
    * @brief Write comparison to JSon
    * @param json
    */
-  virtual void writeJson(QJsonObject& json) = 0;
+  virtual void writeJson(QJsonObject& json) const = 0;
   /**
    * @brief Read comparison from JSon
    * @param json

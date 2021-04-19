@@ -90,7 +90,7 @@ void ConstrainedDoubleFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ConstrainedDoubleFilterParameter::writeJson(QJsonObject& json)
+void ConstrainedDoubleFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

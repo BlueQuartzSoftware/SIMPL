@@ -68,7 +68,7 @@ void FilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterParameter::writeJson(QJsonObject& json)
+void FilterParameter::writeJson(QJsonObject& json) const
 {
   Q_UNUSED(json)
 }

@@ -108,7 +108,7 @@ void LinkedDataContainerSelectionFilterParameter::readJson(const QJsonObject& js
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LinkedDataContainerSelectionFilterParameter::writeJson(QJsonObject& json)
+void LinkedDataContainerSelectionFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

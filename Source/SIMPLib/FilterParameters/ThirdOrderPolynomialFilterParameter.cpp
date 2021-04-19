@@ -97,7 +97,7 @@ void ThirdOrderPolynomialFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ThirdOrderPolynomialFilterParameter::writeJson(QJsonObject& json)
+void ThirdOrderPolynomialFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

@@ -103,7 +103,7 @@ void DataContainerGridSelectionFilterParameter::readJson(const QJsonObject& json
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerGridSelectionFilterParameter::writeJson(QJsonObject& json)
+void DataContainerGridSelectionFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

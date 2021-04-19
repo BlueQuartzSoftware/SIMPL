@@ -153,7 +153,7 @@ void AttributeMatrixSelectionFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrixSelectionFilterParameter::writeJson(QJsonObject& json)
+void AttributeMatrixSelectionFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

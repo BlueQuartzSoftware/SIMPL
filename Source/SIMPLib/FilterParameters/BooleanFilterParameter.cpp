@@ -91,7 +91,7 @@ void BooleanFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void BooleanFilterParameter::writeJson(QJsonObject& json)
+void BooleanFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

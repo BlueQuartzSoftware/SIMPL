@@ -85,7 +85,7 @@ public:
    * @brief Writes the ComparisonValue to JSon
    * @param json
    */
-  void writeJson(QJsonObject& json) override;
+  void writeJson(QJsonObject& json) const override;
 
   /**
    * @brief Reads the ComparisonValue from JSon

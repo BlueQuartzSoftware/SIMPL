@@ -117,7 +117,7 @@ void DynamicTableFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DynamicTableFilterParameter::writeJson(QJsonObject& json)
+void DynamicTableFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

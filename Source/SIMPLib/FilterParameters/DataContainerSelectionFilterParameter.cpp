@@ -107,7 +107,7 @@ void DataContainerSelectionFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerSelectionFilterParameter::writeJson(QJsonObject& json)
+void DataContainerSelectionFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

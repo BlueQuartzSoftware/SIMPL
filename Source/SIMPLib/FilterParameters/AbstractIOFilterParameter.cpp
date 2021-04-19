@@ -52,7 +52,7 @@ void AbstractIOFilterParameter::readJson(const QJsonObject& json)
 }
 
 // -----------------------------------------------------------------------------
-void AbstractIOFilterParameter::writeJson(QJsonObject& json)
+void AbstractIOFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

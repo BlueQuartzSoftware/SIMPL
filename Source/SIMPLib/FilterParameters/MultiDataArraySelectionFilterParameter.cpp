@@ -190,7 +190,7 @@ void MultiDataArraySelectionFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionFilterParameter::writeJson(QJsonObject& json)
+void MultiDataArraySelectionFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

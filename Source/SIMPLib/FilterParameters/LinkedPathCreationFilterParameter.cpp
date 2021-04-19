@@ -152,7 +152,7 @@ void LinkedPathCreationFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LinkedPathCreationFilterParameter::writeJson(QJsonObject& json)
+void LinkedPathCreationFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

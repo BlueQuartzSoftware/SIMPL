@@ -95,7 +95,7 @@ void AxisAngleFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AxisAngleFilterParameter::writeJson(QJsonObject& json)
+void AxisAngleFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

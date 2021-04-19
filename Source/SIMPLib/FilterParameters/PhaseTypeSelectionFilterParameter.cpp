@@ -106,7 +106,7 @@ void PhaseTypeSelectionFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PhaseTypeSelectionFilterParameter::writeJson(QJsonObject& json)
+void PhaseTypeSelectionFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

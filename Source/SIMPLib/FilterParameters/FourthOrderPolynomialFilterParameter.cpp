@@ -97,7 +97,7 @@ void FourthOrderPolynomialFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FourthOrderPolynomialFilterParameter::writeJson(QJsonObject& json)
+void FourthOrderPolynomialFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

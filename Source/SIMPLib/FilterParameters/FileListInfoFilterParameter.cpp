@@ -98,7 +98,7 @@ void FileListInfoFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FileListInfoFilterParameter::writeJson(QJsonObject& json)
+void FileListInfoFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

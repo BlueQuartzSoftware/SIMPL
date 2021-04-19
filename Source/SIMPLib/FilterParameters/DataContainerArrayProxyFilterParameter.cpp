@@ -103,7 +103,7 @@ void DataContainerArrayProxyFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArrayProxyFilterParameter::writeJson(QJsonObject& json)
+void DataContainerArrayProxyFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

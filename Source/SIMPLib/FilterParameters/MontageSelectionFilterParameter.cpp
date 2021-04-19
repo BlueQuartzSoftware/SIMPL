@@ -87,7 +87,7 @@ void MontageSelectionFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MontageSelectionFilterParameter::writeJson(QJsonObject& json)
+void MontageSelectionFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

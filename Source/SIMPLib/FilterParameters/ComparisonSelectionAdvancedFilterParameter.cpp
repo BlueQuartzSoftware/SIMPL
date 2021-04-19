@@ -107,7 +107,7 @@ void ComparisonSelectionAdvancedFilterParameter::readJson(const QJsonObject& jso
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionAdvancedFilterParameter::writeJson(QJsonObject& json)
+void ComparisonSelectionAdvancedFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

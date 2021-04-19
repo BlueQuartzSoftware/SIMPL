@@ -113,7 +113,7 @@ void ComparisonSelectionFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionFilterParameter::writeJson(QJsonObject& json)
+void ComparisonSelectionFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

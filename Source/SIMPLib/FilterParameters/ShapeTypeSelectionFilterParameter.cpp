@@ -103,7 +103,7 @@ void ShapeTypeSelectionFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ShapeTypeSelectionFilterParameter::writeJson(QJsonObject& json)
+void ShapeTypeSelectionFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

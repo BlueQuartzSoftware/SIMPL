@@ -91,7 +91,7 @@ void DynamicChoiceFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DynamicChoiceFilterParameter::writeJson(QJsonObject& json)
+void DynamicChoiceFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

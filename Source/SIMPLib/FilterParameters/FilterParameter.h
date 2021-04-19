@@ -187,7 +187,7 @@ public:
    * @brief writeJson
    * @return
    */
-  virtual void writeJson(QJsonObject& json);
+  virtual void writeJson(QJsonObject& json) const;
 
   /**
    * @brief Handle DataArrayPath changes if necessary

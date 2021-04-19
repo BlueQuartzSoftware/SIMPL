@@ -58,7 +58,7 @@ ComparisonSet::~ComparisonSet()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSet::writeJson(QJsonObject& json)
+void ComparisonSet::writeJson(QJsonObject& json) const
 {
   json["Union Operator"] = m_unionOperator;
   json["Invert Comparison"] = m_invertComparison;

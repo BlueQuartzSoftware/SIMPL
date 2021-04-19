@@ -92,7 +92,7 @@ void NumericTypeFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void NumericTypeFilterParameter::writeJson(QJsonObject& json)
+void NumericTypeFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

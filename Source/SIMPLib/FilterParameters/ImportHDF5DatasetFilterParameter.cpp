@@ -101,7 +101,7 @@ void ImportHDF5DatasetFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 // THIS IS A SPECIAL CASE AND IS NOT STANDARD.  DO NOT COPY THIS CODE.
 // -----------------------------------------------------------------------------
-void ImportHDF5DatasetFilterParameter::writeJson(QJsonObject& json)
+void ImportHDF5DatasetFilterParameter::writeJson(QJsonObject& json) const
 {
   json["HDF5FilePath"] = m_Filter->getHDF5FilePath();
 

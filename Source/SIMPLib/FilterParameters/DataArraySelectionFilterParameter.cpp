@@ -210,7 +210,7 @@ void DataArraySelectionFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArraySelectionFilterParameter::writeJson(QJsonObject& json)
+void DataArraySelectionFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

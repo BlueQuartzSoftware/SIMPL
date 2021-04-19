@@ -85,7 +85,7 @@ void GenerateColorTableFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 // THIS IS A SPECIAL CASE AND IS NOT STANDARD.  DO NOT COPY THIS CODE.
 // -----------------------------------------------------------------------------
-void GenerateColorTableFilterParameter::writeJson(QJsonObject& json)
+void GenerateColorTableFilterParameter::writeJson(QJsonObject& json) const
 {
   QString presetName = m_Filter->getSelectedPresetName();
   QJsonArray presetControlPoints = m_Filter->getSelectedPresetControlPoints();

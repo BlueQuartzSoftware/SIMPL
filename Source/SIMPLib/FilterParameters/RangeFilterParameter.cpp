@@ -97,7 +97,7 @@ void RangeFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RangeFilterParameter::writeJson(QJsonObject& json)
+void RangeFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {

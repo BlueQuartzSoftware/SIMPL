@@ -96,7 +96,7 @@ void ChoiceFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ChoiceFilterParameter::writeJson(QJsonObject& json)
+void ChoiceFilterParameter::writeJson(QJsonObject& json) const
 {
   if(m_GetterCallback)
   {
