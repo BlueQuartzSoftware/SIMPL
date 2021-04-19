@@ -75,33 +75,6 @@ QString OutputFileFilterParameter::getWidgetType() const
 }
 
 // -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputFileFilterParameter::readJson(const QJsonObject& json)
-{
-  QJsonValue jsonValue = json[getPropertyName()];
-  if(jsonValue.isUndefined())
-  {
-    jsonValue = json[getLegacyPropertyName()];
-  }
-  if(!jsonValue.isUndefined() && m_SetterCallback)
-  {
-    m_SetterCallback(jsonValue.toString(""));
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputFileFilterParameter::writeJson(QJsonObject& json)
-{
-  if(m_GetterCallback)
-  {
-    json[getPropertyName()] = m_GetterCallback();
-  }
-}
-
-// -----------------------------------------------------------------------------
 OutputFileFilterParameter::Pointer OutputFileFilterParameter::NullPointer()
 {
   return Pointer(static_cast<Self*>(nullptr));
@@ -148,28 +121,4 @@ void OutputFileFilterParameter::setFileType(const QString& value)
 QString OutputFileFilterParameter::getFileType() const
 {
   return m_FileType;
-}
-
-// -----------------------------------------------------------------------------
-void OutputFileFilterParameter::setSetterCallback(const OutputFileFilterParameter::SetterCallbackType& value)
-{
-  m_SetterCallback = value;
-}
-
-// -----------------------------------------------------------------------------
-OutputFileFilterParameter::SetterCallbackType OutputFileFilterParameter::getSetterCallback() const
-{
-  return m_SetterCallback;
-}
-
-// -----------------------------------------------------------------------------
-void OutputFileFilterParameter::setGetterCallback(const OutputFileFilterParameter::GetterCallbackType& value)
-{
-  m_GetterCallback = value;
-}
-
-// -----------------------------------------------------------------------------
-OutputFileFilterParameter::GetterCallbackType OutputFileFilterParameter::getGetterCallback() const
-{
-  return m_GetterCallback;
 }

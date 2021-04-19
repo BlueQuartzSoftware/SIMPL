@@ -49,16 +49,13 @@ InputPathFilterParameter::~InputPathFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 InputPathFilterParameter::Pointer InputPathFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                   const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const QString& fileExtension,
-                                                                   const QString& fileType, int groupIndex)
+                                                                   const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
   InputPathFilterParameter::Pointer ptr = InputPathFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setFileExtension(fileExtension);
-  ptr->setFileType(fileType);
   ptr->setGroupIndex(groupIndex);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
@@ -72,33 +69,6 @@ InputPathFilterParameter::Pointer InputPathFilterParameter::Create(const QString
 QString InputPathFilterParameter::getWidgetType() const
 {
   return QString("InputPathWidget");
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputPathFilterParameter::readJson(const QJsonObject& json)
-{
-  QJsonValue jsonValue = json[getPropertyName()];
-  if(jsonValue.isUndefined())
-  {
-    jsonValue = json[getLegacyPropertyName()];
-  }
-  if(!jsonValue.isUndefined() && m_SetterCallback)
-  {
-    m_SetterCallback(jsonValue.toString(""));
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputPathFilterParameter::writeJson(QJsonObject& json)
-{
-  if(m_GetterCallback)
-  {
-    json[getPropertyName()] = m_GetterCallback();
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -124,52 +94,4 @@ QString InputPathFilterParameter::getNameOfClass() const
 QString InputPathFilterParameter::ClassName()
 {
   return QString("InputPathFilterParameter");
-}
-
-// -----------------------------------------------------------------------------
-void InputPathFilterParameter::setFileExtension(const QString& value)
-{
-  m_FileExtension = value;
-}
-
-// -----------------------------------------------------------------------------
-QString InputPathFilterParameter::getFileExtension() const
-{
-  return m_FileExtension;
-}
-
-// -----------------------------------------------------------------------------
-void InputPathFilterParameter::setFileType(const QString& value)
-{
-  m_FileType = value;
-}
-
-// -----------------------------------------------------------------------------
-QString InputPathFilterParameter::getFileType() const
-{
-  return m_FileType;
-}
-
-// -----------------------------------------------------------------------------
-void InputPathFilterParameter::setSetterCallback(const InputPathFilterParameter::SetterCallbackType& value)
-{
-  m_SetterCallback = value;
-}
-
-// -----------------------------------------------------------------------------
-InputPathFilterParameter::SetterCallbackType InputPathFilterParameter::getSetterCallback() const
-{
-  return m_SetterCallback;
-}
-
-// -----------------------------------------------------------------------------
-void InputPathFilterParameter::setGetterCallback(const InputPathFilterParameter::GetterCallbackType& value)
-{
-  m_GetterCallback = value;
-}
-
-// -----------------------------------------------------------------------------
-InputPathFilterParameter::GetterCallbackType InputPathFilterParameter::getGetterCallback() const
-{
-  return m_GetterCallback;
 }

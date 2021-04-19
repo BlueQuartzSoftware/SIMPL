@@ -254,7 +254,7 @@ void GenericExample::setupFilterParameters()
     /*   For an input file use this code*/
     parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Category::Parameter, GenericExample, "*.txt", "", 1));
     /*   For an input path use this code*/
-    parameters.push_back(SIMPL_NEW_INPUT_PATH_FP("Input Path", InputPath, FilterParameter::Category::Parameter, GenericExample, "*.txt", "", 2));
+    parameters.push_back(SIMPL_NEW_INPUT_PATH_FP("Input Path", InputPath, FilterParameter::Category::Parameter, GenericExample, 2));
   }
 
   //------------------

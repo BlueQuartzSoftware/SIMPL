@@ -83,52 +83,6 @@ enum TabIndices
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parameter, QString& fType, QString& ext, int& err)
-{
-  QString currentPath = "";
-  fType.clear();
-  ext.clear();
-  if(nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
-  {
-    DataContainerReaderFilterParameter* rParam = dynamic_cast<DataContainerReaderFilterParameter*>(parameter);
-    currentPath = filter->property(rParam->getInputFileProperty().toLatin1().constData()).toString();
-    fType.append(rParam->getFileType());
-    ext.append(rParam->getFileExtension());
-  }
-  else if(nullptr != dynamic_cast<InputFileFilterParameter*>(parameter))
-  {
-    InputFileFilterParameter* rParam = dynamic_cast<InputFileFilterParameter*>(parameter);
-    currentPath = filter->property(rParam->getPropertyName().toLatin1().constData()).toString();
-    fType.append(rParam->getFileType());
-    ext.append(rParam->getFileExtension());
-  }
-  else if(nullptr != dynamic_cast<InputPathFilterParameter*>(parameter))
-  {
-    InputPathFilterParameter* rParam = dynamic_cast<InputPathFilterParameter*>(parameter);
-    currentPath = filter->property(rParam->getPropertyName().toLatin1().constData()).toString();
-    fType.append(rParam->getFileType());
-    ext.append(rParam->getFileExtension());
-  }
-  else
-  {
-    err = -1;
-  }
-
-  QFileInfo fi;
-  if(!currentPath.isEmpty())
-  {
-    SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-    currentPath = validator->convertToAbsolutePath(currentPath);
-
-    fi.setFile(currentPath);
-  }
-
-  return fi;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 FilterInputWidget::FilterInputWidget(AbstractFilter::Pointer filter, QWidget* parent)
 : QWidget(parent)
 , m_Ui(new Ui::FilterInputWidget)
@@ -292,13 +246,6 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
   {
     FilterParameter* parameter = (*iter).get();
 
-    //    // Check to make sure that this is in fact a file system filter parameter
-    //    if(nullptr != dynamic_cast<InputFileFilterParameter*>(parameter) || nullptr != dynamic_cast<InputPathFilterParameter*>(parameter) ||
-    //       nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
-    //    {
-    //      validateFileSystemFilterParameter(parameter, filter);
-    //    }
-
     QWidget* filterParameterWidget = fwm->createWidget(parameter, filter, this);
     m_PropertyToWidget.insert(parameter->getPropertyName(), filterParameterWidget); // Update our Map of Filter Parameter Properties to the Widget
     // Alert to DataArrayPath requirements
@@ -415,85 +362,6 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
   if(!addSpacer)
   {
     m_Ui->scrollAreaVertSpacer->removeItem(m_Ui->inputVertSpacer);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* parameter, AbstractFilter* filter)
-{
-  QString fType;
-  QString ext;
-  int errCode = 0;
-  QFileInfo fi = getFilterParameterPath(filter, parameter, fType, ext, errCode);
-
-  if(errCode < 0)
-  {
-    // Throw an error, because we have the wrong filter parameter type
-  }
-
-  QString currentPath = fi.absoluteFilePath();
-
-  if(!currentPath.isEmpty() && !fi.exists())
-  {
-
-    QString s = fType + QString(" Files (*") + ext + QString(");;All Files (*.*)");
-    QString defaultName = m_OpenDialogLastFilePath;
-
-    if(nullptr != dynamic_cast<InputFileFilterParameter*>(parameter))
-    {
-      InputFileFilterParameter* fsParam = dynamic_cast<InputFileFilterParameter*>(parameter);
-
-      QString title = QObject::tr("%2::%1 Select File...").arg(fsParam->getHumanLabel()).arg(filter->getHumanLabel());
-
-      QString file = QFileDialog::getOpenFileName(this, title, defaultName, s);
-      if(file.isEmpty())
-      {
-        file = currentPath;
-      }
-      file = QDir::toNativeSeparators(file);
-      // Store the last used directory into the private instance variable
-      QFileInfo fi(file);
-      m_OpenDialogLastFilePath = fi.filePath();
-      filter->setProperty(fsParam->getPropertyName().toLatin1().constData(), file);
-    }
-
-    else if(nullptr != dynamic_cast<InputPathFilterParameter*>(parameter))
-    {
-      InputPathFilterParameter* fsParam = dynamic_cast<InputPathFilterParameter*>(parameter);
-
-      QString title = QObject::tr("%2::%1 Select Folder...").arg(fsParam->getHumanLabel()).arg(filter->getHumanLabel());
-
-      QString file = QFileDialog::getExistingDirectory(this, title, defaultName, QFileDialog::ShowDirsOnly);
-      file = QDir::toNativeSeparators(file);
-      if(file.isEmpty())
-      {
-        file = currentPath;
-      }
-      // Store the last used directory into the private instance variable
-      QFileInfo fi(file);
-      m_OpenDialogLastFilePath = fi.filePath();
-      filter->setProperty(fsParam->getPropertyName().toLatin1().constData(), file);
-    }
-
-    else if(nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
-    {
-      DataContainerReaderFilterParameter* fsParam = dynamic_cast<DataContainerReaderFilterParameter*>(parameter);
-
-      QString title = QObject::tr("%2::%1 Select File...").arg(fsParam->getHumanLabel()).arg(filter->getHumanLabel());
-
-      QString file = QFileDialog::getOpenFileName(this, title, defaultName, s);
-      if(file.isEmpty())
-      {
-        file = currentPath;
-      }
-      file = QDir::toNativeSeparators(file);
-      // Store the last used directory into the private instance variable
-      QFileInfo fi(file);
-      m_OpenDialogLastFilePath = fi.filePath();
-      filter->setProperty(fsParam->getInputFileProperty().toLatin1().constData(), file);
-    }
   }
 }
 

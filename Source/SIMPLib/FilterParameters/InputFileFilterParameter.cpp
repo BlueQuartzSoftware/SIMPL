@@ -79,33 +79,6 @@ QString InputFileFilterParameter::getWidgetType() const
 }
 
 // -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputFileFilterParameter::readJson(const QJsonObject& json)
-{
-  QJsonValue jsonValue = json[getPropertyName()];
-  if(jsonValue.isUndefined())
-  {
-    jsonValue = json[getLegacyPropertyName()];
-  }
-  if(!jsonValue.isUndefined() && m_SetterCallback)
-  {
-    m_SetterCallback(jsonValue.toString(""));
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputFileFilterParameter::writeJson(QJsonObject& json)
-{
-  if(m_GetterCallback)
-  {
-    json[getPropertyName()] = m_GetterCallback();
-  }
-}
-
-// -----------------------------------------------------------------------------
 InputFileFilterParameter::Pointer InputFileFilterParameter::NullPointer()
 {
   return Pointer(static_cast<Self*>(nullptr));
@@ -152,28 +125,4 @@ void InputFileFilterParameter::setFileType(const QString& value)
 QString InputFileFilterParameter::getFileType() const
 {
   return m_FileType;
-}
-
-// -----------------------------------------------------------------------------
-void InputFileFilterParameter::setSetterCallback(const InputFileFilterParameter::SetterCallbackType& value)
-{
-  m_SetterCallback = value;
-}
-
-// -----------------------------------------------------------------------------
-InputFileFilterParameter::SetterCallbackType InputFileFilterParameter::getSetterCallback() const
-{
-  return m_SetterCallback;
-}
-
-// -----------------------------------------------------------------------------
-void InputFileFilterParameter::setGetterCallback(const InputFileFilterParameter::GetterCallbackType& value)
-{
-  m_GetterCallback = value;
-}
-
-// -----------------------------------------------------------------------------
-InputFileFilterParameter::GetterCallbackType InputFileFilterParameter::getGetterCallback() const
-{
-  return m_GetterCallback;
 }

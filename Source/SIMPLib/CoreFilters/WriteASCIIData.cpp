@@ -159,7 +159,7 @@ void WriteASCIIData::setupFilterParameters()
   }
 
   // Multiple File Output
-  parameters.push_back(SIMPL_NEW_OUTPUT_PATH_FP("Output Path", OutputPath, FilterParameter::Category::Parameter, WriteASCIIData, "*", "*", 0));
+  parameters.push_back(SIMPL_NEW_OUTPUT_PATH_FP("Output Path", OutputPath, FilterParameter::Category::Parameter, WriteASCIIData, 0));
   parameters.push_back(SIMPL_NEW_STRING_FP("File Extension", FileExtension, FilterParameter::Category::Parameter, WriteASCIIData, 0));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Maximum Tuples Per Line", MaxValPerLine, FilterParameter::Category::Parameter, WriteASCIIData, 0));
 

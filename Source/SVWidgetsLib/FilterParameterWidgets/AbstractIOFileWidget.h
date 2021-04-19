@@ -37,8 +37,7 @@
 
 #include <QtWidgets/QWidget>
 
-
-#include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
+#include "SIMPLib/FilterParameters/AbstractIOFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
@@ -110,6 +109,7 @@ private:
   QAction* m_ShowFileAction = nullptr;
   QString m_CurrentText = "";
   QPixmap m_Icon = QPixmap(QLatin1String(":/SIMPL/icons/images/caret-bottom.png"));
+  AbstractIOFilterParameter* m_FilterParameter = nullptr;
 
 public:
   AbstractIOFileWidget(const AbstractIOFileWidget&) = delete;            // Copy Constructor Not Implemented

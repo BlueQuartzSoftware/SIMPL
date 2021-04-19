@@ -39,7 +39,7 @@
 
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/FilterParameters/AbstractIOFilterParameter.h"
 
 /**
  * @brief SIMPL_NEW_INPUT_PATH_FP This macro is a short-form way of instantiating an instance of
@@ -60,7 +60,7 @@
  * @brief The InputPathFilterParameter class is used by filters to instantiate an InputPathWidget.  By instantiating an instance of
  * this class in a filter's setupFilterParameters() method, an InputPathWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
  */
-class SIMPLib_EXPORT InputPathFilterParameter : public FilterParameter
+class SIMPLib_EXPORT InputPathFilterParameter : public AbstractIOFilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
@@ -76,6 +76,7 @@ public:
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
   using ConstWeakPointer = std::weak_ptr<const Self>;
+
   static Pointer NullPointer();
 
   static Pointer New();
@@ -84,13 +85,11 @@ public:
    * @brief Returns the name of the class for InputPathFilterParameter
    */
   QString getNameOfClass() const override;
+
   /**
    * @brief Returns the name of the class for InputPathFilterParameter
    */
   static QString ClassName();
-
-  using SetterCallbackType = std::function<void(QString)>;
-  using GetterCallbackType = std::function<QString(void)>;
 
   /**
    * @brief New This function instantiates an instance of the InputPathFilterParameter. Although this function is available to be used,
@@ -102,38 +101,18 @@ public:
    * @param category The category for the filter parameter in the DREAM.3D user interface.  There
    * are three categories: Parameter, Required Arrays, and Created Arrays.
    * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-  * that this FilterParameter subclass represents.
+   * that this FilterParameter subclass represents.
    * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-  * that this FilterParameter subclass represents.
-  * @param fileExtension The possible file extensions that this InputPathWidget accepts.
-  * @param fileType The possible file types that this InputPathWidget accepts.
+   * that this FilterParameter subclass represents.
+   * @param fileExtension The possible file extensions that this InputPathWidget accepts.
+   * @param fileType The possible file types that this InputPathWidget accepts.
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, const QString& fileExtension = QString(""), const QString& fileType = QString(""), int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, int groupIndex = -1);
 
   ~InputPathFilterParameter() override;
-
-  /**
-   * @brief Setter property for FileExtension
-   */
-  void setFileExtension(const QString& value);
-  /**
-   * @brief Getter property for FileExtension
-   * @return Value of FileExtension
-   */
-  QString getFileExtension() const;
-
-  /**
-   * @brief Setter property for FileType
-   */
-  void setFileType(const QString& value);
-  /**
-   * @brief Getter property for FileType
-   * @return Value of FileType
-   */
-  QString getFileType() const;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -141,48 +120,6 @@ public:
    * @return
    */
   QString getWidgetType() const override;
-
-  /**
-   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
-   * @param json The QJsonObject that the filter parameter reads from.
-   */
-  void readJson(const QJsonObject& json) override;
-
-  /**
-   * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
-   * @param json The QJsonObject that the filter parameter writes to.
-   */
-  void writeJson(QJsonObject& json) override;
-
-  /**
-   * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-   * that this FilterParameter subclass represents.
-   * from the filter parameter.
-   */
-  /**
-   * @brief Setter property for SetterCallback
-   */
-  void setSetterCallback(const InputPathFilterParameter::SetterCallbackType& value);
-  /**
-   * @brief Getter property for SetterCallback
-   * @return Value of SetterCallback
-   */
-  InputPathFilterParameter::SetterCallbackType getSetterCallback() const;
-
-  /**
-   * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-   * that this FilterParameter subclass represents.
-   * @return The GetterCallback
-   */
-  /**
-   * @brief Setter property for GetterCallback
-   */
-  void setGetterCallback(const InputPathFilterParameter::GetterCallbackType& value);
-  /**
-   * @brief Getter property for GetterCallback
-   * @return Value of GetterCallback
-   */
-  InputPathFilterParameter::GetterCallbackType getGetterCallback() const;
 
 protected:
   /**
@@ -196,10 +133,4 @@ public:
   InputPathFilterParameter(InputPathFilterParameter&&) = delete;                 // Move Constructor Not Implemented
   InputPathFilterParameter& operator=(const InputPathFilterParameter&) = delete; // Copy Assignment Not Implemented
   InputPathFilterParameter& operator=(InputPathFilterParameter&&) = delete;      // Move Assignment Not Implemented
-
-private:
-  QString m_FileExtension = {};
-  QString m_FileType = {};
-  InputPathFilterParameter::SetterCallbackType m_SetterCallback = {};
-  InputPathFilterParameter::GetterCallbackType m_GetterCallback = {};
 };

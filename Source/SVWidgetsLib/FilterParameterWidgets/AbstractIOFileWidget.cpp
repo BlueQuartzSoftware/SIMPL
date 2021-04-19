@@ -43,7 +43,7 @@
 
 #include <QtWidgets/QMenu>
 
-#include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
+#include "SIMPLib/Utilities/FilterCompatibility.hpp"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -59,24 +59,24 @@
 AbstractIOFileWidget::AbstractIOFileWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
+  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, AbstractIOFileWidget, AbstractIOFilterParameter);
+
   setupUi(this);
   setupGui();
-  if(filter != nullptr)
+
+  QString currentPath = m_FilterParameter->getGetterCallback()();
+  if(!currentPath.isEmpty())
   {
-    QString currentPath = filter->property(PROPERTY_NAME_AS_CHAR).toString();
-    if(!currentPath.isEmpty())
-    {
-      currentPath = QDir::toNativeSeparators(currentPath);
-      // Store the last used directory into the private instance variable
-      QFileInfo fi(currentPath);
-      m_LineEdit->setText(fi.filePath());
-      setValidFilePath(m_LineEdit->text());
-    }
-    else
-    {
-      m_LineEdit->setText(QDir::homePath());
-      setValidFilePath(m_LineEdit->text());
-    }
+    currentPath = QDir::toNativeSeparators(currentPath);
+    // Store the last used directory into the private instance variable
+    QFileInfo fi(currentPath);
+    m_LineEdit->setText(fi.filePath());
+    setValidFilePath(m_LineEdit->text());
+  }
+  else
+  {
+    m_LineEdit->setText(QDir::homePath());
+    setValidFilePath(m_LineEdit->text());
   }
 }
 
@@ -141,7 +141,7 @@ void AbstractIOFileWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
+    QString currentPath = m_FilterParameter->getGetterCallback()();
     m_LineEdit->setText(currentPath);
     setValidFilePath(m_LineEdit->text());
     on_m_LineEdit_fileDropped(currentPath);
@@ -308,8 +308,12 @@ void AbstractIOFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   text = validator->convertToAbsolutePath(text);
 
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, text);
-  if(!ok)
+  auto setter = m_FilterParameter->getSetterCallback();
+  if(setter)
+  {
+    setter(text);
+  }
+  else
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

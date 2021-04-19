@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ * Copyright (c) 2021 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -27,85 +27,59 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * The code contained herein was partially funded by the followig contracts:
- *    United States Air Force Prime Contract FA8650-07-D-5800
- *    United States Air Force Prime Contract FA8650-10-D-5210
- *    United States Prime Contract Navy N00173-07-C-2068
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "InputPathWidget.h"
+#include "SIMPLib/FilterParameters/AbstractIOFilterParameter.h"
 
-#include <QtWidgets/QFileDialog>
-
-#include "SIMPLib/Utilities/FilterCompatibility.hpp"
-
-#include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
-
-#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-
-#include "FilterParameterWidgetsDialogs.h"
+#include <QtCore/QJsonObject>
 
 // -----------------------------------------------------------------------------
-//
+AbstractIOFilterParameter::AbstractIOFilterParameter() = default;
+
 // -----------------------------------------------------------------------------
-InputPathWidget::InputPathWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
-: AbstractIOFileWidget(parameter, filter, parent)
+void AbstractIOFilterParameter::readJson(const QJsonObject& json)
 {
-  m_FilterParameter = SIMPL_FILTER_PARAMETER_COMPATIBILITY_CHECK(filter, parameter, InputPathWidget, InputPathFilterParameter);
-
-  setupGui();
-
-  if(filter != nullptr)
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(jsonValue.isUndefined())
   {
-    QString currentPath = m_FilterParameter->getGetterCallback()();
-    if(!currentPath.isEmpty())
-    {
-      currentPath = QDir::toNativeSeparators(currentPath);
-      setValue(currentPath);
-    }
-    else
-    {
-      setValue(QDir::homePath());
-    }
+    jsonValue = json[getLegacyPropertyName()];
+  }
+  if(!jsonValue.isUndefined() && m_SetterCallback)
+  {
+    m_SetterCallback(jsonValue.toString(""));
   }
 }
 
 // -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-InputPathWidget::~InputPathWidget() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputPathWidget::setupGui()
+void AbstractIOFilterParameter::writeJson(QJsonObject& json)
 {
-  connect(selectBtn, SIGNAL(clicked()), this, SLOT(selectInputPath()));
-
-  m_LineEdit->setPlaceholderText("Enter Input Folder Path");
+  if(m_GetterCallback)
+  {
+    json[getPropertyName()] = m_GetterCallback();
+  }
 }
 
 // -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputPathWidget::selectInputPath()
+void AbstractIOFilterParameter::setSetterCallback(const SetterCallbackType& setter)
 {
-  QString currentPath = m_FilterParameter->getGetterCallback()();
-  if(currentPath.isEmpty())
-  {
-    currentPath = getValue();
-  }
-  QString file = QFileDialog::getExistingDirectory(this, tr("Select Input Folder"), currentPath, QFileDialog::ShowDirsOnly);
+  m_SetterCallback = setter;
+}
 
-  if(file.isEmpty())
-  {
-    return;
-  }
-  file = QDir::toNativeSeparators(file);
-  // Store the last used directory into the private instance variable
-  QFileInfo fi(file);
-  setValue(fi.filePath());
+// -----------------------------------------------------------------------------
+void AbstractIOFilterParameter::setGetterCallback(const GetterCallbackType& getter)
+{
+  m_GetterCallback = getter;
+}
 
-  m_LineEdit->setText(file);
-  on_m_LineEdit_editingFinished();
+// -----------------------------------------------------------------------------
+AbstractIOFilterParameter::SetterCallbackType AbstractIOFilterParameter::getSetterCallback() const
+{
+  return m_SetterCallback;
+}
+
+// -----------------------------------------------------------------------------
+AbstractIOFilterParameter::GetterCallbackType AbstractIOFilterParameter::getGetterCallback() const
+{
+  return m_GetterCallback;
 }

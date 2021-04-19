@@ -91,17 +91,12 @@ void OutputPathWidget::selectOutputPath()
   {
     currentPath = getValue();
   }
-  QString Ftype = m_FilterParameter->getFileType();
-  QString ext = m_FilterParameter->getFileExtension();
-  QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
-  QString defaultName = currentPath;
-  QString file = QFileDialog::getExistingDirectory(this, tr("Select Output Folder"), defaultName, QFileDialog::ShowDirsOnly);
+  QString file = QFileDialog::getExistingDirectory(this, tr("Select Output Folder"), currentPath, QFileDialog::ShowDirsOnly);
 
   if(file.isEmpty())
   {
     return;
   }
-  //  bool ok = false;
   file = QDir::toNativeSeparators(file);
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);

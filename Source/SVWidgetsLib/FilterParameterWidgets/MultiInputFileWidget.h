@@ -38,7 +38,7 @@
 #include <QtCore/QString>
 #include <QtWidgets/QWidget>
 
-#include "SVWidgetsLib/FilterParameterWidgets/AbstractIOFileWidget.h"
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 namespace Ui

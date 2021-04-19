@@ -39,7 +39,7 @@
 
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/FilterParameters/AbstractIOFilterParameter.h"
 
 /**
  * @brief SIMPL_NEW_OUTPUT_FILE_FP This macro is a short-form way of instantiating an instance of
@@ -60,7 +60,7 @@
  * @brief The OutputFileFilterParameter class is used by filters to instantiate an OutputFileWidget.  By instantiating an instance of
  * this class in a filter's setupFilterParameters() method, a OutputFileWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
  */
-class SIMPLib_EXPORT OutputFileFilterParameter : public FilterParameter
+class SIMPLib_EXPORT OutputFileFilterParameter : public AbstractIOFilterParameter
 {
   // Start Python bindings declarations
   // clang-format off
@@ -76,6 +76,7 @@ public:
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
   using ConstWeakPointer = std::weak_ptr<const Self>;
+
   static Pointer NullPointer();
 
   static Pointer New();
@@ -84,32 +85,30 @@ public:
    * @brief Returns the name of the class for OutputFileFilterParameter
    */
   QString getNameOfClass() const override;
+
   /**
    * @brief Returns the name of the class for OutputFileFilterParameter
    */
   static QString ClassName();
 
-  using SetterCallbackType = std::function<void(QString)>;
-  using GetterCallbackType = std::function<QString(void)>;
-
   /**
- * @brief New This function instantiates an instance of the OutputFileFilterParameter. Although this function is available to be used,
- * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_OUTPUT_FILE_FP(...) macro at the top of this file.
+   * @brief New This function instantiates an instance of the OutputFileFilterParameter. Although this function is available to be used,
+   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_OUTPUT_FILE_FP(...) macro at the top of this file.
 
- * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
- * @param propertyName The internal property name for this filter parameter.
- * @param defaultValue The value that this filter parameter will be initialized to by default.
- * @param category The category for the filter parameter in the DREAM.3D user interface.  There
- * are three categories: Parameter, Required Arrays, and Created Arrays.
- * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-* that this FilterParameter subclass represents.
- * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-* that this FilterParameter subclass represents.
-* @param fileExtension The possible file extensions that this OutputFileWidget accepts.
-* @param fileType The possible file types that this OutputFileWidget accepts.
- * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
- * @return
- */
+   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+   * @param propertyName The internal property name for this filter parameter.
+   * @param defaultValue The value that this filter parameter will be initialized to by default.
+   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+   * are three categories: Parameter, Required Arrays, and Created Arrays.
+   * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+   * that this FilterParameter subclass represents.
+   * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+   * that this FilterParameter subclass represents.
+   * @param fileExtension The possible file extensions that this OutputFileWidget accepts.
+   * @param fileType The possible file types that this OutputFileWidget accepts.
+   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+   * @return
+   */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback,
                         const GetterCallbackType& getterCallback, const QString& fileExtension = QString(""), const QString& fileType = QString(""), int groupIndex = -1);
 
@@ -119,6 +118,7 @@ public:
    * @brief Setter property for FileExtension
    */
   void setFileExtension(const QString& value);
+
   /**
    * @brief Getter property for FileExtension
    * @return Value of FileExtension
@@ -129,6 +129,7 @@ public:
    * @brief Setter property for FileType
    */
   void setFileType(const QString& value);
+
   /**
    * @brief Getter property for FileType
    * @return Value of FileType
@@ -141,48 +142,6 @@ public:
    * @return
    */
   QString getWidgetType() const override;
-
-  /**
-   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
-   * @param json The QJsonObject that the filter parameter reads from.
-   */
-  void readJson(const QJsonObject& json) override;
-
-  /**
-   * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
-   * @param json The QJsonObject that the filter parameter writes to.
-   */
-  void writeJson(QJsonObject& json) override;
-
-  /**
-   * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-   * that this FilterParameter subclass represents.
-   * from the filter parameter.
-   */
-  /**
-   * @brief Setter property for SetterCallback
-   */
-  void setSetterCallback(const OutputFileFilterParameter::SetterCallbackType& value);
-  /**
-   * @brief Getter property for SetterCallback
-   * @return Value of SetterCallback
-   */
-  OutputFileFilterParameter::SetterCallbackType getSetterCallback() const;
-
-  /**
-   * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-   * that this FilterParameter subclass represents.
-   * @return The GetterCallback
-   */
-  /**
-   * @brief Setter property for GetterCallback
-   */
-  void setGetterCallback(const OutputFileFilterParameter::GetterCallbackType& value);
-  /**
-   * @brief Getter property for GetterCallback
-   * @return Value of GetterCallback
-   */
-  OutputFileFilterParameter::GetterCallbackType getGetterCallback() const;
 
 protected:
   /**
@@ -200,6 +159,4 @@ public:
 private:
   QString m_FileExtension = {};
   QString m_FileType = {};
-  OutputFileFilterParameter::SetterCallbackType m_SetterCallback = {};
-  OutputFileFilterParameter::GetterCallbackType m_GetterCallback = {};
 };

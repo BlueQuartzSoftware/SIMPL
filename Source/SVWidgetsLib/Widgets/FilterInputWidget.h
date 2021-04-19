@@ -122,12 +122,6 @@ private:
   void layoutWidgets(AbstractFilter* filter);
 
   /**
-   * @brief validateFileSystemFilterParameter
-   * @param option
-   */
-  void validateFileSystemFilterParameter(FilterParameter* parameter, AbstractFilter* filter);
-
-  /**
    * @brief linkConditionalWidgets
    * @param filterParameters
    */

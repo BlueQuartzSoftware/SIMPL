@@ -87,6 +87,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiInputFileFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Float4thOrderPolynomial.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Float2ndOrderPolynomial.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractIOFilterParameter.h
 )
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
@@ -162,6 +163,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiInputFileFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Float4thOrderPolynomial.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Float2ndOrderPolynomial.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractIOFilterParameter.cpp
 )
 
 cmp_IDE_SOURCE_PROPERTIES( "${SUBDIR_NAME}" "${SIMPLib_${SUBDIR_NAME}_HDRS};${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}" "${SIMPLib_${SUBDIR_NAME}_SRCS}" "${PROJECT_INSTALL_HEADERS}")

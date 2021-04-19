@@ -49,16 +49,13 @@ OutputPathFilterParameter::~OutputPathFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 OutputPathFilterParameter::Pointer OutputPathFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                     const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const QString& fileExtension,
-                                                                     const QString& fileType, int groupIndex)
+                                                                     const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
   OutputPathFilterParameter::Pointer ptr = OutputPathFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setFileExtension(fileExtension);
-  ptr->setFileType(fileType);
   ptr->setGroupIndex(groupIndex);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
@@ -72,33 +69,6 @@ OutputPathFilterParameter::Pointer OutputPathFilterParameter::Create(const QStri
 QString OutputPathFilterParameter::getWidgetType() const
 {
   return QString("OutputPathWidget");
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputPathFilterParameter::readJson(const QJsonObject& json)
-{
-  QJsonValue jsonValue = json[getPropertyName()];
-  if(jsonValue.isUndefined())
-  {
-    jsonValue = json[getLegacyPropertyName()];
-  }
-  if(!jsonValue.isUndefined() && m_SetterCallback)
-  {
-    m_SetterCallback(jsonValue.toString(""));
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputPathFilterParameter::writeJson(QJsonObject& json)
-{
-  if(m_GetterCallback)
-  {
-    json[getPropertyName()] = m_GetterCallback();
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -124,52 +94,4 @@ QString OutputPathFilterParameter::getNameOfClass() const
 QString OutputPathFilterParameter::ClassName()
 {
   return QString("OutputPathFilterParameter");
-}
-
-// -----------------------------------------------------------------------------
-void OutputPathFilterParameter::setFileExtension(const QString& value)
-{
-  m_FileExtension = value;
-}
-
-// -----------------------------------------------------------------------------
-QString OutputPathFilterParameter::getFileExtension() const
-{
-  return m_FileExtension;
-}
-
-// -----------------------------------------------------------------------------
-void OutputPathFilterParameter::setFileType(const QString& value)
-{
-  m_FileType = value;
-}
-
-// -----------------------------------------------------------------------------
-QString OutputPathFilterParameter::getFileType() const
-{
-  return m_FileType;
-}
-
-// -----------------------------------------------------------------------------
-void OutputPathFilterParameter::setSetterCallback(const OutputPathFilterParameter::SetterCallbackType& value)
-{
-  m_SetterCallback = value;
-}
-
-// -----------------------------------------------------------------------------
-OutputPathFilterParameter::SetterCallbackType OutputPathFilterParameter::getSetterCallback() const
-{
-  return m_SetterCallback;
-}
-
-// -----------------------------------------------------------------------------
-void OutputPathFilterParameter::setGetterCallback(const OutputPathFilterParameter::GetterCallbackType& value)
-{
-  m_GetterCallback = value;
-}
-
-// -----------------------------------------------------------------------------
-OutputPathFilterParameter::GetterCallbackType OutputPathFilterParameter::getGetterCallback() const
-{
-  return m_GetterCallback;
 }
