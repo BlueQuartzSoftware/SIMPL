@@ -556,6 +556,7 @@ if(SIMPL_WRAP_PYTHON)
     SOURCE_DIR "${SIMPLProj_SOURCE_DIR}/Source"
     HEADER_PATH "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/pySIMPLHeader.cpp"
     BODY_PATH "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/pySIMPLBody.cpp"
+    BODY_TOP_PATH "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/pySIMPLBodyTop.cpp"
     PYTHON_OUTPUT_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}$<${_isMultiConfig}:/$<CONFIG>>"
     LINK_LIBRARIES SIMPLib
     INCLUDE_DIRS ${SIMPLProj_SOURCE_DIR}/Wrapping/Python
