@@ -35,7 +35,7 @@ public:
    * function signatures and declares a local variable
    * 'value' of type QString
    */
-  PYBIND11_TYPE_CASTER(QString, _("QString"));
+  PYBIND11_TYPE_CASTER(QString, _("str"));
 
   /**
    *  @brief Conversion part 1 (Python->C++): convert a PyObject into a QString
