@@ -138,9 +138,14 @@ int main(int argc, char* argv[])
   {
     PythonLoader::addToPythonPath(PythonLoader::defaultSIMPLPythonLibPath());
     std::cout << "Loading Python filters:\n";
+    auto paths = PythonLoader::defaultPythonFilterPaths();
+    for(const auto& path : paths)
+    {
+      std::cout << "Searching \"" << path << "\"\n";
+    }
     auto pythonErrorCallback = [](const std::string& message, const std::string& filePath) { std::cout << message << "\nSkipping file: \"" << filePath << "\"\n"; };
     auto pythonLoadedCallback = [](const std::string& className, const std::string& filePath) { std::cout << "Loaded \"" << className << "\" from \"" << filePath << "\"\n"; };
-    size_t numLoaded = PythonLoader::loadPythonFilters(*fm, PythonLoader::defaultPythonFilterPaths(), pythonErrorCallback, pythonLoadedCallback);
+    size_t numLoaded = PythonLoader::loadPythonFilters(*fm, paths, pythonErrorCallback, pythonLoadedCallback);
     std::cout << "Loaded " << numLoaded << " filters\n";
   }
 #endif
