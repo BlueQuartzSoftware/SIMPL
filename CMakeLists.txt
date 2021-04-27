@@ -435,7 +435,7 @@ if(NOT DEFINED SIMPL_USE_GHC_FILESYSTEM)
 endif()
 
 if(SIMPL_USE_GHC_FILESYSTEM)
-  find_package(ghcFilesystem REQUIRED)
+  find_package(ghcFilesystem REQUIRED NAMES ghc_filesystem ghcFilesystem)
 endif()
 
 # -----------------------------------------------------------------------
