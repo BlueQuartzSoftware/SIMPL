@@ -91,7 +91,22 @@ class PyClass():
   def __repr__(self):
     return self.name
 
-  def generate_bindings(self) -> str:
+  def generate_forward_declaration(self) -> str:
+    template_param = self.name
+    instance = f'instance{self.name}'
+    if self.superclass:
+      template_param += f', {self.superclass}'
+    if self.uses_shared_pointer:
+      template_param += f', std::shared_ptr<{self.name}>'
+    code = f'py::class_<{template_param}> {instance}(mod, \"{self.name}\");\n'
+
+    for enum in self.enums:
+      enum_instance = f'instance{self.name}{enum.name}'
+      code += f'py::enum_<{self.name}::{enum.name}> {enum_instance}({instance}, \"{enum.name}\");\n'
+
+    return code
+
+  def generate_bindings(self, foward_declared: bool=False) -> str:
     template_param = self.name
     if self.superclass:
       template_param += f', {self.superclass}'
@@ -100,17 +115,24 @@ class PyClass():
 
     needs_var: bool = self.constructors or self.has_static_new or self.static_creation_methods or self.properties or self.methods or self.fields
 
-    if self.enums or self.is_custom:
-      instance = f'instance{self.name}'
-      code = f'py::class_<{template_param}> {instance}(mod, \"{self.name}\");\n'
+    instance = f'instance{self.name}'
+    code = ''
 
+    if not foward_declared:
+      if self.enums or self.is_custom:
+        
+        code += f'py::class_<{template_param}> {instance}(mod, \"{self.name}\");\n'
+
+        if needs_var:
+          code += f'{instance}\n'
+      else:
+        code = f'py::class_<{template_param}>(mod, \"{self.name}\")'
+        if not needs_var:
+          code += ';'
+        code += '\n'
+    else:
       if needs_var:
         code += f'{instance}\n'
-    else:
-      code = f'py::class_<{template_param}>(mod, \"{self.name}\")'
-      if not needs_var:
-        code += ';'
-      code += '\n'
 
     for constructor in self.constructors:
       args = ', '.join(constructor.args)
@@ -167,7 +189,11 @@ class PyClass():
       code += '\n'
 
     for enum in self.enums:
-      code += f'py::enum_<{self.name}::{enum.name}>(instance{self.name}, \"{enum.name}\")\n'
+      enum_instance = f'instance{self.name}{enum.name}'
+      if not foward_declared:
+        code += f'py::enum_<{self.name}::{enum.name}>({instance}, \"{enum.name}\")\n'
+      else:
+        code += f'{enum_instance}\n'
       for value in enum.values:
         code += f'  .value(\"{value}\", {self.name}::{enum.name}::{value})\n'
       code += ';\n\n'
@@ -554,7 +580,11 @@ def generate_simpl_bindings(output_dir: str, header_path: str, body_path: str, f
       test_file.write(f'def simplUnitTest():\n')
 
     for py_class in module_classes:
-      code = py_class.generate_bindings()
+      code = py_class.generate_forward_declaration()
+      module_file.write(code)
+
+    for py_class in module_classes:
+      code = py_class.generate_bindings(foward_declared=True)
       module_file.write(code)
       if py_class.is_filter:
         python_code = py_class.generate_python_interface('simpl')
@@ -649,7 +679,11 @@ def generate_plugin_bindings(output_dir: str, module_name: str, files: List[str]
       test_file.write(f'def {module_name}UnitTest():\n')
 
     for py_class in module_classes:
-      code = py_class.generate_bindings()
+      code = py_class.generate_forward_declaration()
+      module_file.write(code)
+
+    for py_class in module_classes:
+      code = py_class.generate_bindings(foward_declared=True)
       module_file.write(code)
       if py_class.is_filter:
         python_code = py_class.generate_python_interface(module_name)
