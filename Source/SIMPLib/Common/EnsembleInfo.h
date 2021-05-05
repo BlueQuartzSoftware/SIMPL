@@ -55,9 +55,9 @@ class SIMPLib_EXPORT EnsembleInfo : public QObject
   // Start Python bindings declarations
   PYB11_BEGIN_BINDINGS(EnsembleInfo)
   PYB11_CREATION()
-  PYB11_METHOD(void addValues ARGS const,CrystalStructure const,PhaseType::Type const,QString)
-  PYB11_METHOD(void getValues ARGS size_t CrystalStructure& PhaseType::Type& QString&)
-  PYB11_METHOD(void remove ARGS size_t)
+  PYB11_METHOD(void addValues)
+  PYB11_METHOD(void getValues)
+  PYB11_METHOD(void remove)
   PYB11_METHOD(void clear)
   PYB11_END_BINDINGS()
   // End Python bindings declarations

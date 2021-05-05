@@ -89,7 +89,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
   PYB11_METHOD(bool renameDataContainer OVERLOAD const.DataArrayPath.&,OldPath const.DataArrayPath.&,NewPath )
   PYB11_METHOD(void clearDataContainers)
   PYB11_METHOD(int getNumDataContainers)
-  PYB11_METHOD(void duplicateDataContainer ARGS OldName, NewName)
+  PYB11_METHOD(void duplicateDataContainer ARGS OldName NewName)
   PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix ARGS DataArrayPath)
   PYB11_METHOD(bool doesAttributeMatrixExist ARGS DataArrayPath)
   PYB11_METHOD(bool doesAttributeArrayExist ARGS DataArrayPath)
