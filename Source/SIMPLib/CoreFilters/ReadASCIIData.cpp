@@ -299,6 +299,12 @@ void ReadASCIIData::dataCheck()
           setErrorCondition(DUPLICATE_NAMES, ss);
           return;
         }
+        if(headerName.contains("&") || headerName.contains(":") || headerName.contains("/") || headerName.contains("\\") )
+        {
+          QString ss = "The header name \"" + headerName + "\" contains a character that will cause problems. Do Not use '&',':', '/' or '\\' in the header names.";
+          setErrorCondition(ILLEGAL_NAMES, ss);
+          return;
+        }
       }
     }
   }
