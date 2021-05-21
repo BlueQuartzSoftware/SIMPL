@@ -48,7 +48,6 @@
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/PreflightUpdatedValueFilterParameter.h"
-#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/HexahedralGeom.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
@@ -266,17 +265,17 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 1);
 
-    m_XBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getXBoundsArrayPath(), cDims);
+    m_XBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType>(this, getXBoundsArrayPath(), cDims);
     if(m_XBoundsPtr.lock())
     {
       m_XBounds = m_XBoundsPtr.lock()->getPointer(0);
     }
-    m_YBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getYBoundsArrayPath(), cDims);
+    m_YBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType>(this, getYBoundsArrayPath(), cDims);
     if(m_YBoundsPtr.lock())
     {
       m_YBounds = m_YBoundsPtr.lock()->getPointer(0);
     }
-    m_ZBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getZBoundsArrayPath(), cDims);
+    m_ZBoundsPtr = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType>(this, getZBoundsArrayPath(), cDims);
     if(m_ZBoundsPtr.lock())
     {
       m_ZBounds = m_ZBoundsPtr.lock()->getPointer(0);
@@ -314,8 +313,6 @@ void CreateGeometry::dataCheck()
       DataContainer::Pointer dc = dca->getDataContainer(getXBoundsArrayPath());
       AttributeMatrix::Pointer am = dc->getAttributeMatrix(getXBoundsArrayPath());
 
-      auto nameList = am->getAttributeArrayNames();
-
       FloatArrayType::Pointer farray = std::dynamic_pointer_cast<FloatArrayType>(am->removeAttributeArray(getXBoundsArrayPath().getDataArrayName()));
       rectgrid->setXBounds(farray);
 
@@ -338,7 +335,7 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 3);
 
-    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getSharedVertexListArrayPath0(), cDims);
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType>(this, getSharedVertexListArrayPath0(), cDims);
 
     if(getErrorCode() < 0)
     {
@@ -352,8 +349,14 @@ void CreateGeometry::dataCheck()
     }
     else
     {
-      vertex = VertexGeom::CreateGeometry(verts, SIMPL::Geometry::VertexGeometry);
-      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath0())->removeAttributeArray(getSharedVertexListArrayPath0().getDataArrayName());
+      AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath0());
+      if(nullptr != verts.get() )
+      {
+        // Remove from the Attribute Matrix FIRST
+        IDataArray::Pointer vertsToRemove = am->removeAttributeArray(getSharedVertexListArrayPath0().getDataArrayName());
+        // Assign the Verts to the newly create VertexGeom
+        vertex = VertexGeom::CreateGeometry(verts, SIMPL::Geometry::VertexGeometry);
+      }
     }
     dc->setGeometry(vertex);
 
@@ -367,7 +370,7 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 3);
 
-    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getSharedVertexListArrayPath1(), cDims);
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType>(this, getSharedVertexListArrayPath1(), cDims);
     cDims[0] = 2;
     m_EdgesPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedEdgeList>(this, getSharedEdgeListArrayPath(), cDims);
     if(m_EdgesPtr.lock())
@@ -388,9 +391,9 @@ void CreateGeometry::dataCheck()
     }
     else
     {
-      edge = EdgeGeom::CreateGeometry(m_EdgesPtr.lock(), verts, SIMPL::Geometry::EdgeGeometry);
       getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath1())->removeAttributeArray(getSharedVertexListArrayPath1().getDataArrayName());
       getDataContainerArray()->getAttributeMatrix(getSharedEdgeListArrayPath())->removeAttributeArray(getSharedEdgeListArrayPath().getDataArrayName());
+      edge = EdgeGeom::CreateGeometry(m_EdgesPtr.lock(), verts, SIMPL::Geometry::EdgeGeometry);
     }
     dc->setGeometry(edge);
 
@@ -408,7 +411,7 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 3);
 
-    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getSharedVertexListArrayPath2(), cDims);
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType>(this, getSharedVertexListArrayPath2(), cDims);
     m_TrisPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedTriList>(this, getSharedTriListArrayPath(), cDims);
     if(m_TrisPtr.lock())
     {
@@ -428,9 +431,9 @@ void CreateGeometry::dataCheck()
     }
     else
     {
-      triangle = TriangleGeom::CreateGeometry(m_TrisPtr.lock(), verts, SIMPL::Geometry::TriangleGeometry);
       getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath2())->removeAttributeArray(getSharedVertexListArrayPath2().getDataArrayName());
       getDataContainerArray()->getAttributeMatrix(getSharedTriListArrayPath())->removeAttributeArray(getSharedTriListArrayPath().getDataArrayName());
+      triangle = TriangleGeom::CreateGeometry(m_TrisPtr.lock(), verts, SIMPL::Geometry::TriangleGeometry);
     }
     dc->setGeometry(triangle);
 
@@ -448,7 +451,7 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 3);
 
-    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getSharedVertexListArrayPath3(), cDims);
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType>(this, getSharedVertexListArrayPath3(), cDims);
     cDims[0] = 4;
     m_QuadsPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedQuadList>(this, getSharedQuadListArrayPath(), cDims);
     if(m_QuadsPtr.lock())
@@ -469,9 +472,9 @@ void CreateGeometry::dataCheck()
     }
     else
     {
-      quadrilateral = QuadGeom::CreateGeometry(m_QuadsPtr.lock(), verts, SIMPL::Geometry::QuadGeometry);
       getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath3())->removeAttributeArray(getSharedVertexListArrayPath3().getDataArrayName());
       getDataContainerArray()->getAttributeMatrix(getSharedQuadListArrayPath())->removeAttributeArray(getSharedQuadListArrayPath().getDataArrayName());
+      quadrilateral = QuadGeom::CreateGeometry(m_QuadsPtr.lock(), verts, SIMPL::Geometry::QuadGeometry);
     }
     dc->setGeometry(quadrilateral);
 
@@ -489,7 +492,7 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 3);
 
-    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getSharedVertexListArrayPath4(), cDims);
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType>(this, getSharedVertexListArrayPath4(), cDims);
     cDims[0] = 4;
     m_TetsPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedTetList>(this, getSharedTetListArrayPath(), cDims);
     if(m_TetsPtr.lock())
@@ -510,9 +513,9 @@ void CreateGeometry::dataCheck()
     }
     else
     {
-      tetrahedral = TetrahedralGeom::CreateGeometry(m_TetsPtr.lock(), verts, SIMPL::Geometry::TetrahedralGeometry);
       getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath4())->removeAttributeArray(getSharedVertexListArrayPath4().getDataArrayName());
       getDataContainerArray()->getAttributeMatrix(getSharedTetListArrayPath())->removeAttributeArray(getSharedTetListArrayPath().getDataArrayName());
+      tetrahedral = TetrahedralGeom::CreateGeometry(m_TetsPtr.lock(), verts, SIMPL::Geometry::TetrahedralGeometry);
     }
 
     dc->setGeometry(tetrahedral);
@@ -531,7 +534,7 @@ void CreateGeometry::dataCheck()
   {
     std::vector<size_t> cDims(1, 3);
 
-    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>>(this, getSharedVertexListArrayPath5(), cDims);
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType>(this, getSharedVertexListArrayPath5(), cDims);
     cDims[0] = 8;
     m_HexesPtr = getDataContainerArray()->getPrereqArrayFromPath<SharedHexList>(this, getSharedHexListArrayPath(), cDims);
     if(m_HexesPtr.lock())
@@ -552,9 +555,9 @@ void CreateGeometry::dataCheck()
     }
     else
     {
-      hexahedral = HexahedralGeom::CreateGeometry(m_HexesPtr.lock(), verts, SIMPL::Geometry::HexahedralGeometry);
       getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath5())->removeAttributeArray(getSharedVertexListArrayPath5().getDataArrayName());
       getDataContainerArray()->getAttributeMatrix(getSharedHexListArrayPath())->removeAttributeArray(getSharedHexListArrayPath().getDataArrayName());
+      hexahedral = HexahedralGeom::CreateGeometry(m_HexesPtr.lock(), verts, SIMPL::Geometry::HexahedralGeometry);
     }
 
     dc->setGeometry(hexahedral);
