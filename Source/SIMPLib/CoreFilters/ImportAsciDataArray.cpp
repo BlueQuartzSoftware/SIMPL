@@ -34,6 +34,7 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "ImportAsciDataArray.h"
 
+#include <fstream>
 #include <locale>
 
 #include <QtCore/QDateTime>

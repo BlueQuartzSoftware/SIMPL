@@ -177,10 +177,10 @@ public:
    * @brief Sets all the values to value.
    */
   virtual void initializeWithValue(T initValue, size_t offset = 0);
+
   /**
-   * @brief getTypeName Returns a string representation of the type of data that is stored by this class. This
-   * can be a primitive like char, float, int or the name of a class.
-   * @return
+   * @brief getXdmfTypeAndSize Returns the XDMF Type Name and precision.
+   * @return Returns UNKNOWN and 0 Since NeighborLists are not written to XDMF
    */
   void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const override;
 

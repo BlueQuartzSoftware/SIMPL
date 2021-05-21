@@ -179,10 +179,6 @@ IDataArray::Pointer NeighborList<T>::createNewArray(size_t numElements, const st
   return NeighborList<T>::CreateArray(numElements, dims, name, allocate);
 }
 
-/**
- * @brief isAllocated
- * @return
- */
 // -----------------------------------------------------------------------------
 template <typename T>
 bool NeighborList<T>::isAllocated() const
@@ -190,10 +186,6 @@ bool NeighborList<T>::isAllocated() const
   return true;
 }
 
-/**
- * @brief Gives this array a human readable name
- * @param name The name of this array
- */
 // -----------------------------------------------------------------------------
 template <typename T>
 void NeighborList<T>::setInitValue(T initValue)
@@ -201,20 +193,12 @@ void NeighborList<T>::setInitValue(T initValue)
   m_InitValue = initValue;
 }
 
-/**
- * @brief Sets all the values to value.
- */
 // -----------------------------------------------------------------------------
 template <typename T>
 void NeighborList<T>::initializeWithValue(T initValue, size_t offset)
 {
 }
 
-/**
- * @brief getTypeName Returns a string representation of the type of data that is stored by this class. This
- * can be a primitive like char, float, int or the name of a class.
- * @return
- */
 // -----------------------------------------------------------------------------
 template <typename T>
 void NeighborList<T>::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const
@@ -222,66 +206,6 @@ void NeighborList<T>::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) 
   T value = 0x00;
   xdmfTypeName = "UNKNOWN";
   precision = 0;
-  if(typeid(value) == typeid(int8_t))
-  {
-    xdmfTypeName = "Char";
-    precision = 1;
-  }
-  if(typeid(value) == typeid(uint8_t))
-  {
-    xdmfTypeName = "UChar";
-    precision = 1;
-  }
-
-  if(typeid(value) == typeid(int16_t))
-  {
-    xdmfTypeName = "16 BIT NOT SUPPORTED BY XDMF";
-    precision = 0;
-  }
-  if(typeid(value) == typeid(uint16_t))
-  {
-    xdmfTypeName = "16 BIT NOT SUPPORTED BY XDMF";
-    precision = 0;
-  }
-
-  if(typeid(value) == typeid(int32_t))
-  {
-    xdmfTypeName = "Int";
-    precision = 4;
-  }
-  if(typeid(value) == typeid(uint32_t))
-  {
-    xdmfTypeName = "UInt";
-    precision = 4;
-  }
-
-  if(typeid(value) == typeid(int64_t))
-  {
-    xdmfTypeName = "Int";
-    precision = 8;
-  }
-  if(typeid(value) == typeid(uint64_t))
-  {
-    xdmfTypeName = "UInt";
-    precision = 8;
-  }
-
-  if(typeid(value) == typeid(float))
-  {
-    xdmfTypeName = "Float";
-    precision = 4;
-  }
-  if(typeid(value) == typeid(double))
-  {
-    xdmfTypeName = "Float";
-    precision = 8;
-  }
-
-  if(typeid(value) == typeid(bool))
-  {
-    xdmfTypeName = "uchar";
-    precision = 1;
-  }
 }
 
 // -----------------------------------------------------------------------------
