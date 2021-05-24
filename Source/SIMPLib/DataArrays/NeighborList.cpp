@@ -203,7 +203,6 @@ void NeighborList<T>::initializeWithValue(T initValue, size_t offset)
 template <typename T>
 void NeighborList<T>::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) const
 {
-  T value = 0x00;
   xdmfTypeName = "UNKNOWN";
   precision = 0;
 }
