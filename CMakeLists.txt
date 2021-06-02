@@ -562,7 +562,10 @@ if(SIMPL_WRAP_PYTHON)
     INCLUDE_DIRS ${SIMPLProj_SOURCE_DIR}/Wrapping/Python
   )
 
-  if(NOT DREAM3D_ANACONDA)
+  if(DREAM3D_ANACONDA)
+    configure_file(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/SIMPL/simpl_helpers_conda.py ${DREAM3D_PYTHON_PACKAGE_DIR}/simpl_helpers.py)
+    file(APPEND ${DREAM3D_INIT_PY_FILE} "from . import simpl_helpers\n")
+  else()
     add_custom_target(CopyPythonSupport ALL
       COMMAND ${CMAKE_COMMAND} -E copy
         ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/SIMPL/simpl_helpers.py
