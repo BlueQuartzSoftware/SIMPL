@@ -1,8 +1,8 @@
 set(TEST_${SUBDIR_NAME}_NAMES
-  itkDream3DITransformContainerToTransformTest
-  itkDream3DTransformContainerToTransformTest
-  itkTransformToDream3DTransformContainerTest
-  itkTransformToDream3DITransformContainerTest
+  # itkDream3DITransformContainerToTransformTest
+  # itkDream3DTransformContainerToTransformTest
+  # itkTransformToDream3DTransformContainerTest
+  # itkTransformToDream3DITransformContainerTest
 )
 
 include( ${CMP_SOURCE_DIR}/ITKSupport/IncludeITK.cmake)
