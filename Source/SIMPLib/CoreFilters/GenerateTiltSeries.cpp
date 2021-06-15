@@ -35,17 +35,6 @@
 #include <thread>
 #include <cmath>
 
-#define GTS_GENERATE_DEBUG_ARRAYS 0
-// If we are writing out all the arrays for debugging then we MUST be single threaded.
-#if(GTS_GENERATE_DEBUG_ARRAYS == 1)
-#undef SIMPL_USE_PARALLEL_ALGORITHMS
-#endif
-
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-#include <tbb/task_group.h>
-#include <tbb/task_scheduler_init.h>
-#endif
-
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
@@ -58,11 +47,19 @@
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
-#include "SIMPLib/ITK/Dream3DTemplateAliasMacro.h"
-#include "SIMPLib/ITK/SimpleITKEnums.h"
-#include "SIMPLib/ITK/itkInPlaceDream3DDataToImageFilter.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/SIMPLibVersion.h"
+
+#define GTS_GENERATE_DEBUG_ARRAYS 0
+// If we are writing out all the arrays for debugging then we MUST be single threaded.
+#if(GTS_GENERATE_DEBUG_ARRAYS == 1)
+#undef SIMPL_USE_PARALLEL_ALGORITHMS
+#endif
+
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+#include <tbb/task_group.h>
+#include <tbb/task_scheduler_init.h>
+#endif
 
 #ifndef DREAM3D_PASSIVE_ROTATION
 #define DREAM3D_PASSIVE_ROTATION 1
