@@ -57,7 +57,6 @@ set_property(GLOBAL PROPERTY SIMPL_USE_QtWebEngine "${SIMPL_USE_QtWebEngine}")
 include(${CMP_SOURCE_DIR}/ExtLib/Qt5Support.cmake)
 set(SVWidgetsLib_Qt5_Components Core Widgets Network Gui Concurrent Svg Xml OpenGL PrintSupport )
 CMP_AddQt5Support( "${SVWidgetsLib_Qt5_Components}"
-                    "${SIMPL_USE_QtWebEngine}"
                     "${SIMPLProj_BINARY_DIR}"
                     "SVWidgetsLib")
 
