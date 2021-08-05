@@ -53,8 +53,8 @@ def CreateVertexGeometryTest():
   shared_vertex_list_array_path = simpl.DataArrayPath('DataContainer', 'Bounds', 'Vertices')
   vertex_attribute_matrix_name = 'VertexData'
   err = sh.CreateGeometry(dca, 0, simpl.IGeometry.Type.Vertex, 'DataContainer', False, 
-  shared_vertex_list_array_path = simpl.DataArrayPath('DataContainer', 'Bounds', 'Vertices'),
-  vertex_attribute_matrix_name = 'VertexData')
+                          shared_vertex_list_array_path = simpl.DataArrayPath('DataContainer', 'Bounds', 'Vertices'),
+                          vertex_attribute_matrix_name = 'VertexData')
   assert err == 0, f'Create Geometry -  ErrorCondition: {err}'
 
   err = d3d.data_container_writer(dca, sd.GetTestTempDirectory() + '/CreateVertexGeometry.dream3d', True, False)
