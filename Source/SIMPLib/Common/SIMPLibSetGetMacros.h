@@ -26,7 +26,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * The code contained herein was partially funded by the followig contracts:
+ * The code contained herein was partially funded by the following contracts:
  *    United States Air Force Prime Contract FA8650-07-D-5800
  *    United States Air Force Prime Contract FA8650-10-D-5210
  *    United States Prime Contract Navy N00173-07-C-2068
@@ -257,7 +257,7 @@ public:                                                                         
   void set##prpty(const type& value)                                                                                                                                                                   \
   {                                                                                                                                                                                                    \
     this->m_##prpty = value;                                                                                                                                                                           \
-    Q_EMIT parametersChanged();                                                                                                                                                                          \
+    Q_EMIT parametersChanged();                                                                                                                                                                        \
   }
 
 #define SIMPL_SET_PROPERTY_DECL(type, prpty) void set##prpty(type value);
@@ -401,7 +401,7 @@ public:                                                                         
 // -----------------------------------------------------------------------------
 #define SIMPL_CONTAINER_TYPE(thisClass, container)                                                                                                                                                     \
   typedef(container)<thisClass> ContainerT;                                                                                                                                                            \
-  typedef std::shared_ptr<(container) < (thisClass)>> ContainerPType;
+  typedef std::shared_ptr<(container) < (thisClass)> > ContainerPType;
 
 /**
  * @brief Creates a "setter" method to set the property.

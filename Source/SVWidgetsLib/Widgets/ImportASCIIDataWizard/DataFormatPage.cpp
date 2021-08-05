@@ -26,7 +26,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * The code contained herein was partially funded by the followig contracts:
+ * The code contained herein was partially funded by the following contracts:
  *    United States Air Force Prime Contract FA8650-07-D-5800
  *    United States Air Force Prime Contract FA8650-10-D-5210
  *    United States Prime Contract Navy N00173-07-C-2068
@@ -453,10 +453,10 @@ void DataFormatPage::createAMSelectionMenu()
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
   DataContainerArray::Container containers = dca->getDataContainers();
-  std::vector<QString> daTypes;           // = m_FilterParameter->getDefaultAttributeArrayTypes();
-  QVector<std::vector<size_t>> cDims;     // = m_FilterParameter->getDefaultComponentDimensions();
-  AttributeMatrix::Types amTypes;         // = m_FilterParameter->getDefaultAttributeMatrixTypes();
-  IGeometry::Types geomTypes;             // = m_FilterParameter->getDefaultGeometryTypes();
+  std::vector<QString> daTypes;       // = m_FilterParameter->getDefaultAttributeArrayTypes();
+  QVector<std::vector<size_t>> cDims; // = m_FilterParameter->getDefaultComponentDimensions();
+  AttributeMatrix::Types amTypes;     // = m_FilterParameter->getDefaultAttributeMatrixTypes();
+  IGeometry::Types geomTypes;         // = m_FilterParameter->getDefaultGeometryTypes();
 
   for(DataContainer::Pointer dc : containers)
   {

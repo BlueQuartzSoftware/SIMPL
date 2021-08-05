@@ -1,35 +1,35 @@
 /* ============================================================================
-* Copyright (c) 2009-2018 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-15-D-5231
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2018 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the following contracts:
+ *    United States Air Force Prime Contract FA8650-15-D-5231
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
@@ -45,8 +45,7 @@ namespace itk
 {
 
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
-Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>
-::Dream3DITransformContainerToTransform()
+Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>::Dream3DITransformContainerToTransform()
 {
   // Create the output. We use static_cast<> here because we know the default
   // output must be of type DecoratorType
@@ -56,15 +55,11 @@ Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions
   m_ITransformContainer = ::ITransformContainer::NullPointer();
 }
 
+template <typename TParametersValueType, unsigned int CompositeNDimensions>
+Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>::~Dream3DITransformContainerToTransform() = default;
 
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
-Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>
-::~Dream3DITransformContainerToTransform() = default;
-
-template <typename TParametersValueType, unsigned int CompositeNDimensions>
-void
-Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>
-::SetInput(const ITransformContainer::Pointer & transformContainer)
+void Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>::SetInput(const ITransformContainer::Pointer& transformContainer)
 {
   if(transformContainer != m_ITransformContainer)
   {
@@ -73,21 +68,15 @@ Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions
   }
 }
 
-
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
-ProcessObject::DataObjectPointer
-Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>
-::MakeOutput(ProcessObject::DataObjectPointerArraySizeType)
+ProcessObject::DataObjectPointer Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>::MakeOutput(ProcessObject::DataObjectPointerArraySizeType)
 {
   typename DecoratorType::Pointer output = DecoratorType::New();
   return output.GetPointer();
 }
 
-
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
-void
-Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>
-::VerifyPreconditions() ITKv5_CONST
+void Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>::VerifyPreconditions() ITKv5_CONST
 {
   if(!m_ITransformContainer)
   {
@@ -96,11 +85,8 @@ Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions
   Superclass::VerifyPreconditions();
 }
 
-
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
-void
-Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>
-::CreateTransform(ITKTransformPointer& ptr, const std::string& ClassName)
+void Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>::CreateTransform(ITKTransformPointer& ptr, const std::string& ClassName)
 {
   // The logic of this function is shamelessly copied from itkTransformIOBase.hxx in ITK.
 
@@ -131,11 +117,8 @@ Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions
   ptr->UnRegister();
 }
 
-
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
-void
-Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>
-::TransformGenerateData(ITKTransformPointer& itktransform, ::TransformContainer* transformContainer)
+void Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>::TransformGenerateData(ITKTransformPointer& itktransform, ::TransformContainer* transformContainer)
 {
   CreateTransform(itktransform, transformContainer->getTransformTypeAsString().c_str());
   auto dream3DParameters = transformContainer->getParameters();
@@ -172,11 +155,8 @@ Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions
   itktransform->SetFixedParameters(itkFixedParameters);
 }
 
-
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
-void
-Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>
-::GenerateData(ITKTransformPointer& itktransform, const ITransformContainer::Pointer& mTransformContainer)
+void Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>::GenerateData(ITKTransformPointer& itktransform, const ITransformContainer::Pointer& mTransformContainer)
 {
   ::TransformContainer* transformContainer = dynamic_cast<::TransformContainer*>(mTransformContainer.get());
   if(transformContainer)
@@ -219,11 +199,8 @@ Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions
   }
 }
 
-
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
-void
-Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>
-::GenerateData()
+void Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>::GenerateData()
 {
   auto* outputPtr = this->GetOutput();
   ITKTransformPointer itktransform;
@@ -231,13 +208,11 @@ Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions
   outputPtr->Set(itktransform);
 }
 
-
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
 typename Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>::DecoratorType*
-Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>
-::GetOutput()
+Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>::GetOutput()
 {
   return itkDynamicCastInDebugMode<DecoratorType*>(this->GetPrimaryOutput());
 }
 
-} // end of itk namespace
+} // namespace itk

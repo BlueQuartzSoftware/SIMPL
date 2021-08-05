@@ -1,35 +1,35 @@
 /* ============================================================================
-* Copyright (c) 2009-2018 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-15-D-5231
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2018 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the following contracts:
+ *    United States Air Force Prime Contract FA8650-15-D-5231
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
@@ -40,8 +40,7 @@ namespace itk
 {
 
 template <typename ITKTransformType>
-Dream3DTransformContainerToTransform<ITKTransformType>
-::Dream3DTransformContainerToTransform()
+Dream3DTransformContainerToTransform<ITKTransformType>::Dream3DTransformContainerToTransform()
 {
   // Create the output. We use static_cast<> here because we know the default
   // output must be of type DecoratorType
@@ -51,15 +50,11 @@ Dream3DTransformContainerToTransform<ITKTransformType>
   m_TransformContainer = ::TransformContainer::NullPointer();
 }
 
+template <typename ITKTransformType>
+Dream3DTransformContainerToTransform<ITKTransformType>::~Dream3DTransformContainerToTransform() = default;
 
 template <typename ITKTransformType>
-Dream3DTransformContainerToTransform<ITKTransformType>
-::~Dream3DTransformContainerToTransform() = default;
-
-template <typename ITKTransformType>
-void
-Dream3DTransformContainerToTransform<ITKTransformType>
-::SetInput(::TransformContainer::Pointer transformContainer)
+void Dream3DTransformContainerToTransform<ITKTransformType>::SetInput(::TransformContainer::Pointer transformContainer)
 {
   if(transformContainer != m_TransformContainer)
   {
@@ -68,11 +63,8 @@ Dream3DTransformContainerToTransform<ITKTransformType>
   }
 }
 
-
 template <typename ITKTransformType>
-ProcessObject::DataObjectPointer
-Dream3DTransformContainerToTransform<ITKTransformType>
-::MakeOutput(ProcessObject::DataObjectPointerArraySizeType)
+ProcessObject::DataObjectPointer Dream3DTransformContainerToTransform<ITKTransformType>::MakeOutput(ProcessObject::DataObjectPointerArraySizeType)
 {
   typename DecoratorType::Pointer output = DecoratorType::New();
   typename ITKTransformType::Pointer transform = ITKTransformType::New();
@@ -80,11 +72,8 @@ Dream3DTransformContainerToTransform<ITKTransformType>
   return output.GetPointer();
 }
 
-
 template <typename ITKTransformType>
-void
-Dream3DTransformContainerToTransform<ITKTransformType>
-::VerifyPreconditions() ITKv5_CONST
+void Dream3DTransformContainerToTransform<ITKTransformType>::VerifyPreconditions() ITKv5_CONST
 {
   if(!m_TransformContainer)
   {
@@ -94,7 +83,7 @@ Dream3DTransformContainerToTransform<ITKTransformType>
 #if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 5
   typename ITKTransformType::ConstPointer transform = outputPtr->Get();
 #elif defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
- typename ITKTransformType::Pointer transform = outputPtr->Get();
+  typename ITKTransformType::Pointer transform = outputPtr->Get();
 #endif
 
   // Verifies that the number of Parameters and Fixed Parameters in the transform
@@ -115,11 +104,8 @@ Dream3DTransformContainerToTransform<ITKTransformType>
   Superclass::VerifyPreconditions();
 }
 
-
 template <typename ITKTransformType>
-void
-Dream3DTransformContainerToTransform<ITKTransformType>
-::GenerateData()
+void Dream3DTransformContainerToTransform<ITKTransformType>::GenerateData()
 {
   DecoratorType* outputPtr = this->GetOutput();
   typename ITKTransformType::Pointer transform = outputPtr->Get();
@@ -143,21 +129,15 @@ Dream3DTransformContainerToTransform<ITKTransformType>
 }
 
 template <typename ITKTransformType>
-typename Dream3DTransformContainerToTransform<ITKTransformType>::DecoratorType*
-Dream3DTransformContainerToTransform<ITKTransformType>
-::GetOutput()
+typename Dream3DTransformContainerToTransform<ITKTransformType>::DecoratorType* Dream3DTransformContainerToTransform<ITKTransformType>::GetOutput()
 {
   return itkDynamicCastInDebugMode<DecoratorType*>(this->GetPrimaryOutput());
 }
 
-
 template <typename ITKTransformType>
-const typename Dream3DTransformContainerToTransform<ITKTransformType>::DecoratorType*
-Dream3DTransformContainerToTransform<ITKTransformType>
-::GetOutput() const
+const typename Dream3DTransformContainerToTransform<ITKTransformType>::DecoratorType* Dream3DTransformContainerToTransform<ITKTransformType>::GetOutput() const
 {
   return itkDynamicCastInDebugMode<const DecoratorType*>(this->GetPrimaryOutput());
 }
 
-
-} // end of itk namespace
+} // namespace itk
