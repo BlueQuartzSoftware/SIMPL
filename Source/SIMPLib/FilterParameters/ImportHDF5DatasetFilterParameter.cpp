@@ -50,8 +50,8 @@ ImportHDF5DatasetFilterParameter::~ImportHDF5DatasetFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportHDF5DatasetFilterParameter::Pointer ImportHDF5DatasetFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QVariant& filePathDefaultValue,
-                                                                                   const QVariant& datasetDefaultValue, Category category, ImportHDF5Dataset* filter, int groupIndex)
+ImportHDF5DatasetFilterParameter::Pointer ImportHDF5DatasetFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& filePathDefaultValue,
+                                                                                   const QString& datasetDefaultValue, Category category, ImportHDF5Dataset* filter, int groupIndex)
 {
   ImportHDF5DatasetFilterParameter::Pointer ptr = ImportHDF5DatasetFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

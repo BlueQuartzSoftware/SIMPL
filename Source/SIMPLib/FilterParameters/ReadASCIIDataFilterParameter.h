@@ -79,7 +79,7 @@ public:
    * @param groupIndex
    * @return
    */
-  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QVariant& defaultValue, Category category, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, int groupIndex = -1);
 
   ~ReadASCIIDataFilterParameter() override;
 

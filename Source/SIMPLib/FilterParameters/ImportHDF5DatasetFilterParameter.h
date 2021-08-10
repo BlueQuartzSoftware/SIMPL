@@ -67,7 +67,7 @@ public:
    */
   static QString ClassName();
 
-  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QVariant& filePathDefaultValue, const QVariant& datasetDefaultValue, Category category, ImportHDF5Dataset* filter,
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& filePathDefaultValue, const QString& datasetDefaultValue, Category category, ImportHDF5Dataset* filter,
                         int groupIndex = -1);
 
   ~ImportHDF5DatasetFilterParameter() override;
