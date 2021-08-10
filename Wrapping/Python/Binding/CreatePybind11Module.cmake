@@ -183,6 +183,20 @@ function(CreatePybind11Module)
     file(APPEND ${DREAM3D_INIT_PY_FILE} "from . import ${MODULE_NAME_lower}\n")
     file(APPEND ${DREAM3D_INIT_PY_FILE} "from . import ${MODULE_NAME_lower}py\n")
     add_dependencies(CopyPythonPackage ${MODULE_NAME_lower})
+    add_dependencies(CreateDREAM3DStubs ${MODULE_NAME_lower})
+  endif()
+
+  if(SIMPL_GENERATE_PYI)
+    set(CREATE_STUB_FILE_TARGET ${MODULE_NAME_lower}CreateStubFile)
+    set(STUB_FILE ${ARGS_OUTPUT_DIR}/${MODULE_NAME_lower}.pyi)
+    add_custom_target(${CREATE_STUB_FILE_TARGET} ALL
+      COMMAND ${MYPY_STUBGEN_EXE} -m ${MODULE_NAME_lower} -o ${ARGS_PYTHON_OUTPUT_DIR}
+      COMMENT "${ARGS_MODULE_NAME}: Generating .pyi files"
+      BYPRODUCTS ${STUB_FILE}
+      WORKING_DIRECTORY $<TARGET_FILE_DIR:${MODULE_NAME_lower}>
+    )
+    set_property(TARGET ${CREATE_STUB_FILE_TARGET} PROPERTY FOLDER "Python/Stub")
+    add_dependencies(${CREATE_STUB_FILE_TARGET} ${MODULE_NAME_lower})
   endif()
 endfunction()
 

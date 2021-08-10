@@ -523,6 +523,12 @@ if(SIMPL_WRAP_PYTHON)
     mark_as_advanced(SIMPL_CONDA_EXECUTABLE)
   endif()
 
+  option(SIMPL_GENERATE_PYI "Generate .pyi files for python bindings" OFF)
+
+  if(SIMPL_GENERATE_PYI)
+    find_program(MYPY_STUBGEN_EXE stubgen REQUIRED)
+  endif()
+
   include(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Binding/CreatePybind11Module.cmake)
 
   get_target_property(SIMPL_PY_SOURCES SIMPLib SOURCES)
