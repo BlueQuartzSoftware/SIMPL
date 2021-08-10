@@ -71,7 +71,7 @@ endfunction()
 #-------------------------------------------------------------------------------
 function(CreatePybind11Module)
   set(options PLUGIN)
-  set(oneValueArgs MODULE_NAME OUTPUT_DIR FILE_LIST_PATH SOURCE_DIR HEADER_PATH BODY_PATH BODY_TOP_PATH INCLUDE_DIR PYTHON_OUTPUT_DIR)
+  set(oneValueArgs MODULE_NAME OUTPUT_DIR FILE_LIST_PATH SOURCE_DIR HEADER_PATH BODY_PATH BODY_TOP_PATH POST_TYPES_PATH INCLUDE_DIR PYTHON_OUTPUT_DIR)
   set(multiValueArgs LINK_LIBRARIES INCLUDE_DIRS)
   cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
@@ -119,6 +119,7 @@ function(CreatePybind11Module)
       "--header_path=${ARGS_HEADER_PATH}"
       "--body_path=${ARGS_BODY_PATH}"
       "--body_top_path=${ARGS_BODY_TOP_PATH}"
+      "--post_types_path=${ARGS_POST_TYPES_PATH}"
       "--plugin_name=${ARGS_MODULE_NAME}"
       "${NO_TESTS_ARG}"
       "${RELATIVE_IMPORTS_ARGS}"
@@ -194,7 +195,7 @@ endfunction()
 #-------------------------------------------------------------------------------
 function(CreatePybind11Plugin)
   set(options)
-  set(oneValueArgs PLUGIN_NAME PLUGIN_TARGET HEADER_PATH BODY_PATH BODY_TOP_PATH)
+  set(oneValueArgs PLUGIN_NAME PLUGIN_TARGET HEADER_PATH BODY_PATH BODY_TOP_PATH POST_TYPES_PATH)
   set(multiValueArgs)
   cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
@@ -209,6 +210,7 @@ function(CreatePybind11Plugin)
     HEADER_PATH ${ARGS_HEADER_PATH}
     BODY_PATH ${ARGS_BODY_PATH}
     BODY_TOP_PATH ${ARGS_BODY_TOP_PATH}
+    POST_TYPES_PATH ${ARGS_POST_TYPES_PATH}
     LINK_LIBRARIES ${ARGS_PLUGIN_TARGET}
     INCLUDE_DIRS ${SIMPLProj_SOURCE_DIR}/Wrapping/Python
     PLUGIN

@@ -538,7 +538,7 @@ def replace_file_if_different(temp_file: str, target_file: str) -> None:
   else:
     os.rename(temp_file, target_file)
 
-def generate_simpl_bindings(output_dir: str, header_path: str, body_path: str, files: List[str], source_dir: str, python_output_dir: str, plugin_name: str, body_top_path: str = '', no_tests: bool = False, relative_imports: bool = False) -> None:
+def generate_simpl_bindings(output_dir: str, header_path: str, body_path: str, files: List[str], source_dir: str, python_output_dir: str, plugin_name: str, body_top_path: str = '', post_types_path: str = '', no_tests: bool = False, relative_imports: bool = False) -> None:
   module_target_file_path = f'{output_dir}/py_simpl.cpp'
   module_temp_file_path = f'{module_target_file_path}.temp'
   with open(module_temp_file_path, 'w') as module_file, open(f'{python_output_dir}/simplpy.py', 'w') as python_file, ExitStack() as exit_stack:
@@ -583,6 +583,11 @@ def generate_simpl_bindings(output_dir: str, header_path: str, body_path: str, f
       code = py_class.generate_forward_declaration()
       module_file.write(code)
 
+    if post_types_path:
+      with open(post_types_path, 'r') as post_types_file:
+        custom_post_types_code = post_types_file.read()
+        module_file.write(f'{custom_post_types_code}\n')
+
     for py_class in module_classes:
       code = py_class.generate_bindings(foward_declared=True)
       module_file.write(code)
@@ -607,7 +612,7 @@ def generate_simpl_bindings(output_dir: str, header_path: str, body_path: str, f
     module_file.write('}\n')
   replace_file_if_different(module_temp_file_path, module_target_file_path)
 
-def generate_plugin_bindings(output_dir: str, module_name: str, files: List[str], include_dir: Optional[str], python_output_dir: str, plugin_name: str, header_path: str = '', body_path: str = '', body_top_path: str = '', no_tests: bool = False, relative_imports: bool = False) -> None:
+def generate_plugin_bindings(output_dir: str, module_name: str, files: List[str], include_dir: Optional[str], python_output_dir: str, plugin_name: str, header_path: str = '', body_path: str = '', body_top_path: str = '', post_types_path: str = '', no_tests: bool = False, relative_imports: bool = False) -> None:
   module_target_file_path = f'{output_dir}/py_{module_name}.cpp'
   module_temp_file_path = f'{module_target_file_path}.temp'
   with open(module_temp_file_path, 'w') as module_file, open(f'{python_output_dir}/{module_name}py.py', 'w') as python_file, ExitStack() as exit_stack:
@@ -682,6 +687,11 @@ def generate_plugin_bindings(output_dir: str, module_name: str, files: List[str]
       code = py_class.generate_forward_declaration()
       module_file.write(code)
 
+    if post_types_path:
+      with open(post_types_path, 'r') as post_types_file:
+        custom_post_types_code = post_types_file.read()
+        module_file.write(f'{custom_post_types_code}\n')
+
     for py_class in module_classes:
       code = py_class.generate_bindings(foward_declared=True)
       module_file.write(code)
@@ -748,6 +758,7 @@ if __name__ == '__main__':
   parser.add_argument('--header_path')
   parser.add_argument('--body_path')
   parser.add_argument('--body_top_path')
+  parser.add_argument('--post_types_path')
   parser.add_argument('--include_dir')
   parser.add_argument('--plugin_name')
   parser.add_argument('--plugin', action='store_true')
@@ -760,11 +771,11 @@ if __name__ == '__main__':
     if args.module_name is None:
       parser.error('--plugin requires --module_name')
     files = read_plugin_file_list(args.file_list_path, args.source_dir)
-    generate_plugin_bindings(args.output_dir, args.module_name, files, args.include_dir, args.python_output_dir, args.plugin_name, args.header_path, args.body_path, args.body_top_path, args.no_tests, args.relative_imports)
+    generate_plugin_bindings(args.output_dir, args.module_name, files, args.include_dir, args.python_output_dir, args.plugin_name, args.header_path, args.body_path, args.body_top_path, args.post_types_path, args.no_tests, args.relative_imports)
   else:
     if args.header_path is None:
       parser.error('requires --header_path')
     if args.body_path is None:
       parser.error('requires --body_path')
     files = read_simpl_file_list(args.file_list_path, args.source_dir)
-    generate_simpl_bindings(args.output_dir, args.header_path, args.body_path, files, args.source_dir, args.python_output_dir, args.plugin_name, args.body_top_path, args.no_tests, args.relative_imports)
+    generate_simpl_bindings(args.output_dir, args.header_path, args.body_path, files, args.source_dir, args.python_output_dir, args.plugin_name, args.body_top_path, args.post_types_path, args.no_tests, args.relative_imports)
