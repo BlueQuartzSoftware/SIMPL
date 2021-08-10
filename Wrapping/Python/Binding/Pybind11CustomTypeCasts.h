@@ -16,6 +16,7 @@ namespace py = pybind11;
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractComparison.h"
 
 using DataContainersMap = QMap<QString, DataContainerProxy>;
 using AttributeMatricesMap = QMap<QString, AttributeMatrixProxy>;
@@ -87,7 +88,7 @@ public:
   static handle cast(const QString& src, return_value_policy /* policy */, handle /* parent */)
   {
 #if PY_VERSION_HEX >= 0x03030000 // Python 3.3
-    assert(sizeof(QChar) == 2);
+    static_assert(sizeof(QChar) == 2);
     return PyUnicode_FromKindAndData(PyUnicode_2BYTE_KIND, src.constData(), src.length());
 #else
     QByteArray a = src.toUtf8();
@@ -95,60 +96,6 @@ public:
 #endif
   }
 };
-
-#if 0
-/* Create a TypeCaster for auto python tuple <--> QPair conversion */
-template <>
-struct type_caster<FPRangePair>
-{
-public:
-  /**
-   * This macro establishes the name 'FPRangePair' in
-   * function signatures and declares a local variable
-   * 'value' of type FPRangePair
-   */
-  PYBIND11_TYPE_CASTER(FPRangePair, _("FPRangePair"));
-
-  /**
-   *  @brief Conversion part 1 (Python->C++): convert a tuple into a FPRangePair
-   * instance or return false upon failure. The second argument
-   * indicates whether implicit conversions should be applied.
-   * @param src
-   * @return boolean
-   */
-  bool load(handle src, bool b)
-  {
-    if(!src)
-    {
-      return false;
-    }
-    if(py::isinstance<py::tuple>(src))
-    {
-      py::tuple valuePair = py::cast<py::tuple>(src);
-      value = FPRangePair();
-      value.first = py::cast<double>(valuePair[0]);
-      value.second = py::cast<double>(valuePair[1]);
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * @brief Conversion part 2 (C++ -> Python): convert  FPRangePair instance into
-   * a Python object. The second and third arguments are used to
-   * indicate the return value policy and parent object (for
-   * ``return_value_policy::reference_internal``) and are generally
-   * ignored by implicit casters.
-   *
-   * @param src
-   * @return
-   */
-  static handle cast(const FPRangePair& src, return_value_policy /* policy */, handle /* parent */)
-  {
-    return py::tuple((src.first, src.second));
-  }
-};
-#endif
 
 /* Create a TypeCaster for auto python dict <--> ASCIIWizardData conversion */
 template <>
@@ -175,44 +122,44 @@ public:
     {
       return false;
     }
-    if(py::isinstance<py::dict>(src))
+    if(!py::isinstance<py::dict>(src))
     {
-      py::dict awdDict = py::cast<py::dict>(src);
-      value = ASCIIWizardData();
-      value.inputFilePath = py::cast<QString>(awdDict["inputFilePath"]);
-      value.beginIndex = py::cast<int>(awdDict["beginIndex"]);
-      value.numberOfLines = py::cast<int>(awdDict["numberOfLines"]);
-      QList<char> delimiters;
-      for(auto object : awdDict["delimiters"])
-      {
-        delimiters.push_back(py::cast<char>(object));
-      }
-      value.delimiters = delimiters;
-      value.consecutiveDelimiters = py::cast<bool>(awdDict["consecutiveDelimiters"]);
-      value.automaticAM = py::cast<bool>(awdDict["automaticAM"]);
-      value.selectedPath = py::cast<DataArrayPath>(awdDict["selectedPath"]);
-      QStringList dataHeaders;
-      for(auto header : awdDict["headers"])
-      {
-        dataHeaders.push_back(py::cast<QString>(header));
-      }
-      value.dataHeaders = dataHeaders;
-      value.attrMatType = py::cast<int>(awdDict["attrMatType"]);
-      std::vector<size_t> tupleDims;
-      for(auto tupleDim : awdDict["tupleDimensions"])
-      {
-        tupleDims.push_back(py::cast<size_t>(tupleDim));
-      }
-      value.tupleDims = tupleDims;
-      QStringList dataTypes;
-      for(auto dataType : awdDict["dataTypes"])
-      {
-        dataTypes.push_back(py::cast<QString>(dataType));
-      }
-      value.dataTypes = dataTypes;
-      return true;
+      return false;
     }
-    return false;
+    py::dict awdDict = py::cast<py::dict>(src);
+    value = ASCIIWizardData();
+    value.inputFilePath = py::cast<QString>(awdDict["inputFilePath"]);
+    value.beginIndex = py::cast<int>(awdDict["beginIndex"]);
+    value.numberOfLines = py::cast<int>(awdDict["numberOfLines"]);
+    QList<char> delimiters;
+    for(auto object : awdDict["delimiters"])
+    {
+      delimiters.push_back(py::cast<char>(object));
+    }
+    value.delimiters = delimiters;
+    value.consecutiveDelimiters = py::cast<bool>(awdDict["consecutiveDelimiters"]);
+    value.automaticAM = py::cast<bool>(awdDict["automaticAM"]);
+    value.selectedPath = py::cast<DataArrayPath>(awdDict["selectedPath"]);
+    QStringList dataHeaders;
+    for(auto header : awdDict["headers"])
+    {
+      dataHeaders.push_back(py::cast<QString>(header));
+    }
+    value.dataHeaders = dataHeaders;
+    value.attrMatType = py::cast<int>(awdDict["attrMatType"]);
+    std::vector<size_t> tupleDims;
+    for(auto tupleDim : awdDict["tupleDimensions"])
+    {
+      tupleDims.push_back(py::cast<size_t>(tupleDim));
+    }
+    value.tupleDims = tupleDims;
+    QStringList dataTypes;
+    for(auto dataType : awdDict["dataTypes"])
+    {
+      dataTypes.push_back(py::cast<QString>(dataType));
+    }
+    value.dataTypes = dataTypes;
+    return true;
   }
 
   /**
@@ -231,7 +178,12 @@ public:
     awdDict["inputFilePath"] = src.inputFilePath;
     awdDict["beginIndex"] = src.beginIndex;
     awdDict["numberOfLines"] = src.numberOfLines;
-    awdDict["delimiters"] = src.delimiters;
+    py::list pyList;
+    for(char value : src.delimiters)
+    {
+      pyList.append(value);
+    }
+    awdDict["delimiters"] = pyList;
     awdDict["consecutiveDelimiters"] = src.consecutiveDelimiters;
     awdDict["automaticAM"] = src.automaticAM;
     awdDict["selectedPath"] = src.selectedPath;
@@ -239,65 +191,7 @@ public:
     awdDict["attrMatType"] = src.attrMatType;
     awdDict["tupleDimensions"] = src.tupleDims;
     awdDict["dataTypes"] = src.dataTypes;
-    return std::move(awdDict);
-  }
-};
-
-/* Create a TypeCaster for auto python list <--> QVector<DataArrayPath> conversion */
-template <>
-struct type_caster<QVector<DataArrayPath>>
-{
-public:
-  /**
-   * This macro establishes the name 'QVector<DataArrayPath>' in
-   * function signatures and declares a local variable
-   * 'value' of type QVector<DataArrayPath>
-   */
-  PYBIND11_TYPE_CASTER(QVector<DataArrayPath>, _("QVector<DataArrayPath>"));
-
-  /**
-   *  @brief Conversion part 1 (Python->C++): convert a lsit into a QVector<DataArrayPath>
-   * instance or return false upon failure. The second argument
-   * indicates whether implicit conversions should be applied.
-   * @param src
-   * @return boolean
-   */
-  bool load(handle src, bool b)
-  {
-    if(!src)
-    {
-      return false;
-    }
-    if(py::isinstance<py::list>(src))
-    {
-      value = QVector<DataArrayPath>();
-      for(auto dataArrayPath : src)
-      {
-        value.push_back(py::cast<DataArrayPath>(dataArrayPath));
-      }
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * @brief Conversion part 2 (C++ -> Python): convert QVector<DataArrayPath> instance into
-   * a Python object. The second and third arguments are used to
-   * indicate the return value policy and parent object (for
-   * ``return_value_policy::reference_internal``) and are generally
-   * ignored by implicit casters.
-   *
-   * @param src
-   * @return
-   */
-  static handle cast(const QVector<DataArrayPath>& src, return_value_policy /* policy */, handle /* parent */)
-  {
-    py::list dataArrayPaths;
-    for(auto dataArrayPath : src)
-    {
-      dataArrayPaths.append(dataArrayPath);
-    }
-    return std::move(dataArrayPaths);
+    return awdDict.release();
   }
 };
 
@@ -311,10 +205,10 @@ public:
    * function signatures and declares a local variable
    * 'value' of type QMap<QString, V>
    */
-  PYBIND11_TYPE_CASTER(DataContainersMap, _("DataContainersMap"));
+  PYBIND11_TYPE_CASTER(DataContainersMap, _("Dict[str,DataContainerProxy]"));
 
   /**
-   *  @brief Conversion part 1 (Python->C++): convert a lsit into a QMap<QString, V>
+   *  @brief Conversion part 1 (Python->C++): convert a list into a QMap<QString, V>
    * instance or return false upon failure. The second argument
    * indicates whether implicit conversions should be applied.
    * @param src
@@ -326,17 +220,17 @@ public:
     {
       return false;
     }
-    if(py::isinstance<py::dict>(src))
+    if(!py::isinstance<py::dict>(src))
     {
-      std::map<QString, DataContainerProxy> mapDict = py::cast<std::map<QString, DataContainerProxy>>(src);
-      value = QMap<QString, DataContainerProxy>();
-      for(auto it = mapDict.begin(); it != mapDict.end(); ++it)
-      {
-        value.insert(it->first, it->second);
-      }
-      return true;
+      return false;
     }
-    return false;
+    std::map<QString, DataContainerProxy> mapDict = py::cast<std::map<QString, DataContainerProxy>>(src);
+    value = QMap<QString, DataContainerProxy>();
+    for(auto it = mapDict.begin(); it != mapDict.end(); ++it)
+    {
+      value.insert(it->first, it->second);
+    }
+    return true;
   }
 
   /**
@@ -358,7 +252,7 @@ public:
       QString key(it->first);
       qmapDict[py::str(key.toStdString())] = py::cast(it->second);
     }
-    return std::move(qmapDict);
+    return qmapDict.release();
   }
 };
 
@@ -372,10 +266,10 @@ public:
    * function signatures and declares a local variable
    * 'value' of type QMap<QString, V>
    */
-  PYBIND11_TYPE_CASTER(AttributeMatricesMap, _("AttributeMatricesMap"));
+  PYBIND11_TYPE_CASTER(AttributeMatricesMap, _("Dict[str,AttributeMatrixProxy]"));
 
   /**
-   *  @brief Conversion part 1 (Python->C++): convert a lsit into a QMap<QString, V>
+   *  @brief Conversion part 1 (Python->C++): convert a list into a QMap<QString, V>
    * instance or return false upon failure. The second argument
    * indicates whether implicit conversions should be applied.
    * @param src
@@ -387,17 +281,17 @@ public:
     {
       return false;
     }
-    if(py::isinstance<py::dict>(src))
+    if(!py::isinstance<py::dict>(src))
     {
-      std::map<QString, AttributeMatrixProxy> mapDict = py::cast<std::map<QString, AttributeMatrixProxy>>(src);
-      value = QMap<QString, AttributeMatrixProxy>();
-      for(auto it = mapDict.begin(); it != mapDict.end(); ++it)
-      {
-        value.insert(it->first, it->second);
-      }
-      return true;
+      return false;
     }
-    return false;
+    std::map<QString, AttributeMatrixProxy> mapDict = py::cast<std::map<QString, AttributeMatrixProxy>>(src);
+    value = QMap<QString, AttributeMatrixProxy>();
+    for(auto it = mapDict.begin(); it != mapDict.end(); ++it)
+    {
+      value.insert(it->first, it->second);
+    }
+    return true;
   }
 
   /**
@@ -419,127 +313,18 @@ public:
       QString key(it->first);
       qmapDict[py::str(key.toStdString())] = py::cast(it->second);
     }
-    return std::move(qmapDict);
+    return qmapDict.release();
   }
 };
 
-/* Create a TypeCaster for auto python list <--> QVector<ShapeType::Type> conversion */
 template <>
-struct type_caster<QVector<ShapeType::Type>>
+struct type_caster<QVector<ShapeType::Type>> : public list_caster<QVector<ShapeType::Type>, ShapeType::Type>
 {
-public:
-  /**
-   * This macro establishes the name 'QVector<ShapeType::Type>' in
-   * function signatures and declares a local variable
-   * 'value' of type QVector<ShapeType::Type>
-   */
-  PYBIND11_TYPE_CASTER(QVector<ShapeType::Type>, _("QVector<ShapeType::Type>"));
-
-  /**
-   *  @brief Conversion part 1 (Python->C++): convert a lsit into a QVector<ShapeType::Type>
-   * instance or return false upon failure. The second argument
-   * indicates whether implicit conversions should be applied.
-   * @param src
-   * @return boolean
-   */
-  bool load(handle src, bool b)
-  {
-    if(!src)
-    {
-      return false;
-    }
-    if(py::isinstance<py::list>(src))
-    {
-      value = QVector<ShapeType::Type>();
-      for(auto shapeType : src)
-      {
-        value.push_back(py::cast<ShapeType::Type>(shapeType));
-      }
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * @brief Conversion part 2 (C++ -> Python): convert QVector<ShapeType::Type> instance into
-   * a Python object. The second and third arguments are used to
-   * indicate the return value policy and parent object (for
-   * ``return_value_policy::reference_internal``) and are generally
-   * ignored by implicit casters.
-   *
-   * @param src
-   * @return
-   */
-  static handle cast(const QVector<ShapeType::Type>& src, return_value_policy /* policy */, handle /* parent */)
-  {
-    py::list shapeTypes;
-    for(auto shapeType : src)
-    {
-      shapeTypes.append(shapeType);
-    }
-    return std::move(shapeTypes);
-  }
 };
 
-/* Create a TypeCaster for auto python list <--> QVector<PhaseType::Type> conversion */
 template <>
-struct type_caster<QVector<PhaseType::Type>>
+struct type_caster<QVector<PhaseType::Type>> : public list_caster<QVector<PhaseType::Type>, PhaseType::Type>
 {
-public:
-  /**
-   * This macro establishes the name 'QVector<PhaseType::Type>' in
-   * function signatures and declares a local variable
-   * 'value' of type QVector<PhaseType::Type>
-   */
-  PYBIND11_TYPE_CASTER(QVector<PhaseType::Type>, _("QVector<PhaseType::Type>"));
-
-  /**
-   *  @brief Conversion part 1 (Python->C++): convert a lsit into a QVector<PhaseType::Type>
-   * instance or return false upon failure. The second argument
-   * indicates whether implicit conversions should be applied.
-   * @param src
-   * @return boolean
-   */
-  bool load(handle src, bool)
-  {
-    if(!src)
-    {
-      return false;
-    }
-    if(py::isinstance<py::list>(src))
-    {
-      value = QVector<PhaseType::Type>();
-      for(auto phaseType : src)
-      {
-        value.push_back(py::cast<PhaseType::Type>(phaseType));
-      }
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-
-  /**
-   * @brief Conversion part 2 (C++ -> Python): convert QVector<PhaseType::Type> instance into
-   * a Python object. The second and third arguments are used to
-   * indicate the return value policy and parent object (for
-   * ``return_value_policy::reference_internal``) and are generally
-   * ignored by implicit casters.
-   *
-   * @param src
-   * @return
-   */
-  static handle cast(const QVector<PhaseType::Type>& src, return_value_policy /* policy */, handle /* parent */)
-  {
-    py::list phaseTypes;
-    for(PhaseType::Type phaseType : src)
-    {
-      phaseTypes.append(phaseType);
-    }
-    return std::move(phaseTypes);
-  }
 };
 
 /* Create a TypeCaster for auto python list <--> VectorOfFloatArray conversion */
@@ -552,7 +337,7 @@ public:
    * function signatures and declares a local variable
    * 'value' of type VectorOfFloatArray
    */
-  PYBIND11_TYPE_CASTER(VectorOfFloatArray, _("VectorOfFloatArray"));
+  PYBIND11_TYPE_CASTER(VectorOfFloatArray, _("List[FloatArray]"));
 
   /**
    *  @brief Conversion part 1 (Python->C++): convert a list into a VectorOfFloatArray
@@ -567,47 +352,47 @@ public:
     {
       return false;
     }
-    if(py::isinstance<py::list>(src))
+    if(!py::isinstance<py::list>(src))
     {
-      /* Try converting into a Python integer value */
-      VectorOfFloatArray floatArrays;
-      for(auto floatArray : src)
-      {
-        if(py::isinstance<py::list>(floatArray) || py::isinstance<py::tuple>(floatArray))
-        {
-          FloatArrayType::Pointer floatArrayPtr;
-          std::vector<float> floatArrayVector;
-          size_t index = 0;
-          QString name;
-          for(auto item : floatArray)
-          {
-            if(index == 0)
-            {
-              name = py::cast<QString>(item);
-            }
-            else
-            {
-              floatArrayVector.push_back(py::cast<float>(item));
-            }
-            index++;
-          }
-          floatArrayPtr = FloatArrayType::FromStdVector(floatArrayVector, name);
-          floatArrays.push_back(floatArrayPtr);
-        }
-        else if(py::isinstance<FloatArrayType>(floatArray))
-        {
-          floatArrays.push_back(py::cast<FloatArrayType::Pointer>(floatArray));
-        }
-        else
-        {
-          py::print("object must be list, tuple, or FloatArray");
-        }
-      }
-
-      value = floatArrays;
-      return true;
+      return false;
     }
-    return false;
+    /* Try converting into a Python integer value */
+    VectorOfFloatArray floatArrays;
+    for(auto floatArray : src)
+    {
+      if(py::isinstance<py::list>(floatArray) || py::isinstance<py::tuple>(floatArray))
+      {
+        FloatArrayType::Pointer floatArrayPtr;
+        std::vector<float> floatArrayVector;
+        size_t index = 0;
+        QString name;
+        for(auto item : floatArray)
+        {
+          if(index == 0)
+          {
+            name = py::cast<QString>(item);
+          }
+          else
+          {
+            floatArrayVector.push_back(py::cast<float>(item));
+          }
+          index++;
+        }
+        floatArrayPtr = FloatArrayType::FromStdVector(floatArrayVector, name);
+        floatArrays.push_back(floatArrayPtr);
+      }
+      else if(py::isinstance<FloatArrayType>(floatArray))
+      {
+        floatArrays.push_back(py::cast<FloatArrayType::Pointer>(floatArray));
+      }
+      else
+      {
+        py::print("object must be list, tuple, or FloatArray");
+      }
+    }
+
+    value = floatArrays;
+    return true;
   }
 
   /**
@@ -634,9 +419,77 @@ public:
 
       floatArrays.append(floatArray);
     }
-    return std::move(floatArrays);
+    return floatArrays.release();
   }
 };
 
+/* Create a TypeCaster for auto python list <--> QVector<AbstractComparison::Pointer> conversion */
+template <>
+struct type_caster<QVector<AbstractComparison::Pointer>>
+{
+public:
+  /**
+   * This macro establishes the name 'QVector<AbstractComparison::Pointer>' in
+   * function signatures and declares a local variable
+   * 'value' of type QVector<AbstractComparison::Pointer>
+   */
+  PYBIND11_TYPE_CASTER(QVector<AbstractComparison::Pointer>, _("List[AbstractComparison]"));
+
+  /**
+   *  @brief Conversion part 1 (Python->C++): convert a list into a QVector<AbstractComparison::Pointer>
+   * instance or return false upon failure. The second argument
+   * indicates whether implicit conversions should be applied.
+   * @param src
+   * @return boolean
+   */
+  bool load(handle src, bool)
+  {
+    if(!src)
+    {
+      return false;
+    }
+    if(!py::isinstance<py::list>(src))
+    {
+      return false;
+    }
+    value = QVector<AbstractComparison::Pointer>();
+    auto pyList = reinterpret_borrow<py::list>(src);
+    for(auto item : pyList)
+    {
+      value.push_back(py::cast<AbstractComparison::Pointer>(item));
+    }
+    return true;
+  }
+
+  /**
+   * @brief Conversion part 2 (C++ -> Python): convert QVector<AbstractComparison::Pointer> instance into
+   * a Python object. The second and third arguments are used to
+   * indicate the return value policy and parent object (for
+   * ``return_value_policy::reference_internal``) and are generally
+   * ignored by implicit casters.
+   *
+   * @param src
+   * @return
+   */
+  static handle cast(const QVector<AbstractComparison::Pointer>& src, return_value_policy /* policy */, handle /* parent */)
+  {
+    py::list pyList;
+    for(AbstractComparison::Pointer item : src)
+    {
+      pyList.append(item);
+    }
+    return pyList.release();
+  }
+};
+
+template <>
+struct type_caster<QStringList> : public list_caster<QStringList, QString>
+{
+};
+
+template <>
+struct type_caster<QVector<DataArrayPath>> : public list_caster<QVector<DataArrayPath>, DataArrayPath>
+{
+};
 } // namespace detail
 } // namespace pybind11
