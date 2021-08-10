@@ -124,7 +124,7 @@ void registerDataArray(pybind11::module& mod, const char* name)
           "npview", [](DataArrayType& dataArray) { return py::array_t<T, py::array::c_style>(dataArray.size(), dataArray.data(), py::cast(dataArray)); }, py::return_value_policy::reference_internal)
       .def("__repr__", [](const DataArrayType& a) {
         std::stringstream ss;
-        ss << "<'" << a.getFullNameOfClass().toStdString() << "  NAME=" << a.getName().toStdString() << ": TUPLES: " << a.getNumberOfTuples() << "  COMPONENTS: [";
+        ss << "<" << a.getFullNameOfClass().toStdString() << " NAME=\"" << a.getName().toStdString() << "\" TUPLES=" << a.getNumberOfTuples() << " COMPONENTS=(";
         std::vector<size_t> comps = a.getComponentDimensions();
         bool first = true;
         for(const auto& c : comps)
@@ -136,7 +136,7 @@ void registerDataArray(pybind11::module& mod, const char* name)
           ss << c;
           first = false;
         }
-        ss << "]'>";
+        ss << ")>";
         return ss.str();
       });
 }
@@ -212,6 +212,8 @@ void registerDataContainerArray(pybind11::class_<DataContainerArray, std::shared
   namespace py = pybind11;
   using namespace py::literals;
 
+  instance.def("__repr__", [](const DataContainerArray& dca) { return QString("<DataContainerArray DCs=%1>").arg(QString::number(dca.getNumDataContainers())); });
+
   instance.def("__getitem__", [](const DataContainerArray& dca, const QString& name) {
     if(!dca.doesDataContainerExist(name))
     {
@@ -284,6 +286,8 @@ void registerDataContainer(pybind11::class_<DataContainer, std::shared_ptr<DataC
   namespace py = pybind11;
   using namespace py::literals;
 
+  instance.def("__repr__", [](const DataContainer& dc) { return QString("<DataContainer NAME=\"%1\" AMs=%2>").arg(dc.getName(), QString::number(dc.getNumAttributeMatrices())); });
+
   instance.def("__getitem__", [](const DataContainer& dc, const QString& name) {
     if(!dc.doesAttributeMatrixExist(name))
     {
@@ -321,6 +325,17 @@ void registerAttributeMatrix(pybind11::class_<AttributeMatrix, std::shared_ptr<A
 {
   namespace py = pybind11;
   using namespace py::literals;
+
+  instance.def("__repr__", [](const AttributeMatrix& am) {
+    QString dimString = "(";
+    auto dims = am.getTupleDimensions();
+    for(size_t i = 0; i < dims.size() - 1; i++)
+    {
+      dimString.append(QString("%1, ").arg(QString::number(dims[i])));
+    }
+    dimString.append(QString("%1)").arg(QString::number(dims.back())));
+    return QString("<AttributeMatrix NAME=\"%1\" DIMS=%2 TYPE=%3 DAs=%4>").arg(am.getName(), dimString, AttributeMatrix::TypeToString(am.getType()), QString::number(am.getNumAttributeArrays()));
+  });
 
   instance.def("__contains__", py::overload_cast<const QString&>(&AttributeMatrix::doesAttributeArrayExist, py::const_));
 
