@@ -40,23 +40,20 @@ instanceQListImportHDF5DatasetDatasetImportInfo.def(py::init<>([](py::list value
   return datasetImportInfoList;
 }));
 
-instanceSIMPLComparisonEnumeration
-    .value("LessThan", SIMPL::Comparison::Enumeration::Operator_LessThan)
+instanceSIMPLComparisonEnumeration.value("LessThan", SIMPL::Comparison::Enumeration::Operator_LessThan)
     .value("GreaterThan", SIMPL::Comparison::Enumeration::Operator_GreaterThan)
     .value("Equal", SIMPL::Comparison::Enumeration::Operator_Equal)
     .value("NotEqual", SIMPL::Comparison::Enumeration::Operator_NotEqual)
     .value("Unknown", SIMPL::Comparison::Enumeration::Operator_Unknown)
     .export_values();
 
-instanceSIMPLDelimiterTypeType
-    .value("Comma", SIMPL::DelimiterTypes::Type::Comma)
+instanceSIMPLDelimiterTypeType.value("Comma", SIMPL::DelimiterTypes::Type::Comma)
     .value("Semicolon", SIMPL::DelimiterTypes::Type::Semicolon)
     .value("Colon", SIMPL::DelimiterTypes::Type::Colon)
     .value("Tab", SIMPL::DelimiterTypes::Type::Tab)
     .value("Space", SIMPL::DelimiterTypes::Type::Space);
 
-instancePhaseTypeType
-    .value("Primary", PhaseType::Type::Primary)
+instancePhaseTypeType.value("Primary", PhaseType::Type::Primary)
     .value("Precipitate", PhaseType::Type::Precipitate)
     .value("Transformation", PhaseType::Type::Transformation)
     .value("Matrix", PhaseType::Type::Matrix)
@@ -64,8 +61,7 @@ instancePhaseTypeType
     .value("Unknown", PhaseType::Type::Unknown)
     .value("Any", PhaseType::Type::Any);
 
-instanceShapeTypeType
-    .value("Ellipsoid", ShapeType::Type::Ellipsoid)
+instanceShapeTypeType.value("Ellipsoid", ShapeType::Type::Ellipsoid)
     .value("SuperEllipsoid", ShapeType::Type::SuperEllipsoid)
     .value("CubeOctahedron", ShapeType::Type::CubeOctahedron)
     .value("CylinderA", ShapeType::Type::CylinderA)
@@ -75,8 +71,7 @@ instanceShapeTypeType
     .value("Unknown", ShapeType::Type::Unknown)
     .value("Any", ShapeType::Type::Any);
 
-instanceEnsembleInfoCrystalStructure
-    .value("Hexagonal_High", EnsembleInfo::CrystalStructure::Hexagonal_High)
+instanceEnsembleInfoCrystalStructure.value("Hexagonal_High", EnsembleInfo::CrystalStructure::Hexagonal_High)
     .value("Cubic_High", EnsembleInfo::CrystalStructure::Cubic_High)
     .value("Hexagonal_Low", EnsembleInfo::CrystalStructure::Hexagonal_Low)
     .value("Cubic_Low", EnsembleInfo::CrystalStructure::Cubic_Low)
@@ -89,8 +84,7 @@ instanceEnsembleInfoCrystalStructure
     .value("Trigonal_High", EnsembleInfo::CrystalStructure::Trigonal_High)
     .value("UnknownCrystalStructure", EnsembleInfo::CrystalStructure::UnknownCrystalStructure);
 
-instanceSIMPLScalarTypesType
-    .value("Int8", SIMPL::ScalarTypes::Type::Int8)
+instanceSIMPLScalarTypesType.value("Int8", SIMPL::ScalarTypes::Type::Int8)
     .value("UInt8", SIMPL::ScalarTypes::Type::UInt8)
     .value("Int16", SIMPL::ScalarTypes::Type::Int16)
     .value("UInt16", SIMPL::ScalarTypes::Type::UInt16)
@@ -102,15 +96,13 @@ instanceSIMPLScalarTypesType
     .value("Double", SIMPL::ScalarTypes::Type::Double)
     .value("Bool", SIMPL::ScalarTypes::Type::Bool);
 
-instanceCreateDataArrayInitializationChoices
-    .value("Manual", CreateDataArray::InitializationChoices::Manual)
+instanceCreateDataArrayInitializationChoices.value("Manual", CreateDataArray::InitializationChoices::Manual)
     .value("RandomWithRange", CreateDataArray::InitializationChoices::RandomWithRange)
     .export_values();
 
 instanceArrayCalculatorAngleUnits.value("Radians", ArrayCalculator::AngleUnits::Radians).value("Degrees", ArrayCalculator::AngleUnits::Degrees).export_values();
 
-instanceSIMPLNumericTypesType
-    .value("Int8", SIMPL::NumericTypes::Type::Int8)
+instanceSIMPLNumericTypesType.value("Int8", SIMPL::NumericTypes::Type::Int8)
     .value("UInt8", SIMPL::NumericTypes::Type::UInt8)
     .value("Int16", SIMPL::NumericTypes::Type::Int16)
     .value("UInt16", SIMPL::NumericTypes::Type::UInt16)
@@ -124,11 +116,7 @@ instanceSIMPLNumericTypesType
     .value("SizeT", SIMPL::NumericTypes::Type::SizeT)
     .value("UnknownNumType", SIMPL::NumericTypes::Type::UnknownNumType);
 
-instanceQtCheckState
-    .value("Unchecked", Qt::CheckState::Unchecked)
-    .value("PartiallyChecked", Qt::CheckState::PartiallyChecked)
-    .value("Checked", Qt::CheckState::Checked)
-    .export_values();
+instanceQtCheckState.value("Unchecked", Qt::CheckState::Unchecked).value("PartiallyChecked", Qt::CheckState::PartiallyChecked).value("Checked", Qt::CheckState::Checked).export_values();
 
 instanceSIMPLInfoStringFormat.value("HtmlFormat", SIMPL::InfoStringFormat::HtmlFormat).value("UnknownFormat", SIMPL::InfoStringFormat::UnknownFormat).export_values();
 
@@ -137,59 +125,50 @@ instanceAbstractFilter.def("connectObserver",
 instanceAbstractFilter.def("disconnectObserver",
                            [](AbstractFilter& filter, Observer& observer) { QObject::disconnect(&filter, &AbstractFilter::messageGenerated, &observer, &Observer::processPipelineMessage); });
 
-instanceAttributeMatrixCreationFilterParameterRequirementType
-    .def(py::init<>())
+instanceAttributeMatrixCreationFilterParameterRequirementType.def(py::init<>())
     .def(py::init<const IGeometry::Types&>())
     .def_readwrite("dcGeometryTypes", &AttributeMatrixCreationFilterParameter::RequirementType::dcGeometryTypes);
 
-instanceAttributeMatrixSelectionFilterParameterRequirementType
-    .def(py::init<>())
+instanceAttributeMatrixSelectionFilterParameterRequirementType.def(py::init<>())
     .def(py::init<const IGeometry::Types&, const AttributeMatrix::Types&>())
     .def_readwrite("dcGeometryTypes", &AttributeMatrixSelectionFilterParameter::RequirementType::dcGeometryTypes)
     .def_readwrite("amTypes", &AttributeMatrixSelectionFilterParameter::RequirementType::amTypes);
 
-instanceDataArrayCreationFilterParameterRequirementType
-    .def(py::init<>())
+instanceDataArrayCreationFilterParameterRequirementType.def(py::init<>())
     .def(py::init<const IGeometry::Types&, const AttributeMatrix::Types&>())
     .def_readwrite("dcGeometryTypes", &DataArrayCreationFilterParameter::RequirementType::dcGeometryTypes)
     .def_readwrite("amTypes", &DataArrayCreationFilterParameter::RequirementType::amTypes);
 
-instanceDataArraySelectionFilterParameterRequirementType
-    .def(py::init<>())
+instanceDataArraySelectionFilterParameterRequirementType.def(py::init<>())
     .def(py::init<const IGeometry::Types&, const AttributeMatrix::Types&, const std::vector<QString>&, const std::vector<std::vector<size_t>>&>())
     .def_readwrite("dcGeometryTypes", &DataArraySelectionFilterParameter::RequirementType::dcGeometryTypes)
     .def_readwrite("amTypes", &DataArraySelectionFilterParameter::RequirementType::amTypes)
     .def_readwrite("daTypes", &DataArraySelectionFilterParameter::RequirementType::daTypes)
     .def_readwrite("componentDimensions", &DataArraySelectionFilterParameter::RequirementType::componentDimensions);
 
-instanceDataContainerSelectionFilterParameterRequirementType
-    .def(py::init<>())
+instanceDataContainerSelectionFilterParameterRequirementType.def(py::init<>())
     .def(py::init<const IGeometry::Types&>())
     .def_readwrite("dcGeometryTypes", &DataContainerSelectionFilterParameter::RequirementType::dcGeometryTypes);
 
-instanceLinkedDataContainerSelectionFilterParameterRequirementType
-    .def(py::init<>())
+instanceLinkedDataContainerSelectionFilterParameterRequirementType.def(py::init<>())
     .def(py::init<const IGeometry::Types&>())
     .def_readwrite("dcGeometryTypes", &LinkedDataContainerSelectionFilterParameter::RequirementType::dcGeometryTypes);
 
-instanceMultiAttributeMatrixSelectionFilterParameterRequirementType
-    .def(py::init<>())
+instanceMultiAttributeMatrixSelectionFilterParameterRequirementType.def(py::init<>())
     .def(py::init<const IGeometry::Types&, const AttributeMatrix::Types&, const std::vector<QString>&, const std::vector<std::vector<size_t>>&>())
     .def_readwrite("dcGeometryTypes", &MultiAttributeMatrixSelectionFilterParameter::RequirementType::dcGeometryTypes)
     .def_readwrite("amTypes", &MultiAttributeMatrixSelectionFilterParameter::RequirementType::amTypes)
     .def_readwrite("daTypes", &MultiAttributeMatrixSelectionFilterParameter::RequirementType::daTypes)
     .def_readwrite("componentDimensions", &MultiAttributeMatrixSelectionFilterParameter::RequirementType::componentDimensions);
 
-instanceMultiDataArraySelectionFilterParameterRequirementType
-    .def(py::init<>())
+instanceMultiDataArraySelectionFilterParameterRequirementType.def(py::init<>())
     .def(py::init<const IGeometry::Types&, const AttributeMatrix::Types&, const std::vector<QString>&, const std::vector<std::vector<size_t>>&>())
     .def_readwrite("dcGeometryTypes", &MultiDataArraySelectionFilterParameter::RequirementType::dcGeometryTypes)
     .def_readwrite("amTypes", &MultiDataArraySelectionFilterParameter::RequirementType::amTypes)
     .def_readwrite("daTypes", &MultiDataArraySelectionFilterParameter::RequirementType::daTypes)
     .def_readwrite("componentDimensions", &MultiDataArraySelectionFilterParameter::RequirementType::componentDimensions);
 
-instanceMultiDataContainerSelectionFilterParameterRequirementType
-    .def(py::init<>())
+instanceMultiDataContainerSelectionFilterParameterRequirementType.def(py::init<>())
     .def(py::init<const IGeometry::Types&, const AttributeMatrix::Types&, const std::vector<QString>&, const std::vector<std::vector<size_t>>&>())
     .def_readwrite("dcGeometryTypes", &MultiDataContainerSelectionFilterParameter::RequirementType::dcGeometryTypes)
     .def_readwrite("amTypes", &MultiDataContainerSelectionFilterParameter::RequirementType::amTypes)

@@ -28,11 +28,10 @@ instanceFloat3rdOrderPoly.def(py::init<float, float, float, float, float, float,
 
 py::enum_<RenameErrorCodes> instanceRenameErrorCodes(mod, "RenameErrorCodes");
 
-instanceRenameErrorCodes
-.value("OLD_DOES_NOT_EXIST", RenameErrorCodes::OLD_DOES_NOT_EXIST)
-.value("SUCCESS", RenameErrorCodes::SUCCESS)
-.value("NEW_EXISTS", RenameErrorCodes::NEW_EXISTS)
-.value("SAME_PATH", RenameErrorCodes::SAME_PATH)
-.export_values();
+instanceRenameErrorCodes.value("OLD_DOES_NOT_EXIST", RenameErrorCodes::OLD_DOES_NOT_EXIST)
+    .value("SUCCESS", RenameErrorCodes::SUCCESS)
+    .value("NEW_EXISTS", RenameErrorCodes::NEW_EXISTS)
+    .value("SAME_PATH", RenameErrorCodes::SAME_PATH)
+    .export_values();
 
 py::class_<DataContainerGrid> instanceDataContainerGrid(mod, "DataContainerGrid");

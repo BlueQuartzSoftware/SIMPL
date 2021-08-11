@@ -70,12 +70,15 @@ py::class_<DataArraySelectionFilterParameter::RequirementType> instanceDataArray
 
 py::class_<DataContainerSelectionFilterParameter::RequirementType> instanceDataContainerSelectionFilterParameterRequirementType(instanceDataContainerSelectionFilterParameter, "RequirementType");
 
-py::class_<LinkedDataContainerSelectionFilterParameter::RequirementType> instanceLinkedDataContainerSelectionFilterParameterRequirementType(instanceLinkedDataContainerSelectionFilterParameter, "RequirementType");
+py::class_<LinkedDataContainerSelectionFilterParameter::RequirementType> instanceLinkedDataContainerSelectionFilterParameterRequirementType(instanceLinkedDataContainerSelectionFilterParameter,
+                                                                                                                                            "RequirementType");
 
-py::class_<MultiAttributeMatrixSelectionFilterParameter::RequirementType> instanceMultiAttributeMatrixSelectionFilterParameterRequirementType(instanceMultiAttributeMatrixSelectionFilterParameter, "RequirementType");
+py::class_<MultiAttributeMatrixSelectionFilterParameter::RequirementType> instanceMultiAttributeMatrixSelectionFilterParameterRequirementType(instanceMultiAttributeMatrixSelectionFilterParameter,
+                                                                                                                                              "RequirementType");
 
 py::class_<MultiDataArraySelectionFilterParameter::RequirementType> instanceMultiDataArraySelectionFilterParameterRequirementType(instanceMultiDataArraySelectionFilterParameter, "RequirementType");
 
-py::class_<MultiDataContainerSelectionFilterParameter::RequirementType> instanceMultiDataContainerSelectionFilterParameterRequirementType(instanceMultiDataContainerSelectionFilterParameter, "RequirementType");
+py::class_<MultiDataContainerSelectionFilterParameter::RequirementType> instanceMultiDataContainerSelectionFilterParameterRequirementType(instanceMultiDataContainerSelectionFilterParameter,
+                                                                                                                                          "RequirementType");
 
 py::enum_<Qt::CheckState> instanceQtCheckState(mod, "QtCheckState");
