@@ -569,13 +569,15 @@ if(SIMPL_WRAP_PYTHON)
     INCLUDE_DIRS ${SIMPLProj_SOURCE_DIR}/Wrapping/Python
   )
 
+  set(SIMPL_HELPERS_PY_FILE ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/SIMPL/simpl_helpers.py)
+
   if(DREAM3D_ANACONDA)
-    configure_file(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/SIMPL/simpl_helpers_conda.py ${DREAM3D_PYTHON_PACKAGE_DIR}/simpl_helpers.py)
+    configure_file(${SIMPL_HELPERS_PY_FILE} ${DREAM3D_PYTHON_PACKAGE_DIR}/simpl_helpers.py COPYONLY)
     file(APPEND ${DREAM3D_INIT_PY_FILE} "from . import simpl_helpers\n")
   else()
     add_custom_target(CopyPythonSupport ALL
       COMMAND ${CMAKE_COMMAND} -E copy
-        ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/SIMPL/simpl_helpers.py
+        ${SIMPL_HELPERS_PY_FILE}
         "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}$<${_isMultiConfig}:/$<CONFIG>>"
       COMMENT "Copying simpl_helpers.py to binary directory"
     )

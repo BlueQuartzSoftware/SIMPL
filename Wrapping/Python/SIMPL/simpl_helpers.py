@@ -1,5 +1,9 @@
-import simpl
-import simplpy as d3d
+try:
+    import dream3d.simpl as simpl
+    import dream3d.simplpy as d3d
+except ImportError:
+    import simpl
+    import simplpy as d3d
 
 import numpy as np
 
