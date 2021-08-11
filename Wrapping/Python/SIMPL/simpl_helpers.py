@@ -9,6 +9,58 @@ import numpy as np
 
 from enum import IntEnum
 
+# Custom enumerations for Python
+
+class ArrayHandling(IntEnum):
+    CopyArrays = 0
+    MoveArrays = 1
+
+class FeatureGeneration(IntEnum):
+    GenerateFeatures = 0
+    AlreadyHaveFeatures = 1
+
+class SaveShapeDescArrays(IntEnum):
+    DoNotSave = 0
+    SaveToNewAttrMatrix = 1
+    AppendToExistingAttrMatrix = 2
+
+class Delimiter(IntEnum):
+    COMMA = 0
+    SEMICOLON = 1
+    COLON = 2
+    TAB = 3
+
+class Hemisphere(IntEnum):
+    Northern = 0
+    Southern = 1
+
+class WhatToMove(IntEnum):
+    AttributeMatrix = 0
+    AttributeArray = 1
+
+class AngleRepresentation(IntEnum):
+    Radians = 0
+    Degrees = 1
+    Invalid = 2
+
+class BadDataOperation(IntEnum):
+    Dilate = 0
+    Erode = 1
+
+class ReferenceOrientation(IntEnum):
+    AverageOrientation = 0
+    OrientationAtFeatureCentroid = 1
+
+class DistributionFitType(IntEnum):
+    Beta = 0
+    Lognormal = 1
+    Power = 2
+
+class ObjectToCopy(IntEnum):
+    DataContainer = 0
+    AttributeMatrix = 1
+    AttributeArray = 2
+
 def ReadDREAM3DFile(data_container_array, input_file):
     '''
     Executes the filter DataContainerReader and returns the error. This will read the entire
@@ -95,44 +147,31 @@ def CreateDataArray(name, shape, cDims, type):
     type -- The numpy type of array to create: 8,16,32,64 signed/unsiged and 32/64 floats are supported
     '''
     # Create a numpy array of ones to hold our data
-    ashape = np.append([np.prod(shape)], cDims)
-    # Create a numpy array to hold our data
-    num_array = np.ndarray(ashape, dtype=type, order='C')
-    # Get the numpy array as contiguous
-    z = np.asarray(num_array)
-    if not z.flags.contiguous:
-        z = np.ascontiguousarray(z)
-    z.fill(0)
-    assert z.flags.contiguous, 'Only contiguous arrays are supported.'
-    assert not np.issubdtype(z.dtype, np.complex128), \
-            'Complex numpy arrays cannot be converted to vtk arrays.'\
-            'Use real() or imag() to get a component of the array before'\
-            ' passing it to vtk.'
-    
+    n_tuples = np.prod(shape)
+
     # Declare the number of components for the array
     if type == np.int8:
-        array = simpl.Int8Array(z, name, False)
+        array = simpl.Int8Array(n_tuples, cDims, name, 0)
     elif type == np.uint8:
-        array = simpl.UInt8Array(z, name, False)
+        array = simpl.UInt8Array(n_tuples, cDims, name, 0)
     elif type == np.int16:
-        array = simpl.Int16Array(z, name, False)
+        array = simpl.Int16Array(n_tuples, cDims, name, 0)
     elif type == np.uint16:
-        array = simpl.UInt16Array(z, name, False)
+        array = simpl.UInt16Array(n_tuples, cDims, name, 0)
     elif type == np.int32:
-        array = simpl.Int32Array(z, name, False)
+        array = simpl.Int32Array(n_tuples, cDims, name, 0)
     elif type == np.uint32:
-        array = simpl.UInt32Array(z, name, False)
+        array = simpl.UInt32Array(n_tuples, cDims, name, 0)
     elif type == np.int64:
-        array = simpl.Int64Array(z, name, False)
+        array = simpl.Int64Array(n_tuples, cDims, name, 0)
     elif type == np.uint64:
-        array = simpl.UInt64Array(z, name, False)
+        array = simpl.UInt64Array(n_tuples, cDims, name, 0)
     elif type == np.float32:
-        array = simpl.FloatArray(z, name, False)
+        array = simpl.FloatArray(n_tuples, cDims, name, 0.0)
     elif type == np.double:
-        array = simpl.DoubleArray(z, name, False)     
-    
-    # we need to return the 'z' numpy array so it does not go out of scope.
-    return (z, array)
+        array = simpl.DoubleArray(n_tuples, cDims, name, 0.0)
+
+    return (array.npview(), array)
 
 def CreateDataContainerProxy(dca, data_array_paths):
     '''
@@ -585,64 +624,12 @@ def is_number(s):
         return True
     except ValueError:
         pass
- 
+
     try:
         import unicodedata
         unicodedata.numeric(s)
         return True
     except (TypeError, ValueError):
         pass
- 
+
     return False
-
-# Custom enumerations for Python
-
-class ArrayHandling(IntEnum):
-    CopyArrays = 0
-    MoveArrays = 1
-
-class FeatureGeneration(IntEnum):
-    GenerateFeatures = 0
-    AlreadyHaveFeatures = 1
-
-class SaveShapeDescArrays(IntEnum):
-    DoNotSave = 0
-    SaveToNewAttrMatrix = 1
-    AppendToExistingAttrMatrix = 2
-
-class Delimiter(IntEnum):
-    COMMA = 0
-    SEMICOLON = 1
-    COLON = 2
-    TAB = 3
-
-class Hemisphere(IntEnum):
-    Northern = 0
-    Southern = 1
-
-class WhatToMove(IntEnum):
-    AttributeMatrix = 0
-    AttributeArray = 1
-
-class AngleRepresentation(IntEnum):
-    Radians = 0
-    Degrees = 1
-    Invalid = 2
-
-class BadDataOperation(IntEnum):
-    Dilate = 0
-    Erode = 1
-
-class ReferenceOrientation(IntEnum):
-    AverageOrientation = 0
-    OrientationAtFeatureCentroid = 1
-
-class DistributionFitType(IntEnum):
-    Beta = 0
-    Lognormal = 1
-    Power = 2
-
-class ObjectToCopy(IntEnum):
-    DataContainer = 0
-    AttributeMatrix = 1
-    AttributeArray = 2
