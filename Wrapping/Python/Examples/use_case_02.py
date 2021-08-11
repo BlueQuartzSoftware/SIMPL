@@ -11,7 +11,16 @@ import dream3d.simplpy as simplpy
 import dream3d.simpl_helpers as simpl_helpers
 
 
-
+#Generates a csv file with floats 0-37988 and ints 1-37989
+def make_random_data():
+    with open('new_data.csv', 'w') as f:
+        writer = csv.writer(f, lineterminator='\n',)
+        writer.writerow(["Float", "Int"])
+        i = 0
+        while i < 37989:
+            row = [i, i+1]
+            writer.writerow(row)
+            i = i+1
 
 def import_csv_xyz_vertices_2(file_path: str):
     """
@@ -36,6 +45,35 @@ def import_csv_xyz_vertices_2(file_path: str):
     dca.addOrReplaceDataContainer(dc)
     # Write the Vertex Geometry out to a .dream3d file.
     err = simpl_helpers.WriteDREAM3DFile('vert_geom_2.dream3d', dca, True)
+    
+    # Create Cell AttributeMatrix
+    tupleDims = simpl.VectorSizeT([1, 37989])
+    am = simpl_helpers.CreateAttributeMatrix(tupleDims, 'CellAttributeMatrix', simpl.AttributeMatrix.Type.Cell)
+
+    # Create Data Arrays
+    #Loads in csv file and gets data for each type
+    uints = np.genfromtxt('new_data.csv', dtype=np.uint32, skip_header=1, usecols=1, delimiter=',')
+    f32s = np.genfromtxt('new_data.csv', dtype=np.float32, usecols=0, skip_header=1, delimiter=',')
+
+    #Creates arrays from data with shape of (# of vertices x 1)
+    uintarr = np.ndarray(shape=(37989, 1), dtype=np.uint32, buffer=uints)
+    floatarr = np.ndarray(shape=(37989, 1), dtype=np.float32, buffer=f32s)
+
+    #     Number of tuples must match the number of vertices
+    #     Create 2 Data Arrays: UInt32 and Float32
+    #     Populate data ararys with some random data
+    #       or
+    #     for bonus points read the data from another text file
+    #Makes simpl arrays using numpy arrays
+    uint32arr = simpl.UInt32Array(uintarr, 'UInt32 Arr', True)
+    f32arr = simpl.FloatArray(floatarr, 'Float32 Arr', True)
+    
+    # Add Data Arrays to AttributeMatrix
+    am.addOrReplaceAttributeArray(uint32arr)
+    am.addOrReplaceAttributeArray(f32arr)
+
+    # Add AttributeMatirx to DataContainer
+    dc.addOrReplaceAttributeMatrix(am)
 
 
 def import_csv_xyz_vertices_1(file_path: str):
