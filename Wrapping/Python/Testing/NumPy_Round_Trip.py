@@ -38,7 +38,7 @@ def Test1():
   dc.addOrReplaceAttributeMatrix(cellAm)
 
   # Create the wrapped DataArray<float> array
-  eulers = simpl.FloatArray(z, 'Eulers', False)
+  eulers = simpl.FloatArray(z, 'Eulers')
   # Add the DataArray to the AttributeMatrix
   cellAm.addOrReplaceAttributeArray(eulers)
 
@@ -123,7 +123,7 @@ def Test3():
   assert np_rads.flags.contiguous, 'Only contiguous arrays are supported.'
   
   # Create the wrapped DataArray<float> object
-  simpl_rads = simpl.FloatArray(np_rads, 'Eulers as Rads', False)
+  simpl_rads = simpl.FloatArray(np_rads, 'Eulers as Rads')
   # Add the DataArray to the AttributeMatrix
   cellAm.addOrReplaceAttributeArray(simpl_rads)
 

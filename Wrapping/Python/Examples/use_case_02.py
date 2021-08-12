@@ -23,7 +23,7 @@ def import_csv_xyz_vertices_2(file_path: str):
     verts_flat = rfn.structured_to_unstructured(verts_np, dtype=np.float32, copy=False, casting='safe')
     
     # Create a simpl.DataArray object to hold the vertices by reference
-    verts = simpl.FloatArray(verts_flat, "Vertices", False)
+    verts = simpl.FloatArray(verts_flat, "Vertices")
     # Create a VertexGeometry and set the vertices into the geometry
     vertGeom = simpl.VertexGeom()
     vertGeom.setVertices(verts)
@@ -59,7 +59,7 @@ def import_csv_xyz_vertices_1(file_path: str):
     shape = np_verts.shape
 
     # Create a simpl.DataArray object to hold the vertices by reference
-    verts = simpl.FloatArray(np_verts, "Vertices", False)
+    verts = simpl.FloatArray(np_verts, "Vertices")
     # Create a VertexGeometry and set the vertices into the geometry
     vertGeom = simpl.VertexGeom()
     vertGeom.setVertices(verts)

@@ -24,47 +24,37 @@ void registerDataArray(pybind11::module& mod, const char* name)
   using namespace py::literals;
   using DataArrayType = DataArray<T>;
   py::class_<DataArrayType, IDataArray, std::shared_ptr<DataArrayType>>(mod, name, py::buffer_protocol())
-      .def(py::init([](size_t numElements, const QString& name, T initValue) {
-        if(name.isEmpty())
-        {
-          throw std::invalid_argument("name cannot be empty");
-        }
-        return std::make_shared<DataArrayType>(numElements, name, initValue);
-      }))
-      .def(py::init([](size_t numElements, const std::vector<size_t>& cDims, const QString& name, T initValue) {
-        if(name.isEmpty())
-        {
-          throw std::invalid_argument("name cannot be empty");
-        }
-        return std::make_shared<DataArrayType>(numElements, name, cDims, initValue);
-      }))
-      .def(py::init([](py::array_t<T, py::array::c_style> data, const QString& name, bool ownsData) {
-        py::buffer_info buf = data.request();
-        const std::vector<ssize_t>& shape = buf.shape;
-        ssize_t ndim = buf.ndim;
-        size_t numTuples = 0;
-        std::vector<size_t> cDims;
-        if(ndim == 0)
-        {
-          numTuples = 1;
-          cDims.push_back(1);
-        }
-        else if(ndim == 1)
-        {
-          numTuples = static_cast<size_t>(shape.front());
-          cDims.push_back(1);
-        }
-        else
-        {
-          numTuples = static_cast<size_t>(shape.front());
-          cDims.resize(ndim - 1);
-          for(ssize_t e = 0; e < ndim - 1; e++)
-          {
-            cDims[e] = static_cast<size_t>(shape[e + 1]);
-          }
-        }
-        return DataArrayType::WrapPointer(reinterpret_cast<T*>(data.mutable_data(0)), numTuples, cDims, name, ownsData);
-      }))
+      .def(py::init([](size_t numElements, const QString& name, T initValue) { return std::make_shared<DataArrayType>(numElements, name, initValue); }), "num_elements"_a, "name"_a, "init_value"_a)
+      .def(py::init([](size_t numElements, const std::vector<size_t>& cDims, const QString& name, T initValue) { return std::make_shared<DataArrayType>(numElements, name, cDims, initValue); }),
+           "num_elements"_a, "c_dims"_a, "name"_a, "init_value"_a)
+      .def(py::init([](py::array_t<T, py::array::c_style> data, const QString& name) {
+             py::buffer_info buf = data.request();
+             const std::vector<ssize_t>& shape = buf.shape;
+             ssize_t ndim = buf.ndim;
+             size_t numTuples = 0;
+             std::vector<size_t> cDims;
+             if(ndim == 0)
+             {
+               numTuples = 1;
+               cDims.push_back(1);
+             }
+             else if(ndim == 1)
+             {
+               numTuples = static_cast<size_t>(shape.front());
+               cDims.push_back(1);
+             }
+             else
+             {
+               numTuples = static_cast<size_t>(shape.front());
+               cDims.resize(ndim - 1);
+               for(ssize_t e = 0; e < ndim - 1; e++)
+               {
+                 cDims[e] = static_cast<size_t>(shape[e + 1]);
+               }
+             }
+             return DataArrayType::WrapPointer(reinterpret_cast<T*>(data.mutable_data(0)), numTuples, cDims, name, false);
+           }),
+           py::keep_alive<1, 2>(), "data"_a, "name"_a)
       .def_property("name", &DataArrayType::getName, &DataArrayType::setName)
       .def("__getitem__", [](const DataArrayType& dataArray, size_t i) { return dataArray.at(i); })
       .def("__setitem__", [](DataArrayType& dataArray, size_t i, T value) { dataArray.at(i) = value; })

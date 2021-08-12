@@ -35,7 +35,7 @@ def DataArrayTest():
         arrayList.append(z_flat)
         # Now add an array that is purely allocated on the C++/SIMPL side of things.
         # print ('  Creating Int32Array locally to the Loop.... Int32 SIMPL %s' % array.Name)
-        array = simpl.Int32Array(shape[0] * shape[1] * shape[2], 'Int32 SIMPL ' + array.Name, True)
+        array = simpl.Int32Array(shape[0] * shape[1] * shape[2], 'Int32 SIMPL ' + array.Name, 0)
         # cellAm.addOrReplaceAttributeArray(array)
         # for x in range(shape[0]*shape[1]*shape[2]):
         #     array.setValue(x, x)
