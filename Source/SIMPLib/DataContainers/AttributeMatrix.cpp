@@ -67,6 +67,10 @@ AttributeMatrix::AttributeMatrix(const std::vector<size_t>& tDims, const QString
 , m_TupleDims(tDims)
 , m_Type(attrType)
 {
+  if(name.isEmpty())
+  {
+    throw std::invalid_argument("AttributeMatrix name must not be empty");
+  }
 }
 
 // -----------------------------------------------------------------------------

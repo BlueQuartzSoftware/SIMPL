@@ -71,6 +71,10 @@ DataContainer::DataContainer() = default;
 DataContainer::DataContainer(const QString& name)
 : IDataStructureContainerNode(name)
 {
+  if(name.isEmpty())
+  {
+    throw std::invalid_argument("DataContainer name must not be empty");
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -83,10 +87,6 @@ DataContainer::~DataContainer() = default;
 // -----------------------------------------------------------------------------
 DataContainer::Pointer DataContainer::New(const QString& name)
 {
-  if(name.isEmpty())
-  {
-    return DataContainer::NullPointer();
-  }
   DataContainer::Pointer sharedPtr(new DataContainer(name));
   return sharedPtr;
 }
@@ -96,12 +96,7 @@ DataContainer::Pointer DataContainer::New(const QString& name)
 // -----------------------------------------------------------------------------
 DataContainer::Pointer DataContainer::New(const DataArrayPath& path)
 {
-  if(path.isEmpty())
-  {
-    return DataContainer::NullPointer();
-  }
-  DataContainer::Pointer sharedPtr(new DataContainer(path.getDataContainerName()));
-  return sharedPtr;
+  return New(path.getDataContainerName());
 }
 
 // -----------------------------------------------------------------------------

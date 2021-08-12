@@ -37,7 +37,16 @@
 #include <stdexcept>
 #include <string>
 
-//#include "SIMPLib/DataContainers/DsnIterators.h"
+namespace
+{
+void checkName(const QString& name)
+{
+  if(name.contains('/'))
+  {
+    throw std::invalid_argument("IDataStructureNode name must not contain \'/\'");
+  }
+}
+} // namespace
 
 // -----------------------------------------------------------------------------
 //
@@ -57,6 +66,7 @@ IDataStructureNode::IDataStructureNode(const QString& name)
 : m_Name(name)
 , m_Parent(nullptr)
 {
+  checkName(m_Name);
   updateNameHash();
 }
 
@@ -67,6 +77,7 @@ IDataStructureNode::IDataStructureNode(ParentType* parent, const QString& name)
 : m_Name(name)
 , m_Parent(parent)
 {
+  checkName(m_Name);
   updateNameHash();
 
   // Add to parent's children

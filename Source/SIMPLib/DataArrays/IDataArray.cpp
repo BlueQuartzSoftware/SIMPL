@@ -19,6 +19,10 @@
 IDataArray::IDataArray(const QString& name)
 : IDataStructureNode(name)
 {
+  if(name.isEmpty())
+  {
+    throw std::invalid_argument("IDataArray name must not be empty");
+  }
 }
 
 // -----------------------------------------------------------------------------

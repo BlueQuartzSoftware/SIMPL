@@ -98,7 +98,7 @@ public:
     {
       return NullPointer();
     }
-    Pointer ptr = std::shared_ptr<Self>(new Self(numElements, true));
+    Pointer ptr = std::shared_ptr<Self>(new Self(numElements, name, true));
     if(allocate)
     {
       if(ptr->Allocate() < 0)
@@ -122,7 +122,7 @@ public:
     {
       return NullPointer();
     }
-    Pointer ptr = std::shared_ptr<Self>(new Self(numElements, true));
+    Pointer ptr = std::shared_ptr<Self>(new Self(numElements, QString::fromStdString(name), true));
     if(allocate)
     {
       if(ptr->Allocate() < 0)
@@ -130,7 +130,6 @@ public:
         return Self::NullPointer();
       }
     }
-    ptr->setName(QString::fromStdString(name));
     return ptr;
   }
 
@@ -790,8 +789,9 @@ protected:
    * @param numElements The number of elements in the internal array.
    * @param takeOwnership Will the class clean up the memory. Default=true
    */
-  StructArray(size_t numElements, bool ownsData = true)
-  : m_Array(nullptr)
+  StructArray(size_t numElements, const QString& name, bool ownsData = true)
+  : IDataArray(name)
+  , m_Array(nullptr)
   , m_Size(numElements)
   , m_OwnsData(ownsData)
   , m_IsAllocated(false)
