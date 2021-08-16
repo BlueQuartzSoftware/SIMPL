@@ -387,8 +387,14 @@ void CreateGeometry::dataCheck()
     }
     else
     {
-      vertex = VertexGeom::CreateGeometry(verts, SIMPL::Geometry::VertexGeometry);
-      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath0())->removeAttributeArray(getSharedVertexListArrayPath0().getDataArrayName());
+      AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath0());
+      if(nullptr != verts.get() )
+      {
+        // Remove from the Attribute Matrix FIRST
+        IDataArray::Pointer vertsToRemove = am->removeAttributeArray(getSharedVertexListArrayPath0().getDataArrayName());
+        // Assign the Verts to the newly create VertexGeom
+        vertex = VertexGeom::CreateGeometry(verts, SIMPL::Geometry::VertexGeometry);
+      }
     }
     dc->setGeometry(vertex);
 

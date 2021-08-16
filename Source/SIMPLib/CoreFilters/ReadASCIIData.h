@@ -37,7 +37,8 @@ class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
     INCONSISTENT_COLS = -103,
     CONVERSION_FAILURE = -104,
     DUPLICATE_NAMES = -105,
-    INVALID_ARRAY_TYPE = -106
+    INVALID_ARRAY_TYPE = -106,
+    ILLEGAL_NAMES = -107
   };
 
     /**

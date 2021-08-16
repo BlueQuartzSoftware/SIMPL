@@ -304,6 +304,14 @@ void ReadASCIIData::dataCheck()
           notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
           return;
         }
+        if(headerName.contains("&") || headerName.contains(":") || headerName.contains("/") || headerName.contains("\\") )
+        {
+          QString ss = "The header name \"" + headerName + "\" contains a character that will cause problems. Do Not use '&',':', '/' or '\\' in the header names.";
+          setErrorCondition(ILLEGAL_NAMES);
+          AbstractFilter::notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          return;
+        }
+
       }
     }
   }
