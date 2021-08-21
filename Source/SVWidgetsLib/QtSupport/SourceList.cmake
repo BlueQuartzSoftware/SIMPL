@@ -1,7 +1,3 @@
-
-
-
-
 set(SVWidgetsLib_QtSupport_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSApplicationFileInfo.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSMacros.h
@@ -34,7 +30,7 @@ set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitter.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitterHandle.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStringEdit.h
-  
+
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/httpserver/QtSStaticFileController.h
 )
 
@@ -70,15 +66,23 @@ set(SVWidgetsLib_QtSupport_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/httpserver/QtSStaticFileController.cpp
 )
 
-cmp_IDE_SOURCE_PROPERTIES( "SVWidgetsLib" "${SVWidgetsLib_QtSupport_HDRS};${SVWidgetsLib_QtSupport_MOC_HDRS}" "${SVWidgetsLib_QtSupport_SRCS}" "0")
+set(SVWidgetsLib_QtSupport_UIS
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSApplicationAboutBoxDialog.ui
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSBookmarkMissingDialog.ui
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSDistributionTypeWidget.ui
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSFileDragMessageBox.ui
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSStringEdit.ui
+)
+
+cmp_IDE_SOURCE_PROPERTIES("SVWidgetsLib/QtSupport" "${SVWidgetsLib_QtSupport_HDRS};${SVWidgetsLib_QtSupport_MOC_HDRS}" "${SVWidgetsLib_QtSupport_SRCS}" "0")
+cmp_IDE_GENERATED_PROPERTIES("SVWidgetsLib/QtSupport/UI_Files" "${SVWidgetsLib_QtSupport_UIS}" "")
 
 # -- Add Qt resource file
-SET(SVWidgetsLib_QtSupport_RCS
+set(SVWidgetsLib_QtSupport_RCS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSupportResources.qrc
 )
 
-QT5_ADD_RESOURCES( SVWidgetsLib_QtSupport_Generated_RC_SRCS "${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSupportResources.qrc"  )
-
+QT5_ADD_RESOURCES(SVWidgetsLib_QtSupport_Generated_RC_SRCS "${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSupportResources.qrc")
 
 # --------------------------------------------------------------------
 # and finally this will run moc:
@@ -86,26 +90,18 @@ QT5_ADD_RESOURCES( SVWidgetsLib_QtSupport_Generated_RC_SRCS "${SVWidgetsLib_SOUR
 # set_source_files_properties( ${SVWidgetsLib_QtSupport_Generated_MOC_SRCS} PROPERTIES GENERATED TRUE)
 # set_source_files_properties( ${SVWidgetsLib_QtSupport_Generated_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
 
-
-
 # --------------------------------------------------------------------
 # Wrap UI files so they are AUTO UIC'ed
-QT5_WRAP_UI( SVWidgetsLib_QtSupport_Generated_UI_HDRS   
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSApplicationAboutBoxDialog.ui
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSBookmarkMissingDialog.ui
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSDistributionTypeWidget.ui
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSFileDragMessageBox.ui
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSStringEdit.ui
-)
+QT5_WRAP_UI(SVWidgetsLib_QtSupport_Generated_UI_HDRS ${SVWidgetsLib_QtSupport_UIS})
 foreach(h ${SVWidgetsLib_QtSupport_Generated_UI_HDRS} ${SVWidgetsLib_QtSupport_Generated_RC_SRCS})
   set_property(SOURCE ${h} PROPERTY SKIP_AUTOMOC ON)
 endforeach()
 
 # --------------------------------------------------------------------
 #-- Put the Qt generated files into their own group for IDEs
-cmp_IDE_SOURCE_PROPERTIES( "Generated/Qt_Moc" "" "${SVWidgetsLib_QtSupport_Generated_MOC_SRCS}" "0")
-cmp_IDE_SOURCE_PROPERTIES( "Generated/Qt_Uic" "${SVWidgetsLib_QtSupport_Generated_UI_HDRS}" "" "0")
-cmp_IDE_SOURCE_PROPERTIES( "Generated/Qt_Qrc" "${SVWidgetsLib_QtSupport_Generated_RC_SRCS}" "" "0")
+cmp_IDE_SOURCE_PROPERTIES("Generated/Qt_Moc" "" "${SVWidgetsLib_QtSupport_Generated_MOC_SRCS}" "0")
+cmp_IDE_SOURCE_PROPERTIES("Generated/Qt_Uic" "${SVWidgetsLib_QtSupport_Generated_UI_HDRS}" "" "0")
+cmp_IDE_SOURCE_PROPERTIES("Generated/Qt_Qrc" "${SVWidgetsLib_QtSupport_Generated_RC_SRCS}" "" "0")
 
 set(SVWidgets_QtSupport_Files
   ${SVWidgetsLib_QtSupport_HDRS}
