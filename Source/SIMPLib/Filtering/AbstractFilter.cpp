@@ -577,7 +577,7 @@ void AbstractFilter::clearWarningCode()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyMissingProperty(FilterParameter* filterParameter)
+void AbstractFilter::notifyMissingProperty(const FilterParameter* filterParameter)
 {
   QString ss =
       QString("Error occurred transferring the Filter Parameter '%1' in Filter '%2' to the filter instance. The pipeline may run but the underlying filter will NOT be using the values from the GUI."

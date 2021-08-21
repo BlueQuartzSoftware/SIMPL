@@ -454,7 +454,7 @@ public:
    * @brief notifyMissingProperty
    * @param filterParameter
    */
-  void notifyMissingProperty(FilterParameter* filterParameter);
+  void notifyMissingProperty(const FilterParameter* filterParameter);
 
   //---------------
   // Other convenience methods
