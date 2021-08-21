@@ -147,7 +147,7 @@ void MultiDataArraySelectionWidget::setupGui()
   connect(m_SelectedAttributeMatrixPath, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)));
   connect(this, SIGNAL(unlockDataArrayPathSelection(QToolButton*)), m_SelectedAttributeMatrixPath, SLOT(selectionWidgetUnlocked(QToolButton*)));
 
-  std::vector<DataArrayPath> selectedPaths = m_FilterParameter->getGetterCallback()();
+  std::vector<DataArrayPath> selectedPaths = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(selectedPaths);
   m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
   m_SelectedAttributeMatrixPath->setPropertyName(getFilterParameter()->getHumanLabel());
@@ -549,15 +549,7 @@ void MultiDataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* f
   }
 
   Q_UNUSED(filter)
-  MultiDataArraySelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(selectedPaths);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, selectedPaths, getFilter());
 }
 
 // -----------------------------------------------------------------------------

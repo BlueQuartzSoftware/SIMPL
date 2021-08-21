@@ -76,7 +76,7 @@ void CalculatorWidget::setupGui()
   blockSignals(true);
   if(getFilterParameter() != nullptr)
   {
-    QString str = m_FilterParameter->getGetterCallback()();
+    QString str = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     equation->setText(str);
   }
   blockSignals(false);
@@ -404,15 +404,7 @@ void CalculatorWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void CalculatorWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  CalculatorFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(equation->text());
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, equation->text(), getFilter());
 
   ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);
   Q_ASSERT_X(calculatorFilter != nullptr, "NULL Pointer", "CalculatorWidget can ONLY be used with an ArrayCalculator filter");

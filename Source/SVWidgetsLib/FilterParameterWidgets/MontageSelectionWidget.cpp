@@ -105,7 +105,7 @@ void MontageSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
   // Set FilterParameter values
-  MontageSelection selection = dynamic_cast<MontageSelectionFilterParameter*>(getFilterParameter())->getGetterCallback()();
+  MontageSelection selection = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   m_Ui->prefixStringEdit->setText(selection.getPrefix());
   m_Ui->suffixStringEdit->setText(selection.getSuffix());
   m_Ui->paddingSpinBox->setValue(selection.getPadding());
@@ -209,13 +209,5 @@ void MontageSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
   MontageSelection selection = getMontageSelection();
 
   Q_UNUSED(filter)
-  MontageSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(selection);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, selection, getFilter());
 }

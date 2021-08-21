@@ -46,6 +46,7 @@
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 
+#include "SVWidgetsLib/Dialogs/DetailedErrorDialog.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
@@ -194,6 +195,53 @@ public:
   FilterParameterWidget& operator=(const FilterParameterWidget&) = delete; // Copy Assignment Not Implemented
   FilterParameterWidget& operator=(FilterParameterWidget&&) = delete;      // Move Assignment Not Implemented
 };
+
+/**
+ * @brief Calls a FilterParameter's getter callback inside a try/catch block
+ * reporting any errors using a DetailedErrorDialog
+ * @tparam ParameterType
+ * @param parameter
+ * @param filter
+ * @return
+ */
+template <class ParameterType>
+auto SafeFilterParameterGetter(const ParameterType* parameter, AbstractFilter* filter)
+{
+  using ReturnType = decltype(parameter->getGetterCallback()());
+  try
+  {
+    auto getter = parameter->getGetterCallback();
+    return getter();
+  } catch(const std::exception& exception)
+  {
+    filter->notifyMissingProperty(parameter);
+    DetailedErrorDialog::warning(nullptr, "Error", "Caught an exception while attempting to access a FilterParameter getter callback", exception.what());
+    return ReturnType();
+  }
+}
+
+/**
+ * @brief Calls a FilterParameter's setter callback inside a try/catch block
+ * reporting any errors using a DetailedErrorDialog
+ * @tparam ValueType
+ * @tparam ParameterType
+ * @param parameter
+ * @param value
+ * @param filter
+ */
+template <class ParameterType, class ValueType>
+void SafeFilterParameterSetter(const ParameterType* parameter, ValueType&& value, AbstractFilter* filter)
+{
+  try
+  {
+    auto setter = parameter->getSetterCallback();
+    setter(std::forward<ValueType>(value));
+  } catch(const std::exception& exception)
+  {
+    filter->notifyMissingProperty(parameter);
+    DetailedErrorDialog::warning(nullptr, "Error", "Caught an exception while attempting to access a FilterParameter setter callback", exception.what());
+  }
+}
 
 // -----------------------------------------------------------------------------
 //

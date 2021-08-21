@@ -83,7 +83,7 @@ void IntVec2Widget::setupGui()
   {
     IntVec2WidgetLabel->setText(getFilterParameter()->getHumanLabel());
 
-    IntVec2Type data = m_FilterParameter->getGetterCallback()();
+    IntVec2Type data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     xData->setText(QString::number(data[0]));
     yData->setText(QString::number(data[1]));
   }
@@ -108,15 +108,7 @@ void IntVec2Widget::filterNeedsInputParameters(AbstractFilter* filter)
   data[1] = yData->text().toInt(&ok);
 
   Q_UNUSED(filter)
-  IntVec2FilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(data);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, data, getFilter());
 }
 
 // -----------------------------------------------------------------------------

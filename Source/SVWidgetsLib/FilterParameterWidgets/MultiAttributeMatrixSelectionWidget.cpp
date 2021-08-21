@@ -150,7 +150,7 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
   connect(m_SelectedDataContainerPath, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)));
   connect(this, SIGNAL(unlockDataArrayPathSelection(QToolButton*)), m_SelectedDataContainerPath, SLOT(selectionWidgetUnlocked(QToolButton*)));
 
-  std::vector<DataArrayPath> selectedPaths = m_FilterParameter->getGetterCallback()();
+  std::vector<DataArrayPath> selectedPaths = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(selectedPaths);
   m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
   m_SelectedDataContainerPath->setPropertyName(getFilterParameter()->getHumanLabel());
@@ -560,15 +560,7 @@ void MultiAttributeMatrixSelectionWidget::filterNeedsInputParameters(AbstractFil
   }
 
   Q_UNUSED(filter)
-  MultiAttributeMatrixSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(selectedPaths);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, selectedPaths, getFilter());
 }
 
 // -----------------------------------------------------------------------------
@@ -582,7 +574,7 @@ void MultiAttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyNa
 
   if(propertyName == getFilterParameter()->getPropertyName())
   {
-    std::vector<DataArrayPath> updatedPaths = m_FilterParameter->getGetterCallback()();
+    std::vector<DataArrayPath> updatedPaths = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     DataArrayPath& dap = updatedPaths[0];
     QString dataArrayName = dap.getDataArrayName();
     dap.setDataArrayName("");

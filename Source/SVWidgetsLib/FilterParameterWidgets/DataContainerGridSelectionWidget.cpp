@@ -127,7 +127,7 @@ void DataContainerGridSelectionWidget::setupGui()
   }
   m_Ui->propertyLabel->setText(getFilterParameter()->getHumanLabel());
 
-  m_GridModel = new DataContainerGridModel(m_FilterParameter->getGetterCallback()());
+  m_GridModel = new DataContainerGridModel(SafeFilterParameterGetter(m_FilterParameter, getFilter()));
   m_Ui->dataContainerGridTableView->setModel(m_GridModel);
   checkDepth();
 
@@ -279,9 +279,5 @@ void DataContainerGridSelectionWidget::filterNeedsInputParameters(AbstractFilter
   DataContainerGridModel* model = dynamic_cast<DataContainerGridModel*>(m_Ui->dataContainerGridTableView->model());
   model->getGridData(dcg);
 
-  DataContainerGridSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(dcg);
-  }
+  SafeFilterParameterSetter(m_FilterParameter, dcg, getFilter());
 }

@@ -133,7 +133,7 @@ void DataContainerArrayProxyWidget::setupGui()
     // Proxy object at which point nothing is going to be put into the lists. But if the Filter was
     // initialized from a pipeline file then it might actually have a proxy so we need to do something
     // with that proxy?
-    m_DcaProxy = m_FilterParameter->getGetterCallback()();
+    m_DcaProxy = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     // m_DcaProxy.print("DataContainerArrayProxyWidget::setupGui()");
   }
 }
@@ -440,15 +440,7 @@ void DataContainerArrayProxyWidget::updateDataArrayPath(QString propertyName, co
 void DataContainerArrayProxyWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
-  DataContainerArrayProxyFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(m_DcaProxy);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, m_DcaProxy, getFilter());
 
   //  if(getFilterParameter()->isConditional() )
   //  {

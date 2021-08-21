@@ -96,7 +96,7 @@ void ChoiceWidget::setupGui()
       value->blockSignals(false);
     }
     // Get the Default value from the filter
-    int i = m_FilterParameter->getGetterCallback()();
+    int i = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     value->setCurrentIndex(i);
   }
 }
@@ -138,15 +138,7 @@ void ChoiceWidget::widgetChanged(int index, bool emitParametersChanged)
 void ChoiceWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
-  ChoiceFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(value->currentIndex());
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, value->currentIndex(), getFilter());
 }
 
 // -----------------------------------------------------------------------------

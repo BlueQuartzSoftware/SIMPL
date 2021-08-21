@@ -83,7 +83,7 @@ void UInt64Widget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    uint64_t ui64 = m_FilterParameter->getGetterCallback()();
+    uint64_t ui64 = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     QString str = loc.toString(static_cast<qulonglong>(ui64));
     value->setText(str);
   }
@@ -135,15 +135,7 @@ void UInt64Widget::filterNeedsInputParameters(AbstractFilter* filter)
     errorLabel->show();
   }
 
-  UInt64FilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(i);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, i, getFilter());
 }
 
 // -----------------------------------------------------------------------------

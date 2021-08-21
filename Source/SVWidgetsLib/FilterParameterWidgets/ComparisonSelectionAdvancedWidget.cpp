@@ -147,7 +147,7 @@ void ComparisonSelectionAdvancedWidget::setupGui()
   connect(comparisonSetWidget, SIGNAL(comparisonChanged()), this, SIGNAL(parametersChanged()));
 
   // Copy the data into the Comparison Set
-  ComparisonInputsAdvanced comps = dynamic_cast<ComparisonSelectionAdvancedFilterParameter*>(getFilterParameter())->getGetterCallback()();
+  ComparisonInputsAdvanced comps = SafeFilterParameterGetter(m_FilterParameter, getFilter());
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
@@ -280,15 +280,7 @@ void ComparisonSelectionAdvancedWidget::setComparisons(QVector<AbstractCompariso
 void ComparisonSelectionAdvancedWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
-  ComparisonSelectionAdvancedFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(getComparisonInputs());
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, getComparisonInputs(), getFilter());
 }
 
 // -----------------------------------------------------------------------------
@@ -337,7 +329,7 @@ void ComparisonSelectionAdvancedWidget::afterPreflight()
 
       if(nullptr == comparisonSetWidget->getAttributeMatrix())
       {
-        ComparisonInputsAdvanced comps = m_FilterParameter->getGetterCallback()();
+        ComparisonInputsAdvanced comps = SafeFilterParameterGetter(m_FilterParameter, getFilter());
         comparisonSetWidget->setAttributeMatrix(am);
         comparisonSetWidget->setComparisons(comps.getInputs());
       }
@@ -376,7 +368,7 @@ void ComparisonSelectionAdvancedWidget::populateButtonText()
   QString curAmName = "";
 
   // Get what is in the filter
-  ComparisonInputsAdvanced comps = m_FilterParameter->getGetterCallback()();
+  ComparisonInputsAdvanced comps = SafeFilterParameterGetter(m_FilterParameter, getFilter());
 
   QString filtDcName = comps.getDataContainerName();
   QString filtAmName = comps.getAttributeMatrixName();
@@ -479,7 +471,7 @@ void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName
     DataArrayPath newPath;
     std::tie(oldPath, newPath) = renamePath;
 
-    ComparisonInputsAdvanced inputs = m_FilterParameter->getGetterCallback()();
+    ComparisonInputsAdvanced inputs = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     DataArrayPath amPath = inputs.getAttributeMatrixPath();
     AbstractComparison::Pointer input = inputs[0];
 

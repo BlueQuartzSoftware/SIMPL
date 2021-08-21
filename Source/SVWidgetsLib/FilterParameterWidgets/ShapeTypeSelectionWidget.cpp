@@ -142,7 +142,7 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
     numPhases = 0;
   }
 
-  ShapeType::Types shapeTypesFromFilter = m_FilterParameter->getGetterCallback()();
+  ShapeType::Types shapeTypesFromFilter = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   if(shapeTypesFromFilter.size() > 1 && numPhases <= 0)
   {
     numPhases = shapeTypesFromFilter.size();
@@ -294,13 +294,5 @@ void ShapeTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   }
 
   Q_UNUSED(filter)
-  ShapeTypeSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(shapeTypes);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, shapeTypes, getFilter());
 }

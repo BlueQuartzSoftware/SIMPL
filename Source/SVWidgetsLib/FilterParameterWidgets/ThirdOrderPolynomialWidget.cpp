@@ -91,7 +91,7 @@ void ThirdOrderPolynomialWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    Float3rdOrderPoly_t data = m_FilterParameter->getGetterCallback()();
+    Float3rdOrderPoly_t data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     c30->setText(loc.toString(data.c30));
     c03->setText(loc.toString(data.c03));
     c21->setText(loc.toString(data.c21));
@@ -151,15 +151,7 @@ void ThirdOrderPolynomialWidget::filterNeedsInputParameters(AbstractFilter* filt
   FOPW_EXTRACT_VALUE(c00)
 
   Q_UNUSED(filter)
-  ThirdOrderPolynomialFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(data);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, data, getFilter());
 }
 
 // -----------------------------------------------------------------------------

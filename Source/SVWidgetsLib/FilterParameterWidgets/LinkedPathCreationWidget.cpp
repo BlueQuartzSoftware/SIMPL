@@ -66,7 +66,7 @@ void LinkedPathCreationWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    stringEdit->setText(m_FilterParameter->getGetterCallback()(), true);
+    stringEdit->setText(SafeFilterParameterGetter(m_FilterParameter, getFilter()), true);
   }
   blockSignals(false);
 
@@ -127,13 +127,5 @@ int LinkedPathCreationWidget::getDataTypei() const
 void LinkedPathCreationWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
-  LinkedPathCreationFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(stringEdit->getText());
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, stringEdit->getText(), getFilter());
 }

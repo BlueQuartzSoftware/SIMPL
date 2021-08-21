@@ -88,7 +88,7 @@ void IntVec3Widget::setupGui()
   {
     IntVec3WidgetLabel->setText(getFilterParameter()->getHumanLabel());
 
-    IntVec3Type data = m_FilterParameter->getGetterCallback()();
+    IntVec3Type data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     xData->setText(QString::number(data[0]));
     yData->setText(QString::number(data[1]));
     zData->setText(QString::number(data[2]));
@@ -115,15 +115,7 @@ void IntVec3Widget::filterNeedsInputParameters(AbstractFilter* filter)
   data[2] = zData->text().toInt(&ok);
 
   Q_UNUSED(filter)
-  IntVec3FilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(data);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, data, getFilter());
 }
 
 // -----------------------------------------------------------------------------

@@ -78,7 +78,7 @@ void LinkedBooleanWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    value->setChecked(m_FilterParameter->getGetterCallback()());
+    value->setChecked(SafeFilterParameterGetter(m_FilterParameter, getFilter()));
   }
 }
 
@@ -115,15 +115,7 @@ void LinkedBooleanWidget::widgetChanged(int state)
 void LinkedBooleanWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
-  LinkedBooleanFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(value->isChecked());
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, value->isChecked(), getFilter());
 }
 
 // -----------------------------------------------------------------------------

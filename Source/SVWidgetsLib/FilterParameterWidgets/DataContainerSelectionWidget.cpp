@@ -133,11 +133,7 @@ void DataContainerSelectionWidget::setupGui()
 
   m_SelectedDataContainerPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
 
-  DataContainerSelectionFilterParameter::GetterCallbackType getter = m_FilterParameter->getGetterCallback();
-  if(getter)
-  {
-    m_SelectedDataContainerPath->setText(getter().getDataContainerName());
-  }
+  m_SelectedDataContainerPath->setText(SafeFilterParameterGetter(m_FilterParameter, getFilter()).getDataContainerName());
   m_SelectedDataContainerPath->setPropertyName(getFilterParameter()->getHumanLabel());
 
   changeStyleSheet(Style::FS_STANDARD_STYLE);
@@ -183,13 +179,8 @@ bool DataContainerSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 void DataContainerSelectionWidget::updateDataArrayPath(const QString& propertyName, const DataArrayPath::RenameType& renamePath)
 {
-  DataContainerSelectionFilterParameter::GetterCallbackType getter = m_FilterParameter->getGetterCallback();
-  if(getter)
-  {
-    blockSignals(true);
-    setSelectedPath(getter());
-    blockSignals(false);
-  }
+  QSignalBlocker blocker(this);
+  setSelectedPath(SafeFilterParameterGetter(m_FilterParameter, getFilter()));
 }
 
 // -----------------------------------------------------------------------------
@@ -264,13 +255,5 @@ void DataContainerSelectionWidget::afterPreflight()
 void DataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   DataArrayPath dap(m_SelectedDataContainerPath->text());
-  DataContainerSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(dap);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, dap, getFilter());
 }

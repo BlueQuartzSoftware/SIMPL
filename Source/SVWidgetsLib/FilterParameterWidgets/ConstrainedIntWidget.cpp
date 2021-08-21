@@ -79,7 +79,7 @@ void ConstrainedIntWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    spinBox->setValue(m_FilterParameter->getGetterCallback()());
+    spinBox->setValue(SafeFilterParameterGetter(m_FilterParameter, getFilter()));
   }
 }
 
@@ -97,15 +97,7 @@ void ConstrainedIntWidget::widgetChanged(int i)
 void ConstrainedIntWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
-  ConstrainedIntFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(spinBox->value());
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, spinBox->value(), getFilter());
 }
 
 // -----------------------------------------------------------------------------

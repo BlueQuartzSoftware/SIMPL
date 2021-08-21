@@ -96,7 +96,7 @@ void FloatVec3Widget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    FloatVec3Type data = m_FilterParameter->getGetterCallback()();
+    FloatVec3Type data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
 
     xData->setText(loc.toString(data[0]));
     yData->setText(loc.toString(data[1]));
@@ -193,15 +193,7 @@ void FloatVec3Widget::filterNeedsInputParameters(AbstractFilter* filter)
   }
 
   Q_UNUSED(filter)
-  FloatVec3FilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(data);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, data, getFilter());
 }
 
 // -----------------------------------------------------------------------------

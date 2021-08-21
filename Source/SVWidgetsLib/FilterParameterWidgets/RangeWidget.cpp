@@ -68,8 +68,7 @@ void RangeWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
     // Get the "Getter Callback" standard function and use it to get the values from the filter
-    RangeFilterParameter::GetterCallbackType fpGetter = m_FilterParameter->getGetterCallback();
-    FPRangePair range = fpGetter();
+    FPRangePair range = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     minValue->setText(QString::number(range.first));
     maxValue->setText(QString::number(range.second));
   }
@@ -128,13 +127,5 @@ void RangeWidget::filterNeedsInputParameters(AbstractFilter* filter)
   pair.second = maxValue->text().toDouble();
 
   Q_UNUSED(filter)
-  RangeFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(pair);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, pair, getFilter());
 }

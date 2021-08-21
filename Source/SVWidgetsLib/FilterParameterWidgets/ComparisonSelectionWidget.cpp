@@ -339,15 +339,7 @@ void ComparisonSelectionWidget::setComparisons(QVector<ComparisonInput_t> compar
 void ComparisonSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
-  ComparisonSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(getComparisonInputs());
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, getComparisonInputs(), getFilter());
 }
 
 // -----------------------------------------------------------------------------

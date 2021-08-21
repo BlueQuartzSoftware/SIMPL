@@ -69,12 +69,7 @@ void DataContainerCreationWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    DataContainerCreationFilterParameter::GetterCallbackType getter = m_FilterParameter->getGetterCallback();
-    DataArrayPath dap;
-    if(getter)
-    {
-      dap = getter();
-    }
+    DataArrayPath dap = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     stringEdit->setText(dap.getDataContainerName(), true);
   }
   blockSignals(false);
@@ -120,15 +115,7 @@ void DataContainerCreationWidget::afterPreflight()
 void DataContainerCreationWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   DataArrayPath dap(stringEdit->getText());
-  DataContainerCreationFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(dap);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, dap, getFilter());
 }
 
 // -----------------------------------------------------------------------------
@@ -138,7 +125,7 @@ void DataContainerCreationWidget::updateDataArrayPath(const QString& propertyNam
 {
   if(propertyName == getFilterParameter()->getPropertyName())
   {
-    DataArrayPath updatedPath = m_FilterParameter->getGetterCallback()();
+    DataArrayPath updatedPath = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     QString dcName = updatedPath.getDataContainerName();
     updatedPath.setDataContainerName("");
 

@@ -64,7 +64,7 @@ void ParagraphWidget::setupGui()
   blockSignals(true);
   if(getFilterParameter() != nullptr)
   {
-    QString str = m_FilterParameter->getGetterCallback()();
+    QString str = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     textEdit->setText(str);
   }
   blockSignals(false);
@@ -78,7 +78,7 @@ void ParagraphWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &ParagraphWidget::filterNeedsInputParameters);
 
-  connect(textEdit, &QTextEdit::textChanged, [=]() { m_FilterParameter->getSetterCallback()(textEdit->toHtml()); });
+  connect(textEdit, &QTextEdit::textChanged, [=]() { SafeFilterParameterSetter(m_FilterParameter, textEdit->toHtml(), getFilter()); });
 }
 
 // -----------------------------------------------------------------------------
@@ -101,13 +101,5 @@ void ParagraphWidget::afterPreflight()
 void ParagraphWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
-  ParagraphFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(textEdit->toHtml());
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, textEdit->toHtml(), getFilter());
 }

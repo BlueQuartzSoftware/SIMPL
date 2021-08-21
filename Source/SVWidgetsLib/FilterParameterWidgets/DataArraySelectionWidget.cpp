@@ -139,7 +139,7 @@ void DataArraySelectionWidget::setupGui()
   connect(m_SelectedDataArrayPath, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)));
   connect(this, SIGNAL(unlockDataArrayPathSelection(QToolButton*)), m_SelectedDataArrayPath, SLOT(selectionWidgetUnlocked(QToolButton*)));
 
-  DataArrayPath defaultPath = m_FilterParameter->getGetterCallback()();
+  DataArrayPath defaultPath = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   m_SelectedDataArrayPath->setText(defaultPath.serialize(Detail::Delimiter));
   m_SelectedDataArrayPath->setPropertyName(getFilterParameter()->getHumanLabel());
 
@@ -167,7 +167,7 @@ void DataArraySelectionWidget::updateDataArrayPath(QString propertyName, const D
 {
   if(propertyName == getFilterParameter()->getPropertyName())
   {
-    DataArrayPath updatedPath = m_FilterParameter->getGetterCallback()();
+    DataArrayPath updatedPath = SafeFilterParameterGetter(m_FilterParameter, getFilter());
 
     blockSignals(true);
     setSelectedPath(updatedPath);
@@ -266,13 +266,5 @@ void DataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   DataArrayPath path(dc, am, da);
 
   Q_UNUSED(filter)
-  DataArraySelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(path);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, path, getFilter());
 }

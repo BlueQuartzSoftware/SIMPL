@@ -77,7 +77,7 @@ void PreflightUpdatedValueWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    value->setText(m_FilterParameter->getGetterCallback()());
+    value->setText(SafeFilterParameterGetter(m_FilterParameter, getFilter()));
   }
   blockSignals(false);
 }
@@ -102,5 +102,5 @@ void PreflightUpdatedValueWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void PreflightUpdatedValueWidget::afterPreflight()
 {
-  value->setText(m_FilterParameter->getGetterCallback()());
+  value->setText(SafeFilterParameterGetter(m_FilterParameter, getFilter()));
 }

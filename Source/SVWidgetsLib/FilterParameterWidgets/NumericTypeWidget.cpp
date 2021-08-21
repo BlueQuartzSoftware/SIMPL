@@ -80,7 +80,7 @@ void NumericTypeWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    SIMPL::NumericTypes::Type t = m_FilterParameter->getGetterCallback()();
+    SIMPL::NumericTypes::Type t = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     value->setCurrentIndex(static_cast<int>(t));
   }
 }
@@ -117,15 +117,7 @@ void NumericTypeWidget::filterNeedsInputParameters(AbstractFilter* filter)
   }
 
   Q_UNUSED(filter)
-  NumericTypeFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(static_cast<SIMPL::NumericTypes::Type>(i));
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, static_cast<SIMPL::NumericTypes::Type>(i), getFilter());
 }
 
 // -----------------------------------------------------------------------------

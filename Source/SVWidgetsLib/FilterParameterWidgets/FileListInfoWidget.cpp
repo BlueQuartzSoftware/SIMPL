@@ -259,7 +259,7 @@ void FileListInfoWidget::getGuiParametersFromFilter()
 {
   blockSignals(true);
 
-  StackFileListInfo data = m_FilterParameter->getGetterCallback()();
+  StackFileListInfo data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
 
   m_Ui->inputDir->setText(data.InputPath);
 
@@ -282,7 +282,7 @@ void FileListInfoWidget::getGuiParametersFromFilter()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::validateInputFile()
 {
-  StackFileListInfo data = m_FilterParameter->getGetterCallback()();
+  StackFileListInfo data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
 
   QString currentPath = data.InputPath;
   QFileInfo fi(currentPath);
@@ -305,7 +305,7 @@ void FileListInfoWidget::validateInputFile()
 
     data.InputPath = file;
 
-    m_FilterParameter->getSetterCallback()(data);
+    SafeFilterParameterSetter(m_FilterParameter, data, getFilter());
   }
 }
 
@@ -601,15 +601,7 @@ void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
   data.PaddingDigits = m_Ui->totalDigits->value();
   data.StartIndex = m_Ui->startIndex->value();
 
-  FileListInfoFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(data);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, data, getFilter());
 }
 
 // -----------------------------------------------------------------------------

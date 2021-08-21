@@ -85,7 +85,7 @@ void FloatWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    QString str = loc.toString(m_FilterParameter->getGetterCallback()());
+    QString str = loc.toString(SafeFilterParameterGetter(m_FilterParameter, getFilter()));
     value->setText(str);
   }
 }
@@ -136,15 +136,7 @@ void FloatWidget::filterNeedsInputParameters(AbstractFilter* filter)
   }
 
   Q_UNUSED(filter)
-  FloatFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(i);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, i, getFilter());
 }
 
 // -----------------------------------------------------------------------------

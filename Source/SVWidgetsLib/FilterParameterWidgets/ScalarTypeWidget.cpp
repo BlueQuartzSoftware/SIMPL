@@ -79,7 +79,7 @@ void ScalarTypeWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    SIMPL::ScalarTypes::Type t = m_FilterParameter->getGetterCallback()();
+    SIMPL::ScalarTypes::Type t = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     value->setCurrentIndex(static_cast<int>(t));
   }
 }
@@ -116,15 +116,7 @@ void ScalarTypeWidget::filterNeedsInputParameters(AbstractFilter* filter)
   }
 
   Q_UNUSED(filter)
-  ScalarTypeFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(static_cast<SIMPL::ScalarTypes::Type>(i));
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, static_cast<SIMPL::ScalarTypes::Type>(i), getFilter());
 }
 
 // -----------------------------------------------------------------------------

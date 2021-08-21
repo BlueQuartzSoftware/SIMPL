@@ -118,10 +118,8 @@ void MontageStructureSelectionWidget::setupGui()
   }
   m_Ui->label->setText(getFilterParameter()->getHumanLabel());
 
-  MontageStructureSelectionFilterParameter::GetterCallbackType getter = m_FilterParameter->getGetterCallback();
-  if(getter)
+  QString montageName = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   {
-    QString montageName = getter();
     QSignalBlocker selectionBlocker(m_Ui->montageSelectionComboBox);
     if(m_Ui->montageSelectionComboBox->findText(montageName) == -1)
     {
@@ -197,7 +195,7 @@ void MontageStructureSelectionWidget::afterPreflight()
     return;
   }
 
-  QString currentName = m_FilterParameter->getGetterCallback()();
+  QString currentName = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   QStringList montageNames = dca->getMontageCollection().getNameList();
 
   QSignalBlocker blocker(m_Ui->montageSelectionComboBox);
@@ -219,9 +217,5 @@ void MontageStructureSelectionWidget::filterNeedsInputParameters(AbstractFilter*
     name = QString();
   }
 
-  MontageStructureSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(name);
-  }
+  SafeFilterParameterSetter(m_FilterParameter, name, getFilter());
 }

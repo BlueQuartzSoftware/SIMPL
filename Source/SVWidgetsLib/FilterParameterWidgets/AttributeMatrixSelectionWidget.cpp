@@ -119,7 +119,7 @@ void AttributeMatrixSelectionWidget::setupGui()
   connect(m_SelectedAttributeMatrixPath, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)));
   connect(this, SIGNAL(unlockDataArrayPathSelection(QToolButton*)), m_SelectedAttributeMatrixPath, SLOT(selectionWidgetUnlocked(QToolButton*)));
 
-  DataArrayPath defaultPath = m_FilterParameter->getGetterCallback()();
+  DataArrayPath defaultPath = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
   m_SelectedAttributeMatrixPath->setPropertyName(getFilterParameter()->getHumanLabel());
 
@@ -168,7 +168,7 @@ void AttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyName, c
 {
   if(propertyName == getFilterParameter()->getPropertyName())
   {
-    DataArrayPath updatedPath = m_FilterParameter->getGetterCallback()();
+    DataArrayPath updatedPath = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     blockSignals(true);
     setSelectedPath(updatedPath);
     blockSignals(false);
@@ -249,13 +249,5 @@ void AttributeMatrixSelectionWidget::filterNeedsInputParameters(AbstractFilter* 
   Q_UNUSED(filter)
   // Geenerate the path to the AttributeArray
   DataArrayPath selectedPath = m_SelectedAttributeMatrixPath->getDataArrayPath();
-  AttributeMatrixSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(selectedPath);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, selectedPath, getFilter());
 }

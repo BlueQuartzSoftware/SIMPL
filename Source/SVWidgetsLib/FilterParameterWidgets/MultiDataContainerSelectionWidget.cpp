@@ -125,7 +125,7 @@ void MultiDataContainerSelectionWidget::setupGui()
   // If the DataArrayPath is updated in the filter, update the widget
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
-  std::vector<QString> dcNames = m_FilterParameter->getGetterCallback()();
+  std::vector<QString> dcNames = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   for(size_t i = 0; i < dcNames.size(); i++)
   {
     QString dcName = dcNames[i];
@@ -466,15 +466,7 @@ void MultiDataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilte
     dcNames.push_back(selectedDataContainersListWidget->item(i)->text());
   }
   Q_UNUSED(filter)
-  MultiDataContainerSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(dcNames);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, dcNames, getFilter());
 }
 
 // -----------------------------------------------------------------------------

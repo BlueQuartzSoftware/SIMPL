@@ -68,7 +68,7 @@ void StringWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    stringEdit->setText(m_FilterParameter->getGetterCallback()(), true);
+    stringEdit->setText(SafeFilterParameterGetter(m_FilterParameter, getFilter()), true);
   }
   blockSignals(false);
 
@@ -106,13 +106,5 @@ void StringWidget::afterPreflight()
 void StringWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
-  StringFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(stringEdit->getText());
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, stringEdit->getText(), getFilter());
 }

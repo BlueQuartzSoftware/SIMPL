@@ -64,7 +64,7 @@ AbstractIOFileWidget::AbstractIOFileWidget(FilterParameter* parameter, AbstractF
   setupUi(this);
   setupGui();
 
-  QString currentPath = m_FilterParameter->getGetterCallback()();
+  QString currentPath = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   if(!currentPath.isEmpty())
   {
     currentPath = QDir::toNativeSeparators(currentPath);
@@ -141,7 +141,7 @@ void AbstractIOFileWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    QString currentPath = m_FilterParameter->getGetterCallback()();
+    QString currentPath = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     m_LineEdit->setText(currentPath);
     setValidFilePath(m_LineEdit->text());
     on_m_LineEdit_fileDropped(currentPath);
@@ -308,15 +308,7 @@ void AbstractIOFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   text = validator->convertToAbsolutePath(text);
 
-  auto setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(text);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, text, getFilter());
 }
 
 // -----------------------------------------------------------------------------

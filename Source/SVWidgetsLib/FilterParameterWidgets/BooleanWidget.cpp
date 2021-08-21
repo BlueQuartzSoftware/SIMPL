@@ -78,7 +78,7 @@ void BooleanWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    value->setChecked(m_FilterParameter->getGetterCallback()());
+    value->setChecked(SafeFilterParameterGetter(m_FilterParameter, getFilter()));
   }
 }
 
@@ -97,15 +97,7 @@ void BooleanWidget::widgetChanged(int state)
 void BooleanWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
-  BooleanFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(value->isChecked());
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, value->isChecked(), getFilter());
 }
 
 // -----------------------------------------------------------------------------

@@ -90,7 +90,7 @@ void AxisAngleWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    AxisAngleInput data = m_FilterParameter->getGetterCallback()();
+    AxisAngleInput data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     h->setText(loc.toString(data.h));
     k->setText(loc.toString(data.k));
     l->setText(loc.toString(data.l));
@@ -126,15 +126,7 @@ void AxisAngleWidget::filterNeedsInputParameters(AbstractFilter* filter)
   FOPW_EXTRACT_VALUE(k)
   FOPW_EXTRACT_VALUE(l)
 
-  AxisAngleFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(data);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, data, getFilter());
 }
 
 // -----------------------------------------------------------------------------

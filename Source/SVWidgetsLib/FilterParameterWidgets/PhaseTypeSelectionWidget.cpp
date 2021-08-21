@@ -190,7 +190,7 @@ void PhaseTypeSelectionWidget::updateDataArrayPath(QString propertyName, const D
 {
   if(propertyName == getFilterParameter()->getPropertyName())
   {
-    //    PhaseType::Types t = m_FilterParameter->getGetterCallback()();
+    //    PhaseType::Types t = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
     DataArrayPath updatedPath = var.value<DataArrayPath>();
 
@@ -371,15 +371,7 @@ void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   }
 
   Q_UNUSED(filter)
-  PhaseTypeSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(phaseTypes);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, phaseTypes, getFilter());
 
   DataArrayPath path = m_SelectedAttributeMatrixPath->getDataArrayPath();
   var.setValue(path);

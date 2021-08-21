@@ -98,8 +98,7 @@ void MultiInputFileWidget::setupGui()
   // Loop through all of the input files, find the first non-empty one and use that.
   if(getFilter() != nullptr && getFilterParameter() != nullptr)
   {
-    MultiInputFileFilterParameter::GetterCallbackType getter = m_FilterParameter->getGetterCallback();
-    m_SelectedFiles = QtConverter::ToQStringList(getter());
+    m_SelectedFiles = QtConverter::ToQStringList(SafeFilterParameterGetter(m_FilterParameter, getFilter()));
     for(const auto& inputFile : m_SelectedFiles)
     {
       if(!inputFile.isEmpty())
@@ -162,16 +161,7 @@ void MultiInputFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
   std::ignore = filter;
 
   std::vector<std::string> files = QtConverter::FromQStringFileList(m_SelectedFiles);
-  MultiInputFileFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-
-  if(setter)
-  {
-    setter(files);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, files, getFilter());
 }
 
 // -----------------------------------------------------------------------------

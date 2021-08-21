@@ -94,8 +94,7 @@ void AttributeMatrixCreationWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    AttributeMatrixCreationFilterParameter::GetterCallbackType getter = m_FilterParameter->getGetterCallback();
-    DataArrayPath dap = getter();
+    DataArrayPath dap = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     stringEdit->setText(dap.serialize(), true);
   }
   blockSignals(false);
@@ -140,7 +139,7 @@ void AttributeMatrixCreationWidget::setupGui()
   connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
 
   m_SelectedDataContainerPath->blockSignals(true);
-  DataArrayPath amPath = m_FilterParameter->getGetterCallback()();
+  DataArrayPath amPath = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
   m_SelectedDataContainerPath->setPropertyName(getFilterParameter()->getHumanLabel());
   stringEdit->setText(amPath.getAttributeMatrixName(), true);
@@ -191,7 +190,7 @@ void AttributeMatrixCreationWidget::updateDataArrayPath(QString propertyName, co
 {
   if(propertyName == getFilterParameter()->getPropertyName())
   {
-    DataArrayPath updatedPath = m_FilterParameter->getGetterCallback()();
+    DataArrayPath updatedPath = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     QString amName = updatedPath.getAttributeMatrixName();
     updatedPath.setAttributeMatrixName("");
 
@@ -277,13 +276,5 @@ void AttributeMatrixCreationWidget::filterNeedsInputParameters(AbstractFilter* f
   // Generate the path to the AttributeArray
   DataArrayPath selectedPath = m_SelectedDataContainerPath->getDataArrayPath();
   selectedPath.setAttributeMatrixName(stringEdit->getText());
-  AttributeMatrixCreationFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(selectedPath);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, selectedPath, getFilter());
 }

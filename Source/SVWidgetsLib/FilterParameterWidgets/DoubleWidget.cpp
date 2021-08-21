@@ -86,7 +86,7 @@ void DoubleWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
-    QString str = loc.toString(m_FilterParameter->getGetterCallback()());
+    QString str = loc.toString(SafeFilterParameterGetter(m_FilterParameter, getFilter()));
     value->setText(str);
   }
 }
@@ -135,15 +135,7 @@ void DoubleWidget::filterNeedsInputParameters(AbstractFilter* filter)
     errorLabel->show();
   }
   Q_UNUSED(filter)
-  DoubleFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(i);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, i, getFilter());
 }
 
 // -----------------------------------------------------------------------------

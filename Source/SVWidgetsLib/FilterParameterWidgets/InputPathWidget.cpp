@@ -57,7 +57,7 @@ InputPathWidget::InputPathWidget(FilterParameter* parameter, AbstractFilter* fil
 
   if(filter != nullptr)
   {
-    QString currentPath = m_FilterParameter->getGetterCallback()();
+    QString currentPath = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     if(!currentPath.isEmpty())
     {
       currentPath = QDir::toNativeSeparators(currentPath);
@@ -90,7 +90,7 @@ void InputPathWidget::setupGui()
 // -----------------------------------------------------------------------------
 void InputPathWidget::selectInputPath()
 {
-  QString currentPath = m_FilterParameter->getGetterCallback()();
+  QString currentPath = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   if(currentPath.isEmpty())
   {
     currentPath = getValue();

@@ -94,7 +94,7 @@ void SecondOrderPolynomialWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    Float2ndOrderPolynomial data = m_FilterParameter->getGetterCallback()();
+    Float2ndOrderPolynomial data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     c20->setText(loc.toString(data.c20));
     c02->setText(loc.toString(data.c02));
     c11->setText(loc.toString(data.c11));
@@ -143,15 +143,7 @@ void SecondOrderPolynomialWidget::filterNeedsInputParameters(AbstractFilter* fil
   FOPW_EXTRACT_VALUE(c00)
 
   Q_UNUSED(filter)
-  SecondOrderPolynomialFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(data);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, data, getFilter());
 }
 
 // -----------------------------------------------------------------------------

@@ -118,7 +118,7 @@ void LinkedDataContainerSelectionWidget::setupGui()
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(dataContainerSelected(QString)));
 
-  DataArrayPath dcPath = m_FilterParameter->getGetterCallback()();
+  DataArrayPath dcPath = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   m_SelectedDataContainerPath->setText(dcPath.getDataContainerName());
 
   changeStyleSheet(Style::FS_STANDARD_STYLE);
@@ -338,13 +338,5 @@ void LinkedDataContainerSelectionWidget::afterPreflight()
 void LinkedDataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
-  LinkedDataContainerSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(DataArrayPath(m_SelectedDataContainerPath->text()));
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, DataArrayPath(m_SelectedDataContainerPath->text()), getFilter());
 }

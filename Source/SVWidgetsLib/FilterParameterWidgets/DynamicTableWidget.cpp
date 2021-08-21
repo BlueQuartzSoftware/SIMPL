@@ -180,21 +180,13 @@ void DynamicTableWidget::filterNeedsInputParameters(AbstractFilter* filter)
     }
   }
 
-  DynamicTableData data = m_FilterParameter->getGetterCallback()();
+  DynamicTableData data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   data.setTableData(getData());
   data.setRowHeaders(rHeaders);
   data.setColHeaders(cHeaders);
 
   Q_UNUSED(filter)
-  DynamicTableFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(data);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, data, getFilter());
 }
 
 // -----------------------------------------------------------------------------
@@ -322,7 +314,7 @@ void DynamicTableWidget::on_addColBtn_clicked()
 // -----------------------------------------------------------------------------
 void DynamicTableWidget::on_deleteRowBtn_clicked()
 {
-  DynamicTableData data = m_FilterParameter->getGetterCallback()();
+  DynamicTableData data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
 
   dynamicTable->removeRow(dynamicTable->currentRow());
 
@@ -349,7 +341,7 @@ void DynamicTableWidget::on_deleteRowBtn_clicked()
 // -----------------------------------------------------------------------------
 void DynamicTableWidget::on_deleteColBtn_clicked()
 {
-  DynamicTableData data = m_FilterParameter->getGetterCallback()();
+  DynamicTableData data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
 
   dynamicTable->removeColumn(dynamicTable->currentColumn());
 
@@ -377,7 +369,7 @@ void DynamicTableWidget::on_deleteColBtn_clicked()
 void DynamicTableWidget::populateTable()
 {
   // Get what is in the filter
-  DynamicTableData data = m_FilterParameter->getGetterCallback()();
+  DynamicTableData data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
 
   if(m_FilterParameter != nullptr)
   {
@@ -470,7 +462,7 @@ void DynamicTableWidget::populateTable()
 // -----------------------------------------------------------------------------
 void DynamicTableWidget::populateHeaders()
 {
-  DynamicTableData data = m_FilterParameter->getGetterCallback()();
+  DynamicTableData data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
 
   if(!data.getDynamicRows())
   {
@@ -489,7 +481,7 @@ void DynamicTableWidget::populateHeaders()
 // -----------------------------------------------------------------------------
 void DynamicTableWidget::renumberDynamicHeaders()
 {
-  DynamicTableData data = m_FilterParameter->getGetterCallback()();
+  DynamicTableData data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
 
   if(data.getDynamicRows())
   {
@@ -517,7 +509,7 @@ void DynamicTableWidget::renumberDynamicHeaders()
 // -----------------------------------------------------------------------------
 void DynamicTableWidget::updateDynamicButtons()
 {
-  DynamicTableData data = m_FilterParameter->getGetterCallback()();
+  DynamicTableData data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
 
   // Hide add/remove row buttons if row count is not dynamic
   if(!data.getDynamicRows())

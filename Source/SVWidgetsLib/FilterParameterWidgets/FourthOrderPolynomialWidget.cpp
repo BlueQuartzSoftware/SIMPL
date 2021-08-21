@@ -96,7 +96,7 @@ void FourthOrderPolynomialWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    Float4thOrderPolynomial data = m_FilterParameter->getGetterCallback()();
+    Float4thOrderPolynomial data = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     c40->setText(loc.toString(data.c40));
     c04->setText(loc.toString(data.c04));
     c31->setText(loc.toString(data.c31));
@@ -172,15 +172,7 @@ void FourthOrderPolynomialWidget::filterNeedsInputParameters(AbstractFilter* fil
   FOPW_EXTRACT_VALUE(c00)
 
   Q_UNUSED(filter)
-  FourthOrderPolynomialFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
-  {
-    setter(data);
-  }
-  else
-  {
-    getFilter()->notifyMissingProperty(getFilterParameter());
-  }
+  SafeFilterParameterSetter(m_FilterParameter, data, getFilter());
 }
 
 // -----------------------------------------------------------------------------

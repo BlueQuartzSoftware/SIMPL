@@ -72,7 +72,7 @@ void OutputFileWidget::setupGui()
 // -----------------------------------------------------------------------------
 void OutputFileWidget::selectOutputFile()
 {
-  QString currentPath = m_FilterParameter->getGetterCallback()();
+  QString currentPath = SafeFilterParameterGetter(m_FilterParameter, getFilter());
   if(currentPath.isEmpty())
   {
     currentPath = getValue();

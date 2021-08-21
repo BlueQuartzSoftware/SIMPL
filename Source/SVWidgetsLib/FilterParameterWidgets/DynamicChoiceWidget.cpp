@@ -145,7 +145,7 @@ void DynamicChoiceWidget::updateComboBox()
       value->addItems(choices);
     }
     // Get the Default value from the filter
-    QString i = m_FilterParameter->getGetterCallback()();
+    QString i = SafeFilterParameterGetter(m_FilterParameter, getFilter());
     int index = value->findText(i);
     value->setCurrentIndex(index);
     value->blockSignals(false);
@@ -171,15 +171,7 @@ void DynamicChoiceWidget::filterNeedsInputParameters(AbstractFilter* filter)
   QString index = value->currentText();
   if(!index.isEmpty())
   {
-    DynamicChoiceFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-    if(setter)
-    {
-      setter(index);
-    }
-    else
-    {
-      getFilter()->notifyMissingProperty(getFilterParameter());
-    }
+    SafeFilterParameterSetter(m_FilterParameter, index, getFilter());
   }
 }
 
