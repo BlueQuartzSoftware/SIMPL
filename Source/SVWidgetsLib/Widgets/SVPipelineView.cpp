@@ -75,6 +75,7 @@
 #include "SVWidgetsLib/Animations/PipelineItemSlideAnimation.h"
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+#include "SVWidgetsLib/Dialogs/DetailedErrorDialog.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 #include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 #include "SVWidgetsLib/Widgets/DataStructureWidget.h"
@@ -670,7 +671,14 @@ void SVPipelineView::updatePasteAvailability()
   QString text = clipboard->text();
 
   JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(text);
+  FilterPipeline::Pointer pipeline = nullptr;
+  try
+  {
+    pipeline = jsonReader->readPipelineFromString(text);
+  } catch(const std::exception& exception)
+  {
+    DetailedErrorDialog::warning(nullptr, "Error", "Caught exception while checking paste availability.", exception.what());
+  }
 
   if(text.isEmpty() || FilterPipeline::NullPointer() == pipeline)
   {
@@ -714,7 +722,16 @@ void SVPipelineView::copySelectedFilters()
   }
 
   JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-  QString jsonString = jsonWriter->writePipelineToString(pipeline, "Pipeline", false);
+
+  QString jsonString;
+  try
+  {
+    jsonString = jsonWriter->writePipelineToString(pipeline, "Pipeline", false);
+  } catch(const std::exception& exception)
+  {
+    DetailedErrorDialog::warning(nullptr, "Error", "Caught exception while attempting to copy filters", exception.what());
+    return;
+  }
 
   QClipboard* clipboard = QApplication::clipboard();
   clipboard->setText(jsonString);

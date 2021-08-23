@@ -152,8 +152,6 @@ int main(int argc, char* argv[])
 
   QMetaObjectUtilities::RegisterMetaTypes();
 
-  int err = 0;
-
   // Sanity Check the filepath to make sure it exists, Report an error and bail if it does not
   QFileInfo fi(pipelineFile);
   if(!fi.exists())
@@ -169,12 +167,26 @@ int main(int argc, char* argv[])
   if(ext == "dream3d")
   {
     H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
-    pipeline = dream3dReader->readPipelineFromFile(pipelineFile);
+    try
+    {
+      pipeline = dream3dReader->readPipelineFromFile(pipelineFile);
+    } catch(const std::exception& exception)
+    {
+      std::cout << "Caught exception while reading pipeline file:\n";
+      std::cout << exception.what() << "\n";
+    }
   }
   else if(ext == "json")
   {
     JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-    pipeline = jsonReader->readPipelineFromFile(pipelineFile);
+    try
+    {
+      pipeline = jsonReader->readPipelineFromFile(pipelineFile);
+    } catch(const std::exception& exception)
+    {
+      std::cout << "Caught exception while reading pipeline file:\n";
+      std::cout << exception.what() << "\n";
+    }
   }
   else
   {
@@ -192,14 +204,31 @@ int main(int argc, char* argv[])
   Observer obs; // Create an Observer to report errors/progress from the executing pipeline
   pipeline->addMessageReceiver(&obs);
   // Preflight the pipeline
-  err = pipeline->preflightPipeline();
+  int err = -1;
+  try
+  {
+    err = pipeline->preflightPipeline();
+  } catch(const std::exception& exception)
+  {
+    std::cout << "Caught exception while preflighting pipeline:\n";
+    std::cout << exception.what() << "\n";
+  }
   if(err < 0)
   {
     std::cout << "Errors preflighting the pipeline. Exiting Now." << std::endl;
     return EXIT_FAILURE;
   }
   // Now actually execute the pipeline
-  pipeline->execute();
+  try
+  {
+    pipeline->execute();
+  } catch(const std::exception& exception)
+  {
+    std::cout << "Caught exception while executing pipeline:\n";
+    std::cout << exception.what() << "\n";
+    std::cout << "Exiting now.\n";
+    return EXIT_FAILURE;
+  }
   err = pipeline->getErrorCode();
   if(err < 0)
   {
