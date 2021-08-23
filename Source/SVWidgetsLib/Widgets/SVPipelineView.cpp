@@ -1724,8 +1724,13 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QMode
   menu.addAction(m_ActionCopy);
   menu.addSeparator();
 
-  QAction* actionPasteAbove = new QAction("Paste Above", this);
-  QAction* actionPasteBelow = new QAction("Paste Below", this);
+  QAction* actionPasteAbove = new QAction("Paste Above", &menu);
+  QAction* actionPasteBelow = new QAction("Paste Below", &menu);
+
+  bool pasteAvailable = m_ActionPaste->isEnabled();
+
+  actionPasteAbove->setEnabled(pasteAvailable);
+  actionPasteBelow->setEnabled(pasteAvailable);
 
   connect(actionPasteAbove, &QAction::triggered, this, [=] { pasteFilters(index.row()); });
 
