@@ -41,7 +41,7 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QMessageBox>
 
-#include "SVWidgetsLibDLLExport.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 namespace Ui
 {
