@@ -317,10 +317,10 @@ LibraryProperties( ${PROJECT_NAME} ${EXE_DEBUG_EXTENSION} )
 target_link_libraries(${PROJECT_NAME} PUBLIC ${${PROJECT_NAME}_LINK_LIBS})
 
 #-- Configure Target Installation Rules
-set(install_dir "tools")
+set(install_dir "bin")
 set(lib_install_dir "lib")
 
-if(APPLE)
+if(APPLE AND NOT DREAM3D_ANACONDA)
   get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
   set(install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}bin")
   set(lib_install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}lib")

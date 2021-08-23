@@ -37,7 +37,7 @@ class ExampleFilter(Filter):
 
   @staticmethod
   def human_label() -> str:
-    return 'Example Filter'
+    return 'Example Filter [Python]'
 
   @staticmethod
   def version() -> str:
