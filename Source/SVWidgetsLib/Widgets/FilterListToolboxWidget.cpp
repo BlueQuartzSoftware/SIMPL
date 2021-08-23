@@ -43,6 +43,7 @@
 
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
+#include "SIMPLib/Filtering/IFilterFactory.hpp"
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Widgets/FilterListModel.h"
@@ -156,6 +157,22 @@ void FilterListToolboxWidget::loadFilterList()
   FilterManager* fm = FilterManager::Instance();
   m_LoadedFilters = fm->getFactories();
   QMapIterator<QString, IFilterFactory::Pointer> iter(m_LoadedFilters);
+
+  // Create a new QMap that will be sorted by the filter's human lable instead of the default C++ Class Name
+  QMap<QString, IFilterFactory::Pointer> humanSortedMap;
+  while(iter.hasNext())
+  {
+      iter.next();
+      IFilterFactory::Pointer factory = iter.value();
+      if(nullptr == factory.get())
+      {
+          continue;
+      }
+      humanSortedMap.insert(factory->getFilterHumanLabel(), factory);
+  }
+
+  // Reset the iterator to the new QMap
+  iter = QMapIterator<QString, IFilterFactory::Pointer>(humanSortedMap);
 
   QString countText = QObject::tr("Filter Count: %1").arg(m_LoadedFilters.size());
   filterCountLabel->setText(countText);
