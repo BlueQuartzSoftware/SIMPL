@@ -51,8 +51,58 @@
        <number>0</number>
       </property>
       <property name="verticalSpacing">
-       <number>4</number>
+       <number>0</number>
       </property>
+      <item row="1" column="0">
+       <widget class="QScrollArea" name="variablesScrollArea">
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="variablesTabContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>760</width>
+           <height>356</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="scrollAreaVertSpacer">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <layout class="QGridLayout" name="variablesGrid"/>
+          </item>
+          <item>
+           <spacer name="inputVertSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QFrame" name="labelFrame">
         <property name="minimumSize">
@@ -60,9 +110,6 @@
           <width>0</width>
           <height>30</height>
          </size>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Plain</enum>
@@ -78,7 +125,7 @@
           <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>10</number>
+          <number>0</number>
          </property>
          <property name="bottomMargin">
           <number>0</number>
@@ -175,73 +222,13 @@
         </layout>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="brandingLabel">
         <property name="text">
          <string>Branding Information</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QScrollArea" name="variablesScrollArea">
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="widgetResizable">
-         <bool>true</bool>
-        </property>
-        <widget class="QWidget" name="variablesTabContents">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>760</width>
-           <height>343</height>
-          </rect>
-         </property>
-         <layout class="QVBoxLayout" name="scrollAreaVertSpacer">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <layout class="QGridLayout" name="variablesGrid"/>
-          </item>
-          <item>
-           <spacer name="inputVertSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="Line" name="titleBottomLine">
-        <property name="frameShadow">
-         <enum>QFrame::Plain</enum>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>

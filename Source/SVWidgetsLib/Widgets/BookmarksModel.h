@@ -59,10 +59,15 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
   Q_OBJECT
 
 public:
+    //-------- Setup some QProperties that we can use from the CSS theme files to set the proper icon
+  Q_PROPERTY(QIcon BookmarkIcon READ getBookmarkIcon WRITE setBookmarkIcon)
+  Q_PROPERTY(QIcon FolderIcon READ getFolderIcon WRITE setFolderIcon)
+
   /**
    * @brief Returns the name of the class for BookmarksModel
    */
   QString getNameOfClass() const;
+
   /**
    * @brief Returns the name of the class for BookmarksModel
    */
@@ -153,6 +158,12 @@ public Q_SLOTS:
    */
   QModelIndex addTreeItem(QModelIndex parent, QString& favoriteTitle, QIcon icon, QString favoritePath, int insertIndex, BookmarksItem::ItemType type, bool isExpanded);
 
+  void setBookmarkIcon(const QIcon& path);
+  void setFolderIcon(const QIcon& path);
+
+  QIcon getBookmarkIcon();
+  QIcon getFolderIcon();
+
 protected:
   BookmarksModel(QObject* parent = nullptr);
 
@@ -160,7 +171,7 @@ protected:
 
   QDir findPipelinesDirectory();
 
-  void addPipelinesRecursively(QDir currentDir, QModelIndex parent, QJsonObject prebuiltsObj, QString iconFileName, bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType);
+  void addPipelinesRecursively(QDir currentDir, QModelIndex parent, QJsonObject prebuiltsObj, QIcon iconFileName, bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType);
 
 protected Q_SLOTS:
   void updateRowState(const QString& path);
@@ -169,6 +180,9 @@ protected Q_SLOTS:
 private:
   static BookmarksModel* self;
   bool m_LoadingModel = false;
+
+  QIcon m_BookmarkIcon = QIcon(":/SIMPL/icons/images/bookmark.png");
+  QIcon m_FolderIcon = QIcon(":/SIMPL/icons/images/folder_blue.png");
 
   BookmarksItem* rootItem;
   QFileSystemWatcher* m_Watcher;

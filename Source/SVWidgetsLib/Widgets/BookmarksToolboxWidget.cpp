@@ -411,3 +411,23 @@ QList<QString> BookmarksToolboxWidget::deserializeTreePath(QString treePath)
 
   return list;
 }
+
+void BookmarksToolboxWidget::setBookmarkIcon(const QIcon& path)
+{
+  bookmarksTreeView->setBookmarkIcon(path);
+}
+
+QIcon BookmarksToolboxWidget::getBookmarkIcon()
+{
+  return bookmarksTreeView->getBookmarkIcon();
+}
+
+void BookmarksToolboxWidget::setFolderIcon(const QIcon& path)
+{
+  bookmarksTreeView->setFolderIcon(path);
+}
+
+QIcon BookmarksToolboxWidget::getFolderIcon()
+{
+  return bookmarksTreeView->getFolderIcon();
+}

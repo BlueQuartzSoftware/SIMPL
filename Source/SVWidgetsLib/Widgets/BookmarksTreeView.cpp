@@ -110,7 +110,7 @@ void BookmarksTreeView::addBookmark(const QString& filePath, const QModelIndex& 
   BookmarksModel* model = BookmarksModel::Instance();
   QFileInfo fi(filePath);
   QString fileTitle = fi.baseName();
-  QModelIndex index = model->addTreeItem(parent, fileTitle, QIcon(":/SIMPL/icons/images/bookmark.png"), filePath, model->rowCount(parent), BookmarksItem::ItemType::Bookmark, false);
+  QModelIndex index = model->addTreeItem(parent, fileTitle, model->getBookmarkIcon(), filePath, model->rowCount(parent), BookmarksItem::ItemType::Bookmark, false);
   if(index.isValid())
   {
     Q_EMIT updateStatusBar("The pipeline '" + fileTitle + "' has been added successfully.");
@@ -176,7 +176,7 @@ void BookmarksTreeView::listenAddBookmarkFolderTriggered()
 
   QString name = "New Folder";
 
-  QModelIndex index = model->addTreeItem(parent, name, QIcon(":/SIMPL/icons/images/folder_blue.png"), "", model->rowCount(parent), BookmarksItem::ItemType::Folder, false);
+  QModelIndex index = model->addTreeItem(parent, name, model->getFolderIcon(), "", model->rowCount(parent), BookmarksItem::ItemType::Folder, false);
   expandIndex(parent);
   setCurrentIndex(index);
   scrollTo(index);
@@ -954,4 +954,28 @@ QAction* BookmarksTreeView::getActionOpenBookmark() const
 QAction* BookmarksTreeView::getActionExecuteBookmark() const
 {
   return m_ActionExecuteBookmark;
+}
+
+void BookmarksTreeView::setBookmarkIcon(const QIcon& path)
+{
+  BookmarksModel* model = BookmarksModel::Instance();
+  model->setBookmarkIcon(path);
+}
+
+QIcon BookmarksTreeView::getBookmarkIcon()
+{
+  BookmarksModel* model = BookmarksModel::Instance();
+  return model->getBookmarkIcon();
+}
+
+void BookmarksTreeView::setFolderIcon(const QIcon& path)
+{
+  BookmarksModel* model = BookmarksModel::Instance();
+  model->setFolderIcon(path);
+}
+
+QIcon BookmarksTreeView::getFolderIcon()
+{
+  BookmarksModel* model = BookmarksModel::Instance();
+  return model->getFolderIcon();
 }

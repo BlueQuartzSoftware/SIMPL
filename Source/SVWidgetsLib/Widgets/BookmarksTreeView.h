@@ -60,6 +60,10 @@ public:
     Unknown_Item_Type = 3
   };
 
+  //-------- Setup some QProperties that we can use from the CSS theme files to set the proper icon
+  Q_PROPERTY(QIcon BookmarkIcon READ getBookmarkIcon WRITE setBookmarkIcon)
+  Q_PROPERTY(QIcon FolderIcon READ getFolderIcon WRITE setFolderIcon)
+
   /**
    * @brief Getter property for ActionRenameBookmark
    * @return Value of ActionRenameBookmark
@@ -147,6 +151,12 @@ public:
 public Q_SLOTS:
   void collapseIndex(const QModelIndex& index);
   void expandIndex(const QModelIndex& index);
+
+  void setBookmarkIcon(const QIcon& path);
+  void setFolderIcon(const QIcon& path);
+
+  QIcon getBookmarkIcon();
+  QIcon getFolderIcon();
 
 protected:
   void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;

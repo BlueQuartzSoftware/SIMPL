@@ -69,6 +69,16 @@ public:
   BookmarksToolboxWidget(QWidget* parent = nullptr);
   ~BookmarksToolboxWidget() override;
 
+  void setBookmarkIcon(const QIcon& path);
+  void setFolderIcon(const QIcon& path);
+
+  QIcon getBookmarkIcon();
+  QIcon getFolderIcon();
+
+  //-------- Setup some QProperties that we can use from the CSS theme files to set the proper icon
+  Q_PROPERTY(QIcon BookmarkIcon READ getBookmarkIcon WRITE setBookmarkIcon)
+  Q_PROPERTY(QIcon FolderIcon READ getFolderIcon WRITE setFolderIcon)
+
   /**
    * @brief setupGui
    */
