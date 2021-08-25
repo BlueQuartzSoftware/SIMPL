@@ -183,11 +183,11 @@ endif()
 LibraryProperties( SVWidgetsLib ${EXE_DEBUG_EXTENSION})
 target_link_libraries(SVWidgetsLib ${SVWidgetsLib_LINK_LIBRARIES} QtWebAppLib)
 
-set(install_dir "tools")
+set(install_dir "bin")
 set(lib_install_dir "lib")
 if(WIN32)
     set(install_dir ".")
-    set(lib_install_dir "")
+    set(lib_install_dir ".")
 endif()
 
 if(NOT DREAM3D_ANACONDA)
@@ -202,11 +202,11 @@ if(NOT DREAM3D_ANACONDA)
   endif()
 else()
   if(WIN32)
-    install(TARGETS SVWidgetsLib
+    install(TARGETS ${PROJECT_NAME}
       RUNTIME DESTINATION bin
     )
   else()
-    install(TARGETS SVWidgetsLib
+    install(TARGETS ${PROJECT_NAME}
       LIBRARY DESTINATION lib
     )
   endif()
