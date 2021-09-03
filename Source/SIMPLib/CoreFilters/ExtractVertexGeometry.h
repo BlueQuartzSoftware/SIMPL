@@ -58,6 +58,8 @@ class SIMPLib_EXPORT ExtractVertexGeometry : public AbstractFilter
   PYB11_PROPERTY(int ArrayHandling READ getArrayHandling WRITE setArrayHandling)
   PYB11_PROPERTY(DataArrayPath SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
   PYB11_PROPERTY(std::vector<DataArrayPath> IncludedDataArrayPaths READ getIncludedDataArrayPaths WRITE setIncludedDataArrayPaths)
+  PYB11_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
+  PYB11_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
   PYB11_PROPERTY(DataArrayPath VertexDataContainerName READ getVertexDataContainerName WRITE setVertexDataContainerName)
   PYB11_END_BINDINGS()
   // End Python bindings declarations
@@ -99,7 +101,6 @@ public:
    * @return Value of ArrayHandling
    */
   int getArrayHandling() const;
-
   Q_PROPERTY(int ArrayHandling READ getArrayHandling WRITE setArrayHandling)
 
   /**
@@ -111,7 +112,6 @@ public:
    * @return Value of SelectedDataContainerName
    */
   DataArrayPath getSelectedDataContainerName() const;
-
   Q_PROPERTY(DataArrayPath SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
 
   /**
@@ -123,7 +123,6 @@ public:
    * @return Value of IncludedDataArrayPaths
    */
   std::vector<DataArrayPath> getIncludedDataArrayPaths() const;
-
   Q_PROPERTY(DataArrayPathVec IncludedDataArrayPaths READ getIncludedDataArrayPaths WRITE setIncludedDataArrayPaths)
 
   /**
@@ -135,8 +134,29 @@ public:
    * @return Value of VertexDataContainerName
    */
   DataArrayPath getVertexDataContainerName() const;
-
   Q_PROPERTY(DataArrayPath VertexDataContainerName READ getVertexDataContainerName WRITE setVertexDataContainerName)
+
+  /**
+   * @brief Setter property for MaskArrayPath
+   */
+  void setMaskArrayPath(const DataArrayPath& value);
+  /**
+   * @brief Getter property for MaskArrayPath
+   * @return Value of MaskArrayPath
+   */
+  DataArrayPath getMaskArrayPath() const;
+  Q_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
+
+  /**
+   * @brief Setter property for UseMask
+   */
+  void setUseMask(bool value);
+  /**
+   * @brief Getter property for UseMask
+   * @return Value of UseMask
+   */
+  bool getUseMask() const;
+  Q_PROPERTY(bool UseMask READ getUseMask WRITE setUseMask)
 
   ~ExtractVertexGeometry() override;
 
@@ -222,6 +242,11 @@ private:
 
   std::vector<QString> m_NewDCGeometryChoices;
   std::vector<QString> m_ArrayHandlingChoices;
+
+  DataArrayPath m_MaskArrayPath = {SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::Mask};
+  bool m_UseMask = {false};
+  std::weak_ptr<BoolArrayType> m_MaskPtr;
+  bool* m_Mask = nullptr;
 
 public:
   ExtractVertexGeometry(const ExtractVertexGeometry&) = delete;            // Copy Constructor Not Implemented

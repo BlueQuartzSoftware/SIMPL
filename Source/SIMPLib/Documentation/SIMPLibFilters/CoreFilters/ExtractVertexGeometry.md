@@ -14,11 +14,13 @@ newly created **DataContainer**.
 ## Parameters ##
 
 | Name | Type | Description |
-|------|------|------|
+|------|------|-------------|
 | ArrayHandling | int | 0=Move Arrays, 1=Copy Arrays |
+| Use Mask Array | Bool | Use a mask array to determine which vertices are extracted |
 | SelectedDataContainerName | string | Name of the DataContainer that has the Image or RectGrid Geometry object |
 | IncludedDataArrayPaths | QVector<DataArrayPath> | List of DataArrayPaths to either copy or move |
 | VertexDataContainerName | string | Name of the newly created DataContainer that holds the **VertexGeometry** |
+| MaskArrayPath | string | Path to the mask array |
 
 ## Required Geometry ##
 

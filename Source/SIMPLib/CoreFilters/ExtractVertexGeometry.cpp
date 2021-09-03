@@ -44,8 +44,10 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 
 enum createdPathID : RenameDataPath::DataID_t
@@ -87,17 +89,18 @@ void ExtractVertexGeometry::setupFilterParameters()
 
   FilterParameterVectorType parameters;
 
-  //  {
-  //    m_NewDCGeometryChoices.push_back("Vertex Geometry");
-  //    // Create the Choice Filter Parameter and add it to the list of parameters
-  //    parameters.push_back(SIMPL_NEW_CHOICE_FP("New Data Container Geometry", NewDataContainerGeometry, FilterParameter::Category::Parameter, ExtractVertexGeometry, m_NewDCGeometryChoices, false));
-  //  }
-
   {
     m_ArrayHandlingChoices.push_back("Move Attribute Arrays");
     m_ArrayHandlingChoices.push_back("Copy Attribute Arrays");
     // Create the Choice Filter Parameter and add it to the list of parameters
     parameters.push_back(SIMPL_NEW_CHOICE_FP("Array Handling", ArrayHandling, FilterParameter::Category::Parameter, ExtractVertexGeometry, m_ArrayHandlingChoices, false));
+  }
+  std::vector<QString> linkedProps = {"MaskArrayPath"};
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Use Mask", UseMask, FilterParameter::Category::Parameter, ExtractVertexGeometry, linkedProps));
+
+  {
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Category::Element);
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Mask", MaskArrayPath, FilterParameter::Category::RequiredArray, ExtractVertexGeometry, req));
   }
 
   {
@@ -187,9 +190,30 @@ void ExtractVertexGeometry::dataCheck()
   }
   else
   {
-    QString ss = QObject::tr("Data Container's Geometry type must be either an Image Geometry or RectLinearGrid Geometry. The Geomerty is of type %1").arg(fromGeometry->getGeometryTypeAsString());
+    QString ss =
+        QObject::tr("Data Container's Geometry type must be either an Image Geometry or RectLinearGrid Geometry. The selected geometry is of type %1").arg(fromGeometry->getGeometryTypeAsString());
     setErrorCondition(-2010, ss);
     return;
+  }
+  if(m_UseMask)
+  {
+    std::vector<size_t> cDims = {1};
+    m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType>(this, getMaskArrayPath(), cDims);
+    if(nullptr != m_MaskPtr.lock())
+    {
+      m_Mask = m_MaskPtr.lock()->getPointer(0);
+      if(m_MaskPtr.lock()->getNumberOfTuples() != elementCount)
+      {
+        QString ss = QObject::tr("The data array with path '%1' has a tuple count of %2, but this does not match the "
+                                 "number of tuples required by %4's geometry (%3)")
+                         .arg(getMaskArrayPath().serialize("/"))
+                         .arg(m_MaskPtr.lock()->getNumberOfTuples())
+                         .arg(elementCount)
+                         .arg(dc->getName());
+        setErrorCondition(-2019, ss);
+        return;
+      }
+    }
   }
 
   int selectedArraysSize = m_IncludedDataArrayPaths.size();
@@ -230,7 +254,10 @@ void ExtractVertexGeometry::dataCheck()
     }
     else
     {
-      newArrayPtr = sourceCellAttrMat->removeAttributeArray(dap.getDataArrayName());
+      if(!m_UseMask)
+      {
+        newArrayPtr = sourceCellAttrMat->removeAttributeArray(dap.getDataArrayName());
+      }
     }
 
     DataArrayPath newDap = m_VertexDataContainerName;
@@ -260,22 +287,107 @@ void ExtractVertexGeometry::execute()
     return;
   }
 
-  IGeometryGrid::Pointer sourceGeometry = getDataContainerArray()->getDataContainer(getSelectedDataContainerName())->getGeometryAs<IGeometryGrid>();
+  DataContainer::Pointer sourceGeomDC = getDataContainerArray()->getDataContainer(getSelectedDataContainerName());
+  IGeometryGrid::Pointer sourceGeometry = sourceGeomDC->getGeometryAs<IGeometryGrid>();
 
-  float coords[3] = {0.0f, 0.0f, 0.0f};
+  DataContainer::Pointer vertexDC = getDataContainerArray()->getDataContainer(getVertexDataContainerName());
+  VertexGeom::Pointer vertexGeom = vertexDC->getGeometryAs<VertexGeom>();
 
   SizeVec3Type dims = sourceGeometry->getDimensions();
   size_t cellCount = std::accumulate(dims.begin(), dims.end(), static_cast<size_t>(1), std::multiplies<size_t>());
+  size_t totalCells = cellCount; // We save this here because it may change based on the use_mask flag.
 
-  VertexGeom::Pointer vertexGeom = getDataContainerArray()->getDataContainer(getVertexDataContainerName())->getGeometryAs<VertexGeom>();
-  SharedVertexList::Pointer vertices = vertexGeom->getVertices();
-
-  // Use the APIs from the IGeometryGrid to get the XYZ coord for the center of each cell and then set that into the
-  // the new VertexGeometry
-  for(size_t idx = 0; idx < cellCount; idx++)
+  BoolArrayType::Pointer maskArrayPtr = m_MaskPtr.lock();
+  if(m_UseMask)
   {
-    sourceGeometry->getCoords(idx, coords);
-    vertices->setTuple(idx, coords);
+    BoolArrayType& maskArray = *(maskArrayPtr);
+    size_t size = maskArray.size();
+    cellCount = 0;
+    for(size_t i = 0; i < size; i++)
+    {
+      if(maskArray[i])
+      {
+        cellCount++;
+      }
+    }
+    // Resize the vertex geometry to the proper size
+    vertexGeom->resizeVertexList(cellCount);
+  }
+
+  SharedVertexList::Pointer vertices = vertexGeom->getVertices();
+  float coords[3] = {0.0f, 0.0f, 0.0f};
+
+  // Use the APIs from the IGeometryGrid to get the XYZ coord for the center of each cell and then set that into
+  // the new VertexGeometry
+  size_t vertIdx = 0;
+  for(size_t idx = 0; idx < totalCells; idx++)
+  {
+    if(m_UseMask)
+    {
+      if(maskArrayPtr->getValue(idx))
+      {
+        sourceGeometry->getCoords(idx, coords);
+        vertices->setTuple(vertIdx, coords);
+        vertIdx++;
+      }
+    }
+    else
+    {
+      sourceGeometry->getCoords(idx, coords);
+      vertices->setTuple(idx, coords);
+    }
+  }
+
+  // If we are using a mask we need to copy the data from the cell data arrays to the vertex cell data arrays
+  if(m_UseMask && !m_IncludedDataArrayPaths.empty())
+  {
+    BoolArrayType& maskArray = *(maskArrayPtr);
+
+    AttributeMatrix& imageGeomCellAM = *(sourceGeomDC->getAttributeMatrix(m_IncludedDataArrayPaths[0].getAttributeMatrixName()));
+
+    DataArrayPath vertCelAMPath = m_VertexDataContainerName;
+    vertCelAMPath.setAttributeMatrixName(imageGeomCellAM.getName());
+    vertCelAMPath.setDataArrayName("");
+
+    AttributeMatrix& vertexCellAttrMat = *(vertexDC->getAttributeMatrix(vertCelAMPath));
+    // Clear all the data arrays from the Vertex Cell Attribute Matrix. This is done because the arrays are probably resized,
+    // so we can't do a copy or move. We have to copy the values one at a time.
+    vertexCellAttrMat.clearAttributeArrays();
+    // Correctly set the dimensions on the AttributeMatrix for the vertex array
+    vertexCellAttrMat.resizeAttributeArrays({vertIdx});
+
+    for(const auto& dataArrayPath : m_IncludedDataArrayPaths)
+    {
+      QString msg;
+      QTextStream ss(&msg);
+      ss << "Copying '" << dataArrayPath.serialize("/") << "' data from cell data arrays to vertex cell data array.";
+      notifyStatusMessage(msg);
+
+      IDataArray::Pointer imageGeomDataArrayPtrPtr = imageGeomCellAM[dataArrayPath.getDataArrayName()];
+      std::vector<size_t> cDims = imageGeomDataArrayPtrPtr->getComponentDimensions();
+      QString name = imageGeomDataArrayPtrPtr->getName();
+
+      // Create a new DataArray to copy the cell values into
+      IDataArray::Pointer destDataArray = imageGeomDataArrayPtrPtr->createNewArray(cellCount, cDims, name, true);
+
+      vertIdx = 0;
+      for(size_t idx = 0; idx < totalCells; idx++)
+      {
+        if(maskArray[idx])
+        {
+          destDataArray->copyFromArray(vertIdx, imageGeomDataArrayPtrPtr, idx, 1);
+          vertIdx++;
+        }
+      }
+
+      // Insert the new data array into the vertex cell attribute matrix
+      vertexCellAttrMat.insertOrAssign(destDataArray);
+      // if the user selected to "move" the arrays then remove the source array from its attribute matrix
+      if(static_cast<ArrayHandlingType>(m_ArrayHandling) == ArrayHandlingType::MoveArrays)
+      {
+        imageGeomCellAM.removeAttributeArray(name);
+      }
+    }
   }
 }
 
@@ -426,4 +538,28 @@ void ExtractVertexGeometry::setVertexDataContainerName(const DataArrayPath& valu
 DataArrayPath ExtractVertexGeometry::getVertexDataContainerName() const
 {
   return m_VertexDataContainerName;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractVertexGeometry::setMaskArrayPath(const DataArrayPath& value)
+{
+  m_MaskArrayPath = value;
+}
+
+// -----------------------------------------------------------------------------
+DataArrayPath ExtractVertexGeometry::getMaskArrayPath() const
+{
+  return m_MaskArrayPath;
+}
+
+// -----------------------------------------------------------------------------
+void ExtractVertexGeometry::setUseMask(bool value)
+{
+  m_UseMask = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ExtractVertexGeometry::getUseMask() const
+{
+  return m_UseMask;
 }
