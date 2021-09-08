@@ -84,28 +84,31 @@
 std::map<int, int> test;
 std::map<int, int>::value_type vt;
 
-bool mypredicate(int32_t i, int32_t j)
+namespace SIMPLibTesting 
 {
-  return (i == j);
-}
-
-struct Sum
-{
-  Sum()
-  : sum{0}
+  bool mypredicate(int32_t i, int32_t j)
   {
+    return (i == j);
   }
-  void operator()(int n)
-  {
-    sum += n;
-  }
-  int sum;
-};
 
-template <typename T>
-void print(const T& v)
-{
-  std::cout << v << " ";
+  struct Sum
+  {
+    Sum()
+    : sum{0}
+    {
+    }
+    void operator()(int n)
+    {
+      sum += n;
+    }
+    int sum;
+  };
+
+  template <typename T>
+  void print(const T& v)
+  {
+    std::cout << v << " ";
+  }
 }
 //======================================================================================================================
 
@@ -1278,7 +1281,7 @@ true);
     }
 
     std::cout << "before:";
-    std::for_each(i32Array.begin(), i32Array.end(), print<int32_t>);
+    std::for_each(i32Array.begin(), i32Array.end(), SIMPLibTesting::print<int32_t>);
     std::cout << '\n';
 
     std::cout << "using default comparison:" << std::endl;
@@ -1294,7 +1297,7 @@ true);
     std::for_each(i32Array1.begin(), i32Array1.end(), [](int32_t& n) { n++; });
 
     std::cout << "using predicate comparison:" << std::endl;
-    if(std::equal(i32Array.begin(), i32Array.end(), i32Array1.begin(), mypredicate))
+    if(std::equal(i32Array.begin(), i32Array.end(), i32Array1.begin(), SIMPLibTesting::mypredicate))
     {
       std::cout << "The contents of both sequences are equal.\n";
     }
@@ -1305,10 +1308,10 @@ true);
 
     std::cout << "Using another predicate to sum the values" << std::endl;
     // calls Sum::operator() for each number
-    Sum s = std::for_each(i32Array1.begin(), i32Array1.end(), Sum());
+    SIMPLibTesting::Sum s = std::for_each(i32Array1.begin(), i32Array1.end(), SIMPLibTesting::Sum());
 
     std::cout << "after: ";
-    std::for_each(i32Array1.begin(), i32Array1.end(), print<int32_t>);
+    std::for_each(i32Array1.begin(), i32Array1.end(), SIMPLibTesting::print<int32_t>);
     std::cout << '\n';
     std::cout << "sum: " << s.sum << '\n';
 
@@ -1327,13 +1330,13 @@ true);
     std::cout << "std::fill" << std::endl;
     // std::fill the array with a set value
     std::fill(i32Array.begin(), i32Array.end(), -1);
-    std::for_each(i32Array.begin(), i32Array.end(), print<int32_t>);
+    std::for_each(i32Array.begin(), i32Array.end(), SIMPLibTesting::print<int32_t>);
     std::cout << "" << std::endl;
 
     std::cout << "std::transform from int32_t to float using a back_inserter" << std::endl;
     DataArray<float> f32Array(0, "Float Array", 0.0f);
     std::transform(i32Array.begin(), i32Array.end(), std::back_inserter(f32Array), [](int32_t i) -> float { return i * 2.5; });
-    std::for_each(f32Array.begin(), f32Array.end(), print<float>);
+    std::for_each(f32Array.begin(), f32Array.end(), SIMPLibTesting::print<float>);
     std::cout << std::endl;
 
     // Get the front and back

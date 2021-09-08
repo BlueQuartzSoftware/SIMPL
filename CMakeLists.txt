@@ -250,12 +250,6 @@ SIMPL_ENABLE_GROUP(GROUP_NAME WIDGETS
 
 OPTION(SIMPL_BUILD_TESTING "Compile the test programs" ON)
 
-# --------------------------------------------------------------------
-# Find HDF5 Headers/Libraries
-# HDF5 now comes with everything that is needed for CMake to load
-# up the targets (Exported) that it needs. We just need to find where
-# HDF5 is installed.
-include(${CMP_SOURCE_DIR}/ExtLib/HDF5Support.cmake)
 
 # --------------------------------------------------------------------
 # Should we use Intel Threading Building Blocks
