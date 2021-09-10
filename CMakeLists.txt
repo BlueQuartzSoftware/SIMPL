@@ -441,11 +441,13 @@ add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib ${PROJECT_BINARY_DIR}/S
 # Figure out here if we are going to build the command line tools
 add_subdirectory(${SIMPLProj_SOURCE_DIR}/Source/PipelineRunner ${PROJECT_BINARY_DIR}/PipelineRunner)
 
-# --------------------------------------------------------------------
-# add the Command line MakeFilterUuid
-# Figure out here if we are going to build the command line tools
-add_subdirectory(${SIMPLProj_SOURCE_DIR}/Source/MakeFilterUuid ${PROJECT_BINARY_DIR}/MakeFilterUuid)
-
+option(SIMPL_BUILD_CLI_TOOLS "Build the command line versions of the applications" ON)
+if( SIMPL_BUILD_CLI_TOOLS )
+  # --------------------------------------------------------------------
+  # add the Command line MakeFilterUuid
+  # Figure out here if we are going to build the command line tools
+  add_subdirectory(${SIMPLProj_SOURCE_DIR}/Source/MakeFilterUuid ${PROJECT_BINARY_DIR}/MakeFilterUuid)
+endif()
 
 # --------------------------------------------------------------------
 # add the Command line PipelineRunner
