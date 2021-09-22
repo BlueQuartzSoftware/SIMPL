@@ -139,7 +139,7 @@ void MultiInputFileWidget::createSummaryText()
 {
   if(m_SelectedFiles.isEmpty())
   {
-    m_Ui->m_SummaryLabel->hide();
+    m_Ui->m_SummaryLabel->setText("No Files Selected");
     return;
   }
   QString file = m_SelectedFiles.at(0);
@@ -151,7 +151,6 @@ void MultiInputFileWidget::createSummaryText()
   QTextStream out(&msg);
   out << s_LastUsedDir << "\nNumber of Files Selected: " << m_SelectedFiles.size();
   m_Ui->m_SummaryLabel->setText(msg);
-  m_Ui->m_SummaryLabel->setVisible(true);
 }
 
 // -----------------------------------------------------------------------------
