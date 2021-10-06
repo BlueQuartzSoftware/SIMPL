@@ -119,6 +119,10 @@ public:
    */
   Collection getFactories(const QString& groupName, const QString& subGroupName);
 
+  
+  Collection getFactoriesForPluginName(const QString& pluginName);
+  QSet<QString> getPluginNames();
+
   /**
    * @brief Returns true if it contains a filter factory with the given UUID
    * @param uuid

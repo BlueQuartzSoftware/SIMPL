@@ -137,6 +137,24 @@ FilterManager::Collection FilterManager::getFactories(const QString& groupName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+FilterManager::Collection FilterManager::getFactoriesForPluginName(const QString& pluginName)
+{
+  FilterManager::Collection groupFactories;
+
+  for(FilterManager::Collection::iterator factory = m_Factories.begin(); factory != m_Factories.end(); ++factory)
+  {
+    IFilterFactory::Pointer filterFactory = factory.value();
+    if(nullptr != filterFactory.get() && factory.value()->getCompiledLibraryName().compare(pluginName) == 0)
+    {
+      groupFactories[factory.key()] = factory.value();
+    }
+  }
+  return groupFactories;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 FilterManager::Collection FilterManager::getFactories(const QString& groupName, const QString& subGroupName)
 {
   FilterManager::Collection groupFactories;
@@ -211,6 +229,28 @@ QSet<QString> FilterManager::getGroupNames()
     if(nullptr != filterFactory)
     {
       groupNames.insert(filterFactory->getFilterGroup());
+    }
+    //  qDebug() << factory.value()->getFilterGroup() << "\n";
+  }
+  return groupNames;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QSet<QString> FilterManager::getPluginNames()
+{
+  // qDebug() << "FilterManager::getGroupNames" << "\n";
+  // Get all the  Factories and loop over each one we know about and instantiate a new one
+  FilterManager* fm = FilterManager::Instance();
+  FilterManager::Collection factories = fm->getFactories();
+  QSet<QString> groupNames;
+  for(FilterManager::Collection::iterator factory = factories.begin(); factory != factories.end(); ++factory)
+  {
+    IFilterFactory::Pointer filterFactory = factory.value();
+    if(nullptr != filterFactory)
+    {
+      groupNames.insert(filterFactory->getCompiledLibraryName());
     }
     //  qDebug() << factory.value()->getFilterGroup() << "\n";
   }
