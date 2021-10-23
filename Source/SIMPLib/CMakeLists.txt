@@ -153,7 +153,7 @@ if(SIMPL_Group_FILTERS)
   if(NOT "${SIMPLProj_RELEASE_TYPE}" STREQUAL "Official")
       # Add the generated moc file to the project sources
       set(Project_SRCS ${Project_SRCS} ${PluginAutoMocSourceFile} )
-      include(${SIMPLib_SOURCE_DIR}/TestFilters/SourceList.cmake)
+     # include(${SIMPLib_SOURCE_DIR}/TestFilters/SourceList.cmake)
       set(CORE_FILTER_LIST ${CORE_FILTER_LIST} ${_PublicFilters} )
   endif()
 endif()
@@ -228,7 +228,7 @@ if(SIMPL_EMBED_PYTHON)
 endif()
 
 if(DREAM3D_ANACONDA)
-  target_compile_definitions(${PROJECT_NAME} PRIVATE DREAM3D_ANACONDA)
+  target_compile_definitions(${PROJECT_NAME} PUBLIC DREAM3D_ANACONDA)
 endif()
 
 # Add H5Support

@@ -294,7 +294,7 @@ inline const QString Unsupported("Unsupported");
 namespace FilterSubGroups
 {
 inline const QString EnsembleStatsFilters("Ensemble");
-inline const QString MemoryManagementFilters("Memory/Management");
+inline const QString MemoryManagementFilters("Memory Management");
 inline const QString SpatialFilters("Spatial");
 inline const QString StatisticsFilters("Statistics");
 inline const QString FeatureIdentificationFilters("FeatureIdentification");
@@ -310,7 +310,7 @@ inline const QString WarpingFilters("Warping");
 inline const QString AlignmentFilters("Alignment");
 inline const QString SegmentationFilters("Segmentation");
 inline const QString GroupingFilters("Grouping");
-inline const QString CropCutFilters("Croping/Cutting");
+inline const QString CropCutFilters("Croping Cutting");
 inline const QString RotationTransformationFilters("Rotating/Transforming");
 inline const QString ResolutionFilters("Spacing");
 inline const QString MorphologicalFilters("Morphological");
@@ -319,7 +319,7 @@ inline const QString CrystallographyFilters("Crystallography");
 inline const QString GenerationFilters("Generation");
 inline const QString SmoothingFilters("Smoothing");
 inline const QString CurvatureFilters("Curvature");
-inline const QString ConnectivityArrangementFilters("Connectivity/Arrangement");
+inline const QString ConnectivityArrangementFilters("Connectivity Arrangement");
 inline const QString MappingFilters("Mapping");
 inline const QString MiscFilters("Misc");
 inline const QString GeometryFilters("Geometry");

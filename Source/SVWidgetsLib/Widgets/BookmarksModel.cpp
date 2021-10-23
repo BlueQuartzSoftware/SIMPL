@@ -829,6 +829,27 @@ QDir BookmarksModel::findPipelinesDirectory()
   QDir pipelinesDir = QDir(appPath);
 #if defined(DREAM3D_ANACONDA)
   pipelinesDir.cd(QString("../share/%1").arg(QCoreApplication::applicationName()));
+  #if defined(Q_OS_MAC)
+  if(pipelinesDir.dirName() == "MacOS")
+  {
+    pipelinesDir.cdUp();
+    // Can we change directory into the "PrebuiltPipeliines" directory at this level.
+    QString pbpDir = QString("Resources/%1").arg(PREBUILT_PIPELINES_DIR);
+    if(pipelinesDir.cd(pbpDir))
+    {
+      return pipelinesDir;
+    }
+    pipelinesDir.cdUp();
+    pipelinesDir.cdUp();
+    pipelinesDir.cdUp();
+    pipelinesDir.cd("share");
+    pipelinesDir.cd("DREAM3D");
+    if(pipelinesDir.cd(PREBUILT_PIPELINES_DIR))
+    {
+      return pipelinesDir;
+    }
+  }
+  #endif
 #else
 #if defined(Q_OS_WIN)
   QFileInfo fi(pipelinesDir.absolutePath() + QDir::separator() + dirName);
