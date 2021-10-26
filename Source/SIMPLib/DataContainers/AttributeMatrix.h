@@ -191,7 +191,12 @@ public:
    */
   static Pointer Create(const std::vector<size_t> &tupleDims, const QString& name, AttributeMatrix::Type attrType)
   {
-    Pointer sharedPtr(new AttributeMatrix(QVector<size_t>::fromStdVector(tupleDims), name, static_cast<AttributeMatrix::Type>(attrType)));
+    QVector<size_t> qTupleDims;
+    for(const auto& dim : tupleDims)
+    {
+      qTupleDims.push_back(dim);
+    }
+    Pointer sharedPtr(new AttributeMatrix(qTupleDims, name, static_cast<AttributeMatrix::Type>(attrType)));
     return sharedPtr;
   }
 
