@@ -418,14 +418,14 @@ if(SIMPL_USE_ITK)
   endif()
 endif()
 
-if(NOT DEFINED SIMPL_USE_GHC_FILESYSTEM)
-  set(SIMPL_USE_GHC_FILESYSTEM OFF)
-
-  if(APPLE OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-    set(SIMPL_USE_GHC_FILESYSTEM ON)
-  elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" AND "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
-    set(SIMPL_USE_GHC_FILESYSTEM ON)
-  endif()
+# -----------------------------------------------------------------------
+# Determine if we need the ghcFilesystem library
+#-------------------------------------------------------------------------------
+set(SIMPL_USE_GHC_FILESYSTEM OFF)
+if(APPLE AND CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS 10.15)
+  set(SIMPL_USE_GHC_FILESYSTEM ON)
+elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" AND "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
+  set(SIMPL_USE_GHC_FILESYSTEM ON)
 endif()
 
 if(SIMPL_USE_GHC_FILESYSTEM)
