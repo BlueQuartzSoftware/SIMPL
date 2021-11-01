@@ -62,7 +62,7 @@ class ObjectToCopy(IntEnum):
     AttributeArray = 2
 
 def ReadDREAM3DFile(data_container_array, input_file):
-    '''
+    """
     Executes the filter DataContainerReader and returns the error. This will read the entire
     file into memory.
 
@@ -70,7 +70,7 @@ def ReadDREAM3DFile(data_container_array, input_file):
     :param QString input_file: Sets the InputFile value.
     :return: ErrorCode produced by the filter
     :rtype: int
-    '''
+    """
     
     # Create a DataContainerReader and read the DataStructure into a proxy
     data_container_reader = simpl.DataContainerReader.New()
@@ -87,42 +87,42 @@ def ReadDREAM3DFile(data_container_array, input_file):
     return executeError
 
 def CreateDataContainerArray():
-    '''
+    """
     Creates a Top level Data Container Array object. Everything will get packed in this
-    '''
+    """
     dca = simpl.DataContainerArray.New()
     return dca
 
 def CreateDataContainer(name):
-    '''
+    """
     Creates a DataContainer object
 
     Keyword arguments:
     name -- The name of the DataContainer    
-    '''
+    """
     dc = simpl.DataContainer(name)
     return dc
 
 def CreateAttributeMatrix(dims, name, type):
-    '''
+    """
     Creates an AttriuteMatrix of the given type
 
     Keyword arguments:
     dims -- the dimensions of the AttributeMatrix
     name -- The name of the AttributeMatrix
     type -- the type of the AttributeMatrix
-    '''
+    """
     am = simpl.AttributeMatrix.New(dims, name, type)
     return am
 
 def WriteDREAM3DFile(path, dca, verbose=False):
-    '''
+    """
     Writes a dream3d file and returns the error code
 
     Keyword arguments:
     path -- The output path of the file.
     dca -- The DataContainerArray to write
-    '''
+    """
     # Lets write out the whole Heirarchy to a .dream3d file
     if verbose:
         print('Creating DREAM3D Writer filter....')
@@ -137,7 +137,7 @@ def WriteDREAM3DFile(path, dca, verbose=False):
     return writer.ErrorCode
 
 def CreateDataArray(name, shape, cDims, type):
-    '''
+    """
     Creates a data array with the attributes listed. The array will be a numpy array in 'C' ordering.
 
     Keyword arguments:
@@ -145,7 +145,7 @@ def CreateDataArray(name, shape, cDims, type):
     shape -- The dimensions of the DataArray. Note that the array will be flattened into a contiguous array
     cDims -- The component dimensions, i.e., the number of components at each tuple.
     type -- The numpy type of array to create: 8,16,32,64 signed/unsiged and 32/64 floats are supported
-    '''
+    """
     # Create a numpy array of ones to hold our data
     n_tuples = np.prod(shape)
 
@@ -174,11 +174,11 @@ def CreateDataArray(name, shape, cDims, type):
     return (array.npview(), array)
 
 def CreateDataContainerProxy(dca, data_array_paths):
-    '''
+    """
     Create a DataContainerProxy
-    \ndca: Data Container Array
-    \ndata_array_paths: list of DataArrayPaths (or list/tuple equivalent) to be 'checked'
-    '''
+    dca: Data Container Array
+    data_array_paths: list of DataArrayPaths (or list/tuple equivalent) to be 'checked'
+    """
     dcap = simpl.DataContainerArrayProxy()
     checked = 2 # The flag for 'checking' an item
     for data_array_path in data_array_paths:
@@ -210,7 +210,7 @@ y_bounds_array_path = simpl.DataArrayPath('', '', ''), z_bounds_array_path = sim
 shared_vertex_list_array_path = simpl.DataArrayPath('', '', ''), vertex_attribute_matrix_name = '', shared_edge_list_array_path = simpl.DataArrayPath('', '', ''),
 edge_attribute_matrix_name = '', shared_tri_list_array_path = simpl.DataArrayPath('', '', ''), face_attribute_matrix_name='',
 shared_quad_list_array_path = simpl.DataArrayPath('', '', ''), shared_tet_list_array_path = simpl.DataArrayPath('', '', '')):
-    '''
+    """
     Create Geometry
 
     Required inputs: 
@@ -254,8 +254,7 @@ shared_quad_list_array_path = simpl.DataArrayPath('', '', ''), shared_tet_list_a
         * Tetrahedral List
         * Vertex Attribute Matrix Name
         * Cell Attribute Matrix Name
-
-    '''
+    """
 
     # For all geometry types
     create_geometry = simpl.CreateGeometry.New()
@@ -314,20 +313,20 @@ shared_quad_list_array_path = simpl.DataArrayPath('', '', ''), shared_tet_list_a
 
 def CreateAsciiWizardData(input_file_path, begin_index, number_of_lines, delimiters, consecutive_delimiters,
 automatic_AM, selected_path, headers, attribute_matrix_type, tuple_dimensions, data_types):
-    '''
+    """
     Creates an ASCII Wizard Data object for use in the ReadASCIIData filter
-    \ninput_file_path: a string containing the path to the input file
-    \nbegin_index: an integer for the line number to start reading in the file
-    \nnumber_of_lines: an integer of the number of lines to read
-    \ndelimiters: a list of characters to parse file with (ie. [',', ':'])
-    \nconsecutive_delimiters: a boolean for whether to treat consecutive delimiters as one
-    \nautomatic_AM: a boolean for whether to create a new attribute matrix
-    \nselected_path: a DataArrayPath object for the input data
-    \nheaders: a list of strings containing header names (ie. ['x', 'y', 'z'])
-    \nattribute_matrix_type: either an AttributeMatrix.Type object or the integer equivalent
-    \ntuple_dimensions: a list of integers for the dimensions of each tuple
-    \ndata_types: a list of strings for the data types (ie. ['float', 'float', 'float'])
-    '''
+    input_file_path: a string containing the path to the input file
+    begin_index: an integer for the line number to start reading in the file
+    number_of_lines: an integer of the number of lines to read
+    delimiters: a list of characters to parse file with (ie. [',', ':'])
+    consecutive_delimiters: a boolean for whether to treat consecutive delimiters as one
+    automatic_AM: a boolean for whether to create a new attribute matrix
+    selected_path: a DataArrayPath object for the input data
+    headers: a list of strings containing header names (ie. ['x', 'y', 'z'])
+    attribute_matrix_type: either an AttributeMatrix.Type object or the integer equivalent
+    tuple_dimensions: a list of integers for the dimensions of each tuple
+    data_types: a list of strings for the data types (ie. ['float', 'float', 'float'])
+    """
     wizardData = {
     'inputFilePath': input_file_path,
     'beginIndex': begin_index,
@@ -344,12 +343,12 @@ automatic_AM, selected_path, headers, attribute_matrix_type, tuple_dimensions, d
     return wizardData
 
 def CreateDynamicTableData(data, columnheaders = [], rowheaders = []):
-    '''
+    """
     Creates a DynamicTableData object for use in creation of attribute matrices
-    \ndata: a list of lists of integer values for the tuple dimensions of the attribute matrix
-    \ncolumnheaders: a list of the column headers for the data (optional)
-    \nrowheaders: a list of the row headers for the data (optional)
-    '''
+    data: a list of lists of integer values for the tuple dimensions of the attribute matrix
+    columnheaders: a list of the column headers for the data (optional)
+    rowheaders: a list of the row headers for the data (optional)
+    """
     if not columnheaders:
         cols = len(data[0])
         for i in range(cols):
@@ -374,12 +373,12 @@ def CreateDynamicTableData(data, columnheaders = [], rowheaders = []):
         return dtd
 
 def RemoveArray(dca, path):
-    '''
+    """
     Removes the array given by 'path'
-    \ndca: Data Container Array containing the array to be removed
-    \npath: Either a DataArrayPath object or a list of 3 strings (data container, attribute matrix name, array name)
-    \nReturns a boolean variable of True if successful, False otherwise
-    '''
+    dca: Data Container Array containing the array to be removed
+    path: Either a DataArrayPath object or a list of 3 strings (data container, attribute matrix name, array name)
+    Returns a boolean variable of True if successful, False otherwise
+    """
     # Validate path object and get names of path elements
     datacontainername = ''
     attrmatrixname = ''
@@ -419,12 +418,12 @@ def RemoveArray(dca, path):
         return True
 
 def RemoveArrays(dca, paths):
-    '''
+    """
     Remove the list of data array paths
-    \ndca: Data Container Array containing the arrays to be removed
-    \npaths: List of either DataArrayPath objects or of lists of 3 strings (data container, attribute matrix name, array name)
-    \nReturns a boolean variable of True if successful, False otherwise
-    '''
+    dca: Data Container Array containing the arrays to be removed
+    paths: List of either DataArrayPath objects or of lists of 3 strings (data container, attribute matrix name, array name)
+    Returns a boolean variable of True if successful, False otherwise
+    """
     success = True
 
     for path in paths:
@@ -434,14 +433,14 @@ def RemoveArrays(dca, paths):
     return success
 
 def MultiThresholdObjects(dca, destination_array_name, selected_thresholds):
-    '''
+    """
     Create and run a Multi Threshold Objects filter
-    \ndca: Data Container Array containing the arrays
-    \ndestination_array_name: The name of the destination array for storing the results
-    \nselected_thresholds: A list of tuples containing the Data Container Name, Attribute Matrix Name, Data Array Name,  a Comparison Operator, and a Comparison Value
-    \n The comparison operator choices are ['<', '>', '=', '!='] (or their index in this list)
-    \n The comparison value is an double floating point number to compare the values with. 
-    '''
+    dca: Data Container Array containing the arrays
+    destination_array_name: The name of the destination array for storing the results
+    selected_thresholds: A list of tuples containing the Data Container Name, Attribute Matrix Name, Data Array Name,  a Comparison Operator, and a Comparison Value
+     The comparison operator choices are ['<', '>', '=', '!='] (or their index in this list)
+     The comparison value is an double floating point number to compare the values with. 
+    """
     comparison_operators = ['<', '>', '=', '!=']
     if len(selected_thresholds) == 0:
         print('Insufficient data passed')
@@ -472,21 +471,21 @@ def MultiThresholdObjects(dca, destination_array_name, selected_thresholds):
     return err
 
 def MultiThresholdObjects2(dca, source_path, destination_array_name, selected_thresholds):
-    '''
+    """
     Create and run a Multi Threshold Objects filter
-    \ndca: Data Container Array containing the arrays
-    \nsource_path: Data Array Path or tuple/list of 3 strings representing a Data Array Path
-    \ndestination_array_name: The name of the destination array for storing the results
-    \nselected_thresholds: A list of Comparison Sets that has a DataContainerName, AttributeMatrixName, and a Union Operator (AND, OR)
-    \nA list of tuples containing the AttributeArrayName, a CompOperator, and a CompValue
-    \nThe comparison operator choices are ['<', '>', '=', '!='] (or their index in this list)
-    \nThe comparison value is an double floating point number to compare the values with. 
-    \nNOTE: Comparison Sets can contain Comparison Sets or Values but Comparison Values cannot contain either
-    \n Place the UnionOperator in front of the Comparison Values in a a Comparison Set
-    \n Comparison Sets should be lists in [] form and Comparison Values should be tuples in () form
-    \nExample:
-    \n['AND', (CV1), (CV2), ['OR', (CV3, (CV4)]] ==> CV1 && CV2 && (CV3 OR CV4)
-    '''
+    dca: Data Container Array containing the arrays
+    source_path: Data Array Path or tuple/list of 3 strings representing a Data Array Path
+    destination_array_name: The name of the destination array for storing the results
+    selected_thresholds: A list of Comparison Sets that has a DataContainerName, AttributeMatrixName, and a Union Operator (AND, OR)
+    A list of tuples containing the AttributeArrayName, a CompOperator, and a CompValue
+    The comparison operator choices are ['<', '>', '=', '!='] (or their index in this list)
+    The comparison value is an double floating point number to compare the values with. 
+    NOTE: Comparison Sets can contain Comparison Sets or Values but Comparison Values cannot contain either
+     Place the UnionOperator in front of the Comparison Values in a a Comparison Set
+     Comparison Sets should be lists in [] form and Comparison Values should be tuples in () form
+    Example:
+    ['AND', (CV1), (CV2), ['OR', (CV3, (CV4)]] ==> CV1 && CV2 && (CV3 OR CV4)
+    """
     thresholds = simpl.ComparisonInputsAdvanced()
     topLevelComparisonSet = simpl.ComparisonSet()
     for selected_threshold in selected_thresholds:
@@ -520,10 +519,10 @@ def MultiThresholdObjects2(dca, source_path, destination_array_name, selected_th
     return err
 
 def BuildSelectedThresholds(selected_threshold):
-    '''
+    """
     Recursive function to build a Comparison Set
-    \nselected_threshold: A nested Comparison Set to be built
-    '''
+    selected_threshold: A nested Comparison Set to be built
+    """
     # AND = 0 / OR = 1
     newComparisonSet = simpl.ComparisonSet()
     if selected_threshold[0] == 'AND':
@@ -543,13 +542,13 @@ def BuildSelectedThresholds(selected_threshold):
     return newComparisonSet
 
 def MoveData(dca, what_to_move, source_path, destination_path):
-    '''
+    """
     Move the data from source to destination
-    \ndca: Data Container Array containing project data
-    \nwhat_to_move: Either 'Attribute Matrix' or 'Data Array' (or the actual type such as simpl.AttributeMatrix or simpl.IDataArray)
-    \nsource_path: The full Data Array Path to the object being moved (or a list/tuple of strings)
-    \ndestination: The full Data Array Path where the object is moved to (or a list/tuple of strings)
-    '''
+    dca: Data Container Array containing project data
+    what_to_move: Either 'Attribute Matrix' or 'Data Array' (or the actual type such as simpl.AttributeMatrix or simpl.IDataArray)
+    source_path: The full Data Array Path to the object being moved (or a list/tuple of strings)
+    destination: The full Data Array Path where the object is moved to (or a list/tuple of strings)
+    """
     what_to_move_number = 0
     if not isinstance(what_to_move, (simpl.AttributeMatrix, simpl.IDataArray)):
         if what_to_move == 'Data Array' or what_to_move == 'Attribute Array' or what_to_move == WhatToMove.AttributeArray:
@@ -603,13 +602,13 @@ def MoveData(dca, what_to_move, source_path, destination_path):
     return err
 
 def MoveMultiData(dca, what_to_move, source_paths, destination_path):
-    '''
+    """
     Moves multiple data arrays or attribute matrices to the destination path
-    \ndca: Data Container Array with the data in it
-    \nwhat_to_move: Either 'Attribute Matrix' or 'Data Array' (or the actual type such as simpl.AttributeMatrix or simpl.IDataArray)
-    \nsource_paths: A list of full Data Array Paths to the objects being moved (or a list of list/tuple of strings)
-    \ndestination: The full Data Array Path where the object is moved to (or a list/tuple of strings)
-    '''
+    dca: Data Container Array with the data in it
+    what_to_move: Either 'Attribute Matrix' or 'Data Array' (or the actual type such as simpl.AttributeMatrix or simpl.IDataArray)
+    source_paths: A list of full Data Array Paths to the objects being moved (or a list of list/tuple of strings)
+    destination: The full Data Array Path where the object is moved to (or a list/tuple of strings)
+    """
     if len(source_paths) < 1:
         print('Invalid or insufficient source paths')
         return -1

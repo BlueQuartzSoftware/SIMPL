@@ -209,12 +209,14 @@ class PyClass():
     if args_text:
       args_text = ', ' + args_text
     code = f'def {camel_to_snake(self.name)}(data_container_array{args_text}, observer = None) -> int:\n'
-    code += '  \"\"\"\n'
-    code += f'  {self.name}\n\n'
-    code += '  :param data_container_array | DataContainerArray\n'
+    code += f'  \"\"\"Pythonic interface to {self.name} Filter which will execute the filter immediately and return.\n'
+    code += f'  \n'
+    code += f'  Args:\n'
+    code +=  '    data_container_array (DataContainerArray): The DataContainerArray that will be used as input\n'
     for prop, arg in zip(self.properties, arg_list):
-      code += f'  :param {arg} | {prop.type} {prop.name}\n'
-    code += '  :param observer | Observer\n'
+      code += f'    {arg} ({prop.type}): Sets the "{prop.name}" filter property\n'
+    code += '    observer (Observer): The observer that can report back warnings/errors.\n'
+    code += '\n  Returns:\n    int\n'
     code += '  \"\"\"\n\n'
     code += f'  filter = {module_name}.{self.name}()\n'
     code += f'  filter.setDataContainerArray(data_container_array)\n'
@@ -655,8 +657,12 @@ def generate_plugin_bindings(output_dir: str, module_name: str, files: List[str]
       f'{include_code}\n\n'
       'namespace py = pybind11;\n'
       'using namespace py::literals;\n\n'
-      f'PYBIND11_MODULE({module_name}, mod)\n'
-      '{\n'
+      f'PYBIND11_MODULE({module_name}, mod){{\n'
+      'mod.doc() = R"pbdoc(\n'
+      f' Python module "{module_name}" wrapping the "{plugin_name}" DREAM3D Plugin\n'
+      ' -----------------------\n'
+      f'  .. currentmodule:: {module_name} \n\n'
+    ')pbdoc";\n'
       f'py::module::import("{relative_import_code}");\n\n'
     )
     module_file.write(header_code)
