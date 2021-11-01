@@ -230,7 +230,7 @@ void registerDataContainerArray(pybind11::class_<DataContainerArray, std::shared
         case SIMPL::NumericTypes::Type::Int8:
           return py::cast(dca.createNonPrereqArrayFromPath<Int8ArrayType>(filter.filter, path, initValue.cast<int8_t>(), compDims, property, id));
         case SIMPL::NumericTypes::Type::UInt8:
-          return py::cast(dca.createNonPrereqArrayFromPath<Int8ArrayType>(filter.filter, path, initValue.cast<uint8_t>(), compDims, property, id));
+          return py::cast(dca.createNonPrereqArrayFromPath<UInt8ArrayType>(filter.filter, path, initValue.cast<uint8_t>(), compDims, property, id));
         case SIMPL::NumericTypes::Type::Int16:
           return py::cast(dca.createNonPrereqArrayFromPath<Int16ArrayType>(filter.filter, path, initValue.cast<int16_t>(), compDims, property, id));
         case SIMPL::NumericTypes::Type::UInt16:
