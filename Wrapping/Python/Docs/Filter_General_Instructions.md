@@ -92,7 +92,7 @@
 
 **7. setup_parameters**
   - This function returns a list of your filter parameters.
-  - There is separate documentation for the filter parameters at INSERT LINK HERE.
+  - There is separate documentation for the filter parameters in the SIMPL/Wrapping/Python/Docs folder.
   - Before the return statement, you can add any requirements that are necessary for the parameters. Requirements are stated in the filter parameter documentation.
 
 **8. data_check**
