@@ -177,6 +177,15 @@ void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims
       p->setValue(v, static_cast<bool>(ptr->getValue(v)));
     }
   }
+  else if(scalarType == SIMPL::NumericTypes::Type::SizeT)
+  {
+    SizeTArrayType::Pointer p = SizeTArrayType::CreateArray(voxels, dims, name, true);
+    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
+    for(size_t v = 0; v < size; ++v)
+    {
+      p->setValue(v, static_cast<size_t>(ptr->getValue(v)));
+    }
+  }
   else
   {
     QString ss =
@@ -312,6 +321,10 @@ void ConvertData::dataCheck()
     else if(m_ScalarType == SIMPL::NumericTypes::Type::Bool)
     {
       p = BoolArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
+    }
+    else if(m_ScalarType == SIMPL::NumericTypes::Type::SizeT)
+    {
+      p = SizeTArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
     cellAttrMat->insertOrAssign(p);
   }
