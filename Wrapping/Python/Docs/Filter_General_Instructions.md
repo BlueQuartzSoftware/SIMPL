@@ -1,14 +1,16 @@
 ## Creating a DREAM3D Filter in Python
 
-**1. Setup Instructions for Anaconda:** [https://github.com/BlueQuartzSoftware/dream3d-conda-feedstock/blob/main/dream3d_conda_instructions.md](https://github.com/BlueQuartzSoftware/dream3d-conda-feedstock/blob/main/dream3d_conda_instructions.md)
+**1. Setup Instructions for Anaconda:** [https://github.com/BlueQuartzSoftware/DREAM3D/blob/develop/Documentation/ReferenceManual/6_Developer/python_filter_development_prebuilt.md](https://github.com/BlueQuartzSoftware/DREAM3D/blob/develop/Documentation/ReferenceManual/6_Developer/python_filter_development_prebuilt.md)
+
 **2. Imports Needed in Script:**
 
+```(lang-python)
     from dream3d.Filter import Filter, FilterDelegatePy
     from dream3d.simpl import *
+```
 
 **3. Filter Class General Format:**
-
-    ```
+```(lang-python)
     class FilterName(Filter)
     	def __init__(self) -> None:
         self.var: var_data_type = initial_value
@@ -64,8 +66,7 @@
     		return (0, 'Success')
 
     filters = [NameOfFilter]
-
-    ```
+```
 
 
 
@@ -73,17 +74,18 @@
 
   - All variables used for the filter parameters are declared and initialized here.
   - An example variable declaration:
-
-      `self.new_string: str = ''`
+```(lang-python)
+      self.new_string: str = ''
+```
 
 
 **5. uuid**
   - uuid() is a unique ID for the filter.
   - To get a uuid(), run the following in Anaconda:
-
-      `import uuid`
-
-      `uuid.uuid4()`
+```(lang-python)
+      import uuid
+      uuid.uuid4()
+```
 
   - Copy the uuid and paste into the return value for the function.
 
@@ -99,9 +101,10 @@
   - This function runs checks on the user data inputted into the filter. For example, you may want to check if the user has entered a name for a new array, if a data container and/or attribute matrix exists, if the user has selected an input file, etc.
   - An example if statement data check:
 
-
+```(lang-python)
         if da is None:
               return (-2, 'DataArray is None')
+```
 
   - An if statement should always return a negative code along with an error message.
 

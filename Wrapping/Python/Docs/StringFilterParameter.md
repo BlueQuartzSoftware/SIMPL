@@ -7,20 +7,26 @@ The **StringFilterParameter** allows the user to input a string.
 
 ## Python Code Parts
 
-In init: `self.new_string: str = 0`
+In init:
+```(lang-python)
+self.new_string: str = 0
+```
 
 Setter method:
-```
+```(lang-python)
 def _set_new_string(self, value: str) -> None:
 	self.new_string = value
 ```
 Getter method:
-```
+```(lang-python)
 def _get_new_string(self) -> str:
 	return self.new_string
 ```
 
-In setup_parameters: `StringFilterParameter('Label Name', 'label_name', self.new_string, FilterParameter.Category.Parameter, self._set_new_string, self._get_new_string, -1)`
+In setup_parameters:
+```(lang-python)
+StringFilterParameter('Label Name', 'label_name', self.new_string, FilterParameter.Category.Parameter, self._set_new_string, self._get_new_string, -1)
+```
 
 *‘Label Name’* = label that shows up for user in DREAM3D
 
@@ -34,6 +40,8 @@ In setup_parameters: `StringFilterParameter('Label Name', 'label_name', self.new
 
 ## Example Code and GUI
 
-`StringFilterParameter('Group', 'group', self.group, FilterParameter.Category.Parameter, self._set_group, self._get_group, -1)`
+```(lang-python)
+StringFilterParameter('Group', 'group', self.group, FilterParameter.Category.Parameter, self._set_group, self._get_group, -1)
+```
 
 ![string_gui](Images/group_gui.png)

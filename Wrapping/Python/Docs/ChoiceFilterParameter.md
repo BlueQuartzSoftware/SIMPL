@@ -7,20 +7,26 @@ The **ChoiceFilterParameter** allows the user to choose between a program-define
 
 ## Python Code Parts
 
-In init: `self.choice: int = 0`
+In init:
+```(lang-python)
+self.choice: int = 0
+```
 
 Setter method:
-```
+```(lang-python)
 def _set_choice(self, value: int) -> None:
 		self.choice = value
 ```
 Getter method:
-```
+```(lang-python)
 def _get_choice(self) -> int:
 		return self.choice
 ```
 
-In setup_parameters: `ChoiceFilterParameter('Choices', 'choices', self.choice, FilterParameter.Category.Parameter, self._set_choice, self._get_choice, ["choice_1", "choice_2", "choice_3"], False, -1)`
+In setup_parameters:
+```(lang-python)
+ChoiceFilterParameter('Choices', 'choices', self.choice, FilterParameter.Category.Parameter, self._set_choice, self._get_choice, ["choice_1", "choice_2", "choice_3"], False, -1)
+```
 
 *'Choices’* = label that shows up for user in DREAM3D
 
@@ -33,5 +39,7 @@ In setup_parameters: `ChoiceFilterParameter('Choices', 'choices', self.choice, F
 *self._get_choice* = getter method for int variable
 
 ## Example Code and GUI
-`ChoiceFilterParameter('Slice Axis', 'axes', self.axes, FilterParameter.Category.Parameter, self._set_axes, self._get_axes, ["x", "y", "z"], False, -1)`
+```(lang-python)
+ChoiceFilterParameter('Slice Axis', 'axes', self.axes, FilterParameter.Category.Parameter, self._set_axes, self._get_axes, ["x", "y", "z"], False, -1)
+```
 ![choice_gui](Images/choice_gui.png)
