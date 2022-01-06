@@ -107,7 +107,7 @@ void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath,
     else
     {
       QString errorMessage = QString("Unsupported number of components: %1.").arg(nbComponents);
-      setErrorCondition(-4, errorMessage);
+      setErrorCondition(-406, errorMessage);
       break;
     }
     break;
@@ -121,7 +121,7 @@ void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath,
   case itk::ImageIOBase::MATRIX:
   default:
     QString errorMessage = QString("Unsupported pixel type: %1.").arg(itk::ImageIOBase::GetPixelTypeAsString(pixel).c_str());
-    setErrorCondition(-4, errorMessage);
+    setErrorCondition(-407, errorMessage);
     break;
   }
 }
@@ -135,7 +135,7 @@ void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath,
   DataContainer::Pointer container = getDataContainerArray()->getDataContainer(dataArrayPath.getDataContainerName());
   if(nullptr == container.get())
   {
-    setErrorCondition(-4, "Container not found.");
+    setErrorCondition(-408, "Container not found.");
     return;
   }
 
@@ -216,7 +216,7 @@ void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath,
       break;
     default:
       QString errorMessage = QString("Unsupported pixel component: %1.").arg(imageIO->GetComponentTypeAsString(component).c_str());
-      setErrorCondition(-4, errorMessage);
+      setErrorCondition(-409, errorMessage);
       break;
     }
   } catch(itk::ExceptionObject& err)

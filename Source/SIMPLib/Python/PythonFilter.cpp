@@ -133,7 +133,7 @@ void PythonFilter::execute()
     setErrorCondition(-3, QString("Python failed with the following error: \n %1").arg(exception.what()));
   } catch(const std::exception& exception)
   {
-    setErrorCondition(-4, QString("Caught the following exception: \n %1").arg(exception.what()));
+    setErrorCondition(-666, QString("Caught the following exception: \n %1").arg(exception.what()));
   }
 }
 

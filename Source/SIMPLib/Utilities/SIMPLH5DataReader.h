@@ -75,7 +75,7 @@ public:
   ~SIMPLH5DataReader() override;
 
   /**
-   * @brief openFile
+   * @brief ReadJsonFile
    * @param filePath
    * @return
    */
