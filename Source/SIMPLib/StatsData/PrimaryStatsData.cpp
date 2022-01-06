@@ -43,6 +43,8 @@
 
 #include "H5Support/H5Utilities.h"
 
+using namespace H5Support;
+
 #include "SIMPLib/HDF5/H5PrimaryStatsDataDelegate.h"
 
 // -----------------------------------------------------------------------------

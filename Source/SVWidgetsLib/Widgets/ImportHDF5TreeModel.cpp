@@ -31,6 +31,8 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "H5Support/H5Utilities.h"
 
+using namespace H5Support;
+
 #include "ImportHDF5TreeModel.h"
 #include "ImportHDF5TreeModelItem.h"
 

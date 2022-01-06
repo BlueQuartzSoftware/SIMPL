@@ -12,6 +12,8 @@
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 
+using namespace H5Support;
+
 #include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"

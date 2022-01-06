@@ -41,6 +41,8 @@
 
 #include "H5Support/QH5Lite.h"
 
+using namespace H5Support;
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 //#include "SIMPLib/DataArrays/DataArray.hpp"

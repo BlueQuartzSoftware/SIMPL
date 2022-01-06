@@ -41,6 +41,8 @@
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 
+using namespace H5Support;
+
 #include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainer.h"

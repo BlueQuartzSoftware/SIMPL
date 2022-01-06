@@ -34,6 +34,8 @@
 
 #include "H5Support/H5Utilities.h"
 
+using namespace H5Support;
+
 ImportHDF5TreeModelItem::ImportHDF5TreeModelItem(hid_t fileId, const QString& data, ImportHDF5TreeModelItem* parent)
 : m_ItemData(QVariant(data))
 , m_ParentItem(parent)

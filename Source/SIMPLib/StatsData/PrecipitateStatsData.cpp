@@ -40,6 +40,8 @@
 
 #include "H5Support/H5Utilities.h"
 
+using namespace H5Support;
+
 #include <QtCore/QDebug>
 
 #include "SIMPLib/HDF5/H5PrecipitateStatsDataDelegate.h"

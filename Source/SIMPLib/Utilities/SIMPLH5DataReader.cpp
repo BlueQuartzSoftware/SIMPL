@@ -40,6 +40,8 @@
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 
+using namespace H5Support;
+
 #include "SIMPLib/Common/IObserver.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"

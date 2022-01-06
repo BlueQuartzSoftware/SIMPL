@@ -41,6 +41,8 @@
 #include "H5Support/H5ScopedErrorHandler.h"
 #include "H5Support/QH5Lite.h"
 
+using namespace H5Support;
+
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Geometry/IGeometry.h"

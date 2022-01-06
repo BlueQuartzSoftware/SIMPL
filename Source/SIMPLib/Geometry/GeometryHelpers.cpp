@@ -31,6 +31,11 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "GeometryHelpers.h"
 
+#include "H5Support/QH5Lite.h"
+
+using namespace H5Support;
+
+
 namespace GeometryHelpers
 {
 

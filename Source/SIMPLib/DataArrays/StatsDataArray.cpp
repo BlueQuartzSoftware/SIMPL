@@ -43,6 +43,8 @@
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 
+using namespace H5Support;
+
 #include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/HDF5/H5DataArrayWriter.hpp"
 #include "SIMPLib/StatsData/BoundaryStatsData.h"
