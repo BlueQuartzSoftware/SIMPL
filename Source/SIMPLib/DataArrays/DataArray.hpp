@@ -290,7 +290,11 @@ public:
     {
       return NullPointer();
     }
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     DataArray<T>* d = new DataArray<T>(numTuples, QVector<size_t>::fromStdVector(cDims), name, allocate);
+#else
+    DataArray<T>* d = new DataArray<T>(numTuples, QVector<size_t>(cDims.begin(), cDims.end()), name, allocate);
+#endif
     if(allocate)
     {
       if(d->allocate() < 0)
