@@ -4,7 +4,9 @@
 #include <QtCore/QDebug>
 #include <QtGui/QPainter>
 #include <QtGui/QMouseEvent>
+#include <QtGui/QPainterPath>
 #include <QtWidgets/QStyleOption>
+
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
