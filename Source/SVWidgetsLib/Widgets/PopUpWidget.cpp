@@ -32,7 +32,7 @@
 #include "PopUpWidget.h"
 
 #include <QtGui/QPainter>
-
+#include <QtGui/QPainterPath>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QGridLayout>
