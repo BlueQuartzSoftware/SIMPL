@@ -55,7 +55,9 @@ set(SIMPLib_Utilities_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLDataPathValidator.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReader.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReaderRequirements.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringLiteral.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringOperations.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringUtilities.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/TestObserver.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ToolTipGenerator.cpp
 )
