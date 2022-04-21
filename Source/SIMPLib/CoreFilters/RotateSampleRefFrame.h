@@ -37,9 +37,11 @@
 #pragma once
 
 #include <memory>
+#include <mutex>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -266,6 +268,12 @@ public:
    */
   void execute() override;
 
+  /**
+   * @brief sendThreadSafeProgressMessage
+   * @param counter
+   */
+  void sendThreadSafeProgressMessage(int64_t counter);
+
 protected:
   RotateSampleRefFrame();
 
@@ -295,4 +303,17 @@ private:
   bool m_SliceBySlice = false;
   DynamicTableData m_RotationTable;
   int m_RotationRepresentationChoice = 0;
+
+  AttributeMatrix::Pointer m_SourceAttributeMatrix;
+
+  // Threadsafe Progress Message
+  mutable std::mutex m_ProgressMessage_Mutex;
+  size_t m_InstanceIndex = {0};
+  int64_t m_TotalElements = {};
+
+  /**
+   * @brief This is an alternate version of the execute that attempted to parallelize over each DataArray. Turns out this was
+   * slower then just running it in serial. This is here in case anyone wants to revist this.
+   */
+  void execute_alt();
 };

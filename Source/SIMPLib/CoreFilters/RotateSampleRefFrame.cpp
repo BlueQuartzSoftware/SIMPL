@@ -36,7 +36,10 @@
 
 #include "RotateSampleRefFrame.h"
 
+#include <chrono>
 #include <cmath>
+#include <iostream>
+#include <thread>
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 #include <tbb/blocked_range3d.h>
@@ -61,6 +64,12 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Math/MatrixMath.h"
+#include "SIMPLib/Utilities/ParallelDataAlgorithm.h"
+#include "SIMPLib/Utilities/TimeUtilities.h"
+
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+#include <tbb/task_group.h>
+#endif
 
 namespace
 {
@@ -91,6 +100,7 @@ const Eigen::Vector3f k_XAxis = Eigen::Vector3f::UnitX();
 const Eigen::Vector3f k_YAxis = Eigen::Vector3f::UnitY();
 const Eigen::Vector3f k_ZAxis = Eigen::Vector3f::UnitZ();
 
+// -----------------------------------------------------------------------------
 // Requires table to be 3 x 3
 Matrix3fR tableToMatrix(const std::vector<std::vector<double>>& table)
 {
@@ -108,6 +118,7 @@ Matrix3fR tableToMatrix(const std::vector<std::vector<double>>& table)
   return matrix;
 }
 
+// -----------------------------------------------------------------------------
 void determineMinMax(const Matrix3fR& rotationMatrix, const FloatVec3Type& spacing, size_t col, size_t row, size_t plane, float& xMin, float& xMax, float& yMin, float& yMax, float& zMin, float& zMax)
 {
   Eigen::Vector3f coords(static_cast<float>(col) * spacing[0], static_cast<float>(row) * spacing[1], static_cast<float>(plane) * spacing[2]);
@@ -124,6 +135,7 @@ void determineMinMax(const Matrix3fR& rotationMatrix, const FloatVec3Type& spaci
   zMax = std::max(newCoords[2], zMax);
 }
 
+// -----------------------------------------------------------------------------
 float cosBetweenVectors(const Eigen::Vector3f& a, const Eigen::Vector3f& b)
 {
   float normA = a.norm();
@@ -137,6 +149,7 @@ float cosBetweenVectors(const Eigen::Vector3f& a, const Eigen::Vector3f& b)
   return a.dot(b) / (normA * normB);
 }
 
+// -----------------------------------------------------------------------------
 float determineSpacing(const FloatVec3Type& spacing, const Eigen::Vector3f& axisNew)
 {
   float xAngle = std::abs(cosBetweenVectors(k_XAxis, axisNew));
@@ -152,6 +165,7 @@ float determineSpacing(const FloatVec3Type& spacing, const Eigen::Vector3f& axis
   return spacing[index];
 }
 
+// -----------------------------------------------------------------------------
 RotateArgs createRotateParams(const ImageGeom& imageGeom, const Matrix3fR& rotationMatrix)
 {
   const SizeVec3Type origDims = imageGeom.getDimensions();
@@ -213,6 +227,7 @@ RotateArgs createRotateParams(const ImageGeom& imageGeom, const Matrix3fR& rotat
   return params;
 }
 
+// -----------------------------------------------------------------------------
 void updateGeometry(ImageGeom& imageGeom, const RotateArgs& params)
 {
   FloatVec3Type origin = imageGeom.getOrigin();
@@ -227,7 +242,7 @@ void updateGeometry(ImageGeom& imageGeom, const RotateArgs& params)
 
 /**
  * @brief The RotateSampleRefFrameImpl class implements a threaded algorithm to do the
- * actual computation of the rotation by applying the rotation to each Euler angle
+ * actual computation of the rotation by applying the rotation to each element
  */
 class SampleRefFrameRotator
 {
@@ -303,6 +318,9 @@ public:
 
 } // namespace
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 struct RotateSampleRefFrame::Impl
 {
   Matrix3fR m_RotationMatrix = Matrix3fR::Zero();
@@ -314,6 +332,84 @@ struct RotateSampleRefFrame::Impl
 
     m_Params = RotateArgs();
   }
+};
+
+namespace RotateSampleRefFrameProgress
+{
+static size_t s_InstanceIndex = 0;
+static std::map<size_t, int64_t> s_ProgressValues;
+static std::map<size_t, int64_t> s_LastProgressInt;
+} // namespace RotateSampleRefFrameProgress
+
+// -----------------------------------------------------------------------------
+class RotateSampleRefFrameImpl
+{
+public:
+  RotateSampleRefFrameImpl(RotateSampleRefFrame* filter, IDataArray::Pointer& sourceArray, IDataArray::Pointer& targetArray, Int64ArrayType::Pointer& newIndicesPtr)
+  : m_Filter(filter)
+  , m_SourceArray(sourceArray)
+  , m_TargetArray(targetArray)
+  , m_NewIndices(newIndicesPtr)
+  {
+  }
+  virtual ~RotateSampleRefFrameImpl() = default;
+
+  void convert(size_t start, size_t end) const
+  {
+    //    int64_t progCounter = 0;
+    //    int64_t totalElements = (end - start);
+    //    int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
+
+    //    size_t numComps = m_SourceArray->getNumberOfComponents();
+
+    Int64ArrayType& newindicies = *m_NewIndices;
+    int64_t newIndicies_I = 0;
+    for(size_t i = start; i < end; i++)
+    {
+      if(m_Filter->getCancel())
+      {
+        break;
+      }
+      newIndicies_I = newindicies[i];
+      if(newIndicies_I >= 0)
+      {
+        if(!m_TargetArray->copyFromArray(i, m_SourceArray, newIndicies_I, 1))
+        {
+          return;
+        }
+      }
+      else
+      {
+        int var = 0;
+        m_TargetArray->initializeTuple(i, &var);
+      }
+
+      //      if(progCounter > progIncrement)
+      //      {
+      //        m_Filter->sendThreadSafeProgressMessage(progCounter);
+      //        progCounter = 0;
+      //      }
+      //      progCounter++;
+    }
+  }
+
+  void operator()() const
+  {
+    convert(0, m_NewIndices->getNumberOfTuples());
+    // Delete the original array
+    m_SourceArray->resizeTuples(0);
+  }
+
+  void operator()(const SIMPLRange& range) const
+  {
+    convert(range.min(), range.max());
+  }
+
+private:
+  RotateSampleRefFrame* m_Filter = nullptr;
+  IDataArray::Pointer m_SourceArray;
+  IDataArray::Pointer m_TargetArray;
+  Int64ArrayType::Pointer m_NewIndices;
 };
 
 // -----------------------------------------------------------------------------
@@ -522,13 +618,29 @@ void RotateSampleRefFrame::dataCheck()
   updateGeometry(*imageGeom, p_Impl->m_Params);
 
   // Resize attribute matrix
-
   std::vector<size_t> tDims(3);
   tDims[0] = p_Impl->m_Params.xpNew;
   tDims[1] = p_Impl->m_Params.ypNew;
   tDims[2] = p_Impl->m_Params.zpNew;
+
   QString attrMatName = getCellAttributeMatrixPath().getAttributeMatrixName();
-  m->getAttributeMatrix(attrMatName)->resizeAttributeArrays(tDims);
+  // Get the List of Array Names FIRST
+  QList<QString> voxelArrayNames = m->getAttributeMatrix(attrMatName)->getAttributeArrayNames();
+  // Now remove the current Cell Attribute Matrix and store it in the instance variable
+  m_SourceAttributeMatrix = m->removeAttributeMatrix(attrMatName);
+  // Now create a new Attribute Matrix that has the correct Tuple Dims.
+  AttributeMatrix::Pointer targetAttributeMatrix = m->createNonPrereqAttributeMatrix(this, attrMatName, tDims, AttributeMatrix::Type::Cell);
+  // Loop over all of the original cell data arrays and create new ones and insert that into the new Attribute Matrix.
+  // DO NOT ALLOCATE the arrays, even during execute as this could potentially be a LARGE memory hog. Wait until
+  // execute to allocate the arrays one at a time, do the copy, then deallocate the old array. This will keep the memory
+  // consumption to a minimum.
+  for(const auto& attrArrayName : voxelArrayNames)
+  {
+    IDataArray::Pointer p = m_SourceAttributeMatrix->getAttributeArray(attrArrayName);
+    auto compDims = p->getComponentDimensions();
+    IDataArray::Pointer targetArray = p->createNewArray(tDims[0] * tDims[1] * tDims[2], compDims, p->getName(), false);
+    targetAttributeMatrix->addOrReplaceAttributeArray(targetArray);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -555,7 +667,8 @@ void RotateSampleRefFrame::execute()
 
   DataArray<int64_t>::Pointer newIndiciesPtr = DataArray<int64_t>::CreateArray(newNumCellTuples, std::string("_INTERNAL_USE_ONLY_RotateSampleRef_NewIndicies"), true);
   newIndiciesPtr->initializeWithValue(-1);
-  int64_t* newindicies = newIndiciesPtr->getPointer(0);
+
+  notifyStatusMessage("Creating mapping of old to new indices....");
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   tbb::parallel_for(tbb::blocked_range3d<int64_t, int64_t, int64_t>(0, p_Impl->m_Params.zpNew, 0, p_Impl->m_Params.ypNew, 0, p_Impl->m_Params.xpNew),
@@ -567,49 +680,169 @@ void RotateSampleRefFrame::execute()
   }
 #endif
 
-  // This could technically be parallelized also where each thread takes an array to adjust. Except
-  // that the DataContainer is NOT thread safe or re-entrant so that would actually be a BAD idea.
-
   QString attrMatName = getCellAttributeMatrixPath().getAttributeMatrixName();
-  QList<QString> voxelArrayNames = m->getAttributeMatrix(attrMatName)->getAttributeArrayNames();
+  AttributeMatrix::Pointer targetAttributeMatrix = m->getAttributeMatrix(attrMatName);
+
+  QList<QString> voxelArrayNames = targetAttributeMatrix->getAttributeArrayNames();
+
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+  std::shared_ptr<tbb::task_group> g(new tbb::task_group);
+  // C++11 RIGHT HERE....
+  int32_t nthreads = static_cast<int32_t>(std::thread::hardware_concurrency()); // Returns ZERO if not defined on this platform
+  int32_t threadCount = 0;
+#endif
 
   for(const auto& attrArrayName : voxelArrayNames)
   {
-    IDataArray::Pointer p = m->getAttributeMatrix(attrMatName)->getAttributeArray(attrArrayName);
+    // Needed for Threaded Progress Messages
+    m_InstanceIndex = ++RotateSampleRefFrameProgress::s_InstanceIndex;
+    RotateSampleRefFrameProgress::s_ProgressValues[m_InstanceIndex] = 0;
+    RotateSampleRefFrameProgress::s_LastProgressInt[m_InstanceIndex] = 0;
+    m_TotalElements = newNumCellTuples;
 
-    // Make a copy of the 'p' array that has the same name. When placed into
-    // the data container this will over write the current array with
-    // the same name.
+    //    auto start = std::chrono::steady_clock::now();
+    notifyStatusMessage(QString("Rotating DataArray '%1'").arg(attrArrayName));
+    IDataArray::Pointer sourceArray = m_SourceAttributeMatrix->getAttributeArray(attrArrayName);
+    IDataArray::Pointer targetArray = targetAttributeMatrix->getAttributeArray(attrArrayName);
+    // So this little work-around is because if we just try to resize the DataArray<T> will think the sizes are the same
+    // and never actually allocate the data. So we just resize to 1 tuple, and then to the real size.
+    targetArray->resizeTuples(1);                // Allocate the memory for this data array
+    targetArray->resizeTuples(newNumCellTuples); // Allocate the memory for this data array
+#if 0
+// This section was an attempt to parallelize the rotation of each DataArray. it is actually slower this way
+// than in serial. So we punted on just gave a CPU core to each DataArray that needed to be transformed.
+    // Allow data-based parallelization
+    ParallelDataAlgorithm dataAlg;
+    dataAlg.setParallelizationEnabled(false);
+    dataAlg.setRange(0, newNumCellTuples);
+    dataAlg.execute(RotateSampleRefFrameImpl(this, sourceArray, targetArray, newIndiciesPtr));
+#endif
 
-    IDataArray::Pointer data = p->createNewArray(newNumCellTuples, p->getComponentDimensions(), p->getName());
-    int64_t newIndicies_I = 0;
-    for(size_t i = 0; i < static_cast<size_t>(newNumCellTuples); i++)
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+    g->run(RotateSampleRefFrameImpl(this, sourceArray, targetArray, newIndiciesPtr));
+    threadCount++;
+    if(threadCount == nthreads)
     {
-      newIndicies_I = newindicies[i];
-      if(newIndicies_I >= 0)
-      {
-        if(!data->copyFromArray(i, p, newIndicies_I, 1))
-        {
-          QString ss = QObject::tr("copyFromArray Failed: ");
-          QTextStream out(&ss);
-          out << "Source Array Name: " << p->getName() << " Source Tuple Index: " << newIndicies_I << "\n";
-          out << "Dest Array Name: " << data->getName() << "  Dest. Tuple Index: " << i << "\n";
-          setErrorCondition(-45102, ss);
-          return;
-        }
-      }
-      else
-      {
-        int var = 0;
-        data->initializeTuple(i, &var);
-      }
+      g->wait();
+      threadCount = 0;
     }
-    m->getAttributeMatrix(attrMatName)->insertOrAssign(data);
+#else
+    RotateSampleRefFrameImpl impl(this, sourceArray, targetArray, newIndiciesPtr);
+    impl();
+#endif
+
+    //    auto end = std::chrono::steady_clock::now();
+    //    std::cout << "    Elapsed time in seconds: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " sec" << std::endl;
+
+    //    if(getCancel())
+    //    {
+    //      break;
+    //    }
+  }
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+  // This will spill over if the number of DataArrays to process does not divide evenly by the number of threads.
+  g->wait();
+#endif
+}
+
+void RotateSampleRefFrame::execute_alt()
+{
+  dataCheck();
+  if(getErrorCode() < 0)
+  {
+    return;
+  }
+
+  DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getCellAttributeMatrixPath().getDataContainerName());
+
+  if(m == nullptr)
+  {
+    QString ss = QObject::tr("Failed to get DataContainer '%1'").arg(getCellAttributeMatrixPath().getDataContainerName());
+    setErrorCondition(-45101, ss);
+    return;
+  }
+
+  int64_t newNumCellTuples = p_Impl->m_Params.xpNew * p_Impl->m_Params.ypNew * p_Impl->m_Params.zpNew;
+
+  DataArray<int64_t>::Pointer newIndiciesPtr = DataArray<int64_t>::CreateArray(newNumCellTuples, std::string("_INTERNAL_USE_ONLY_RotateSampleRef_NewIndicies"), true);
+  newIndiciesPtr->initializeWithValue(-1);
+
+  notifyStatusMessage("Creating mapping of old to new indices....");
+
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+  tbb::parallel_for(tbb::blocked_range3d<int64_t, int64_t, int64_t>(0, p_Impl->m_Params.zpNew, 0, p_Impl->m_Params.ypNew, 0, p_Impl->m_Params.xpNew),
+                    SampleRefFrameRotator(newIndiciesPtr, p_Impl->m_Params, p_Impl->m_RotationMatrix, m_SliceBySlice), tbb::auto_partitioner());
+#else
+  {
+    SampleRefFrameRotator serial(newIndiciesPtr, p_Impl->m_Params, p_Impl->m_RotationMatrix, m_SliceBySlice);
+    serial.convert(0, p_Impl->m_Params.zpNew, 0, p_Impl->m_Params.ypNew, 0, p_Impl->m_Params.xpNew);
+  }
+#endif
+
+  QString attrMatName = getCellAttributeMatrixPath().getAttributeMatrixName();
+  AttributeMatrix::Pointer targetAttributeMatrix = m->getAttributeMatrix(attrMatName);
+
+  QList<QString> voxelArrayNames = targetAttributeMatrix->getAttributeArrayNames();
+
+  for(const auto& attrArrayName : voxelArrayNames)
+  {
+    // Needed for Threaded Progress Messages
+    m_InstanceIndex = ++RotateSampleRefFrameProgress::s_InstanceIndex;
+    RotateSampleRefFrameProgress::s_ProgressValues[m_InstanceIndex] = 0;
+    RotateSampleRefFrameProgress::s_LastProgressInt[m_InstanceIndex] = 0;
+    m_TotalElements = newNumCellTuples;
+
+    auto start = std::chrono::steady_clock::now();
+    notifyStatusMessage(QString("Rotating DataArray '%1'").arg(attrArrayName));
+    IDataArray::Pointer sourceArray = m_SourceAttributeMatrix->getAttributeArray(attrArrayName);
+    IDataArray::Pointer targetArray = targetAttributeMatrix->getAttributeArray(attrArrayName);
+    // So this little work-around is because if we just try to resize the DataArray<T> will think the sizes are the same
+    // and never actually allocate the data. So we just resize to 1 tuple, and then to the real size.
+    targetArray->resizeTuples(1);                // Allocate the memory for this data array
+    targetArray->resizeTuples(newNumCellTuples); // Allocate the memory for this data array
+
+    // This section was an attempt to parallelize the rotation of each DataArray. it is actually slower this way
+    // than in serial. So we punted on just gave a CPU core to each DataArray that needed to be transformed.
+    // Allow data-based parallelization
+    ParallelDataAlgorithm dataAlg;
+    dataAlg.setParallelizationEnabled(false);
+    dataAlg.setRange(0, newNumCellTuples);
+    dataAlg.execute(RotateSampleRefFrameImpl(this, sourceArray, targetArray, newIndiciesPtr));
+
+    auto end = std::chrono::steady_clock::now();
+    std::cout << "    Elapsed time in seconds: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " sec" << std::endl;
+
+    if(getCancel())
+    {
+      break;
+    }
   }
 }
 
 // -----------------------------------------------------------------------------
-//
+void RotateSampleRefFrame::sendThreadSafeProgressMessage(int64_t counter)
+{
+  std::lock_guard<std::mutex> guard(m_ProgressMessage_Mutex);
+
+  int64_t& progCounter = RotateSampleRefFrameProgress::s_ProgressValues[m_InstanceIndex];
+  progCounter += counter;
+  int64_t progressInt = static_cast<int64_t>((static_cast<float>(progCounter) / m_TotalElements) * 100.0f);
+
+  int64_t progIncrement = m_TotalElements / 100;
+  int64_t prog = 1;
+
+  int64_t& lastProgressInt = RotateSampleRefFrameProgress::s_LastProgressInt[m_InstanceIndex];
+
+  if(progCounter > prog && lastProgressInt != progressInt)
+  {
+    QString ss = QObject::tr("Transforming || %1% Completed").arg(progressInt);
+    notifyStatusMessage(ss);
+    prog += progIncrement;
+  }
+
+  lastProgressInt = progressInt;
+}
+
 // -----------------------------------------------------------------------------
 AbstractFilter::Pointer RotateSampleRefFrame::newFilterInstance(bool copyFilterParameters) const
 {

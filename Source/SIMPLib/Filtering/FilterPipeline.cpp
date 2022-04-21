@@ -886,7 +886,7 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
   QDateTime now = QDateTime::currentDateTime();
   QString msg;
   QTextStream out(&msg);
-  out << "Pipline Start: " << now.toString(Qt::ISODate);
+  out << "Pipeline Start: " << now.toString(Qt::ISODate);
   notifyStatusMessage(msg);
   // Start looping through the Pipeline
   for(const auto& filt : m_Pipeline)
