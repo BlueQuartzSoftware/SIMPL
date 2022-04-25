@@ -81,7 +81,7 @@ class SVWidgetsLib_EXPORT DynamicChoiceWidget : public FilterParameterWidget, pr
     void setFilterParameter(FilterParameter* value);
     FilterParameter* getFilterParameter() const;
 
-  public slots:
+  public Q_SLOTS:
     void widgetChanged(int index);
     void filterNeedsInputParameters(AbstractFilter* filter); // When the filter is ready for us to update its input parameter(s) that we are responsible for
     void beforePreflight(); // Called just before the "dataCheck()" is called

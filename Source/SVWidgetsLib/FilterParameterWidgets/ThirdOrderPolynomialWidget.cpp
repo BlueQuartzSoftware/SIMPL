@@ -128,7 +128,7 @@ void ThirdOrderPolynomialWidget::widgetChanged(const QString& text)
   FOPW_CHECK_LINEEDIT(c01)
   FOPW_CHECK_LINEEDIT(c00)
 
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

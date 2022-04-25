@@ -57,6 +57,8 @@ elseif(WIN32)
   set(lib_install_dir ".")
 endif()
 
+add_compile_definitions(QT_NO_KEYWORDS)
+
 add_library(QtWebAppLib ${LIB_TYPE} ${QtWebAppLib_SRCS})
 CMP_AddDefinitions(TARGET ${PROJECT_NAME})
 target_link_libraries(QtWebAppLib Qt5::Core Qt5::Network)

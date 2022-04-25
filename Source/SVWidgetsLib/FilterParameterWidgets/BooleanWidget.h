@@ -79,7 +79,7 @@ class SVWidgetsLib_EXPORT BooleanWidget : public FilterParameterWidget, private 
     void setupGui() override;
 
 
-  public slots:
+  public Q_SLOTS:
     void widgetChanged(int state);
     void filterNeedsInputParameters(AbstractFilter* filter); // When the filter is ready for us to update its input parameter(s) that we are responsible for
     void beforePreflight(); // Called just before the "dataCheck()" is called

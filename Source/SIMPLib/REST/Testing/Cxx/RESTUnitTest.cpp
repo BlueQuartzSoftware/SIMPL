@@ -90,7 +90,7 @@ public:
 
   ~RESTUnitTestObserver() override = default;
 
-public slots:
+public Q_SLOTS:
   void processUploadProgress(qint64 bytesSent, qint64 bytesTotal)
   {
     double percent;
@@ -359,7 +359,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(fileNameList.size(), 117);
 
     QStringList filePathList;
-    foreach(QString fileName, fileNameList)
+    Q_FOREACH(QString fileName, fileNameList)
     {
       filePathList.push_back(QObject::tr("%1/%2").arg(smallIN100Dir.path()).arg(fileName));
     }
@@ -449,7 +449,7 @@ public:
     QList<QNetworkReply::RawHeaderPair> headerPairs = reply->rawHeaderPairs();
 
     bool hasContentTypeHeader = false;
-    foreach(QNetworkReply::RawHeaderPair headerPair, headerPairs)
+    Q_FOREACH(QNetworkReply::RawHeaderPair headerPair, headerPairs)
     {
       if(headerPair.first == "Content-Type")
       {
@@ -699,7 +699,7 @@ public:
     QList<QNetworkReply::RawHeaderPair> headerPairs = reply->rawHeaderPairs();
 
     bool hasContentTypeHeader = false;
-    foreach(QNetworkReply::RawHeaderPair headerPair, headerPairs)
+    Q_FOREACH(QNetworkReply::RawHeaderPair headerPair, headerPairs)
     {
       if(headerPair.first == "Content-Type")
       {

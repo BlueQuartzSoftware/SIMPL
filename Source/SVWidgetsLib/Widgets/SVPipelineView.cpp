@@ -357,7 +357,7 @@ void SVPipelineView::preflightPipeline()
   {
     return;
   }
-  emit clearIssuesTriggered();
+  Q_EMIT clearIssuesTriggered();
 
   PipelineModel* model = getPipelineModel();
   if(nullptr == model)
@@ -416,7 +416,7 @@ void SVPipelineView::preflightPipeline()
     }
   }
 
-  emit preflightFinished(count, err);
+  Q_EMIT preflightFinished(count, err);
   updateFilterInputWidgetIndices();
 }
 
@@ -437,23 +437,23 @@ void SVPipelineView::executePipeline()
   m_WorkerThread = new QThread(); // Create a new Thread Resource
 
   // Clear out the Issues Table
-  emit clearIssuesTriggered();
+  Q_EMIT clearIssuesTriggered();
 
   // Create a FilterPipeline Object
   //  m_PipelineInFlight = getCopyOfFilterPipeline();
   m_PipelineInFlight = getFilterPipeline();
 
-  emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("Preflight Pipeline.....", true));
+  Q_EMIT stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("Preflight Pipeline.....", true));
 
   // Give the pipeline one last chance to preflight and get all the latest values from the GUI
   int err = m_PipelineInFlight->preflightPipeline();
   if(err < 0)
   {
     m_PipelineInFlight = FilterPipeline::NullPointer();
-    emit displayIssuesTriggered();
+    Q_EMIT displayIssuesTriggered();
     return;
   }
-  emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("    Preflight Results: 0 Errors", false));
+  Q_EMIT stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("    Preflight Results: 0 Errors", false));
 
   // Save each of the DataContainerArrays from each of the filters for when the pipeline is complete
   m_PreflightDataContainerArrays.clear();
@@ -464,7 +464,7 @@ void SVPipelineView::executePipeline()
   }
 
   // Save the preferences file NOW in case something happens
-  emit writeSIMPLViewSettingsTriggered();
+  Q_EMIT writeSIMPLViewSettingsTriggered();
 
   toReadyState();
 
@@ -496,8 +496,8 @@ void SVPipelineView::executePipeline()
 
   toRunningState();
   m_WorkerThread->start();
-  emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(" ", false));
-  emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE STARTED ***************", false));
+  Q_EMIT stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(" ", false));
+  Q_EMIT stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE STARTED ***************", false));
 }
 
 // -----------------------------------------------------------------------------
@@ -505,7 +505,7 @@ void SVPipelineView::executePipeline()
 // -----------------------------------------------------------------------------
 void SVPipelineView::processPipelineMessage(const PipelineMessage& msg)
 {
-  emit pipelineHasMessage(msg);
+  Q_EMIT pipelineHasMessage(msg);
 }
 
 // -----------------------------------------------------------------------------
@@ -555,18 +555,18 @@ void SVPipelineView::finishPipeline()
   switch(m_PipelineInFlight->getExecutionResult())
   {
   case FilterPipeline::ExecutionResult::Canceled:
-    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE CANCELED ***************", true));
+    Q_EMIT stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE CANCELED ***************", true));
     break;
   case FilterPipeline::ExecutionResult::Completed:
-    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FINISHED ***************", true));
+    Q_EMIT stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FINISHED ***************", true));
     break;
   case FilterPipeline::ExecutionResult::Failed:
-    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FAILED ***************", true));
+    Q_EMIT stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FAILED ***************", true));
     break;
   case FilterPipeline::ExecutionResult::Invalid:
     break;
   }
-  emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("", false));
+  Q_EMIT stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("", false));
 
   // Put back the DataContainerArray for each filter at the conclusion of running
   // the pipeline. this keeps the data browser current and up to date.
@@ -580,8 +580,8 @@ void SVPipelineView::finishPipeline()
 
   toStoppedState();
 
-  emit displayIssuesTriggered();
-  emit pipelineFinished();
+  Q_EMIT displayIssuesTriggered();
+  Q_EMIT pipelineFinished();
 }
 
 // -----------------------------------------------------------------------------
@@ -681,17 +681,17 @@ int SVPipelineView::writePipeline(const QString& outputPath)
   }
   else
   {
-    emit statusMessage(tr("The pipeline was not written to file '%1'. '%2' is an unsupported file extension.").arg(fi.fileName()).arg(ext));
+    Q_EMIT statusMessage(tr("The pipeline was not written to file '%1'. '%2' is an unsupported file extension.").arg(fi.fileName()).arg(ext));
     return -1;
   }
 
   if(err < 0)
   {
-    emit statusMessage(tr("There was an error while saving the pipeline to file '%1'.").arg(fi.fileName()));
+    Q_EMIT statusMessage(tr("There was an error while saving the pipeline to file '%1'.").arg(fi.fileName()));
     return -1;
   }
 
-    emit statusMessage(tr("The pipeline has been saved successfully to '%1'.").arg(fi.fileName()));
+    Q_EMIT statusMessage(tr("The pipeline has been saved successfully to '%1'.").arg(fi.fileName()));
 
   return 0;
 }
@@ -847,7 +847,7 @@ void SVPipelineView::clearPipeline()
   RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filters, this, "Clear");
   addUndoCommand(removeCmd);
 
-  emit clearDataStructureWidgetTriggered();
+  Q_EMIT clearDataStructureWidgetTriggered();
 }
 
 // -----------------------------------------------------------------------------
@@ -1441,7 +1441,7 @@ void SVPipelineView::setFiltersEnabled(QModelIndexList indexes, bool enabled)
   }
 
   preflightPipeline();
-  emit filterEnabledStateChanged();
+  Q_EMIT filterEnabledStateChanged();
 }
 
 // -----------------------------------------------------------------------------
@@ -1463,7 +1463,7 @@ void SVPipelineView::keyPressEvent(QKeyEvent* event)
   {
     if(getPipelineState() == PipelineViewState::Running)
     {
-      emit deleteKeyPressed();
+      Q_EMIT deleteKeyPressed();
     }
   }
   else if(event->key() == Qt::Key_A && qApp->queryKeyboardModifiers() == Qt::ControlModifier)
@@ -1600,8 +1600,8 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
   }
 
   // Notify user of successful read
-  emit statusMessage(tr("Opened \"%1\" Pipeline").arg(baseName));
-  emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(tr("Opened \"%1\" Pipeline").arg(baseName), false));
+  Q_EMIT statusMessage(tr("Opened \"%1\" Pipeline").arg(baseName));
+  Q_EMIT stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(tr("Opened \"%1\" Pipeline").arg(baseName), false));
 
   QList<AbstractFilter::Pointer> pipelineFilters = pipeline->getFilterContainer();
   std::vector<AbstractFilter::Pointer> filters;
@@ -1613,8 +1613,8 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
   // Populate the pipeline view
   addFilters(filters, insertIndex);
 
-  emit pipelineFilePathUpdated(filePath);
-  emit pipelineChanged();
+  Q_EMIT pipelineFilePathUpdated(filePath);
+  Q_EMIT pipelineChanged();
 
   return 0;
 }
@@ -1643,8 +1643,8 @@ FilterPipeline::Pointer SVPipelineView::readPipelineFromFile(const QString& file
 
   if(jsonObs.getErrorCode() != 0)
   {
-    emit statusMessage(jsonObs.getErrorMessage());
-    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(jsonObs.getErrorMessage(), true));
+    Q_EMIT statusMessage(jsonObs.getErrorMessage());
+    Q_EMIT stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(jsonObs.getErrorMessage(), true));
   }
 
   return pipeline;
@@ -1663,7 +1663,7 @@ void SVPipelineView::mousePressEvent(QMouseEvent* event)
     {
       clearSelection();
 
-      emit filterInputWidgetNeedsCleared();
+      Q_EMIT filterInputWidgetNeedsCleared();
     }
   }
 

@@ -249,7 +249,7 @@ public:     \
 * @brief
 */
 #define SIMPL_SET_FILTER_PARAMETER(type, prpty)\
-  void set##prpty(const type& value) { this->m_##prpty = value; emit parametersChanged(); }
+  void set##prpty(const type& value) { this->m_##prpty = value; Q_EMIT parametersChanged(); }
 
 
 #define SIMPL_SET_PROPERTY_DECL(type, prpty)\

@@ -74,7 +74,7 @@ void FilterPipeline::setName(const QString& newName)
   QString oldName = m_PipelineName;
   m_PipelineName = newName;
 
-  emit pipelineNameChanged(oldName, newName);
+  Q_EMIT pipelineNameChanged(oldName, newName);
 }
 
 // -----------------------------------------------------------------------------
@@ -306,7 +306,7 @@ void FilterPipeline::cancel()
     }
     progValue.setText(ss);
     progValue.setCode(getErrorCondition());
-    emit pipelineGeneratedMessage(progValue);
+    Q_EMIT pipelineGeneratedMessage(progValue);
     return;
   }
 
@@ -324,7 +324,7 @@ DataContainerArray::Pointer FilterPipeline::run()
 {
   m_Dca = execute();
 
-  emit pipelineFinished();
+  Q_EMIT pipelineFinished();
 
   return m_Dca;
 }
@@ -344,13 +344,13 @@ bool FilterPipeline::pushFront(const AbstractFilter::Pointer& f)
     QString ss = QObject::tr("Filter '%1' could not be added to pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
     progValue.setText(ss);
     progValue.setCode(getErrorCondition());
-    emit pipelineGeneratedMessage(progValue);
+    Q_EMIT pipelineGeneratedMessage(progValue);
     return false;
   }
 
   m_Pipeline.push_front(f);
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -370,13 +370,13 @@ bool FilterPipeline::popFront()
     QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
     progValue.setText(ss);
     progValue.setCode(getErrorCondition());
-    emit pipelineGeneratedMessage(progValue);
+    Q_EMIT pipelineGeneratedMessage(progValue);
     return false;
   }
 
   m_Pipeline.pop_front();
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -394,13 +394,13 @@ bool FilterPipeline::pushBack(const AbstractFilter::Pointer& f)
     QString ss = QObject::tr("Filter '%1' could not be added to pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
     progValue.setText(ss);
     progValue.setCode(getErrorCondition());
-    emit pipelineGeneratedMessage(progValue);
+    Q_EMIT pipelineGeneratedMessage(progValue);
     return false;
   }
 
   m_Pipeline.push_back(f);
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -420,13 +420,13 @@ bool FilterPipeline::popBack()
     QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
     progValue.setText(ss);
     progValue.setCode(getErrorCondition());
-    emit pipelineGeneratedMessage(progValue);
+    Q_EMIT pipelineGeneratedMessage(progValue);
     return false;
   }
 
   m_Pipeline.pop_back();
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -444,7 +444,7 @@ bool FilterPipeline::insert(size_t index, const AbstractFilter::Pointer& f)
     QString ss = QObject::tr("Filter '%1' could not be added to pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
     progValue.setText(ss);
     progValue.setCode(getErrorCondition());
-    emit pipelineGeneratedMessage(progValue);
+    Q_EMIT pipelineGeneratedMessage(progValue);
     return false;
   }
 
@@ -455,7 +455,7 @@ bool FilterPipeline::insert(size_t index, const AbstractFilter::Pointer& f)
   }
   m_Pipeline.insert(it, f);
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -475,7 +475,7 @@ bool FilterPipeline::erase(size_t index)
     QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
     progValue.setText(ss);
     progValue.setCode(getErrorCondition());
-    emit pipelineGeneratedMessage(progValue);
+    Q_EMIT pipelineGeneratedMessage(progValue);
     return false;
   }
 
@@ -486,7 +486,7 @@ bool FilterPipeline::erase(size_t index)
   }
   m_Pipeline.erase(it);
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -504,7 +504,7 @@ bool FilterPipeline::clear()
     QString ss = QObject::tr("Pipeline '%1' could not be cleared because it is executing.").arg(getName());
     progValue.setText(ss);
     progValue.setCode(getErrorCondition());
-    emit pipelineGeneratedMessage(progValue);
+    Q_EMIT pipelineGeneratedMessage(progValue);
     return false;
   }
 
@@ -514,7 +514,7 @@ bool FilterPipeline::clear()
     filter->setNextFilter(AbstractFilter::NullPointer());
   }
   m_Pipeline.clear();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
   return true;
 }
 // -----------------------------------------------------------------------------
@@ -547,7 +547,7 @@ AbstractFilter::Pointer FilterPipeline::removeFirstFilterByName(const QString& n
     QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because the pipeline is already executing.").arg(name).arg(getName());
     progValue.setText(ss);
     progValue.setCode(getErrorCondition());
-    emit pipelineGeneratedMessage(progValue);
+    Q_EMIT pipelineGeneratedMessage(progValue);
     return AbstractFilter::NullPointer();
   }
 
@@ -562,7 +562,7 @@ AbstractFilter::Pointer FilterPipeline::removeFirstFilterByName(const QString& n
     }
   }
   updatePrevNextFilters();
-  emit pipelineWasEdited();
+  Q_EMIT pipelineWasEdited();
 
   return f;
 }
@@ -676,7 +676,7 @@ int FilterPipeline::preflightPipeline()
     QString ss = QObject::tr("Pipeline '%1' could not be preflighted because it is already executing.").arg(getName());
     progValue.setText(ss);
     progValue.setCode(getErrorCondition());
-    emit pipelineGeneratedMessage(progValue);
+    Q_EMIT pipelineGeneratedMessage(progValue);
     return getErrorCondition();
   }
 
@@ -798,7 +798,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
     QString ss = QObject::tr("Pipeline '%1' could not be executed because it is already executing.").arg(getName());
     progValue.setText(ss);
     progValue.setCode(getErrorCondition());
-    emit pipelineGeneratedMessage(progValue);
+    Q_EMIT pipelineGeneratedMessage(progValue);
 
     disconnectSignalsSlots();
     return DataContainerArray::NullPointer();
@@ -823,14 +823,14 @@ DataContainerArray::Pointer FilterPipeline::execute()
     progress = progress + 1.0f;
     progValue.setType(PipelineMessage::MessageType::ProgressValue);
     progValue.setProgressValue(static_cast<int>(progress / (m_Pipeline.size() + 1) * 100.0f));
-    emit pipelineGeneratedMessage(progValue);
+    Q_EMIT pipelineGeneratedMessage(progValue);
 
     QString ss = QObject::tr("[%1/%2] %3 ").arg(progress).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
 
     progValue.setType(PipelineMessage::MessageType::StatusMessage);
     progValue.setText(ss);
-    emit pipelineGeneratedMessage(progValue);
-    emit filt->filterInProgress(filt.get());
+    Q_EMIT pipelineGeneratedMessage(progValue);
+    Q_EMIT filt->filterInProgress(filt.get());
 
     // Do not execute disabled filters
     if(filt->getEnabled())
@@ -854,9 +854,9 @@ DataContainerArray::Pointer FilterPipeline::execute()
         progValue.setText(ss);
         progValue.setPipelineIndex(filt->getPipelineIndex());
         progValue.setCode(filt->getErrorCondition());
-        emit pipelineGeneratedMessage(progValue);
-        emit filt->filterCompleted(filt.get());
-        emit pipelineFinished();
+        Q_EMIT pipelineGeneratedMessage(progValue);
+        Q_EMIT filt->filterCompleted(filt.get());
+        Q_EMIT pipelineFinished();
         disconnectSignalsSlots();
         m_State = FilterPipeline::State::Idle;
         m_ExecutionResult = FilterPipeline::ExecutionResult::Failed;
@@ -872,7 +872,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
     }
 
     // Emit that the filter is completed for those objects that care, even the disabled ones.
-    emit filt->filterCompleted(filt.get());
+    Q_EMIT filt->filterCompleted(filt.get());
   }
 
   disconnectSignalsSlots();
@@ -892,18 +892,18 @@ DataContainerArray::Pointer FilterPipeline::execute()
   {
     // This should never get here
     completeMessage.setText("Unsupported Pipeline Execution Result");
-    emit pipelineGeneratedMessage(completeMessage);
+    Q_EMIT pipelineGeneratedMessage(completeMessage);
 
     setErrorCondition(-210);
     completeMessage.setType(PipelineMessage::MessageType::Error);
     completeMessage.setCode(getErrorCondition());
   }
 
-  emit pipelineGeneratedMessage(completeMessage);
+  Q_EMIT pipelineGeneratedMessage(completeMessage);
 
   m_State = FilterPipeline::State::Idle;
 
-  emit pipelineFinished();
+  Q_EMIT pipelineFinished();
 
   return m_Dca;
 }

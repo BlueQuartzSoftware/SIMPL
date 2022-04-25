@@ -31,7 +31,7 @@
 
 #include <QtCore/QJsonObject>
 
-typedef struct
+ struct Float3rdOrderPoly_t
 {
   float c30;
   float c03;
@@ -77,6 +77,6 @@ typedef struct
     }
     return false;
   }
-} Float3rdOrderPoly_t;
+} ;
 
 Q_DECLARE_METATYPE(Float3rdOrderPoly_t)

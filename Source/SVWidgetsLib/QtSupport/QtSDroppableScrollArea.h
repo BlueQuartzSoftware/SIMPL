@@ -54,7 +54,7 @@ class SVWidgetsLib_EXPORT QtSDroppableScrollArea : public QScrollArea
     void dropEvent(QDropEvent* event) override;
     void dragMoveEvent( QDragMoveEvent* event) override;
 
-  signals:
+  Q_SIGNALS:
     void filterDropped(QString filter);
 
   private:

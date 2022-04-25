@@ -68,7 +68,7 @@ PipelineModel::~PipelineModel()
 // -----------------------------------------------------------------------------
 void PipelineModel::updateActivePipeline(const QModelIndex &pipelineIdx)
 {
-  emit clearIssuesTriggered();
+  Q_EMIT clearIssuesTriggered();
 
   setActivePipeline(m_ActivePipelineIndex, false);
   setActivePipeline(pipelineIdx, true);
@@ -77,7 +77,7 @@ void PipelineModel::updateActivePipeline(const QModelIndex &pipelineIdx)
 
   if(m_ActivePipelineIndex.isValid())
   {
-    emit preflightTriggered(m_ActivePipelineIndex, this);
+    Q_EMIT preflightTriggered(m_ActivePipelineIndex, this);
   }
 }
 
@@ -225,7 +225,7 @@ void PipelineModel::setFilter(const QModelIndex &index, AbstractFilter::Pointer 
 
   item->setFilter(filter);
 
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -265,7 +265,7 @@ void PipelineModel::setDropIndicatorText(const QModelIndex &index, const QString
 
   item->setDropIndicatorText(text);
 
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -310,7 +310,7 @@ void PipelineModel::setActivePipeline(const QModelIndex &index, bool value)
     m_ActivePipelineIndex = QModelIndex();
   }
 
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -664,7 +664,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
     return false;
   }
 
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
 
   return true;
 }
@@ -724,7 +724,7 @@ void PipelineModel::setPipelineSaved(const QModelIndex &index, bool saved)
   PipelineItem* item = getItem(index);
   item->setPipelineSaved(saved);
 
-  emit dataChanged(index, index);
+  Q_EMIT dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------

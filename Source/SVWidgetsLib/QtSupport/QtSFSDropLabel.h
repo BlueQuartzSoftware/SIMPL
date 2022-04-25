@@ -69,7 +69,7 @@ class SVWidgetsLib_EXPORT QtSFSDropLabel : public QLabel
     void dragLeaveEvent(QDragLeaveEvent* event) override;
     void changeStyleSheet(int style);
 
-  signals:
+  Q_SIGNALS:
     void fileDropped(const QString& file);
 
   private:

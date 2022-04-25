@@ -368,14 +368,14 @@ void DynamicTableData::writeJson(QJsonObject& json) const
   writeData(json);
 
   QJsonArray rHeaders;
-  foreach(QString header, m_RowHeaders)
+  Q_FOREACH(QString header, m_RowHeaders)
   {
     rHeaders.push_back(header);
   }
   json["Row Headers"] = rHeaders;
 
   QJsonArray cHeaders;
-  foreach(QString header, m_ColHeaders)
+  Q_FOREACH(QString header, m_ColHeaders)
   {
     cHeaders.push_back(header);
   }
@@ -405,7 +405,7 @@ bool DynamicTableData::readJson(QJsonObject& json)
   }
 
   QJsonArray rHeaders = json["Row Headers"].toArray();
-  foreach(QJsonValue val, rHeaders)
+  Q_FOREACH(QJsonValue val, rHeaders)
   {
     if(val.isString())
     {
@@ -414,7 +414,7 @@ bool DynamicTableData::readJson(QJsonObject& json)
   }
 
   QJsonArray cHeaders = json["Column Headers"].toArray();
-  foreach(QJsonValue val, cHeaders)
+  Q_FOREACH(QJsonValue val, cHeaders)
   {
     if(val.isString())
     {
@@ -438,10 +438,10 @@ bool DynamicTableData::readJson(QJsonObject& json)
 void DynamicTableData::writeData(QJsonObject& object) const
 {
   QJsonArray rows;
-  foreach(std::vector<double> vector, m_TableData)
+  Q_FOREACH(std::vector<double> vector, m_TableData)
   {
     QJsonArray cols;
-    foreach(double val, vector)
+    Q_FOREACH(double val, vector)
     {
       cols.push_back(val);
     }

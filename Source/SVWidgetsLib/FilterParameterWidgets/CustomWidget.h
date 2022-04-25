@@ -74,7 +74,7 @@ class FilterWidgetsLib_EXPORT CustomWidget : public QWidget, private Ui::CustomW
     */
     void setupGui();
 
-  public slots:
+  public Q_SLOTS:
 
   public:
     CustomWidget(const CustomWidget&) = delete;   // Copy Constructor Not Implemented

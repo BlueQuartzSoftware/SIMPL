@@ -112,7 +112,7 @@ void DataContainerSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter*
   if(oldPath.getDataContainerName() == m_GetterCallback() && oldPath.getDataContainerName() != newPath.getDataContainerName())
   {
     m_SetterCallback(newPath.getDataContainerName());
-    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }
 

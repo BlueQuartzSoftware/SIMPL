@@ -120,7 +120,7 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     void populateFilterList(QStringList filterNames);
     QString writeNewFavoriteFilePath(QString newFavoriteTitle, QString favoritePath, QTreeWidgetItem* item);
 
-  protected slots:
+  protected Q_SLOTS:
 
     //// Slots to catch signals from the QTreeWidget
     void on_bookmarksTreeView_clicked(const QModelIndex& index);
@@ -128,7 +128,7 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
 
     void listenLocateBookmarkTriggered();
 
-  signals:
+  Q_SIGNALS:
 
     void fireWriteSettings();
 

@@ -112,7 +112,7 @@ void PreflightUpdatedValueWidget::afterPreflight()
   else
   {
     QString ss = QObject::tr("Error occurred getting Filter Parameter %1").arg(getFilterParameter()->getPropertyName());
-    emit errorSettingFilterParameter(ss);
+    Q_EMIT errorSettingFilterParameter(ss);
     qDebug() << ss;
   }
 }

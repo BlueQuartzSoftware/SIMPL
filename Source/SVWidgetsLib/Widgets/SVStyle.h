@@ -576,7 +576,7 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
      */
     void initialize();
 
-  signals:
+  Q_SIGNALS:
     void styleSheetLoaded(const QString &styleFilePath);
     
   private:

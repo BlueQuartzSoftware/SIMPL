@@ -74,17 +74,17 @@ class TupleTableWidget : public QWidget, private Ui::TupleTableWidget
 
     bool didUseEdit();
 
-  public slots:
+  public Q_SLOTS:
     void on_addTupleBtn_clicked();
     void on_deleteTupleBtn_clicked();
 
   protected:
     void addColumn(int value);
 
-  protected slots:
+  protected Q_SLOTS:
     void on_tupleTable_itemChanged(QTableWidgetItem* item);
 
-  signals:
+  Q_SIGNALS:
     void tupleDimsChanged(QVector<size_t> tupleDims);
 
   private:

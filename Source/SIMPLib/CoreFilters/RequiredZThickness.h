@@ -120,7 +120,7 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
     */
     void preflight() override;
 
-    //  signals:
+    //  Q_SIGNALS:
     //    void decisionMade(bool& dm);
 
   protected:

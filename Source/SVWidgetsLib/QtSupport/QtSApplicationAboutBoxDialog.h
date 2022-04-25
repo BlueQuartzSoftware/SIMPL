@@ -78,7 +78,7 @@ class SVWidgetsLib_EXPORT QtSApplicationAboutBoxDialog: public QDialog, private 
     void setLicenseFiles(QStringList files);
 
 
-  protected slots:
+  protected Q_SLOTS:
     void on_licenseCombo_currentIndexChanged(int index);
 
 

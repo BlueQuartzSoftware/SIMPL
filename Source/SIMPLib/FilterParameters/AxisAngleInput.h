@@ -34,7 +34,7 @@
 /**
 * @brief
 */
-typedef struct
+ struct AxisAngleInput_t
 {
   float angle;
   float h;
@@ -62,7 +62,7 @@ typedef struct
     return false;
   }
 
-} AxisAngleInput_t;
+} ;
 
 Q_DECLARE_METATYPE(AxisAngleInput_t)
 

@@ -31,7 +31,7 @@
 
 #include <QtCore/QJsonObject>
 
-typedef struct
+ struct IntVec3_t
 {
   int x;
   int y;
@@ -60,6 +60,6 @@ typedef struct
     }
     return false;
   }
-} IntVec3_t;
+} ;
 
 Q_DECLARE_METATYPE(IntVec3_t)

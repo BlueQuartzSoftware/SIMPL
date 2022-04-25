@@ -742,7 +742,7 @@ void FilterInputWidget::fadeOutWidget(QWidget* widget)
 // -----------------------------------------------------------------------------
 void FilterInputWidget::getEmittedPathReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs)
 {
-  emit viewPathsMatchingReqs(dcReqs);
+  Q_EMIT viewPathsMatchingReqs(dcReqs);
 
   //QObject* obj = this->sender();
   //for(QWidget* widget : m_PropertyToWidget)
@@ -750,7 +750,7 @@ void FilterInputWidget::getEmittedPathReqs(DataContainerSelectionFilterParameter
   //  FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
   //  if(fpWidget && fpWidget != obj)
   //  {
-  //    emit fpWidget->endViewPathRequirements();
+  //    Q_EMIT fpWidget->endViewPathRequirements();
   //  }
   //}
 }
@@ -760,7 +760,7 @@ void FilterInputWidget::getEmittedPathReqs(DataContainerSelectionFilterParameter
 // -----------------------------------------------------------------------------
 void FilterInputWidget::getEmittedPathReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs)
 {
-  emit viewPathsMatchingReqs(amReqs);
+  Q_EMIT viewPathsMatchingReqs(amReqs);
 
   //QObject* obj = this->sender();
   //for(QWidget* widget : m_PropertyToWidget)
@@ -768,7 +768,7 @@ void FilterInputWidget::getEmittedPathReqs(AttributeMatrixSelectionFilterParamet
   //  FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
   //  if(fpWidget && fpWidget != obj)
   //  {
-  //    emit fpWidget->endViewPathRequirements();
+  //    Q_EMIT fpWidget->endViewPathRequirements();
   //  }
   //}
 }
@@ -778,7 +778,7 @@ void FilterInputWidget::getEmittedPathReqs(AttributeMatrixSelectionFilterParamet
 // -----------------------------------------------------------------------------
 void FilterInputWidget::getEmittedPathReqs(DataArraySelectionFilterParameter::RequirementType daReqs)
 {
-  emit viewPathsMatchingReqs(daReqs);
+  Q_EMIT viewPathsMatchingReqs(daReqs);
 
   //QObject* obj = this->sender();
   //for(QWidget* widget : m_PropertyToWidget)
@@ -786,7 +786,7 @@ void FilterInputWidget::getEmittedPathReqs(DataArraySelectionFilterParameter::Re
   //  FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
   //  if(fpWidget && fpWidget != obj)
   //  {
-  //    emit fpWidget->endViewPathRequirements();
+  //    Q_EMIT fpWidget->endViewPathRequirements();
   //  }
   //}
 }
@@ -802,7 +802,7 @@ void FilterInputWidget::emitFilterPath(DataArrayPath path)
     FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
     if((fpWidget != nullptr) && fpWidget != obj)
     {
-      emit fpWidget->filterPathInput(path);
+      Q_EMIT fpWidget->filterPathInput(path);
     }
   }
 }

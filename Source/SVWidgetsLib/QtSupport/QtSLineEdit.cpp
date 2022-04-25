@@ -278,14 +278,14 @@ void QtSLineEdit::iconClicked()
   }
   else
   {
-    emit buttonClicked((Side)index);
+    Q_EMIT buttonClicked((Side)index);
     if(index == Left)
     {
-      emit leftButtonClicked();
+      Q_EMIT leftButtonClicked();
     }
     else if(index == Right)
     {
-      emit rightButtonClicked();
+      Q_EMIT rightButtonClicked();
     }
   }
 }
@@ -380,7 +380,7 @@ void QtSLineEdit::dropEvent(QDropEvent* event)
       fName = QDir::toNativeSeparators(fName);
       info.setFile(fName); // information about file
       setText(fName);      // if is file, setText
-      emit fileDropped(fName);
+      Q_EMIT fileDropped(fName);
     }
   }
 
@@ -392,7 +392,7 @@ void QtSLineEdit::dropEvent(QDropEvent* event)
 // -----------------------------------------------------------------------------
 void QtSLineEdit::keyPressEvent(QKeyEvent* event)
 {
-  emit keyPressed(event);
+  Q_EMIT keyPressed(event);
   QLineEdit::keyPressEvent(event);
 }
 

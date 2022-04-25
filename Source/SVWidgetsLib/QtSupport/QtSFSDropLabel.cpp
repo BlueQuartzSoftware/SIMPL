@@ -133,7 +133,7 @@ void QtSFSDropLabel::dropEvent(QDropEvent* event)
       fName = QDir::toNativeSeparators(fName);
       info.setFile(fName); // information about file
       setText(fName);      // if is file, setText
-      emit fileDropped(fName);
+      Q_EMIT fileDropped(fName);
     }
   }
   changeStyleSheet(FS_STANDARD_STYLE);

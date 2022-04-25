@@ -88,7 +88,7 @@ void LinkedBooleanWidget::setupGui()
     else
     {
       QString ss = QObject::tr("Error occurred getting Filter Parameter %1 for filter %2").arg(getFilterParameter()->getPropertyName()).arg(getFilter()->getNameOfClass());
-      emit errorSettingFilterParameter(ss);
+      Q_EMIT errorSettingFilterParameter(ss);
       qDebug() << ss;
     }
   }
@@ -101,7 +101,7 @@ void LinkedBooleanWidget::updateLinkedWidgets()
 {
   // QVariant objValue = getFilter()->property(PROPERTY_NAME_AS_CHAR);
   int state = value->checkState();
-  emit conditionalPropertyChanged(state);
+  Q_EMIT conditionalPropertyChanged(state);
 }
 
 // -----------------------------------------------------------------------------
@@ -118,8 +118,8 @@ int LinkedBooleanWidget::getLinkedState()
 void LinkedBooleanWidget::widgetChanged(int state)
 {
   // Let the other widgets that this widget is linked to know that the state changed.
-  emit conditionalPropertyChanged(state);
-  emit parametersChanged();
+  Q_EMIT conditionalPropertyChanged(state);
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

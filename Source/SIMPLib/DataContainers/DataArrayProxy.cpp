@@ -119,7 +119,7 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
 
   QList<QString> dataArrayNames;
   QH5Utilities::getGroupObjects(attrMatGid, H5Utilities::H5Support_DATASET | H5Utilities::H5Support_GROUP, dataArrayNames);
-  foreach(QString dataArrayName, dataArrayNames)
+  Q_FOREACH(QString dataArrayName, dataArrayNames)
   {
     if(__SHOW_DEBUG_MSG__)
     {

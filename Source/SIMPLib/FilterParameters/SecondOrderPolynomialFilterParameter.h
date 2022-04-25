@@ -39,7 +39,7 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
-typedef struct
+ struct Float2ndOrderPoly_t
 {
   float c20; float c02; float c11; float c10; float c01; float c00;
 
@@ -68,7 +68,7 @@ typedef struct
     }
     return false;
   }
-} Float2ndOrderPoly_t;
+} ;
 
 Q_DECLARE_METATYPE(Float2ndOrderPoly_t)
 

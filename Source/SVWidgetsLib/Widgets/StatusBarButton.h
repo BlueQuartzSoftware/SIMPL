@@ -42,7 +42,7 @@ class SVWidgetsLib_EXPORT StatusBarButton : public QToolButton
      */
     int getTextMargin();
 
-  signals:
+  Q_SIGNALS:
     void visibilityChanged(bool visible);
 
   private:

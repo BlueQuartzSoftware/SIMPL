@@ -191,7 +191,7 @@ QVector<DataArrayPath> DataContainerBundle::findCommonDataArrayPaths(bool filter
     {
       DataArrayPath dc0Path = dc0Paths[i];
       bool match = false;
-      foreach(DataArrayPath path, paths)
+      Q_FOREACH(DataArrayPath path, paths)
       {
         // qDebug() << "Comparing " << dc0Path.serialize() << " TO " << path.serialize();
         if(path.hasSameAttributeMatrix(dc0Path) && path.hasSameDataArray(dc0Path))

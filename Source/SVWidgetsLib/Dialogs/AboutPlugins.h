@@ -81,7 +81,7 @@ class SVWidgetsLib_EXPORT AboutPlugins : public SVDialog, private Ui::AboutPlugi
 
     void setLoadPreferencesFlag();
 
-  public slots:
+  public Q_SLOTS:
     void on_closeBtn_clicked();
     void on_addPluginBtn_clicked();
     void on_removePluginBtn_clicked();

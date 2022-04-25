@@ -120,5 +120,5 @@ void DataContainerArrayProxyFilterParameter::dataArrayPathRenamed(AbstractFilter
   dcaProxy.updatePath(renamePath);
   var.setValue(dcaProxy);
   filter->setProperty(qPrintable(getPropertyName()), var);
-  emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+  Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }

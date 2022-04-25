@@ -73,10 +73,10 @@ class SVWidgetsLib_EXPORT UpdateCheck : public QObject
 
     void checkVersion(QUrl website);
 
-  protected slots:
+  protected Q_SLOTS:
     void networkReplied(QNetworkReply* reply);
 
-  signals:
+  Q_SIGNALS:
     void latestVersion(UpdateCheckData*);
 
   protected:

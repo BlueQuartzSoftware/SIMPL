@@ -112,10 +112,10 @@ void MaskCountDecision::dataCheck()
 void MaskCountDecision::preflight()
 {
   setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
+  Q_EMIT preflightAboutToExecute();
+  Q_EMIT updateFilterParameters(this);
   dataCheck();
-  emit preflightExecuted();
+  Q_EMIT preflightExecuted();
   setInPreflight(false);
 }
 
@@ -144,7 +144,7 @@ void MaskCountDecision::execute()
     if(m_NumberOfTrues < 0 && !m_Mask[i])
     {
       qDebug() << "First if check: " << dm;
-      emit decisionMade(dm);
+      Q_EMIT decisionMade(dm);
       return;
     }
     if(m_Mask[i])
@@ -156,15 +156,15 @@ void MaskCountDecision::execute()
       dm = false;
       qDebug() << "Second if check: " << dm;
 
-      emit decisionMade(dm);
-      emit targetValue(trueCount);
+      Q_EMIT decisionMade(dm);
+      Q_EMIT targetValue(trueCount);
       return;
     }
   }
 
   qDebug() << "Fell through: " << dm;
 
-  emit decisionMade(dm);
+  Q_EMIT decisionMade(dm);
 
 }
 

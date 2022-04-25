@@ -115,7 +115,7 @@ class SVWidgetsLib_EXPORT QtSLineEdit : public SVLineEdit
     void dragEnterEvent(QDragEnterEvent* event) override;
     void dropEvent(QDropEvent* event) override;
 
-  signals:
+  Q_SIGNALS:
     void buttonClicked(QtSLineEdit::Side side);
     void leftButtonClicked();
     void rightButtonClicked();
@@ -123,7 +123,7 @@ class SVWidgetsLib_EXPORT QtSLineEdit : public SVLineEdit
 
     void keyPressed(QKeyEvent* event);
 
-  private slots:
+  private Q_SLOTS:
     void checkButtons(const QString&);
     void iconClicked();
 

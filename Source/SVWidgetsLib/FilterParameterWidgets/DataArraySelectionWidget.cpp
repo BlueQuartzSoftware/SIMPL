@@ -194,7 +194,7 @@ void DataArraySelectionWidget::dataArraySelected(QString path)
   setSelectedPath(path);
 
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 

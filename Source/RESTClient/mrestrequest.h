@@ -73,7 +73,7 @@ public:
   QJsonDocument document() const;
   QByteArray rawData() const;
 
-signals:
+Q_SIGNALS:
   void notifyStatusMessage(const QString& msg);
   void notifyErrorMessage(const QString& msg);
   void notifyWarningMessage(const QString& msg);
@@ -81,7 +81,7 @@ signals:
   void finished() const;
   void replyError(const QString& msgs) const;
 
-public slots:
+public Q_SLOTS:
 
 protected:
   enum class Priority
@@ -111,7 +111,7 @@ protected:
   QJsonDocument mReplyDocument;
   QJsonDocument mRequestDocument;
 
-private slots:
+private Q_SLOTS:
   void onReplyError(QNetworkReply::NetworkError code);
   void onReadyRead();
   void onReplyFinished();

@@ -57,7 +57,7 @@ class SVWidgetsLib_EXPORT DREAM3DListWidget: public QListWidget
     void mouseMoveEvent(QMouseEvent* event) override;
     void dropEvent(QDropEvent* event) override;
 
-  signals:
+  Q_SIGNALS:
     void dropOccurred();
 
   private:

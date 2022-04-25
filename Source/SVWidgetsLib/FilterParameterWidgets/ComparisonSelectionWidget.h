@@ -102,7 +102,7 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      */
     bool eventFilter(QObject* obj, QEvent* event) override;
 
-  public slots:
+  public Q_SLOTS:
     /**
      * @brief beforePreflight
      */
@@ -161,7 +161,7 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     void populateButtonText();
 
 
-  protected slots:
+  protected Q_SLOTS:
     /**
      * @brief on_addComparison_clicked
      */

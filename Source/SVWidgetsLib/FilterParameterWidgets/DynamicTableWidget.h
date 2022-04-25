@@ -92,7 +92,7 @@ class SVWidgetsLib_EXPORT DynamicTableWidget : public FilterParameterWidget, pri
 
     void updateButtonStyles();
 
-  public slots:
+  public Q_SLOTS:
     void on_dynamicTable_cellChanged(int row, int col);
     void on_addRowBtn_clicked();
     void on_deleteRowBtn_clicked();

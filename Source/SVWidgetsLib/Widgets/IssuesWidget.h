@@ -76,7 +76,7 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
     static const int Description = 2;
     static const int ErrorCode = 3;
 
-  public slots:
+  public Q_SLOTS:
     void processPipelineMessage(const PipelineMessage& msg) override;
     void clearIssues();
     void on_errorTableWidget_itemClicked( QTableWidgetItem* item );
@@ -84,7 +84,7 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
 
     void showFilterHelp(const QString &url);
 
-  signals:
+  Q_SIGNALS:
     void tableHasErrors(bool b, int errCount, int warnCount);
     void showTable(bool b);
 

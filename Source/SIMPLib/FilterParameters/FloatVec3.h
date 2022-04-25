@@ -31,7 +31,7 @@
 
 #include <QtCore/QJsonObject>
 
-typedef struct
+ struct FloatVec3_t
 {
   float x;
   float y;
@@ -69,6 +69,6 @@ typedef struct
     y = y / denom;
     z = z / denom;
   }
-} FloatVec3_t;
+} ;
 
 Q_DECLARE_METATYPE(FloatVec3_t)

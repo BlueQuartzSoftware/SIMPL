@@ -83,18 +83,18 @@ class SIMPLib_EXPORT Observable : public QObject
 
     virtual void notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress);
 
-  public slots:
+  public Q_SLOTS:
 
     /**
      * @brief This method will cause this object to 'emit' the filterGeneratedMessage() signal. This is useful if other
-     * classes need the filter to emit an error or warning messge from a class that is not able to emit the proper signals
+     * classes need the filter to Q_EMIT an error or warning messge from a class that is not able to Q_EMIT the proper signals
      * or the class is not connected to anything that would receive the signals
      * @param msg
      */
     void broadcastPipelineMessage(const PipelineMessage& msg);
 
 
-  signals:
+  Q_SIGNALS:
 
     /**
      * @brief filterGeneratedMessage This is a Qt Signal that is used when the filter generates Errors, Warnings, Status and Progress Messages

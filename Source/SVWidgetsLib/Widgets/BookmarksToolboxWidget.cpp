@@ -221,7 +221,7 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
         if (result)
         {
           QString filePath = model->data(index, BookmarksModel::Roles::PathRole).toString();
-          emit bookmarkActivated(filePath);
+          Q_EMIT bookmarkActivated(filePath);
         }
       }
     }
@@ -234,7 +234,7 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
         model->setData(index, false, static_cast<int>(BookmarksModel::Roles::ErrorsRole));
         model->getFileSystemWatcher()->addPath(path);
       }
-      emit bookmarkActivated(path);
+      Q_EMIT bookmarkActivated(path);
     }
   }
 }

@@ -44,7 +44,7 @@
  * The expected design is for the Higher level Application to use Qt's signals
  * and slots to "connect" one of their own slots to the signals emitted from
  * this class. Lower level classes should get the instance of this class (which
- * is a singleton) and call one of the slots that will in turn emit a signal.
+ * is a singleton) and call one of the slots that will in turn Q_EMIT a signal.
  */
 class SIMPLib_EXPORT DocRequestManager : public QObject
 {

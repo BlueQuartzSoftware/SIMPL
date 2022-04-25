@@ -199,7 +199,7 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     */
     bool syncProxies();
 
-  signals:
+  Q_SIGNALS:
     /**
      * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
      * be pushed from a user-facing control (such as a widget)
@@ -241,7 +241,7 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
      */
     DataContainerArray::Pointer readData(DataContainerArrayProxy& proxy);
 
-  protected slots:
+  protected Q_SLOTS:
     /**
     * @brief Cleans up the filter after execution
     */

@@ -94,7 +94,7 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
      */
     QString generateStyleSheet(bool error);
 
-  public slots:
+  public Q_SLOTS:
     /**
      * @brief issuesVisibilityChanged
      * @param b

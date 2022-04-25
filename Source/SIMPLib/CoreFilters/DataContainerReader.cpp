@@ -221,14 +221,14 @@ void DataContainerReader::preflight()
   setInPreflight(true);
   // Annouce we are about to preflight
   // The GUI will pick up the structure
-  emit preflightAboutToExecute();
+  Q_EMIT preflightAboutToExecute();
   // The Gui sends down any changes to the Proxy (which for preflight we don't care about)
-  emit updateFilterParameters(this);
+  Q_EMIT updateFilterParameters(this);
   // to the read here because this will populate the DataContainerArray with our DataContainer
   dataCheck();
   // The GUI needs to send down the selections that were made by the user and we need to update
   // DataContainerArray->DataContainer object so the rest of the pipeline has the proper information
-  emit preflightExecuted(); // Done executing
+  Q_EMIT preflightExecuted(); // Done executing
   setInPreflight(false);
 }
 

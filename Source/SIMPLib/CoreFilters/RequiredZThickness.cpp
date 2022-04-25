@@ -154,10 +154,10 @@ void RequiredZThickness::dataCheck()
 void RequiredZThickness::preflight()
 {
   setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
+  Q_EMIT preflightAboutToExecute();
+  Q_EMIT updateFilterParameters(this);
   dataCheck();
-  emit preflightExecuted();
+  Q_EMIT preflightExecuted();
   setInPreflight(false);
 }
 
@@ -196,7 +196,7 @@ void RequiredZThickness::execute()
     setErrorCondition(-7788);
     notifyErrorMessage(getHumanLabel(), str, getErrorCondition());
     bool needMoreData = true;
-    emit decisionMade(needMoreData);
+    Q_EMIT decisionMade(needMoreData);
   }
 
 }

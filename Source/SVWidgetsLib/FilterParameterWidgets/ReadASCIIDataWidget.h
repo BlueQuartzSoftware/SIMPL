@@ -72,12 +72,12 @@ class SVWidgetsLib_EXPORT ReadASCIIDataWidget : public FilterParameterWidget, pr
      */
     void setupGui() override;
 
-  public slots:
+  public Q_SLOTS:
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-  protected slots:
+  protected Q_SLOTS:
     void on_importFileBtn_clicked();
     void on_resetWizardBtn_clicked();
     void on_editImportSettings_clicked();

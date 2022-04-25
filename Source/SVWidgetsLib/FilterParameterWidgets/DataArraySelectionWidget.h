@@ -102,14 +102,14 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
 
     bool eventFilter(QObject* obj, QEvent* event) override;
 
-  public slots:
+  public Q_SLOTS:
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
     void dataArraySelected(QString path);
 
-  protected slots:
+  protected Q_SLOTS:
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   private:

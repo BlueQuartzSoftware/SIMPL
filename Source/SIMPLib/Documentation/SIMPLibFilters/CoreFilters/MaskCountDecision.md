@@ -7,7 +7,7 @@ Core (Misc)
 
 ## Description ##
 
-This **Filter** emits a *true* or *false* signal based on the number of occurrences of *true* in the supplied boolean **Attribute Array**. If the user input *Number of True Instances* is less than the number of *true* values in the supplied array, a boolean false is emitted. Otherwise, a boolean true is emitted. If a negative number is entered for the *Number of True Instances*, then the **Filter** will emit true only if all values in the supplied array are true. 
+This **Filter** emits a *true* or *false* signal based on the number of occurrences of *true* in the supplied boolean **Attribute Array**. If the user input *Number of True Instances* is less than the number of *true* values in the supplied array, a boolean false is emitted. Otherwise, a boolean true is emitted. If a negative number is entered for the *Number of True Instances*, then the **Filter** will Q_EMIT true only if all values in the supplied array are true. 
 
 *Note:* This **Filter** only provides use when DREAM.3D is engaging in network communications.  
 

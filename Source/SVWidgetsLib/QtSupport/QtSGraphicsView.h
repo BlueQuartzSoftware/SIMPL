@@ -136,7 +136,7 @@ class SVWidgetsLib_EXPORT QtSGraphicsView : public QGraphicsView
     void updateColorTables(QVector<QRgb> colorTable);
     void useCustomColorTable(bool b);
 
-  public slots:
+  public Q_SLOTS:
     void zoomIn();
 
     void zoomOut();
@@ -152,7 +152,7 @@ class SVWidgetsLib_EXPORT QtSGraphicsView : public QGraphicsView
     void updateDisplay();
 
 
-  signals:
+  Q_SIGNALS:
     void fireBaseImageFileLoaded(const QString& filename);
     void fireOverlayImageFileLoaded(const QString& filename);
 

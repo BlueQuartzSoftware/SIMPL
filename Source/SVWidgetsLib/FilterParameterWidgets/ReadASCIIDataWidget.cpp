@@ -202,7 +202,7 @@ void ReadASCIIDataWidget::on_editImportSettings_clicked()
       tupleDimsLabel->show();
       tupleDims->show();
 
-      emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+      Q_EMIT parametersChanged(); // This should force the preflight to run because we are emitting a signal
     }
     m_ImportWizard->setEditSettings(false);
   }
@@ -388,7 +388,7 @@ void ReadASCIIDataWidget::lineCountDidFinish()
 {
   // This is needed to reset the DataContainer Array into a state that would
   // represent it before this filter runs.
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 
   loadingProgress->setText("0%");
   loadingProgress->hide();
@@ -429,7 +429,7 @@ void ReadASCIIDataWidget::lineCountDidFinish()
     tupleDims->show();
     editImportSettings->show();
 
-    emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+    Q_EMIT parametersChanged(); // This should force the preflight to run because we are emitting a signal
   }
 }
 
@@ -451,7 +451,7 @@ void ReadASCIIDataWidget::on_resetWizardBtn_clicked()
   tupleDimsLabel->hide();
   editImportSettings->hide();
 
-  emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+  Q_EMIT parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
 // -----------------------------------------------------------------------------

@@ -80,7 +80,7 @@ class SVWidgetsLib_EXPORT CalculatorWidget : public FilterParameterWidget, priva
     */
     void setupGui() override;
 
-  public slots:
+  public Q_SLOTS:
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
@@ -91,7 +91,7 @@ class SVWidgetsLib_EXPORT CalculatorWidget : public FilterParameterWidget, priva
 
     void hideButton();
 
-  protected slots:
+  protected Q_SLOTS:
     void printUnaryButtonName();
     void printButtonName();
     void printActionName();

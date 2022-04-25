@@ -76,7 +76,7 @@ class SVWidgetsLib_EXPORT UnknownWidget : public FilterParameterWidget, private 
     */
     void setupGui() override;
 
-  public slots:
+  public Q_SLOTS:
     void widgetChanged(const QString& msg);
     void beforePreflight();
     void afterPreflight();

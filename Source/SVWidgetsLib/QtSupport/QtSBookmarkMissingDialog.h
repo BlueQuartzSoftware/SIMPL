@@ -53,7 +53,7 @@ class SVWidgetsLib_EXPORT QtSBookmarkMissingDialog : public QDialog, private Ui:
 
     void setBookmarkName(QString name);
 
-  protected slots:
+  protected Q_SLOTS:
     void on_locateBtn_clicked();
     void on_cancelBtn_clicked();
 

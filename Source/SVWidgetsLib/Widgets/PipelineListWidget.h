@@ -55,7 +55,7 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
      */
     void setProgressValue(float percent);
 
-  public slots:
+  public Q_SLOTS:
     /**
      * @brief on_startPipelineBtn_clicked
      */
@@ -78,7 +78,7 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
      */
     void setupGui();
 
-  signals:
+  Q_SIGNALS:
     void pipelineCanceled(const QModelIndex &pipelineIndex);
 
   private:

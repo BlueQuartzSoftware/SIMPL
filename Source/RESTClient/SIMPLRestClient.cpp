@@ -141,7 +141,7 @@ QSharedPointer<SIMPLClientRequest> SIMPLRestClient::createRequest(SIMPLClientReq
     m_NumOfActiveRequests--;
     if(m_NumOfActiveRequests <= 0)
     {
-      emit finished();
+      Q_EMIT finished();
     }
   });
 

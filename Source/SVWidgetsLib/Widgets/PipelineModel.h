@@ -130,7 +130,7 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     QList<QObject*> getPipelineMessageObservers();
 
-  signals:
+  Q_SIGNALS:
     void clearIssuesTriggered();
 
     void preflightTriggered(const QModelIndex &pipelineIndex, PipelineModel* model);

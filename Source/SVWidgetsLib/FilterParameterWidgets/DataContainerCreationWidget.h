@@ -80,12 +80,12 @@ class SVWidgetsLib_EXPORT DataContainerCreationWidget : public FilterParameterWi
     */
     void setupGui() override;
 
-  public slots:
+  public Q_SLOTS:
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-  protected slots:
+  protected Q_SLOTS:
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   private:

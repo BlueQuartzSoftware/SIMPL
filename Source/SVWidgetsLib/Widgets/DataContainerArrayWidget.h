@@ -42,7 +42,7 @@ class SVWidgetsLib_EXPORT DataContainerArrayWidget : public QWidget, private Ui:
 
 
 
-  protected slots:
+  protected Q_SLOTS:
 
     void updateView();
 

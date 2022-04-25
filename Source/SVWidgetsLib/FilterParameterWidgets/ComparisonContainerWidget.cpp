@@ -124,7 +124,7 @@ void ComparisonContainerWidget::unionOperatorChanged(int unionOp)
   if (nullptr != m_comparisonWidget)
   {
     m_comparisonWidget->getComparison()->setUnionOperator(unionOp);
-    emit comparisonChanged();
+    Q_EMIT comparisonChanged();
   }
 }
 
@@ -257,7 +257,7 @@ void ComparisonContainerWidget::deleteItem()
   if(m_comparisonSetWidget != nullptr)
   {
     m_comparisonSetWidget->updateItems();
-    emit m_comparisonSetWidget->comparisonChanged();
+    Q_EMIT m_comparisonSetWidget->comparisonChanged();
 
     m_comparisonSetWidget->update();
     QCoreApplication::processEvents();

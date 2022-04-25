@@ -76,7 +76,7 @@ class SVWidgetsLib_EXPORT ScalarTypeWidget : public FilterParameterWidget, priva
     */
     void setupGui() override;
 
-  public slots:
+  public Q_SLOTS:
     void widgetChanged(int index);
     void beforePreflight();
     void afterPreflight();

@@ -87,7 +87,7 @@ void FavoritesChangedDialog::on_outputDir_textChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void FavoritesChangedDialog::on_exportBtn_clicked()
 {
-  emit exportBtnPressed(outputDir->text());
+  Q_EMIT exportBtnPressed(outputDir->text());
 }
 
 // -----------------------------------------------------------------------------

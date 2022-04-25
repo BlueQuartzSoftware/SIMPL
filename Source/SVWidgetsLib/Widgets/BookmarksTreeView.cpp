@@ -114,12 +114,12 @@ void BookmarksTreeView::addBookmark(const QString& filePath, const QModelIndex& 
   QModelIndex index = model->addTreeItem(parent, fileTitle, QIcon(":/SIMPL/icons/images/bookmark.png"), filePath, model->rowCount(parent), BookmarksItem::ItemType::Bookmark, false);
   if(index.isValid())
   {
-    emit updateStatusBar("The pipeline '" + fileTitle + "' has been added successfully.");
+    Q_EMIT updateStatusBar("The pipeline '" + fileTitle + "' has been added successfully.");
     expand(parent);
   }
   else
   {
-    emit updateStatusBar("The pipeline '" + fileTitle + "' could not be added, because the pipeline file extension was not recognized.");
+    Q_EMIT updateStatusBar("The pipeline '" + fileTitle + "' could not be added, because the pipeline file extension was not recognized.");
   }
 }
 
@@ -173,7 +173,7 @@ void BookmarksTreeView::listenAddBookmarkFolderTriggered()
     parent = QModelIndex();
   }
 
-  emit raiseBookmarksWidget();
+  Q_EMIT raiseBookmarksWidget();
 
   QString name = "New Folder";
 
@@ -278,7 +278,7 @@ void BookmarksTreeView::listenRemoveBookmarkTriggered()
     }
 
     // Write these changes out to the preferences file
-    emit fireWriteSettings();
+    Q_EMIT fireWriteSettings();
   }
 }
 
@@ -304,7 +304,7 @@ void BookmarksTreeView::listenOpenBookmarkTriggered()
     QFileInfo fi(pipelinePath);
     if(fi.exists())
     {
-      emit newSIMPLViewInstanceTriggered(pipelinePath);
+      Q_EMIT newSIMPLViewInstanceTriggered(pipelinePath);
 
       // Cache the last directory on old instance
       m_OpenDialogLastFilePath = pipelinePath;
@@ -332,7 +332,7 @@ void BookmarksTreeView::listenExecuteBookmarkTriggered()
     QFileInfo fi(pipelinePath);
     if(fi.exists())
     {
-      emit newSIMPLViewInstanceTriggered(pipelinePath, true);
+      Q_EMIT newSIMPLViewInstanceTriggered(pipelinePath, true);
 
       // Cache the last directory on old instance
       m_OpenDialogLastFilePath = pipelinePath;
@@ -900,5 +900,5 @@ void BookmarksTreeView::expandIndex(const QModelIndex& index)
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
-  emit currentIndexChanged(current, previous);
+  Q_EMIT currentIndexChanged(current, previous);
 }

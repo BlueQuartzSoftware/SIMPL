@@ -140,7 +140,7 @@ public:
     m_WorkerThread->start();
   }
 
-public slots:
+public Q_SLOTS:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
@@ -160,7 +160,7 @@ public slots:
     DREAM3D_REQUIRE_EQUAL(GlobalVariable, 3);
     std::cout << "GlobalVariable = 3" << std::endl;
 
-    emit pipelineIsResuming();
+    Q_EMIT pipelineIsResuming();
   }
 
   // -----------------------------------------------------------------------------
@@ -173,7 +173,7 @@ public slots:
     std::cout << "GlobalVariable = 7" << std::endl;
   }
 
-signals:
+Q_SIGNALS:
   void pipelineIsResuming();
   void testFinished();
 

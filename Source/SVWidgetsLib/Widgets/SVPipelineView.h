@@ -217,7 +217,7 @@ public:
    */
   QPixmap getHighDPIDeleteBtnHoveredPixmap(bool highlighted = false);
 
-public slots:
+public Q_SLOTS:
   /**
    * @brief Adds a filter with the specified filterClassName to the current model
    * @param filterClassName
@@ -329,7 +329,7 @@ public slots:
    */
   void processPipelineMessage(const PipelineMessage& pm) override;
 
-signals:
+Q_SIGNALS:
   void displayIssuesTriggered();
   void clearIssuesTriggered();
   void clearDataStructureWidgetTriggered();
@@ -382,7 +382,7 @@ protected:
   void setFiltersEnabled(QModelIndexList indexes, bool enabled);
   void setSelectedFiltersEnabled(bool enabled);
 
-protected slots:
+protected Q_SLOTS:
   void requestContextMenu(const QPoint& pos);
 
   /**
@@ -400,7 +400,7 @@ protected slots:
   void listenPasteTriggered();
   void listenClearPipelineTriggered();
 
-private slots:
+private Q_SLOTS:
   /**
    * @brief listenFilterInProgress
    * @param filter

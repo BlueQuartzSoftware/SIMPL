@@ -380,7 +380,7 @@ public:
    */
   virtual void copyFilterParameterInstanceVariables(AbstractFilter* filter) const;
 
-signals:
+Q_SIGNALS:
   /**
    * @brief Signal is emitted when filter has completed the execute() method
    */
@@ -398,7 +398,7 @@ signals:
   */
   void dataArrayPathUpdated(QString propertyName, DataArrayPath::RenameType renamePath);
 
-public slots:
+public Q_SLOTS:
 
   /**
     * @brief Cancel the operation
@@ -422,7 +422,7 @@ public slots:
 protected:
   AbstractFilter();
 
-protected slots:
+protected Q_SLOTS:
   /**
    * @brief This function will be called after the pipeline is completely done executing.  This can be reimplemented
    * in subclasses to provide cleanup code between pipeline executions. (resetting/clearing variables, updating settings, etc.)

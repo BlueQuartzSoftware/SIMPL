@@ -75,7 +75,7 @@ class SVWidgetsLib_EXPORT UInt64Widget : public FilterParameterWidget, private U
     */
     void setupGui() override;
 
-  public slots:
+  public Q_SLOTS:
     void widgetChanged(const QString& msg);
     void beforePreflight();
     void afterPreflight();

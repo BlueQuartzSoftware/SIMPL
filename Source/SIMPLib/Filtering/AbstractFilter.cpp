@@ -127,7 +127,7 @@ void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
         //notifyStatusMessage(getHumanLabel(), ss);
         var.setValue(path);
         this->setProperty(name, var);
-        emit dataArrayPathUpdated(name, oldPath, newPath);
+        Q_EMIT dataArrayPathUpdated(name, oldPath, newPath);
       }
     }
     else if(var.isValid() && var.canConvert<DataContainerArrayProxy>())
@@ -136,7 +136,7 @@ void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
       proxy.updatePath(oldPath, newPath);
       var.setValue(proxy);
       this->setProperty(name, var);
-      emit dataArrayPathUpdated(name, oldPath, newPath);
+      Q_EMIT dataArrayPathUpdated(name, oldPath, newPath);
     }
     else if(var.isValid() && var.canConvert<DataContainerProxy>())
     {
@@ -144,7 +144,7 @@ void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
       proxy.updatePath(oldPath, newPath);
       var.setValue(proxy);
       this->setProperty(name, var);
-      emit dataArrayPathUpdated(name, oldPath, newPath);
+      Q_EMIT dataArrayPathUpdated(name, oldPath, newPath);
     }
     else if(var.isValid() && var.canConvert<AttributeMatrixProxy>())
     {
@@ -152,7 +152,7 @@ void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
       proxy.updatePath(oldPath, newPath);
       var.setValue(proxy);
       this->setProperty(name, var);
-      emit dataArrayPathUpdated(name, oldPath, newPath);
+      Q_EMIT dataArrayPathUpdated(name, oldPath, newPath);
     }
     else if(var.isValid() && var.canConvert<DataArrayProxy>())
     {
@@ -160,7 +160,7 @@ void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
       proxy.updatePath(oldPath, newPath);
       var.setValue(proxy);
       this->setProperty(name, var);
-      emit dataArrayPathUpdated(name, oldPath, newPath);
+      Q_EMIT dataArrayPathUpdated(name, oldPath, newPath);
     }
   }
 #endif
@@ -594,7 +594,7 @@ void AbstractFilter::notifyErrorMessage(const QString& humanLabel, const QString
 {
   PipelineMessage pm = PipelineMessage::CreateErrorMessage(getNameOfClass(), humanLabel, str, code);
   pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  Q_EMIT filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -604,7 +604,7 @@ void AbstractFilter::notifyStatusMessage(const QString& humanLabel, const QStrin
 {
   PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
   pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  Q_EMIT filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -615,7 +615,7 @@ void AbstractFilter::notifyStatusMessage(const QString& prefix, const QString& h
   PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
   pm.setPrefix(prefix);
   pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  Q_EMIT filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -625,7 +625,7 @@ void AbstractFilter::notifyStandardOutputMessage(const QString& humanLabel, int 
 {
   PipelineMessage pm = PipelineMessage::CreateStandardOutputMessage(humanLabel, pipelineIndex, str);
   pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  Q_EMIT filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -635,7 +635,7 @@ void AbstractFilter::notifyWarningMessage(const QString& humanLabel, const QStri
 {
   PipelineMessage pm = PipelineMessage::CreateWarningMessage(getNameOfClass(), humanLabel, str, code);
   pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  Q_EMIT filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -648,7 +648,7 @@ void AbstractFilter::notifyProgressMessage(const QString& prefix, const QString&
   pm.setProgressValue(progress);
   pm.setType(PipelineMessage::MessageType::StatusMessageAndProgressValue);
   pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  Q_EMIT filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------

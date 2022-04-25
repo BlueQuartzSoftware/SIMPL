@@ -155,7 +155,7 @@ bool DataStructureItem::insertColumns(int position, int columns)
     m_ItemData.insert(position, QVariant());
   }
 
-  foreach(DataStructureItem* child, m_ChildItems)
+  Q_FOREACH(DataStructureItem* child, m_ChildItems)
   {
     child->insertColumns(position, columns);
   }
@@ -213,7 +213,7 @@ bool DataStructureItem::removeColumns(int position, int columns)
     m_ItemData.remove(position);
   }
 
-  foreach(DataStructureItem* child, m_ChildItems)
+  Q_FOREACH(DataStructureItem* child, m_ChildItems)
   {
     child->removeColumns(position, columns);
   }

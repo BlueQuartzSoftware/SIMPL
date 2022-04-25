@@ -51,7 +51,7 @@ class SVWidgetsLib_EXPORT PipelineItemHeightAnimation : public QVariantAnimation
 
     PipelineItemHeightAnimation(PipelineModel* model, QPersistentModelIndex index, AnimationDirection direction, QObject* parent = nullptr);
 
-  private slots:
+  private Q_SLOTS:
     void listenValueChanged(const QVariant & value);
 
   private:

@@ -93,7 +93,7 @@ class SVWidgetsLib_EXPORT FilterLibraryToolboxWidget : public QWidget, private U
   protected:
     void updateFilterGroupList(FilterManager::Collection& factories);
 
-  protected slots:
+  protected Q_SLOTS:
     void on_filterLibrary_currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous );
     void on_filterLibrary_itemDoubleClicked( QTreeWidgetItem* item, int column );
 
@@ -109,7 +109,7 @@ class SVWidgetsLib_EXPORT FilterLibraryToolboxWidget : public QWidget, private U
     */
     void launchHelpForItem(QString name);
 
-  signals:
+  Q_SIGNALS:
     /**
      * @brief filterItemDoubleClicked
      * @param filterName

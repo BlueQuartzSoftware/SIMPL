@@ -49,7 +49,7 @@ class SIMPLib_EXPORT TestObserver : public QObject, public IObserver
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TestObserver, IObserver)
     ~TestObserver() override;
 
- public slots:
+ public Q_SLOTS:
       void processPipelineMessage(const PipelineMessage& pm) override;
 
     public:

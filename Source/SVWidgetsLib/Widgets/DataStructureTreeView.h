@@ -108,7 +108,7 @@ public:
    */
   void clearViewRequirements();
 
-signals:
+Q_SIGNALS:
   void filterPath(DataArrayPath path);
   void endDataStructureFiltering();
   void applyPathToFilteringParameter(DataArrayPath path);
@@ -161,7 +161,7 @@ protected:
    */
   void dragComplete();
 
-private slots:
+private Q_SLOTS:
   /**
    * @brief mousePressEvent
    * @param event

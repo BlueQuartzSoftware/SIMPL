@@ -228,5 +228,5 @@ void MultiAttributeMatrixSelectionFilterParameter::dataArrayPathRenamed(Abstract
   }
 
   m_SetterCallback(paths);
-  emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+  Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }

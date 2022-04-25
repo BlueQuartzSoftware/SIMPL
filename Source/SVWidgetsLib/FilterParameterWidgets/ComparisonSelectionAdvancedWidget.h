@@ -80,7 +80,7 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     */
     bool eventFilter(QObject* obj, QEvent* event) override;
 
-  public slots:
+  public Q_SLOTS:
     /**
     * @brief beforePreflight
     */
@@ -142,7 +142,7 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     */
     void presetAttributeMatrix(DataArrayPath path);
 
-  protected slots:
+  protected Q_SLOTS:
     /**
     * @brief widgetChanged
     * @param text

@@ -109,7 +109,7 @@ void RangeWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void RangeWidget::on_minValue_textChanged(const QString& text)
 {
-  emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+  Q_EMIT parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
 // -----------------------------------------------------------------------------
@@ -117,7 +117,7 @@ void RangeWidget::on_minValue_textChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void RangeWidget::on_maxValue_textChanged(const QString& text)
 {
-  emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+  Q_EMIT parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
 // -----------------------------------------------------------------------------

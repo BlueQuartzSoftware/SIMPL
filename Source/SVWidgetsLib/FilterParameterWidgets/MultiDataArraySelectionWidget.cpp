@@ -226,7 +226,7 @@ void MultiDataArraySelectionWidget::setSelectedPath(const DataArrayPath& amPath)
   availableArraysListWidget->clear();
   selectedArraysListWidget->clear();
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 
@@ -267,7 +267,7 @@ void MultiDataArraySelectionWidget::on_selectBtn_clicked()
     }
 
     m_DidCausePreflight = true;
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
     m_DidCausePreflight = false;
   }
 }
@@ -278,14 +278,14 @@ void MultiDataArraySelectionWidget::on_selectBtn_clicked()
 void MultiDataArraySelectionWidget::on_deselectBtn_clicked()
 {
   QList<QListWidgetItem*> items = selectedArraysListWidget->selectedItems();
-  foreach(QListWidgetItem* item, items)
+  Q_FOREACH(QListWidgetItem* item, items)
   {
     int row = selectedArraysListWidget->row(item);
     selectedArraysListWidget->takeItem(row);
     availableArraysListWidget->addItem(item);
   }
   m_DidCausePreflight = true;
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
   m_DidCausePreflight = false;
 }
 
@@ -303,7 +303,7 @@ void MultiDataArraySelectionWidget::on_upBtn_clicked()
     selectedArraysListWidget->setCurrentRow(currentIndex - 1);
 
     m_DidCausePreflight = true;
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
     m_DidCausePreflight = false;
   }
 }
@@ -322,7 +322,7 @@ void MultiDataArraySelectionWidget::on_downBtn_clicked()
     selectedArraysListWidget->setCurrentRow(currentIndex + 1);
 
     m_DidCausePreflight = true;
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
     m_DidCausePreflight = false;
   }
 }
@@ -346,7 +346,7 @@ void MultiDataArraySelectionWidget::on_removeBtn_clicked()
     }
 
     m_DidCausePreflight = true;
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
     m_DidCausePreflight = false;
   }
 }

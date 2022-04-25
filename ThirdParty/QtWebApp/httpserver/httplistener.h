@@ -84,7 +84,7 @@ private:
   /** Pool of connection handlers */
   HttpConnectionHandlerPool* pool;
 
-signals:
+Q_SIGNALS:
 
   /**
     Sent to the connection handler to process a new incoming connection.

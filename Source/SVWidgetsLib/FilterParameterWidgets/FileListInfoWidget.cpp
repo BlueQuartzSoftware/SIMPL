@@ -93,7 +93,7 @@ FileListInfoWidget::~FileListInfoWidget() = default;
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::setWidgetListEnabled(bool b)
 {
-  foreach(QWidget* w, m_WidgetList)
+  Q_FOREACH(QWidget* w, m_WidgetList)
   {
     w->setEnabled(b);
   }
@@ -127,7 +127,7 @@ void FileListInfoWidget::setupGui()
     inputDir_textChanged(m_Ui->inputDir->text());
     blockSignals(false);
 
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   });
 
 //  validateInputFile();
@@ -158,42 +158,42 @@ void FileListInfoWidget::connectSignalsSlots()
 
   connect(m_Ui->filePrefix, &QtSLineEdit::textChanged, this, [=] {
     generateExampleInputFile();
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   });
 
   connect(m_Ui->fileSuffix, &QtSLineEdit::textChanged, this, [=] {
     generateExampleInputFile();
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   });
 
   connect(m_Ui->fileExt, &QtSLineEdit::textChanged, this, [=] {
     generateExampleInputFile();
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   });
 
   connect(m_Ui->totalDigits, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=] {
     generateExampleInputFile();
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   });
 
   connect(m_Ui->startIndex, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=] {
     generateExampleInputFile();
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   });
 
   connect(m_Ui->endIndex, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=] {
     generateExampleInputFile();
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   });
 
   connect(m_Ui->increment, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=] {
     generateExampleInputFile();
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   });
 
   connect(m_Ui->orderAscending, &QRadioButton::toggled, this, [=] {
     generateExampleInputFile();
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   });
 }
 
@@ -392,7 +392,7 @@ void FileListInfoWidget::inputDir_textChanged(const QString& text)
     m_Ui->fileListView->clear();
   }
 
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------
@@ -517,7 +517,7 @@ void FileListInfoWidget::findMaxSliceAndPrefix()
   int digitEnd = 0;
   int totalOimFilesFound = 0;
   int minTotalDigits = 1000;
-  foreach(QFileInfo fi, angList)
+  Q_FOREACH(QFileInfo fi, angList)
   {
     if((fi.suffix().compare(ext) != 0) && fi.isFile())
     {
@@ -583,7 +583,7 @@ void FileListInfoWidget::findMaxSliceAndPrefix()
 void FileListInfoWidget::widgetChanged(const QString& text)
 {
   Q_UNUSED(text)
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------
@@ -594,7 +594,7 @@ void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
   if(nullptr == filter)
   {
     QString ss = QObject::tr("Error Setting FileListStack Gui values to Filter instance. Filter instance was nullptr.").arg(getFilterParameter()->getPropertyName());
-    emit errorSettingFilterParameter(ss);
+    Q_EMIT errorSettingFilterParameter(ss);
     return;
   }
   bool ok = false;

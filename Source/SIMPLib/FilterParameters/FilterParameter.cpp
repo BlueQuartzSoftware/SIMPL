@@ -86,7 +86,7 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath
     {
       var.setValue(path);
       filter->setProperty(qPrintable(getPropertyName()), var);
-      emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+      Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
     }
   }
   else if(var.isValid() && var.canConvert<DataContainerArrayProxy>())
@@ -95,7 +95,7 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath
     proxy.updatePath(renamePath);
     var.setValue(proxy);
     filter->setProperty(qPrintable(getPropertyName()), var);
-    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
   else if(var.isValid() && var.canConvert<DataContainerProxy>())
   {
@@ -103,7 +103,7 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath
     proxy.updatePath(renamePath);
     var.setValue(proxy);
     filter->setProperty(qPrintable(getPropertyName()), var);
-    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
   else if(var.isValid() && var.canConvert<AttributeMatrixProxy>())
   {
@@ -111,7 +111,7 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath
     proxy.updatePath(renamePath);
     var.setValue(proxy);
     filter->setProperty(qPrintable(getPropertyName()), var);
-    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
   else if(var.isValid() && var.canConvert<DataArrayProxy>())
   {
@@ -119,6 +119,6 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath
     proxy.updatePath(renamePath);
     var.setValue(proxy);
     filter->setProperty(qPrintable(getPropertyName()), var);
-    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }

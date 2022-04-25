@@ -221,7 +221,7 @@ int main(int argc, char** argv)
 
     QDir inputD(QString::fromStdString(inputDir.getValue()));
     QStringList entryList = inputD.entryList();
-    foreach(QString file, entryList)
+    Q_FOREACH(QString file, entryList)
     {
       QFileInfo fi(file);
       if(fi.suffix().compare("ang") == 0)

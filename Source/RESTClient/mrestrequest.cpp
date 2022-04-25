@@ -172,7 +172,7 @@ void MRestRequest::send()
 {
   Q_ASSERT(mNetworkManager);
   QString msg = tr("%1 - Try %2").arg(m_RequestUrl.toDisplayString()).arg(QString::number(mRequestRetryCounter));
-  emit notifyStatusMessage(msg);
+  Q_EMIT notifyStatusMessage(msg);
   mReplyData.clear();
   QNetworkRequest request(m_RequestUrl);
   request.setOriginatingObject(this);
@@ -180,7 +180,7 @@ void MRestRequest::send()
   if(mType == Type::None)
   {
     QString errMsg = "Request type is set to None - can't send. Please set request type to Put, Post, Get or Delete";
-    emit notifyErrorMessage(errMsg);
+    Q_EMIT notifyErrorMessage(errMsg);
   }
   else if(mType == Type::Put)
   {
@@ -229,7 +229,7 @@ void MRestRequest::retry()
     if(mActiveReply->bytesAvailable())
     {
       QString msg = QObject::tr("Retrying request, %1 bytes lost.").arg(mActiveReply->bytesAvailable());
-      emit notifyStatusMessage(msg);
+      Q_EMIT notifyStatusMessage(msg);
       send();
     }
   }
@@ -247,7 +247,7 @@ void MRestRequest::onReplyError(QNetworkReply::NetworkError code)
     reply->deleteLater();
     mRequestTimer->stop();
     mLastError = reply->errorString();
-    emit notifyErrorMessage(mLastError);
+    Q_EMIT notifyErrorMessage(mLastError);
   }
 }
 
@@ -284,8 +284,8 @@ void MRestRequest::onReplyFinished()
 
   if(mReplyData.isEmpty())
   {
-    emit notifyErrorMessage(tr("%1 - %2 - Request reply is empty").arg(requestName).arg(status));
-    emit finished();
+    Q_EMIT notifyErrorMessage(tr("%1 - %2 - Request reply is empty").arg(requestName).arg(status));
+    Q_EMIT finished();
     return;
   }
 
@@ -293,31 +293,31 @@ void MRestRequest::onReplyFinished()
   mReplyDocument = QJsonDocument::fromJson(mReplyData, &parseError);
   if(parseError.error != QJsonParseError::NoError)
   {
-    emit notifyWarningMessage(tr("%1 - %2 - Error while parsing json document: %3").arg(requestName).arg(status).arg(parseError.errorString()));
-    emit finished();
+    Q_EMIT notifyWarningMessage(tr("%1 - %2 - Error while parsing json document: %3").arg(requestName).arg(status).arg(parseError.errorString()));
+    Q_EMIT finished();
     return;
   }
 
-  emit notifyStatusMessage(tr("%1 - request response received").arg(requestName));
+  Q_EMIT notifyStatusMessage(tr("%1 - request response received").arg(requestName));
 
   if(mReplyDocument.isNull())
   {
     mLastError = "JSON document is invalid";
-    emit notifyStatusMessage(tr("%1 - %2").arg(requestName).arg(mLastError));
-    emit finished(); // rawData can still be parsed in another formats
+    Q_EMIT notifyStatusMessage(tr("%1 - %2").arg(requestName).arg(mLastError));
+    Q_EMIT finished(); // rawData can still be parsed in another formats
     return;
   }
 
   // parse json document according to specific request reply format
   parseReplyData();
-  emit finished();
+  Q_EMIT finished();
 }
 
 /*!
  * \fn MRestRequest::parse
  * \brief read QJsonDocument or Rawreturned by server
  *
- * This method should emit parsed data in form of request specific signal
+ * This method should Q_EMIT parsed data in form of request specific signal
  * because Request object will be deleted by event queue soon after
  * returning from onReplyFinished
  * NOTE!! you should check mReplyDocument and use rawData() if mReplyDocument isNull

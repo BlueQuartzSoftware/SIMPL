@@ -39,7 +39,7 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
-typedef struct
+ struct Float4thOrderPoly_t
 {
   float c40; float c04; 
   float c31; float c13; 
@@ -118,7 +118,7 @@ typedef struct
     }
     return false;
   }
-} Float4thOrderPoly_t;
+} ;
 
 Q_DECLARE_METATYPE(Float4thOrderPoly_t)
 

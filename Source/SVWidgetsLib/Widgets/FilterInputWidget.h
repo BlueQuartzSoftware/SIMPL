@@ -75,12 +75,12 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
 
     QWidget* getVariablesTabContentsWidget();
 
-  public slots :
+  public Q_SLOTS:
     void clearInputWidgets();
     void showHelp();
     void displayFilterParameters(AbstractFilter::Pointer filter);
 
-  signals:
+  Q_SIGNALS:
     void filterParametersChanged(bool preflight = true);
     void errorSettingFilterParameter(const QString &text);
 
@@ -95,7 +95,7 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     void dataArrayPathSelectionLocked(QToolButton* selection);
     void dataArrayPathSelectionUnlocked(QToolButton* button);
 
-  private slots:
+  private Q_SLOTS:
     void fadeInWidget(QWidget* widget);
     void fadeOutWidget(QWidget* widget);
     

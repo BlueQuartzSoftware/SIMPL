@@ -177,7 +177,7 @@ void ImportHDF5DatasetWidget::setupGui()
     on_value_returnPressed();
     blockSignals(false);
 
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   });
 
   // Allow the widget to fill the entire FilterInputWidget space
@@ -411,7 +411,7 @@ void ImportHDF5DatasetWidget::on_selectBtn_clicked()
   if(initWithFile(file))
   {
     value->setText(file);
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   }
 
   // Store the last used directory into the private instance variable
@@ -460,7 +460,7 @@ void ImportHDF5DatasetWidget::dropEvent(QDropEvent* e)
     m_OpenDialogLastDirectory = parent.dirName();
     if(initWithFile(file))
     {
-      emit parametersChanged();
+      Q_EMIT parametersChanged();
     }
   }
 }
@@ -556,7 +556,7 @@ void ImportHDF5DatasetWidget::on_cDimsLE_valueChanged(const QString& text)
 {
   m_ComponentDimsMap.insert(QString::fromStdString(m_CurrentHDFDataPath), text);
 
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------
@@ -1176,7 +1176,7 @@ void ImportHDF5DatasetWidget::setValue(const QString& text)
     QFileInfo fi(file);
     m_OpenDialogLastDirectory = fi.path();
     setErrorText("");
-    emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+    Q_EMIT parametersChanged(); // This should force the preflight to run because we are emitting a signal
   }
   errorLabel->update();
 }

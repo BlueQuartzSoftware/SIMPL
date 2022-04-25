@@ -49,12 +49,13 @@
 #include <tbb/blocked_range3d.h>
 #include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
-#include <tbb/task_scheduler_init.h>
 #endif
 
 #include "H5Support/H5Lite.h"
 #include "SIMPLib/Geometry/GeometryHelpers.h"
 #include "SIMPLib/HDF5/VTKH5Constants.h"
+
+#include <thread>
 
 /**
  * @brief The FindImageDerivativesImpl class implements a threaded algorithm that computes the
@@ -882,13 +883,12 @@ void ImageGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType:
   }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  tbb::task_scheduler_init init;
-  bool doParallel = true;
+    bool doParallel = true;
 #endif
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 
-  size_t grain = dims[2] == 1 ? 1 : dims[2] / tbb::task_scheduler_init::default_num_threads();
+  size_t grain = dims[2] == 1 ? 1 : dims[2] / std::thread::hardware_concurrency();
 
   if(grain == 0) // This can happen if dims[2] > number of processors
   {

@@ -27,7 +27,7 @@ public:
   {
   }
 
-public slots:
+public Q_SLOTS:
   void processPipelineMessage(const PipelineMessage& msg)
   {
     m_ErrorList.push_back(msg);

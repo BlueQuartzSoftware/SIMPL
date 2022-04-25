@@ -66,7 +66,7 @@ class SIMPLib_EXPORT SIMPLDataPathValidator : public QObject
   protected:
     SIMPLDataPathValidator();
 
-  signals:
+  Q_SIGNALS:
     void dataDirectoryChanged(const QString &path);
 
   private:

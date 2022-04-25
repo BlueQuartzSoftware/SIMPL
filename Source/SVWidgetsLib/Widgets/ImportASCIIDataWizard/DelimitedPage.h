@@ -76,7 +76,7 @@ class DelimitedPage : public AbstractWizardPage, private Ui::DelimitedPage
 
     void setEditSettings(bool value);
 
-  protected slots:
+  protected Q_SLOTS:
     void showEvent(QShowEvent* event) override;
     void checkBox_Toggled(int state);
 

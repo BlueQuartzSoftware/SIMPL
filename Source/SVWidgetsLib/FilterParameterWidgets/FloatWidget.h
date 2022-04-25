@@ -77,7 +77,7 @@ class SVWidgetsLib_EXPORT FloatWidget : public FilterParameterWidget, private Ui
     */
     void setupGui() override;
 
-  public slots:
+  public Q_SLOTS:
     void widgetChanged(const QString& msg);// when something in the widget changes
     void filterNeedsInputParameters(AbstractFilter* filter); // When the filter is ready for us to update its input parameter(s) that we are responsible for
     void beforePreflight(); // Called just before the "dataCheck()" is called

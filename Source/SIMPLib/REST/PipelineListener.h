@@ -35,7 +35,7 @@ public:
   QString getStatusLog();
   QString getStandardOutputLog();
 
-public slots:
+public Q_SLOTS:
   void processPipelineMessage(const PipelineMessage& pm);
 
 private:

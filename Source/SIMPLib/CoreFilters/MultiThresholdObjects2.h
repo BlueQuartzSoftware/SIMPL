@@ -131,7 +131,7 @@ class  SIMPLib_EXPORT MultiThresholdObjects2 : public AbstractFilter
     */
     void preflight() override;
 
-  signals:
+  Q_SIGNALS:
     /**
      * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
      * be pushed from a user-facing control (such as a widget)

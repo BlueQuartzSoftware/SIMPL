@@ -103,7 +103,7 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
 {
   QList<QString> dataContainers;
   QH5Utilities::getGroupObjects(dcArrayGroupId, H5Utilities::H5Support_GROUP, dataContainers);
-  foreach(QString dataContainerName, dataContainers)
+  Q_FOREACH(QString dataContainerName, dataContainers)
   {
     if(__SHOW_DEBUG_MSG__)
     {
@@ -832,7 +832,7 @@ QVector<DataArrayPath> DataContainer::getAllDataArrayPaths()
     QString amName = am->getName();
     QList<QString> aaNames = am->getAttributeArrayNames();
 
-    foreach(QString aaName, aaNames)
+    Q_FOREACH(QString aaName, aaNames)
     {
       DataArrayPath dap(getName(), amName, aaName);
       paths.push_back(dap);

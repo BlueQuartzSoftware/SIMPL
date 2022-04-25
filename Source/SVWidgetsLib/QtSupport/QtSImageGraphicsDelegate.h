@@ -94,7 +94,7 @@ class SVWidgetsLib_EXPORT QtSImageGraphicsDelegate : public QObject
     void resetCaches();
 
 
-  public slots:
+  public Q_SLOTS:
     void on_parentResized();
 
     /**
@@ -114,7 +114,7 @@ class SVWidgetsLib_EXPORT QtSImageGraphicsDelegate : public QObject
 
     //  void compositeWithImage(QImage* image, bool update = true);
 
-  public slots:
+  public Q_SLOTS:
     void setClearMode() { m_composition_mode = QPainter::CompositionMode_Clear;  }
     void setSourceMode() { m_composition_mode = QPainter::CompositionMode_Source;  }
     void setDestinationMode() { m_composition_mode = QPainter::CompositionMode_Destination;  }

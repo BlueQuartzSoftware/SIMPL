@@ -71,7 +71,7 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
     */
     void writeSettings(QtSSettings* prefs);
 
-  public slots:
+  public Q_SLOTS:
 
     /**
     * @brief searchFilters triggered when the user types something in the Search Field
@@ -115,7 +115,7 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
      */
     void setupSearchField();
 
-  signals:
+  Q_SIGNALS:
     void filterItemDoubleClicked(const QString& filterName, int insertIndex = -1, bool useAnimationOnFirstRun = true);
 
   private:

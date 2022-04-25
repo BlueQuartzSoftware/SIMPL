@@ -84,7 +84,7 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     */
     void setupGui() override;
 
-  public slots:
+  public Q_SLOTS:
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);

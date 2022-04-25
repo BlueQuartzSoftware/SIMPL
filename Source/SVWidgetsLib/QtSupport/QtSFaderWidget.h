@@ -53,7 +53,7 @@ class SVWidgetsLib_EXPORT QtSFaderWidget : public QWidget
 
     void start();
 
-  signals:
+  Q_SIGNALS:
     void animationComplete();
 
   protected:

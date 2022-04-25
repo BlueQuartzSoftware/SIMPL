@@ -80,7 +80,7 @@ class SVWidgetsLib_EXPORT ChoiceWidget : public FilterParameterWidget, private U
     int getCurrentIndex();
 
 
-  public slots:
+  public Q_SLOTS:
     void widgetChanged(int index, bool emitParametersChanged = true);
     void filterNeedsInputParameters(AbstractFilter* filter); // When the filter is ready for us to update its input parameter(s) that we are responsible for
     void beforePreflight(); // Called just before the "dataCheck()" is called
@@ -88,7 +88,7 @@ class SVWidgetsLib_EXPORT ChoiceWidget : public FilterParameterWidget, private U
 
 
 
-  signals:
+  Q_SIGNALS:
     void conditionalPropertyChanged(int);
 
   private:

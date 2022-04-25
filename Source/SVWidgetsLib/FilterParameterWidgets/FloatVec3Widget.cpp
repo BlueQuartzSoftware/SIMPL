@@ -133,7 +133,7 @@ void FloatVec3Widget::widgetChanged(const QString& text)
     }
   }
 
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

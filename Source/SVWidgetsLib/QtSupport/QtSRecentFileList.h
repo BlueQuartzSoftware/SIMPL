@@ -118,7 +118,7 @@ class SVWidgetsLib_EXPORT QtSRecentFileList: public QObject
     */
     void clear();
 
-  public slots:
+  public Q_SLOTS:
 
     /**
     * @brief Removes a file from the list of recent files.
@@ -127,7 +127,7 @@ class SVWidgetsLib_EXPORT QtSRecentFileList: public QObject
     void removeFile(const QString& file);
 
     /* ******************* Begin Qt Signals ********************************* */
-  signals:
+  Q_SIGNALS:
 
     /**
      * @brief Qt Signal emitted when the list of files has changed.

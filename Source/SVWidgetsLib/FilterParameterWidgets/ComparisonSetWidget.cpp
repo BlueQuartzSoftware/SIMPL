@@ -178,7 +178,7 @@ void ComparisonSetWidget::setInverse(int newInverse)
   bool invert = newInverse == Qt::Checked;
   m_comparisonSet->setInvertComparison(invert);
 
-  emit comparisonChanged();
+  Q_EMIT comparisonChanged();
 }
 
 // -----------------------------------------------------------------------------
@@ -251,7 +251,7 @@ void ComparisonSetWidget::addComparisonWidget(AbstractComparison::Pointer compar
   connect(comparisonWidget, SIGNAL(comparisonChanged()),
     this, SIGNAL(comparisonChanged()));
 
-  emit comparisonChanged();
+  Q_EMIT comparisonChanged();
 }
 
 // -----------------------------------------------------------------------------
@@ -294,7 +294,7 @@ void ComparisonSetWidget::updateItems()
 
   m_comparisonSet->setComparisons(updatedChildComparisons);
 
-  //emit comparisonChanged();
+  //Q_EMIT comparisonChanged();
 }
 
 // -----------------------------------------------------------------------------
@@ -373,7 +373,7 @@ void ComparisonSetWidget::dropEvent(QDropEvent* event)
     ownerComparisonSet->updateItems();
   }
 
-  emit comparisonChanged();
+  Q_EMIT comparisonChanged();
 
   event->acceptProposedAction();
 }

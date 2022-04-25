@@ -77,7 +77,7 @@ class SVWidgetsLib_EXPORT ConstrainedIntWidget : public FilterParameterWidget, p
     */
     void setupGui() override;
 
-  public slots:
+  public Q_SLOTS:
     void widgetChanged(int i);
     void beforePreflight();
     void afterPreflight();

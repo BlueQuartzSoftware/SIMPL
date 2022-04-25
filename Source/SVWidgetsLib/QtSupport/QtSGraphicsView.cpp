@@ -378,7 +378,7 @@ void QtSGraphicsView::loadBaseImageFile(const QString& filename)
   gScene->setSceneRect(rect);
   centerOn(m_ImageGraphicsItem);
   this->updateDisplay();
-  emit fireBaseImageFileLoaded(filename);
+  Q_EMIT fireBaseImageFileLoaded(filename);
 }
 
 
@@ -397,7 +397,7 @@ void QtSGraphicsView::loadOverlayImageFile(const QString& filename)
 
   m_ImageDisplayType = EmMpm_Constants::CompositedImage;
   setOverlayImage(m_OverlayImage);
-  emit fireOverlayImageFileLoaded(filename);
+  Q_EMIT fireOverlayImageFileLoaded(filename);
 }
 
 // -----------------------------------------------------------------------------

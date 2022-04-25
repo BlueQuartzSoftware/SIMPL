@@ -86,7 +86,7 @@ void FilterListView::connectSignalsSlots()
     FilterListModel* model = getFilterListModel();
 
     QString filterClassName = model->data(index, FilterListModel::Roles::ClassNameRole).toString();
-    emit filterItemDoubleClicked(filterClassName);
+    Q_EMIT filterItemDoubleClicked(filterClassName);
   });
 }
 
@@ -286,7 +286,7 @@ void FilterListView::listenKeyPressed(QKeyEvent* event)
       {
         QModelIndex selectedIndex = selectedIndexes[0];
         QString filterClassName = model->data(selectedIndex, FilterListModel::Roles::ClassNameRole).toString();
-        emit filterItemDoubleClicked(filterClassName);
+        Q_EMIT filterItemDoubleClicked(filterClassName);
         return;
       }
     }

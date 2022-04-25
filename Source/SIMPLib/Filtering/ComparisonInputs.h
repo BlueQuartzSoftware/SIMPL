@@ -43,7 +43,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"  // for SIMPL_PIMPL_PROPERTY_DECL
 
-typedef struct
+ struct ComparisonInput_t
 {
   PYB11_CREATE_BINDINGS(ComparisonInput_t)
 
@@ -83,7 +83,7 @@ typedef struct
     return false;
   }
 
-} ComparisonInput_t;
+} ;
 
 
 

@@ -74,7 +74,7 @@ public:
   void setIcon(const QPixmap& path);
   QPixmap getIcon();
 
-public slots:
+public Q_SLOTS:
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
@@ -154,10 +154,10 @@ protected:
    */
   QString getErrorText() const;
 
-protected slots:
+protected Q_SLOTS:
   void on_cDimsLE_valueChanged(const QString& text);
 
-private slots:
+private Q_SLOTS:
   /**
    * @brief Slot to catch events when the DataRecord TreeView selection is changed
    * @param current The currently selected Index

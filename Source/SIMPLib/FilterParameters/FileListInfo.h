@@ -32,7 +32,7 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QString>
 
-typedef struct
+ struct FileListInfo_t
 {
   qint32 PaddingDigits = 3;
   quint32 Ordering = 0; /* Ordering=0 = Ascending, Ordering=1 = Descending */
@@ -75,6 +75,6 @@ typedef struct
     }
     return false;
   }
-} FileListInfo_t;
+} ;
 
 Q_DECLARE_METATYPE(FileListInfo_t)

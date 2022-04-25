@@ -68,9 +68,9 @@ void SIMPLClientRequest::parseReplyData()
   const QJsonObject object(mReplyDocument.object());
 
   QByteArray out = mReplyDocument.toJson(QJsonDocument::Indented);
-  emit notifyStatusMessage(out.data());
+  Q_EMIT notifyStatusMessage(out.data());
 
-  emit finished();
+  Q_EMIT finished();
 
-  //    emit replyInfo(cityName, humidity, pressure, temp);
+  //    Q_EMIT replyInfo(cityName, humidity, pressure, temp);
 }

@@ -136,7 +136,7 @@ void AbstractIOFileWidget::setupGui()
     on_m_LineEdit_returnPressed();
     blockSignals(false);
 
-    emit parametersChanged();
+    Q_EMIT parametersChanged();
   });
 
   if(getFilterParameter() != nullptr)
@@ -231,7 +231,7 @@ void AbstractIOFileWidget::on_m_LineEdit_editingFinished()
 
   QtSFileUtils::VerifyPathExists(path, m_LineEdit);
   m_CurrentText = m_LineEdit->text();
-  emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+  Q_EMIT parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
 // -----------------------------------------------------------------------------
@@ -292,7 +292,7 @@ void AbstractIOFileWidget::on_m_LineEdit_fileDropped(const QString& text)
   // Set/Remove the red outline if the file does exist
   QtSFileUtils::VerifyPathExists(inputPath, m_LineEdit);
 
-  emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+  Q_EMIT parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
 // -----------------------------------------------------------------------------

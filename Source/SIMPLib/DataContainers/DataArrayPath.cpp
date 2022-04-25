@@ -108,7 +108,7 @@ DataArrayPath::~DataArrayPath() = default;
 QVector<DataArrayPath> DataArrayPath::ConvertToQVector(QStringList& paths)
 {
   QVector<DataArrayPath> vPaths;
-  foreach(const QString sPath, paths)
+  Q_FOREACH(const QString sPath, paths)
   {
     DataArrayPath p(sPath);
     vPaths.push_back(p);

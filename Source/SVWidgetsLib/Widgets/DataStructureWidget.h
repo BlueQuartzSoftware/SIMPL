@@ -98,7 +98,7 @@ public:
   QIcon getHexahedralGeomIcon();
   QIcon getRectilinearGeomIcon();
 
-public slots:
+public Q_SLOTS:
   /**
    * @brief Updates the internal DataContainerArray copy from the input DataContainerArray
    * @param dca
@@ -147,7 +147,7 @@ public slots:
   */
   void clearViewRequirements();
 
-signals:
+Q_SIGNALS:
   void filterPath(DataArrayPath path);
   void endDataStructureFiltering();
   void applyPathToFilteringParameter(DataArrayPath path);

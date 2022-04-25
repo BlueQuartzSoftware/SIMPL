@@ -199,7 +199,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     */
     void updateDataArrayPath(DataArrayPath::RenameType renamePath);
 
-  public slots:
+  public Q_SLOTS:
     /**
      * @brief dcaItemSelected
      * @param path
@@ -251,7 +251,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     void createAMSelectionMenu();
 
 
-  private slots:
+  private Q_SLOTS:
     void on_startRowSpin_valueChanged(int i);
     void on_hasHeadersRadio_toggled(bool checked);
     void on_doesNotHaveHeadersRadio_toggled(bool checked);

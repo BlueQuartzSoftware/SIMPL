@@ -170,12 +170,12 @@ void DataStructureTreeView::emitFilterPath(QModelIndex& index)
 
   if(!index.isValid())
   {
-    emit endDataStructureFiltering();
+    Q_EMIT endDataStructureFiltering();
     return;
   }
 
   DataArrayPath path = getDataArrayPath(index);
-  emit filterPath(path);
+  Q_EMIT filterPath(path);
 }
 
 // -----------------------------------------------------------------------------
@@ -236,7 +236,7 @@ void DataStructureTreeView::leaveEvent(QEvent* event)
     return;
   }
 
-  emit endDataStructureFiltering();
+  Q_EMIT endDataStructureFiltering();
 }
 
 // -----------------------------------------------------------------------------
@@ -278,7 +278,7 @@ void DataStructureTreeView::performDrag()
 // -----------------------------------------------------------------------------
 void DataStructureTreeView::dragComplete()
 {
-  emit endDataStructureFiltering();
+  Q_EMIT endDataStructureFiltering();
   m_Dragging = false;
 }
 
@@ -377,6 +377,6 @@ void DataStructureTreeView::mouseDoubleClickEvent(QMouseEvent* event)
   DataArrayPath path = getDataArrayPath(index);
   if(m_Delegate->pathMatchesReqs(path))
   {
-    emit applyPathToFilteringParameter(path);
+    Q_EMIT applyPathToFilteringParameter(path);
   }
 }

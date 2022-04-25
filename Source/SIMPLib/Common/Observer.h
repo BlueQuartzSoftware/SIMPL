@@ -64,7 +64,7 @@ class SIMPLib_EXPORT Observer : public QObject, public IObserver
 
     ~Observer() override;
 
-  public slots:
+  public Q_SLOTS:
     void processPipelineMessage(const PipelineMessage& pm) override;
 
   public:

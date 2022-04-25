@@ -134,7 +134,7 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
      */
     void writeBookmarksToPrefsFile();
 
-  public slots:
+  public Q_SLOTS:
     /**
      * @brief addTreeItem
      * @param parent
@@ -163,7 +163,7 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
     void addPipelinesRecursively(QDir currentDir, QModelIndex parent, QJsonObject prebuiltsObj, QString iconFileName,
                                  bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType);
 
-  protected slots:
+  protected Q_SLOTS:
     void updateRowState(const QString& path);
     void updateModel(const QModelIndex& topLeft, const QModelIndex& bottomRight);
 

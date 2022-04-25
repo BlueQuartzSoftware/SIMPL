@@ -106,7 +106,7 @@ void MRestRequestManager::removeActiveRequest(QObject* sender)
     return;
   }
 
-  foreach(const MRestRequestPtr& request, mActiveRequests)
+  Q_FOREACH(const MRestRequestPtr& request, mActiveRequests)
   {
     if(request.data() == sender)
     {
@@ -123,7 +123,7 @@ void MRestRequestManager::removeActiveRequest(QObject* sender)
  * \brief handle networkManager onSslErrors
  * \param reply
  * \param errors
- * handle onSslErrors. ignore SSL errors or abort and emit sslErrorsChanged
+ * handle onSslErrors. ignore SSL errors or abort and Q_EMIT sslErrorsChanged
  */
 
 void MRestRequestManager::onSslErrors(QNetworkReply* reply, const QList<QSslError>& errors)
@@ -136,12 +136,12 @@ void MRestRequestManager::onSslErrors(QNetworkReply* reply, const QList<QSslErro
 
   reply->deleteLater();
   mLastSslErrors.clear();
-  foreach(QSslError error, errors)
+  Q_FOREACH(QSslError error, errors)
   {
     mLastSslErrors << error.errorString();
   }
 
-  emit sslErrorsChanged(mLastSslErrors);
+  Q_EMIT sslErrorsChanged(mLastSslErrors);
 }
 
 /*! @} */

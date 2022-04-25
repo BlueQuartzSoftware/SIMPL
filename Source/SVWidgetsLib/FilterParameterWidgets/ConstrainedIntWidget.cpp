@@ -96,7 +96,7 @@ void ConstrainedIntWidget::setupGui()
 // -----------------------------------------------------------------------------
 void ConstrainedIntWidget::widgetChanged(int i)
 {
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

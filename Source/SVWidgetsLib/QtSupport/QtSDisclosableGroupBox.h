@@ -61,10 +61,10 @@ public:
   virtual void setupGui();
 
 
-signals:
+Q_SIGNALS:
   void dragStarted(QtSDisclosableGroupBox* widget);
 
-public slots:
+public Q_SLOTS:
   void disclose(bool on);
 
   /**

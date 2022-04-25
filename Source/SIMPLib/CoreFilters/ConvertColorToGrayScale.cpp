@@ -42,7 +42,6 @@
 #include <tbb/blocked_range.h>
 #include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
-#include <tbb/task_scheduler_init.h>
 #endif
 #include <algorithm>
 
@@ -355,10 +354,10 @@ void ConvertColorToGrayScale::dataCheck()
 void ConvertColorToGrayScale::preflight()
 {
   setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
+  Q_EMIT preflightAboutToExecute();
+  Q_EMIT updateFilterParameters(this);
   dataCheck();
-  emit preflightExecuted();
+  Q_EMIT preflightExecuted();
   setInPreflight(false);
 }
 
@@ -420,8 +419,7 @@ void ConvertColorToGrayScale::execute()
     size_t totalPoints = inputColorData->getNumberOfTuples();
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  tbb::task_scheduler_init init;
-#endif
+  #endif
 
     switch (convType)
     {

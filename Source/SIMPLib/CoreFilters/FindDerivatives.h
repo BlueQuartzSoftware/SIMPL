@@ -133,7 +133,7 @@ class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
     */
     void preflight() override;
 
-signals:
+Q_SIGNALS:
   /**
    * @brief updateFilterParameters This is emitted when the filter requests all the latest Filter Parameters need to be
    * pushed from a user facing control such as the FilterParameter Widget

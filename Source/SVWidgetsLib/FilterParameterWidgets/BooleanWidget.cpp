@@ -88,7 +88,7 @@ void BooleanWidget::setupGui()
     else
     {
       QString ss = QObject::tr("Error occurred getting Filter Parameter %1 for filter %2").arg(getFilterParameter()->getPropertyName()).arg(getFilter()->getNameOfClass());
-      emit errorSettingFilterParameter(ss);
+      Q_EMIT errorSettingFilterParameter(ss);
       qDebug() << ss;
     }
   }
@@ -99,7 +99,7 @@ void BooleanWidget::setupGui()
 // -----------------------------------------------------------------------------
 void BooleanWidget::widgetChanged(int state)
 {
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

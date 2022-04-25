@@ -101,7 +101,7 @@ void QtSDisclosableGroupBox::disclose(bool on)
   }
 
   QObjectList objs = children();
-  foreach(QObject* obj, objs)
+  Q_FOREACH(QObject* obj, objs)
   {
     QWidget* w = qobject_cast<QWidget*>(obj);
     if(nullptr != w)

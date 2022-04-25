@@ -101,7 +101,7 @@ void FloatWidget::setupGui()
 // -----------------------------------------------------------------------------
 void FloatWidget::widgetChanged(const QString& text)
 {
-  emit parametersChanged();
+  Q_EMIT parametersChanged();
 }
 
 // -----------------------------------------------------------------------------

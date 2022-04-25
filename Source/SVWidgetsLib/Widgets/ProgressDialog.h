@@ -54,7 +54,7 @@ class SVWidgetsLib_EXPORT ProgressDialog : public QDialog
     ProgressDialog(QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
     ~ProgressDialog() override;
 
-  public slots:
+  public Q_SLOTS:
 
     void setLabelText(const QString& text);
     void processPipelineMessage(const PipelineMessage& msg);

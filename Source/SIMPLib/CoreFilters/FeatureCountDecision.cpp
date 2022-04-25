@@ -119,10 +119,10 @@ void FeatureCountDecision::dataCheck()
 void FeatureCountDecision::preflight()
 {
   setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
+  Q_EMIT preflightAboutToExecute();
+  Q_EMIT updateFilterParameters(this);
   dataCheck();
-  emit preflightExecuted();
+  Q_EMIT preflightExecuted();
   setInPreflight(false);
 }
 
@@ -150,8 +150,8 @@ void FeatureCountDecision::execute()
     dm = false;
   }
 
-  emit decisionMade(dm);
-  emit targetValue(m_FeatureIds[1]);
+  Q_EMIT decisionMade(dm);
+  Q_EMIT targetValue(m_FeatureIds[1]);
 
 }
 

@@ -78,7 +78,7 @@ class SVWidgetsLib_EXPORT StringWidget : public FilterParameterWidget, private U
     */
     void setupGui() override;
 
-  public slots:
+  public Q_SLOTS:
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);

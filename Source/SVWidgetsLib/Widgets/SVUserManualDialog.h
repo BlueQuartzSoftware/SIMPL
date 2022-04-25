@@ -91,7 +91,7 @@ public:
 protected:
   explicit SVUserManualDialog(QWidget* parent = nullptr);
 
-protected slots:
+protected Q_SLOTS:
   void on_backBtn_clicked();
   void on_forwardBtn_clicked();
   void on_refreshBtn_clicked();

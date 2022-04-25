@@ -109,7 +109,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
      */
     void notifyErrorMessage(const QString& humanLabel, const QString& str, int code) override;
 
-  signals:
+  Q_SIGNALS:
     void errorGenerated(const QString &title, const QString &msg, const int &code);
 
   private:

@@ -75,7 +75,7 @@ public:
     m_StdOutput.clear();
   }
 
-public slots:
+public Q_SLOTS:
   void processPipelineMessage(const PipelineMessage& pm) override
   {
     if(pm.getType() == PipelineMessage::MessageType::StandardOutputMessage)

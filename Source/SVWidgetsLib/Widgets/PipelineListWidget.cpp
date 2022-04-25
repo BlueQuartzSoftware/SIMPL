@@ -66,7 +66,7 @@ void PipelineListWidget::on_startPipelineBtn_clicked()
   if(pipelineView->getPipelineState() == SVPipelineView::PipelineViewState::Running)
   {
     QModelIndex pipelineIndex = model->index(0, PipelineItem::Contents);
-    emit pipelineCanceled(pipelineIndex);
+    Q_EMIT pipelineCanceled(pipelineIndex);
 
     setPipelineState(SVPipelineView::PipelineViewState::Cancelling);
 

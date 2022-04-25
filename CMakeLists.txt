@@ -194,6 +194,7 @@ endif()
 # Check relative paths
 OPTION (SIMPL_RELATIVE_PATH_CHECK "Check relative paths" OFF)
 
+add_compile_definitions("QT_NO_KEYWORDS")
 #-------------------------------------------------------------------------------
 # SIMPL_ENABLE_GROUP
 # 

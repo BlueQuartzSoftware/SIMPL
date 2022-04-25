@@ -93,7 +93,7 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
 
     bool eventFilter(QObject* obj, QEvent* event) override;
 
-  public slots:
+  public Q_SLOTS:
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
@@ -108,7 +108,7 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
 
     void resetPhaseComboBoxes();
 
-  protected slots:
+  protected Q_SLOTS:
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   private:

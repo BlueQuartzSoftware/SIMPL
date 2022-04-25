@@ -130,7 +130,7 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
     */
     void preflight() override;
 
-  signals:
+  Q_SIGNALS:
     /**
      * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
      * be pushed from a user-facing control (such as a widget)
@@ -166,7 +166,7 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
     void initialize();
 
 
-  protected slots:
+  protected Q_SLOTS:
     void processHasFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void processHasErroredOut(QProcess::ProcessError error);
     void sendErrorOutput();

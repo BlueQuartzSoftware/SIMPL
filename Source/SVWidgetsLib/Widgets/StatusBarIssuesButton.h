@@ -19,7 +19,7 @@ class SVWidgetsLib_EXPORT StatusBarIssuesButton : public StatusBarButton
    */
     void paintEvent(QPaintEvent* event) override;
     
-  public slots:
+  public Q_SLOTS:
     void setErrorBadgeCount(int count);
     void setWarningBadgeCount(int count);
 

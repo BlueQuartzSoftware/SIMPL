@@ -71,7 +71,7 @@ class SVWidgetsLib_EXPORT InputPathWidget : public AbstractIOFileWidget
     */
     void setupGui() override;
 
-  public slots:
+  public Q_SLOTS:
     void selectInputPath();
 
   private:

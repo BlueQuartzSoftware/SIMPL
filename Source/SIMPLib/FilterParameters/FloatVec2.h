@@ -31,7 +31,7 @@
 
 #include <QtCore/QJsonObject>
 
-typedef struct
+ struct FloatVec2_t
 {
   float x;
   float y;
@@ -57,6 +57,6 @@ typedef struct
     }
     return false;
   }
-} FloatVec2_t;
+} ;
 
 Q_DECLARE_METATYPE(FloatVec2_t)

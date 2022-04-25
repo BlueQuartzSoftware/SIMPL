@@ -67,7 +67,7 @@ void Observable::operator=(const Observable&)
 // -----------------------------------------------------------------------------
 void Observable::broadcastPipelineMessage(const PipelineMessage& msg)
 {
-  emit filterGeneratedMessage(msg);
+  Q_EMIT filterGeneratedMessage(msg);
 }
 
 // -----------------------------------------------------------------------------
@@ -76,7 +76,7 @@ void Observable::broadcastPipelineMessage(const PipelineMessage& msg)
 void Observable::notifyErrorMessage(const QString& humanLabel, const QString& str, int code)
 {
   PipelineMessage pm = PipelineMessage::CreateErrorMessage(getNameOfClass(), humanLabel, str, code);
-  emit filterGeneratedMessage(pm);
+  Q_EMIT filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ void Observable::notifyErrorMessage(const QString& humanLabel, const QString& st
 void Observable::notifyStatusMessage(const QString& humanLabel, const QString& str)
 {
   PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
-  emit filterGeneratedMessage(pm);
+  Q_EMIT filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -95,7 +95,7 @@ void Observable::notifyStatusMessage(const QString& prefix, const QString& human
 {
   PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
   pm.setPrefix(prefix);
-  emit filterGeneratedMessage(pm);
+  Q_EMIT filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -104,7 +104,7 @@ void Observable::notifyStatusMessage(const QString& prefix, const QString& human
 void Observable::notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& str)
 {
   PipelineMessage pm = PipelineMessage::CreateStandardOutputMessage(humanLabel, pipelineIndex, str);
-  emit filterGeneratedMessage(pm);
+  Q_EMIT filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -113,7 +113,7 @@ void Observable::notifyStandardOutputMessage(const QString& humanLabel, int pipe
 void Observable::notifyWarningMessage(const QString& humanLabel, const QString& str, int code)
 {
   PipelineMessage pm = PipelineMessage::CreateWarningMessage(getNameOfClass(), humanLabel, str, code);
-  emit filterGeneratedMessage(pm);
+  Q_EMIT filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -125,5 +125,5 @@ void Observable::notifyProgressMessage(const QString& prefix, const QString& hum
   pm.setPrefix(prefix);
   pm.setProgressValue(progress);
   pm.setType(PipelineMessage::MessageType::StatusMessageAndProgressValue);
-  emit filterGeneratedMessage(pm);
+  Q_EMIT filterGeneratedMessage(pm);
 }

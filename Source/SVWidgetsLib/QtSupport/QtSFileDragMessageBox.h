@@ -62,7 +62,7 @@ class SVWidgetsLib_EXPORT QtSFileDragMessageBox : public QDialog, private Ui::Qt
 
     bool isExtractPipelineBtnChecked();
 
-  protected slots:
+  protected Q_SLOTS:
     void on_okBtn_clicked();
     void on_cancelBtn_clicked();
 
