@@ -342,6 +342,11 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   {
     return false;
   }
+  // This should pick up the NeighborList<T> condition
+  if(!reqs.daTypes.empty() && SIMPL::contains(reqs.daTypes, da->getNameOfClass()))
+  {
+    return true;
+  }
 
   if(!reqs.daTypes.empty() && !SIMPL::contains(reqs.daTypes, da->getTypeAsString()))
   {
