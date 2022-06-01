@@ -88,6 +88,7 @@ protected Q_SLOTS:
   // Slots to catch signals emitted by the various ui widgets
   void inputDirBtn_clicked();
   void inputDir_textChanged(const QString& text);
+  void acceptBtn_clicked();
 
 protected:
   void setInputDirectory(QString val);
