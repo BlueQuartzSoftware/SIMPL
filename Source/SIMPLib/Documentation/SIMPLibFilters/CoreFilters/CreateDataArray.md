@@ -51,13 +51,23 @@ Another example is if you want to create a floating point array where each tuple
 The number of components should be at least 1. Examples of _Number of Components_ would be 3 for an RGB Image, 1 for a gray scale image, 1 for a scalar array, 4 for a quaternions array, etc. All values of the array will be initialized to the user set value. The initialization value text box
 must have a user entry or the default value _0_ will be used.
 
+### Initialization Types ###
+| Initialization Type             |        Description       |
+|---------------------------------|--------------------------|
+| Manual | Initialize the array with a manual initialization value |
+| Random With Range | Initialize the array with random values in a range |
+| Indices | Initialize the array with indices.  Example: The contents of a size 5 array with a Starting Value of 3 would be [3, 4, 5, 6, 7].  The contents of a size 10 array with Starting Value of 0 would be [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] |
+
 ## Parameters ##
 
 | Name             | Type | Description |
 |------------------|------|-------------|
 | Scalar Type | Enumeration | Primitive data type for created array |
-| Number of Components | int32_t | The number of components that each tuple contains. Matrix are row major form within SIMPL|
-| Initialization Value | float | Initialization value for array |
+| Number of Components | int32_t | The number of components that each tuple contains. Matrix are row major form within SIMPL |
+| Initialization Type | Enumeration | The technique used to initialize the output array |
+| Initialization Value | float | Initialization value for array.  ONLY used when Initialization Type is set to Manual |
+| Initialization Range | 2 floats | Initialization range for array.  ONLY used when Initialization Type is set to Random With Range |
+| Starting Value | int | The starting value to use when initializing the array with indices.  ONLY used when Initialization Type is set to Indices |
 
 ## Required Geometry ##
 
