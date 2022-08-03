@@ -140,21 +140,25 @@ std::vector<T> createInitVector(AbstractFilter* filter, const QString& initializ
  * @param p The array that will be initialized
  */
 template <typename T>
-void initializeArrayWithInts(CreateDataArray* filter, IDataArray::Pointer outputArrayPtr, FPRangePair initializationRange)
+void initializeArrayWithInts(CreateDataArray* filter, IDataArray::Pointer outputArrayPtr)
 {
   std::vector<T> initValues = CDA::createInitVector<T>(filter, filter->getInitializationValue(), filter->getNumberOfComponents());
   typename DataArray<T>::Pointer array = std::dynamic_pointer_cast<DataArray<T>>(outputArrayPtr);
   size_t numTuples = array->getNumberOfTuples();
+  size_t numComponents = array->getNumberOfComponents();
 
   if(filter->getInitializationType() == CreateDataArray::Manual)
   {
+    // Manual Initialization
     for(size_t t = 0; t < numTuples; t++)
     {
       array->setTuple(t, initValues);
     }
   }
-  else
+  else if(filter->getInitializationType() == CreateDataArray::RandomWithRange)
   {
+    // Random With Range Initialization
+    FPRangePair initializationRange = filter->getInitializationRange();
     T rangeMin = static_cast<T>(initializationRange.first);
     T rangeMax = static_cast<T>(initializationRange.second);
 
@@ -168,6 +172,16 @@ void initializeArrayWithInts(CreateDataArray* filter, IDataArray::Pointer output
     {
       T value = static_cast<T>(distribution(generator));
       rawPointer[i] = value;
+    }
+  }
+  else
+  {
+    // Indices Initialization
+    int startingValue = filter->getStartingIndexValue();
+    for(size_t t = 0; t < numTuples; t++)
+    {
+      std::vector<T> vec(numComponents, t + startingValue);
+      array->setTuple(t, vec);
     }
   }
 }
@@ -184,19 +198,22 @@ void initializeArrayWithBool(CreateDataArray* filter, IDataArray::Pointer output
   std::vector<bool> initValues = CDA::createInitVector<bool>(filter, filter->getInitializationValue(), filter->getNumberOfComponents());
   DataArray<bool>::Pointer array = std::dynamic_pointer_cast<DataArray<bool>>(outputArrayPtr);
   size_t numTuples = array->getNumberOfTuples();
-  int32_t numComp = array->getNumberOfComponents();
+  int32_t numComponents = array->getNumberOfComponents();
+
   if(filter->getInitializationType() == CreateDataArray::Manual)
   {
+    // Manual Initialization
     for(size_t t = 0; t < numTuples; t++)
     {
-      for(int32_t c = 0; c < numComp; c++)
+      for(int32_t c = 0; c < numComponents; c++)
       {
         array->setComponent(t, c, initValues[c]);
       }
     }
   }
-  else
+  else if(filter->getInitializationType() == CreateDataArray::RandomWithRange)
   {
+    // Random With Range Initialization
     std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
     std::mt19937_64 generator(seed); // Standard mersenne_twister_engine seeded with milliseconds
     std::uniform_int_distribution<int32_t> distribution(0, 1);
@@ -216,6 +233,14 @@ void initializeArrayWithBool(CreateDataArray* filter, IDataArray::Pointer output
       }
     }
   }
+  else
+  {
+    // Indices Initialization
+    QString dataArrayName = filter->getNewArray().getDataArrayName();
+    QString ss = QObject::tr("%1: Initializing a boolean array with the Indices initialization option is not supported.").arg(dataArrayName);
+    filter->setErrorCondition(-4010, ss);
+    return;
+  }
 }
 
 /**
@@ -227,22 +252,25 @@ void initializeArrayWithBool(CreateDataArray* filter, IDataArray::Pointer output
  * @param p The array that will be initialized
  */
 template <typename T>
-void initializeArrayWithReals(CreateDataArray* filter, IDataArray::Pointer outputArrayPtr, FPRangePair initializationRange)
+void initializeArrayWithReals(CreateDataArray* filter, IDataArray::Pointer outputArrayPtr)
 {
-  std::vector<T> initValues = CDA::createInitVector<T>(filter, filter->getInitializationValue(), filter->getNumberOfComponents());
-
   typename DataArray<T>::Pointer array = std::dynamic_pointer_cast<DataArray<T>>(outputArrayPtr);
   size_t numTuples = array->getNumberOfTuples();
+  size_t numComponents = array->getNumberOfComponents();
 
   if(filter->getInitializationType() == CreateDataArray::Manual)
   {
+    // Manual Initialization
+    std::vector<T> initValues = CDA::createInitVector<T>(filter, filter->getInitializationValue(), filter->getNumberOfComponents());
     for(size_t t = 0; t < numTuples; t++)
     {
       array->setTuple(t, initValues);
     }
   }
-  else
+  else if(filter->getInitializationType() == CreateDataArray::RandomWithRange)
   {
+    // Random With Range Initialization
+    FPRangePair initializationRange = filter->getInitializationRange();
     size_t count = array->getSize();
     T* rawPointer = array->getPointer(0);
     T rangeMin = static_cast<T>(initializationRange.first);
@@ -256,6 +284,16 @@ void initializeArrayWithReals(CreateDataArray* filter, IDataArray::Pointer outpu
     {
       T value = distribution(generator);
       rawPointer[i] = value;
+    }
+  }
+  else
+  {
+    // Indices Initialization
+    int startingValue = filter->getStartingIndexValue();
+    for(size_t t = 0; t < numTuples; t++)
+    {
+      std::vector<T> vec(numComponents, t + startingValue);
+      array->setTuple(t, vec);
     }
   }
 }
@@ -294,10 +332,12 @@ void CreateDataArray::setupFilterParameters()
     std::vector<QString> choices;
     choices.push_back("Manual");
     choices.push_back("Random With Range");
+    choices.push_back("Indices");
     parameter->setChoices(choices);
     std::vector<QString> linkedProps;
     linkedProps.push_back("InitializationValue");
     linkedProps.push_back("InitializationRange");
+    linkedProps.push_back("StartingIndexValue");
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Category::Parameter);
@@ -305,6 +345,7 @@ void CreateDataArray::setupFilterParameters()
   }
   parameters.push_back(SIMPL_NEW_STRING_FP("Initialization Value", InitializationValue, FilterParameter::Category::Parameter, CreateDataArray, Manual));
   parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitializationRange, FilterParameter::Category::Parameter, CreateDataArray, RandomWithRange));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Starting Value", StartingIndexValue, FilterParameter::Category::Parameter, CreateDataArray, Indices));
   {
     DataArrayCreationFilterParameter::RequirementType req;
     parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Attribute Array", NewArray, FilterParameter::Category::CreatedArray, CreateDataArray, req));
@@ -368,7 +409,7 @@ void CreateDataArray::dataCheck()
   if(!getNewArray().isValid())
   {
     QString ss = QObject::tr("The Created DataArrayPath is invalid. Please select the Data Container, Attribute Matrix and set an output DataArray name.");
-    setErrorCondition(-8051, ss);
+    setErrorCondition(-8052, ss);
   }
   std::vector<size_t> cDims(1, getNumberOfComponents());
   if(getErrorCode() < 0)
@@ -377,53 +418,59 @@ void CreateDataArray::dataCheck()
   }
 
   // Create the data array and initialize it to a placeholder value
-  m_OutputArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromTypeEnum()(this, getNewArray(), cDims, static_cast<int>(getScalarType()), 0, DataArrayID);
-
   QString dataArrayName = getNewArray().getDataArrayName();
+  m_OutputArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromTypeEnum()(this, getNewArray(), cDims, static_cast<int>(getScalarType()), 0, DataArrayID);
+  if(nullptr == m_OutputArrayPtr.lock())
+  {
+    QString ss = QObject::tr("Unable to access data array '%1'.").arg(dataArrayName);
+    setErrorCondition(-8053, ss);
+  }
+
+  IDataArray::Pointer outputArrayShPtr = m_OutputArrayPtr.lock();
 
   if(m_ScalarType == SIMPL::ScalarTypes::Type::Int8)
   {
-    checkInitialization<int8_t>(dataArrayName); // check the initialization for that data type
+    checkInitialization<int8_t>(*outputArrayShPtr.get()); // check the initialization for that data type
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int16)
   {
-    checkInitialization<int16_t>(dataArrayName); // check the initialization for that data type
+    checkInitialization<int16_t>(*outputArrayShPtr.get()); // check the initialization for that data type
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int32)
   {
-    checkInitialization<int32_t>(dataArrayName); // check the initialization for that data type
+    checkInitialization<int32_t>(*outputArrayShPtr.get()); // check the initialization for that data type
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int64)
   {
-    checkInitialization<int64_t>(dataArrayName); // check the initialization for that data type
+    checkInitialization<int64_t>(*outputArrayShPtr.get()); // check the initialization for that data type
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt8)
   {
-    checkInitialization<uint8_t>(dataArrayName); // check the initialization for that data type
+    checkInitialization<uint8_t>(*outputArrayShPtr.get()); // check the initialization for that data type
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt16)
   {
-    checkInitialization<uint16_t>(dataArrayName); // check the initialization for that data type
+    checkInitialization<uint16_t>(*outputArrayShPtr.get()); // check the initialization for that data type
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt32)
   {
-    checkInitialization<uint32_t>(dataArrayName); // check the initialization for that data type
+    checkInitialization<uint32_t>(*outputArrayShPtr.get()); // check the initialization for that data type
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt64)
   {
-    checkInitialization<uint64_t>(dataArrayName); // check the initialization for that data type
+    checkInitialization<uint64_t>(*outputArrayShPtr.get()); // check the initialization for that data type
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Float)
   {
-    checkInitialization<float>(dataArrayName); // check the initialization for that data type
+    checkInitialization<float>(*outputArrayShPtr.get()); // check the initialization for that data type
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Double)
   {
-    checkInitialization<double>(dataArrayName); // check the initialization for that data type
+    checkInitialization<double>(*outputArrayShPtr.get()); // check the initialization for that data type
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Bool)
   {
-    checkInitialization<bool>(dataArrayName); // check the initialization for that data type
+    checkInitialization<bool>(*outputArrayShPtr.get()); // check the initialization for that data type
   }
 }
 
@@ -440,43 +487,43 @@ void CreateDataArray::execute()
 
   if(m_ScalarType == SIMPL::ScalarTypes::Type::Int8)
   {
-    CDA::initializeArrayWithInts<int8_t>(this, m_OutputArrayPtr.lock(), m_InitializationRange);
+    CDA::initializeArrayWithInts<int8_t>(this, m_OutputArrayPtr.lock());
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int16)
   {
-    CDA::initializeArrayWithInts<int16_t>(this, m_OutputArrayPtr.lock(), m_InitializationRange);
+    CDA::initializeArrayWithInts<int16_t>(this, m_OutputArrayPtr.lock());
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int32)
   {
-    CDA::initializeArrayWithInts<int32_t>(this, m_OutputArrayPtr.lock(), m_InitializationRange);
+    CDA::initializeArrayWithInts<int32_t>(this, m_OutputArrayPtr.lock());
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int64)
   {
-    CDA::initializeArrayWithInts<int64_t>(this, m_OutputArrayPtr.lock(), m_InitializationRange);
+    CDA::initializeArrayWithInts<int64_t>(this, m_OutputArrayPtr.lock());
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt8)
   {
-    CDA::initializeArrayWithInts<uint8_t>(this, m_OutputArrayPtr.lock(), m_InitializationRange);
+    CDA::initializeArrayWithInts<uint8_t>(this, m_OutputArrayPtr.lock());
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt16)
   {
-    CDA::initializeArrayWithInts<uint16_t>(this, m_OutputArrayPtr.lock(), m_InitializationRange);
+    CDA::initializeArrayWithInts<uint16_t>(this, m_OutputArrayPtr.lock());
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt32)
   {
-    CDA::initializeArrayWithInts<uint32_t>(this, m_OutputArrayPtr.lock(), m_InitializationRange);
+    CDA::initializeArrayWithInts<uint32_t>(this, m_OutputArrayPtr.lock());
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt64)
   {
-    CDA::initializeArrayWithInts<uint64_t>(this, m_OutputArrayPtr.lock(), m_InitializationRange);
+    CDA::initializeArrayWithInts<uint64_t>(this, m_OutputArrayPtr.lock());
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Float)
   {
-    CDA::initializeArrayWithReals<float>(this, m_OutputArrayPtr.lock(), m_InitializationRange);
+    CDA::initializeArrayWithReals<float>(this, m_OutputArrayPtr.lock());
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Double)
   {
-    CDA::initializeArrayWithReals<double>(this, m_OutputArrayPtr.lock(), m_InitializationRange);
+    CDA::initializeArrayWithReals<double>(this, m_OutputArrayPtr.lock());
   }
   else if(m_ScalarType == SIMPL::ScalarTypes::Type::Bool)
   {
@@ -488,8 +535,10 @@ void CreateDataArray::execute()
 //
 // -----------------------------------------------------------------------------
 template <typename T>
-void CreateDataArray::checkInitialization(QString dataArrayName)
+void CreateDataArray::checkInitialization(const IDataArray& dataArray)
 {
+  QString dataArrayName = dataArray.getName();
+
   if(m_InitializationType == Manual)
   {
     // This next part will just ignore the return as we are looking for the ability to actually convert all the inputs
@@ -533,6 +582,31 @@ void CreateDataArray::checkInitialization(QString dataArrayName)
     {
       QString ss = dataArrayName + ": The initialization range must have differing values";
       setErrorCondition(-4002, ss);
+      return;
+    }
+  }
+  else if(m_InitializationType == Indices)
+  {
+    if constexpr(std::is_same<T, bool>::value)
+    {
+      QString ss = QObject::tr("%1: Initializing a boolean array with the Indices initialization option is not supported.").arg(dataArrayName);
+      setErrorCondition(-4003, ss);
+      return;
+    }
+
+    if(m_StartingIndexValue < 0)
+    {
+      QString ss = QObject::tr("%1: The initialization starting value must be a positive number.").arg(dataArrayName);
+      setErrorCondition(-4004, ss);
+      return;
+    }
+
+    size_t tupleCount = dataArray.getNumberOfTuples();
+    if(tupleCount - 1 + m_StartingIndexValue > std::numeric_limits<T>::max())
+    {
+      QString ss = QObject::tr("%1: The largest value in the output array (%2) will be larger than the maximum allowed value (%3) for the chosen array type (%4).")
+                       .arg(dataArrayName, QString::number(tupleCount - 1 + m_StartingIndexValue), QString::number(std::numeric_limits<T>::max()), dataArray.getTypeAsString());
+      setErrorCondition(-4005, ss);
       return;
     }
   }
@@ -709,4 +783,16 @@ void CreateDataArray::setInitializationRange(const FPRangePair& value)
 FPRangePair CreateDataArray::getInitializationRange() const
 {
   return m_InitializationRange;
+}
+
+// -----------------------------------------------------------------------------
+void CreateDataArray::setStartingIndexValue(int value)
+{
+  m_StartingIndexValue = value;
+}
+
+// -----------------------------------------------------------------------------
+int CreateDataArray::getStartingIndexValue() const
+{
+  return m_StartingIndexValue;
 }
