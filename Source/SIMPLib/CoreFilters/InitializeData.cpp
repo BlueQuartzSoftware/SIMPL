@@ -255,6 +255,10 @@ void InitializeData::dataCheck()
     {
       checkInitialization<double>(p);
     }
+    else if(type == "bool")
+    {
+      checkInitialization<bool>(p);
+    }
 
     if(getErrorCode() < 0)
     {
@@ -294,6 +298,33 @@ void InitializeData::checkInitialization(IDataArray::Pointer p)
     if(min < static_cast<double>(std::numeric_limits<T>().lowest()) || max > static_cast<double>(std::numeric_limits<T>().max()))
     {
       QString ss = QObject::tr("%1: The initialization range can only be from %2 to %3").arg(arrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
+      setErrorCondition(-4001, ss);
+      return;
+    }
+    if(min == max)
+    {
+      QString ss = arrayName + ": The initialization range must have differing values";
+      setErrorCondition(-4002, ss);
+      return;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <>
+void InitializeData::checkInitialization<bool>(IDataArray::Pointer p)
+{
+  QString arrayName = p->getName();
+
+  if(m_InitType == RandomWithRange)
+  {
+    double min = m_InitRange.first;
+    double max = m_InitRange.second;
+    if(min > max)
+    {
+      QString ss = arrayName + ": Invalid initialization range.  Minimum value is larger than maximum value.";
       setErrorCondition(-4001, ss);
       return;
     }
@@ -376,6 +407,10 @@ void InitializeData::execute()
     {
       initializeArrayWithReals<double>(p, dims);
     }
+    else if(type == "bool")
+    {
+      initializeArrayWithBools(p, dims);
+    }
 
     delay(1); // Delay the execution by 1 second to avoid the exact same seedings for each array
   }
@@ -385,26 +420,33 @@ void InitializeData::execute()
 //
 // -----------------------------------------------------------------------------
 template <typename T>
-void InitializeData::initializeArrayWithInts(IDataArray::Pointer p, int64_t dims[3])
+std::pair<T, T> InitializeData::getConvertedRange()
 {
-  T rangeMin;
-  T rangeMax;
   if(m_InitType == RandomWithRange)
   {
-    rangeMin = m_InitRange.first;
-    rangeMax = m_InitRange.second;
+    return std::make_pair(static_cast<T>(m_InitRange.first), static_cast<T>(m_InitRange.second));
   }
-  else
-  {
-    rangeMin = std::numeric_limits<T>().min();
-    rangeMax = std::numeric_limits<T>().max();
-  }
+
+  return std::make_pair(std::numeric_limits<T>().min(), std::numeric_limits<T>().max());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename T>
+void InitializeData::initializeArrayWithInts(IDataArray::Pointer p, int64_t dims[3])
+{
+  std::pair<T, T> range = getConvertedRange<T>();
+  T rangeMin = range.first;
+  T rangeMax = range.second;
 
   std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
   std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
   std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
   generator.seed(seed);
-  std::uniform_int_distribution<> distribution(rangeMin, rangeMax);
+  std::uniform_int_distribution<T> distribution(rangeMin, rangeMax);
+
+  T manualValue = static_cast<T>(m_InitValue);
 
   for(int32_t k = m_ZMin; k < m_ZMax + 1; k++)
   {
@@ -416,8 +458,7 @@ void InitializeData::initializeArrayWithInts(IDataArray::Pointer p, int64_t dims
 
         if(m_InitType == Manual)
         {
-          T num = static_cast<T>(m_InitValue);
-          p->initializeTuple(index, &num);
+          p->initializeTuple(index, &manualValue);
         }
         else
         {
@@ -435,24 +476,17 @@ void InitializeData::initializeArrayWithInts(IDataArray::Pointer p, int64_t dims
 template <typename T>
 void InitializeData::initializeArrayWithReals(IDataArray::Pointer p, int64_t dims[3])
 {
-  T rangeMin;
-  T rangeMax;
-  if(m_InitType == RandomWithRange)
-  {
-    rangeMin = static_cast<T>(m_InitRange.first);
-    rangeMax = static_cast<T>(m_InitRange.second);
-  }
-  else
-  {
-    rangeMin = std::numeric_limits<T>().min();
-    rangeMax = std::numeric_limits<T>().max();
-  }
+  std::pair<T, T> range = getConvertedRange<T>();
+  T rangeMin = range.first;
+  T rangeMax = range.second;
 
   std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
   std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
   std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
   generator.seed(seed);
   std::uniform_real_distribution<T> distribution(rangeMin, rangeMax);
+
+  T manualValue = static_cast<T>(m_InitValue);
 
   for(int32_t k = m_ZMin; k < m_ZMax + 1; k++)
   {
@@ -464,13 +498,51 @@ void InitializeData::initializeArrayWithReals(IDataArray::Pointer p, int64_t dim
 
         if(m_InitType == Manual)
         {
-          T num = static_cast<T>(m_InitValue);
-          p->initializeTuple(index, &num);
+          p->initializeTuple(index, &manualValue);
         }
         else
         {
           T temp = distribution(generator);
           p->initializeTuple(index, &temp);
+        }
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void InitializeData::initializeArrayWithBools(IDataArray::Pointer p, int64_t dims[3])
+{
+  int8_t rangeMin = 0;
+  int8_t rangeMax = 1;
+
+  std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
+  std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
+  std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
+  generator.seed(seed);
+  std::uniform_int_distribution<int8_t> distribution(rangeMin, rangeMax);
+
+  bool manualValue = (m_InitValue != 0);
+
+  for(int32_t k = m_ZMin; k < m_ZMax + 1; k++)
+  {
+    for(int32_t j = m_YMin; j < m_YMax + 1; j++)
+    {
+      for(int32_t i = m_XMin; i < m_XMax + 1; i++)
+      {
+        size_t index = (k * dims[0] * dims[1]) + (j * dims[0]) + i;
+
+        if(m_InitType == Manual)
+        {
+          p->initializeTuple(index, &manualValue);
+        }
+        else
+        {
+          int8_t temp = distribution(generator);
+          bool boolTemp = (temp != 0);
+          p->initializeTuple(index, &boolTemp);
         }
       }
     }

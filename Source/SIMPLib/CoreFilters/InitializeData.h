@@ -322,6 +322,12 @@ private:
   };
 
   /**
+   * @brief getRange Gets the range, converted to the proper type
+   */
+  template <typename T>
+  std::pair<T, T> getConvertedRange();
+
+  /**
    * @brief initializeArrayWithInts Initializes the array p with integers, either from the
    * manual value entered in the filter, or with a random number.  This function does not
    * check that the template type actually is an integer, so it will most likely cause
@@ -345,11 +351,22 @@ private:
   void initializeArrayWithReals(IDataArrayShPtrType p, int64_t dims[3]);
 
   /**
+   * @brief initializeArrayWithBools Initializes the array p with booleans, either from the
+   * manual value entered in the filter, or with a random boolean value.
+   * @param p The array that will be initialized
+   * @param dims The dimensions of the array p
+   */
+  void initializeArrayWithBools(IDataArrayShPtrType p, int64_t dims[3]);
+
+  /**
    * @brief checkInitialization Checks that the chosen initialization value/range is inside
    * the bounds of the array type
    */
   template <typename T>
   void checkInitialization(IDataArrayShPtrType p);
+
+  template <>
+  void checkInitialization<bool>(IDataArrayShPtrType p);
 
 public:
   InitializeData(const InitializeData&) = delete;            // Copy Constructor Not Implemented
