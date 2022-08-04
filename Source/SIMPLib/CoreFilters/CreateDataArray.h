@@ -61,9 +61,9 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
   PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
   PYB11_PROPERTY(DataArrayPath NewArray READ getNewArray WRITE setNewArray)
   PYB11_PROPERTY(int InitializationType READ getInitializationType WRITE setInitializationType)
-  PYB11_PROPERTY(int StartingIndexValue READ getStartingIndexValue WRITE setStartingIndexValue)
   PYB11_PROPERTY(QString InitializationValue READ getInitializationValue WRITE setInitializationValue)
   PYB11_PROPERTY(FPRangePair InitializationRange READ getInitializationRange WRITE setInitializationRange)
+  PYB11_PROPERTY(int StartingIndexValue READ getStartingIndexValue WRITE setStartingIndexValue)
   PYB11_END_BINDINGS()
   // End Python bindings declarations
 
