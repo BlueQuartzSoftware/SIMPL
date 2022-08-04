@@ -409,33 +409,26 @@ void InitializeData::execute()
 //
 // -----------------------------------------------------------------------------
 template <typename T>
-std::pair<T, T> InitializeData::getConvertedRange()
-{
-  if(m_InitType == RandomWithRange)
-  {
-    return std::make_pair(static_cast<T>(m_InitRange.first), static_cast<T>(m_InitRange.second));
-  }
-
-  return std::make_pair(std::numeric_limits<T>().min(), std::numeric_limits<T>().max());
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
 void InitializeData::initializeArrayWithInts(IDataArray::Pointer p, int64_t dims[3])
 {
-  std::pair<T, T> range = getConvertedRange<T>();
-  T rangeMin = range.first;
-  T rangeMax = range.second;
+  T rangeMin;
+  T rangeMax;
+  if(m_InitType == RandomWithRange)
+  {
+    rangeMin = m_InitRange.first;
+    rangeMax = m_InitRange.second;
+  }
+  else
+  {
+    rangeMin = std::numeric_limits<T>().min();
+    rangeMax = std::numeric_limits<T>().max();
+  }
 
   std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
   std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
   std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
   generator.seed(seed);
-  std::uniform_int_distribution<T> distribution(rangeMin, rangeMax);
-
-  T manualValue = static_cast<T>(m_InitValue);
+  std::uniform_int_distribution<> distribution(rangeMin, rangeMax);
 
   for(int32_t k = m_ZMin; k < m_ZMax + 1; k++)
   {
@@ -447,7 +440,8 @@ void InitializeData::initializeArrayWithInts(IDataArray::Pointer p, int64_t dims
 
         if(m_InitType == Manual)
         {
-          p->initializeTuple(index, &manualValue);
+          T num = static_cast<T>(m_InitValue);
+          p->initializeTuple(index, &num);
         }
         else
         {
@@ -465,17 +459,24 @@ void InitializeData::initializeArrayWithInts(IDataArray::Pointer p, int64_t dims
 template <typename T>
 void InitializeData::initializeArrayWithReals(IDataArray::Pointer p, int64_t dims[3])
 {
-  std::pair<T, T> range = getConvertedRange<T>();
-  T rangeMin = range.first;
-  T rangeMax = range.second;
+  T rangeMin;
+  T rangeMax;
+  if(m_InitType == RandomWithRange)
+  {
+    rangeMin = static_cast<T>(m_InitRange.first);
+    rangeMax = static_cast<T>(m_InitRange.second);
+  }
+  else
+  {
+    rangeMin = std::numeric_limits<T>().min();
+    rangeMax = std::numeric_limits<T>().max();
+  }
 
   std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
   std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
   std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
   generator.seed(seed);
   std::uniform_real_distribution<T> distribution(rangeMin, rangeMax);
-
-  T manualValue = static_cast<T>(m_InitValue);
 
   for(int32_t k = m_ZMin; k < m_ZMax + 1; k++)
   {
@@ -487,7 +488,8 @@ void InitializeData::initializeArrayWithReals(IDataArray::Pointer p, int64_t dim
 
         if(m_InitType == Manual)
         {
-          p->initializeTuple(index, &manualValue);
+          T num = static_cast<T>(m_InitValue);
+          p->initializeTuple(index, &num);
         }
         else
         {
@@ -504,14 +506,14 @@ void InitializeData::initializeArrayWithReals(IDataArray::Pointer p, int64_t dim
 // -----------------------------------------------------------------------------
 void InitializeData::initializeArrayWithBools(IDataArray::Pointer p, int64_t dims[3])
 {
-  int8_t rangeMin = 0;
-  int8_t rangeMax = 1;
+  int rangeMin = 0;
+  int rangeMax = 1;
 
   std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
   std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
   std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
   generator.seed(seed);
-  std::uniform_int_distribution<int8_t> distribution(rangeMin, rangeMax);
+  std::uniform_int_distribution<> distribution(rangeMin, rangeMax);
 
   bool manualValue = (m_InitValue != 0);
 
@@ -529,7 +531,7 @@ void InitializeData::initializeArrayWithBools(IDataArray::Pointer p, int64_t dim
         }
         else
         {
-          int8_t temp = distribution(generator);
+          int temp = distribution(generator);
           bool boolTemp = (temp != 0);
           p->initializeTuple(index, &boolTemp);
         }

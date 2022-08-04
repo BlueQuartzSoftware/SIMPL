@@ -322,12 +322,6 @@ private:
   };
 
   /**
-   * @brief getRange Gets the range, converted to the proper type
-   */
-  template <typename T>
-  std::pair<T, T> getConvertedRange();
-
-  /**
    * @brief initializeArrayWithInts Initializes the array p with integers, either from the
    * manual value entered in the filter, or with a random number.  This function does not
    * check that the template type actually is an integer, so it will most likely cause
