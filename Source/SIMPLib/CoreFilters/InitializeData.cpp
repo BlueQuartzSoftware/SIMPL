@@ -36,6 +36,7 @@
 
 #include <chrono>
 #include <random>
+#include <thread>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QTextStream>
@@ -52,18 +53,6 @@
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void delay(int seconds)
-{
-  QTime dieTime = QTime::currentTime().addSecs(seconds);
-  while(QTime::currentTime() < dieTime)
-  {
-    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-  }
-}
 
 // -----------------------------------------------------------------------------
 //
@@ -412,7 +401,7 @@ void InitializeData::execute()
       initializeArrayWithBools(p, dims);
     }
 
-    delay(1); // Delay the execution by 1 second to avoid the exact same seedings for each array
+    std::this_thread::sleep_for(std::chrono::milliseconds(1)); // Delay the execution to avoid the exact same seedings for each array
   }
 }
 
