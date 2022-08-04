@@ -54,6 +54,82 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
+namespace Detail
+{
+/**
+ * @brief checkInitialization Checks that the chosen initialization value/range is inside
+ * the bounds of the array type
+ */
+template <typename T>
+void checkInitialization(InitializeData* filter, IDataArray::Pointer p)
+{
+  QString arrayName = p->getName();
+
+  if(filter->getInitType() == InitializeData::Manual)
+  {
+    double input = filter->getInitValue();
+    if(input < static_cast<double>(std::numeric_limits<T>().lowest()) || input > static_cast<double>(std::numeric_limits<T>().max()))
+    {
+      QString ss = QObject::tr("%1: The initialization value could not be converted. The valid range is %2 to %3").arg(arrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
+      filter->setErrorCondition(-4000, ss);
+      return;
+    }
+  }
+  else if(filter->getInitType() == InitializeData::RandomWithRange)
+  {
+    FPRangePair initRange = filter->getInitRange();
+    double min = initRange.first;
+    double max = initRange.second;
+    if(min > max)
+    {
+      QString ss = arrayName + ": Invalid initialization range.  Minimum value is larger than maximum value.";
+      filter->setErrorCondition(-5550, ss);
+      return;
+    }
+    if(min < static_cast<double>(std::numeric_limits<T>().lowest()) || max > static_cast<double>(std::numeric_limits<T>().max()))
+    {
+      QString ss = QObject::tr("%1: The initialization range can only be from %2 to %3").arg(arrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
+      filter->setErrorCondition(-4001, ss);
+      return;
+    }
+    if(min == max)
+    {
+      QString ss = arrayName + ": The initialization range must have differing values";
+      filter->setErrorCondition(-4002, ss);
+      return;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <>
+void checkInitialization<bool>(InitializeData* filter, IDataArray::Pointer p)
+{
+  QString arrayName = p->getName();
+
+  if(filter->getInitType() == InitializeData::RandomWithRange)
+  {
+    FPRangePair initRange = filter->getInitRange();
+    double min = initRange.first;
+    double max = initRange.second;
+    if(min > max)
+    {
+      QString ss = arrayName + ": Invalid initialization range.  Minimum value is larger than maximum value.";
+      filter->setErrorCondition(-4001, ss);
+      return;
+    }
+    if(min == max)
+    {
+      QString ss = arrayName + ": The initialization range must have differing values";
+      filter->setErrorCondition(-4002, ss);
+      return;
+    }
+  }
+}
+} // namespace Detail
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -262,68 +338,7 @@ void InitializeData::dataCheck()
 template <typename T>
 void InitializeData::checkInitialization(IDataArray::Pointer p)
 {
-  QString arrayName = p->getName();
-
-  if(m_InitType == Manual)
-  {
-    double input = m_InitValue;
-    if(input < static_cast<double>(std::numeric_limits<T>().lowest()) || input > static_cast<double>(std::numeric_limits<T>().max()))
-    {
-      QString ss = QObject::tr("%1: The initialization value could not be converted. The valid range is %2 to %3").arg(arrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-      setErrorCondition(-4000, ss);
-      return;
-    }
-  }
-  else if(m_InitType == RandomWithRange)
-  {
-    double min = m_InitRange.first;
-    double max = m_InitRange.second;
-    if(min > max)
-    {
-      QString ss = arrayName + ": Invalid initialization range.  Minimum value is larger than maximum value.";
-      setErrorCondition(-5550, ss);
-      return;
-    }
-    if(min < static_cast<double>(std::numeric_limits<T>().lowest()) || max > static_cast<double>(std::numeric_limits<T>().max()))
-    {
-      QString ss = QObject::tr("%1: The initialization range can only be from %2 to %3").arg(arrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-      setErrorCondition(-4001, ss);
-      return;
-    }
-    if(min == max)
-    {
-      QString ss = arrayName + ": The initialization range must have differing values";
-      setErrorCondition(-4002, ss);
-      return;
-    }
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <>
-void InitializeData::checkInitialization<bool>(IDataArray::Pointer p)
-{
-  QString arrayName = p->getName();
-
-  if(m_InitType == RandomWithRange)
-  {
-    double min = m_InitRange.first;
-    double max = m_InitRange.second;
-    if(min > max)
-    {
-      QString ss = arrayName + ": Invalid initialization range.  Minimum value is larger than maximum value.";
-      setErrorCondition(-4001, ss);
-      return;
-    }
-    if(min == max)
-    {
-      QString ss = arrayName + ": The initialization range must have differing values";
-      setErrorCondition(-4002, ss);
-      return;
-    }
-  }
+  Detail::checkInitialization<T>(this, p);
 }
 
 // -----------------------------------------------------------------------------

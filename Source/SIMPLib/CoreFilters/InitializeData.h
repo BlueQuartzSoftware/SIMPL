@@ -79,6 +79,13 @@ public:
   using WeakPointer = std::weak_ptr<Self>;
   using ConstWeakPointer = std::weak_ptr<const Self>;
 
+  enum InitChoices
+  {
+    Manual,
+    Random,
+    RandomWithRange
+  };
+
   /**
    * @brief Returns a NullPointer wrapped by a shared_ptr<>
    * @return
@@ -314,13 +321,6 @@ private:
   double m_InitValue = {0};
   FPRangePair m_InitRange = {};
 
-  enum InitChoices
-  {
-    Manual,
-    Random,
-    RandomWithRange
-  };
-
   /**
    * @brief initializeArrayWithInts Initializes the array p with integers, either from the
    * manual value entered in the filter, or with a random number.  This function does not
@@ -358,9 +358,6 @@ private:
    */
   template <typename T>
   void checkInitialization(IDataArrayShPtrType p);
-
-  template <>
-  void checkInitialization<bool>(IDataArrayShPtrType p);
 
 public:
   InitializeData(const InitializeData&) = delete;            // Copy Constructor Not Implemented
