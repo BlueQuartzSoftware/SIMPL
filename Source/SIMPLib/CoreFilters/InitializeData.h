@@ -69,6 +69,7 @@ class SIMPLib_EXPORT InitializeData : public AbstractFilter
   PYB11_PROPERTY(bool Random READ getRandom WRITE setRandom)
   PYB11_PROPERTY(double InitValue READ getInitValue WRITE setInitValue)
   PYB11_PROPERTY(FPRangePair InitRange READ getInitRange WRITE setInitRange)
+  PYB11_PROPERTY(bool InvertData READ getInvertData WRITE setInvertData)
   PYB11_END_BINDINGS()
   // End Python bindings declarations
 
@@ -242,6 +243,18 @@ public:
   Q_PROPERTY(FPRangePair InitRange READ getInitRange WRITE setInitRange)
 
   /**
+   * @brief Setter property for InvertData
+   */
+  void setInvertData(bool value);
+  /**
+   * @brief Getter property for InvertData
+   * @return Value of InvertData
+   */
+  bool getInvertData() const;
+
+  Q_PROPERTY(bool InvertData READ getInvertData WRITE setInvertData)
+
+  /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */
   QString getCompiledLibraryName() const override;
@@ -318,8 +331,15 @@ private:
   int m_ZMax = {0};
   int m_InitType = {Manual};
   bool m_Random = {};
+  bool m_InvertData = {false};
   double m_InitValue = {0};
   FPRangePair m_InitRange = {};
+
+  /**
+   * @brief getRange Gets the range needed for the uniform distribution.
+   */
+  template <typename T>
+  std::pair<T, T> getRange();
 
   /**
    * @brief initializeArrayWithInts Initializes the array p with integers, either from the
@@ -330,7 +350,7 @@ private:
    * @param dims The dimensions of the array p
    */
   template <typename T>
-  void initializeArrayWithInts(IDataArrayShPtrType p, int64_t dims[3]);
+  void initializeArrayWithInts(IDataArrayShPtrType p, std::array<int64_t, 3>& dims, std::array<int64_t, 6>& bounds);
 
   /**
    * @brief initializeArrayWithReals Initializes the array p with real numbers, either from the
@@ -342,7 +362,7 @@ private:
    * @param dims The dimensions of the array p
    */
   template <typename T>
-  void initializeArrayWithReals(IDataArrayShPtrType p, int64_t dims[3]);
+  void initializeArrayWithReals(IDataArrayShPtrType p, std::array<int64_t, 3>& dims, std::array<int64_t, 6>& bounds);
 
   /**
    * @brief initializeArrayWithBools Initializes the array p with booleans, either from the
@@ -350,7 +370,7 @@ private:
    * @param p The array that will be initialized
    * @param dims The dimensions of the array p
    */
-  void initializeArrayWithBools(IDataArrayShPtrType p, int64_t dims[3]);
+  void initializeArrayWithBools(IDataArrayShPtrType p, std::array<int64_t, 3>& dims, std::array<int64_t, 6>& bounds);
 
   /**
    * @brief checkInitialization Checks that the chosen initialization value/range is inside

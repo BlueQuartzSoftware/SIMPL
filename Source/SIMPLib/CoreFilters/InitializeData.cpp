@@ -47,6 +47,7 @@
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
@@ -56,6 +57,83 @@
 
 namespace Detail
 {
+template <typename T>
+class UniformDistribution
+{
+public:
+  virtual T generateValue() = 0;
+};
+
+template <typename T>
+class UniformIntDistribution : public UniformDistribution<T>
+{
+public:
+  UniformIntDistribution(T rangeMin, T rangeMax)
+  {
+    std::random_device randomDevice;               // Will be used to obtain a seed for the random number engine
+    m_Generator = std::mt19937_64(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
+    std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
+    m_Generator.seed(seed);
+    m_Distribution = std::uniform_int_distribution<T>(rangeMin, rangeMax);
+  }
+
+  T generateValue() override
+  {
+    return m_Distribution(m_Generator);
+  }
+
+private:
+  std::uniform_int_distribution<T> m_Distribution;
+  std::mt19937_64 m_Generator;
+};
+
+template <typename T>
+class UniformRealsDistribution : public UniformDistribution<T>
+{
+public:
+  UniformRealsDistribution(T rangeMin, T rangeMax)
+  {
+    std::random_device randomDevice;               // Will be used to obtain a seed for the random number engine
+    m_Generator = std::mt19937_64(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
+    std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
+    m_Generator.seed(seed);
+    m_Distribution = std::uniform_real_distribution<T>(rangeMin, rangeMax);
+  }
+
+  T generateValue() override
+  {
+    return m_Distribution(m_Generator);
+  }
+
+private:
+  std::uniform_real_distribution<T> m_Distribution;
+  std::mt19937_64 m_Generator;
+};
+
+template <typename T>
+class UniformBoolDistribution : public UniformDistribution<T>
+{
+public:
+  UniformBoolDistribution()
+  {
+    std::random_device randomDevice;               // Will be used to obtain a seed for the random number engine
+    m_Generator = std::mt19937_64(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
+    std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
+    m_Generator.seed(seed);
+    m_Distribution = std::uniform_int_distribution<int>(0, 1);
+  }
+
+  T generateValue() override
+  {
+    int temp = m_Distribution(m_Generator);
+    return (temp != 0);
+  }
+
+private:
+  std::uniform_int_distribution<int> m_Distribution;
+  std::mt19937_64 m_Generator;
+};
+
 /**
  * @brief checkInitialization Checks that the chosen initialization value/range is inside
  * the bounds of the array type
@@ -128,6 +206,54 @@ void checkInitialization<bool>(InitializeData* filter, IDataArray::Pointer p)
     }
   }
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool isPointInBounds(int64_t i, int64_t j, int64_t k, const std::array<int64_t, 6>& bounds)
+{
+  return (i >= bounds[0] && i <= bounds[1] && j >= bounds[2] && j <= bounds[3] && k >= bounds[4] && k <= bounds[5]);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename T>
+void initializeArray(IDataArray::Pointer p, const std::array<int64_t, 3>& dims, const std::array<int64_t, 6>& bounds, Detail::UniformDistribution<T>& distribution, T manualValue,
+                     InitializeData::InitChoices initType, bool invertData)
+{
+  std::array<int64_t, 6> searchingBounds = bounds;
+  if(invertData)
+  {
+    searchingBounds = {0, dims[0] - 1, 0, dims[1] - 1, 0, dims[2] - 1};
+  }
+
+  for(int64_t k = searchingBounds[4]; k <= searchingBounds[5]; k++)
+  {
+    for(int64_t j = searchingBounds[2]; j <= searchingBounds[3]; j++)
+    {
+      for(int64_t i = searchingBounds[0]; i <= searchingBounds[1]; i++)
+      {
+        if(invertData && isPointInBounds(i, j, k, bounds))
+        {
+          continue;
+        }
+
+        size_t index = (k * dims[0] * dims[1]) + (j * dims[0]) + i;
+
+        if(initType == InitializeData::Manual)
+        {
+          p->initializeTuple(index, &manualValue);
+        }
+        else
+        {
+          T value = distribution.generateValue();
+          p->initializeTuple(index, &value);
+        }
+      }
+    }
+  }
+}
 } // namespace Detail
 
 // -----------------------------------------------------------------------------
@@ -184,6 +310,7 @@ void InitializeData::setupFilterParameters()
   }
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Initialization Value", InitValue, FilterParameter::Category::Parameter, InitializeData, Manual));
   parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitRange, FilterParameter::Category::Parameter, InitializeData, RandomWithRange));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Invert", InvertData, FilterParameter::Category::Parameter, InitializeData));
   setFilterParameters(parameters);
 }
 
@@ -357,11 +484,13 @@ void InitializeData::execute()
 
   SizeVec3Type udims = m->getGeometryAs<ImageGeom>()->getDimensions();
 
-  int64_t dims[3] = {
+  std::array<int64_t, 3> dims = {
       static_cast<int64_t>(udims[0]),
       static_cast<int64_t>(udims[1]),
       static_cast<int64_t>(udims[2]),
   };
+
+  std::array<int64_t, 6> bounds = {m_XMin, m_XMax, m_YMin, m_YMax, m_ZMin, m_ZMax};
 
   QString attrMatName = attributeMatrixPath.getAttributeMatrixName();
   std::vector<QString> voxelArrayNames = DataArrayPath::GetDataArrayNames(m_CellAttributeMatrixPaths);
@@ -373,47 +502,47 @@ void InitializeData::execute()
     QString type = p->getTypeAsString();
     if(type == "int8_t")
     {
-      initializeArrayWithInts<int8_t>(p, dims);
+      initializeArrayWithInts<int8_t>(p, dims, bounds);
     }
     else if(type == "int16_t")
     {
-      initializeArrayWithInts<int16_t>(p, dims);
+      initializeArrayWithInts<int16_t>(p, dims, bounds);
     }
     else if(type == "int32_t")
     {
-      initializeArrayWithInts<int32_t>(p, dims);
+      initializeArrayWithInts<int32_t>(p, dims, bounds);
     }
     else if(type == "int64_t")
     {
-      initializeArrayWithInts<int64_t>(p, dims);
+      initializeArrayWithInts<int64_t>(p, dims, bounds);
     }
     else if(type == "uint8_t")
     {
-      initializeArrayWithInts<uint8_t>(p, dims);
+      initializeArrayWithInts<uint8_t>(p, dims, bounds);
     }
     else if(type == "uint16_t")
     {
-      initializeArrayWithInts<uint16_t>(p, dims);
+      initializeArrayWithInts<uint16_t>(p, dims, bounds);
     }
     else if(type == "uint32_t")
     {
-      initializeArrayWithInts<uint32_t>(p, dims);
+      initializeArrayWithInts<uint32_t>(p, dims, bounds);
     }
     else if(type == "uint64_t")
     {
-      initializeArrayWithInts<uint64_t>(p, dims);
+      initializeArrayWithInts<uint64_t>(p, dims, bounds);
     }
     else if(type == "float")
     {
-      initializeArrayWithReals<float>(p, dims);
+      initializeArrayWithReals<float>(p, dims, bounds);
     }
     else if(type == "double")
     {
-      initializeArrayWithReals<double>(p, dims);
+      initializeArrayWithReals<double>(p, dims, bounds);
     }
     else if(type == "bool")
     {
-      initializeArrayWithBools(p, dims);
+      initializeArrayWithBools(p, dims, bounds);
     }
 
     std::this_thread::sleep_for(std::chrono::milliseconds(1)); // Delay the execution to avoid the exact same seedings for each array
@@ -424,135 +553,47 @@ void InitializeData::execute()
 //
 // -----------------------------------------------------------------------------
 template <typename T>
-void InitializeData::initializeArrayWithInts(IDataArray::Pointer p, int64_t dims[3])
+void InitializeData::initializeArrayWithInts(IDataArray::Pointer p, std::array<int64_t, 3>& dims, std::array<int64_t, 6>& bounds)
 {
-  T rangeMin;
-  T rangeMax;
-  if(m_InitType == RandomWithRange)
-  {
-    rangeMin = m_InitRange.first;
-    rangeMax = m_InitRange.second;
-  }
-  else
-  {
-    rangeMin = std::numeric_limits<T>().min();
-    rangeMax = std::numeric_limits<T>().max();
-  }
-
-  std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
-  std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
-  std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-  generator.seed(seed);
-  std::uniform_int_distribution<> distribution(rangeMin, rangeMax);
-
-  for(int32_t k = m_ZMin; k < m_ZMax + 1; k++)
-  {
-    for(int32_t j = m_YMin; j < m_YMax + 1; j++)
-    {
-      for(int32_t i = m_XMin; i < m_XMax + 1; i++)
-      {
-        size_t index = (k * dims[0] * dims[1]) + (j * dims[0]) + i;
-
-        if(m_InitType == Manual)
-        {
-          T num = static_cast<T>(m_InitValue);
-          p->initializeTuple(index, &num);
-        }
-        else
-        {
-          T temp = distribution(generator);
-          p->initializeTuple(index, &temp);
-        }
-      }
-    }
-  }
+  std::pair<T, T> range = getRange<T>();
+  Detail::UniformIntDistribution<T> distribution(range.first, range.second);
+  T manualValue = static_cast<T>(m_InitValue);
+  Detail::initializeArray(p, dims, bounds, distribution, manualValue, static_cast<InitializeData::InitChoices>(m_InitType), m_InvertData);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 template <typename T>
-void InitializeData::initializeArrayWithReals(IDataArray::Pointer p, int64_t dims[3])
+void InitializeData::initializeArrayWithReals(IDataArray::Pointer p, std::array<int64_t, 3>& dims, std::array<int64_t, 6>& bounds)
 {
-  T rangeMin;
-  T rangeMax;
-  if(m_InitType == RandomWithRange)
-  {
-    rangeMin = static_cast<T>(m_InitRange.first);
-    rangeMax = static_cast<T>(m_InitRange.second);
-  }
-  else
-  {
-    rangeMin = std::numeric_limits<T>().min();
-    rangeMax = std::numeric_limits<T>().max();
-  }
-
-  std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
-  std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
-  std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-  generator.seed(seed);
-  std::uniform_real_distribution<T> distribution(rangeMin, rangeMax);
-
-  for(int32_t k = m_ZMin; k < m_ZMax + 1; k++)
-  {
-    for(int32_t j = m_YMin; j < m_YMax + 1; j++)
-    {
-      for(int32_t i = m_XMin; i < m_XMax + 1; i++)
-      {
-        size_t index = (k * dims[0] * dims[1]) + (j * dims[0]) + i;
-
-        if(m_InitType == Manual)
-        {
-          T num = static_cast<T>(m_InitValue);
-          p->initializeTuple(index, &num);
-        }
-        else
-        {
-          T temp = distribution(generator);
-          p->initializeTuple(index, &temp);
-        }
-      }
-    }
-  }
+  std::pair<T, T> range = getRange<T>();
+  Detail::UniformRealsDistribution<T> distribution(range.first, range.second);
+  T manualValue = static_cast<T>(m_InitValue);
+  Detail::initializeArray(p, dims, bounds, distribution, manualValue, static_cast<InitializeData::InitChoices>(m_InitType), m_InvertData);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InitializeData::initializeArrayWithBools(IDataArray::Pointer p, int64_t dims[3])
+void InitializeData::initializeArrayWithBools(IDataArray::Pointer p, std::array<int64_t, 3>& dims, std::array<int64_t, 6>& bounds)
 {
-  int rangeMin = 0;
-  int rangeMax = 1;
-
-  std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
-  std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
-  std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-  generator.seed(seed);
-  std::uniform_int_distribution<> distribution(rangeMin, rangeMax);
-
+  Detail::UniformBoolDistribution<bool> distribution;
   bool manualValue = (m_InitValue != 0);
+  Detail::initializeArray(p, dims, bounds, distribution, manualValue, static_cast<InitializeData::InitChoices>(m_InitType), m_InvertData);
+}
 
-  for(int32_t k = m_ZMin; k < m_ZMax + 1; k++)
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename T>
+std::pair<T, T> InitializeData::getRange()
+{
+  if(m_InitType == RandomWithRange)
   {
-    for(int32_t j = m_YMin; j < m_YMax + 1; j++)
-    {
-      for(int32_t i = m_XMin; i < m_XMax + 1; i++)
-      {
-        size_t index = (k * dims[0] * dims[1]) + (j * dims[0]) + i;
-
-        if(m_InitType == Manual)
-        {
-          p->initializeTuple(index, &manualValue);
-        }
-        else
-        {
-          int temp = distribution(generator);
-          bool boolTemp = (temp != 0);
-          p->initializeTuple(index, &boolTemp);
-        }
-      }
-    }
+    return m_InitRange;
   }
+  return std::make_pair(std::numeric_limits<T>().min(), std::numeric_limits<T>().max());
 }
 
 // -----------------------------------------------------------------------------
@@ -785,4 +826,16 @@ void InitializeData::setInitRange(const FPRangePair& value)
 FPRangePair InitializeData::getInitRange() const
 {
   return m_InitRange;
+}
+
+// -----------------------------------------------------------------------------
+void InitializeData::setInvertData(bool value)
+{
+  m_InvertData = value;
+}
+
+// -----------------------------------------------------------------------------
+bool InitializeData::getInvertData() const
+{
+  return m_InvertData;
 }
