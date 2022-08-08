@@ -420,10 +420,16 @@ void CreateDataArray::dataCheck()
   // Create the data array and initialize it to a placeholder value
   QString dataArrayName = getNewArray().getDataArrayName();
   m_OutputArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromTypeEnum()(this, getNewArray(), cDims, static_cast<int>(getScalarType()), 0, DataArrayID);
+  if(getErrorCode() < 0)
+  {
+    return;
+  }
+
   if(nullptr == m_OutputArrayPtr.lock())
   {
     QString ss = QObject::tr("Unable to access data array '%1'.").arg(dataArrayName);
     setErrorCondition(-8053, ss);
+    return;
   }
 
   IDataArray::Pointer outputArrayShPtr = m_OutputArrayPtr.lock();
