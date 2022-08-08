@@ -336,43 +336,6 @@ private:
   FPRangePair m_InitRange = {};
 
   /**
-   * @brief getRange Gets the range needed for the uniform distribution.
-   */
-  template <typename T>
-  std::pair<T, T> getRange();
-
-  /**
-   * @brief initializeArrayWithInts Initializes the array p with integers, either from the
-   * manual value entered in the filter, or with a random number.  This function does not
-   * check that the template type actually is an integer, so it will most likely cause
-   * unexpected results when passing anything other than an integer as a template parameter.
-   * @param p The array that will be initialized
-   * @param dims The dimensions of the array p
-   */
-  template <typename T>
-  void initializeArrayWithInts(IDataArrayShPtrType p, std::array<int64_t, 3>& dims, std::array<int64_t, 6>& bounds);
-
-  /**
-   * @brief initializeArrayWithReals Initializes the array p with real numbers, either from the
-   * manual value entered in the filter, or with a random number.  This function does not
-   * check that the template type actually is a non-integer, so it will most likely cause
-   * unexpected results when passing anything other than a float or double as a template
-   * parameter.
-   * @param p The array that will be initialized
-   * @param dims The dimensions of the array p
-   */
-  template <typename T>
-  void initializeArrayWithReals(IDataArrayShPtrType p, std::array<int64_t, 3>& dims, std::array<int64_t, 6>& bounds);
-
-  /**
-   * @brief initializeArrayWithBools Initializes the array p with booleans, either from the
-   * manual value entered in the filter, or with a random boolean value.
-   * @param p The array that will be initialized
-   * @param dims The dimensions of the array p
-   */
-  void initializeArrayWithBools(IDataArrayShPtrType p, std::array<int64_t, 3>& dims, std::array<int64_t, 6>& bounds);
-
-  /**
    * @brief checkInitialization Checks that the chosen initialization value/range is inside
    * the bounds of the array type
    */
