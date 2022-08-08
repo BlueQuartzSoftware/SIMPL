@@ -62,7 +62,7 @@ public:
     m_Generator = std::mt19937_64(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
     std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
     m_Generator.seed(seed);
-    m_Distribution = std::uniform_int_distribution<T>(rangeMin, rangeMax);
+    m_Distribution = std::uniform_int_distribution<>(rangeMin, rangeMax);
   }
 
   T generateValue() override
@@ -71,7 +71,7 @@ public:
   }
 
 private:
-  std::uniform_int_distribution<T> m_Distribution;
+  std::uniform_int_distribution<> m_Distribution;
   std::mt19937_64 m_Generator;
 };
 
@@ -108,7 +108,7 @@ public:
     m_Generator = std::mt19937_64(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
     std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
     m_Generator.seed(seed);
-    m_Distribution = std::uniform_int_distribution<int>(0, 1);
+    m_Distribution = std::uniform_int_distribution<>(0, 1);
   }
 
   T generateValue() override
@@ -118,7 +118,7 @@ public:
   }
 
 private:
-  std::uniform_int_distribution<int> m_Distribution;
+  std::uniform_int_distribution<> m_Distribution;
   std::mt19937_64 m_Generator;
 };
 
