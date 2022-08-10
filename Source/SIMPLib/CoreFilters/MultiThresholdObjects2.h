@@ -44,6 +44,9 @@
 #include "SIMPLib/Filtering/ComparisonSet.h"
 #include "SIMPLib/Filtering/ComparisonValue.h"
 
+class IDataArray;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
+
 /**
  * @brief The MultiThresholdObjects2 class. See [Filter documentation](@ref multithresholdobjects2) for details.
  */
@@ -58,6 +61,7 @@ class SIMPLib_EXPORT MultiThresholdObjects2 : public AbstractFilter
   PYB11_FILTER_NEW_MACRO(MultiThresholdObjects2)
   PYB11_PROPERTY(QString DestinationArrayName READ getDestinationArrayName WRITE setDestinationArrayName)
   PYB11_PROPERTY(ComparisonInputsAdvanced SelectedThresholds READ getSelectedThresholds WRITE setSelectedThresholds)
+  PYB11_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)
   PYB11_END_BINDINGS()
   // End Python bindings declarations
 
@@ -105,6 +109,18 @@ public:
   ComparisonInputsAdvanced getSelectedThresholds() const;
 
   Q_PROPERTY(ComparisonInputsAdvanced SelectedThresholds READ getSelectedThresholds WRITE setSelectedThresholds)
+
+  /**
+   * @brief Setter property for ScalarType
+   */
+  void setScalarType(SIMPL::ScalarTypes::Type value);
+  /**
+   * @brief Getter property for ScalarType
+   * @return Value of ScalarType
+   */
+  SIMPL::ScalarTypes::Type getScalarType() const;
+
+  Q_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -221,8 +237,8 @@ protected:
   void thresholdValue(ComparisonValue::Pointer comparisonValue, BoolArrayType::Pointer& inputThreshold, int32_t& err, bool replaceInput = false, bool inverse = false);
 
 private:
-  std::weak_ptr<DataArray<bool>> m_DestinationPtr;
-  bool* m_Destination = nullptr;
+  IDataArrayWkPtrType m_DestinationPtr;
+  SIMPL::ScalarTypes::Type m_ScalarType = {SIMPL::ScalarTypes::Type::Bool};
 
   QString m_DestinationArrayName = {SIMPL::GeneralData::Mask};
   ComparisonInputsAdvanced m_SelectedThresholds = {};

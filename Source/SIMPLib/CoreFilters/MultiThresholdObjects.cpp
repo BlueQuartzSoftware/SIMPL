@@ -38,10 +38,12 @@
 
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ComparisonSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/ScalarTypeFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Filtering/ThresholdFilterHelper.h"
@@ -50,6 +52,34 @@ enum createdPathID : RenameDataPath::DataID_t
 {
   ThresholdArrayID = 1
 };
+
+namespace Detail
+{
+template <typename T>
+void updateDestinationArray(const BoolArrayType& thresholdArray, IDataArray::Pointer iDestinationArray)
+{
+  typename DataArray<T>::Pointer destinationArray = std::dynamic_pointer_cast<DataArray<T>>(iDestinationArray);
+  size_t thresholdSize = thresholdArray.getNumberOfTuples();
+  T* dest = destinationArray->getPointer(0);
+
+  for(int64_t p = 0; p < thresholdSize; p++)
+  {
+    if constexpr(std::is_same<T, bool>::value)
+    {
+      // Boolean case
+      if(!dest[p] || !thresholdArray[p])
+      {
+        dest[p] = false;
+      }
+    }
+    else if(dest[p] == static_cast<T>(0) || !thresholdArray[p])
+    {
+      // Non-boolean case
+      dest[p] = static_cast<T>(0);
+    }
+  }
+}
+} // namespace Detail
 
 // -----------------------------------------------------------------------------
 //
@@ -78,6 +108,7 @@ void MultiThresholdObjects::setupFilterParameters()
     parameter->setGetterCallback(SIMPL_BIND_GETTER(MultiThresholdObjects, this, SelectedThresholds));
     parameters.push_back(parameter);
   }
+  parameters.push_back(SIMPL_NEW_SCALARTYPE_FP("Output Scalar Type", ScalarType, FilterParameter::Category::Parameter, MultiThresholdObjects));
   parameters.push_back(SIMPL_NEW_STRING_FP("Output Attribute Array", DestinationArrayName, FilterParameter::Category::CreatedArray, MultiThresholdObjects));
   setFilterParameters(parameters);
 }
@@ -141,11 +172,12 @@ void MultiThresholdObjects::dataCheck()
     ComparisonInput_t comp = m_SelectedThresholds[0];
     std::vector<size_t> cDims(1, 1);
     DataArrayPath tempPath(comp.dataContainerName, comp.attributeMatrixName, getDestinationArrayName());
-    m_DestinationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>>(this, tempPath, true, cDims, "", ThresholdArrayID);
-    if(nullptr != m_DestinationPtr.lock())
+
+    m_DestinationPtr = TemplateHelpers::CreateNonPrereqArrayFromTypeEnum()(this, tempPath, cDims, static_cast<int>(getScalarType()), 1, ThresholdArrayID);
+    if(getErrorCode() < 0)
     {
-      m_Destination = m_DestinationPtr.lock()->getPointer(0);
-    } /* Now assign the raw pointer to data from the DataArray<T> object */
+      return;
+    }
 
     // Do not allow non-scalar arrays
     for(size_t i = 0; i < m_SelectedThresholds.size(); ++i)
@@ -190,54 +222,78 @@ void MultiThresholdObjects::execute()
 
   DataContainerArray::Pointer dca = getDataContainerArray();
   DataContainer::Pointer m = dca->getDataContainer(dcName);
+  AttributeMatrix::Pointer am = m->getAttributeMatrix(amName);
 
-  // Prime our output array with the result of the first comparison
+  // Get the total number of tuples, create and initialize an array to use for these results
+  int64_t totalTuples = static_cast<int64_t>(am->getNumberOfTuples());
+
+  // At least one threshold value is required
+  if(m_SelectedThresholds.size() == 0)
   {
-    ThresholdFilterHelper filter(static_cast<SIMPL::Comparison::Enumeration>(comp_0.compOperator), comp_0.compValue, m_DestinationPtr.lock().get());
-    // Run the first threshold and store the results in our output array
-    int32_t err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(comp_0.attributeArrayName), m_DestinationPtr.lock().get());
-    if(err < 0)
-    {
-      DataArrayPath tempPath(comp_0.dataContainerName, comp_0.attributeMatrixName, comp_0.attributeArrayName);
-      QString ss = QObject::tr("Error Executing threshold filter on first array. The path is %1").arg(tempPath.serialize());
-      setErrorCondition(-13001, ss);
-      return;
-    }
+    QString ss = QObject::tr("Error Executing threshold filter. There are no specified values to threshold against");
+    setErrorCondition(-13001, ss);
+    return;
   }
 
-  if(m_SelectedThresholds.size() > 1)
+  // Loop on the Comparison objects updating our final result array as we go
+  for(int32_t i = 0; i < m_SelectedThresholds.size(); ++i)
   {
-    // Get the total number of tuples, create and initialize an array to use for these results
-    int64_t totalTuples = static_cast<int64_t>(m->getAttributeMatrix(amName)->getNumberOfTuples());
-    BoolArrayType::Pointer currentArrayPtr = BoolArrayType::CreateArray(totalTuples, std::string("_INTERNAL_USE_ONLY_TEMP"), true);
+    // Create and initialize an array to use for these results
+    BoolArrayType::Pointer thresholdArrayPtr = BoolArrayType::CreateArray(totalTuples, std::string("_INTERNAL_USE_ONLY_TEMP"), true);
+    // Initialize with False
+    thresholdArrayPtr->initializeWithZeros();
 
-    // Loop on the remaining Comparison objects updating our final result array as we go
-    for(int32_t i = 1; i < m_SelectedThresholds.size(); ++i)
+    ComparisonInput_t& compRef = m_SelectedThresholds[i];
+
+    ThresholdFilterHelper filter(static_cast<SIMPL::Comparison::Enumeration>(compRef.compOperator), compRef.compValue, thresholdArrayPtr.get());
+
+    int32_t err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(compRef.attributeArrayName), thresholdArrayPtr.get());
+    if(err < 0)
     {
-      // Initialize the array to false
-      currentArrayPtr->initializeWithZeros();
-      // Get the pointer to the front of the array. Raw Pointers = fast access = NO Bounds Checking!!!
-      bool* currentArray = currentArrayPtr->getPointer(0);
+      DataArrayPath tempPath(compRef.dataContainerName, compRef.attributeMatrixName, compRef.attributeArrayName);
+      QString ss = QObject::tr("Error Executing threshold filter on array. The path is %1").arg(tempPath.serialize());
+      setErrorCondition(-13002, ss);
+      return;
+    }
 
-      ComparisonInput_t& compRef = m_SelectedThresholds[i];
-
-      ThresholdFilterHelper filter(static_cast<SIMPL::Comparison::Enumeration>(compRef.compOperator), compRef.compValue, currentArrayPtr.get());
-
-      int32_t err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(compRef.attributeArrayName), currentArrayPtr.get());
-      if(err < 0)
-      {
-        DataArrayPath tempPath(compRef.dataContainerName, compRef.attributeMatrixName, compRef.attributeArrayName);
-        QString ss = QObject::tr("Error Executing threshold filter on array. The path is %1").arg(tempPath.serialize());
-        setErrorCondition(-13002, ss);
-        return;
-      }
-      for(int64_t p = 0; p < totalTuples; ++p)
-      {
-        if(!m_Destination[p] || !currentArray[p])
-        {
-          m_Destination[p] = false;
-        }
-      }
+    switch(m_ScalarType)
+    {
+    case SIMPL::ScalarTypes::Type::Int8:
+      Detail::updateDestinationArray<int8_t>(*thresholdArrayPtr, m_DestinationPtr.lock());
+      break;
+    case SIMPL::ScalarTypes::Type::Int16:
+      Detail::updateDestinationArray<int16_t>(*thresholdArrayPtr, m_DestinationPtr.lock());
+      break;
+    case SIMPL::ScalarTypes::Type::Int32:
+      Detail::updateDestinationArray<int32_t>(*thresholdArrayPtr, m_DestinationPtr.lock());
+      break;
+    case SIMPL::ScalarTypes::Type::Int64:
+      Detail::updateDestinationArray<int64_t>(*thresholdArrayPtr, m_DestinationPtr.lock());
+      break;
+    case SIMPL::ScalarTypes::Type::UInt8:
+      Detail::updateDestinationArray<uint8_t>(*thresholdArrayPtr, m_DestinationPtr.lock());
+      break;
+    case SIMPL::ScalarTypes::Type::UInt16:
+      Detail::updateDestinationArray<uint16_t>(*thresholdArrayPtr, m_DestinationPtr.lock());
+      break;
+    case SIMPL::ScalarTypes::Type::UInt32:
+      Detail::updateDestinationArray<uint32_t>(*thresholdArrayPtr, m_DestinationPtr.lock());
+      break;
+    case SIMPL::ScalarTypes::Type::UInt64:
+      Detail::updateDestinationArray<uint64_t>(*thresholdArrayPtr, m_DestinationPtr.lock());
+      break;
+    case SIMPL::ScalarTypes::Type::Float:
+      Detail::updateDestinationArray<float>(*thresholdArrayPtr, m_DestinationPtr.lock());
+      break;
+    case SIMPL::ScalarTypes::Type::Double:
+      Detail::updateDestinationArray<double>(*thresholdArrayPtr, m_DestinationPtr.lock());
+      break;
+    case SIMPL::ScalarTypes::Type::Bool:
+      Detail::updateDestinationArray<bool>(*thresholdArrayPtr, m_DestinationPtr.lock());
+      break;
+    case SIMPL::ScalarTypes::Type::SizeT:
+      Detail::updateDestinationArray<size_t>(*thresholdArrayPtr, m_DestinationPtr.lock());
+      break;
     }
   }
 }
@@ -364,4 +420,16 @@ void MultiThresholdObjects::setSelectedThresholds(const ComparisonInputs& value)
 ComparisonInputs MultiThresholdObjects::getSelectedThresholds() const
 {
   return m_SelectedThresholds;
+}
+
+// -----------------------------------------------------------------------------
+void MultiThresholdObjects::setScalarType(SIMPL::ScalarTypes::Type value)
+{
+  m_ScalarType = value;
+}
+
+// -----------------------------------------------------------------------------
+SIMPL::ScalarTypes::Type MultiThresholdObjects::getScalarType() const
+{
+  return m_ScalarType;
 }
