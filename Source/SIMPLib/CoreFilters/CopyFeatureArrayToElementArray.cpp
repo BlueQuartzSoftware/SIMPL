@@ -220,7 +220,7 @@ void CopyFeatureArrayToElementArray::execute()
 
   if(largestFeature < (numFeatures - 1))
   {
-    QString ss = QObject::tr("The number of Features in the InArray array (%1) is not less than the largest Feature Id in the FeatureIds array").arg(numFeatures);
+    QString ss = QObject::tr("The number of Features in the InArray array (%1) is greater than the largest Feature Id in the FeatureIds array").arg(numFeatures);
     setErrorCondition(-5555, ss);
     return;
   }
