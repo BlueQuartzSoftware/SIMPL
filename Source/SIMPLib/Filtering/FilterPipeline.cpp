@@ -36,6 +36,7 @@
 #include "FilterPipeline.h"
 
 #include <QtCore/QTextStream>
+#include <QtCore/QDateTime>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
@@ -57,7 +58,12 @@
 #include "SIMPLib/Utilities/StringOperations.h"
 
 #define RENAME_ENABLED 1
-
+namespace {
+QString CreateDateTimeStamp()
+{
+  return QDateTime::currentDateTime().toString("yyyy:MM:dd HH:mm:ss");
+}
+}
 /**
  * @brief This message handler is used by FilterPipeline to re-emit filter progress messages as pipeline progress messages
  */
@@ -892,7 +898,7 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
   for(const auto& filt : m_Pipeline)
   {
     int filtIndex = filt->getPipelineIndex();
-    QString ss = QObject::tr("[%1/%2] %3").arg(filtIndex + 1).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
+    QString ss = QObject::tr("[%4] [%1/%2] %3").arg(filtIndex + 1).arg(m_Pipeline.size()).arg(filt->getHumanLabel()).arg(::CreateDateTimeStamp());
     notifyStatusMessage(ss);
 
     Q_EMIT filt->filterInProgress(filt.get());
@@ -910,7 +916,7 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
       err = filt->getErrorCode();
       if(err < 0)
       {
-        ss = QObject::tr("[%1/%2] %3 caused an error during execution.").arg(filtIndex + 1).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
+        ss = QObject::tr("[%4] [%1/%2] %3 caused an error during execution.").arg(filtIndex + 1).arg(m_Pipeline.size()).arg(filt->getHumanLabel().arg(::CreateDateTimeStamp()));
         setErrorCondition(err, ss);
 
         notifyProgressMessage(100, "");
@@ -922,6 +928,7 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
         m_ExecutionResult = FilterPipeline::ExecutionResult::Failed;
         return m_Dca;
       }
+      
     }
 
     if(m_State == FilterPipeline::State::Canceling)

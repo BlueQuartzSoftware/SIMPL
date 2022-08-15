@@ -146,50 +146,29 @@ void FileListInfoWidget::connectSignalsSlots()
   // Connections for the various ui widgets
   connect(m_Ui->inputDirBtn, &QPushButton::clicked, this, &FileListInfoWidget::inputDirBtn_clicked);
 
+  //
+  connect(m_Ui->acceptBtn, &QPushButton::clicked, this, &FileListInfoWidget::acceptBtn_clicked);
+
   QtSFileCompleter* com = new QtSFileCompleter(this, true);
   m_Ui->inputDir->setCompleter(com);
   connect(com, static_cast<void (QtSFileCompleter::*)(const QString&)>(&QtSFileCompleter::activated), this, &FileListInfoWidget::inputDir_textChanged);
   connect(m_Ui->inputDir, &QtSLineEdit::textChanged, this, &FileListInfoWidget::inputDir_textChanged);
 
-  connect(m_Ui->filePrefix, &QtSLineEdit::textChanged, this, [=] {
-    generateExampleInputFile();
-    Q_EMIT parametersChanged();
-  });
+  connect(m_Ui->filePrefix, &QtSLineEdit::textChanged, this, [=] { m_Ui->acceptBtn->setVisible(true); });
 
-  connect(m_Ui->fileSuffix, &QtSLineEdit::textChanged, this, [=] {
-    generateExampleInputFile();
-    Q_EMIT parametersChanged();
-  });
+  connect(m_Ui->fileSuffix, &QtSLineEdit::textChanged, this, [=] { m_Ui->acceptBtn->setVisible(true); });
 
-  connect(m_Ui->fileExt, &QtSLineEdit::textChanged, this, [=] {
-    generateExampleInputFile();
-    Q_EMIT parametersChanged();
-  });
+  connect(m_Ui->fileExt, &QtSLineEdit::textChanged, this, [=] { m_Ui->acceptBtn->setVisible(true); });
 
-  connect(m_Ui->totalDigits, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=] {
-    generateExampleInputFile();
-    Q_EMIT parametersChanged();
-  });
+  connect(m_Ui->totalDigits, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=] { m_Ui->acceptBtn->setVisible(true); });
 
-  connect(m_Ui->startIndex, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=] {
-    generateExampleInputFile();
-    Q_EMIT parametersChanged();
-  });
+  connect(m_Ui->startIndex, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=] { m_Ui->acceptBtn->setVisible(true); });
 
-  connect(m_Ui->endIndex, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=] {
-    generateExampleInputFile();
-    Q_EMIT parametersChanged();
-  });
+  connect(m_Ui->endIndex, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=] { m_Ui->acceptBtn->setVisible(true); });
 
-  connect(m_Ui->increment, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=] {
-    generateExampleInputFile();
-    Q_EMIT parametersChanged();
-  });
+  connect(m_Ui->increment, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, [=] { m_Ui->acceptBtn->setVisible(true); });
 
-  connect(m_Ui->orderAscending, &QRadioButton::toggled, this, [=] {
-    generateExampleInputFile();
-    Q_EMIT parametersChanged();
-  });
+  connect(m_Ui->orderAscending, &QRadioButton::toggled, this, [=] { m_Ui->acceptBtn->setVisible(true); });
 }
 
 // -----------------------------------------------------------------------------
@@ -321,6 +300,15 @@ void FileListInfoWidget::checkIOFiles()
   {
     findMaxSliceAndPrefix();
   }
+}
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FileListInfoWidget::acceptBtn_clicked()
+{
+  generateExampleInputFile();
+  Q_EMIT parametersChanged();
+  m_Ui->acceptBtn->setVisible(false);
 }
 
 // -----------------------------------------------------------------------------

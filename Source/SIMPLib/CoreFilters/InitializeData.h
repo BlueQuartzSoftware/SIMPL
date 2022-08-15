@@ -69,6 +69,7 @@ class SIMPLib_EXPORT InitializeData : public AbstractFilter
   PYB11_PROPERTY(bool Random READ getRandom WRITE setRandom)
   PYB11_PROPERTY(double InitValue READ getInitValue WRITE setInitValue)
   PYB11_PROPERTY(FPRangePair InitRange READ getInitRange WRITE setInitRange)
+  PYB11_PROPERTY(bool InvertData READ getInvertData WRITE setInvertData)
   PYB11_END_BINDINGS()
   // End Python bindings declarations
 
@@ -78,6 +79,13 @@ public:
   using ConstPointer = std::shared_ptr<const Self>;
   using WeakPointer = std::weak_ptr<Self>;
   using ConstWeakPointer = std::weak_ptr<const Self>;
+
+  enum InitChoices
+  {
+    Manual,
+    Random,
+    RandomWithRange
+  };
 
   /**
    * @brief Returns a NullPointer wrapped by a shared_ptr<>
@@ -235,6 +243,18 @@ public:
   Q_PROPERTY(FPRangePair InitRange READ getInitRange WRITE setInitRange)
 
   /**
+   * @brief Setter property for InvertData
+   */
+  void setInvertData(bool value);
+  /**
+   * @brief Getter property for InvertData
+   * @return Value of InvertData
+   */
+  bool getInvertData() const;
+
+  Q_PROPERTY(bool InvertData READ getInvertData WRITE setInvertData)
+
+  /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */
   QString getCompiledLibraryName() const override;
@@ -311,38 +331,9 @@ private:
   int m_ZMax = {0};
   int m_InitType = {Manual};
   bool m_Random = {};
+  bool m_InvertData = {false};
   double m_InitValue = {0};
   FPRangePair m_InitRange = {};
-
-  enum InitChoices
-  {
-    Manual,
-    Random,
-    RandomWithRange
-  };
-
-  /**
-   * @brief initializeArrayWithInts Initializes the array p with integers, either from the
-   * manual value entered in the filter, or with a random number.  This function does not
-   * check that the template type actually is an integer, so it will most likely cause
-   * unexpected results when passing anything other than an integer as a template parameter.
-   * @param p The array that will be initialized
-   * @param dims The dimensions of the array p
-   */
-  template <typename T>
-  void initializeArrayWithInts(IDataArrayShPtrType p, int64_t dims[3]);
-
-  /**
-   * @brief initializeArrayWithReals Initializes the array p with real numbers, either from the
-   * manual value entered in the filter, or with a random number.  This function does not
-   * check that the template type actually is a non-integer, so it will most likely cause
-   * unexpected results when passing anything other than a float or double as a template
-   * parameter.
-   * @param p The array that will be initialized
-   * @param dims The dimensions of the array p
-   */
-  template <typename T>
-  void initializeArrayWithReals(IDataArrayShPtrType p, int64_t dims[3]);
 
   /**
    * @brief checkInitialization Checks that the chosen initialization value/range is inside

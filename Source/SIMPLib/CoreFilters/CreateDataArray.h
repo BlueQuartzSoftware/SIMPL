@@ -63,6 +63,7 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
   PYB11_PROPERTY(int InitializationType READ getInitializationType WRITE setInitializationType)
   PYB11_PROPERTY(QString InitializationValue READ getInitializationValue WRITE setInitializationValue)
   PYB11_PROPERTY(FPRangePair InitializationRange READ getInitializationRange WRITE setInitializationRange)
+  PYB11_PROPERTY(int StartingIndexValue READ getStartingIndexValue WRITE setStartingIndexValue)
   PYB11_END_BINDINGS()
   // End Python bindings declarations
 
@@ -90,7 +91,8 @@ public:
   enum InitializationChoices
   {
     Manual,
-    RandomWithRange
+    RandomWithRange,
+    Indices
   };
 
   /**
@@ -164,6 +166,18 @@ public:
   FPRangePair getInitializationRange() const;
 
   Q_PROPERTY(FPRangePair InitializationRange READ getInitializationRange WRITE setInitializationRange)
+
+  /**
+   * @brief Setter property for StartingIndexValue
+   */
+  void setStartingIndexValue(int value);
+  /**
+   * @brief Getter property for StartingIndexValue
+   * @return Value of NumberOfComponents
+   */
+  int getStartingIndexValue() const;
+
+  Q_PROPERTY(int StartingIndexValue READ getStartingIndexValue WRITE setStartingIndexValue)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -246,13 +260,14 @@ private:
   int m_InitializationType = {Manual};
   QString m_InitializationValue = {"0"};
   FPRangePair m_InitializationRange = {};
+  int m_StartingIndexValue = {0};
 
   /**
    * @brief checkInitialization Checks that the chosen initialization value/range is inside
    * the bounds of the array type
    */
   template <typename T>
-  void checkInitialization(QString dataArrayName);
+  void checkInitialization(const IDataArray& dataArray);
 
   const QString Int8 = "signed   int 8  bit";
   const QString UInt8 = "unsigned int 8  bit";

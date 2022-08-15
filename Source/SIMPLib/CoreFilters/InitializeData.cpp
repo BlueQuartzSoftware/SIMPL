@@ -36,6 +36,7 @@
 
 #include <chrono>
 #include <random>
+#include <thread>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QTextStream>
@@ -43,9 +44,11 @@
 
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/CoreFilters/Algorithms/InitializeDataImpl.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
@@ -53,17 +56,85 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+#include <tbb/task_group.h>
+#endif
+
+namespace Detail
+{
+/**
+ * @brief checkInitialization Checks that the chosen initialization value/range is inside
+ * the bounds of the array type
+ */
+template <typename T>
+void checkInitialization(InitializeData* filter, IDataArray::Pointer p)
+{
+  QString arrayName = p->getName();
+
+  if(filter->getInitType() == InitializeData::Manual)
+  {
+    double input = filter->getInitValue();
+    if(input < static_cast<double>(std::numeric_limits<T>().lowest()) || input > static_cast<double>(std::numeric_limits<T>().max()))
+    {
+      QString ss = QObject::tr("%1: The initialization value could not be converted. The valid range is %2 to %3").arg(arrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
+      filter->setErrorCondition(-4000, ss);
+      return;
+    }
+  }
+  else if(filter->getInitType() == InitializeData::RandomWithRange)
+  {
+    FPRangePair initRange = filter->getInitRange();
+    double min = initRange.first;
+    double max = initRange.second;
+    if(min > max)
+    {
+      QString ss = arrayName + ": Invalid initialization range.  Minimum value is larger than maximum value.";
+      filter->setErrorCondition(-5550, ss);
+      return;
+    }
+    if(min < static_cast<double>(std::numeric_limits<T>().lowest()) || max > static_cast<double>(std::numeric_limits<T>().max()))
+    {
+      QString ss = QObject::tr("%1: The initialization range can only be from %2 to %3").arg(arrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
+      filter->setErrorCondition(-4001, ss);
+      return;
+    }
+    if(min == max)
+    {
+      QString ss = arrayName + ": The initialization range must have differing values";
+      filter->setErrorCondition(-4002, ss);
+      return;
+    }
+  }
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void delay(int seconds)
+template <>
+void checkInitialization<bool>(InitializeData* filter, IDataArray::Pointer p)
 {
-  QTime dieTime = QTime::currentTime().addSecs(seconds);
-  while(QTime::currentTime() < dieTime)
+  QString arrayName = p->getName();
+
+  if(filter->getInitType() == InitializeData::RandomWithRange)
   {
-    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    FPRangePair initRange = filter->getInitRange();
+    double min = initRange.first;
+    double max = initRange.second;
+    if(min > max)
+    {
+      QString ss = arrayName + ": Invalid initialization range.  Minimum value is larger than maximum value.";
+      filter->setErrorCondition(-4001, ss);
+      return;
+    }
+    if(min == max)
+    {
+      QString ss = arrayName + ": The initialization range must have differing values";
+      filter->setErrorCondition(-4002, ss);
+      return;
+    }
   }
 }
+} // namespace Detail
 
 // -----------------------------------------------------------------------------
 //
@@ -119,6 +190,7 @@ void InitializeData::setupFilterParameters()
   }
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Initialization Value", InitValue, FilterParameter::Category::Parameter, InitializeData, Manual));
   parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitRange, FilterParameter::Category::Parameter, InitializeData, RandomWithRange));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Invert", InvertData, FilterParameter::Category::Parameter, InitializeData));
   setFilterParameters(parameters);
 }
 
@@ -255,6 +327,10 @@ void InitializeData::dataCheck()
     {
       checkInitialization<double>(p);
     }
+    else if(type == "bool")
+    {
+      checkInitialization<bool>(p);
+    }
 
     if(getErrorCode() < 0)
     {
@@ -269,41 +345,7 @@ void InitializeData::dataCheck()
 template <typename T>
 void InitializeData::checkInitialization(IDataArray::Pointer p)
 {
-  QString arrayName = p->getName();
-
-  if(m_InitType == Manual)
-  {
-    double input = m_InitValue;
-    if(input < static_cast<double>(std::numeric_limits<T>().lowest()) || input > static_cast<double>(std::numeric_limits<T>().max()))
-    {
-      QString ss = QObject::tr("%1: The initialization value could not be converted. The valid range is %2 to %3").arg(arrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-      setErrorCondition(-4000, ss);
-      return;
-    }
-  }
-  else if(m_InitType == RandomWithRange)
-  {
-    double min = m_InitRange.first;
-    double max = m_InitRange.second;
-    if(min > max)
-    {
-      QString ss = arrayName + ": Invalid initialization range.  Minimum value is larger than maximum value.";
-      setErrorCondition(-5550, ss);
-      return;
-    }
-    if(min < static_cast<double>(std::numeric_limits<T>().lowest()) || max > static_cast<double>(std::numeric_limits<T>().max()))
-    {
-      QString ss = QObject::tr("%1: The initialization range can only be from %2 to %3").arg(arrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-      setErrorCondition(-4001, ss);
-      return;
-    }
-    if(min == max)
-    {
-      QString ss = arrayName + ": The initialization range must have differing values";
-      setErrorCondition(-4002, ss);
-      return;
-    }
-  }
+  Detail::checkInitialization<T>(this, p);
 }
 
 // -----------------------------------------------------------------------------
@@ -322,159 +364,34 @@ void InitializeData::execute()
 
   SizeVec3Type udims = m->getGeometryAs<ImageGeom>()->getDimensions();
 
-  int64_t dims[3] = {
+  std::array<int64_t, 3> dims = {
       static_cast<int64_t>(udims[0]),
       static_cast<int64_t>(udims[1]),
       static_cast<int64_t>(udims[2]),
   };
 
+  std::array<int64_t, 6> bounds = {m_XMin, m_XMax, m_YMin, m_YMax, m_ZMin, m_ZMax};
+
   QString attrMatName = attributeMatrixPath.getAttributeMatrixName();
   std::vector<QString> voxelArrayNames = DataArrayPath::GetDataArrayNames(m_CellAttributeMatrixPaths);
+
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+  std::shared_ptr<tbb::task_group> g(new tbb::task_group);
+#endif
 
   for(const QString& name : voxelArrayNames)
   {
     IDataArray::Pointer p = m->getAttributeMatrix(attrMatName)->getAttributeArray(name);
-
-    QString type = p->getTypeAsString();
-    if(type == "int8_t")
-    {
-      initializeArrayWithInts<int8_t>(p, dims);
-    }
-    else if(type == "int16_t")
-    {
-      initializeArrayWithInts<int16_t>(p, dims);
-    }
-    else if(type == "int32_t")
-    {
-      initializeArrayWithInts<int32_t>(p, dims);
-    }
-    else if(type == "int64_t")
-    {
-      initializeArrayWithInts<int64_t>(p, dims);
-    }
-    else if(type == "uint8_t")
-    {
-      initializeArrayWithInts<uint8_t>(p, dims);
-    }
-    else if(type == "uint16_t")
-    {
-      initializeArrayWithInts<uint16_t>(p, dims);
-    }
-    else if(type == "uint32_t")
-    {
-      initializeArrayWithInts<uint32_t>(p, dims);
-    }
-    else if(type == "uint64_t")
-    {
-      initializeArrayWithInts<uint64_t>(p, dims);
-    }
-    else if(type == "float")
-    {
-      initializeArrayWithReals<float>(p, dims);
-    }
-    else if(type == "double")
-    {
-      initializeArrayWithReals<double>(p, dims);
-    }
-
-    delay(1); // Delay the execution by 1 second to avoid the exact same seedings for each array
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+    g->run(InitializeDataImpl(this, p, dims, bounds, m_InitType, m_InvertData, m_InitValue, m_InitRange));
+#else
+    InitializeDataImpl(this, p, dims, bounds, m_InitType, m_InvertData, m_InitValue, m_InitRange)();
+#endif
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-void InitializeData::initializeArrayWithInts(IDataArray::Pointer p, int64_t dims[3])
-{
-  T rangeMin;
-  T rangeMax;
-  if(m_InitType == RandomWithRange)
-  {
-    rangeMin = m_InitRange.first;
-    rangeMax = m_InitRange.second;
-  }
-  else
-  {
-    rangeMin = std::numeric_limits<T>().min();
-    rangeMax = std::numeric_limits<T>().max();
-  }
-
-  std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
-  std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
-  std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-  generator.seed(seed);
-  std::uniform_int_distribution<> distribution(rangeMin, rangeMax);
-
-  for(int32_t k = m_ZMin; k < m_ZMax + 1; k++)
-  {
-    for(int32_t j = m_YMin; j < m_YMax + 1; j++)
-    {
-      for(int32_t i = m_XMin; i < m_XMax + 1; i++)
-      {
-        size_t index = (k * dims[0] * dims[1]) + (j * dims[0]) + i;
-
-        if(m_InitType == Manual)
-        {
-          T num = static_cast<T>(m_InitValue);
-          p->initializeTuple(index, &num);
-        }
-        else
-        {
-          T temp = distribution(generator);
-          p->initializeTuple(index, &temp);
-        }
-      }
-    }
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-void InitializeData::initializeArrayWithReals(IDataArray::Pointer p, int64_t dims[3])
-{
-  T rangeMin;
-  T rangeMax;
-  if(m_InitType == RandomWithRange)
-  {
-    rangeMin = static_cast<T>(m_InitRange.first);
-    rangeMax = static_cast<T>(m_InitRange.second);
-  }
-  else
-  {
-    rangeMin = std::numeric_limits<T>().min();
-    rangeMax = std::numeric_limits<T>().max();
-  }
-
-  std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
-  std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
-  std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-  generator.seed(seed);
-  std::uniform_real_distribution<T> distribution(rangeMin, rangeMax);
-
-  for(int32_t k = m_ZMin; k < m_ZMax + 1; k++)
-  {
-    for(int32_t j = m_YMin; j < m_YMax + 1; j++)
-    {
-      for(int32_t i = m_XMin; i < m_XMax + 1; i++)
-      {
-        size_t index = (k * dims[0] * dims[1]) + (j * dims[0]) + i;
-
-        if(m_InitType == Manual)
-        {
-          T num = static_cast<T>(m_InitValue);
-          p->initializeTuple(index, &num);
-        }
-        else
-        {
-          T temp = distribution(generator);
-          p->initializeTuple(index, &temp);
-        }
-      }
-    }
-  }
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+  // This will spill over if the number of arrays to process does not divide evenly by the number of threads.
+  g->wait();
+#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -707,4 +624,16 @@ void InitializeData::setInitRange(const FPRangePair& value)
 FPRangePair InitializeData::getInitRange() const
 {
   return m_InitRange;
+}
+
+// -----------------------------------------------------------------------------
+void InitializeData::setInvertData(bool value)
+{
+  m_InvertData = value;
+}
+
+// -----------------------------------------------------------------------------
+bool InitializeData::getInvertData() const
+{
+  return m_InvertData;
 }

@@ -219,6 +219,8 @@ ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util FloorOpe
 ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util CeilOperator.h)
 ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util CeilOperator.cpp)
 
+ADD_SIMPL_SUPPORT_CLASS(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/Algorithms InitializeDataImpl)
+
 # -- Run MOC and UIC on the necessary files
 QT5_ADD_RESOURCES( SIMPLib_CoreFilters_Generated_RCS_SRCS "${SIMPLib_SOURCE_DIR}/CoreFilters/CoreResources.qrc"  )
 foreach(h ${SIMPLib_CoreFilters_Generated_RCS_SRCS})

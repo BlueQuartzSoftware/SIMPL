@@ -448,8 +448,7 @@ bool AttributeMatrix::removeInactiveObjects(const QVector<bool>& activeObjects, 
       for(const auto& header : headers)
       {
         IDataArray::Pointer p = getAttributeArray(header);
-        QString type = p->getTypeAsString();
-        if(type.compare("NeighborList<T>") == 0)
+        if(p->getNameOfClass() == "NeighborList<T>")
         {
           removeAttributeArray(header);
         }

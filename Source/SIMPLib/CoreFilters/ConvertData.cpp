@@ -51,7 +51,7 @@
 #define CHECK_AND_CONVERT(Type, DataContainer, ScalarType, Array, AttributeMatrixName, OutputName)                                                                                                     \
   if(false == completed)                                                                                                                                                                               \
   {                                                                                                                                                                                                    \
-    Type::Pointer Type##Ptr = std::dynamic_pointer_cast<Type>(Array);                                                                                                                                  \
+    DataArray<Type>::Pointer Type##Ptr = std::dynamic_pointer_cast<DataArray<Type>>(Array);                                                                                                            \
     if(nullptr != Type##Ptr)                                                                                                                                                                           \
     {                                                                                                                                                                                                  \
       std::vector<size_t> dims = Array->getComponentDimensions();                                                                                                                                      \
@@ -62,6 +62,48 @@
 
 namespace Detail
 {
+template <typename O, typename D>
+/**
+ * @brief ConvertData Templated function that converts an IDataArray to a given primitive type
+ * @param origin IDataArray instance pointer
+ * @param dims Component dimensions
+ * @param m DataContainer instance pointer
+ * @param attributeMatrixName Name of target AttributeMatrix
+ * @param name Name of converted array
+ *
+ */
+void ConvertData(DataArray<O>* origin, const std::vector<size_t>& dims, DataContainer::Pointer m, const QString attributeMatrixName, const QString& name)
+{
+  size_t voxels = origin->getNumberOfTuples();
+  size_t size = origin->getSize();
+
+  typename DataArray<D>::Pointer p = DataArray<D>::CreateArray(voxels, dims, name, true);
+  m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
+  for(size_t v = 0; v < size; ++v)
+  {
+    if constexpr(std::is_same<O, D>::value)
+    {
+      // Origin and destination arrays have the same type
+      p->setValue(v, origin->getValue(v));
+    }
+    else if constexpr(std::is_same<O, bool>::value)
+    {
+      // Origin array is a boolean array
+      p->setValue(v, (origin->getValue(v) ? 1 : 0));
+    }
+    else if constexpr(std::is_same<D, bool>::value)
+    {
+      // Destination array is a boolean array
+      p->setValue(v, (origin->getValue(v) != 0));
+    }
+    else
+    {
+      // All other cases
+      p->setValue(v, static_cast<D>(origin->getValue(v)));
+    }
+  }
+}
+
 template <typename T>
 /**
  * @brief ConvertData Templated function that converts an IDataArray to a given primitive type
@@ -72,125 +114,63 @@ template <typename T>
  * @param attributeMatrixName Name of target AttributeMatrix
  * @param name Name of converted array
  */
-void ConvertData(AbstractFilter* filter, T* ptr, const std::vector<size_t>& dims, DataContainer::Pointer m, SIMPL::NumericTypes::Type scalarType, const QString attributeMatrixName,
+void ConvertData(AbstractFilter* filter, DataArray<T>* ptr, const std::vector<size_t>& dims, DataContainer::Pointer m, SIMPL::NumericTypes::Type scalarType, const QString attributeMatrixName,
                  const QString& name)
 {
-  size_t voxels = ptr->getNumberOfTuples();
-  size_t size = ptr->getSize();
-
   if(scalarType == SIMPL::NumericTypes::Type::Int8)
   {
-    Int8ArrayType::Pointer p = Int8ArrayType::CreateArray(voxels, dims, name, true);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
-    for(size_t v = 0; v < size; ++v)
-    {
-      p->setValue(v, static_cast<int8_t>(ptr->getValue(v)));
-    }
+    ConvertData<T, int8_t>(ptr, dims, m, attributeMatrixName, name);
   }
   else if(scalarType == SIMPL::NumericTypes::Type::UInt8)
   {
-    UInt8ArrayType::Pointer p = UInt8ArrayType::CreateArray(voxels, dims, name, true);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
-    for(size_t v = 0; v < size; ++v)
-    {
-      p->setValue(v, static_cast<uint8_t>(ptr->getValue(v)));
-    }
+    ConvertData<T, uint8_t>(ptr, dims, m, attributeMatrixName, name);
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Int16)
   {
-    Int16ArrayType::Pointer p = Int16ArrayType::CreateArray(voxels, dims, name, true);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
-    for(size_t v = 0; v < size; ++v)
-    {
-      p->setValue(v, static_cast<int16_t>(ptr->getValue(v)));
-    }
+    ConvertData<T, int16_t>(ptr, dims, m, attributeMatrixName, name);
   }
   else if(scalarType == SIMPL::NumericTypes::Type::UInt16)
   {
-    UInt16ArrayType::Pointer p = UInt16ArrayType::CreateArray(voxels, dims, name, true);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
-    for(size_t v = 0; v < size; ++v)
-    {
-      p->setValue(v, static_cast<uint16_t>(ptr->getValue(v)));
-    }
+    ConvertData<T, uint16_t>(ptr, dims, m, attributeMatrixName, name);
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Int32)
   {
-    Int32ArrayType::Pointer p = Int32ArrayType::CreateArray(voxels, dims, name, true);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
-    for(size_t v = 0; v < size; ++v)
-    {
-      p->setValue(v, static_cast<int32_t>(ptr->getValue(v)));
-    }
+    ConvertData<T, int32_t>(ptr, dims, m, attributeMatrixName, name);
   }
   else if(scalarType == SIMPL::NumericTypes::Type::UInt32)
   {
-    UInt32ArrayType::Pointer p = UInt32ArrayType::CreateArray(voxels, dims, name, true);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
-    for(size_t v = 0; v < size; ++v)
-    {
-      p->setValue(v, static_cast<uint32_t>(ptr->getValue(v)));
-    }
+    ConvertData<T, uint32_t>(ptr, dims, m, attributeMatrixName, name);
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Int64)
   {
-    Int64ArrayType::Pointer p = Int64ArrayType::CreateArray(voxels, dims, name, true);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
-    for(size_t v = 0; v < size; ++v)
-    {
-      p->setValue(v, static_cast<int64_t>(ptr->getValue(v)));
-    }
+    ConvertData<T, int64_t>(ptr, dims, m, attributeMatrixName, name);
   }
   else if(scalarType == SIMPL::NumericTypes::Type::UInt64)
   {
-    UInt64ArrayType::Pointer p = UInt64ArrayType::CreateArray(voxels, dims, name, true);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
-    for(size_t v = 0; v < size; ++v)
-    {
-      p->setValue(v, static_cast<uint64_t>(ptr->getValue(v)));
-    }
+    ConvertData<T, uint64_t>(ptr, dims, m, attributeMatrixName, name);
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Float)
   {
-    FloatArrayType::Pointer p = FloatArrayType::CreateArray(voxels, dims, name, true);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
-    for(size_t v = 0; v < size; ++v)
-    {
-      p->setValue(v, static_cast<float>(ptr->getValue(v)));
-    }
+    ConvertData<T, float>(ptr, dims, m, attributeMatrixName, name);
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Double)
   {
-    DoubleArrayType::Pointer p = DoubleArrayType::CreateArray(voxels, dims, name, true);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
-    for(size_t v = 0; v < size; ++v)
-    {
-      p->setValue(v, static_cast<double>(ptr->getValue(v)));
-    }
+    ConvertData<T, double>(ptr, dims, m, attributeMatrixName, name);
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Bool)
   {
-    BoolArrayType::Pointer p = BoolArrayType::CreateArray(voxels, dims, name, true);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
-    for(size_t v = 0; v < size; ++v)
-    {
-      p->setValue(v, static_cast<bool>(ptr->getValue(v)));
-    }
+    ConvertData<T, bool>(ptr, dims, m, attributeMatrixName, name);
   }
   else if(scalarType == SIMPL::NumericTypes::Type::SizeT)
   {
-    SizeTArrayType::Pointer p = SizeTArrayType::CreateArray(voxels, dims, name, true);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
-    for(size_t v = 0; v < size; ++v)
-    {
-      p->setValue(v, static_cast<size_t>(ptr->getValue(v)));
-    }
+    ConvertData<T, size_t>(ptr, dims, m, attributeMatrixName, name);
   }
   else
   {
     QString ss =
         QString("Error Converting DataArray '%1/%2' from type %3 to type %4").arg(attributeMatrixName).arg(ptr->getName()).arg(static_cast<int>(ptr->getType())).arg(static_cast<int>(scalarType));
     filter->setErrorCondition(-399, ss);
+    return;
   }
 }
 } // End Namespace Detail
@@ -353,18 +333,18 @@ void ConvertData::execute()
   }
 
   bool completed = false;
-  CHECK_AND_CONVERT(Int8ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
+  CHECK_AND_CONVERT(int8_t, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
 
-  CHECK_AND_CONVERT(UInt8ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
-  CHECK_AND_CONVERT(UInt16ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
-  CHECK_AND_CONVERT(Int16ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
-  CHECK_AND_CONVERT(UInt32ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
-  CHECK_AND_CONVERT(Int32ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
-  CHECK_AND_CONVERT(UInt64ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
-  CHECK_AND_CONVERT(Int64ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
-  CHECK_AND_CONVERT(FloatArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
-  CHECK_AND_CONVERT(DoubleArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
-  CHECK_AND_CONVERT(BoolArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
+  CHECK_AND_CONVERT(uint8_t, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
+  CHECK_AND_CONVERT(uint16_t, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
+  CHECK_AND_CONVERT(int16_t, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
+  CHECK_AND_CONVERT(uint32_t, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
+  CHECK_AND_CONVERT(int32_t, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
+  CHECK_AND_CONVERT(uint64_t, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
+  CHECK_AND_CONVERT(int64_t, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
+  CHECK_AND_CONVERT(float, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
+  CHECK_AND_CONVERT(double, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
+  CHECK_AND_CONVERT(bool, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
 }
 // -----------------------------------------------------------------------------
 //
