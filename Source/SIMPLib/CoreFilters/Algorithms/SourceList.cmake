@@ -4,10 +4,12 @@ set(${PLUGIN_NAME}_Algorithms_SRCS "")
 
 set(${PLUGIN_NAME}_Algorithms_HDRS ${${PLUGIN_NAME}_Algorithms_HDRS}
     ${${PLUGIN_NAME}_SOURCE_DIR}/Algorithms/InitializeDataImpl.h
+    ${${PLUGIN_NAME}_SOURCE_DIR}/Algorithms/PadImageGeometryImpl.h
 )
 
 set(${PLUGIN_NAME}_Algorithms_SRCS ${${PLUGIN_NAME}_Algorithms_SRCS}
     ${${PLUGIN_NAME}_SOURCE_DIR}/Algorithms/InitializeDataImpl.cpp
+    ${${PLUGIN_NAME}_SOURCE_DIR}/Algorithms/PadImageGeometryImpl.cpp
 )
 
 

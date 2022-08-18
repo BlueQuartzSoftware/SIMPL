@@ -37,6 +37,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   MoveMultiDataTest
   MultiThresholdObjectsTest
   MultiThresholdObjects2Test
+  PadImageGeometryTest
   RawBinaryReaderTest
   ReadASCIIDataTest
   RemoveArraysTest
