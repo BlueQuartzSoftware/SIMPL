@@ -96,7 +96,10 @@ QUrl QtSHelpUrlGenerator::GenerateHTMLUrl(QString htmlName)
   FilterManager* fm = FilterManager::Instance();
 
   IFilterFactory::Pointer factory = fm->getFactoryFromClassName(htmlName);
-
+  if(factory.get() == nullptr)
+  {
+    return {};
+  }
 #ifdef SIMPL_USE_MKDOCS
   {
     QString helpFilePath;
