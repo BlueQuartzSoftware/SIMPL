@@ -680,9 +680,24 @@ void ImageGeom::getCoords(size_t idx, double coords[3]) const
 // -----------------------------------------------------------------------------
 std::optional<size_t> ImageGeom::getIndex(float xCoord, float yCoord, float zCoord) const
 {
-  size_t x = (xCoord - (0.5f * m_Spacing[0]) - m_Origin[0]) / m_Spacing[0];
-  size_t y = (yCoord - (0.5f * m_Spacing[1]) - m_Origin[1]) / m_Spacing[1];
-  size_t z = (zCoord - (0.5f * m_Spacing[2]) - m_Origin[2]) / m_Spacing[2];
+  if(xCoord < m_Origin[0] || xCoord > (m_Dimensions[0] * m_Spacing[0] + m_Origin[0]))
+  {
+    return {};
+  }
+
+  if(yCoord < m_Origin[1] || yCoord > (m_Dimensions[1] * m_Spacing[1] + m_Origin[1]))
+  {
+    return {};
+  }
+
+  if(zCoord < m_Origin[2] || zCoord > (m_Dimensions[2] * m_Spacing[2] + m_Origin[2]))
+  {
+    return {};
+  }
+
+  size_t x = (xCoord - m_Origin[0]) / m_Spacing[0];
+  size_t y = (yCoord - m_Origin[1]) / m_Spacing[1];
+  size_t z = (zCoord - m_Origin[2]) / m_Spacing[2];
 
   return (m_Dimensions[1] * m_Dimensions[0] * z) + (m_Dimensions[0] * y) + x;
 }
@@ -692,9 +707,24 @@ std::optional<size_t> ImageGeom::getIndex(float xCoord, float yCoord, float zCoo
 // -----------------------------------------------------------------------------
 std::optional<size_t> ImageGeom::getIndex(double xCoord, double yCoord, double zCoord) const
 {
-  size_t x = (xCoord - (0.5 * m_Spacing[0]) - m_Origin[0]) / m_Spacing[0];
-  size_t y = (yCoord - (0.5 * m_Spacing[1]) - m_Origin[1]) / m_Spacing[1];
-  size_t z = (zCoord - (0.5 * m_Spacing[2]) - m_Origin[2]) / m_Spacing[2];
+  if(xCoord < m_Origin[0] || xCoord > (m_Dimensions[0] * m_Spacing[0] + m_Origin[0]))
+  {
+    return {};
+  }
+
+  if(yCoord < m_Origin[1] || yCoord > (m_Dimensions[1] * m_Spacing[1] + m_Origin[1]))
+  {
+    return {};
+  }
+
+  if(zCoord < m_Origin[2] || zCoord > (m_Dimensions[2] * m_Spacing[2] + m_Origin[2]))
+  {
+    return {};
+  }
+
+  size_t x = (xCoord - m_Origin[0]) / m_Spacing[0];
+  size_t y = (yCoord - m_Origin[1]) / m_Spacing[1];
+  size_t z = (zCoord - m_Origin[2]) / m_Spacing[2];
 
   return (m_Dimensions[1] * m_Dimensions[0] * z) + (m_Dimensions[0] * y) + x;
 }
