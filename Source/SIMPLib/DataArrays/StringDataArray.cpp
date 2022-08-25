@@ -54,10 +54,15 @@ StringDataArray::StringDataArray()
 // -----------------------------------------------------------------------------
 StringDataArray::StringDataArray(size_t numTuples, const QString& name, bool allocate)
 : IDataArray(name)
+, m_NumTuples(numTuples)
+, m_IsAllocated(allocate)
 , _ownsData(true)
 {
-  m_Array.resize(numTuples);
   setName(name);
+  if(m_IsAllocated)
+  {
+    m_Array.resize(m_NumTuples);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -198,7 +203,11 @@ void* StringDataArray::getVoidPointer(size_t i)
 // -----------------------------------------------------------------------------
 size_t StringDataArray::getNumberOfTuples() const
 {
-  return m_Array.size();
+  if(m_IsAllocated)
+  {
+    return m_Array.size();
+  }
+  return m_NumTuples;
 }
 
 // -----------------------------------------------------------------------------
@@ -206,7 +215,11 @@ size_t StringDataArray::getNumberOfTuples() const
 // -----------------------------------------------------------------------------
 size_t StringDataArray::getSize() const
 {
-  return m_Array.size();
+  if(m_IsAllocated)
+  {
+    return m_Array.size();
+  }
+  return m_NumTuples;
 }
 
 // -----------------------------------------------------------------------------
@@ -254,7 +267,10 @@ size_t StringDataArray::getTypeSize() const
 // -----------------------------------------------------------------------------
 int StringDataArray::eraseTuples(const std::vector<size_t>& idxs)
 {
-
+  if(!m_IsAllocated)
+  {
+    return 0;
+  }
   int err = 0;
 
   // If nothing is to be erased just return
@@ -308,6 +324,10 @@ int StringDataArray::eraseTuples(const std::vector<size_t>& idxs)
 // -----------------------------------------------------------------------------
 int StringDataArray::copyTuple(size_t currentPos, size_t newPos)
 {
+  if(!m_IsAllocated)
+  {
+    return -1;
+  }
   if(currentPos >= m_Array.size())
   {
     return -1;
@@ -326,6 +346,10 @@ int StringDataArray::copyTuple(size_t currentPos, size_t newPos)
 // -----------------------------------------------------------------------------
 bool StringDataArray::copyFromArray(size_t destTupleOffset, IDataArray::ConstPointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
 {
+  if(!m_IsAllocated)
+  {
+    return false;
+  }
   if(destTupleOffset >= m_Array.size())
   {
     return false;
@@ -394,8 +418,13 @@ void StringDataArray::initializeWithValue(const std::string& value)
 // -----------------------------------------------------------------------------
 IDataArray::Pointer StringDataArray::deepCopy(bool forceNoAllocate) const
 {
-  StringDataArray::Pointer daCopy = StringDataArray::CreateArray(getNumberOfTuples(), getName(), true);
-  if(!forceNoAllocate)
+  bool allocate = m_IsAllocated;
+  if(forceNoAllocate)
+  {
+    allocate = false;
+  }
+  StringDataArray::Pointer daCopy = StringDataArray::CreateArray(getNumberOfTuples(), getName(), allocate);
+  if(m_IsAllocated && !forceNoAllocate)
   {
     for(std::vector<QString>::size_type i = 0; i < m_Array.size(); ++i)
     {
@@ -410,7 +439,11 @@ IDataArray::Pointer StringDataArray::deepCopy(bool forceNoAllocate) const
 // -----------------------------------------------------------------------------
 int32_t StringDataArray::resizeTotalElements(size_t size)
 {
-  m_Array.resize(size);
+  m_NumTuples = size;
+  if(m_IsAllocated)
+  {
+    m_Array.resize(size);
+  }
   return 1;
 }
 
@@ -419,7 +452,11 @@ int32_t StringDataArray::resizeTotalElements(size_t size)
 // -----------------------------------------------------------------------------
 void StringDataArray::resizeTuples(size_t numTuples)
 {
-  m_Array.resize(numTuples);
+  m_NumTuples = numTuples;
+  if(m_IsAllocated)
+  {
+    m_Array.resize(m_NumTuples);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -483,9 +520,6 @@ QString StringDataArray::getInfoString(SIMPL::InfoStringFormat format) const
   if(format == SIMPL::HtmlFormat)
   {
     return getToolTipGenerator().generateHTML();
-  }
-  else
-  {
   }
   return QString();
 }

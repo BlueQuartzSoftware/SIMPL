@@ -396,6 +396,8 @@ protected:
 private:
   QString m_InitValue;
   std::vector<QString> m_Array;
+  size_t m_NumTuples = 0;
+  bool m_IsAllocated = false;
   bool _ownsData;
 
 public:
