@@ -104,18 +104,18 @@ public:
   Q_PROPERTY(bool UpdateOrigin READ getUpdateOrigin WRITE setUpdateOrigin)
 
   /**
-   * @brief Getter property for OldGeometryDimensions
-   * @return Value of OldGeometryDimensions
+   * @brief Getter property for OldGeometryInformation
+   * @return Value of OldGeometryInformation
    */
-  QString getOldGeometryDimensions();
-  Q_PROPERTY(QString OldGeometryDimensions READ getOldGeometryDimensions)
+  QString getOldGeometryInformation();
+  Q_PROPERTY(QString OldGeometryInformation READ getOldGeometryInformation)
 
   /**
-   * @brief Getter property for NewGeometryDimensions
-   * @return Value of NewGeometryDimensions
+   * @brief Getter property for NewGeometryInformation
+   * @return Value of NewGeometryInformation
    */
-  QString getNewGeometryDimensions();
-  Q_PROPERTY(QString NewGeometryDimensions READ getNewGeometryDimensions)
+  QString getNewGeometryInformation();
+  Q_PROPERTY(QString NewGeometryInformation READ getNewGeometryInformation)
 
   /**
    * @brief Setter property for AttributeMatrixPath

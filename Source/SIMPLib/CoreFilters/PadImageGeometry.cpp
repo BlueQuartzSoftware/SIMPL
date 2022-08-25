@@ -57,12 +57,11 @@ void PadImageGeometry::setupFilterParameters()
 
   parameters.push_back(SIMPL_NEW_BOOL_FP("Update Origin", UpdateOrigin, FilterParameter::Category::Parameter, PadImageGeometry));
 
-  PreflightUpdatedValueFilterParameter::Pointer param =
-      SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Old Geometry Size in Length Units", OldGeometryDimensions, FilterParameter::Category::Parameter, PadImageGeometry);
+  PreflightUpdatedValueFilterParameter::Pointer param = SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Old Geometry Information", OldGeometryInformation, FilterParameter::Category::Parameter, PadImageGeometry);
   param->setReadOnly(true);
   parameters.push_back(param);
 
-  param = SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("New Geometry Size in Length Units", NewGeometryDimensions, FilterParameter::Category::Parameter, PadImageGeometry);
+  param = SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("New Geometry Information", NewGeometryInformation, FilterParameter::Category::Parameter, PadImageGeometry);
   param->setReadOnly(true);
   parameters.push_back(param);
 
@@ -364,7 +363,7 @@ bool PadImageGeometry::getUpdateOrigin() const
 }
 
 // -----------------------------------------------------------------------------
-QString PadImageGeometry::getOldGeometryDimensions()
+QString PadImageGeometry::getOldGeometryInformation()
 {
   QString desc = QString("Please select a Data Container that has an Image Geometry");
   DataContainerArray::Pointer dca = getDataContainerArray();
@@ -377,16 +376,29 @@ QString PadImageGeometry::getOldGeometryDimensions()
       if(nullptr != image)
       {
         desc.clear();
-        QTextStream ss(&desc);
+
         FloatVec3Type oldOrigin = m_OldGeometry->getOrigin();
         FloatVec3Type oldSpacing = m_OldGeometry->getSpacing();
         SizeVec3Type oldDims = m_OldGeometry->getDimensions();
-        ss << "X Range: " << oldOrigin[0] << " to " << (oldOrigin[0] + (oldDims[0] * oldSpacing[0])) << " (Delta: " << (oldDims[0] * oldSpacing[0]) << ") " << 0 << "-" << oldDims[0] - 1
-           << " Voxels\n";
-        ss << "Y Range: " << oldOrigin[1] << " to " << (oldOrigin[1] + (oldDims[1] * oldSpacing[1])) << " (Delta: " << (oldDims[1] * oldSpacing[1]) << ") " << 0 << "-" << oldDims[1] - 1
-           << " Voxels\n";
-        ss << "Z Range: " << oldOrigin[2] << " to " << (oldOrigin[2] + (oldDims[2] * oldSpacing[2])) << " (Delta: " << (oldDims[2] * oldSpacing[2]) << ") " << 0 << "-" << oldDims[2] - 1
-           << " Voxels\n";
+        IGeometry::LengthUnit lengthUnits = image->getUnits();
+        QString lengthUnitStr = IGeometry::LengthUnitToString(lengthUnits);
+        if(lengthUnits == IGeometry::LengthUnit::Unspecified)
+        {
+          lengthUnitStr.append(" Units");
+        }
+        float xRangeMax = oldOrigin[0] + (oldDims[0] * oldSpacing[0]);
+        float xDelta = oldDims[0] * oldSpacing[0];
+        float yRangeMax = oldOrigin[1] + (oldDims[1] * oldSpacing[1]);
+        float yDelta = oldDims[1] * oldSpacing[1];
+        float zRangeMax = oldOrigin[2] + (oldDims[2] * oldSpacing[2]);
+        float zDelta = oldDims[2] * oldSpacing[2];
+
+        desc.append(QObject::tr("X Range: %1 to %2 [%5] (Delta: %3 [%5]) 0-%4 Voxels\n")
+                        .arg(QString::number(oldOrigin[0]), QString::number(xRangeMax), QString::number(xDelta), QString::number(oldDims[0] - 1), lengthUnitStr));
+        desc.append(QObject::tr("Y Range: %1 to %2 [%5] (Delta: %3 [%5]) 0-%4 Voxels\n")
+                        .arg(QString::number(oldOrigin[1]), QString::number(yRangeMax), QString::number(yDelta), QString::number(oldDims[1] - 1), lengthUnitStr));
+        desc.append(QObject::tr("Z Range: %1 to %2 [%5] (Delta: %3 [%5]) 0-%4 Voxels\n")
+                        .arg(QString::number(oldOrigin[2]), QString::number(zRangeMax), QString::number(zDelta), QString::number(oldDims[2] - 1), lengthUnitStr));
       }
     }
   }
@@ -394,7 +406,7 @@ QString PadImageGeometry::getOldGeometryDimensions()
 }
 
 // -----------------------------------------------------------------------------
-QString PadImageGeometry::getNewGeometryDimensions()
+QString PadImageGeometry::getNewGeometryInformation()
 {
   QString desc = QString("Please select a Data Container that has an Image Geometry");
   DataContainerArray::Pointer dca = getDataContainerArray();
@@ -407,16 +419,29 @@ QString PadImageGeometry::getNewGeometryDimensions()
       if(nullptr != image)
       {
         desc.clear();
-        QTextStream ss(&desc);
+
         FloatVec3Type newOrigin = image->getOrigin();
         FloatVec3Type newSpacing = image->getSpacing();
         SizeVec3Type newDims = image->getDimensions();
-        ss << "X Range: " << newOrigin[0] << " to " << (newOrigin[0] + (newDims[0] * newSpacing[0])) << " (Delta: " << (newDims[0] * newSpacing[0]) << ") " << 0 << "-" << newDims[0] - 1
-           << " Voxels\n";
-        ss << "Y Range: " << newOrigin[1] << " to " << (newOrigin[1] + (newDims[1] * newSpacing[1])) << " (Delta: " << (newDims[1] * newSpacing[1]) << ") " << 0 << "-" << newDims[1] - 1
-           << " Voxels\n";
-        ss << "Z Range: " << newOrigin[2] << " to " << (newOrigin[2] + (newDims[2] * newSpacing[2])) << " (Delta: " << (newDims[2] * newSpacing[2]) << ") " << 0 << "-" << newDims[2] - 1
-           << " Voxels\n";
+        IGeometry::LengthUnit lengthUnits = image->getUnits();
+        QString lengthUnitStr = IGeometry::LengthUnitToString(lengthUnits);
+        if(lengthUnits == IGeometry::LengthUnit::Unspecified)
+        {
+          lengthUnitStr.append(" Units");
+        }
+        float xRangeMax = newOrigin[0] + (newDims[0] * newSpacing[0]);
+        float xDelta = newDims[0] * newSpacing[0];
+        float yRangeMax = newOrigin[1] + (newDims[1] * newSpacing[1]);
+        float yDelta = newDims[1] * newSpacing[1];
+        float zRangeMax = newOrigin[2] + (newDims[2] * newSpacing[2]);
+        float zDelta = newDims[2] * newSpacing[2];
+
+        desc.append(QObject::tr("X Range: %1 to %2 [%5] (Delta: %3 [%5]) 0-%4 Voxels\n")
+                        .arg(QString::number(newOrigin[0]), QString::number(xRangeMax), QString::number(xDelta), QString::number(newDims[0] - 1), lengthUnitStr));
+        desc.append(QObject::tr("Y Range: %1 to %2 [%5] (Delta: %3 [%5]) 0-%4 Voxels\n")
+                        .arg(QString::number(newOrigin[1]), QString::number(yRangeMax), QString::number(yDelta), QString::number(newDims[1] - 1), lengthUnitStr));
+        desc.append(QObject::tr("Z Range: %1 to %2 [%5] (Delta: %3 [%5]) 0-%4 Voxels\n")
+                        .arg(QString::number(newOrigin[2]), QString::number(zRangeMax), QString::number(zDelta), QString::number(newDims[2] - 1), lengthUnitStr));
       }
     }
   }
