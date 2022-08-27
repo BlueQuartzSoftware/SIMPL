@@ -108,40 +108,35 @@ public:
       float coords[3] = {-9.9f, 5.25f, 2.15f};
       std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
       DREAM3D_REQUIRE_EQUAL(result.has_value(), true)
-      size_t index = result.value();
-      DREAM3D_REQUIRE_EQUAL(index, 0)
+      DREAM3D_REQUIRE_EQUAL(*result, 0)
     }
 
     {
       float coords[3] = {-9.26f, 5.25f, 2.1f};
       std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
       DREAM3D_REQUIRE_EQUAL(result.has_value(), true)
-      size_t index = result.value();
-      DREAM3D_REQUIRE_EQUAL(index, 1)
+      DREAM3D_REQUIRE_EQUAL(*result, 1)
     }
 
     {
       float coords[3] = {-9.8f, 5.8f, 2.05f};
       std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
       DREAM3D_REQUIRE_EQUAL(result.has_value(), true)
-      size_t index = result.value();
-      DREAM3D_REQUIRE_EQUAL(index, 10)
+      DREAM3D_REQUIRE_EQUAL(*result, 10)
     }
 
     {
       float coords[3] = {-6.55f, 5.6f, 2.45f};
       std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
       DREAM3D_REQUIRE_EQUAL(result.has_value(), true)
-      size_t index = result.value();
-      DREAM3D_REQUIRE_EQUAL(index, 16)
+      DREAM3D_REQUIRE_EQUAL(*result, 16)
     }
 
     {
       float coords[3] = {-6.95f, 5.9f, 2.55f};
       std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
       DREAM3D_REQUIRE_EQUAL(result.has_value(), true)
-      size_t index = result.value();
-      DREAM3D_REQUIRE_EQUAL(index, 216)
+      DREAM3D_REQUIRE_EQUAL(*result, 216)
     }
 
     {
