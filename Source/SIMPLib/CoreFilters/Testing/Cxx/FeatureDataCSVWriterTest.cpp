@@ -40,6 +40,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataArrays/NeighborList.hpp"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
