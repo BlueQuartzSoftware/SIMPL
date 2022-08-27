@@ -93,6 +93,97 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
+  void TestCoordsToIndex()
+  {
+    ImageGeom::Pointer geom = ImageGeom::CreateGeometry("Test Geometry");
+    SizeVec3Type dims(10, 20, 30);
+    FloatVec3Type spacing = {0.5f, 0.5f, 0.5f};
+    FloatVec3Type origin = {-10.0f, 5.0f, 2.0f};
+
+    geom->setDimensions(dims);
+    geom->setOrigin(origin);
+    geom->setSpacing(spacing);
+
+    {
+      float coords[3] = {-9.9f, 5.25f, 2.15f};
+      std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
+      DREAM3D_REQUIRE_EQUAL(result.has_value(), true)
+      size_t index = result.value();
+      DREAM3D_REQUIRE_EQUAL(index, 0)
+    }
+
+    {
+      float coords[3] = {-9.26f, 5.25f, 2.1f};
+      std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
+      DREAM3D_REQUIRE_EQUAL(result.has_value(), true)
+      size_t index = result.value();
+      DREAM3D_REQUIRE_EQUAL(index, 1)
+    }
+
+    {
+      float coords[3] = {-9.8f, 5.8f, 2.05f};
+      std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
+      DREAM3D_REQUIRE_EQUAL(result.has_value(), true)
+      size_t index = result.value();
+      DREAM3D_REQUIRE_EQUAL(index, 10)
+    }
+
+    {
+      float coords[3] = {-6.55f, 5.6f, 2.45f};
+      std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
+      DREAM3D_REQUIRE_EQUAL(result.has_value(), true)
+      size_t index = result.value();
+      DREAM3D_REQUIRE_EQUAL(index, 16)
+    }
+
+    {
+      float coords[3] = {-6.95f, 5.9f, 2.55f};
+      std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
+      DREAM3D_REQUIRE_EQUAL(result.has_value(), true)
+      size_t index = result.value();
+      DREAM3D_REQUIRE_EQUAL(index, 216)
+    }
+
+    {
+      float coords[3] = {-10.0001f, 5.75f, 2.75f};
+      std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
+      DREAM3D_REQUIRE_EQUAL(result.has_value(), false)
+    }
+
+    {
+      float coords[3] = {-9.75f, 4.9999f, 2.75f};
+      std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
+      DREAM3D_REQUIRE_EQUAL(result.has_value(), false)
+    }
+
+    {
+      float coords[3] = {-9.75f, 5.75f, 1.9999f};
+      std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
+      DREAM3D_REQUIRE_EQUAL(result.has_value(), false)
+    }
+
+    {
+      float coords[3] = {-4.9f, 5.75f, 2.75f};
+      std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
+      DREAM3D_REQUIRE_EQUAL(result.has_value(), false)
+    }
+
+    {
+      float coords[3] = {-9.75f, 15.1f, 2.75f};
+      std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
+      DREAM3D_REQUIRE_EQUAL(result.has_value(), false)
+    }
+
+    {
+      float coords[3] = {-9.75f, 5.75f, 17.1f};
+      std::optional<size_t> result = geom->getIndex(coords[0], coords[1], coords[2]);
+      DREAM3D_REQUIRE_EQUAL(result.has_value(), false)
+    }
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
   void operator()()
   {
     std::cout << "#### ImageGeomTest Starting ####" << std::endl;
@@ -100,6 +191,7 @@ public:
 
     // Use this to register a specific function that will run a test
     DREAM3D_REGISTER_TEST(TestIndexCalculation());
+    DREAM3D_REGISTER_TEST(TestCoordsToIndex());
     DREAM3D_REGISTER_TEST(RemoveTestFiles());
   }
 

@@ -45,6 +45,7 @@
 
 #include <QtCore/QTextStream>
 
+#include <cmath>
 #include <thread>
 
 #include "SIMPLib/Geometry/ImageGeom.h"
@@ -695,9 +696,9 @@ std::optional<size_t> ImageGeom::getIndex(float xCoord, float yCoord, float zCoo
     return {};
   }
 
-  size_t x = (xCoord - m_Origin[0]) / m_Spacing[0];
-  size_t y = (yCoord - m_Origin[1]) / m_Spacing[1];
-  size_t z = (zCoord - m_Origin[2]) / m_Spacing[2];
+  size_t x = static_cast<int64_t>(floor((xCoord - m_Origin[0]) / m_Spacing[0]));
+  size_t y = static_cast<int64_t>(floor((yCoord - m_Origin[1]) / m_Spacing[1]));
+  size_t z = static_cast<int64_t>(floor((zCoord - m_Origin[2]) / m_Spacing[2]));
 
   return (m_Dimensions[1] * m_Dimensions[0] * z) + (m_Dimensions[0] * y) + x;
 }
@@ -722,9 +723,9 @@ std::optional<size_t> ImageGeom::getIndex(double xCoord, double yCoord, double z
     return {};
   }
 
-  size_t x = (xCoord - m_Origin[0]) / m_Spacing[0];
-  size_t y = (yCoord - m_Origin[1]) / m_Spacing[1];
-  size_t z = (zCoord - m_Origin[2]) / m_Spacing[2];
+  size_t x = static_cast<int64_t>(floor((xCoord - m_Origin[0]) / m_Spacing[0]));
+  size_t y = static_cast<int64_t>(floor((yCoord - m_Origin[1]) / m_Spacing[1]));
+  size_t z = static_cast<int64_t>(floor((zCoord - m_Origin[2]) / m_Spacing[2]));
 
   return (m_Dimensions[1] * m_Dimensions[0] * z) + (m_Dimensions[0] * y) + x;
 }
