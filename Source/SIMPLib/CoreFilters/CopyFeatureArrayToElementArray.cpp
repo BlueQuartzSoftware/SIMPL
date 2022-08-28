@@ -70,14 +70,15 @@ void CopyFeatureArrayToElementArray::setupFilterParameters()
   parameters.push_back(SeparatorFilterParameter::Create("Feature Data", FilterParameter::Category::RequiredArray));
 
   {
-    DataArraySelectionFilterParameter::RequirementType req =
-        DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Category::Feature);
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(
+        SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, {AttributeMatrix::Category::Element, AttributeMatrix::Category::Feature, AttributeMatrix::Category::Ensemble});
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Data to Copy to Element Data", SelectedFeatureArrayPath, FilterParameter::Category::RequiredArray, CopyFeatureArrayToElementArray, req));
   }
   parameters.push_back(SeparatorFilterParameter::Create("Element Data", FilterParameter::Category::RequiredArray));
 
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Int32, 1, AttributeMatrix::Category::Element);
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(
+        SIMPL::TypeNames::Int32, 1, {AttributeMatrix::Category::Element, AttributeMatrix::Category::Feature, AttributeMatrix::Category::Ensemble});
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Ids", FeatureIdsArrayPath, FilterParameter::Category::RequiredArray, CopyFeatureArrayToElementArray, req));
   }
   parameters.push_back(SeparatorFilterParameter::Create("Element Data", FilterParameter::Category::CreatedArray));
@@ -213,14 +214,11 @@ void CopyFeatureArrayToElementArray::execute()
 
   if(mismatchedFeatures)
   {
-    QString ss = QObject::tr("The largest Feature Id (%1) in the FeatureIds array is larger than the number of Features in the InArray array (%2)").arg(largestFeature).arg(numFeatures);
-    setErrorCondition(-5555, ss);
-    return;
-  }
-
-  if(largestFeature != (numFeatures - 1))
-  {
-    QString ss = QObject::tr("The number of Features in the InArray array (%1) does not match the largest Feature Id in the FeatureIds array").arg(numFeatures);
+    QString ss = QObject::tr("The given FeatureIds Array %1 has a value that is larger than allowed by the given Feature Attribute Matrix %2.\n %3 >= %4")
+                     .arg(m_FeatureIdsArrayPath.serialize("/"))
+                     .arg(m_SelectedFeatureArrayPath.serialize("/"))
+                     .arg(largestFeature)
+                     .arg(numFeatures);
     setErrorCondition(-5555, ss);
     return;
   }
