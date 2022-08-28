@@ -143,6 +143,15 @@ public:
   static RequirementType CreateCategoryRequirement(const QString& primitiveType, size_t allowedCompDim, AttributeMatrix::Category attributeMatrixCategory);
 
   /**
+   * @brief
+   * @param primitiveType
+   * @param allowedCompDim
+   * @param attributeMatrixCategories
+   * @return
+   */
+  static RequirementType CreateCategoryRequirement(const QString& primitiveType, size_t allowedCompDim,
+                                                                                                                  std::vector<AttributeMatrix::Category> attributeMatrixCategories);
+  /**
    * @brief CreateRequirement
    * @param primitiveType
    * @param allowedCompDim

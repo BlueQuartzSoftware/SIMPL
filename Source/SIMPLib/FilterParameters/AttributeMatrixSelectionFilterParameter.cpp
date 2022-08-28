@@ -114,6 +114,39 @@ AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectio
   return req;
 }
 
+AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectionFilterParameter::CreateRequirement(std::vector<AttributeMatrix::Category> attributeMatrixObjectTypes)
+{
+  AttributeMatrixSelectionFilterParameter::RequirementType req;
+  AttributeMatrix::Types amTypes;
+  for(const auto& attributeMatrixObjectType : attributeMatrixObjectTypes)
+  {
+    if(attributeMatrixObjectType == AttributeMatrix::Category::Element)
+    {
+      amTypes.push_back(AttributeMatrix::Type::Cell);
+      amTypes.push_back(AttributeMatrix::Type::Face);
+      amTypes.push_back(AttributeMatrix::Type::Edge);
+      amTypes.push_back(AttributeMatrix::Type::Vertex);
+    }
+    else if(attributeMatrixObjectType == AttributeMatrix::Category::Feature)
+    {
+      amTypes.push_back(AttributeMatrix::Type::CellFeature);
+      amTypes.push_back(AttributeMatrix::Type::FaceFeature);
+      amTypes.push_back(AttributeMatrix::Type::EdgeFeature);
+      amTypes.push_back(AttributeMatrix::Type::VertexFeature);
+    }
+    else if(attributeMatrixObjectType == AttributeMatrix::Category::Ensemble)
+    {
+      amTypes.push_back(AttributeMatrix::Type::CellEnsemble);
+      amTypes.push_back(AttributeMatrix::Type::FaceEnsemble);
+      amTypes.push_back(AttributeMatrix::Type::EdgeEnsemble);
+      amTypes.push_back(AttributeMatrix::Type::VertexEnsemble);
+    }
+  }
+  req.amTypes = amTypes;
+
+  return req;
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

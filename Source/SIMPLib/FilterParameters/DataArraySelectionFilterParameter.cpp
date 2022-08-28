@@ -82,7 +82,51 @@ QString DataArraySelectionFilterParameter::getWidgetType() const
 }
 
 // -----------------------------------------------------------------------------
-//
+DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParameter::CreateCategoryRequirement(const QString& primitiveType, size_t allowedCompDim,
+                                                                                                                std::vector<AttributeMatrix::Category> attributeMatrixCategories)
+{
+  using SizeTVectorType = std::vector<size_t>;
+  DataArraySelectionFilterParameter::RequirementType req;
+  AttributeMatrix::Types amTypes;
+  for(const auto&  attributeMatrixCategory:  attributeMatrixCategories)
+  {
+    if(attributeMatrixCategory == AttributeMatrix::Category::Element)
+    {
+      amTypes.push_back(AttributeMatrix::Type::Cell);
+      amTypes.push_back(AttributeMatrix::Type::Face);
+      amTypes.push_back(AttributeMatrix::Type::Edge);
+      amTypes.push_back(AttributeMatrix::Type::Vertex);
+    }
+    else if(attributeMatrixCategory == AttributeMatrix::Category::Feature)
+    {
+      amTypes.push_back(AttributeMatrix::Type::CellFeature);
+      amTypes.push_back(AttributeMatrix::Type::FaceFeature);
+      amTypes.push_back(AttributeMatrix::Type::EdgeFeature);
+      amTypes.push_back(AttributeMatrix::Type::VertexFeature);
+    }
+    else if(attributeMatrixCategory == AttributeMatrix::Category::Ensemble)
+    {
+      amTypes.push_back(AttributeMatrix::Type::CellEnsemble);
+      amTypes.push_back(AttributeMatrix::Type::FaceEnsemble);
+      amTypes.push_back(AttributeMatrix::Type::EdgeEnsemble);
+      amTypes.push_back(AttributeMatrix::Type::VertexEnsemble);
+    }
+  }
+  req.amTypes = amTypes;
+  if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
+  {
+    req.daTypes = std::vector<QString>(1, primitiveType);
+  }
+  if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
+  {
+    req.componentDimensions = std::vector<SizeTVectorType>(1, SizeTVectorType(1, allowedCompDim));
+  }
+  //  if(IGeometry::Type::Unknown != geometryType)
+  //  {
+  //    req.dcGeometryTypes = IGeometry::Types(1, geometryType);
+  //  }
+  return req;
+}
 // -----------------------------------------------------------------------------
 DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParameter::CreateCategoryRequirement(const QString& primitiveType, size_t allowedCompDim,
                                                                                                                 AttributeMatrix::Category attributeMatrixCategory)

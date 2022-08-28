@@ -136,6 +136,14 @@ public:
   static RequirementType CreateRequirement(AttributeMatrix::Category attributeMatrixObjectType);
 
   /**
+   *
+   * @param attributeMatrixObjectTypes
+   * @return
+   */
+  static RequirementType CreateRequirement(std::vector<AttributeMatrix::Category> attributeMatrixObjectTypes);
+
+
+  /**
    * @brief CreateRequirement
    * @param attributeMatrixType
    * @param geometryType
