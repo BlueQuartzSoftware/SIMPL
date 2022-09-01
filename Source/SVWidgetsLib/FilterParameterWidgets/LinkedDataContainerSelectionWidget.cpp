@@ -98,6 +98,15 @@ void LinkedDataContainerSelectionWidget::setupGui()
   {
     return;
   }
+
+  // We need to convert between the 2 different RequirementTypes. Trying to use the same
+  // type lead to python issues. 
+  LinkedDataContainerSelectionFilterParameter::RequirementType requirements = m_FilterParameter->getRequirements();
+  DataContainerSelectionFilterParameter::RequirementType dcfpRequirements;
+  dcfpRequirements.dcGeometryTypes = requirements.dcGeometryTypes;
+  m_SelectedDataContainerPath->setDataContainerRequirements(dcfpRequirements);
+
+  m_SelectedDataContainerPath->setFilter(getFilter());
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), &AbstractFilter::preflightAboutToExecute, this, &LinkedDataContainerSelectionWidget::beforePreflight);
 
@@ -106,6 +115,8 @@ void LinkedDataContainerSelectionWidget::setupGui()
 
   // Catch when the filter wants its values updated
   connect(getFilter(), &AbstractFilter::updateFilterParameters, this, &LinkedDataContainerSelectionWidget::filterNeedsInputParameters);
+
+  connect(m_SelectedDataContainerPath, SIGNAL(pathChanged()), this, SLOT(dragPathChanged()));
 
   if(getFilterParameter() == nullptr)
   {
@@ -124,6 +135,10 @@ void LinkedDataContainerSelectionWidget::setupGui()
   changeStyleSheet(Style::FS_STANDARD_STYLE);
 }
 
+void LinkedDataContainerSelectionWidget::dragPathChanged()
+{
+  dataContainerSelected(m_SelectedDataContainerPath->getDataArrayPath().serialize(Detail::Delimiter));
+}
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

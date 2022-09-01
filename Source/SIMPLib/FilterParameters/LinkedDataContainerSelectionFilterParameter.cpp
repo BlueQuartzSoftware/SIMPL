@@ -134,6 +134,14 @@ void LinkedDataContainerSelectionFilterParameter::dataArrayPathRenamed(AbstractF
     Q_EMIT filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }
+// -----------------------------------------------------------------------------
+LinkedDataContainerSelectionFilterParameter::RequirementType LinkedDataContainerSelectionFilterParameter::getRequirements()
+{
+  RequirementType reqs;
+  reqs.dcGeometryTypes = getDefaultGeometryTypes();
+
+  return reqs;
+}
 
 // -----------------------------------------------------------------------------
 LinkedDataContainerSelectionFilterParameter::Pointer LinkedDataContainerSelectionFilterParameter::NullPointer()

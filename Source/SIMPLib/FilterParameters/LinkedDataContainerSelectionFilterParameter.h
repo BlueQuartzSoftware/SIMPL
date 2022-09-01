@@ -40,6 +40,7 @@
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
 class AbstractFilter;
@@ -91,6 +92,7 @@ public:
 
   using SetterCallbackType = std::function<void(DataArrayPath)>;
   using GetterCallbackType = std::function<DataArrayPath(void)>;
+
 
   struct RequirementType
   {
@@ -158,6 +160,12 @@ public:
    * @param json The QJsonObject that the filter parameter writes to.
    */
   void writeJson(QJsonObject& json) const override;
+
+  /**
+   * @brief Returns the RequirementType for the filter parameter
+   * @return
+   */
+  RequirementType getRequirements();
 
   /**
    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property

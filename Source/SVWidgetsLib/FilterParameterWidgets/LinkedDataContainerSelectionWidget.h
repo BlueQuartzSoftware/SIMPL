@@ -107,6 +107,7 @@ public Q_SLOTS:
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
   void dataContainerSelected(QString path);
+  void dragPathChanged();
 
 Q_SIGNALS:
   void conditionalPropertyChanged(int);
