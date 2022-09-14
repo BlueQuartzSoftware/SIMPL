@@ -697,8 +697,22 @@ std::optional<size_t> ImageGeom::getIndex(float xCoord, float yCoord, float zCoo
   }
 
   size_t x = static_cast<int64_t>(floor((xCoord - m_Origin[0]) / m_Spacing[0]));
+  if(x >= m_Dimensions[0])
+  {
+    return {};
+  }
+
   size_t y = static_cast<int64_t>(floor((yCoord - m_Origin[1]) / m_Spacing[1]));
+  if(y >= m_Dimensions[1])
+  {
+    return {};
+  }
+
   size_t z = static_cast<int64_t>(floor((zCoord - m_Origin[2]) / m_Spacing[2]));
+  if(z >= m_Dimensions[2])
+  {
+    return {};
+  }
 
   return (m_Dimensions[1] * m_Dimensions[0] * z) + (m_Dimensions[0] * y) + x;
 }
@@ -724,8 +738,22 @@ std::optional<size_t> ImageGeom::getIndex(double xCoord, double yCoord, double z
   }
 
   size_t x = static_cast<int64_t>(floor((xCoord - m_Origin[0]) / m_Spacing[0]));
+  if(x >= m_Dimensions[0])
+  {
+    return {};
+  }
+
   size_t y = static_cast<int64_t>(floor((yCoord - m_Origin[1]) / m_Spacing[1]));
+  if(y >= m_Dimensions[1])
+  {
+    return {};
+  }
+
   size_t z = static_cast<int64_t>(floor((zCoord - m_Origin[2]) / m_Spacing[2]));
+  if(z >= m_Dimensions[2])
+  {
+    return {};
+  }
 
   return (m_Dimensions[1] * m_Dimensions[0] * z) + (m_Dimensions[0] * y) + x;
 }
