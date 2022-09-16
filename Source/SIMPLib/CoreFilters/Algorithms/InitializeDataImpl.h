@@ -44,8 +44,6 @@
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
-#include <tbb/concurrent_queue.h>
-
 class InitializeData;
 class IDataArray;
 using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
