@@ -191,10 +191,10 @@ void CopyFeatureArrayToElementArray::execute()
     return;
   }
 
-  // Validate that the selected InArray has tuples equal to the largest
-  // Feature Id; the filter would not crash otherwise, but the user should
-  // be notified of unanticipated behavior ; this cannot be done in the dataCheck since
-  // we don't have acces to the data yet
+  // Validate that the selected InArray has tuples not larger than the largest
+  // Feature Id; the filter would crash otherwise, but the user should
+  // be notified of unanticipated behavior. this cannot be done in the dataCheck since
+  // we don't have access to the data yet
   int32_t numFeatures = static_cast<int32_t>(m_InArrayPtr.lock()->getNumberOfTuples());
   bool mismatchedFeatures = false;
   int32_t largestFeature = 0;

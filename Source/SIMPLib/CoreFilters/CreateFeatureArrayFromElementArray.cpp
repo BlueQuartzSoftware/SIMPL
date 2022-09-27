@@ -217,11 +217,13 @@ void CreateFeatureArrayFromElementArray::execute()
     return;
   }
 
-  // Validate that the selected InArray has tuples equal to the largest
-  // Feature Id; the filter would not crash otherwise, but the user should
-  // be notified of unanticipated behavior ; this cannot be done in the dataCheck since
-  // we don't have acces to the data yet
-  int32_t totalFeatures = getDataContainerArray()->getAttributeMatrix(m_CellFeatureAttributeMatrixName)->getNumberOfTuples();
+  DataContainer::Pointer dc = getDataContainerArray()->getDataContainer(m_CellFeatureAttributeMatrixName.getDataContainerName());
+  AttributeMatrix::Pointer attrMat = dc->getAttributeMatrix(m_CellFeatureAttributeMatrixName.getAttributeMatrixName());
+  // Validate that the selected InArray has tuples not larger than the largest
+  // Feature Id; the filter would crash otherwise, but the user should
+  // be notified of unanticipated behavior. this cannot be done in the dataCheck since
+  // we don't have access to the data yet
+  int32_t numFeatures = getDataContainerArray()->getAttributeMatrix(m_CellFeatureAttributeMatrixName)->getNumberOfTuples();
   bool mismatchedFeatures = false;
   int32_t largestFeature = 0;
   size_t totalPoints = m_FeatureIdsPtr.lock()->getNumberOfTuples();
@@ -230,7 +232,7 @@ void CreateFeatureArrayFromElementArray::execute()
     if(m_FeatureIds[i] > largestFeature)
     {
       largestFeature = m_FeatureIds[i];
-      if(largestFeature >= totalFeatures)
+      if(largestFeature >= numFeatures)
       {
         mismatchedFeatures = true;
         break;
@@ -242,65 +244,59 @@ void CreateFeatureArrayFromElementArray::execute()
   {
     QString ss = QObject::tr("Attribute Matrix %1 has %2 tuples but the input array %3 has a Feature ID value of at least %4")
                      .arg(m_CellFeatureAttributeMatrixName.serialize("/"))
-                     .arg(totalFeatures)
+                     .arg(numFeatures)
                      .arg(getFeatureIdsArrayPath().serialize("/"))
                      .arg(largestFeature);
     setErrorCondition(-5555, ss);
     return;
   }
 
-  if(largestFeature != (totalFeatures - 1))
-  {
-    QString ss = QObject::tr("The number of Features in the InArray array (%1) does not match the largest Feature Id in the FeatureIds array").arg(totalFeatures);
-    setErrorCondition(-5556, ss);
-    return;
-  }
 
   IDataArray::Pointer p = IDataArray::NullPointer();
 
   if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(m_InArrayPtr.lock()))
   {
-    p = copyCellData<int8_t>(this, m_InArrayPtr.lock(), totalFeatures, m_FeatureIds, getCreatedArrayName());
+    p = copyCellData<int8_t>(this, m_InArrayPtr.lock(), numFeatures, m_FeatureIds, getCreatedArrayName());
   }
   else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(m_InArrayPtr.lock()))
   {
-    p = copyCellData<uint8_t>(this, m_InArrayPtr.lock(), totalFeatures, m_FeatureIds, getCreatedArrayName());
+    p = copyCellData<uint8_t>(this, m_InArrayPtr.lock(), numFeatures, m_FeatureIds, getCreatedArrayName());
   }
   else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(m_InArrayPtr.lock()))
   {
-    p = copyCellData<int16_t>(this, m_InArrayPtr.lock(), totalFeatures, m_FeatureIds, getCreatedArrayName());
+    p = copyCellData<int16_t>(this, m_InArrayPtr.lock(), numFeatures, m_FeatureIds, getCreatedArrayName());
   }
   else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(m_InArrayPtr.lock()))
   {
-    p = copyCellData<uint16_t>(this, m_InArrayPtr.lock(), totalFeatures, m_FeatureIds, getCreatedArrayName());
+    p = copyCellData<uint16_t>(this, m_InArrayPtr.lock(), numFeatures, m_FeatureIds, getCreatedArrayName());
   }
   else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(m_InArrayPtr.lock()))
   {
-    p = copyCellData<int32_t>(this, m_InArrayPtr.lock(), totalFeatures, m_FeatureIds, getCreatedArrayName());
+    p = copyCellData<int32_t>(this, m_InArrayPtr.lock(), numFeatures, m_FeatureIds, getCreatedArrayName());
   }
   else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(m_InArrayPtr.lock()))
   {
-    p = copyCellData<uint32_t>(this, m_InArrayPtr.lock(), totalFeatures, m_FeatureIds, getCreatedArrayName());
+    p = copyCellData<uint32_t>(this, m_InArrayPtr.lock(), numFeatures, m_FeatureIds, getCreatedArrayName());
   }
   else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(m_InArrayPtr.lock()))
   {
-    p = copyCellData<int64_t>(this, m_InArrayPtr.lock(), totalFeatures, m_FeatureIds, getCreatedArrayName());
+    p = copyCellData<int64_t>(this, m_InArrayPtr.lock(), numFeatures, m_FeatureIds, getCreatedArrayName());
   }
   else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(m_InArrayPtr.lock()))
   {
-    p = copyCellData<uint64_t>(this, m_InArrayPtr.lock(), totalFeatures, m_FeatureIds, getCreatedArrayName());
+    p = copyCellData<uint64_t>(this, m_InArrayPtr.lock(), numFeatures, m_FeatureIds, getCreatedArrayName());
   }
   else if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(m_InArrayPtr.lock()))
   {
-    p = copyCellData<float>(this, m_InArrayPtr.lock(), totalFeatures, m_FeatureIds, getCreatedArrayName());
+    p = copyCellData<float>(this, m_InArrayPtr.lock(), numFeatures, m_FeatureIds, getCreatedArrayName());
   }
   else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(m_InArrayPtr.lock()))
   {
-    p = copyCellData<double>(this, m_InArrayPtr.lock(), totalFeatures, m_FeatureIds, getCreatedArrayName());
+    p = copyCellData<double>(this, m_InArrayPtr.lock(), numFeatures, m_FeatureIds, getCreatedArrayName());
   }
   else if(TemplateHelpers::CanDynamicCast<BoolArrayType>()(m_InArrayPtr.lock()))
   {
-    p = copyCellData<bool>(this, m_InArrayPtr.lock(), totalFeatures, m_FeatureIds, getCreatedArrayName());
+    p = copyCellData<bool>(this, m_InArrayPtr.lock(), numFeatures, m_FeatureIds, getCreatedArrayName());
   }
   else
   {
