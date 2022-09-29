@@ -172,7 +172,7 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
     {
       shapeTypeLabel = new QLabel(m_ShapeTypeScrollContents);
       QString str;
-      if((names.get() != nullptr) && names->getNumberOfTuples() > 0)
+      if((names.get() != nullptr) && names->isAllocated() && names->getNumberOfTuples() > 0)
       {
         str = names->getValue(i);
       }
@@ -205,7 +205,7 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
       shapeTypeComboBox = m_ShapeTypeCombos.at(i - 1);
 
       QString str;
-      if((names.get() != nullptr) && names->getNumberOfTuples() > 0)
+      if((names.get() != nullptr) && names->isAllocated() && names->getNumberOfTuples() > 0)
       {
         str = names->getValue(i);
       }

@@ -138,7 +138,7 @@ StringDataArray::~StringDataArray() = default;
 // -----------------------------------------------------------------------------
 bool StringDataArray::isAllocated() const
 {
-  return true;
+  return m_IsAllocated;
 }
 
 // -----------------------------------------------------------------------------
