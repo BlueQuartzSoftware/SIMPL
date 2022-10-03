@@ -49,7 +49,7 @@ IntFilterParameter::~IntFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 IntFilterParameter::Pointer IntFilterParameter::Create(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback,
-                                                       const GetterCallbackType& getterCallback, int groupIndex)
+                                                       const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
 
   IntFilterParameter::Pointer ptr = IntFilterParameter::New();
@@ -57,7 +57,7 @@ IntFilterParameter::Pointer IntFilterParameter::Create(const QString& humanLabel
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

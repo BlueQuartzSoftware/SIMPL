@@ -59,7 +59,7 @@ MultiAttributeMatrixSelectionFilterParameter::~MultiAttributeMatrixSelectionFilt
 MultiAttributeMatrixSelectionFilterParameter::Pointer MultiAttributeMatrixSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName,
                                                                                                            const std::vector<DataArrayPath>& defaultValue, Category category,
                                                                                                            const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                                           RequirementType req, int groupIndex)
+                                                                                                           RequirementType req, const std::vector<int>& groupIndices)
 {
 
   MultiAttributeMatrixSelectionFilterParameter::Pointer ptr = MultiAttributeMatrixSelectionFilterParameter::New();
@@ -73,7 +73,7 @@ MultiAttributeMatrixSelectionFilterParameter::Pointer MultiAttributeMatrixSelect
   ptr->setDefaultAttributeMatrixTypes(req.amTypes);
   ptr->setDefaultAttributeArrayTypes(req.daTypes);
   ptr->setDefaultComponentDimensions(req.componentDimensions);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

@@ -58,7 +58,7 @@ MultiDataArraySelectionFilterParameter::~MultiDataArraySelectionFilterParameter(
 // -----------------------------------------------------------------------------
 MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const std::vector<DataArrayPath>& defaultValue,
                                                                                                Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                               RequirementType req, int groupIndex)
+                                                                                               RequirementType req, const std::vector<int>& groupIndices)
 {
 
   MultiDataArraySelectionFilterParameter::Pointer ptr = MultiDataArraySelectionFilterParameter::New();
@@ -72,7 +72,7 @@ MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterPar
   ptr->setDefaultAttributeMatrixTypes(req.amTypes);
   ptr->setDefaultAttributeArrayTypes(req.daTypes);
   ptr->setDefaultComponentDimensions(req.componentDimensions);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

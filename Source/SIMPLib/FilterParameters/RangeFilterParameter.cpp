@@ -49,7 +49,7 @@ RangeFilterParameter::~RangeFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 RangeFilterParameter::Pointer RangeFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const FPRangePair& defaultPair, Category category,
-                                                           const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                           const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
 
   RangeFilterParameter::Pointer ptr = RangeFilterParameter::New();
@@ -57,7 +57,7 @@ RangeFilterParameter::Pointer RangeFilterParameter::Create(const QString& humanL
   ptr->setPropertyName(propertyName);
   ptr->setDefaultPair(defaultPair);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

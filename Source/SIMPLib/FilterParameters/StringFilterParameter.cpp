@@ -49,7 +49,7 @@ StringFilterParameter::~StringFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 StringFilterParameter::Pointer StringFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                             const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                             const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
 
   StringFilterParameter::Pointer ptr = StringFilterParameter::New();
@@ -57,7 +57,7 @@ StringFilterParameter::Pointer StringFilterParameter::Create(const QString& huma
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

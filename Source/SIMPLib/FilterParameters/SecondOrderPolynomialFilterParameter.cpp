@@ -50,7 +50,7 @@ SecondOrderPolynomialFilterParameter::~SecondOrderPolynomialFilterParameter() = 
 // -----------------------------------------------------------------------------
 SecondOrderPolynomialFilterParameter::Pointer SecondOrderPolynomialFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const Float2ndOrderPolynomial& defaultValue,
                                                                                            Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                           int groupIndex)
+                                                                                           const std::vector<int>& groupIndices)
 {
 
   SecondOrderPolynomialFilterParameter::Pointer ptr = SecondOrderPolynomialFilterParameter::New();
@@ -60,7 +60,7 @@ SecondOrderPolynomialFilterParameter::Pointer SecondOrderPolynomialFilterParamet
   v.setValue(defaultValue);
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

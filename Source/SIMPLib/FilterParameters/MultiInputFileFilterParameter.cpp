@@ -55,7 +55,7 @@ MultiInputFileFilterParameter::~MultiInputFileFilterParameter() = default;
 // -----------------------------------------------------------------------------
 MultiInputFileFilterParameter::Pointer MultiInputFileFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const VecString& defaultValue, Category category,
                                                                              const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const QString& fileExtension,
-                                                                             const QString& fileType, int groupIndex)
+                                                                             const QString& fileType, const std::vector<int>& groupIndices)
 {
   MultiInputFileFilterParameter::Pointer ptr = MultiInputFileFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -64,7 +64,7 @@ MultiInputFileFilterParameter::Pointer MultiInputFileFilterParameter::Create(con
   ptr->setCategory(category);
   ptr->setFileExtension(fileExtension);
   ptr->setFileType(fileType);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

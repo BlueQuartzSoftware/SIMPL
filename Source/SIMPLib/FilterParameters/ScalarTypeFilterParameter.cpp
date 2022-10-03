@@ -49,7 +49,7 @@ ScalarTypeFilterParameter::~ScalarTypeFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 ScalarTypeFilterParameter::Pointer ScalarTypeFilterParameter::Create(const QString& humanLabel, const QString& propertyName, SIMPL::ScalarTypes::Type defaultValue, Category category,
-                                                                     const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                                     const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
   ScalarTypeFilterParameter::Pointer ptr = ScalarTypeFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -58,7 +58,7 @@ ScalarTypeFilterParameter::Pointer ScalarTypeFilterParameter::Create(const QStri
   var.setValue(defaultValue);
   ptr->setDefaultValue(var);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

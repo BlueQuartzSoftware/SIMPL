@@ -105,11 +105,16 @@ void FilterParameterWidget::setLinkedComboBoxState(int groupId)
 {
   if(m_FilterParameter != nullptr)
   {
-    int groupIndex = m_FilterParameter->getGroupIndex();
-    int state = (groupIndex == groupId) ? Qt::Checked : Qt::Unchecked;
+    std::vector<int> groupIndices = m_FilterParameter->getGroupIndices();
+    int state = Qt::Unchecked;
+    for(const auto& groupIndex : groupIndices)
     {
-      setLinkedConditionalState(state);
+      if(groupIndex == groupId)
+      {
+        state = Qt::Checked;
+      }
     }
+    setLinkedConditionalState(state);
   }
 }
 

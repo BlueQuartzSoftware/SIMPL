@@ -58,7 +58,7 @@ MultiDataContainerSelectionFilterParameter::~MultiDataContainerSelectionFilterPa
 // -----------------------------------------------------------------------------
 MultiDataContainerSelectionFilterParameter::Pointer MultiDataContainerSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const std::vector<QString>& defaultValue,
                                                                                                        Category category, const SetterCallbackType& setterCallback,
-                                                                                                       const GetterCallbackType& getterCallback, const RequirementType& req, int groupIndex)
+                                                                                                       const GetterCallbackType& getterCallback, const RequirementType& req, const std::vector<int>& groupIndices)
 {
 
   MultiDataContainerSelectionFilterParameter::Pointer ptr = MultiDataContainerSelectionFilterParameter::New();
@@ -72,7 +72,7 @@ MultiDataContainerSelectionFilterParameter::Pointer MultiDataContainerSelectionF
   ptr->setDefaultAttributeMatrixTypes(req.amTypes);
   ptr->setDefaultAttributeArrayTypes(req.daTypes);
   ptr->setDefaultComponentDimensions(req.componentDimensions);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

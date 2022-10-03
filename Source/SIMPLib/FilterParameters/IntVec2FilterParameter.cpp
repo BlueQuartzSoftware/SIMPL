@@ -47,7 +47,7 @@ IntVec2FilterParameter::~IntVec2FilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 IntVec2FilterParameter::Pointer IntVec2FilterParameter::Create(const QString& humanLabel, const QString& propertyName, const IntVec2Type& defaultValue, Category category,
-                                                               const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                               const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
 
   IntVec2FilterParameter::Pointer ptr = IntVec2FilterParameter::New();
@@ -57,7 +57,7 @@ IntVec2FilterParameter::Pointer IntVec2FilterParameter::Create(const QString& hu
   v.setValue(defaultValue);
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

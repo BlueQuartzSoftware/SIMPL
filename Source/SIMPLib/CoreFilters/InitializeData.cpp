@@ -188,8 +188,8 @@ void InitializeData::setupFilterParameters()
     parameter->setCategory(FilterParameter::Category::Parameter);
     parameters.push_back(parameter);
   }
-  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Initialization Value", InitValue, FilterParameter::Category::Parameter, InitializeData, Manual));
-  parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitRange, FilterParameter::Category::Parameter, InitializeData, RandomWithRange));
+  parameters.push_back(SIMPL_NEW_DOUBLE_FP("Initialization Value", InitValue, FilterParameter::Category::Parameter, InitializeData, {Manual}));
+  parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitRange, FilterParameter::Category::Parameter, InitializeData, {RandomWithRange}));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Invert", InvertData, FilterParameter::Category::Parameter, InitializeData));
   setFilterParameters(parameters);
 }

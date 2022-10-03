@@ -1003,9 +1003,16 @@ public:
         DREAM3D_REQUIRE_EQUAL(responseFPObject[SIMPL::JSON::FilterParameterCategory].isDouble(), true);
         DREAM3D_REQUIRE_EQUAL(responseFPObject[SIMPL::JSON::FilterParameterCategory].toInt(), static_cast<int32_t>(parameters[i]->getCategory()));
 
-        DREAM3D_REQUIRE_EQUAL(responseFPObject.contains(SIMPL::JSON::FilterParameterGroupIndex), true);
-        DREAM3D_REQUIRE_EQUAL(responseFPObject[SIMPL::JSON::FilterParameterGroupIndex].isDouble(), true);
-        DREAM3D_REQUIRE_EQUAL(responseFPObject[SIMPL::JSON::FilterParameterGroupIndex].toInt(), parameters[i]->getGroupIndex());
+        DREAM3D_REQUIRE_EQUAL(responseFPObject.contains(SIMPL::JSON::FilterParameterGroupIndices), true);
+        DREAM3D_REQUIRE_EQUAL(responseFPObject[SIMPL::JSON::FilterParameterGroupIndices].isArray(), true);
+        QJsonArray groupIndicesJsonArray = responseFPObject[SIMPL::JSON::FilterParameterGroupIndices].toArray();
+        std::vector<int> groupIndices = parameters[i]->getGroupIndices();
+        DREAM3D_REQUIRE_EQUAL(groupIndicesJsonArray.size(), groupIndices.size());
+        for(int j = 0; j < groupIndicesJsonArray.size(); j++)
+        {
+          DREAM3D_REQUIRE_EQUAL(groupIndicesJsonArray[j].isDouble(), true);
+          DREAM3D_REQUIRE_EQUAL(groupIndicesJsonArray[j].toInt(), groupIndices[j]);
+        }
 
         DREAM3D_REQUIRE_EQUAL(responseFPObject.contains(SIMPL::JSON::FilterParameterHumanLabel), true);
         DREAM3D_REQUIRE_EQUAL(responseFPObject[SIMPL::JSON::FilterParameterHumanLabel].isString(), true);

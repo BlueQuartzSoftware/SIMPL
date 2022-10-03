@@ -115,7 +115,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, const DataContainerGrid& defaultValue, Category category, SetterCallbackType setterCallback,
-                        GetterCallbackType getterCallback, int groupIndex = -1);
+                        GetterCallbackType getterCallback, const std::vector<int>& groupIndices = {});
 
   ~DataContainerGridSelectionFilterParameter() override;
 

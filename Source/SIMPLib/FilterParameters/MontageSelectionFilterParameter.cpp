@@ -48,14 +48,14 @@ MontageSelectionFilterParameter::~MontageSelectionFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 MontageSelectionFilterParameter::Pointer MontageSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const MontageSelection& defaultValue, Category category,
-                                                                                 const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                                                 const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
   MontageSelectionFilterParameter::Pointer ptr = MontageSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(QVariant::fromValue(defaultValue));
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

@@ -96,19 +96,19 @@ void MoveMultiData::setupFilterParameters()
 
   {
     MultiAttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_MAM_SELECTION_FP("Attribute Matrix Sources", AttributeMatrixSources, FilterParameter::Category::RequiredArray, MoveMultiData, req, 0));
+    parameters.push_back(SIMPL_NEW_MAM_SELECTION_FP("Attribute Matrix Sources", AttributeMatrixSources, FilterParameter::Category::RequiredArray, MoveMultiData, req, {0}));
   }
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Destination", DataContainerDestination, FilterParameter::Category::RequiredArray, MoveMultiData, req, 0));
+    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Destination", DataContainerDestination, FilterParameter::Category::RequiredArray, MoveMultiData, req, {0}));
   }
   {
     MultiDataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Array Sources", DataArraySources, FilterParameter::Category::RequiredArray, MoveMultiData, req, 1));
+    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Array Sources", DataArraySources, FilterParameter::Category::RequiredArray, MoveMultiData, req, {1}));
   }
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix Destination", AttributeMatrixDestination, FilterParameter::Category::RequiredArray, MoveMultiData, req, 1));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix Destination", AttributeMatrixDestination, FilterParameter::Category::RequiredArray, MoveMultiData, req, {1}));
   }
 
   setFilterParameters(parameters);

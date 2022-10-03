@@ -51,7 +51,7 @@ DataContainerCreationFilterParameter::~DataContainerCreationFilterParameter() = 
 //
 // -----------------------------------------------------------------------------
 DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category,
-                                                                                           const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                                                           const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
 
   DataContainerCreationFilterParameter::Pointer ptr = DataContainerCreationFilterParameter::New();
@@ -61,7 +61,7 @@ DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParamet
   v.setValue(defaultValue);
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

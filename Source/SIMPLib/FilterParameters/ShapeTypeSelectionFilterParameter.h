@@ -113,7 +113,7 @@ public:
   * @return
   */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, ShapeType::Types defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, const QString& phaseTypeCountProperty, const QString& phaseTypeArrayPathProperty, int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, const QString& phaseTypeCountProperty, const QString& phaseTypeArrayPathProperty, const std::vector<int>& groupIndices = {});
 
   ~ShapeTypeSelectionFilterParameter() override;
 

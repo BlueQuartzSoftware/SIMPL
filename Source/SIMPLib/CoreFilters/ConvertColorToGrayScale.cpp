@@ -228,9 +228,9 @@ void ConvertColorToGrayScale::setupFilterParameters()
     parameters.push_back(parameter);
   }
 
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Color Weighting", ColorWeights, FilterParameter::Category::Parameter, ConvertColorToGrayScale, 0));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Color Weighting", ColorWeights, FilterParameter::Category::Parameter, ConvertColorToGrayScale, {0}));
 
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Color Channel", ColorChannel, FilterParameter::Category::Parameter, ConvertColorToGrayScale, 3));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Color Channel", ColorChannel, FilterParameter::Category::Parameter, ConvertColorToGrayScale, {3}));
 
   MultiDataArraySelectionFilterParameter::RequirementType req;
   req.dcGeometryTypes = IGeometry::Types(1, IGeometry::Type::Image);

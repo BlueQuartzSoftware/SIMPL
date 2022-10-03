@@ -43,14 +43,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterParameter::FilterParameter()
-: m_HumanLabel("")
-, m_PropertyName("")
-, m_Category(FilterParameter::Category::Uncategorized)
-, m_ReadOnly(false)
-, m_GroupIndex(-1)
-{
-}
+FilterParameter::FilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -211,15 +204,15 @@ bool FilterParameter::getReadOnly() const
 }
 
 // -----------------------------------------------------------------------------
-void FilterParameter::setGroupIndex(int value)
+void FilterParameter::setGroupIndices(const std::vector<int>& value)
 {
-  m_GroupIndex = value;
+  m_GroupIndices = value;
 }
 
 // -----------------------------------------------------------------------------
-int FilterParameter::getGroupIndex() const
+std::vector<int> FilterParameter::getGroupIndices() const
 {
-  return m_GroupIndex;
+  return m_GroupIndices;
 }
 
 // -----------------------------------------------------------------------------

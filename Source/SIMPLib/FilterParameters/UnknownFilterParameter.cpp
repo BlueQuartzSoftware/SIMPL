@@ -48,14 +48,14 @@ UnknownFilterParameter::~UnknownFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-UnknownFilterParameter::Pointer UnknownFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, int groupIndex)
+UnknownFilterParameter::Pointer UnknownFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const std::vector<int>& groupIndices)
 {
   UnknownFilterParameter::Pointer ptr = UnknownFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   return ptr;
 }
 

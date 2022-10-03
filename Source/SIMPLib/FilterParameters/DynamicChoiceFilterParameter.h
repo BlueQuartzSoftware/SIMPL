@@ -110,7 +110,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, const QString& listProperty, int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, const QString& listProperty, const std::vector<int>& groupIndices = {});
 
   ~DynamicChoiceFilterParameter() override;
 

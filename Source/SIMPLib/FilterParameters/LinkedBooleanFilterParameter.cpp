@@ -50,7 +50,7 @@ LinkedBooleanFilterParameter::~LinkedBooleanFilterParameter() = default;
 // -----------------------------------------------------------------------------
 LinkedBooleanFilterParameter::Pointer LinkedBooleanFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const bool& defaultValue, Category category,
                                                                            const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                           const std::vector<QString>& conditionalProperties, int groupIndex)
+                                                                           const std::vector<QString>& conditionalProperties, const std::vector<int>& groupIndices)
 {
   LinkedBooleanFilterParameter::Pointer ptr = LinkedBooleanFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -58,7 +58,7 @@ LinkedBooleanFilterParameter::Pointer LinkedBooleanFilterParameter::Create(const
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
   ptr->setConditionalProperties(conditionalProperties);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

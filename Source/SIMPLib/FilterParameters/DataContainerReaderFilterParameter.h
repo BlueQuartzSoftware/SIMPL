@@ -87,7 +87,7 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, DataContainerReader* filter, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, DataContainerReader* filter, const std::vector<int>& groupIndices = {});
 
   ~DataContainerReaderFilterParameter() override;
 

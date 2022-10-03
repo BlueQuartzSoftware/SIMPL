@@ -69,7 +69,7 @@ void RequiredZThickness::setupFilterParameters()
     DataContainerSelectionFilterParameter::RequirementType req;
     parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("DataContainer", DataContainerSelection, FilterParameter::Category::RequiredArray, RequiredZThickness, req));
   }
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Minimum Z Dimension", NumZVoxels, FilterParameter::Category::Parameter, RequiredZThickness, 0));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Minimum Z Dimension", NumZVoxels, FilterParameter::Category::Parameter, RequiredZThickness, {0}));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Preflight Check", PreflightCheck, FilterParameter::Category::Parameter, RequiredZThickness));
   setFilterParameters(parameters);
 }

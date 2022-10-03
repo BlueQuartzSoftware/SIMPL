@@ -70,7 +70,7 @@ void FeatureCountDecision::setupFilterParameters()
         DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, AttributeMatrix::Type::CellEnsemble, IGeometry::Type::Any);
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Ids", FeatureIdsArrayPath, FilterParameter::Category::RequiredArray, FeatureCountDecision, req));
   }
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Maximum Number of Features", MaxGrains, FilterParameter::Category::Parameter, FeatureCountDecision, 0));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Maximum Number of Features", MaxGrains, FilterParameter::Category::Parameter, FeatureCountDecision, {0}));
   setFilterParameters(parameters);
 }
 

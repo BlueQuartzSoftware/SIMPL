@@ -50,7 +50,7 @@ FourthOrderPolynomialFilterParameter::~FourthOrderPolynomialFilterParameter() = 
 // -----------------------------------------------------------------------------
 FourthOrderPolynomialFilterParameter::Pointer FourthOrderPolynomialFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const Float4thOrderPolynomial& defaultValue,
                                                                                            Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                           int groupIndex)
+                                                                                           const std::vector<int>& groupIndices)
 {
 
   FourthOrderPolynomialFilterParameter::Pointer ptr = FourthOrderPolynomialFilterParameter::New();
@@ -60,7 +60,7 @@ FourthOrderPolynomialFilterParameter::Pointer FourthOrderPolynomialFilterParamet
   v.setValue(defaultValue);
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

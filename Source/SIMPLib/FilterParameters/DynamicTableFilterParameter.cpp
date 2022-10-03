@@ -54,14 +54,14 @@ DynamicTableFilterParameter::~DynamicTableFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::Create(const QString& humanLabel, const QString& propertyName, DynamicTableData defaultTableData, FilterParameter::Category category,
-                                                                         const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                                         const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
   DynamicTableFilterParameter::Pointer ptr = DynamicTableFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setCategory(category);
   ptr->setReadOnly(false);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

@@ -49,14 +49,14 @@ GenerateColorTableFilterParameter::~GenerateColorTableFilterParameter() = defaul
 //
 // -----------------------------------------------------------------------------
 GenerateColorTableFilterParameter::Pointer GenerateColorTableFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                                     GenerateColorTable* filter, int groupIndex)
+                                                                                     GenerateColorTable* filter, const std::vector<int>& groupIndices)
 {
   GenerateColorTableFilterParameter::Pointer ptr = GenerateColorTableFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setFilter(filter);
 
   return ptr;

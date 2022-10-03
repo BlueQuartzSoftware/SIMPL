@@ -93,15 +93,15 @@ void CopyObject::setupFilterParameters()
   }
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container to Copy", DataContainerToCopy, FilterParameter::Category::RequiredArray, CopyObject, req, 0));
+    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container to Copy", DataContainerToCopy, FilterParameter::Category::RequiredArray, CopyObject, req, {0}));
   }
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix to Copy", AttributeMatrixToCopy, FilterParameter::Category::RequiredArray, CopyObject, req, 1));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix to Copy", AttributeMatrixToCopy, FilterParameter::Category::RequiredArray, CopyObject, req, {1}));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Copy", AttributeArrayToCopy, FilterParameter::Category::RequiredArray, CopyObject, req, 2));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Copy", AttributeArrayToCopy, FilterParameter::Category::RequiredArray, CopyObject, req, {2}));
   }
   parameters.push_back(SIMPL_NEW_STRING_FP("Copied Object Name", CopiedObjectName, FilterParameter::Category::CreatedArray, CopyObject));
   setFilterParameters(parameters);
@@ -145,7 +145,8 @@ void CopyObject::dataCheck()
   switch(getObjectToCopy())
   {
   // Copy Data Container
-  case 0: {
+  case 0:
+  {
     if(getDataContainerArray()->doesDataContainerExist(getCopiedObjectName()))
     {
       QString ss = QObject::tr("A Data Container already exists with the name %1").arg(getCopiedObjectName());
@@ -167,7 +168,8 @@ void CopyObject::dataCheck()
     break;
   }
   // Copy Attribute Matrix
-  case 1: {
+  case 1:
+  {
     DataArrayPath path(getAttributeMatrixToCopy().getDataContainerName(), getCopiedObjectName(), "");
     if(getDataContainerArray()->doesAttributeMatrixExist(path))
     {
@@ -190,7 +192,8 @@ void CopyObject::dataCheck()
     break;
   }
   // Copy Attribute Array
-  case 2: {
+  case 2:
+  {
     DataArrayPath path(getAttributeArrayToCopy().getDataContainerName(), getAttributeArrayToCopy().getAttributeMatrixName(), getCopiedObjectName());
     if(getDataContainerArray()->doesAttributeArrayExist(path))
     {
@@ -212,7 +215,8 @@ void CopyObject::dataCheck()
 
     break;
   }
-  default: {
+  default:
+  {
     break;
   }
   }

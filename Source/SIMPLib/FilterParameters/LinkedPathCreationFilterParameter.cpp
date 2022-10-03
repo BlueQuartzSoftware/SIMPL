@@ -109,7 +109,7 @@ LinkedPathCreationFilterParameter::~LinkedPathCreationFilterParameter() = defaul
 // -----------------------------------------------------------------------------
 LinkedPathCreationFilterParameter::Pointer LinkedPathCreationFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
                                                                                      const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                     std::unique_ptr<ILinkedPath> linkedPath, int groupIndex)
+                                                                                     std::unique_ptr<ILinkedPath> linkedPath, const std::vector<int>& groupIndices)
 {
 
   LinkedPathCreationFilterParameter::Pointer ptr = LinkedPathCreationFilterParameter::New();
@@ -118,7 +118,7 @@ LinkedPathCreationFilterParameter::Pointer LinkedPathCreationFilterParameter::Cr
   ptr->setDefaultValue(defaultValue);
   ptr->setLinkedPath(std::move(linkedPath));
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

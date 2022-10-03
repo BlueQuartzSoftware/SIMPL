@@ -458,12 +458,12 @@ void RotateSampleRefFrame::setupFilterParameters()
 
   // Axis Angle Parameters
 
-  parameters.push_back(SIMPL_NEW_FLOAT_FP("Rotation Angle (Degrees)", RotationAngle, FilterParameter::Category::Parameter, RotateSampleRefFrame, 0));
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Rotation Axis (ijk)", RotationAxis, FilterParameter::Category::Parameter, RotateSampleRefFrame, 0));
+  parameters.push_back(SIMPL_NEW_FLOAT_FP("Rotation Angle (Degrees)", RotationAngle, FilterParameter::Category::Parameter, RotateSampleRefFrame, {0}));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Rotation Axis (ijk)", RotationAxis, FilterParameter::Category::Parameter, RotateSampleRefFrame, {0}));
 
   // Rotation Matrix Parameters
 
-  parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Rotation Matrix", RotationTable, FilterParameter::Category::Parameter, RotateSampleRefFrame, 1));
+  parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Rotation Matrix", RotationTable, FilterParameter::Category::Parameter, RotateSampleRefFrame, {1}));
 
   // Required Arrays
 
@@ -546,7 +546,8 @@ void RotateSampleRefFrame::dataCheck()
 
   switch(representation)
   {
-  case RotationRepresentation::AxisAngle: {
+  case RotationRepresentation::AxisAngle:
+  {
     const Eigen::Vector3f rotationAxis(m_RotationAxis.data());
     float norm = rotationAxis.norm();
     if(!SIMPLibMath::closeEnough(rotationAxis.norm(), 1.0f, k_Threshold))
@@ -562,7 +563,8 @@ void RotateSampleRefFrame::dataCheck()
     p_Impl->m_RotationMatrix = axisAngle.toRotationMatrix();
   }
   break;
-  case RotationRepresentation::RotationMatrix: {
+  case RotationRepresentation::RotationMatrix:
+  {
     auto rotationMatrixTable = m_RotationTable.getTableData();
 
     if(rotationMatrixTable.size() != 3)
@@ -606,7 +608,8 @@ void RotateSampleRefFrame::dataCheck()
     p_Impl->m_RotationMatrix = rotationMatrix;
   }
   break;
-  default: {
+  default:
+  {
     QString ss = QObject::tr("Invalid rotation representation");
     setErrorCondition(-45008, ss);
     return;

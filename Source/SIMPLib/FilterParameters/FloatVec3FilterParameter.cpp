@@ -49,7 +49,7 @@ FloatVec3FilterParameter::~FloatVec3FilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 FloatVec3FilterParameter::Pointer FloatVec3FilterParameter::Create(const QString& humanLabel, const QString& propertyName, const FloatVec3Type& defaultValue, Category category,
-                                                                   const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                                   const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
 
   FloatVec3FilterParameter::Pointer ptr = FloatVec3FilterParameter::New();
@@ -59,7 +59,7 @@ FloatVec3FilterParameter::Pointer FloatVec3FilterParameter::Create(const QString
   v.setValue(defaultValue);
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

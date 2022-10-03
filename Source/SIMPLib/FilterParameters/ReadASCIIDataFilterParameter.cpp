@@ -51,14 +51,14 @@ ReadASCIIDataFilterParameter::~ReadASCIIDataFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ReadASCIIDataFilterParameter::Pointer ReadASCIIDataFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, int groupIndex)
+ReadASCIIDataFilterParameter::Pointer ReadASCIIDataFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const std::vector<int>& groupIndices)
 {
   ReadASCIIDataFilterParameter::Pointer ptr = ReadASCIIDataFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
 
   return ptr;
 }

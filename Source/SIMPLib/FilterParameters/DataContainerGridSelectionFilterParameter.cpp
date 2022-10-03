@@ -49,7 +49,7 @@ DataContainerGridSelectionFilterParameter::~DataContainerGridSelectionFilterPara
 // -----------------------------------------------------------------------------
 DataContainerGridSelectionFilterParameter::Pointer DataContainerGridSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const DataContainerGrid& defaultValue,
                                                                                                      Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                                                                                                     int groupIndex)
+                                                                                                     const std::vector<int>& groupIndices)
 {
   DataContainerGridSelectionFilterParameter::Pointer ptr = DataContainerGridSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -58,7 +58,7 @@ DataContainerGridSelectionFilterParameter::Pointer DataContainerGridSelectionFil
   v.setValue(defaultValue);
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

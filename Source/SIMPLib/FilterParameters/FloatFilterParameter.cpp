@@ -45,7 +45,7 @@ FloatFilterParameter::~FloatFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 FloatFilterParameter::Pointer FloatFilterParameter::Create(const QString& humanLabel, const QString& propertyName, float defaultValue, Category category, const SetterCallbackType& setterCallback,
-                                                           const GetterCallbackType& getterCallback, int groupIndex)
+                                                           const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
 
   FloatFilterParameter::Pointer ptr = FloatFilterParameter::New();
@@ -53,7 +53,7 @@ FloatFilterParameter::Pointer FloatFilterParameter::Create(const QString& humanL
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

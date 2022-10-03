@@ -50,7 +50,7 @@ LinkedChoicesFilterParameter::~LinkedChoicesFilterParameter() = default;
 // -----------------------------------------------------------------------------
 LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::Create(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category,
                                                                            const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<QString>& choices,
-                                                                           const std::vector<QString>& linkedProperties, int groupIndex)
+                                                                           const std::vector<QString>& linkedProperties, const std::vector<int>& groupIndices)
 {
   LinkedChoicesFilterParameter::Pointer ptr = LinkedChoicesFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -60,7 +60,7 @@ LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::Create(const
   ptr->setChoices(choices);
   ptr->setLinkedProperties(linkedProperties);
   ptr->setEditable(false);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 
