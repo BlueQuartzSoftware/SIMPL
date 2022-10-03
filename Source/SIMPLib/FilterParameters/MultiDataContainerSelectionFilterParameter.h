@@ -127,7 +127,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, const std::vector<QString>& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, const RequirementType& req, int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, const RequirementType& req, const std::vector<int>& groupIndices = {});
 
   ~MultiDataContainerSelectionFilterParameter() override;
 

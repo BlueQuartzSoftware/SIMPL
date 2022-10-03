@@ -112,7 +112,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                        const std::vector<QString>& choices, bool editable, int groupIndex = -1);
+                        const std::vector<QString>& choices, bool editable, const std::vector<int>& groupIndices = {});
 
   ~ChoiceFilterParameter() override;
 

@@ -104,7 +104,7 @@ public:
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, GetterCallbackType getterCallback, int groupIndex = -1);
+  static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, GetterCallbackType getterCallback, const std::vector<int>& groupIndices = {});
 
   ~PreflightUpdatedValueFilterParameter() override;
 

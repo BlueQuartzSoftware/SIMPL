@@ -113,7 +113,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, DataContainerArrayProxy defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, DataContainerArrayProxy proxy, Qt::CheckState defState, int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, DataContainerArrayProxy proxy, Qt::CheckState defState, const std::vector<int>& groupIndices = {});
 
   ~DataContainerArrayProxyFilterParameter() override;
 

@@ -114,7 +114,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, ComparisonInputs defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, const std::vector<QString>& choices, bool showOperators, int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, const std::vector<QString>& choices, bool showOperators, const std::vector<int>& groupIndices = {});
 
   ~ComparisonSelectionFilterParameter() override;
 

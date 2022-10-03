@@ -49,14 +49,14 @@ OutputPathFilterParameter::~OutputPathFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 OutputPathFilterParameter::Pointer OutputPathFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                     const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                                     const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
   OutputPathFilterParameter::Pointer ptr = OutputPathFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

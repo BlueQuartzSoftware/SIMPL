@@ -55,13 +55,13 @@ PhaseTypeSelectionFilterParameter::~PhaseTypeSelectionFilterParameter() = defaul
 PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::Create(const QString& humanLabel, const QString& phaseTypeDataProperty, const DataArrayPath& attributeMatrixDefault,
                                                                                      Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                                                                                      const QString& PhaseTypesArrayName, const QString& phaseTypeCountProperty, const QString& attributeMatrixProperty,
-                                                                                     const std::vector<QString>& phaseListChoices, int groupIndex)
+                                                                                     const std::vector<QString>& phaseListChoices, const std::vector<int>& groupIndices)
 {
   PhaseTypeSelectionFilterParameter::Pointer ptr = PhaseTypeSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(PhaseTypesArrayName);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setPhaseListChoices(phaseListChoices);
   ptr->setPhaseTypeCountProperty(phaseTypeCountProperty);
   ptr->setPhaseTypeDataProperty(phaseTypeDataProperty);

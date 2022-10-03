@@ -95,7 +95,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                        const std::vector<QString>& choices, const std::vector<QString>& linkedProperties, int groupIndex = -1);
+                        const std::vector<QString>& choices, const std::vector<QString>& linkedProperties, const std::vector<int>& groupIndices = {});
 
   ~LinkedChoicesFilterParameter() override;
 

@@ -54,14 +54,14 @@ DataContainerReaderFilterParameter::~DataContainerReaderFilterParameter() = defa
 //
 // -----------------------------------------------------------------------------
 DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                                       DataContainerReader* filter, int groupIndex)
+                                                                                       DataContainerReader* filter, const std::vector<int>& groupIndices)
 {
   DataContainerReaderFilterParameter::Pointer ptr = DataContainerReaderFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(ptr->getInputFileProperty());
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setFileExtension(".dream3d");
   ptr->setFileType("");
   ptr->setFilter(filter);

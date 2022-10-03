@@ -109,7 +109,7 @@ void ImportHDF5Dataset::setupFilterParameters()
                                                                                                  QString(""),                          // File Path Default Value
                                                                                                  QString(""),                          // Dataset Default value
                                                                                                  FilterParameter::Category::Parameter, // Category
-                                                                                                 this, -1);
+                                                                                                 this);
   parameters.push_back(parameter);
 
   {

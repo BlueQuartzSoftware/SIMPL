@@ -114,7 +114,7 @@ public:
   */
   static Pointer Create(const QString& humanLabel, const QString& phaseTypeDataProperty, const DataArrayPath& attributeMatrixDefault, Category category, const SetterCallbackType& setterCallback,
                         const GetterCallbackType& getterCallback, const QString& PhaseTypesArrayName, const QString& phaseTypeCountProperty, const QString& attributeMatrixProperty,
-                        const std::vector<QString>& phaseListChoices, int groupIndex = -1);
+                        const std::vector<QString>& phaseListChoices, const std::vector<int>& groupIndices = {});
 
   ~PhaseTypeSelectionFilterParameter() override;
 

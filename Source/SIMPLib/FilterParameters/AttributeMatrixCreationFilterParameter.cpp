@@ -51,7 +51,7 @@ AttributeMatrixCreationFilterParameter::~AttributeMatrixCreationFilterParameter(
 // -----------------------------------------------------------------------------
 AttributeMatrixCreationFilterParameter::Pointer AttributeMatrixCreationFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue,
                                                                                                Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                               const RequirementType& req, int groupIndex)
+                                                                                               const RequirementType& req, const std::vector<int>& groupIndices)
 {
   AttributeMatrixCreationFilterParameter::Pointer ptr = AttributeMatrixCreationFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -61,7 +61,7 @@ AttributeMatrixCreationFilterParameter::Pointer AttributeMatrixCreationFilterPar
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
   ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

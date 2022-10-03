@@ -116,7 +116,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, const VecString& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, const QString& fileExtension = QString(""), const QString& fileType = QString(""), int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, const QString& fileExtension = QString(""), const QString& fileType = QString(""), const std::vector<int>& groupIndices = {});
 
   ~MultiInputFileFilterParameter() override;
 

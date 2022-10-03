@@ -109,7 +109,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, int defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                        int groupIndex = -1);
+                        const std::vector<int>& groupIndices = {});
 
   ~IntFilterParameter() override;
 

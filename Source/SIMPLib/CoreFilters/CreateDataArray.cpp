@@ -343,9 +343,9 @@ void CreateDataArray::setupFilterParameters()
     parameter->setCategory(FilterParameter::Category::Parameter);
     parameters.push_back(parameter);
   }
-  parameters.push_back(SIMPL_NEW_STRING_FP("Initialization Value", InitializationValue, FilterParameter::Category::Parameter, CreateDataArray, Manual));
-  parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitializationRange, FilterParameter::Category::Parameter, CreateDataArray, RandomWithRange));
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Starting Value", StartingIndexValue, FilterParameter::Category::Parameter, CreateDataArray, Indices));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Initialization Value", InitializationValue, FilterParameter::Category::Parameter, CreateDataArray, {Manual}));
+  parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitializationRange, FilterParameter::Category::Parameter, CreateDataArray, {RandomWithRange}));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Starting Value", StartingIndexValue, FilterParameter::Category::Parameter, CreateDataArray, {Indices}));
   {
     DataArrayCreationFilterParameter::RequirementType req;
     parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Attribute Array", NewArray, FilterParameter::Category::CreatedArray, CreateDataArray, req));

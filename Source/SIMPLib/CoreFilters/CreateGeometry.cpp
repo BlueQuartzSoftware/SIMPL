@@ -135,68 +135,68 @@ void CreateGeometry::setupFilterParameters()
   DataContainerSelectionFilterParameter::RequirementType req;
   parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container", DataContainerName, FilterParameter::Category::RequiredArray, CreateGeometry, req));
   {
-    parameters.push_back(SIMPL_NEW_INT_VEC3_FP("Dimensions", Dimensions, FilterParameter::Category::Parameter, CreateGeometry, 0));
-    parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Category::Parameter, CreateGeometry, 0));
-    parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Spacing", Spacing, FilterParameter::Category::Parameter, CreateGeometry, 0));
+    parameters.push_back(SIMPL_NEW_INT_VEC3_FP("Dimensions", Dimensions, FilterParameter::Category::Parameter, CreateGeometry, {0}));
+    parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Category::Parameter, CreateGeometry, {0}));
+    parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Spacing", Spacing, FilterParameter::Category::Parameter, CreateGeometry, {0}));
     parameters.back()->setLegacyPropertyName("Resolution");
-    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Attribute Matrix", ImageCellAttributeMatrixName, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, 0));
+    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Attribute Matrix", ImageCellAttributeMatrixName, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, {0}));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 1, AttributeMatrix::Category::Any);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("X Bounds", XBoundsArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, 1));
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Y Bounds", YBoundsArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, 1));
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Z Bounds", ZBoundsArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, 1));
-    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Attribute Matrix", RectGridCellAttributeMatrixName, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, 1));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("X Bounds", XBoundsArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, {1}));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Y Bounds", YBoundsArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, {1}));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Z Bounds", ZBoundsArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, {1}));
+    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Attribute Matrix", RectGridCellAttributeMatrixName, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, {1}));
 
     PreflightUpdatedValueFilterParameter::Pointer param = SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Box Size in Length Units", BoxDimensions, FilterParameter::Category::Parameter, CreateGeometry);
     param->setReadOnly(true);
-    param->setGroupIndex(0);
+    param->setGroupIndices({0});
     parameters.push_back(param);
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 3, AttributeMatrix::Category::Any);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Vertex List", SharedVertexListArrayPath0, FilterParameter::Category::RequiredArray, CreateGeometry, req, 2));
-    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName0, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, 2));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Vertex List", SharedVertexListArrayPath0, FilterParameter::Category::RequiredArray, CreateGeometry, req, {2}));
+    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName0, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, {2}));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 3, AttributeMatrix::Category::Any);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Shared Vertex List", SharedVertexListArrayPath1, FilterParameter::Category::RequiredArray, CreateGeometry, req, 3));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Shared Vertex List", SharedVertexListArrayPath1, FilterParameter::Category::RequiredArray, CreateGeometry, req, {3}));
     req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::UInt64, 2, AttributeMatrix::Category::Any);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Edge List", SharedEdgeListArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, 3));
-    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName1, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, 3));
-    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Edge Attribute Matrix", EdgeAttributeMatrixName, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, 3));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Edge List", SharedEdgeListArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, {3}));
+    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName1, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, {3}));
+    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Edge Attribute Matrix", EdgeAttributeMatrixName, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, {3}));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 3, AttributeMatrix::Category::Any);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Shared Vertex List", SharedVertexListArrayPath2, FilterParameter::Category::RequiredArray, CreateGeometry, req, 4));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Shared Vertex List", SharedVertexListArrayPath2, FilterParameter::Category::RequiredArray, CreateGeometry, req, {4}));
     req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::UInt64, 3, AttributeMatrix::Category::Any);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Triangle List", SharedTriListArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, 4));
-    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName2, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, 4));
-    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Face Attribute Matrix", FaceAttributeMatrixName0, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, 4));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Triangle List", SharedTriListArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, {4}));
+    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName2, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, {4}));
+    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Face Attribute Matrix", FaceAttributeMatrixName0, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, {4}));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 3, AttributeMatrix::Category::Any);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Shared Vertex List", SharedVertexListArrayPath3, FilterParameter::Category::RequiredArray, CreateGeometry, req, 5));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Shared Vertex List", SharedVertexListArrayPath3, FilterParameter::Category::RequiredArray, CreateGeometry, req, {5}));
     req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::UInt64, 4, AttributeMatrix::Category::Any);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Quadrilateral List", SharedQuadListArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, 5));
-    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName3, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, 5));
-    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Face Attribute Matrix", FaceAttributeMatrixName1, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, 5));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Quadrilateral List", SharedQuadListArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, {5}));
+    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName3, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, {5}));
+    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Face Attribute Matrix", FaceAttributeMatrixName1, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, {5}));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 3, AttributeMatrix::Category::Any);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Shared Vertex List", SharedVertexListArrayPath4, FilterParameter::Category::RequiredArray, CreateGeometry, req, 6));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Shared Vertex List", SharedVertexListArrayPath4, FilterParameter::Category::RequiredArray, CreateGeometry, req, {6}));
     req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::UInt64, 4, AttributeMatrix::Category::Any);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Tetrahedral List", SharedTetListArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, 6));
-    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName4, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, 6));
-    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Attribute Matrix", TetCellAttributeMatrixName, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, 6));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Tetrahedral List", SharedTetListArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, {6}));
+    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName4, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, {6}));
+    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Attribute Matrix", TetCellAttributeMatrixName, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, {6}));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 3, AttributeMatrix::Category::Any);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Shared Vertex List", SharedVertexListArrayPath5, FilterParameter::Category::RequiredArray, CreateGeometry, req, 7));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Shared Vertex List", SharedVertexListArrayPath5, FilterParameter::Category::RequiredArray, CreateGeometry, req, {7}));
     req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::UInt64, 8, AttributeMatrix::Category::Any);
-    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Hexahedral List", SharedHexListArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, 7));
-    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName5, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, 7));
-    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Attribute Matrix", HexCellAttributeMatrixName, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, 7));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Hexahedral List", SharedHexListArrayPath, FilterParameter::Category::RequiredArray, CreateGeometry, req, {7}));
+    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Vertex Attribute Matrix", VertexAttributeMatrixName5, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, {7}));
+    parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Cell Attribute Matrix", HexCellAttributeMatrixName, DataContainerName, FilterParameter::Category::CreatedArray, CreateGeometry, {7}));
   }
   setFilterParameters(parameters);
 }
@@ -572,7 +572,8 @@ void CreateGeometry::dataCheck()
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }
-  default: {
+  default:
+  {
     QString ss = QObject::tr("Invalid selection for Geometry type");
     setErrorCondition(-701, ss);
     break;
@@ -837,7 +838,8 @@ void CreateGeometry::execute()
 
     break;
   }
-  default: {
+  default:
+  {
     break;
   }
   }

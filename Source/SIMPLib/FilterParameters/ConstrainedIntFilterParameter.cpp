@@ -49,7 +49,7 @@ ConstrainedIntFilterParameter::~ConstrainedIntFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 ConstrainedIntFilterParameter::Pointer ConstrainedIntFilterParameter::Create(const QString& humanLabel, const QString& propertyName, int32_t min, int32_t max, int32_t defaultValue, Category category,
-                                                                             const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                                             const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
 
   ConstrainedIntFilterParameter::Pointer ptr = ConstrainedIntFilterParameter::New();
@@ -57,7 +57,7 @@ ConstrainedIntFilterParameter::Pointer ConstrainedIntFilterParameter::Create(con
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
   ptr->setMinimum(min);

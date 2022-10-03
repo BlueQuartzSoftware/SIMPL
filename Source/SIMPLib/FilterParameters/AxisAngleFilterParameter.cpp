@@ -49,7 +49,7 @@ AxisAngleFilterParameter::~AxisAngleFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 AxisAngleFilterParameter::Pointer AxisAngleFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const AxisAngleInput& defaultValue, Category category,
-                                                                   const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                                   const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
   AxisAngleFilterParameter::Pointer ptr = AxisAngleFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -58,7 +58,7 @@ AxisAngleFilterParameter::Pointer AxisAngleFilterParameter::Create(const QString
   v.setValue(defaultValue);
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

@@ -52,7 +52,7 @@ DataArraySelectionFilterParameter::~DataArraySelectionFilterParameter() = defaul
 // -----------------------------------------------------------------------------
 DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category,
                                                                                      const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, RequirementType req,
-                                                                                     int groupIndex)
+                                                                                     const std::vector<int>& groupIndices)
 {
 
   DataArraySelectionFilterParameter::Pointer ptr = DataArraySelectionFilterParameter::New();
@@ -66,7 +66,7 @@ DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::Cr
   ptr->setDefaultAttributeMatrixTypes(req.amTypes);
   ptr->setDefaultAttributeArrayTypes(req.daTypes);
   ptr->setDefaultComponentDimensions(req.componentDimensions);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

@@ -126,7 +126,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, const std::vector<DataArrayPath>& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, RequirementType req, int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, RequirementType req, const std::vector<int>& groupIndices = {});
 
   ~MultiDataArraySelectionFilterParameter() override;
 

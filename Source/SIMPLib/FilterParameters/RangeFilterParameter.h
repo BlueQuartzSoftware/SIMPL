@@ -103,7 +103,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, const FPRangePair& defaultPair, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices = {});
 
   /**
    * @brief Returns the name of the class for RangeFilterParameter

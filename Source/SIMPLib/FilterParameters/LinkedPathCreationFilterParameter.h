@@ -319,7 +319,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, std::unique_ptr<ILinkedPath> linkedPath, int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, std::unique_ptr<ILinkedPath> linkedPath, const std::vector<int>& groupIndices = {});
 
   ~LinkedPathCreationFilterParameter() override;
 

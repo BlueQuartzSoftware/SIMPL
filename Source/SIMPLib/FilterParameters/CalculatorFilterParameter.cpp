@@ -52,7 +52,7 @@ CalculatorFilterParameter::~CalculatorFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 CalculatorFilterParameter::Pointer CalculatorFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                     const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                                     const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
 
   CalculatorFilterParameter::Pointer ptr = CalculatorFilterParameter::New();
@@ -60,7 +60,7 @@ CalculatorFilterParameter::Pointer CalculatorFilterParameter::Create(const QStri
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

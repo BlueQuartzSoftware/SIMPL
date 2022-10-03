@@ -54,7 +54,7 @@ AttributeMatrixSelectionFilterParameter::~AttributeMatrixSelectionFilterParamete
 // -----------------------------------------------------------------------------
 AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue,
                                                                                                  Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                                 const RequirementType& req, int groupIndex)
+                                                                                                 const RequirementType& req, const std::vector<int>& groupIndices)
 {
 
   AttributeMatrixSelectionFilterParameter::Pointer ptr = AttributeMatrixSelectionFilterParameter::New();
@@ -66,7 +66,7 @@ AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterP
   ptr->setCategory(category);
   ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
   ptr->setDefaultAttributeMatrixTypes(req.amTypes);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

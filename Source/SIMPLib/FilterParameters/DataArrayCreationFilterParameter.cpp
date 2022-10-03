@@ -53,7 +53,7 @@ DataArrayCreationFilterParameter::~DataArrayCreationFilterParameter() = default;
 // -----------------------------------------------------------------------------
 DataArrayCreationFilterParameter::Pointer DataArrayCreationFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category,
                                                                                    const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, RequirementType req,
-                                                                                   int groupIndex)
+                                                                                   const std::vector<int>& groupIndices)
 {
 
   DataArrayCreationFilterParameter::Pointer ptr = DataArrayCreationFilterParameter::New();
@@ -65,7 +65,7 @@ DataArrayCreationFilterParameter::Pointer DataArrayCreationFilterParameter::Crea
   ptr->setCategory(category);
   ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
   ptr->setDefaultAttributeMatrixTypes(req.amTypes);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

@@ -168,14 +168,14 @@ public:
   bool getReadOnly() const;
 
   /**
-   * @brief Setter property for GroupIndex
+   * @brief Setter property for GroupIndices
    */
-  void setGroupIndex(int value);
+  void setGroupIndices(const std::vector<int>& value);
   /**
-   * @brief Getter property for GroupIndex
-   * @return Value of GroupIndex
+   * @brief Getter property for GroupIndices
+   * @return Value of GroupIndices
    */
-  int getGroupIndex() const;
+  std::vector<int> getGroupIndices() const;
 
   /**
    * @brief readJson
@@ -211,9 +211,9 @@ private:
   QString m_HumanLabel = {};
   QString m_PropertyName = {};
   QString m_LegacyPropertyName = {};
-  FilterParameter::Category m_Category = {};
+  FilterParameter::Category m_Category = FilterParameter::Category::Uncategorized;
   bool m_ReadOnly = {};
-  int m_GroupIndex = {};
+  std::vector<int> m_GroupIndices = {};
 };
 
 using FilterParameterVectorType = std::vector<FilterParameter::Pointer>;

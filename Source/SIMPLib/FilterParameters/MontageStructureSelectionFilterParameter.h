@@ -107,7 +107,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                        int groupIndex = -1);
+                        const std::vector<int>& groupIndices = {});
 
   ~MontageStructureSelectionFilterParameter() override;
 

@@ -125,7 +125,7 @@ public:
    * @return
    */
   static Pointer Create(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, const RequirementType& req, int groupIndex = -1);
+                        const GetterCallbackType& getterCallback, const RequirementType& req, const std::vector<int>& groupIndices = {});
 
   ~AttributeMatrixCreationFilterParameter() override;
 

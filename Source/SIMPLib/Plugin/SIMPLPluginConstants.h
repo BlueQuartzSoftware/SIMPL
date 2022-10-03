@@ -63,7 +63,7 @@ const QString NumFilters("NumFilters");
 const QString FilterParameterName("FilterParameterName");
 const QString FilterParameterWidget("FilterParameterWidget");
 const QString FilterParameterCategory("FilterParameterCategory");
-const QString FilterParameterGroupIndex("FilterParameterGroupIndex");
+const QString FilterParameterGroupIndices("FilterParameterGroupIndices");
 const QString FilterParameterHumanLabel("FilterParameterHumanLabel");
 const QString FilterParameterPropertyName("FilterParameterPropertyName");
 const QString FilterParameterReadOnly("FilterParameterReadOnly");

@@ -47,7 +47,7 @@ ParagraphFilterParameter::~ParagraphFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 ParagraphFilterParameter::Pointer ParagraphFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                   const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, bool allowPreflight, int groupIndex)
+                                                                   const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, bool allowPreflight, const std::vector<int>& groupIndices)
 {
 
   ParagraphFilterParameter::Pointer ptr = ParagraphFilterParameter::New();
@@ -55,7 +55,7 @@ ParagraphFilterParameter::Pointer ParagraphFilterParameter::Create(const QString
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setAllowPreflight(allowPreflight);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);

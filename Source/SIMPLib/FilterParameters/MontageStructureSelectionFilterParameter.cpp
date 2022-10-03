@@ -49,7 +49,7 @@ MontageStructureSelectionFilterParameter::~MontageStructureSelectionFilterParame
 // -----------------------------------------------------------------------------
 MontageStructureSelectionFilterParameter::Pointer MontageStructureSelectionFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue,
                                                                                                    Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                                                                                                   int groupIndex)
+                                                                                                   const std::vector<int>& groupIndices)
 {
   MontageStructureSelectionFilterParameter::Pointer ptr = MontageStructureSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -58,7 +58,7 @@ MontageStructureSelectionFilterParameter::Pointer MontageStructureSelectionFilte
   v.setValue(defaultValue);
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

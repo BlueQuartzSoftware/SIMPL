@@ -50,7 +50,7 @@ ConstrainedDoubleFilterParameter::~ConstrainedDoubleFilterParameter() = default;
 // -----------------------------------------------------------------------------
 ConstrainedDoubleFilterParameter::Pointer ConstrainedDoubleFilterParameter::Create(const QString& humanLabel, const QString& propertyName, double min, double max, double defaultValue,
                                                                                    Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                   int groupIndex)
+                                                                                   const std::vector<int>& groupIndices)
 {
 
   ConstrainedDoubleFilterParameter::Pointer ptr = ConstrainedDoubleFilterParameter::New();
@@ -58,7 +58,7 @@ ConstrainedDoubleFilterParameter::Pointer ConstrainedDoubleFilterParameter::Crea
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
   ptr->setMinimum(min);

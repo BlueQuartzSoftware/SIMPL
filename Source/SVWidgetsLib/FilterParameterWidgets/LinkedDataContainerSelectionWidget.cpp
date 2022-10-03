@@ -100,7 +100,7 @@ void LinkedDataContainerSelectionWidget::setupGui()
   }
 
   // We need to convert between the 2 different RequirementTypes. Trying to use the same
-  // type lead to python issues. 
+  // type lead to python issues.
   LinkedDataContainerSelectionFilterParameter::RequirementType requirements = m_FilterParameter->getRequirements();
   DataContainerSelectionFilterParameter::RequirementType dcfpRequirements;
   dcfpRequirements.dcGeometryTypes = requirements.dcGeometryTypes;

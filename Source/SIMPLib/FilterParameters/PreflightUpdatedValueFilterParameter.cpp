@@ -51,14 +51,14 @@ PreflightUpdatedValueFilterParameter::~PreflightUpdatedValueFilterParameter() = 
 //
 // -----------------------------------------------------------------------------
 PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                                           GetterCallbackType getterCallback, int groupIndex)
+                                                                                           GetterCallbackType getterCallback, const std::vector<int>& groupIndices)
 {
   PreflightUpdatedValueFilterParameter::Pointer ptr = PreflightUpdatedValueFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setGetterCallback(getterCallback);
 
   return ptr;

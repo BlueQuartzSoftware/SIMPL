@@ -49,7 +49,7 @@ NumericTypeFilterParameter::~NumericTypeFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 NumericTypeFilterParameter::Pointer NumericTypeFilterParameter::Create(const QString& humanLabel, const QString& propertyName, SIMPL::NumericTypes::Type defaultValue, Category category,
-                                                                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
+                                                                       const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const std::vector<int>& groupIndices)
 {
   NumericTypeFilterParameter::Pointer ptr = NumericTypeFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -58,7 +58,7 @@ NumericTypeFilterParameter::Pointer NumericTypeFilterParameter::Create(const QSt
   var.setValue(defaultValue);
   ptr->setDefaultValue(var);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

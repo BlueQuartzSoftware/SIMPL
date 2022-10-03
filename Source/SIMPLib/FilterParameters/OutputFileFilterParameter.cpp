@@ -50,7 +50,7 @@ OutputFileFilterParameter::~OutputFileFilterParameter() = default;
 // -----------------------------------------------------------------------------
 OutputFileFilterParameter::Pointer OutputFileFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
                                                                      const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, const QString& fileExtension,
-                                                                     const QString& fileType, int groupIndex)
+                                                                     const QString& fileType, const std::vector<int>& groupIndices)
 {
   OutputFileFilterParameter::Pointer ptr = OutputFileFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -59,7 +59,7 @@ OutputFileFilterParameter::Pointer OutputFileFilterParameter::Create(const QStri
   ptr->setCategory(category);
   ptr->setFileExtension(fileExtension);
   ptr->setFileType(fileType);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

@@ -88,7 +88,7 @@ void GenerateVertexCoordinates::setupFilterParameters()
 
   DataArrayCreationFilterParameter::RequirementType req;
   req.amTypes = {AttributeMatrix::Type::Cell};
-  parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Vertex Coordinates", CoordinateArrayPath, FilterParameter::Category::CreatedArray, GenerateVertexCoordinates, req, 0));
+  parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Vertex Coordinates", CoordinateArrayPath, FilterParameter::Category::CreatedArray, GenerateVertexCoordinates, req, {0}));
 
   setFilterParameters(parameters);
 }

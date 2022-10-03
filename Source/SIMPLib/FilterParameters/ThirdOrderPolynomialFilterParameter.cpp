@@ -50,7 +50,7 @@ ThirdOrderPolynomialFilterParameter::~ThirdOrderPolynomialFilterParameter() = de
 // -----------------------------------------------------------------------------
 ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter::Create(const QString& humanLabel, const QString& propertyName, const Float3rdOrderPoly_t& defaultValue,
                                                                                          Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                         int groupIndex)
+                                                                                         const std::vector<int>& groupIndices)
 {
 
   ThirdOrderPolynomialFilterParameter::Pointer ptr = ThirdOrderPolynomialFilterParameter::New();
@@ -60,7 +60,7 @@ ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter
   v.setValue(defaultValue);
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
+  ptr->setGroupIndices(groupIndices);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 
