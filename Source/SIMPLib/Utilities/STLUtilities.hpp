@@ -73,4 +73,15 @@ bool contains(const T& container, const K& value)
   return result != container.cend();
 }
 
+/**
+ * @brief Takes an enumeration value and returns its underlying type value
+ * @param e The enumeration value
+ * @return The underlying type value
+ */
+template <typename E>
+constexpr typename std::underlying_type<E>::type to_underlying(E e) noexcept
+{
+  return static_cast<typename std::underlying_type<E>::type>(e);
+}
+
 } // namespace SIMPL
