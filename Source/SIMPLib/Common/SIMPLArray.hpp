@@ -39,7 +39,7 @@
 /**
  * @brief This class is a facade pattern around a std::array<T,D> array to allow for some semantics
  * for either a 2D or 3D point such as X,Y,Z. We Provide 3 concrete implementations that are for 2, 3 and 4 element
- * arrays used in some of the filter parameters. The devloper can extend this quite easily to more
+ * arrays used in some of the filter parameters. The developer can extend this quite easily to more
  * elements should they need them
  */
 template <class T, unsigned int Dimension>
@@ -353,6 +353,9 @@ using FloatVec2Type = IVec2<float>;
 using IntVec2Type = IVec2<int>;
 using SizeVec2Type = IVec2<size_t>;
 
+#define X_VAL (*this)[0]
+#define Y_VAL (*this)[1]
+#define Z_VAL (*this)[2]
 // -----------------------------------------------------------------------------
 template <typename T>
 class IVec3 : public SIMPLArray<T, 3>
@@ -366,14 +369,16 @@ public:
   IVec3& operator=(IVec3&&) noexcept = default;
   ~IVec3() = default;
 
+
+
   /**
    * @brief IVec3 Default constructor initializes all values to ZERO.
    */
   IVec3()
   {
-    (*this)[0] = static_cast<T>(0);
-    (*this)[1] = static_cast<T>(0);
-    (*this)[2] = static_cast<T>(0);
+    X_VAL = static_cast<T>(0);
+    Y_VAL = static_cast<T>(0);
+    Z_VAL = static_cast<T>(0);
   }
   /**
    * @brief IVec3
@@ -383,9 +388,9 @@ public:
    */
   IVec3(T x, T y, T z)
   {
-    (*this)[0] = x;
-    (*this)[1] = y;
-    (*this)[2] = z;
+    X_VAL = x;
+    Y_VAL = y;
+    Z_VAL = z;
   }
   /**
    * @brief IVec3
@@ -393,9 +398,9 @@ public:
    */
   IVec3(const std::array<T, 3>& data)
   {
-    (*this)[0] = data[0];
-    (*this)[1] = data[1];
-    (*this)[2] = data[2];
+    X_VAL = data[0];
+    Y_VAL = data[1];
+    Z_VAL = data[2];
   }
   /**
    * @brief IVec3
@@ -403,9 +408,9 @@ public:
    */
   IVec3(const std::tuple<T, T, T>& data)
   {
-    (*this)[0] = std::get<0>(data);
-    (*this)[1] = std::get<1>(data);
-    (*this)[2] = std::get<2>(data);
+    X_VAL = std::get<0>(data);
+    Y_VAL = std::get<1>(data);
+    Z_VAL = std::get<2>(data);
   }
   /**
    * @brief IVec3
@@ -413,9 +418,9 @@ public:
    */
   IVec3(const T* data)
   {
-    (*this)[0] = data[0];
-    (*this)[1] = data[1];
-    (*this)[2] = data[2];
+    X_VAL = data[0];
+    Y_VAL = data[1];
+    Z_VAL = data[2];
   }
   /**
    * @brief IVec3
@@ -423,9 +428,9 @@ public:
    */
   IVec3(const std::vector<T>& data)
   {
-    (*this)[0] = data[0];
-    (*this)[1] = data[1];
-    (*this)[2] = data[2];
+    X_VAL = data[0];
+    Y_VAL = data[1];
+    Z_VAL = data[2];
   }
 
   inline T getX() const
@@ -442,15 +447,15 @@ public:
   }
   inline void setX(const T& x)
   {
-    (*this)[0] = x;
+    X_VAL = x;
   }
   inline void setY(const T& y)
   {
-    (*this)[1] = y;
+    Y_VAL = y;
   }
   inline void setZ(const T& z)
   {
-    (*this)[2] = z;
+    Z_VAL = z;
   }
 
   /**
@@ -458,9 +463,9 @@ public:
    */
   inline void setValues(const T& x, const T& y, const T& z)
   {
-    (*this)[0] = x;
-    (*this)[1] = y;
-    (*this)[2] = z;
+    X_VAL = x;
+    Y_VAL = y;
+    Z_VAL = z;
   }
 
   /**
@@ -478,9 +483,77 @@ public:
   template <typename OutType>
   IVec3<OutType> convertType()
   {
-    return IVec3<OutType>(static_cast<OutType>((*this)[0]), static_cast<OutType>((*this)[1]), static_cast<OutType>((*this)[2]));
+    return IVec3<OutType>(static_cast<OutType>(X_VAL), static_cast<OutType>(Y_VAL), static_cast<OutType>(Z_VAL));
   }
+
+
+  inline IVec3 operator+(const IVec3& v) const
+  {
+    return IVec3(X_VAL + v[0], Y_VAL + v[1], Z_VAL + v[2]);
+  }
+  inline IVec3 operator-(const IVec3& v) const
+  {
+    return IVec3(X_VAL - v[0], Y_VAL - v[1], Z_VAL - v[2]);
+  }
+  inline IVec3 operator-() const
+  {
+    return IVec3(-X_VAL, -Y_VAL, -Z_VAL);
+  }
+  inline IVec3 operator*(const T& r) const
+  {
+    return IVec3(X_VAL * r, Y_VAL * r, Z_VAL * r);
+  }
+  inline IVec3 operator*(const IVec3& v) const
+  {
+    return IVec3(X_VAL * v.x, Y_VAL * v.y, Z_VAL * v.z);
+  }
+  inline T dotProduct(const IVec3<T>& v) const
+  {
+    return X_VAL * v[0] + Y_VAL * v[1] + Z_VAL * v[2];
+  }
+  inline IVec3& operator/=(const T& r)
+  {
+    X_VAL /= r, Y_VAL /= r, Z_VAL /= r;
+    return *this;
+  }
+  inline IVec3& operator*=(const T& r)
+  {
+    X_VAL *= r, Y_VAL *= r, Z_VAL *= r;
+    return *this;
+  }
+  inline IVec3 crossProduct(const IVec3<T>& v) const
+  {
+    return IVec3<T>(Y_VAL * v[2] - Z_VAL * v[1], Z_VAL * v[0] - X_VAL * v[2], X_VAL * v[1] - Y_VAL * v[0]);
+  }
+  inline T norm() const
+  {
+    return X_VAL * X_VAL + Y_VAL * Y_VAL + Z_VAL * Z_VAL;
+  }
+  inline T length() const
+  {
+    return sqrt(norm());
+  }
+
+  inline IVec3& normalize()
+  {
+    T n = norm();
+    if (n > 0) {
+      T factor = 1 / sqrt(n);
+      X_VAL *= factor, Y_VAL *= factor, Z_VAL *= factor;
+    }
+    return *this;
+  }
+
+  inline friend  IVec3 operator * (const T &r, const IVec3 &v)
+  { return IVec3<T>(v[0] * r, v[1] * r, v[2] * r); }
+  inline friend  IVec3 operator / (const T &r, const IVec3 &v)
+  { return IVec3<T>(r / v[0], r / v[1], r / v[2]); }
+  
 };
+
+#undef X_VAL
+#undef Y_VAL
+#undef Z_VAL
 
 // -----------------------------------------------------------------------------
 template <typename T>
