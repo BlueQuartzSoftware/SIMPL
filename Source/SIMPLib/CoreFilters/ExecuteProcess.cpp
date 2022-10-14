@@ -162,6 +162,11 @@ void ExecuteProcess::execute()
   }
   else
   {
+    if(QCoreApplication::instance() == nullptr)
+    {
+      setErrorCondition(-4011, "ExecuteProcess is set use the non-blocking interface which requires a QCoreApplication instance which does not exist. Switch blocking to true to fix this issue.");
+      return;
+    }
     m_ProcessPtr->start(command, arguments);
     m_ProcessPtr->waitForStarted(2000);
 
