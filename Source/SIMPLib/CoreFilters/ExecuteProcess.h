@@ -60,6 +60,8 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
   PYB11_SHARED_POINTERS(ExecuteProcess)
   PYB11_FILTER_NEW_MACRO(ExecuteProcess)
   PYB11_PROPERTY(QString Arguments READ getArguments WRITE setArguments)
+  PYB11_PROPERTY(bool Blocking READ getBlocking WRITE setBlocking)
+  PYB11_PROPERTY(int Timeout READ getTimeout WRITE setTimeout)
   PYB11_END_BINDINGS()
   // End Python bindings declarations
 
@@ -102,6 +104,32 @@ public:
   QString getArguments() const;
 
   Q_PROPERTY(QString Arguments READ getArguments WRITE setArguments)
+
+  /**
+   * @brief Setter property for Blocking
+   */
+  void setBlocking(bool value);
+
+  /**
+   * @brief Getter property for Blocking
+   * @return Value of Blocking
+   */
+  bool getBlocking() const;
+
+  Q_PROPERTY(bool Blocking READ getBlocking WRITE setBlocking)
+
+  /**
+   * @brief Setter property for Timeout
+   */
+  void setTimeout(bool value);
+
+  /**
+   * @brief Getter property for Timeout
+   * @return Value of Timeout
+   */
+  int getTimeout() const;
+
+  Q_PROPERTY(int Timeout READ getTimeout WRITE setTimeout)
 
   ~ExecuteProcess() override;
 
@@ -190,6 +218,8 @@ private:
   QMutex m_Mutex;
   bool m_Pause = false;
   QSharedPointer<QProcess> m_ProcessPtr;
+  bool m_Blocking = false;
+  int m_Timeout = 30000;
 
   /**
    * @brief splitArgumentsString
