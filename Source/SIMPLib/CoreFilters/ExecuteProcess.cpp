@@ -43,6 +43,8 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
 // -----------------------------------------------------------------------------
@@ -63,6 +65,11 @@ void ExecuteProcess::setupFilterParameters()
   FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_STRING_FP("Command Line Arguments", Arguments, FilterParameter::Category::Parameter, ExecuteProcess));
+  {
+    std::vector<QString> linkedProps = {"Timeout"};
+    parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Should Block", Blocking, FilterParameter::Category::Parameter, ExecuteProcess, linkedProps));
+  }
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Timeout (ms)", Timeout, FilterParameter::Category::Parameter, ExecuteProcess));
 
   setFilterParameters(parameters);
 }
@@ -129,30 +136,50 @@ void ExecuteProcess::execute()
 
   arguments.removeAt(0);
 
-  m_ProcessPtr = QSharedPointer<QProcess>(new QProcess(nullptr));
+  m_ProcessPtr = QSharedPointer<QProcess>::create();
   qRegisterMetaType<QProcess::ExitStatus>("QProcess::ExitStatus");
   qRegisterMetaType<QProcess::ProcessError>("QProcess::ProcessError");
-  connect(m_ProcessPtr.data(), SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processHasFinished(int, QProcess::ExitStatus)), Qt::QueuedConnection);
-  connect(m_ProcessPtr.data(), SIGNAL(error(QProcess::ProcessError)), this, SLOT(processHasErroredOut(QProcess::ProcessError)), Qt::QueuedConnection);
-  connect(m_ProcessPtr.data(), SIGNAL(readyReadStandardError()), this, SLOT(sendErrorOutput()), Qt::QueuedConnection);
-  connect(m_ProcessPtr.data(), SIGNAL(readyReadStandardOutput()), this, SLOT(sendStandardOutput()), Qt::QueuedConnection);
-  m_ProcessPtr->start(command, arguments);
-  m_ProcessPtr->waitForStarted(2000);
+  Qt::ConnectionType connectionType = m_Blocking ? Qt::AutoConnection : Qt::QueuedConnection;
+  connect(m_ProcessPtr.get(), qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &ExecuteProcess::processHasFinished, connectionType);
+  connect(m_ProcessPtr.get(), &QProcess::errorOccurred, this, &ExecuteProcess::processHasErroredOut, connectionType);
+  connect(m_ProcessPtr.get(), &QProcess::readyReadStandardError, this, &ExecuteProcess::sendErrorOutput, connectionType);
+  connect(m_ProcessPtr.get(), &QProcess::readyReadStandardOutput, this, &ExecuteProcess::sendStandardOutput, connectionType);
 
-  m_Mutex.lock();
-  m_Pause = true;
-  while(m_Pause)
+  if(m_Blocking)
   {
-    m_WaitCondition.wait(&m_Mutex, 200);
-    QCoreApplication::processEvents();
-
-    if(getCancel())
+    m_ProcessPtr->start(command, arguments);
+    if(!m_ProcessPtr->waitForStarted(m_Timeout))
     {
-      m_ProcessPtr->kill(); // Kill the process;
-      m_ProcessPtr->waitForFinished(10000);
+      return;
     }
+
+    if(!m_ProcessPtr->waitForFinished(m_Timeout))
+    {
+      return;
+    }
+
+    notifyStatusMessage(m_ProcessPtr->readAll());
   }
-  m_Mutex.unlock();
+  else
+  {
+    m_ProcessPtr->start(command, arguments);
+    m_ProcessPtr->waitForStarted(2000);
+
+    m_Mutex.lock();
+    m_Pause = true;
+    while(m_Pause)
+    {
+      m_WaitCondition.wait(&m_Mutex, 200);
+      QCoreApplication::processEvents();
+
+      if(getCancel())
+      {
+        m_ProcessPtr->kill(); // Kill the process;
+        m_ProcessPtr->waitForFinished(10000);
+      }
+    }
+    m_Mutex.unlock();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -409,4 +436,28 @@ void ExecuteProcess::setArguments(const QString& value)
 QString ExecuteProcess::getArguments() const
 {
   return m_Arguments;
+}
+
+// -----------------------------------------------------------------------------
+void ExecuteProcess::setBlocking(bool value)
+{
+  m_Blocking = value;
+}
+
+// -----------------------------------------------------------------------------
+bool ExecuteProcess::getBlocking() const
+{
+  return m_Blocking;
+}
+
+// -----------------------------------------------------------------------------
+void ExecuteProcess::setTimeout(bool value)
+{
+  m_Timeout = value;
+}
+
+// -----------------------------------------------------------------------------
+int ExecuteProcess::getTimeout() const
+{
+  return m_Timeout;
 }
