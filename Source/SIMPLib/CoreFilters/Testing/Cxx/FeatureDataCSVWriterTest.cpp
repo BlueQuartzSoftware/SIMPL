@@ -177,6 +177,7 @@ public:
     }
 
     QList<QString> daNames = am->getAttributeArrayNames();
+    daNames.sort();
 
     std::vector<IDataArray::Pointer> daList;
     std::vector<IDataArray::Pointer> nlList;
@@ -276,8 +277,8 @@ public:
 
       // The data array added last in code will be the first printed and first in daList
 
-      checkDataList<int32_t>(am, daList[0]->getName(), tokens, i, 1);
-      checkDataList<float>(am, daList[1]->getName(), tokens, i, 1 + daList[0]->getNumberOfComponents());
+      checkDataList<float>(am, daList[0]->getName(), tokens, i, 1);
+      checkDataList<int32_t>(am, daList[1]->getName(), tokens, i, 1 + daList[0]->getNumberOfComponents());
     }
 
     if(writeNeighborListData)

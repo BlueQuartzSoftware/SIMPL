@@ -189,6 +189,7 @@ void FeatureDataCSVWriter::execute()
   }
   // Get all the names of the arrays from the Data Container
   QList<QString> headers = cellFeatureAttrMat->getAttributeArrayNames();
+  headers.sort();
 
   std::vector<IDataArray::Pointer> data;
 
