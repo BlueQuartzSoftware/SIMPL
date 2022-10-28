@@ -149,14 +149,15 @@ void FloatVec2Widget::filterNeedsInputParameters(AbstractFilter* filter)
   FloatVec2Type defValue = m_FilterParameter->getDefaultValue().value<FloatVec2Type>();
   FloatVec2Type data;
 
-  QLocale loc;
+  QLocale loc = QLocale::system();
 
   data[0] = loc.toFloat(xData->text(), &ok);
   if(!ok)
   {
     SVStyle::Instance()->LineEditBackgroundErrorStyle(xData);
     SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
-    errorLabel->setText("X Value entered is beyond the representable range for a float.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
+    errorLabel->setText("X Value '" + xData->text() + " entered is beyond the representable range for a float.\nThe filter will use the default value of " +
+                        getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
     data[0] = defValue[0];
   }
@@ -166,7 +167,8 @@ void FloatVec2Widget::filterNeedsInputParameters(AbstractFilter* filter)
   {
     SVStyle::Instance()->LineEditBackgroundErrorStyle(yData);
     SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
-    errorLabel->setText("Y Value entered is beyond the representable range for a float.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
+    errorLabel->setText("Y Value '" + yData->text() + " entered is beyond the representable range for a float.\nThe filter will use the default value of " +
+                        getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
     data[1] = defValue[1];
   }

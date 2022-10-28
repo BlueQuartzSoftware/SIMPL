@@ -160,14 +160,15 @@ void FloatVec3Widget::filterNeedsInputParameters(AbstractFilter* filter)
   FloatVec3Type defValue = m_FilterParameter->getDefaultValue().value<FloatVec3Type>();
   FloatVec3Type data;
 
-  QLocale loc;
+  QLocale loc = QLocale::system();
 
   data[0] = loc.toFloat(xData->text(), &ok);
   if(!ok)
   {
     SVStyle::Instance()->LineEditBackgroundErrorStyle(xData);
     SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
-    errorLabel->setText("X Value entered is beyond the representable range for a float.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
+    errorLabel->setText("X Value '" + xData->text() + " entered is beyond the representable range for a float.\nThe filter will use the default value of " +
+                        getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
     data[0] = defValue[0];
   }
@@ -177,7 +178,8 @@ void FloatVec3Widget::filterNeedsInputParameters(AbstractFilter* filter)
   {
     SVStyle::Instance()->LineEditBackgroundErrorStyle(yData);
     SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
-    errorLabel->setText("Y Value entered is beyond the representable range for a float.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
+    errorLabel->setText("Y Value '" + yData->text() + " entered is beyond the representable range for a float.\nThe filter will use the default value of " +
+                        getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
     data[1] = defValue[1];
   }
@@ -187,7 +189,8 @@ void FloatVec3Widget::filterNeedsInputParameters(AbstractFilter* filter)
   {
     SVStyle::Instance()->LineEditBackgroundErrorStyle(zData);
     SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
-    errorLabel->setText("Z Value entered is beyond the representable range for a float.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
+    errorLabel->setText("Z Value '" + zData->text() + " entered is beyond the representable range for a float.\nThe filter will use the default value of " +
+                        getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
     data[2] = defValue[2];
   }
