@@ -318,6 +318,13 @@ size_t PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::
   return numberLoaded;
 }
 
+void PythonLoader::loadPluginFilters()
+{
+#ifdef DREAM3D_ANACONDA
+  pybind11::module_::import("dream3d");
+#endif
+}
+
 // -----------------------------------------------------------------------------
 struct PythonLoader::ScopedInterpreter::Impl
 {

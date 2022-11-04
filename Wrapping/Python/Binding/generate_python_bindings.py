@@ -1,7 +1,9 @@
 import argparse
+from dataclasses import dataclass
 import filecmp
 import os
 import re
+import shutil
 
 from collections import Counter, defaultdict
 from contextlib import ExitStack
@@ -540,6 +542,34 @@ def replace_file_if_different(temp_file: str, target_file: str) -> None:
   else:
     os.rename(temp_file, target_file)
 
+@dataclass
+class PythonFiltersInfo:
+  files: List[str]
+  filters: List[str]
+  package_dir: str
+
+def write_plugin_filters(output_dir: str, plugin_name: str, filters_info: PythonFiltersInfo) -> None:
+  module_dir = Path(output_dir) / f'{plugin_name}_filters'
+  module_dir.mkdir(exist_ok=True)
+
+  for filepath in filters_info.files:
+    shutil.copy(filepath, module_dir)
+
+  with open(module_dir / '__init__.py', 'w') as file:
+    file.write('from dream3d.simpl import registerPythonFilter\n')
+    for filename in filters_info.files:
+      file.write(f'from .{Path(filename).stem} import *\n')
+
+    filter_list_str = ', '.join(filters_info.filters)
+
+    file.write('def get_filters():\n')
+    file.write(f'  return [{filter_list_str}]\n')
+
+    file.write('def register_filters():\n')
+    file.write('  for f in get_filters():\n')
+    file.write('    registerPythonFilter(f)\n')
+    file.write('register_filters()\n')
+
 def generate_simpl_bindings(output_dir: str, header_path: str, body_path: str, files: List[str], source_dir: str, python_output_dir: str, plugin_name: str, body_top_path: str = '', post_types_path: str = '', no_tests: bool = False, relative_imports: bool = False) -> None:
   module_target_file_path = f'{output_dir}/py_simpl.cpp'
   module_temp_file_path = f'{module_target_file_path}.temp'
@@ -614,7 +644,7 @@ def generate_simpl_bindings(output_dir: str, header_path: str, body_path: str, f
     module_file.write('}\n')
   replace_file_if_different(module_temp_file_path, module_target_file_path)
 
-def generate_plugin_bindings(output_dir: str, module_name: str, files: List[str], include_dir: Optional[str], python_output_dir: str, plugin_name: str, header_path: str = '', body_path: str = '', body_top_path: str = '', post_types_path: str = '', no_tests: bool = False, relative_imports: bool = False) -> None:
+def generate_plugin_bindings(output_dir: str, module_name: str, files: List[str], include_dir: Optional[str], python_output_dir: str, plugin_name: str, header_path: str = '', body_path: str = '', body_top_path: str = '', post_types_path: str = '', no_tests: bool = False, relative_imports: bool = False, python_filters_info: Optional[PythonFiltersInfo] = None) -> None:
   module_target_file_path = f'{output_dir}/py_{module_name}.cpp'
   module_temp_file_path = f'{module_target_file_path}.temp'
   with open(module_temp_file_path, 'w') as module_file, open(f'{python_output_dir}/{module_name}py.py', 'w') as python_file, ExitStack() as exit_stack:
@@ -727,6 +757,8 @@ def generate_plugin_bindings(output_dir: str, module_name: str, files: List[str]
     module_file.write('  }\n')
     module_file.write('\n}\n')
   replace_file_if_different(module_temp_file_path, module_target_file_path)
+  if python_filters_info:
+    write_plugin_filters(python_filters_info.package_dir, module_name, python_filters_info)
 
 def read_plugin_file_list(file_list_path: str, source_dir: str) -> List[str]:
   files = []
@@ -767,17 +799,35 @@ if __name__ == '__main__':
   parser.add_argument('--post_types_path')
   parser.add_argument('--include_dir')
   parser.add_argument('--plugin_name')
+  parser.add_argument('--package_dir',)
+  parser.add_argument('--python_files', nargs='+')
+  parser.add_argument('--python_filters', nargs='+')
   parser.add_argument('--plugin', action='store_true')
   parser.add_argument('--no_tests', action='store_true')
   parser.add_argument('--relative_imports', action='store_true')
+  parser.add_argument('--has_python_filters', action='store_true')
 
   args = parser.parse_args()
+
+  python_filters_info = None
+
+  if args.has_python_filters:
+    if not args.plugin:
+      parser.error('--has_python_filters requires --plugin')
+    if args.python_files is None:
+      parser.error('--has_python_filters requires --python_files')
+    if args.python_filters is None:
+      parser.error('--has_python_filters requires --python_filters')
+    if args.package_dir is None:
+      parser.error('--has_python_filters requires --package_dir')
+
+    python_filters_info = PythonFiltersInfo(files=args.python_files, filters=args.python_filters, package_dir=args.package_dir)
 
   if args.plugin:
     if args.module_name is None:
       parser.error('--plugin requires --module_name')
     files = read_plugin_file_list(args.file_list_path, args.source_dir)
-    generate_plugin_bindings(args.output_dir, args.module_name, files, args.include_dir, args.python_output_dir, args.plugin_name, args.header_path, args.body_path, args.body_top_path, args.post_types_path, args.no_tests, args.relative_imports)
+    generate_plugin_bindings(args.output_dir, args.module_name, files, args.include_dir, args.python_output_dir, args.plugin_name, args.header_path, args.body_path, args.body_top_path, args.post_types_path, args.no_tests, args.relative_imports, python_filters_info)
   else:
     if args.header_path is None:
       parser.error('requires --header_path')

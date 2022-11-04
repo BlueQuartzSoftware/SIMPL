@@ -136,6 +136,7 @@ int main(int argc, char* argv[])
 #ifdef SIMPL_EMBED_PYTHON
   if(hasPythonHome)
   {
+    PythonLoader::loadPluginFilters();
     PythonLoader::addToPythonPath(PythonLoader::defaultSIMPLPythonLibPath());
     std::cout << "Loading Python filters:\n";
     auto paths = PythonLoader::defaultPythonFilterPaths();
