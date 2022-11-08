@@ -556,7 +556,7 @@ def write_plugin_filters(output_dir: str, plugin_name: str, filters_info: Python
     shutil.copy(filepath, module_dir)
 
   with open(module_dir / '__init__.py', 'w') as file:
-    file.write('from dream3d.simpl import registerPythonFilter\n')
+    file.write('from dream3d.simpl import registerPluginPythonFilter\n')
     for filename in filters_info.files:
       file.write(f'from .{Path(filename).stem} import *\n')
 
@@ -567,7 +567,7 @@ def write_plugin_filters(output_dir: str, plugin_name: str, filters_info: Python
 
     file.write('def register_filters():\n')
     file.write('  for f in get_filters():\n')
-    file.write('    registerPythonFilter(f)\n')
+    file.write('    registerPluginPythonFilter(f)\n')
     file.write('register_filters()\n')
 
 def generate_simpl_bindings(output_dir: str, header_path: str, body_path: str, files: List[str], source_dir: str, python_output_dir: str, plugin_name: str, body_top_path: str = '', post_types_path: str = '', no_tests: bool = False, relative_imports: bool = False) -> None:

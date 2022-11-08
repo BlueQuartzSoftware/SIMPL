@@ -45,6 +45,8 @@ namespace PythonLoader
 using ErrorCallback = std::function<void(const std::string&, const std::string&)>;
 // class, file
 using LoadedCallback = std::function<void(const std::string&, const std::string&)>;
+// error message
+using PluginErrorCallback = std::function<void(const std::string&)>;
 
 SIMPLib_EXPORT std::vector<std::string> defaultPythonFilterPaths();
 
@@ -53,7 +55,7 @@ SIMPLib_EXPORT std::string defaultSIMPLPythonLibPath();
 SIMPLib_EXPORT size_t loadPythonFilters(FilterManager& filterManager, const std::vector<std::string>& paths = defaultPythonFilterPaths(), ErrorCallback errorCallBack = {},
                                         LoadedCallback loadedCallback = {});
 
-SIMPLib_EXPORT void loadPluginFilters();
+SIMPLib_EXPORT bool loadPluginFilters(PluginErrorCallback errorCallback);
 
 SIMPLib_EXPORT bool checkPythonHome();
 

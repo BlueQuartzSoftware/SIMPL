@@ -136,7 +136,11 @@ int main(int argc, char* argv[])
 #ifdef SIMPL_EMBED_PYTHON
   if(hasPythonHome)
   {
-    PythonLoader::loadPluginFilters();
+    std::cout << "Loading plugin Python filters\n";
+    if(!PythonLoader::loadPluginFilters([](const std::string& error) { std::cout << error << "\n"; }))
+    {
+      std::cout << "Failed to load python filters from plugins\n";
+    }
     PythonLoader::addToPythonPath(PythonLoader::defaultSIMPLPythonLibPath());
     std::cout << "Loading Python filters:\n";
     auto paths = PythonLoader::defaultPythonFilterPaths();
