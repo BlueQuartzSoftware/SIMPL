@@ -70,9 +70,28 @@ endfunction()
 # @ PYTHON_OUTPUT_DIR
 #-------------------------------------------------------------------------------
 function(CreatePybind11Module)
-  set(options PLUGIN)
-  set(oneValueArgs MODULE_NAME OUTPUT_DIR FILE_LIST_PATH SOURCE_DIR HEADER_PATH BODY_PATH BODY_TOP_PATH POST_TYPES_PATH INCLUDE_DIR PYTHON_OUTPUT_DIR)
-  set(multiValueArgs LINK_LIBRARIES INCLUDE_DIRS)
+  set(options
+    PLUGIN
+    HAS_PYTHON_FILTERS
+  )
+  set(oneValueArgs
+    MODULE_NAME
+    OUTPUT_DIR
+    FILE_LIST_PATH
+    SOURCE_DIR
+    HEADER_PATH
+    BODY_PATH
+    BODY_TOP_PATH
+    POST_TYPES_PATH
+    INCLUDE_DIR
+    PYTHON_OUTPUT_DIR
+  )
+  set(multiValueArgs
+    LINK_LIBRARIES
+    INCLUDE_DIRS
+    PYTHON_FILTERS
+    PYTHON_FILES
+  )
   cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
   set(pybind11_FIND_QUIETLY TRUE)
@@ -81,6 +100,11 @@ function(CreatePybind11Module)
   set(PLUGIN_ARG "")
   if(${ARGS_PLUGIN})
     set(PLUGIN_ARG "--plugin")
+  endif()
+
+  set(HAS_PYTHON_FILTERS_ARG "")
+  if(${ARGS_HAS_PYTHON_FILTERS})
+    set(HAS_PYTHON_FILTERS_ARG "--has_python_filters")
   endif()
 
   string(TOLOWER ${ARGS_MODULE_NAME} MODULE_NAME_lower)
@@ -121,6 +145,10 @@ function(CreatePybind11Module)
       "--body_top_path=${ARGS_BODY_TOP_PATH}"
       "--post_types_path=${ARGS_POST_TYPES_PATH}"
       "--plugin_name=${ARGS_MODULE_NAME}"
+      "${HAS_PYTHON_FILTERS_ARG}"
+      "--python_files=${ARGS_PYTHON_FILES}"
+      "--python_filters=${ARGS_PYTHON_FILTERS}"
+      "--package_dir=${DREAM3D_PYTHON_PACKAGE_DIR}"
       "${NO_TESTS_ARG}"
       "${RELATIVE_IMPORTS_ARGS}"
       COMMENT "${ARGS_MODULE_NAME}: Generating Python bindings"
@@ -182,6 +210,9 @@ function(CreatePybind11Module)
   if(DREAM3D_ANACONDA)
     file(APPEND ${DREAM3D_INIT_PY_FILE} "from . import ${MODULE_NAME_lower}\n")
     file(APPEND ${DREAM3D_INIT_PY_FILE} "from . import ${MODULE_NAME_lower}py\n")
+    if(ARGS_HAS_PYTHON_FILTERS)
+      file(APPEND ${DREAM3D_INIT_PY_FILE} "from . import ${MODULE_NAME_lower}_filters\n")
+    endif()
     add_dependencies(CopyPythonPackage ${MODULE_NAME_lower})
     add_dependencies(CreateDREAM3DStubs ${MODULE_NAME_lower})
   endif()
@@ -208,12 +239,17 @@ endfunction()
 # @ BODY_PATH
 #-------------------------------------------------------------------------------
 function(CreatePybind11Plugin)
-  set(options)
+  set(options HAS_PYTHON_FILTERS)
   set(oneValueArgs PLUGIN_NAME PLUGIN_TARGET HEADER_PATH BODY_PATH BODY_TOP_PATH POST_TYPES_PATH)
-  set(multiValueArgs)
+  set(multiValueArgs PYTHON_FILTERS PYTHON_FILES)
   cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
   get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+
+  set(HAS_PYTHON_FILTERS_ARG "")
+  if(ARGS_HAS_PYTHON_FILTERS)
+    set(HAS_PYTHON_FILTERS_ARG "HAS_PYTHON_FILTERS")
+  endif()
 
   CreatePybind11Module(MODULE_NAME ${ARGS_PLUGIN_NAME}
     OUTPUT_DIR "${${ARGS_PLUGIN_NAME}_BINARY_DIR}/Wrapping/PythonCore"
@@ -228,6 +264,9 @@ function(CreatePybind11Plugin)
     LINK_LIBRARIES ${ARGS_PLUGIN_TARGET}
     INCLUDE_DIRS ${SIMPLProj_SOURCE_DIR}/Wrapping/Python
     PLUGIN
+    ${HAS_PYTHON_FILTERS_ARG}
+    PYTHON_FILTERS ${ARGS_PYTHON_FILTERS}
+    PYTHON_FILES ${ARGS_PYTHON_FILES}
   )
 endfunction()
 

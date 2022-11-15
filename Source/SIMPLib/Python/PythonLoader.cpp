@@ -318,6 +318,33 @@ size_t PythonLoader::loadPythonFilters(FilterManager& filterManager, const std::
   return numberLoaded;
 }
 
+bool PythonLoader::loadPluginFilters(PluginErrorCallback errorCallback)
+{
+#ifdef DREAM3D_ANACONDA
+  pybind11::gil_scoped_acquire gil_acquire_guard{};
+  try
+  {
+    // the auto generated code in the dream3d package should import plugin filters
+    pybind11::module_::import("dream3d");
+  } catch(const pybind11::error_already_set& exception)
+  {
+    if(errorCallback)
+    {
+      errorCallback(exception.what());
+      return false;
+    }
+  } catch(const std::exception& exception)
+  {
+    if(errorCallback)
+    {
+      errorCallback(exception.what());
+      return false;
+    }
+  }
+#endif
+  return true;
+}
+
 // -----------------------------------------------------------------------------
 struct PythonLoader::ScopedInterpreter::Impl
 {

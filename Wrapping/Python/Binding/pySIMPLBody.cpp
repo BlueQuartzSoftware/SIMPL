@@ -197,6 +197,12 @@ mod.def("registerPythonFilter", [](py::object object) {
   filterManager->addPythonFilterFactory(filterFactory->getFilterClassName(), filterFactory);
 });
 
+mod.def("registerPluginPythonFilter", [](py::object object) {
+  auto filterManager = FilterManager::Instance();
+  auto filterFactory = PythonFilterFactory::New(object);
+  filterManager->addFilterFactory(filterFactory->getFilterClassName(), filterFactory);
+});
+
 mod.def("unregisterPythonFilter", [](const std::string& uuidStr) {
   QUuid uuid(QString::fromStdString(uuidStr));
   auto filterManager = FilterManager::Instance();
