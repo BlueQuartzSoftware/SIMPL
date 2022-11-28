@@ -55,8 +55,6 @@
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
-#include <tbb/parallel_for.h>
-
 
 class ConvertColorToGrayScaleTest
 {
@@ -350,12 +348,11 @@ class ConvertColorToGrayScaleTest
     std::vector<uint8_t> colorArray{algorithmMap[algoMapIndex]};
 
     int wrongValues = 0;
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, colorArray.size()), [&](const tbb::blocked_range<size_t>& r) {
-      for(size_t index = r.begin(); index < r.end(); ++index)
-      {
-        wrongValues += (testArray->getValue(index) == colorArray[index]) ? 0 : 1;
-      }
-    });
+    for(size_t index = 0; index < colorArray.size(); ++index)
+    {
+      wrongValues += (testArray->getValue(index) == colorArray[index]) ? 0 : 1;
+    }
+
     return wrongValues;
   }
 
