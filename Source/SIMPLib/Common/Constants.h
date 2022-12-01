@@ -516,6 +516,7 @@ inline const QString SurfaceMeshFaceNormals("FaceNormals");
 inline const QString SurfaceMeshFeatureFaceId("FeatureFaceId");
 inline const QString SurfaceMeshGaussianCurvatures("GaussianCurvatures");
 inline const QString SurfaceMeshMeanCurvatures("MeanCurvatures");
+inline const QString SurfaceMeshWeingartenMatrix("WeingartenMatrix");
 inline const QString SurfaceMeshPrincipalCurvature1("PrincipalCurvature1");
 inline const QString SurfaceMeshPrincipalCurvature2("PrincipalCurvature2");
 inline const QString SurfaceMeshPrincipalDirection1("PrincipalDirection1");
