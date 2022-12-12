@@ -112,18 +112,15 @@ public:
   template <typename Body>
   void execute(const Body& body)
   {
-    bool doParallel = false;
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-    doParallel = m_RunParallel;
-    if(doParallel)
+    if(m_RunParallel)
     {
       tbb::blocked_range2d<size_t, size_t> tbbRange(m_Range.minRow(), m_Range.maxRow(), m_Range.minCol(), m_Range.maxCol());
       tbb::parallel_for(tbbRange, body, m_Partitioner);
     }
-#endif
-
     // Run non-parallel operation
-    if(!doParallel)
+    else
+#endif
     {
       body(m_Range);
     }
