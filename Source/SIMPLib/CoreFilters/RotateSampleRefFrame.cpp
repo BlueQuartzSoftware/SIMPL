@@ -345,71 +345,88 @@ static std::map<size_t, int64_t> s_LastProgressInt;
 class RotateSampleRefFrameImpl
 {
 public:
-  RotateSampleRefFrameImpl(RotateSampleRefFrame* filter, IDataArray::Pointer& sourceArray, IDataArray::Pointer& targetArray, Int64ArrayType::Pointer& newIndicesPtr)
+  RotateSampleRefFrameImpl(RotateSampleRefFrame* filter, IDataArray::Pointer& sourceArray, IDataArray::Pointer& targetArray, const RotateArgs& args, const Matrix3fR& rotationMatrix, bool sliceBySlice)
   : m_Filter(filter)
   , m_SourceArray(sourceArray)
   , m_TargetArray(targetArray)
-  , m_NewIndices(newIndicesPtr)
+  , m_SliceBySlice(sliceBySlice)
+  , m_Params(args)
   {
+    // We have to inline the 3x3 Maxtrix transpose here because of the "const" nature of the 'convert' function
+    Matrix3fR transpose = rotationMatrix.transpose();
+    // Need to use row based Eigen matrix so that the values get mapped to the right place in the raw array
+    // Raw array is faster than Eigen
+    Eigen::Map<Matrix3fR>(&m_RotMatrixInv[0][0], transpose.rows(), transpose.cols()) = transpose;
   }
+
   virtual ~RotateSampleRefFrameImpl() = default;
 
-  void convert(size_t start, size_t end) const
+  void convert() const
   {
-    //    int64_t progCounter = 0;
-    //    int64_t totalElements = (end - start);
-    //    int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
+    std::array<float32, 3> coordsOld = {0.0f, 0.0f, 0.0f};
 
-    //    size_t numComps = m_SourceArray->getNumberOfComponents();
-
-    Int64ArrayType& newindicies = *m_NewIndices;
-    int64_t newIndicies_I = 0;
-    for(size_t i = start; i < end; i++)
+    for(int64_t k = 0; k < m_Params.zpNew; k++)
     {
-      if(m_Filter->getCancel())
+      int64_t ktot = (m_Params.xpNew * m_Params.ypNew) * k;
+      for(int64_t j = 0; j < m_Params.ypNew; j++)
       {
-        break;
-      }
-      newIndicies_I = newindicies[i];
-      if(newIndicies_I >= 0)
-      {
-        if(!m_TargetArray->copyFromArray(i, m_SourceArray, newIndicies_I, 1))
+        int64_t jtot = (m_Params.xpNew) * j;
+        for(int64_t i = 0; i < m_Params.xpNew; i++)
         {
-          return;
+
+          int64_t newIndex = ktot + jtot + i;
+          int64_t oldIndex = -1;
+
+          std::array<float, 3> coordsNew = {(static_cast<float>(i) * m_Params.xResNew) + m_Params.xMinNew, (static_cast<float>(j) * m_Params.yResNew) + m_Params.yMinNew,
+                                            (static_cast<float>(k) * m_Params.zResNew) + m_Params.zMinNew};
+
+          MatrixMath::Multiply3x3with3x1(m_RotMatrixInv, coordsNew.data(), coordsOld.data());
+
+          auto colOld = static_cast<int64_t>(std::nearbyint(coordsOld[0] / m_Params.xRes));
+          auto rowOld = static_cast<int64_t>(std::nearbyint(coordsOld[1] / m_Params.yRes));
+          auto planeOld = static_cast<int64_t>(std::nearbyint(coordsOld[2] / m_Params.zRes));
+
+          if(m_SliceBySlice)
+          {
+            planeOld = k;
+          }
+
+          if(colOld >= 0 && colOld < m_Params.xp && rowOld >= 0 && rowOld < m_Params.yp && planeOld >= 0 && planeOld < m_Params.zp)
+          {
+            oldIndex = (m_Params.xp * m_Params.yp * planeOld) + (m_Params.xp * rowOld) + colOld;
+          }
+
+          if(oldIndex >= 0)
+          {
+            if(!m_TargetArray->copyFromArray(oldIndex, m_SourceArray, newIndex, 1))
+            {
+              return;
+            }
+          }
+          else
+          {
+            int var = 0;
+            m_TargetArray->initializeTuple(newIndex, &var);
+          }
         }
       }
-      else
-      {
-        int var = 0;
-        m_TargetArray->initializeTuple(i, &var);
-      }
-
-      //      if(progCounter > progIncrement)
-      //      {
-      //        m_Filter->sendThreadSafeProgressMessage(progCounter);
-      //        progCounter = 0;
-      //      }
-      //      progCounter++;
     }
   }
 
   void operator()() const
   {
-    convert(0, m_NewIndices->getNumberOfTuples());
+    convert();
     // Delete the original array
     m_SourceArray->resizeTuples(0);
-  }
-
-  void operator()(const SIMPLRange& range) const
-  {
-    convert(range.min(), range.max());
   }
 
 private:
   RotateSampleRefFrame* m_Filter = nullptr;
   IDataArray::Pointer m_SourceArray;
   IDataArray::Pointer m_TargetArray;
-  Int64ArrayType::Pointer m_NewIndices;
+  float m_RotMatrixInv[3][3] = {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}};
+  bool m_SliceBySlice = false;
+  RotateArgs m_Params;
 };
 
 // -----------------------------------------------------------------------------
@@ -668,21 +685,6 @@ void RotateSampleRefFrame::execute()
 
   int64_t newNumCellTuples = p_Impl->m_Params.xpNew * p_Impl->m_Params.ypNew * p_Impl->m_Params.zpNew;
 
-  DataArray<int64_t>::Pointer newIndiciesPtr = DataArray<int64_t>::CreateArray(newNumCellTuples, std::string("_INTERNAL_USE_ONLY_RotateSampleRef_NewIndicies"), true);
-  newIndiciesPtr->initializeWithValue(-1);
-
-  notifyStatusMessage("Creating mapping of old to new indices....");
-
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  tbb::parallel_for(tbb::blocked_range3d<int64_t, int64_t, int64_t>(0, p_Impl->m_Params.zpNew, 0, p_Impl->m_Params.ypNew, 0, p_Impl->m_Params.xpNew),
-                    SampleRefFrameRotator(newIndiciesPtr, p_Impl->m_Params, p_Impl->m_RotationMatrix, m_SliceBySlice), tbb::auto_partitioner());
-#else
-  {
-    SampleRefFrameRotator serial(newIndiciesPtr, p_Impl->m_Params, p_Impl->m_RotationMatrix, m_SliceBySlice);
-    serial.convert(0, p_Impl->m_Params.zpNew, 0, p_Impl->m_Params.ypNew, 0, p_Impl->m_Params.xpNew);
-  }
-#endif
-
   QString attrMatName = getCellAttributeMatrixPath().getAttributeMatrixName();
   AttributeMatrix::Pointer targetAttributeMatrix = m->getAttributeMatrix(attrMatName);
 
@@ -711,18 +713,9 @@ void RotateSampleRefFrame::execute()
     // and never actually allocate the data. So we just resize to 1 tuple, and then to the real size.
     targetArray->resizeTuples(1);                // Allocate the memory for this data array
     targetArray->resizeTuples(newNumCellTuples); // Allocate the memory for this data array
-#if 0
-// This section was an attempt to parallelize the rotation of each DataArray. it is actually slower this way
-// than in serial. So we punted on just gave a CPU core to each DataArray that needed to be transformed.
-    // Allow data-based parallelization
-    ParallelDataAlgorithm dataAlg;
-    dataAlg.setParallelizationEnabled(false);
-    dataAlg.setRange(0, newNumCellTuples);
-    dataAlg.execute(RotateSampleRefFrameImpl(this, sourceArray, targetArray, newIndiciesPtr));
-#endif
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-    g->run(RotateSampleRefFrameImpl(this, sourceArray, targetArray, newIndiciesPtr));
+    g->run(RotateSampleRefFrameImpl(this, sourceArray, targetArray, p_Impl->m_Params, p_Impl->m_RotationMatrix, m_SliceBySlice));
     threadCount++;
     if(threadCount == nthreads)
     {
@@ -730,96 +723,14 @@ void RotateSampleRefFrame::execute()
       threadCount = 0;
     }
 #else
-    RotateSampleRefFrameImpl impl(this, sourceArray, targetArray, newIndiciesPtr);
+    RotateSampleRefFrameImpl impl(this, sourceArray, targetArray, p_Impl->m_Params, p_Impl->m_RotationMatrix, m_SliceBySlice);
     impl();
 #endif
-
-    //    auto end = std::chrono::steady_clock::now();
-    //    std::cout << "    Elapsed time in seconds: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " sec" << std::endl;
-
-    //    if(getCancel())
-    //    {
-    //      break;
-    //    }
   }
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   // This will spill over if the number of DataArrays to process does not divide evenly by the number of threads.
   g->wait();
 #endif
-}
-
-void RotateSampleRefFrame::execute_alt()
-{
-  dataCheck();
-  if(getErrorCode() < 0)
-  {
-    return;
-  }
-
-  DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getCellAttributeMatrixPath().getDataContainerName());
-
-  if(m == nullptr)
-  {
-    QString ss = QObject::tr("Failed to get DataContainer '%1'").arg(getCellAttributeMatrixPath().getDataContainerName());
-    setErrorCondition(-45101, ss);
-    return;
-  }
-
-  int64_t newNumCellTuples = p_Impl->m_Params.xpNew * p_Impl->m_Params.ypNew * p_Impl->m_Params.zpNew;
-
-  DataArray<int64_t>::Pointer newIndiciesPtr = DataArray<int64_t>::CreateArray(newNumCellTuples, std::string("_INTERNAL_USE_ONLY_RotateSampleRef_NewIndicies"), true);
-  newIndiciesPtr->initializeWithValue(-1);
-
-  notifyStatusMessage("Creating mapping of old to new indices....");
-
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  tbb::parallel_for(tbb::blocked_range3d<int64_t, int64_t, int64_t>(0, p_Impl->m_Params.zpNew, 0, p_Impl->m_Params.ypNew, 0, p_Impl->m_Params.xpNew),
-                    SampleRefFrameRotator(newIndiciesPtr, p_Impl->m_Params, p_Impl->m_RotationMatrix, m_SliceBySlice), tbb::auto_partitioner());
-#else
-  {
-    SampleRefFrameRotator serial(newIndiciesPtr, p_Impl->m_Params, p_Impl->m_RotationMatrix, m_SliceBySlice);
-    serial.convert(0, p_Impl->m_Params.zpNew, 0, p_Impl->m_Params.ypNew, 0, p_Impl->m_Params.xpNew);
-  }
-#endif
-
-  QString attrMatName = getCellAttributeMatrixPath().getAttributeMatrixName();
-  AttributeMatrix::Pointer targetAttributeMatrix = m->getAttributeMatrix(attrMatName);
-
-  QList<QString> voxelArrayNames = targetAttributeMatrix->getAttributeArrayNames();
-
-  for(const auto& attrArrayName : voxelArrayNames)
-  {
-    // Needed for Threaded Progress Messages
-    m_InstanceIndex = ++RotateSampleRefFrameProgress::s_InstanceIndex;
-    RotateSampleRefFrameProgress::s_ProgressValues[m_InstanceIndex] = 0;
-    RotateSampleRefFrameProgress::s_LastProgressInt[m_InstanceIndex] = 0;
-    m_TotalElements = newNumCellTuples;
-
-    auto start = std::chrono::steady_clock::now();
-    notifyStatusMessage(QString("Rotating DataArray '%1'").arg(attrArrayName));
-    IDataArray::Pointer sourceArray = m_SourceAttributeMatrix->getAttributeArray(attrArrayName);
-    IDataArray::Pointer targetArray = targetAttributeMatrix->getAttributeArray(attrArrayName);
-    // So this little work-around is because if we just try to resize the DataArray<T> will think the sizes are the same
-    // and never actually allocate the data. So we just resize to 1 tuple, and then to the real size.
-    targetArray->resizeTuples(1);                // Allocate the memory for this data array
-    targetArray->resizeTuples(newNumCellTuples); // Allocate the memory for this data array
-
-    // This section was an attempt to parallelize the rotation of each DataArray. it is actually slower this way
-    // than in serial. So we punted on just gave a CPU core to each DataArray that needed to be transformed.
-    // Allow data-based parallelization
-    ParallelDataAlgorithm dataAlg;
-    dataAlg.setParallelizationEnabled(false);
-    dataAlg.setRange(0, newNumCellTuples);
-    dataAlg.execute(RotateSampleRefFrameImpl(this, sourceArray, targetArray, newIndiciesPtr));
-
-    auto end = std::chrono::steady_clock::now();
-    std::cout << "    Elapsed time in seconds: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " sec" << std::endl;
-
-    if(getCancel())
-    {
-      break;
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
