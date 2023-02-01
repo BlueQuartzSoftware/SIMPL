@@ -93,9 +93,7 @@ public:
   void execute(const Body& body)
   {
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-    bool doParallel = false;
-    doParallel = m_Parallelization;
-    if(doParallel)
+    if(m_Parallelization)
     {
       m_TaskGroup->run(body);
       m_CurThreads++;
@@ -104,9 +102,11 @@ public:
         wait();
       }
     }
-#else
-    body();
+    else
 #endif
+    {
+      body();
+    }
   }
 
   /**
