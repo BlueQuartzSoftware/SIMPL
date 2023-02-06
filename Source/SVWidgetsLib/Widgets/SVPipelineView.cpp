@@ -1597,6 +1597,10 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
   Q_EMIT pipelineFilePathUpdated(filePath);
   Q_EMIT pipelineChanged();
 
+  // Add file to the recent files list
+  QtSRecentFileList* list = QtSRecentFileList::Instance();
+  list->addFile(filePath);
+
   return 0;
 }
 
