@@ -56,7 +56,7 @@ QWidget* DynamicTableItemDelegate::createEditor(QWidget* parent, const QStyleOpt
 {
   QLineEdit* editor = new QLineEdit(parent);
   QDoubleValidator* validator = new QDoubleValidator();
-  validator->setDecimals(5);
+  validator->setDecimals(8);
   validator->setNotation(QDoubleValidator::StandardNotation);
   editor->setValidator(validator);
   return editor;
