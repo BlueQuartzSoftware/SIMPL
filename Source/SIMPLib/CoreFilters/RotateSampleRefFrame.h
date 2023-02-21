@@ -46,6 +46,8 @@
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
+#include <QtCore/QDateTime>
+
 /**
  * @brief The RotateSampleRefFrame class. See [Filter documentation](@ref rotatesamplerefframe) for details.
  */
