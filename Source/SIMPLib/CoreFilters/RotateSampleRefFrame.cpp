@@ -410,9 +410,18 @@ public:
           // Now we know what voxel the new cell center maps back to in the original geometry.
           if(errorResult == ImageGeom::ErrorType::NoError)
           {
+            // This is such a BAD idea but is needed here due to the ReadH5Ebsd and how it needs a very
+            // particular transformation performed. UNDER Probably NO other circumstances should slice-by-slice be used
+            // for any other kind of transformation.
+            if(m_SliceBySlice)
+
+            {
+              oldGeomIndices[2] = k;
+            }
             size_t oldIndex = (origImageGeomDims[0] * origImageGeomDims[1] * oldGeomIndices[2]) + (origImageGeomDims[0] * oldGeomIndices[1]) + oldGeomIndices[0];
             if(!m_TargetArray->copyFromArray(newIndex, m_SourceArray, oldIndex, 1))
             {
+              m_Filter->setErrorCondition(-99000, "RotateSampleReferenceFrame: Error occured when copying data to the rotated geometry. This should not have happened.");
               return;
             }
           }
@@ -779,6 +788,7 @@ void RotateSampleRefFrame::sendThreadSafeProgressMessage(int64_t counter)
   lastProgressInt = progressInt;
 }
 
+// -----------------------------------------------------------------------------
 void RotateSampleRefFrame::sendThreadSafeProgressMessage(const QString& message)
 {
   static std::mutex mutex;
