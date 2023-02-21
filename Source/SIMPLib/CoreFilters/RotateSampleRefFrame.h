@@ -274,6 +274,8 @@ public:
    */
   void sendThreadSafeProgressMessage(int64_t counter);
 
+  void sendThreadSafeProgressMessage(const QString& message);
+
 protected:
   RotateSampleRefFrame();
 
@@ -310,6 +312,7 @@ private:
   mutable std::mutex m_ProgressMessage_Mutex;
   size_t m_InstanceIndex = {0};
   int64_t m_TotalElements = {};
+  qint64 m_Millis = QDateTime::currentMSecsSinceEpoch();
 
   /**
    * @brief This is an alternate version of the execute that attempted to parallelize over each DataArray. Turns out this was
