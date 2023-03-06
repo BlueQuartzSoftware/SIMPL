@@ -1234,7 +1234,7 @@ ImageGeom::ErrorType ImageGeom::computeCellIndex(const float coords[3], size_t i
       return static_cast<ImageGeom::ErrorType>(i * 2 + 1);
     }
     index[i] = static_cast<size_t>((coords[i] - m_Origin[i]) / m_Spacing[i]);
-    if(index[i] > m_Dimensions[i])
+    if(index[i] >= m_Dimensions[i])
     {
       return static_cast<ImageGeom::ErrorType>(i * 2 + 1);
     }

@@ -459,15 +459,15 @@ private:
 RotateSampleRefFrame::RotateSampleRefFrame()
 : p_Impl(std::make_unique<Impl>())
 {
-  std::vector<std::vector<double>> defaultTable{{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}};
+  std::vector<std::vector<double>> defaultTable{{1.0, 0.0, 0.0, 0.0}, {0.0, 1.0, 0.0, 0.0}, {0.0, 0.0, 1.0, 0.0},  {0.0, 0.0, 0.0, 1.0}};
 
   m_RotationTable.setTableData(defaultTable);
   m_RotationTable.setDynamicRows(false);
   m_RotationTable.setDynamicCols(false);
-  m_RotationTable.setDefaultColCount(3);
-  m_RotationTable.setDefaultRowCount(3);
-  m_RotationTable.setMinCols(3);
-  m_RotationTable.setMinRows(3);
+  m_RotationTable.setDefaultColCount(4);
+  m_RotationTable.setDefaultRowCount(4);
+  m_RotationTable.setMinCols(4);
+  m_RotationTable.setMinRows(4);
 }
 
 // -----------------------------------------------------------------------------

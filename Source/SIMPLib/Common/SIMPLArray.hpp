@@ -505,7 +505,7 @@ public:
   }
   inline IVec3 operator*(const IVec3& v) const
   {
-    return IVec3(X_VAL * v.x, Y_VAL * v.y, Z_VAL * v.z);
+    return IVec3(X_VAL * v[0], Y_VAL * v[1], Z_VAL * v[2]);
   }
   inline T dotProduct(const IVec3<T>& v) const
   {
