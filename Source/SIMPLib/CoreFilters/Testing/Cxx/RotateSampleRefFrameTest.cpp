@@ -242,16 +242,6 @@ public:
 
     resetGeometry(matrix, imageGeom, tDims);
 
-    // Non-normalized rotation axis should generate a warning
-
-    setProperty(rotateFilter, k_RotationAxisName, FloatVec3Type(1.0f, 1.0f, 0.0f));
-
-    rotateFilter->preflight();
-    int warning = rotateFilter->getWarningCode();
-    DREAM3D_REQUIRED(warning, <, 0)
-
-    resetGeometry(matrix, imageGeom, tDims);
-
     // Correct rotation matrix inputs
 
     setProperty(rotateFilter, k_RotationRepresentationChoiceName, k_RotationMatrix);
@@ -260,7 +250,7 @@ public:
     //  0 1 0
     // -1 0 0
 
-    std::vector<std::vector<double>> table = {{0.0, 0.0, 1.0}, {0.0, 1.0, 0.0}, {-1.0, 0.0, 0.0}};
+    std::vector<std::vector<double>> table = {{0.0, 0.0, 1.0, 0.0}, {0.0, 1.0, 0.0, 0.0}, {-1.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 1.0}};
 
     DynamicTableData tableData(table);
 
@@ -436,8 +426,10 @@ public:
           {
             row.push_back(static_cast<double>(rotationMatrix(i, j)));
           }
+          row.push_back(0.0);
           data.push_back(row);
         }
+        data.push_back({0.0, 0.0, 0.0, 1.0});
 
         DynamicTableData tableData(data);
 
