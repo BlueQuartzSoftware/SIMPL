@@ -38,6 +38,7 @@
 #include <cstdlib>
 
 // C++ Includes
+#include <fstream>
 #include <iostream>
 
 // Qt Includes
@@ -55,6 +56,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
+// #include "SIMPLib/Common/LogFileObserver.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
@@ -68,11 +70,42 @@
 #include "SIMPLib/Python/PythonLoader.h"
 #endif
 
-// -----------------------------------------------------------------------------
-//
+QFile s_LogFile;
+QTextStream s_LogStream(&s_LogFile);
+
+/**
+ * @brief MessageToLogFileHandler
+ * @param type
+ * @param msg
+ */
+void MessageToLogFileHandler(QtMsgType type, const QMessageLogContext&, const QString& msg)
+{
+  QString txt;
+  switch(type)
+  {
+  case QtDebugMsg:
+    txt = QString("Debug: %1").arg(msg);
+    break;
+  case QtWarningMsg:
+    txt = QString("Warning: %1").arg(msg);
+    break;
+  case QtCriticalMsg:
+    txt = QString("Critical: %1").arg(msg);
+    break;
+  case QtFatalMsg:
+    txt = QString("Fatal: %1").arg(msg);
+    break;
+  case QtInfoMsg:
+    txt = QString("Info: %1").arg(msg);
+    break;
+  }
+  s_LogStream << txt << "\n";
+}
+
 // -----------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
+
 #ifdef DREAM3D_ANACONDA
   {
     constexpr const char k_PYTHONHOME[] = "PYTHONHOME";
@@ -121,17 +154,52 @@ int main(int argc, char* argv[])
                                      "Pipeline File as a JSON file.", "file");
   parser.addOption(pipelineFileArg);
 
+  QCommandLineOption logFileOption(QStringList() << "l"
+                                                 << "logfile",
+                                   "Save output to file", "log");
+  parser.addOption(logFileOption);
   // Process the actual command line arguments given by the user
   parser.process(app);
 
   QString pipelineFile = parser.value(pipelineFileArg);
+  QString logFile = parser.value(logFileOption);
 
-  std::cout << "PipelineRunner " << SIMPLib::Version::PackageComplete().toStdString() << std::endl;
-  std::cout << "Input File: " << pipelineFile.toStdString() << std::endl;
-
+  if(!logFile.isEmpty())
+  {
+    s_LogFile.setFileName(logFile);
+    s_LogFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
+    qInstallMessageHandler(MessageToLogFileHandler);
+    qDebug() << QDateTime::currentDateTime();
+  }
   // Register all the filters including trying to load those from Plugins
   FilterManager* fm = FilterManager::Instance();
   SIMPLibPluginLoader::LoadPluginFilters(fm);
+  if(!logFile.isEmpty())
+  {
+    s_LogFile.close();
+  }
+
+  // Now hand off to the C++ streams for logging
+  std::ofstream logFileStream;
+  std::streambuf* stdCoutBuf = std::cout.rdbuf();
+
+  if(!logFile.isEmpty())
+  {
+    logFileStream.open(logFile.toStdString(), std::ios_base::out | std::ios_base::app);
+    if(!logFileStream.is_open())
+    {
+      std::cout << "Error opening log file '" << logFile.toStdString() << "'" << std::endl;
+      return 1;
+    }
+    std::cout.rdbuf(logFileStream.rdbuf());
+  }
+
+  std::cout << "PipelineRunner " << SIMPLib::Version::PackageComplete().toStdString() << std::endl;
+  std::cout << "Input File: " << pipelineFile.toStdString() << std::endl;
+  if(!logFile.isEmpty())
+  {
+    std::cout << "Log File: " << logFile.toStdString() << std::endl;
+  }
 
 #ifdef SIMPL_EMBED_PYTHON
   if(hasPythonHome)
@@ -207,7 +275,16 @@ int main(int argc, char* argv[])
 
   std::cout << "Pipeline Count: " << pipeline->size() << std::endl;
   Observer obs; // Create an Observer to report errors/progress from the executing pipeline
-  pipeline->addMessageReceiver(&obs);
+
+  //  if(logFile.isEmpty())
+  {
+    pipeline->addMessageReceiver(&obs);
+  }
+  //  else
+  //  {
+  //    pipeline->addMessageReceiver(logFileObserver);
+  //  }
+
   // Preflight the pipeline
   int err = -1;
   try
@@ -240,6 +317,9 @@ int main(int argc, char* argv[])
     std::cout << "Error Condition of Pipeline: " << err << std::endl;
     return EXIT_FAILURE;
   }
+
+  // Return std::cout back to normal
+  std::cout.rdbuf(stdCoutBuf);
 
   return EXIT_SUCCESS;
 }
