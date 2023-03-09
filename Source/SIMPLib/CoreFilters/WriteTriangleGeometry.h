@@ -44,6 +44,10 @@
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
+class IDataArray;
+using IDataArrayShPtrType = std::shared_ptr<IDataArray>;
+using IDataArrayWkPtrType = std::weak_ptr<IDataArray>;
+
 /**
  * @class WriteTriangleGeometry WriteTriangleGeometry.h FilterCategory/Code/FilterCategoryFilters/WriteTriangleGeometry.h
  * @brief This filter writes a Nodes, Triangles and Edges file from a Surface Mesh.
@@ -63,6 +67,11 @@ class SIMPLib_EXPORT WriteTriangleGeometry : public AbstractFilter
   PYB11_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
   PYB11_PROPERTY(QString OutputNodesFile READ getOutputNodesFile WRITE setOutputNodesFile)
   PYB11_PROPERTY(QString OutputTrianglesFile READ getOutputTrianglesFile WRITE setOutputTrianglesFile)
+  PYB11_PROPERTY(std::vector<DataArrayPath> VertexDataArrayPaths READ getVertexDataArrayPaths WRITE setVertexDataArrayPaths)
+  PYB11_PROPERTY(std::vector<DataArrayPath> FaceDataArrayPaths READ getFaceDataArrayPaths WRITE setFaceDataArrayPaths)
+  PYB11_PROPERTY(QString CommentMarker READ getCommentMarker WRITE setCommentMarker)
+  PYB11_PROPERTY(int Delimiter READ getDelimiter WRITE setDelimiter)
+
   PYB11_END_BINDINGS()
   // End Python bindings declarations
 
@@ -87,6 +96,15 @@ public:
 
   ~WriteTriangleGeometry() override;
 
+  enum DelimiterType
+  {
+    Comma = 0,
+    Semicolon = 1,
+    Space = 2,
+    Colon = 3,
+    Tab = 4
+  };
+
   /**
    * @brief Setter property for DataContainerSelection
    */
@@ -108,7 +126,6 @@ public:
    * @return Value of OutputNodesFile
    */
   QString getOutputNodesFile() const;
-
   Q_PROPERTY(QString OutputNodesFile READ getOutputNodesFile WRITE setOutputNodesFile)
 
   /**
@@ -120,8 +137,52 @@ public:
    * @return Value of OutputTrianglesFile
    */
   QString getOutputTrianglesFile() const;
-
   Q_PROPERTY(QString OutputTrianglesFile READ getOutputTrianglesFile WRITE setOutputTrianglesFile)
+
+  /**
+   * @brief Setter property for VertexDataArrayPaths
+   */
+  void setVertexDataArrayPaths(const std::vector<DataArrayPath>& value);
+  /**
+   * @brief Getter property for VertexDataArrayPaths
+   * @return Value of VertexDataArrayPaths
+   */
+  std::vector<DataArrayPath> getVertexDataArrayPaths() const;
+  Q_PROPERTY(DataArrayPathVec VertexDataArrayPaths READ getVertexDataArrayPaths WRITE setVertexDataArrayPaths)
+
+  /**
+   * @brief Setter property for FaceDataArrayPaths
+   */
+  void setFaceDataArrayPaths(const std::vector<DataArrayPath>& value);
+  /**
+   * @brief Getter property for FaceDataArrayPaths
+   * @return Value of FaceDataArrayPaths
+   */
+  std::vector<DataArrayPath> getFaceDataArrayPaths() const;
+  Q_PROPERTY(DataArrayPathVec FaceDataArrayPaths READ getFaceDataArrayPaths WRITE setFaceDataArrayPaths)
+
+  /**
+   * @brief Setter property for OutputNodesFile
+   */
+  void setCommentMarker(const QString& value);
+  /**
+   * @brief Getter property for OutputNodesFile
+   * @return Value of OutputNodesFile
+   */
+  QString getCommentMarker() const;
+  Q_PROPERTY(QString CommentMarker READ getCommentMarker WRITE setCommentMarker)
+
+  /**
+   * @brief Setter property for Delimiter
+   */
+  void setDelimiter(int value);
+  /**
+   * @brief Getter property for Delimiter
+   * @return Value of Delimiter
+   */
+  int getDelimiter() const;
+
+  Q_PROPERTY(int Delimiter READ getDelimiter WRITE setDelimiter)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -206,4 +267,13 @@ private:
   DataArrayPath m_DataContainerSelection = {"", "", ""};
   QString m_OutputNodesFile = {""};
   QString m_OutputTrianglesFile = {""};
+  std::vector<DataArrayPath> m_VertexDataArrayPaths = {};
+  std::vector<DataArrayPath> m_FaceDataArrayPaths = {};
+  QString m_CommentMarker = "!";
+  int m_Delimiter = {0};
+
+  /**
+   * @brief writeSingleFileOutput
+   */
+  void writeSingleFileOutput();
 };

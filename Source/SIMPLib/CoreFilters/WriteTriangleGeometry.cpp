@@ -40,17 +40,214 @@
 #include <QtCore/QTextStream>
 
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/Geometry/IGeometry.h"
+#include "SIMPLib/Geometry/QuadGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Utilities/FileSystemPathHelper.h"
 
 #define WRITE_EDGES_FILE 0
+
+namespace
+{
+
+// -----------------------------------------------------------------------------
+class ElementWriter
+{
+public:
+  ElementWriter(QTextStream& out, SharedQuadList::Pointer connectivityPtr)
+  : m_Out(out)
+  , m_IndexPtr(connectivityPtr)
+  {
+  }
+  void printIndex(size_t index, char delimiter)
+  {
+    m_Out << index + 1 << delimiter;
+    size_t numComp = m_IndexPtr->getNumberOfComponents();
+    for(size_t c = 0; c < numComp; c++)
+    {
+      size_t value = m_IndexPtr->getComponent(index, c);
+      m_Out << value + 1 << delimiter;
+    }
+  }
+
+private:
+  QTextStream& m_Out;
+  SharedQuadList::Pointer m_IndexPtr;
+};
+
+// -----------------------------------------------------------------------------
+class NodeWriter
+{
+public:
+  NodeWriter(QTextStream& out, SharedVertexList::Pointer vertPtr)
+  : m_Out(out)
+  , m_VertPtr(vertPtr)
+  {
+  }
+  void printIndex(size_t index, char delimiter)
+  {
+    m_Out << index + 1 << delimiter;
+    m_VertPtr->printTuple(m_Out, index, delimiter);
+  }
+
+private:
+  QTextStream& m_Out;
+  SharedVertexList::Pointer m_VertPtr;
+};
+
+// -----------------------------------------------------------------------------
+char lookupDelimiter(int m_Delimiter)
+{
+  char del = ' ';
+  switch(m_Delimiter)
+  {
+  case WriteTriangleGeometry::DelimiterType::Comma:
+    del = ',';
+    break;
+  case WriteTriangleGeometry::DelimiterType::Semicolon:
+    del = ';';
+    break;
+  case WriteTriangleGeometry::DelimiterType::Space:
+    del = ' ';
+    break;
+  case WriteTriangleGeometry::DelimiterType::Colon:
+    del = ':';
+    break;
+  case WriteTriangleGeometry::DelimiterType::Tab:
+    del = '\t';
+    break;
+  default:
+    del = ' ';
+  }
+  return del;
+}
+
+// -----------------------------------------------------------------------------
+template <typename T, class WriterType>
+void WriteSingleFileOutput(WriteTriangleGeometry* filter, const QString& outputFilePath, const QString& header, const QString& comment, typename DataArray<T>::Pointer geomDataPtr,
+                           std::vector<DataArrayPath>& dataPaths)
+{
+  DataContainerArray::Pointer dca = filter->getDataContainerArray();
+
+  // Make sure any directory path is also available as the user may have just typed
+  // in a path without actually creating the full path
+  QFileInfo fi(outputFilePath);
+  QDir parentPath(fi.path());
+  if(!parentPath.mkpath("."))
+  {
+    QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath.absolutePath());
+    filter->setErrorCondition(-12020, ss);
+    return;
+  }
+
+  QFile file(outputFilePath);
+  if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+  {
+    QString ss = QObject::tr("Output file could not be opened: %1").arg(outputFilePath);
+    filter->setErrorCondition(-12021, ss);
+    return;
+  }
+
+  QTextStream outFile(&file);
+
+  std::vector<IDataArray::Pointer> dataArrays;
+
+  // *********** Print the header Line *******************
+  char delimiter = lookupDelimiter(filter->getDelimiter());
+  QString commentMarker = filter->getCommentMarker();
+
+  outFile << comment;
+  outFile << header;
+
+  for(const auto& dataPath : dataPaths)
+  {
+    IDataArray::Pointer selectedArrayPtr = dca->getPrereqIDataArrayFromPath(filter, dataPath);
+
+    if(selectedArrayPtr->getNumberOfComponents() == 1)
+    {
+      outFile << selectedArrayPtr->getName();
+    }
+    else // There are more than a single component so we need to add multiple header values
+    {
+      for(int32_t k = 0; k < selectedArrayPtr->getNumberOfComponents(); ++k)
+      {
+        outFile << selectedArrayPtr->getName() << "_" << k;
+        if(k < selectedArrayPtr->getNumberOfComponents() - 1)
+        {
+          outFile << delimiter;
+        }
+      }
+    }
+    // if(i < dataPaths.size() - 1)
+    //{
+    outFile << delimiter;
+    // }
+    // Get the IDataArray from the DataContainer
+    dataArrays.push_back(selectedArrayPtr);
+  }
+  outFile << "\n";
+
+  // Get the number of tuples in the arrays
+  size_t numTuples = 0;
+  if(!dataArrays.empty())
+  {
+    numTuples = dataArrays[0]->getNumberOfTuples();
+  }
+
+  QString s;
+  QTextStream out(&s);
+  WriterType writerType(out, geomDataPtr);
+
+  float threshold = 0.0f;
+
+  // size_t numArrays = data.size();
+  for(size_t i = 0; i < numTuples; ++i)
+  {
+    float percentIncrement = static_cast<float>(i) / static_cast<float>(numTuples) * 100.0f;
+    if(percentIncrement > threshold)
+    {
+      QString ss = QObject::tr("Writing Output: %1%").arg(static_cast<int32_t>(percentIncrement));
+      filter->notifyStatusMessage(ss);
+      threshold = threshold + 5.0f;
+      if(threshold < percentIncrement)
+      {
+        threshold = percentIncrement;
+      }
+    }
+
+    writerType.printIndex(i, delimiter);
+    // Print a row of data
+    for(const auto& data : dataArrays)
+    {
+      data->printTuple(out, i, delimiter);
+
+      out << delimiter;
+
+      outFile << s;
+      s.clear();
+    }
+    outFile << "\n";
+  }
+}
+
+} // namespace
+
+enum createdPathID : RenameDataPath::DataID_t
+{
+  DataContainerID = 1,
+  AttributeMatrixID
+};
 
 // -----------------------------------------------------------------------------
 //
@@ -69,14 +266,55 @@ void WriteTriangleGeometry::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
+  parameters.push_back(SeparatorFilterParameter::Create("Input Options", FilterParameter::Category::Parameter));
+
+  parameters.push_back(SIMPL_NEW_STRING_FP("Comment Marker", CommentMarker, FilterParameter::Category::Parameter, WriteTriangleGeometry, {0}));
+
+  {
+    ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New(); // Delimiter choice
+    parameter->setHumanLabel("Delimiter");
+    parameter->setPropertyName("Delimiter");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(WriteTriangleGeometry, this, Delimiter));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(WriteTriangleGeometry, this, Delimiter));
+
+    std::vector<QString> choices;
+    choices.push_back(", (comma)");
+    choices.push_back("; (semicolon)");
+    choices.push_back("  (space)");
+    choices.push_back(": (colon)");
+    choices.push_back("\\t (Tab)");
+    parameter->setChoices(choices);
+    parameter->setCategory(FilterParameter::Category::Parameter);
+    parameters.push_back(parameter);
+  }
+
+  parameters.push_back(SeparatorFilterParameter::Create("Output File Selection", FilterParameter::Category::Parameter));
+
   parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output Nodes File", OutputNodesFile, FilterParameter::Category::Parameter, WriteTriangleGeometry));
   parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output Triangles File", OutputTrianglesFile, FilterParameter::Category::Parameter, WriteTriangleGeometry));
 
+  parameters.push_back(SeparatorFilterParameter::Create("Input Geometry Selection", FilterParameter::Category::Parameter));
+
   {
     DataContainerSelectionFilterParameter::RequirementType req;
+    IGeometry::Types geomTypes = {IGeometry::Type::Triangle, IGeometry::Type::Quad};
+    req.dcGeometryTypes = geomTypes;
     parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("DataContainer", DataContainerSelection, FilterParameter::Category::RequiredArray, WriteTriangleGeometry, req));
   }
 
+  parameters.push_back(SeparatorFilterParameter::Create("Output Data Arrays Selection", FilterParameter::Category::Parameter));
+
+  {
+    MultiDataArraySelectionFilterParameter::RequirementType req;
+    req.amTypes = AttributeMatrix::Types(1, AttributeMatrix::Type::Vertex);
+    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Vertex Data To Write", VertexDataArrayPaths, FilterParameter::Category::RequiredArray, WriteTriangleGeometry, req));
+  }
+
+  {
+    MultiDataArraySelectionFilterParameter::RequirementType req;
+    req.amTypes = AttributeMatrix::Types(1, AttributeMatrix::Type::Face);
+    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Face Data To Write", FaceDataArrayPaths, FilterParameter::Category::RequiredArray, WriteTriangleGeometry, req));
+  }
   setFilterParameters(parameters);
 }
 
@@ -110,14 +348,14 @@ void WriteTriangleGeometry::dataCheck()
   QFileInfo fi(getOutputNodesFile());
   if(fi.suffix().compare("") == 0)
   {
-    m_OutputNodesFile.append(".bin");
+    m_OutputNodesFile.append(".csv");
   }
   FileSystemPathHelper::CheckOutputFile(this, "Output Nodes File", getOutputNodesFile(), true);
 
   fi = QFileInfo(getOutputTrianglesFile());
   if(fi.suffix().compare("") == 0)
   {
-    m_OutputTrianglesFile.append(".bin");
+    m_OutputTrianglesFile.append(".csv");
   }
   FileSystemPathHelper::CheckOutputFile(this, "Output Triangles File", getOutputTrianglesFile(), true);
 
@@ -127,21 +365,75 @@ void WriteTriangleGeometry::dataCheck()
     return;
   }
 
-  TriangleGeom::Pointer triangles = dataContainer->getPrereqGeometry<TriangleGeom>(this);
-  if(getErrorCode() < 0)
+  IGeometry2D::Pointer nodeGeom2D = dataContainer->getGeometryAs<IGeometry2D>();
+  if(nodeGeom2D->getGeometryType() != IGeometry::Type::Quad && nodeGeom2D->getGeometryType() != IGeometry::Type::Triangle)
   {
+    setErrorCondition(-384, "Only Triangle And Quad Geometry are supported.");
     return;
   }
 
-  // We MUST have Nodes
-  if(nullptr == triangles->getVertices().get())
+  std::vector<DataArrayPath> paths = getVertexDataArrayPaths();
+
+  if(!DataArrayPath::ValidateVector(paths))
   {
-    setErrorCondition(-386, "DataContainer Geometry missing Vertices");
+    QString ss = QObject::tr("There are Attribute Arrays selected that are not contained in the same Attribute Matrix. All selected Attribute Arrays must belong to the same Attribute Matrix");
+    setErrorCondition(-11008, ss);
+    return;
   }
-  // We MUST have Triangles defined also.
-  if(nullptr == triangles->getTriangles().get())
+
+  for(auto const& path : paths)
   {
-    setErrorCondition(-387, "DataContainer Geometry missing Triangles");
+    IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, path);
+
+    if(getErrorCode() < 0)
+    {
+      return;
+    }
+
+    if(ptr.lock()->getNameOfClass() == "NeighborList<T>")
+    {
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "NeighborList is unsupported when writing ASCII Data.");
+    }
+    else if(ptr.lock()->getTypeAsString() == "struct")
+    {
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StructArray is unsupported when writing ASCII Data.");
+    }
+    else if(ptr.lock()->getTypeAsString() == "StatsDataArray")
+    {
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StatsDataArray is unsupported when writing ASCII Data.");
+    }
+  }
+
+  paths = getFaceDataArrayPaths();
+
+  if(!DataArrayPath::ValidateVector(paths))
+  {
+    QString ss = QObject::tr("There are Attribute Arrays selected that are not contained in the same Attribute Matrix. All selected Attribute Arrays must belong to the same Attribute Matrix");
+    setErrorCondition(-11008, ss);
+    return;
+  }
+
+  for(auto const& path : paths)
+  {
+    IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath(this, path);
+
+    if(getErrorCode() < 0)
+    {
+      return;
+    }
+
+    if(ptr.lock()->getNameOfClass() == "NeighborList<T>")
+    {
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "NeighborList is unsupported when writing ASCII Data.");
+    }
+    else if(ptr.lock()->getTypeAsString() == "struct")
+    {
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StructArray is unsupported when writing ASCII Data.");
+    }
+    else if(ptr.lock()->getTypeAsString() == "StatsDataArray")
+    {
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StatsDataArray is unsupported when writing ASCII Data.");
+    }
   }
 }
 
@@ -160,109 +452,86 @@ void WriteTriangleGeometry::execute()
   }
   DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerSelection());
 
-  TriangleGeom::Pointer triangleGeom = dataContainer->getGeometryAs<TriangleGeom>();
-  QString geometryType = triangleGeom->getGeometryTypeAsString();
-  float* nodes = triangleGeom->getVertexPointer(0);
-  size_t* triangles = triangleGeom->getTriPointer(0);
+  IGeometry2D::Pointer nodeGeom2D = dataContainer->getGeometryAs<IGeometry2D>();
+  SharedVertexList::Pointer vertices = nodeGeom2D->getVertices();
 
-  size_t numNodes = triangleGeom->getNumberOfVertices();
-  size_t maxNodeId = numNodes - 1;
-  size_t numTriangles = triangleGeom->getNumberOfTris();
+  QString header;
+  QTextStream headerStrm(&header);
 
-  // ++++++++++++++ Write the Nodes File +++++++++++++++++++++++++++++++++++++++++++
-  // Make sure any directory path is also available as the user may have just typed
-  // in a path without actually creating the full path
+  QString comment;
+  QTextStream commentStrm(&comment);
 
-  notifyStatusMessage("Writing Nodes Text File");
-  QFileInfo fi(getOutputNodesFile());
-  QDir parentPath = fi.path();
+  char delimiter = lookupDelimiter(m_Delimiter);
 
-  if(!parentPath.mkpath("."))
+  auto geometryType = nodeGeom2D->getGeometryType();
+  switch(geometryType)
   {
-    QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath.absolutePath());
-    setErrorCondition(-1, ss);
-    return;
+  case IGeometry::Type::Quad: {
+
+    QuadGeom::Pointer quadGeomPtr = dataContainer->getGeometryAs<QuadGeom>();
+    headerStrm << "Index" << delimiter << "X" << delimiter << "Y" << delimiter << "Z" << delimiter;
+
+    commentStrm << getCommentMarker() << " All lines starting with '" << getCommentMarker() << "' are comments\n";
+    commentStrm << getCommentMarker() << " DREAM.3D Nodes file\n";
+    commentStrm << getCommentMarker() << " DREAM.3D Version " << SIMPLib::Version::Complete().toLatin1().constData() << "\n";
+    commentStrm << getCommentMarker() << " Node Data is X Y Z.\n";
+    commentStrm << getCommentMarker() << " Indexing starts at 1\n";
+    commentStrm << getCommentMarker() << " Total Vertices: " << vertices->getNumberOfTuples() << "\n";
+
+    notifyStatusMessage(QString("Writing Nodes file...."));
+    WriteSingleFileOutput<float, NodeWriter>(this, getOutputNodesFile(), header, comment, vertices, m_VertexDataArrayPaths);
+
+    SharedQuadList::Pointer quadList = quadGeomPtr->getQuads();
+
+    header.clear();
+    headerStrm << "Index" << delimiter << "V1" << delimiter << "V2" << delimiter << "V3" << delimiter << "V4" << delimiter;
+    comment.clear();
+    commentStrm << getCommentMarker() << " All lines starting with '" << getCommentMarker() << "' are comments\n";
+    commentStrm << getCommentMarker() << " DREAM.3D Elements file\n";
+    commentStrm << getCommentMarker() << " DREAM.3D Version " << SIMPLib::Version::Complete().toLatin1().constData() << "\n";
+    commentStrm << getCommentMarker() << " Element Data: Each line has the vertex index and any associated element data.\n";
+    commentStrm << getCommentMarker() << " Element Data is considered located at the centroid of the element.\n";
+    commentStrm << getCommentMarker() << " Indexing starts at 1\n";
+    commentStrm << getCommentMarker() << " Total Elements: " << quadList->getNumberOfTuples() << "\n";
+
+    notifyStatusMessage(QString("Writing Elements file...."));
+    WriteSingleFileOutput<size_t, ElementWriter>(this, getOutputTrianglesFile(), header, comment, quadList, m_FaceDataArrayPaths);
+    break;
   }
+  case IGeometry::Type::Triangle: {
+    TriangleGeom::Pointer quadGeomPtr = dataContainer->getGeometryAs<TriangleGeom>();
+    headerStrm << "Index" << delimiter << "X" << delimiter << "Y" << delimiter << "Z" << delimiter;
 
-  QFile fileNodes(getOutputNodesFile());
+    commentStrm << getCommentMarker() << " All lines starting with '" << getCommentMarker() << "' are comments\n";
+    commentStrm << getCommentMarker() << " DREAM.3D Nodes file\n";
+    commentStrm << getCommentMarker() << " DREAM.3D Version " << SIMPLib::Version::Complete().toLatin1().constData() << "\n";
+    commentStrm << getCommentMarker() << " Node Data is X Y Z.\n";
+    commentStrm << getCommentMarker() << " Indexing starts at 1\n";
+    commentStrm << getCommentMarker() << " Total Vertices: " << vertices->getNumberOfTuples() << "\n";
 
-  if(!fileNodes.open(QIODevice::WriteOnly | QIODevice::Text))
-  {
-    QString ss = QObject::tr("Output file could not be opened: %1").arg(getOutputNodesFile());
-    setErrorCondition(-100, ss);
-    return;
+    notifyStatusMessage(QString("Writing Nodes file...."));
+    WriteSingleFileOutput<float, NodeWriter>(this, getOutputNodesFile(), header, comment, vertices, m_VertexDataArrayPaths);
+
+    SharedQuadList::Pointer quadList = quadGeomPtr->getTriangles();
+
+    header.clear();
+    headerStrm << "Index" << delimiter << "V1" << delimiter << "V2" << delimiter << "V3" << delimiter;
+    comment.clear();
+    commentStrm << getCommentMarker() << " All lines starting with '" << getCommentMarker() << "' are comments\n";
+    commentStrm << getCommentMarker() << " DREAM.3D Elements file\n";
+    commentStrm << getCommentMarker() << " DREAM.3D Version " << SIMPLib::Version::Complete().toLatin1().constData() << "\n";
+    commentStrm << getCommentMarker() << " Element Data: Each line has the vertex index and any associated element data.\n";
+    commentStrm << getCommentMarker() << " Element Data is considered located at the centroid of the element.\n";
+    commentStrm << getCommentMarker() << " Indexing starts at 1\n";
+    commentStrm << getCommentMarker() << " Total Elements: " << quadList->getNumberOfTuples() << "\n";
+
+    notifyStatusMessage(QString("Writing Elements file...."));
+    WriteSingleFileOutput<size_t, ElementWriter>(this, getOutputTrianglesFile(), header, comment, quadList, m_FaceDataArrayPaths);
   }
-
-  QTextStream outFileNodes(&fileNodes);
-
-  outFileNodes << "# All lines starting with '#' are comments\n";
-  outFileNodes << "# DREAM.3D Nodes file\n";
-  outFileNodes << "# DREAM.3D Version " << SIMPLib::Version::Complete().toLatin1().constData() << "\n";
-  outFileNodes << "# Node Data is X Y Z space delimited.\n";
-  outFileNodes << "Node Count: " << numNodes << "\n";
-
-  outFileNodes.setFieldWidth(8);
-  outFileNodes.setRealNumberPrecision(5);
-  outFileNodes.setRealNumberNotation(QTextStream::FixedNotation);
-
-  for(size_t i = 0; i < numNodes; i++)
-  {
-    outFileNodes.setFieldWidth(8);
-    outFileNodes << nodes[i * 3] << qSetFieldWidth(0);
-    outFileNodes << " " << qSetFieldWidth(8);
-    outFileNodes << nodes[i * 3 + 1] << qSetFieldWidth(0);
-    outFileNodes << " " << qSetFieldWidth(8);
-    outFileNodes << nodes[i * 3 + 2] << qSetFieldWidth(0);
-    outFileNodes << "\n";
+  break;
+  default:
+    break;
   }
-
-  fileNodes.close();
-
-  // ++++++++++++++ Write the Triangles File +++++++++++++++++++++++++++++++++++++++++++
-
-  notifyStatusMessage("Writing Triangles Text File");
-  QFileInfo triFI(getOutputTrianglesFile());
-  parentPath.setPath(triFI.path());
-
-  if(!parentPath.mkpath("."))
-  {
-    QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath.absolutePath());
-    setErrorCondition(-1, ss);
-    return;
-  }
-
-  QFile fileTri(getOutputTrianglesFile());
-
-  if(!fileTri.open(QIODevice::WriteOnly | QIODevice::Text))
-  {
-    QString ss = QObject::tr("Output file could not be opened: %1").arg(getOutputTrianglesFile());
-    setErrorCondition(-100, ss);
-    return;
-  }
-
-  QTextStream outFileTri(&fileTri);
-
-  outFileTri << "# All lines starting with '#' are comments\n";
-  outFileTri << "# DREAM.3D Triangle file\n";
-  outFileTri << "# DREAM.3D Version " << SIMPLib::Version::Complete().toLatin1().constData() << "\n";
-  outFileTri << "# Each Triangle consists of 3 Node Ids.\n";
-  outFileTri << "# NODE IDs START AT 0.\n";
-  outFileTri << "Geometry Type: " << geometryType.toLatin1().constData() << "\n";
-  outFileTri << "Node Count: " << numNodes << "\n";
-  outFileTri << "Max Node Id: " << maxNodeId << "\n";
-  outFileTri << "Triangle Count: " << numTriangles << "\n";
-
-  int n1, n2, n3;
-  for(size_t j = 0; j < numTriangles; ++j)
-  {
-    n1 = triangles[j * 3];
-    n2 = triangles[j * 3 + 1];
-    n3 = triangles[j * 3 + 2];
-
-    outFileTri << n1 << " " << n2 << " " << n3 << "\n";
-  }
-
-  fileTri.close();
 }
 
 // -----------------------------------------------------------------------------
@@ -334,7 +603,7 @@ QString WriteTriangleGeometry::getSubGroupName() const
 // -----------------------------------------------------------------------------
 QString WriteTriangleGeometry::getHumanLabel() const
 {
-  return "Export Triangle Geometry";
+  return "Export Triangle/Quad Geometry";
 }
 
 // -----------------------------------------------------------------------------
@@ -400,4 +669,52 @@ void WriteTriangleGeometry::setOutputTrianglesFile(const QString& value)
 QString WriteTriangleGeometry::getOutputTrianglesFile() const
 {
   return m_OutputTrianglesFile;
+}
+
+// -----------------------------------------------------------------------------
+void WriteTriangleGeometry::setVertexDataArrayPaths(const std::vector<DataArrayPath>& value)
+{
+  m_VertexDataArrayPaths = value;
+}
+
+// -----------------------------------------------------------------------------
+std::vector<DataArrayPath> WriteTriangleGeometry::getVertexDataArrayPaths() const
+{
+  return m_VertexDataArrayPaths;
+}
+
+// -----------------------------------------------------------------------------
+void WriteTriangleGeometry::setFaceDataArrayPaths(const std::vector<DataArrayPath>& value)
+{
+  m_FaceDataArrayPaths = value;
+}
+
+// -----------------------------------------------------------------------------
+std::vector<DataArrayPath> WriteTriangleGeometry::getFaceDataArrayPaths() const
+{
+  return m_FaceDataArrayPaths;
+}
+
+// -----------------------------------------------------------------------------
+void WriteTriangleGeometry::setCommentMarker(const QString& value)
+{
+  m_CommentMarker = value;
+}
+
+// -----------------------------------------------------------------------------
+QString WriteTriangleGeometry::getCommentMarker() const
+{
+  return m_CommentMarker;
+}
+
+// -----------------------------------------------------------------------------
+void WriteTriangleGeometry::setDelimiter(int value)
+{
+  m_Delimiter = value;
+}
+
+// -----------------------------------------------------------------------------
+int WriteTriangleGeometry::getDelimiter() const
+{
+  return m_Delimiter;
 }
