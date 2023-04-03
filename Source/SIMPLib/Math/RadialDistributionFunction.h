@@ -36,6 +36,7 @@
 #pragma once
 
 #include <array>
+#include <random>
 #include <vector>
 
 #include "SIMPLib/SIMPLib.h"
@@ -60,6 +61,9 @@ public:
    * @return An array of values that are the frequency values for the histogram
    */
   static std::vector<float> GenerateRandomDistribution(float minDistance, float maxDistance, int numBins, std::array<float, 3>& boxdims, std::array<float, 3>& boxres);
+
+  static std::vector<float> GenerateRandomDistribution(float minDistance, float maxDistance, int numBins, std::array<float, 3>& boxdims, std::array<float, 3>& boxres, bool useSeedFromUser,
+                                                       uint64_t userSeedValue = std::mt19937::default_seed);
 
 protected:
   RadialDistributionFunction();
