@@ -54,6 +54,15 @@ RadialDistributionFunction::~RadialDistributionFunction() = default;
 // -----------------------------------------------------------------------------
 std::vector<float> RadialDistributionFunction::GenerateRandomDistribution(float minDistance, float maxDistance, int numBins, std::array<float, 3>& boxdims, std::array<float, 3>& boxres)
 {
+  return GenerateRandomDistribution(minDistance, maxDistance, numBins, boxdims, boxres, false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+std::vector<float> RadialDistributionFunction::GenerateRandomDistribution(float minDistance, float maxDistance, int numBins, std::array<float, 3>& boxdims, std::array<float, 3>& boxres,
+                                                                          bool useSeedFromUser, uint64_t userSeedValue)
+{
   std::vector<float> freq(numBins, 0);
   std::vector<float> randomCentroids;
   std::vector<std::vector<float>> distancelist;
@@ -82,14 +91,25 @@ std::vector<float> RadialDistributionFunction::GenerateRandomDistribution(float 
 
   freq.resize(static_cast<size_t>(current_num_bins + 1));
 
-  SIMPL_RANDOMNG_NEW();
+  std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
+  std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
+  std::mt19937::result_type seed = userSeedValue;
+
+  if(!useSeedFromUser)
+  {
+    seed = static_cast<std::mt19937::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
+  }
+
+  generator.seed(seed);
+  std::uniform_real_distribution<double> distribution(0.0, 1.0);
 
   randomCentroids.resize(largeNumber * 3);
 
   // Generating all of the random points and storing their coordinates in randomCentroids
   for(size_t i = 0; i < largeNumber; i++)
   {
-    featureOwnerIdx = static_cast<size_t>(rg.genrand_res53() * totalpoints);
+    const auto random = distribution(generator);
+    featureOwnerIdx = static_cast<size_t>(random * totalpoints);
 
     column = featureOwnerIdx % xpoints;
     row = (featureOwnerIdx / xpoints) % ypoints;
