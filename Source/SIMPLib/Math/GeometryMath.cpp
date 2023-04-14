@@ -66,6 +66,19 @@ double GeometryMath::CosThetaBetweenVectors(const double a[3], const double b[3]
   }
   return (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]) / (norm1 * norm2);
 }
+float GeometryMath::CosThetaBetweenVectors(const Eigen::Vector3f& vectorA, const Eigen::Vector3f& vectorB)
+{
+  const float normA = vectorA.norm();
+  const float normB = vectorB.norm();
+
+  if(normA == 0.0f || normB == 0.0f)
+  {
+    return 1.0f;
+  }
+
+  return vectorA.dot(vectorB) / (normA * normB);
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

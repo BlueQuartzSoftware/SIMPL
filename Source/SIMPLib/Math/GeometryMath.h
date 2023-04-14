@@ -37,6 +37,8 @@
 
 #include <memory>
 
+#include <Eigen/Dense>
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataArrays/DynamicListArray.hpp"
 
@@ -62,6 +64,7 @@ namespace GeometryMath
  */
 SIMPLib_EXPORT float CosThetaBetweenVectors(const float a[3], const float b[3]);
 SIMPLib_EXPORT double CosThetaBetweenVectors(const double a[3], const double b[3]);
+SIMPLib_EXPORT float CosThetaBetweenVectors(const Eigen::Vector3f& vectorA, const Eigen::Vector3f& vectorB);
 
 /**
  * @brief Computes the angle in RADIANS between 2 vectors.
