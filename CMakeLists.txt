@@ -422,15 +422,28 @@ endif()
 # Determine if we need the ghcFilesystem library
 #-------------------------------------------------------------------------------
 set(SIMPL_USE_GHC_FILESYSTEM OFF)
-if(APPLE AND CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS 10.15)
-  set(SIMPL_USE_GHC_FILESYSTEM ON)
-elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" AND "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
+
+if(APPLE)
+  exec_program(uname ARGS -v  OUTPUT_VARIABLE DARWIN_VERSION)
+  string(REGEX MATCH "[0-9]+" DARWIN_VERSION ${DARWIN_VERSION})
+  if(DARWIN_VERSION VERSION_LESS 19)
+    message(STATUS "The current macOS System is too old to compile and will fail. Please set the SIMPL_USE_GHC_FILESYSTEM=ON variable to allow Ebsdlib to compile")
+  endif()
+  message(STATUS "SIMPL: DARWIN_VERSION ${DARWIN_VERSION}")
+  message(STATUS "SIMPL: CMAKE_OSX_DEPLOYMENT_TARGET: ${CMAKE_OSX_DEPLOYMENT_TARGET}")
+endif()
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux" AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
   set(SIMPL_USE_GHC_FILESYSTEM ON)
 endif()
+
+
+message(STATUS "SIMPL: SIMPL_USE_GHC_FILESYSTEM: ${SIMPL_USE_GHC_FILESYSTEM}")
 
 if(SIMPL_USE_GHC_FILESYSTEM)
   find_package(ghcFilesystem REQUIRED NAMES ghc_filesystem ghcFilesystem)
 endif()
+
+
 
 # -----------------------------------------------------------------------
 # -- Add in the SIMPL Sources into a library
