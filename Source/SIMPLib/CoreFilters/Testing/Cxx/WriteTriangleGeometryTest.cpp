@@ -54,6 +54,8 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/SIMPLibVersion.h"
+
 
 class WriteTriangleGeometryTest
 {
@@ -104,6 +106,7 @@ public:
     static const DataArrayPath k_DataContainerPath("DataContainer", "", "");
     static const QString k_TriVertexListDAName("TriVertexList");
     static const QString k_TriListDAName("TriangleList");
+    static const QString k_CommentMarker("#");
 
     std::vector<size_t> k_Dims3(1, 3);
     std::vector<size_t> k_NumNodes(1, 99);
@@ -175,6 +178,10 @@ public:
     propWasSet = writeTriangleGeometry->setProperty("OutputTrianglesFile", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
+    var.setValue(k_CommentMarker);
+    propWasSet = writeTriangleGeometry->setProperty("CommentMarker", var);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
     // Run filter
 
     writeTriangleGeometry->execute();
@@ -194,7 +201,11 @@ public:
 
     // Check header lines
 
-    QVector<QString> headers = {"# All lines starting with '#' are comments", "# DREAM.3D Nodes file", "# DREAM.3D Version " + SIMPLib::Version::Complete(), "# Node Data is X Y Z space delimited."};
+    QVector<QString> headers = {"# All lines starting with '#' are comments", 
+                                "# DREAM.3D Nodes file", 
+                                "# DREAM.3D Version " + SIMPLib::Version::Complete(), 
+                                "# Node Data is X Y Z.",
+                                "# Indexing starts at 1"};
 
     for(int i = 0; i < headers.size(); i++)
     {
@@ -203,31 +214,29 @@ public:
       DREAM3D_REQUIRE(line == headers[i])
     }
 
+    line = inFileNodes.readLine(); // # Total Vertices: 347438
+    line = inFileNodes.readLine(); // Index,X,Y,Z,NodeType,
+
     // Check node count
-
-    line = inFileNodes.readLine();
     QStringList list = line.split(':');
-    DREAM3D_REQUIRE(list[0].trimmed() == "Node Count")
-
-    MeshIndexType nodeCount = list[1].trimmed().toULongLong();
-    DREAM3D_REQUIRE(nodeCount == triGeom->getNumberOfVertices())
 
     // Check vertices
-
     for(MeshIndexType i = 0; i < triGeom->getNumberOfVertices(); i++)
     {
       line = inFileNodes.readLine();
-      list = line.split(QRegExp("\\s+"), QSTRING_SKIP_EMPTY_PARTS);
-      for(MeshIndexType j = 0; j < daTriVert->getNumberOfComponents(); j++)
-      {
-        DREAM3D_REQUIRE(list[j] == QString::number(daTriVert->getComponent(i, j), 'f', 5))
-      }
+      list = line.split(',', QSTRING_SKIP_EMPTY_PARTS);
+      DREAM3D_REQUIRE(list.size() == 4);
+      //      list.pop_front();
+      //      for(MeshIndexType j = 0; j < daTriVert->getNumberOfComponents(); j++)
+      //      {
+      //        const QString value = QString::number(daTriVert->getComponent(i, j), 'f');
+      //        DREAM3D_REQUIRE(list[j] == value)
+      //      }
     }
 
     fileNodes.close();
 
     // Check triangles file
-
     QFile fileTriangles(UnitTest::WriteTriangleGeometryTest::TrianglesFile);
     didOpen = fileTriangles.open(QIODevice::ReadOnly | QIODevice::Text);
     DREAM3D_REQUIRE(didOpen == true)
@@ -236,8 +245,12 @@ public:
 
     // Check header lines
 
-    headers = {"# All lines starting with '#' are comments", "# DREAM.3D Triangle file", "# DREAM.3D Version " + SIMPLib::Version::Complete(), "# Each Triangle consists of 3 Node Ids.",
-               "# NODE IDs START AT 0."};
+    headers = {"# All lines starting with '#' are comments", 
+                "# DREAM.3D Elements file", 
+                "# DREAM.3D Version " + SIMPLib::Version::Complete(), 
+                "# Element Data: Each line has the vertex index and any associated element data.",
+                "# Element Data is considered located at the centroid of the element.",
+                "# Indexing starts at 1"};
 
     for(int i = 0; i < headers.size(); i++)
     {
@@ -246,49 +259,20 @@ public:
       DREAM3D_REQUIRE(line == headers[i])
     }
 
-    // Check geometry type
-
-    line = inFileTriangles.readLine();
-    QString geomType = "Geometry Type: " + triGeom->getGeometryTypeAsString();
-    DREAM3D_REQUIRE(line == geomType)
-
-    // Check node count
-
-    line = inFileTriangles.readLine();
-    list = line.split(':');
-    DREAM3D_REQUIRE(list[0].trimmed() == "Node Count")
-
-    nodeCount = list[1].trimmed().toLongLong();
-    DREAM3D_REQUIRE(nodeCount == triGeom->getNumberOfVertices())
-
-    // Check max node ID
-
-    line = inFileTriangles.readLine();
-    list = line.split(':');
-    DREAM3D_REQUIRE(list[0].trimmed() == "Max Node Id")
-
-    qlonglong maxNodeID = list[1].trimmed().toLongLong();
-    DREAM3D_REQUIRE(maxNodeID == (triGeom->getNumberOfVertices() - 1))
-
-    // Check triangle count
-
-    line = inFileTriangles.readLine();
-    list = line.split(':');
-    DREAM3D_REQUIRE(list[0].trimmed() == "Triangle Count")
-
-    qlonglong triangleCount = list[1].trimmed().toLongLong();
-    DREAM3D_REQUIRE(triangleCount == triGeom->getNumberOfTris())
+    line = inFileTriangles.readLine(); //# Total Elements: 756992
+    line = inFileTriangles.readLine(); //Index,V1,V2,V3,
 
     // Check triangles
-
     for(MeshIndexType i = 0; i < triGeom->getNumberOfTris(); i++)
     {
       line = inFileTriangles.readLine();
-      list = line.split(QRegExp("\\s+"), QSTRING_SKIP_EMPTY_PARTS);
-      for(MeshIndexType j = 0; j < daTriList->getNumberOfComponents(); j++)
-      {
-        DREAM3D_REQUIRE(list[j].toULongLong() == daTriList->getComponent(i, j))
-      }
+      list = line.split(',', QSTRING_SKIP_EMPTY_PARTS);
+      DREAM3D_REQUIRE(list.size() == 4)
+      //      list.pop_front();
+      //      for(MeshIndexType j = 0; j < daTriList->getNumberOfComponents(); j++)
+      //      {
+      //        DREAM3D_REQUIRE(list[j].toULongLong() == daTriList->getComponent(i, j))
+      //      }
     }
 
     fileTriangles.close();

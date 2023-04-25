@@ -77,8 +77,16 @@ public:
     for(size_t c = 0; c < numComp; c++)
     {
       size_t value = m_IndexPtr->getComponent(index, c);
-      m_Out << value + 1 << delimiter;
+      m_Out << value + 1;
+      if(c < numComp - 1)
+      {
+        m_Out << delimiter;
+      }
     }
+  }
+  size_t getNumberOfTuples()
+  {
+    return m_IndexPtr->getNumberOfTuples();
   }
 
 private:
@@ -99,6 +107,10 @@ public:
   {
     m_Out << index + 1 << delimiter;
     m_VertPtr->printTuple(m_Out, index, delimiter);
+  }
+  size_t getNumberOfTuples()
+  {
+    return m_VertPtr->getNumberOfTuples();
   }
 
 private:
@@ -176,17 +188,13 @@ void WriteSingleFileOutput(WriteTriangleGeometry* filter, const QString& outputF
 
     if(selectedArrayPtr->getNumberOfComponents() == 1)
     {
-      outFile << selectedArrayPtr->getName();
+      outFile << delimiter << selectedArrayPtr->getName();
     }
     else // There are more than a single component so we need to add multiple header values
     {
       for(int32_t k = 0; k < selectedArrayPtr->getNumberOfComponents(); ++k)
       {
-        outFile << selectedArrayPtr->getName() << "_" << k;
-        if(k < selectedArrayPtr->getNumberOfComponents() - 1)
-        {
-          outFile << delimiter;
-        }
+        outFile << delimiter << selectedArrayPtr->getName() << "_" << k;
       }
     }
     // if(i < dataPaths.size() - 1)
@@ -197,17 +205,19 @@ void WriteSingleFileOutput(WriteTriangleGeometry* filter, const QString& outputF
     dataArrays.push_back(selectedArrayPtr);
   }
   outFile << "\n";
+  outFile.flush();
 
   // Get the number of tuples in the arrays
-  size_t numTuples = 0;
-  if(!dataArrays.empty())
-  {
-    numTuples = dataArrays[0]->getNumberOfTuples();
-  }
+  //  size_t numTuples = 0;
+  //  if(!dataArrays.empty())
+  //  {
+  //    numTuples = dataArrays[0]->getNumberOfTuples();
+  //  }
 
   QString s;
   QTextStream out(&s);
   WriterType writerType(out, geomDataPtr);
+  size_t numTuples = writerType.getNumberOfTuples();
 
   float threshold = 0.0f;
 
@@ -227,6 +237,8 @@ void WriteSingleFileOutput(WriteTriangleGeometry* filter, const QString& outputF
     }
 
     writerType.printIndex(i, delimiter);
+    outFile << s;
+    s.clear();
     // Print a row of data
     for(const auto& data : dataArrays)
     {
@@ -469,7 +481,7 @@ void WriteTriangleGeometry::execute()
   case IGeometry::Type::Quad: {
 
     QuadGeom::Pointer quadGeomPtr = dataContainer->getGeometryAs<QuadGeom>();
-    headerStrm << "Index" << delimiter << "X" << delimiter << "Y" << delimiter << "Z" << delimiter;
+    headerStrm << "Index" << delimiter << "X" << delimiter << "Y" << delimiter << "Z";
 
     commentStrm << getCommentMarker() << " All lines starting with '" << getCommentMarker() << "' are comments\n";
     commentStrm << getCommentMarker() << " DREAM.3D Nodes file\n";
@@ -484,7 +496,7 @@ void WriteTriangleGeometry::execute()
     SharedQuadList::Pointer quadList = quadGeomPtr->getQuads();
 
     header.clear();
-    headerStrm << "Index" << delimiter << "V1" << delimiter << "V2" << delimiter << "V3" << delimiter << "V4" << delimiter;
+    headerStrm << "Index" << delimiter << "V1" << delimiter << "V2" << delimiter << "V3" << delimiter << "V4";
     comment.clear();
     commentStrm << getCommentMarker() << " All lines starting with '" << getCommentMarker() << "' are comments\n";
     commentStrm << getCommentMarker() << " DREAM.3D Elements file\n";
@@ -500,7 +512,7 @@ void WriteTriangleGeometry::execute()
   }
   case IGeometry::Type::Triangle: {
     TriangleGeom::Pointer quadGeomPtr = dataContainer->getGeometryAs<TriangleGeom>();
-    headerStrm << "Index" << delimiter << "X" << delimiter << "Y" << delimiter << "Z" << delimiter;
+    headerStrm << "Index" << delimiter << "X" << delimiter << "Y" << delimiter << "Z";
 
     commentStrm << getCommentMarker() << " All lines starting with '" << getCommentMarker() << "' are comments\n";
     commentStrm << getCommentMarker() << " DREAM.3D Nodes file\n";
@@ -515,7 +527,7 @@ void WriteTriangleGeometry::execute()
     SharedQuadList::Pointer quadList = quadGeomPtr->getTriangles();
 
     header.clear();
-    headerStrm << "Index" << delimiter << "V1" << delimiter << "V2" << delimiter << "V3" << delimiter;
+    headerStrm << "Index" << delimiter << "V1" << delimiter << "V2" << delimiter << "V3";
     comment.clear();
     commentStrm << getCommentMarker() << " All lines starting with '" << getCommentMarker() << "' are comments\n";
     commentStrm << getCommentMarker() << " DREAM.3D Elements file\n";
