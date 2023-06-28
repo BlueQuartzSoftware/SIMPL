@@ -73,62 +73,75 @@
 #include "util/SubtractionOperator.h"
 #include "util/TanOperator.h"
 
-#define CREATE_CALCULATOR_ARRAY(itemPtr, iDataArrayPtr)                                                                                                                                                \
-  if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(iDataArrayPtr))                                                                                                                                 \
-  {                                                                                                                                                                                                    \
-    FloatArrayType::Pointer arrayCast = std::dynamic_pointer_cast<FloatArrayType>(iDataArrayPtr);                                                                                                      \
-    itemPtr = CalculatorArray<float>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                      \
-  }                                                                                                                                                                                                    \
-  else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(iDataArrayPtr))                                                                                                                           \
-  {                                                                                                                                                                                                    \
-    DoubleArrayType::Pointer arrayCast = std::dynamic_pointer_cast<DoubleArrayType>(iDataArrayPtr);                                                                                                    \
-    itemPtr = CalculatorArray<double>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                     \
-  }                                                                                                                                                                                                    \
-  else if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(iDataArrayPtr))                                                                                                                             \
-  {                                                                                                                                                                                                    \
-    Int8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int8ArrayType>(iDataArrayPtr);                                                                                                        \
-    itemPtr = CalculatorArray<int8_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                     \
-  }                                                                                                                                                                                                    \
-  else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(iDataArrayPtr))                                                                                                                            \
-  {                                                                                                                                                                                                    \
-    UInt8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt8ArrayType>(iDataArrayPtr);                                                                                                      \
-    itemPtr = CalculatorArray<uint8_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                    \
-  }                                                                                                                                                                                                    \
-  else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(iDataArrayPtr))                                                                                                                            \
-  {                                                                                                                                                                                                    \
-    Int16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int16ArrayType>(iDataArrayPtr);                                                                                                      \
-    itemPtr = CalculatorArray<int16_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                    \
-  }                                                                                                                                                                                                    \
-  else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(iDataArrayPtr))                                                                                                                           \
-  {                                                                                                                                                                                                    \
-    UInt16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt16ArrayType>(iDataArrayPtr);                                                                                                    \
-    itemPtr = CalculatorArray<uint16_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                   \
-  }                                                                                                                                                                                                    \
-  else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(iDataArrayPtr))                                                                                                                            \
-  {                                                                                                                                                                                                    \
-    Int32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int32ArrayType>(iDataArrayPtr);                                                                                                      \
-    itemPtr = CalculatorArray<int32_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                    \
-  }                                                                                                                                                                                                    \
-  else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(iDataArrayPtr))                                                                                                                           \
-  {                                                                                                                                                                                                    \
-    UInt32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt32ArrayType>(iDataArrayPtr);                                                                                                    \
-    itemPtr = CalculatorArray<uint32_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                   \
-  }                                                                                                                                                                                                    \
-  else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(iDataArrayPtr))                                                                                                                            \
-  {                                                                                                                                                                                                    \
-    Int64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int64ArrayType>(iDataArrayPtr);                                                                                                      \
-    itemPtr = CalculatorArray<int64_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                    \
-  }                                                                                                                                                                                                    \
-  else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(iDataArrayPtr))                                                                                                                           \
-  {                                                                                                                                                                                                    \
-    UInt64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt64ArrayType>(iDataArrayPtr);                                                                                                    \
-    itemPtr = CalculatorArray<uint64_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                   \
-  }                                                                                                                                                                                                    \
-  else if(TemplateHelpers::CanDynamicCast<DataArray<bool>>()(iDataArrayPtr))                                                                                                                           \
-  {                                                                                                                                                                                                    \
-    DataArray<bool>::Pointer arrayCast = std::dynamic_pointer_cast<DataArray<bool>>(iDataArrayPtr);                                                                                                    \
-    itemPtr = CalculatorArray<bool>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                       \
+namespace
+{
+CalculatorItem::Pointer createCalculatorArray(AbstractFilter* filter, IDataArrayShPtr iDataArrayPtr)
+{
+  CalculatorItem::Pointer itemPtr = CalculatorItem::NullPointer();
+  if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(iDataArrayPtr))
+  {
+    FloatArrayType::Pointer arrayCast = std::dynamic_pointer_cast<FloatArrayType>(iDataArrayPtr);
+    itemPtr = CalculatorArray<float>::New(arrayCast, ICalculatorArray::Array, !filter->getInPreflight());
   }
+  else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(iDataArrayPtr))
+  {
+    DoubleArrayType::Pointer arrayCast = std::dynamic_pointer_cast<DoubleArrayType>(iDataArrayPtr);
+    itemPtr = CalculatorArray<double>::New(arrayCast, ICalculatorArray::Array, !filter->getInPreflight());
+  }
+  else if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(iDataArrayPtr))
+  {
+    Int8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int8ArrayType>(iDataArrayPtr);
+    itemPtr = CalculatorArray<int8_t>::New(arrayCast, ICalculatorArray::Array, !filter->getInPreflight());
+  }
+  else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(iDataArrayPtr))
+  {
+    UInt8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt8ArrayType>(iDataArrayPtr);
+    itemPtr = CalculatorArray<uint8_t>::New(arrayCast, ICalculatorArray::Array, !filter->getInPreflight());
+  }
+  else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(iDataArrayPtr))
+  {
+    Int16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int16ArrayType>(iDataArrayPtr);
+    itemPtr = CalculatorArray<int16_t>::New(arrayCast, ICalculatorArray::Array, !filter->getInPreflight());
+  }
+  else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(iDataArrayPtr))
+  {
+    UInt16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt16ArrayType>(iDataArrayPtr);
+    itemPtr = CalculatorArray<uint16_t>::New(arrayCast, ICalculatorArray::Array, !filter->getInPreflight());
+  }
+  else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(iDataArrayPtr))
+  {
+    Int32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int32ArrayType>(iDataArrayPtr);
+    itemPtr = CalculatorArray<int32_t>::New(arrayCast, ICalculatorArray::Array, !filter->getInPreflight());
+  }
+  else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(iDataArrayPtr))
+  {
+    UInt32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt32ArrayType>(iDataArrayPtr);
+    itemPtr = CalculatorArray<uint32_t>::New(arrayCast, ICalculatorArray::Array, !filter->getInPreflight());
+  }
+  else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(iDataArrayPtr))
+  {
+    Int64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int64ArrayType>(iDataArrayPtr);
+    itemPtr = CalculatorArray<int64_t>::New(arrayCast, ICalculatorArray::Array, !filter->getInPreflight());
+  }
+  else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(iDataArrayPtr))
+  {
+    UInt64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt64ArrayType>(iDataArrayPtr);
+    itemPtr = CalculatorArray<uint64_t>::New(arrayCast, ICalculatorArray::Array, !filter->getInPreflight());
+  }
+  else if(TemplateHelpers::CanDynamicCast<BoolArrayType>()(iDataArrayPtr))
+  {
+    BoolArrayType::Pointer arrayCast = std::dynamic_pointer_cast<BoolArrayType>(iDataArrayPtr);
+    itemPtr = CalculatorArray<bool>::New(arrayCast, ICalculatorArray::Array, !filter->getInPreflight());
+  }
+  else if(TemplateHelpers::CanDynamicCast<SizeTArrayType>()(iDataArrayPtr))
+  {
+    SizeTArrayType::Pointer arrayCast = std::dynamic_pointer_cast<SizeTArrayType>(iDataArrayPtr);
+    itemPtr = CalculatorArray<size_t>::New(arrayCast, ICalculatorArray::Array, !filter->getInPreflight());
+  }
+
+  return itemPtr;
+}
+}
 
 enum createdPathID : RenameDataPath::DataID_t
 {
@@ -841,9 +854,8 @@ bool ArrayCalculator::parseIndexOperator(QString token, QVector<CalculatorItem::
   parsedInfix.pop_back();
 
   DoubleArrayType::Pointer reducedArray = calcArray->reduceToOneComponent(index, !getInPreflight());
-  CalculatorItem::Pointer itemPtr;
 
-  CREATE_CALCULATOR_ARRAY(itemPtr, reducedArray)
+  CalculatorItem::Pointer itemPtr = createCalculatorArray(this, reducedArray);
   parsedInfix.push_back(itemPtr);
 
   QString ss = QObject::tr("Item '%1' in the infix expression is the name of an array in the selected Attribute Matrix, but it is currently being used as an indexing operator").arg(token);
@@ -879,7 +891,6 @@ bool ArrayCalculator::parseCommaOperator(QString token, QVector<CalculatorItem::
   }
 
   CalculatorItem::Pointer itemPtr = m_SymbolMap.value(token);
-
   parsedInfix.push_back(itemPtr);
   return true;
 }
@@ -913,9 +924,7 @@ bool ArrayCalculator::parseArray(QString token, QVector<CalculatorItem::Pointer>
     return false;
   }
 
-  CalculatorItem::Pointer itemPtr;
-
-  CREATE_CALCULATOR_ARRAY(itemPtr, dataArray)
+  CalculatorItem::Pointer itemPtr = createCalculatorArray(this, dataArray);
   parsedInfix.push_back(itemPtr);
   return true;
 }
