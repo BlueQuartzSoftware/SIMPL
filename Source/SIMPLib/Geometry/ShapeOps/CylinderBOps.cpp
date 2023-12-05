@@ -59,9 +59,8 @@ float CylinderBOps::radcur1(QMap<ArgName, float> args)
   float covera = args[C_OverA];
 
   // the equation for volume for a B cylinder is pi*a*c*h where a and c are semi axis lengths, but
-  // h is a full axis length - meaning h = 2b.  However, since our aspect ratios relate semi axis lengths, the 2.0
-  // factor can be ingored in this part
-  radcur1 = static_cast<float>((volcur * SIMPLib::Constants::k_1OverPiD * (1.0f / bovera) * (1.0f / covera)));
+  // h is a full axis length - meaning h = 2b.
+  radcur1 = static_cast<float>((volcur* 0.5 * SIMPLib::Constants::k_1OverPiD * (1.0f / bovera) * (1.0f / covera)));
   radcur1 = powf(radcur1, 0.333333333333f);
   return radcur1;
 }
